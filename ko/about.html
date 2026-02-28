@@ -1,0 +1,326 @@
+<!--
+  Copyright 2024 The Ray Optics Simulation authors and contributors
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <!--
+    Copyright 2024 The Ray Optics Simulation authors and contributors
+  
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+  
+        http://www.apache.org/licenses/LICENSE-2.0
+  
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  -->
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>이 앱에 대하여 - 광선 광학 시뮬레이션</title>
+  <meta property="og:title" content="이 앱에 대하여 - 광선 광학 시뮬레이션">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://phydemo.app/ray-optics/ko/about">
+  <meta property="og:image" content="https://phydemo.app/ray-optics/img/image.png">
+  <meta property="og:description" content="광선 광학 시뮬레이션">
+  <meta property="og:locale" content="ko">
+  <link rel="canonical" href="https://phydemo.app/ray-optics/ko/about">
+  <link rel="alternate" hreflang="en" href="https://phydemo.app/ray-optics/about">
+  <link rel="alternate" hreflang="fr" href="https://phydemo.app/ray-optics/fr/about">
+  <link rel="alternate" hreflang="km" href="https://phydemo.app/ray-optics/km/about">
+  <link rel="alternate" hreflang="ko" href="https://phydemo.app/ray-optics/ko/about">
+  <link rel="alternate" hreflang="pl" href="https://phydemo.app/ray-optics/pl/about">
+  <link rel="alternate" hreflang="pt-BR" href="https://phydemo.app/ray-optics/pt-BR/about">
+  <link rel="alternate" hreflang="pt-PT" href="https://phydemo.app/ray-optics/pt-PT/about">
+  <link rel="alternate" hreflang="ru" href="https://phydemo.app/ray-optics/ru/about">
+  <link rel="alternate" hreflang="ta" href="https://phydemo.app/ray-optics/ta/about">
+  <link rel="alternate" hreflang="zh-CN" href="https://phydemo.app/ray-optics/cn/about">
+  <link rel="alternate" hreflang="zh-TW" href="https://phydemo.app/ray-optics/tw/about">
+  <link rel="stylesheet" href="../thirdparty/bootstrap/bootstrap.min.css">
+  <link rel="icon" href="../img/icon.png" type="image/png">
+  <style>
+    .brand {
+      font-size: 12pt;
+      color: #888;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-left: 5px;
+      margin-right: 5px;
+      padding: 0px;
+      height: 40px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+    }
+  
+    .brand:hover {
+      text-decoration: none;
+    }
+  
+    .github-button-container {
+      color: #888;
+      margin-top: 7px;
+      margin-bottom: 0px;
+      margin-left: 0px;
+      margin-right: 0px;
+      padding: 0px;
+      height: 40px;
+      width: 92px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      float: right;
+    }
+  
+    .github-button-container a {
+      color: transparent;
+    }
+  
+    .navul {
+      font-size: 11pt;
+    }
+  
+    .navul a {
+      color: #555;
+      float: left;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-left: 5px;
+      margin-right: 5px;
+      padding: 2px;
+      height: 40px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+    }
+  
+    .clearfix {
+      clear: both;
+    }
+  
+    .navul a:hover {
+      border-bottom: 3px solid #CCC;
+      text-decoration: none;
+    }
+  
+    .navul a.active {
+      color: #000;
+      border-bottom: 3px solid gray;
+    }
+  
+    body {
+      padding-top: 72px;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    }
+  </style>
+  <script defer src="../thirdparty/jquery.min.js"></script>
+  <script defer src="../thirdparty/bootstrap/bootstrap.min.js"></script>
+  <script async defer src="https://buttons.github.io/buttons.js"></script></head>
+
+<body>
+  <!--
+    Copyright 2024 The Ray Optics Simulation authors and contributors
+  
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+  
+        http://www.apache.org/licenses/LICENSE-2.0
+  
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  -->
+  
+  <div class="navbar navbar-fixed-top container" style="background-color:white;max-height:90px;overflow:hidden">
+  
+    <a href="../ko/" class="navbar-left brand">
+      <img src="../img/icon.png" alt="" style="width:18pt; height:18pt"> 광선 광학 시뮬레이션
+    </a>
+    <div class="navbar-right">
+  
+      <span class="navul">
+        <a href="../ko/" class="">홈</a>
+        <a href="../gallery/" class="">갤러리</a>
+        <a href="../ko/about" class="active">이 앱에 대하여</a>
+      </span>
+      <span class="github-button-container">
+        <a class="github-button" href="https://github.com/ricktu288/ray-optics" data-show-count="true"
+          aria-label="Star ricktu288/ray-optics on GitHub">Star</a>
+      </span>
+    </div>
+  
+  </div>  <div class="container">
+    <div align="center">
+      <h3 style="margin-bottom: 4px"><img src="../img/icon.png" alt="Icon" width="64" height="64" style="margin-bottom: 3px;"><br>
+        광선 광학 시뮬레이션</h3>
+      <b>2D 기하 광학 생성 및 시뮬레이션을 위한 무료 오픈소스 웹 기반 앱입니다.</b><br>
+      <div style="font-size: 12px; margin-top: 4px;"><span style="font-family: monospace;">v5.4+20260227.4611bd3</span></div>
+    </div>
+    <br>
+    <p>갤러리 콘텐츠를 포함한 이 프로젝트는 <a href="https://github.com/ricktu288/ray-optics/blob/master/LICENSE">Apache License 2.0</a> 라이선스에 따라 배포되며, <a href="https://phydemo.app/">PhyDemo (phydemo.app)</a> 웹사이트(이전에는 ricktu288.github.io)에 공식적으로 호스팅됩니다. 소스 코드는 <a href="https://github.com/ricktu288/ray-optics">GitHub</a>에서 확인할 수 있으며, 여러분의 <a href="https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md">참여를 환영합니다</a>. 질문이나 제안 사항이 있으시면 GitHub에서 <a href="https://github.com/ricktu288/ray-optics/issues">issues</a> 또는 <a href="https://github.com/ricktu288/ray-optics/discussions">discussions</a>를 개설하시거나, GitHub을 사용하지 않으시는 경우 <a href="mailto:ray-optics@phydemo.app" style="white-space: nowrap;">ray-optics@phydemo.app</a>으로 이메일을 보내주세요.</p>
+
+    <p>
+      <b><a href="https://github.com/ricktu288/ray-optics/blob/master/CITATION.md">이 프로젝트 인용하기</a></b>
+    </p>
+    <p><strong>주저자</strong></p>
+    <ul>
+      <li><a href="https://yitingtu.com">Yi-Ting Tu</a> (코드, UI 디자인, 갤러리, 모듈, <span style="font-family: monospace;">zh-TW</span> & <span style="font-family: monospace;">zh-CN</span>번역)</li>
+    </ul>
+    <p><strong>기여자</strong></p>
+    <ul>
+      <li>Stas Fainer (코드, 갤러리, 모듈)</li>
+      <li>Pedro Braga (<span style="font-family: monospace;">pt-BR</span>번역)</li>
+      <li>Fundacja Nauka i Wiedza (<span style="font-family: monospace;">pl</span>번역)</li>
+      <li>Hong Phong Kim (<span style="font-family: monospace;">km</span>번역)</li>
+      <li>Wei-Fang Sun (코드, UI 디자인)</li>
+      <li>Paul Falstad (코드, 갤러리)</li>
+      <li>James Garrard (코드, 갤러리)</li>
+      <li>Brianna D'Urso (코드)</li>
+      <li>digitalgreenery (코드)</li>
+      <li>Scott Cheng (코드)</li>
+      <li>Levent Candan (<span style="font-family: monospace;">tr</span>번역)</li>
+      <li>Silvério Santos (<span style="font-family: monospace;">pt-PT</span>번역)</li>
+      <li>Qurbonsaid (<span style="font-family: monospace;">uz</span>번역)</li>
+      <li>Ettore Atalan (<span style="font-family: monospace;">de</span>번역)</li>
+      <li>BlueCl0wn (<span style="font-family: monospace;">de</span>번역)</li>
+      <li>Lo-Chen Cheng (<span style="font-family: monospace;">de</span>번역)</li>
+      <li>Artuom Jdkd (<span style="font-family: monospace;">ru</span>번역)</li>
+      <li>Rémi Berthoz (<span style="font-family: monospace;">fr</span>번역)</li>
+      <li>Eno Lak (<span style="font-family: monospace;">fr</span>번역)</li>
+      <li>Mars goshi (<span style="font-family: monospace;">ar</span>번역)</li>
+      <li>Rai Gar (<span style="font-family: monospace;">es</span>번역)</li>
+      <li>Estyx Translations (<span style="font-family: monospace;">es</span>번역)</li>
+      <li>Michael Heise (<span style="font-family: monospace;">de</span>번역)</li>
+      <li>sadajun916 (<span style="font-family: monospace;">ja</span>번역)</li>
+      <li>Miguel Sánchez Palomino (<span style="font-family: monospace;">es</span>번역)</li>
+      <li>Savva (<span style="font-family: monospace;">ru</span>번역)</li>
+      <li>GLmontanari (코드)</li>
+      <li>Adrian Dorrington (코드)</li>
+      <li>Tharusha Theekshana (<span style="font-family: monospace;">si</span>번역)</li>
+      <li>mcornillon (<span style="font-family: monospace;">fr</span>번역)</li>
+      <li>Sepp Vogel (코드)</li>
+      <li>Bearia (<span style="font-family: monospace;">ja</span>번역)</li>
+      <li>Lorenzo Trevisanello (<span style="font-family: monospace;">it</span>번역)</li>
+      <li>cyamahat (코드)</li>
+      <li>kqakqakqa (코드, <span style="font-family: monospace;">zh-CN</span>번역)</li>
+      <li>SukkaW (코드)</li>
+      <li>Abhinandan Kushwaha (코드)</li>
+      <li>Artyom Vasilenko (<span style="font-family: monospace;">ru</span>번역)</li>
+      <li>German Abelentsev (<span style="font-family: monospace;">ru</span>번역)</li>
+      <li>Nicolás De Francesco (<span style="font-family: monospace;">es</span>번역)</li>
+      <li>corentin N (<span style="font-family: monospace;">fr</span>번역)</li>
+      <li>Georges Le Goaster (<span style="font-family: monospace;">fr</span>번역)</li>
+      <li>Martin Poitras (코드)</li>
+      <li>BoopSnoot (<span style="font-family: monospace;">ru</span>번역)</li>
+      <li>mahjsa (<span style="font-family: monospace;">nl</span>번역)</li>
+      <li>Wen Zhou (갤러리)</li>
+      <li>Cutivel Dimitri (<span style="font-family: monospace;">fr</span>번역)</li>
+      <li>Vincent Fan (코드, UI 디자인, 갤러리)</li>
+      <li>Victory Science (갤러리)</li>
+      <li>Matteo Ricci Cipolloni (갤러리)</li>
+      <li>Mikhail Kochiev (갤러리)</li>
+      <li>Steve Stonebraker (갤러리)</li>
+      <li>krzysztofkrzeslak (UI 디자인)</li>
+      <li>Young-Gi Kim (<span style="font-family: monospace;">ko</span>번역)</li>
+      <li>chuangyu J (갤러리)</li>
+      <li>Georg Nadorff (갤러리)</li>
+      <li>Rene (갤러리)</li>
+      <li>josephernest (모듈)</li>
+      <li>Alex (갤러리)</li>
+      <li>Liu Quanhong (갤러리)</li>
+      <li>Peter Becher (갤러리)</li>
+      <li>Mario Petitclerc (갤러리)</li>
+      <li>Matthias Guillon (갤러리)</li>
+      <li>Andreas Arnold (<span style="font-family: monospace;">fr</span>번역)</li>
+      <li>Leon Seidel (갤러리)</li>
+      <li>TamilNeram (<span style="font-family: monospace;">ta</span>번역)</li>
+      <li>sasavladimirov6 (<span style="font-family: monospace;">ru</span>번역)</li>
+      <li>Patrick Gretzki (<span style="font-family: monospace;">de</span>번역)</li>
+      <li>Rafael Bastin (<span style="font-family: monospace;">fr</span>번역)</li>
+      <li>Daniel Anya (갤러리)</li>
+      <li>Shahar Seifer (갤러리)</li>
+      <li>Ilya Vasilenko (<span style="font-family: monospace;">ru</span>번역)</li>
+      <li>Feng (모듈)</li>
+      <li>vanapro1 (<span style="font-family: monospace;">ru</span>번역)</li>
+      <li>Florence (<span style="font-family: monospace;">fr</span>번역)</li>
+      <li>Alvise Di Rienzo (<span style="font-family: monospace;">it</span>번역)</li>
+      <li>Jan Pražák (<span style="font-family: monospace;">cs</span>번역)</li>
+      <li>gert jansen (<span style="font-family: monospace;">nl</span>번역)</li>
+      <li>Mohammed B (<span style="font-family: monospace;">ar</span>번역)</li>
+      <li>Richard Ruh (갤러리)</li>
+      <li>vimalrajrm (<span style="font-family: monospace;">ta</span>번역)</li>
+      <li>bri (갤러리)</li>
+      <li>Adrián González Rodríguez (<span style="font-family: monospace;">es</span>번역)</li>
+      <li>bird0cosmic (갤러리)</li>
+      <li>Márk Fazekas (<span style="font-family: monospace;">hu</span>번역)</li>
+      <li>Jorge Bodroghy Leite (갤러리)</li>
+      <li>Brad Goodman (모듈)</li>
+      <li>DeadeyeSun (갤러리)</li>
+      <li>Dullayachat Boonudom (<span style="font-family: monospace;">lo</span>번역)</li>
+    </ul>
+     (GitHub 기여자 우선, 나머지는 시간순으로 정렬.)
+
+    <!--
+      Copyright 2024 The Ray Optics Simulation authors and contributors
+    
+      Licensed under the Apache License, Version 2.0 (the "License");
+      you may not use this file except in compliance with the License.
+      You may obtain a copy of the License at
+    
+          http://www.apache.org/licenses/LICENSE-2.0
+    
+      Unless required by applicable law or agreed to in writing, software
+      distributed under the License is distributed on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      See the License for the specific language governing permissions and
+      limitations under the License.
+    -->
+    
+    <div style="float: right; padding-bottom: 1em;">
+      <div class="dropup">
+        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+          <span id="language">언어: 한국어</span>
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a href="../about">English<span style="color:gray"></span></a></li>
+          <li><a href="../fr/about">Français<span style="color:gray"></span></a></li>
+          <li><a href="../km/about">ភាសាខ្មែរ<span style="color:gray"></span></a></li>
+          <li><a href="../ko/about">한국어<span style="color:gray"></span></a></li>
+          <li><a href="../pl/about">polski<span style="color:gray"></span></a></li>
+          <li><a href="../pt-BR/about">Português (Brasil)<span style="color:gray"></span></a></li>
+          <li><a href="../pt-PT/about">Português (Portugal)<span style="color:gray"></span></a></li>
+          <li><a href="../ru/about">Русский<span style="color:gray"></span></a></li>
+          <li><a href="../ta/about">தமிழ்<span style="color:gray"></span></a></li>
+          <li><a href="../cn/about">简体中文<span style="color:gray"></span></a></li>
+          <li><a href="../tw/about">正體中文<span style="color:gray"></span></a></li>
+        </ul>
+      </div>
+    </div>  </div>
+
+</body>
+</html>

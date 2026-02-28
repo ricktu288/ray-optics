@@ -1,0 +1,53 @@
+{
+  "project": {
+    "name": "Simulace Ray Optics",
+    "shortName": "Ray Optics",
+    "description": "Volně dostupná open-source webová aplikace pro vytváření a simulaci optických prvků a šíření světla ve 2D."
+  },
+  "pages": {
+    "simulator": "Simulátor",
+    "home": "Úvod",
+    "gallery": "Galerie",
+    "modules": "Moduly",
+    "about": "O aplikaci",
+    "github": "GitHub"
+  },
+  "homePage": {
+    "description": "Interaktivně tvořte a simulujte 2D geometrické optické scény.\nZcela zdarma a přímo v prohlížeči. Zrojový kód je [k dispozici na GitHubu](/github).",
+    "launchSimulator": "Spustit simulátor"
+  },
+  "tools": {
+    "title": "Nástroje",
+    "categories": {
+      "lightSource": "Světelný zdroj",
+      "mirror": "Zrcadlo",
+      "glass": "Sklo",
+      "blocker": "Zástěna",
+      "other": "Další"
+    },
+    "common": {
+      "clickInstruction": "Klikni pro vytvoření.",
+      "lineInstruction": "Pro vytvoření potáhni nebo klikni.",
+      "circleInstruction": "Pro vytvoření potáhni nebo klikni, nejprve střed a poté obvod."
+    },
+    "SingleRay": {
+      "title": "Jeden paprsek",
+      "description": "Jediný paprsek světla určený dvěma body.",
+      "instruction": "Pro vytvoření potáhni nebo klikni, nejprve zdroj a poté směr."
+    },
+    "Beam": {
+      "title": "Svazek",
+      "description": "Souběžný či rozbíhající se svazek paprsků vycházející ze segmentu úsečky, intenzitu lze nastavit posuvníkem 'Hustota paprsků'."
+    },
+    "PointSource": {
+      "title": "Bodový zdroj",
+      "description": "Paprsky vycházejí z jediného bodu, počet lze nastavit pomocí posuvníku \"Hustota paprsků\"."
+    }
+  },
+  "meta": {
+    "languageName": "Čeština",
+    "parentheses": "{{main}} ({{sub}})",
+    "colon": "{{name}}: {{value}}",
+    "list": "{{first}}, {{others}}"
+  }
+}

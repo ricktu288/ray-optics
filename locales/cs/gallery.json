@@ -1,0 +1,50 @@
+{
+  "galleryPage": {
+    "title": "Galerie Ray Optics",
+    "description": "Toto je soubor simulací vytvořených pomocí [webové aplikace](/simulator), které lze použít jako interaktivní ukázky optiky. Budeme rádi, pokud přispějete novými položkami. Podrobnosti najdete v [průvodci pro přispěvovatele](/contributing/gallery). Chcete-li nahlásit chybu, otevřete issue na GitHubu nebo napište na ray-optics@phydemo.app.",
+    "categories": {
+      "title": "Kategorie",
+      "reflection": "Odraz",
+      "refraction": "Lom",
+      "lens": "Čočka",
+      "combinationOfLenses": "Kombinace čoček",
+      "grinOptics": "Optika s gradientním indexem lomu",
+      "miscellaneous": "Různé"
+    },
+    "contributors_one": "Přispěvovatel: {{contributors}}",
+    "contributors_few": "Přispěvovatelé: {{contributors}}",
+    "contributors_other": "Přispěvovatelé: {{contributors}}",
+    "openInSimulator": "Otevřít v simulátoru"
+  },
+  "galleryData": {
+    "common": {
+      "warningthesequenceof": "Upozornění: Pořadí zobrazování světelných paprsků neodpovídá skutečnému šíření světla – správný smysl má pouze výsledný obraz."
+    },
+    "imagesFormedByTwoMirrors": {
+      "title": "Obrazy vytvořené dvěma zrcadly",
+      "description": "Tato simulace zobrazuje obrazy vytvořené dvěma zrcadly. Zelené \"L\" představuje objekt. Pokud úhel mezi oběma zrcadly odpovídá \\(\\frac{360^\\circ}{n}\\), bude vytvořeno \\(n-1\\) virtuálních obrazů (oranžové \"L\"). Potažením kontrolních bodů zrcadel lze upravit jejich úhel."
+    },
+    "parabolicMirror": {
+      "title": "Parabolické zrcadlo",
+      "description": "Tato simulace demonstruje schopnost parabolického zrcadla soustředit světlo do jediného bodu."
+    },
+    "hyperbolicMirror": {
+      "title": "Hyperbolické zrcadlo",
+      "description": "Toto je ukázka vlastností hyperbolického zrcadla: Paprsky světla vycházející z jednoho ohniska směrem k hyperbolickému zrcadlu se odrazí tak, že se rozbíhají směrem od druhého ohniska.\n\nOba ohniskové body hyperbolického zrcadla se nazývají aplanatické body (viz [Aplanatické body](/gallery/aplanatic-points)).",
+      "theorangeraysareimag": "Oranžové paprsky představují pomyslné prodloužení odražených žlutých paprsků.\nTyto pomyslné paprsky se sbíhají do druhého ohniskového bodu.",
+      "pointlightsourceaton": "Bodový zdroj světla v jednom ohnisku"
+    },
+    "retroreflectors": {
+      "title": "Retroreflektory",
+      "description": "Toto je simulace dvou typů retroreflektorů (odrazek):\n\n1. Rohový (koutový) odražeč.\n2. Sférický odražeč.",
+      "dragtorotatethebeam": "Potáhni\npro natočení paprsku",
+      "catseyeretroreflecto": "Sférický odražeč (kuličková odrazka)",
+      "cornerretroreflector": "Rohový (koutový) odražeč"
+    },
+    "periscope": {
+      "title": "Periskop",
+      "description": "Toto je simulace periskopu tvořeného dvěma plochými zrcadly a několika zástěnami.",
+      "observerseyenottosca": "Oko pozorovatele (není v měřítku)"
+    }
+  }
+}

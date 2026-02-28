@@ -1,0 +1,272 @@
+{
+  "project": {
+    "name": "Ray Optics Simulation",
+    "shortName": "Ray Optics",
+    "description": "A free, open-source web app for creating and simulating 2D geometric optical scenes."
+  },
+  "pages": {
+    "simulator": "Simulator",
+    "home": "Home",
+    "gallery": "Gallery",
+    "modules": "Modules",
+    "about": "About",
+    "github": "GitHub"
+  },
+  "homePage": {
+    "description": "Create & simulate 2D geometric optical scenes interactively.\nTotally free and web-based. Source code is [available on GitHub](/github).",
+    "launchSimulator": "Launch Simulator"
+  },
+  "tools": {
+    "title": "Tools",
+    "categories": {
+      "lightSource": "Light Source",
+      "mirror": "Mirror",
+      "glass": "Glass",
+      "blocker": "Blocker",
+      "other": "Other"
+    },
+    "common": {
+      "clickInstruction": "Click to create.",
+      "lineInstruction": "Drag or click to create.",
+      "circleInstruction": "Drag or click to create, first the center, then the circumference."
+    },
+    "SingleRay": {
+      "title": "Single ray",
+      "description": "A single ray of light defined by two points.",
+      "instruction": "Drag or Click to create, first the source, then the direction."
+    },
+    "Beam": {
+      "title": "Beam",
+      "description": "A parallel or divergent beam of rays emerges from a line segment, with density controlled by the 'Ray density' slider."
+    },
+    "PointSource": {
+      "title": "Point source",
+      "description": "Rays emerge from a single point, with number controlled by the 'Ray density' slider."
+    },
+    "AngleSource": {
+      "instruction": "Drag or Click to create, first the source, then the direction.",
+      "description": "Point source with a given emission angle."
+    },
+    "Mirror": {
+      "title": "Segment",
+      "description": "Simulate the reflection of light on a mirror."
+    },
+    "otherMirror": {
+      "title": "Curved",
+      "description": "A mirror whose shape is curved. Can be circular, parabolic, or defined by a custom equation y = f(x)."
+    },
+    "ArcMirror": {
+      "title": "Circular Arc",
+      "description": "A mirror whose shape is part of a circle, which is defined by three points.",
+      "instruction": "Drag or click the two endpoints to create, then click a third point on the arc to define the curvature."
+    },
+    "ParabolicMirror": {
+      "title": "Parabolic",
+      "description": "A mirror whose shape is a parabola, which is defined by three points.",
+      "instruction": "Drag or click the two endpoints to create, then click the vertex."
+    },
+    "IdealMirror": {
+      "title": "Ideal curved mirror",
+      "description": "The idealized 'curved' mirror which obeys exactly the mirror equation (1/p + 1/q = 1/f). The focal length can be set directly."
+    },
+    "BeamSplitter": {
+      "title": "Beam Splitter",
+      "description": "A mirror that transmits a percentage of incoming light."
+    },
+    "CustomMirror": {
+      "title": "Custom Equation",
+      "description": "A mirror whose shape is defined by a custom equation y = f(x), where (x,y) is in the transformed coordinates in which the two control points are (-1,0) and (1,0)."
+    },
+    "ParamMirror": {
+      "title": "Parametric Curve",
+      "description": "A mirror whose shape is defined by custom parametric equations."
+    },
+    "ConcaveDiffractionGrating": {
+      "title": "Concave Grating",
+      "description": "A concave diffraction grating whose shape is part of a circle."
+    },
+    "PlaneGlass": {
+      "title": "Half-plane",
+      "description": "Simulate the refraction and reflection of light on a surface.",
+      "instruction": "Drag or click two points on the surface to create."
+    },
+    "otherGlass": {
+      "title": "Other shapes",
+      "description": "Glass with any shapes constructed from line segments and circular arcs, or shapes defined by a custom inequality f(x) < y < g(x)."
+    },
+    "CircleGlass": {
+      "title": "Circle",
+      "description": "Glass with a circle shape, defined by its center and a point on the surface."
+    },
+    "Glass": {
+      "title": "Polygon / Circular Arcs",
+      "description": "Glass with any shapes constructed from line segments and circular arcs.",
+      "instruction": "Click to create a segment, drag to create an arc, click on the starting point when finish drawing."
+    },
+    "IdealLens": {
+      "title": "Ideal Lens",
+      "description": "An ideal lens which obeys exactly the thin lens equation (1/p + 1/q = 1/f). The focal length can be set directly."
+    },
+    "SphericalLens": {
+      "title": "Spherical Lens",
+      "description": "A spherical lens, whose shape can be defined using various parameters."
+    },
+    "CustomGlass": {
+      "title": "Custom Equation",
+      "description": "Glass with the shape defined by a custom inequality f(x) < y < g(x), where (x,y) is in the transformed coordinates in which the two control points are (-1,0) and (1,0)."
+    },
+    "ParamGlass": {
+      "title": "Parametric Curve",
+      "description": "Glass with the shape defined by custom parametric equations."
+    },
+    "CurveGlass": {
+      "title": "Bézier Curves",
+      "description": "Glass bounded by cubic Bézier curves.",
+      "instruction": "Click to create a piece, click on the starting point when finish drawing. After that, drag the boxes to manipulate the control points, changing the curve."
+    },
+    "CircleGrinGlass": {
+      "title": "GRIN Circle",
+      "description": "Glass with a custom refractive index function n(x,y) and a circular boundary."
+    },
+    "GrinGlass": {
+      "title": "GRIN Polygon",
+      "description": "Glass with a custom refractive index function n(x,y) and a polygonal boundary.",
+      "instruction": "Click to create a segment, click on the starting point when finish drawing.",
+      "warning": "WARNING: Only simple polygons are supported, otherwise the behavior is unpredictable."
+    },
+    "ParamGrinGlass": {
+      "title": "GRIN Parametric Curve",
+      "description": "Gradient-index glass with boundary defined by custom parametric equations."
+    },
+    "CurveGrinGlass": {
+      "title": "GRIN Bézier Curves",
+      "description": "Gradient-index glass bounded by cubic Bézier curves."
+    },
+    "otherGrinGlass": {
+      "title": "Gradient-index glass",
+      "description": "Material with a custom refractive index function n(x,y)."
+    },
+    "Blocker": {
+      "title": "Line Blocker",
+      "description": "A line-segment light blocker which absorbs the incident rays."
+    },
+    "CircleBlocker": {
+      "title": "Circle Blocker",
+      "description": "A circle light blocker which absorbs the incident rays."
+    },
+    "Aperture": {
+      "title": "Aperture",
+      "description": "A pair of light blockers which absorbs the incident rays. The size of the hole can be adjusted symmetrically.",
+      "instruction": "Drag or click the two endpoints to create."
+    },
+    "DiffractionGrating": {
+      "title": "Diffraction Grating",
+      "description": "A diffraction grating that splits light at an angle depending on wavelength.",
+      "warning": "Warning: The intensities of diffracted rays may not be accurate."
+    },
+    "Ruler": {
+      "title": "Ruler",
+      "description": "A ruler from a point for zero and another point."
+    },
+    "Protractor": {
+      "title": "Protractor",
+      "description": "A protractor defined from the center and another point for the zero direction. The scale is in degrees."
+    },
+    "Detector": {
+      "title": "Detector",
+      "description": "A tool for measuring the rate of energy flow (P), the rate of perpendicular momentum flow (F⊥), and the rate of parallel momentum flow (F∥) through a line segment.  The units are arbitrary."
+    },
+    "TextLabel": {
+      "title": "Text",
+      "description": "A text label."
+    },
+    "LineArrow": {
+      "title": "Line / Arrow",
+      "description": "A line segment or arrow."
+    },
+    "Drawing": {
+      "title": "Drawing",
+      "description": "A freehand drawing tool.",
+      "instruction": "Drag to draw."
+    },
+    "CustomSurface": {
+      "title": "Custom Line Surface",
+      "description": "A custom line-segment surface where the angles (θ) and brightnesses (P) of the outgoing rays (when a ray is incident on it) are defined by custom equations."
+    },
+    "CustomArcSurface": {
+      "title": "Custom Arc Surface",
+      "description": "A custom surface with shape of a circular arc."
+    },
+    "CustomParamSurface": {
+      "title": "Custom Parametric Curve",
+      "description": "A custom surface with shape defined by parametric equations."
+    },
+    "modules": {
+      "import": "Import Modules…",
+      "remove": "Remove module"
+    },
+    "moveView": {
+      "title": "Move view",
+      "description": "Drag to move the view. (Mouse right button drag has the same function.)"
+    },
+    "moreTools": {
+      "title": "More Tools…"
+    }
+  },
+  "view": {
+    "title": "View",
+    "rays": {
+      "title": "Rays",
+      "description": "Show the rays. When the 'Ray density' is high, they appear to be continuous."
+    },
+    "extended": {
+      "title": "Extended rays",
+      "description": "Show both the rays and its extension. Orange indicates backward extensions, and gray indicates forward ones.",
+      "simulateColorsNote": "When 'Simulate Colors' is on, they are shown in source colors and distinguished by dashing instead."
+    },
+    "images": {
+      "title": "All Images",
+      "description": "Show the position of all images. Yellow points indicate real images, orange indicates virtual images, and gray (none in this picture) indicates virtual objects. Note that some images cannot be detected if 'Ray density' is not high enough.",
+      "simulateColorsNote": "When 'Simulate Colors' is on, they are shown in source colors and distinguished by dot sizes instead."
+    },
+    "observer": {
+      "title": "Seen by Observer",
+      "description": "Simulate the rays and images seen from some position. The blue circle is the observer. Any rays crossing it are considered to be 'observed'. The observer does not know where the rays actually begin, but may think they begin at some point(s) if they intersect there. The rays are shown in blue, and the points in yellow (real) or orange (virtual).",
+      "simulateColorsNote": "When 'Simulate Colors' is on, they are shown in source colors instead.",
+      "instruction": "Drag the big blue dot to move the observer."
+    },
+    "customThemeNote": "Note: This scene uses a custom theme."
+  },
+  "simulateColors": {
+    "title": "Simulate Colors",
+    "description": "Simulate colors (wavelengths) of light sources, mixture of colors, color filtering of blockers and mirrors, and chromatic dispersion of glasses.",
+    "instruction": "You can set those parameters for those objects when selected. To simulate color spectra, overlap rays with different wavelengths.",
+    "warning": "Color mixing is inaccurate unless used with \"Correct Brightness\"."
+  },
+  "aboutPage": {
+    "description": "This project, including the gallery contents, is licensed under the [Apache License 2.0](/license), and is officially hosted on the [PhyDemo (phydemo.app)](/phydemo) website (formerly on ricktu288.github.io). The source code is [available on GitHub](/github), and you are [welcome to contribute](/contributing). If you have questions or suggestions, you can open [issues](/github/issues) or [discussions](/github/discussions) on GitHub, or email us at [ray-optics@phydemo.app](/email) if you do not use GitHub.",
+    "cite": "Cite this project",
+    "mainAuthors_one": "Main Author",
+    "mainAuthors_other": "Main Authors",
+    "contributors": "Contributors",
+    "contributorSorting": "GitHub contributors first; others sorted chronologically.",
+    "contributionCategories": {
+      "code": "code",
+      "uiDesign": "UI design",
+      "gallery": "gallery",
+      "module": "module",
+      "translations_one": "{{languages}} translation",
+      "translations_other": "{{languages}} translations"
+    }
+  },
+  "languageDropdown": {
+    "title": "Language: {{language}}",
+    "translatedFraction": "{{fraction}} translated"
+  },
+  "meta": {
+    "languageName": "English",
+    "parentheses": "{{main}} ({{sub}})",
+    "colon": "{{name}}: {{value}}",
+    "list": "{{first}}, {{others}}"
+  }
+}

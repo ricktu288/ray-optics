@@ -1,0 +1,497 @@
+<!--
+  Copyright 2024 The Ray Optics Simulation authors and contributors
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <!--
+    Copyright 2024 The Ray Optics Simulation authors and contributors
+  
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+  
+        http://www.apache.org/licenses/LICENSE-2.0
+  
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  -->
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulation de rayon optique - PhyDemo</title>
+  <meta property="og:title" content="Simulation de rayon optique - PhyDemo">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://phydemo.app/ray-optics/fr/">
+  <meta property="og:image" content="https://phydemo.app/ray-optics/img/image.png">
+  <meta property="og:description" content="Simulation de rayon optique">
+  <meta property="og:locale" content="fr">
+  <link rel="canonical" href="https://phydemo.app/ray-optics/fr/">
+  <link rel="alternate" hreflang="en" href="https://phydemo.app/ray-optics/">
+  <link rel="alternate" hreflang="de" href="https://phydemo.app/ray-optics/de/">
+  <link rel="alternate" hreflang="es" href="https://phydemo.app/ray-optics/es/">
+  <link rel="alternate" hreflang="fr" href="https://phydemo.app/ray-optics/fr/">
+  <link rel="alternate" hreflang="ja" href="https://phydemo.app/ray-optics/jp/">
+  <link rel="alternate" hreflang="km" href="https://phydemo.app/ray-optics/km/">
+  <link rel="alternate" hreflang="ko" href="https://phydemo.app/ray-optics/ko/">
+  <link rel="alternate" hreflang="nl" href="https://phydemo.app/ray-optics/nl/">
+  <link rel="alternate" hreflang="pl" href="https://phydemo.app/ray-optics/pl/">
+  <link rel="alternate" hreflang="pt-BR" href="https://phydemo.app/ray-optics/pt-BR/">
+  <link rel="alternate" hreflang="pt-PT" href="https://phydemo.app/ray-optics/pt-PT/">
+  <link rel="alternate" hreflang="ru" href="https://phydemo.app/ray-optics/ru/">
+  <link rel="alternate" hreflang="si" href="https://phydemo.app/ray-optics/si/">
+  <link rel="alternate" hreflang="ta" href="https://phydemo.app/ray-optics/ta/">
+  <link rel="alternate" hreflang="zh-CN" href="https://phydemo.app/ray-optics/cn/">
+  <link rel="alternate" hreflang="zh-TW" href="https://phydemo.app/ray-optics/tw/">
+  <link rel="stylesheet" href="../thirdparty/bootstrap/bootstrap.min.css">
+  <link rel="icon" href="../img/icon.png" type="image/png">
+  <style>
+    .brand {
+      font-size: 12pt;
+      color: #888;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-left: 5px;
+      margin-right: 5px;
+      padding: 0px;
+      height: 40px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+    }
+  
+    .brand:hover {
+      text-decoration: none;
+    }
+  
+    .github-button-container {
+      color: #888;
+      margin-top: 7px;
+      margin-bottom: 0px;
+      margin-left: 0px;
+      margin-right: 0px;
+      padding: 0px;
+      height: 40px;
+      width: 92px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      float: right;
+    }
+  
+    .github-button-container a {
+      color: transparent;
+    }
+  
+    .navul {
+      font-size: 11pt;
+    }
+  
+    .navul a {
+      color: #555;
+      float: left;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-left: 5px;
+      margin-right: 5px;
+      padding: 2px;
+      height: 40px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+    }
+  
+    .clearfix {
+      clear: both;
+    }
+  
+    .navul a:hover {
+      border-bottom: 3px solid #CCC;
+      text-decoration: none;
+    }
+  
+    .navul a.active {
+      color: #000;
+      border-bottom: 3px solid gray;
+    }
+  
+    body {
+      padding-top: 72px;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    }
+  </style>
+  <script defer src="../thirdparty/jquery.min.js"></script>
+  <script defer src="../thirdparty/bootstrap/bootstrap.min.js"></script>
+  <script async defer src="https://buttons.github.io/buttons.js"></script>  <style>
+    .preview-image {
+      width: 100%;
+    }
+
+    .thumbnail.right-caption>img {
+      float: left;
+      margin-right: 9px;
+    }
+
+    .thumbnail {
+      margin-bottom: 5px;
+    }
+
+    .tool-title {
+      font-size: 16pt;
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+
+    .mode-title {
+      font-size: 16pt;
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+  </style>
+</head>
+
+<body>
+  <!--
+    Copyright 2024 The Ray Optics Simulation authors and contributors
+  
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+  
+        http://www.apache.org/licenses/LICENSE-2.0
+  
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  -->
+  
+  <div class="navbar navbar-fixed-top container" style="background-color:white;max-height:90px;overflow:hidden">
+  
+    <a href="../fr/" class="navbar-left brand">
+      <img src="../img/icon.png" alt="" style="width:18pt; height:18pt"> Simulation de rayon optique
+    </a>
+    <div class="navbar-right">
+  
+      <span class="navul">
+        <a href="../fr/" class="active">Accueil</a>
+        <a href="../fr/gallery/" class="">Galerie</a>
+        <a href="../fr/about" class="">À propos</a>
+      </span>
+      <span class="github-button-container">
+        <a class="github-button" href="https://github.com/ricktu288/ray-optics" data-show-count="true"
+          aria-label="Star ricktu288/ray-optics on GitHub">Star</a>
+      </span>
+    </div>
+  
+  </div>  <div class="container">
+    <div align="center">
+      <h1><b><span>Simulation de rayon optique</span></b></h1>
+      <p>
+        Créez et simulez des scènes interactives en géométrie 2D.<br>Totalement gratuit et basé sur le web. Le code source est <a href="https://github.com/ricktu288/ray-optics">disponible sur GitHub</a>.
+      </p>
+      <p>
+        <a href="../simulator/?fr" target="_blank" class="btn btn-success btn-lg">Lancer l&#39;application</a>
+      </p>
+    </div>
+    <br>
+    <div id="screenshots" class="carousel slide" data-ride="carousel" style="aspect-ratio: 940/440; max-width: 1140px">
+      <ol class="carousel-indicators">
+        <li data-target="#screenshots" data-slide-to="0" class="active"></li>
+        <li data-target="#screenshots" data-slide-to="1"></li>
+        <li data-target="#screenshots" data-slide-to="2"></li>
+        <li data-target="#screenshots" data-slide-to="3"></li>
+        <li data-target="#screenshots" data-slide-to="4"></li>
+      </ol>
+
+      <div class="carousel-inner" role="listbox">
+        <div class="item active">
+          <a href="../simulator/?fr#spherical-lens-and-mirror" target="_blank"><img src="../img/spherical-lens-and-mirror.jpg"
+              alt="Spherical Lens and Mirror" class="preview-image"></a>
+        </div>
+        <div class="item">
+          <a href="../simulator/?fr#compound-microscope" target="_blank">
+            <picture>
+              <source srcset="../gallery/compound-microscope.avif" type="image/avif">
+              <img src="../gallery/compound-microscope.jpg" alt="Compound Microscope" class="preview-image">
+            </picture>
+          </a>
+        </div>
+        <div class="item">
+          <a href="../simulator/?fr#../fr/gallery/apparent-depth" target="_blank">
+            <picture>
+              <source srcset="../fr/gallery/apparent-depth.avif" type="image/avif">
+              <img src="../fr/gallery/apparent-depth.jpg" alt="Profondeur apparente" class="preview-image">
+            </picture>
+          </a>
+        </div>
+        <div class="item">
+          <a href="../simulator/?fr#chromatic-dispersion" target="_blank">
+            <picture>
+              <source srcset="../gallery/chromatic-dispersion.avif" type="image/avif">
+              <img src="../gallery/chromatic-dispersion.jpg" alt="Chromatic dispersion" class="preview-image">
+            </picture>
+          </a>
+        </div>
+        <div class="item">
+          <a href="../simulator/?fr#images-formed-by-two-mirrors" target="_blank"><img src="../img/images-formed-by-two-mirrors.svg"
+              alt="Images provenant de deux miroirs" class="preview-image"></a>
+        </div>
+      </div>
+
+      <a class="left carousel-control" href="#screenshots" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="right carousel-control" href="#screenshots" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+
+    <div class="row" style="font-size: 10pt">
+      <div class="col-sm-6">
+        <div class="col-sm-12">
+          <h2>Outils</h2>
+          <div class="row thumbnail right-caption">
+            <img src="../img/SingleRay.svg" alt="Rayon" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">Rayon</p>
+              <span>Un rayon de lumière unique définit par deux points.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/Beam.svg" alt="Faisceau" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">Faisceau</p>
+              <span>Un faisceau de rayons parallèle émergeant d&#39;un segment, avec une densité contrôlée par le curseur &#39;Densité de rayons&#39;.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/PointSource.svg" alt="Source de lumière" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">Source de lumière</p>
+              <span>Rayons émergeant d&#39;un point unique, avec un nombre de rayons controlé par le curseur &#39;Densité de rayons&#39;.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/Mirror.svg" alt="Miroirs" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">Miroirs</p>
+              <span>Simule la reflexion de la lumière sur un miroir.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/ArcMirror.svg" alt="Miroirs (Courbé)" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">Miroirs (Courbé)</p>
+              <span>Un miroir dont la forme est un arc circulaire, qui est définit par trois points.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/IdealMirror.svg" alt="Courbure idéale" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">Courbure idéale</p>
+              <span>Un miroir &#39;courbé&#39; qui obéit exactement à l&#39;équation (1/p + 1/q = 1/f). La distance focale peut être défini directement.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/BeamSplitter.svg" alt="Diviseur de rayons" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">Diviseur de rayons</p>
+              <span>Un miroir qui transmet un pourcentage de la lumière entrant.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/PlaneGlass.svg" alt="Verres" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">Verres</p>
+              <span>Simule la réfraction et la reflexion de la lumière sur une surface.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/Glass.svg" alt="Verres (Autre)" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">Verres (Autre)</p>
+              <span>Verre avec une forme quelconque construite avec des segments et des arcs circulaires, ou avec la forme définie par une inéquation personnalisée f(x) &lt; y &lt; g(x).</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/CircleGrinGlass.svg" alt="Gradient-index glass" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">Gradient-index glass</p>
+              <span>Material with a custom refractive index function n(x,y).</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/IdealLens.svg" alt="Lentille idéale" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">Lentille idéale</p>
+              <span>Une lentille obéissant exactement à l&#39;équation de lentille (1/p&#39; + 1/p = 1/f&#39;). La distance focale peut être défini directement.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/Blocker.svg" alt="Diaphragme" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">Diaphragme</p>
+              <span>Un segment absorbant les rayons incidents.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/DiffractionGrating.svg" alt="Diffraction Grating" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">Diffraction Grating</p>
+              <span>A diffraction grating that splits light at an angle depending on wavelength.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/Ruler.svg" alt="Règle" style="width:100px;height:100px;" class="img-rounded">
+            <div class="caption" class="img-rounded">
+              <p class="tool-title">Règle</p>
+              <span>Une règle de zéro à un autre point.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/Protractor.svg" alt="Rapporteur" style="width:100px;height:100px;" class="img-rounded">
+            <div class="caption" class="img-rounded">
+              <p class="tool-title">Rapporteur</p>
+              <span>Un rapporteur défini par le centre et un autre point pour la direction zero. L&#39;echelle est en degrès.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/Detector.svg" alt="Détecteur" style="width:100px;height:100px;" class="img-rounded">
+            <div class="caption" class="img-rounded">
+              <p class="tool-title">Détecteur</p>
+              <span>A tool for measuring the rate of energy flow (P), the rate of perpendicular momentum flow (F⊥), and the rate of parallel momentum flow (F∥) through a line segment.  The units are arbitrary.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="col-sm-12">
+          <h2>Vue</h2>
+          <div class="row thumbnail">
+            <div class="caption">
+              <p class="mode-title">Rayons</p>
+              <span>Montre les rayons. Quand la &#39;Densité de rayons&#39; est élevée, elles paraissent continues.</span>
+            </div>
+            <div align="center">
+              <div style="aspect-ratio: 519/163; max-width: 510px">
+                <img src="../img/high_density.png" alt="Rayons" style="width:100%" class="img-rounded">
+              </div>
+              <div style="aspect-ratio: 519/163; max-width: 510px">
+                <img src="../img/low_density.svg" alt="Rayons" class="img-rounded" style="margin-top:5px; width:100%">
+              </div>
+            </div>
+          </div>
+          <div class="row thumbnail">
+            <div class="caption">
+              <p class="mode-title">Rayons étendus</p>
+              <span>Montre les rayons et leur extensions. Le orange indique les extensions de derrière, le gris les extensions de devant.</span>
+            </div>
+            <div align="center">
+              <div style="aspect-ratio: 445/216; max-width: 510px">
+                <img src="../img/extended_rays.svg" alt="Rayons étendus" class="img-rounded" style="width:100%">
+              </div>
+            </div>
+          </div>
+          <div class="row thumbnail">
+            <div class="caption">
+              <p class="mode-title">Toutes les images</p>
+              <span>Montre la position de toutes les images. Les points jaunes indiquent les images réelles, l&#39;orange indique les images virtuelles et le gris (absent sur l&#39;image) indique les objets virtuels. Notons que certaines images ne peuvent pas être detectées si la &#39;Densité de rayon&#39; n&#39;est pas suffisament grande.</span>
+            </div>
+            <div align="center">
+              <div style="aspect-ratio: 445/216; max-width: 510px">
+                <img src="../img/all_images.svg" alt="Toutes les images" class="img-rounded" style="width:100%">
+              </div>
+            </div>
+          </div>
+          <div class="row thumbnail">
+            <div class="caption">
+              <p class="mode-title">Vu par un observateur</p>
+              <span>Simule les rayons et images vus depuis une certaine position. Le cercle bleu est l&#39;observateur. N&#39;importe quel rayon traversant ce cercle est consideré comme &#39;observé&#39;. L&#39;observateur ne sait pas exactement où le rayon commence réellement, mais pensera qu&#39;il commence à un certain point s&#39;ils se croisent ici. Les rayons sont montrés en bleu, et les points en orange.</span>
+            </div>
+            <div align="center">
+              <div style="aspect-ratio: 445/216; max-width: 510px">
+                <img src="../img/seen_by_observer.svg" alt="Vu par un observateur" class="img-rounded" style="width:100%">
+              </div>
+            </div>
+          </div>
+          <div class="row thumbnail">
+            <div class="caption">
+              <p class="mode-title">Simuler les couleurs</p>
+              <span>Simuler les couleurs (longueurs d&#39;onde) de sources lumineuses, des mélanges de couleurs, le filtrage de couleurs par les miroirs ou les bloqueurs de lumière, ainsi que la dispersion chromatique des verres.</span>
+            </div>
+            <div align="center">
+              <div style="aspect-ratio: 445/216; max-width: 510px">
+                <img src="../img/simulate_colors.png" alt="Simuler les couleurs" class="img-rounded" style="width:100%">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      Copyright 2024 The Ray Optics Simulation authors and contributors
+    
+      Licensed under the Apache License, Version 2.0 (the "License");
+      you may not use this file except in compliance with the License.
+      You may obtain a copy of the License at
+    
+          http://www.apache.org/licenses/LICENSE-2.0
+    
+      Unless required by applicable law or agreed to in writing, software
+      distributed under the License is distributed on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      See the License for the specific language governing permissions and
+      limitations under the License.
+    -->
+    
+    <div style="float: right; padding-bottom: 1em;">
+      <div class="dropup">
+        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+          <span id="language">Langue : Français</span>
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a href="../">English<span style="color:gray"></span></a></li>
+          <li><a href="../de/">Deutsch<span style="color:gray"></span></a></li>
+          <li><a href="../es/">Español<span style="color:gray"></span></a></li>
+          <li><a href="../fr/">Français<span style="color:gray"></span></a></li>
+          <li><a href="../jp/">日本語<span style="color:gray"></span></a></li>
+          <li><a href="../km/">ភាសាខ្មែរ<span style="color:gray"></span></a></li>
+          <li><a href="../ko/">한국어<span style="color:gray"></span></a></li>
+          <li><a href="../nl/">Nederlands<span style="color:gray"></span></a></li>
+          <li><a href="../pl/">polski<span style="color:gray"></span></a></li>
+          <li><a href="../pt-BR/">Português (Brasil)<span style="color:gray"></span></a></li>
+          <li><a href="../pt-PT/">Português (Portugal)<span style="color:gray"></span></a></li>
+          <li><a href="../ru/">Русский<span style="color:gray"></span></a></li>
+          <li><a href="../si/">සිංහල<span style="color:gray"></span></a></li>
+          <li><a href="../ta/">தமிழ்<span style="color:gray"></span></a></li>
+          <li><a href="../cn/">简体中文<span style="color:gray"></span></a></li>
+          <li><a href="../tw/">正體中文<span style="color:gray"></span></a></li>
+        </ul>
+      </div>
+    </div>  </div>
+</body>

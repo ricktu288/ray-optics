@@ -1,0 +1,258 @@
+{
+  "galleryPage": {
+    "title": "La galería de The Ray Optics",
+    "description": "Esto es una colección de simulaciones hechas usando [the web app](/simulator), que pueden ser usadas como demostraciones interactivas de óptica. Eres bienvenido de contribuir con nuevas simulaciones. Véase [the contribution guide](/contributing/gallery) para más información. Para reportar un fallo, por favor [open an issue on GitHub](/github/issues) o envía un email a [ray-optics@phydemo.app](/email).",
+    "categories": {
+      "title": "Categorías",
+      "reflection": "Reflexión",
+      "refraction": "Refracción",
+      "lens": "Lente",
+      "combinationOfLenses": "Combinación de Lentes",
+      "grinOptics": "Óptica de gradiente de índice",
+      "miscellaneous": "Misceláneas"
+    },
+    "openInSimulator": "Abrir en el simulador",
+    "contributors_one": "Colaborador: {{contributors}}",
+    "contributors_many": "Colaboradores: {{contributors}}",
+    "contributors_other": "Colaboradores: {{contributors}}"
+  },
+  "galleryData": {
+    "common": {
+      "warningthesequenceof": "Atención: La secuencia de luz apareciendo no representa realmente la velocidad de la luz - solo la imagen final es significante."
+    },
+    "imagesFormedByTwoMirrors": {
+      "title": "Imágenes de dos espejos",
+      "description": "La simulación muestra imágenes formadas por dos espejos. La \"L\" verde es el objeto. Si el ángulo entre ambos espejos es \\(\\frac{360^\\circ}{n}\\), entonces \\(n-1\\) imágenes virtuales (las L's naranjas) se formarán. Puedes arrastrar el punto final del espejo para cambiar el ángulo entre ellos."
+    },
+    "parabolicMirror": {
+      "title": "Espejo parabólico",
+      "description": "La simulación demuestra la propiedad de focalización del espejo parabólico."
+    },
+    "hyperbolicMirror": {
+      "title": "Espejo hiperbólico",
+      "description": "Esto es una demostración de la propiedad de reflexión del espejo hiperbólico: Los rayos de luz que viajan de un foco hacia el espejo hiperbólico se reflejarán alejándose del otro foco.\n\nLos dos focos de la hipérbola son puntos aplanáticos (véase [Aplanatic points](/gallery/aplanatic-points)).",
+      "theorangeraysareimag": "Los rayos naranjas son rayos imaginarios extendidos a partir de los rayos amarillos reflejados.\nEstos rayos imaginarios convergen en el otro punto focal.",
+      "pointlightsourceaton": "Fuente de luz puntual en un punto focal"
+    },
+    "retroreflectors": {
+      "title": "Retrorreflectores",
+      "description": "Esta es una simulación de dos tipos de retrorreflectores:\n\n1. Retrorreflector de esquina.\n2. Retrorreflector de ojo de gato.",
+      "dragtorotatethebeam": "Arrastra\npara rotar el haz",
+      "catseyeretroreflecto": "Retrorreflector de ojo de gato",
+      "cornerretroreflector": "Retrorreflector de esquina"
+    },
+    "periscope": {
+      "title": "Periscopio",
+      "description": "Esta es una simulación de un periscopio formado por dos espejos planos y algunos bloqueadores de luz.",
+      "observerseyenottosca": "Ojo de observador (no a escala)"
+    },
+    "newtonianTelescope": {
+      "title": "Telescopio Newtoniano",
+      "description": "Esto es un modelo de un telescopio Newtoniano con un ocular de Plössl."
+    },
+    "penroseUnilluminableRoom": {
+      "title": "Sala no iluminable de Penrose",
+      "description": "La sala no iluminable de Penrose se construye a partir de espejos elípticos, circulares y lineales. Tiene la propiedad interesante de que una fuente puntual (verde) en la sala no iluminará la sala entera, sin importar dónde lo coloques. Puedes arrastrar el punto verde para mover la fuente.",
+      "nomatterwhereyouputt": "No importe dónde pongas la fuente puntual, no iluminará la sala entera.\nAtención: Debido a errores numéricos, puede que todavía brille después de un tiempo."
+    },
+    "internalReflection": {
+      "title": "Reflejo interno",
+      "description": "Esta simulación muestra la refracción y la reflexión interna en una superficie."
+    },
+    "hyperbolicLens": {
+      "title": "Lente hiperbólica"
+    },
+    "interrogationRoom": {
+      "darkroom": "Cuarto oscuro",
+      "lamp": "Lámpara",
+      "interrogationroom": "Sala de interrogatorio",
+      "observerseyeris": "Ojo del observador",
+      "suspectseyeris": "Ojo del sospechoso",
+      "thelampsreflection": "El reflejo de la lámpara",
+      "title": "Sala de interrogatorio",
+      "twowaymirror": "Espejo de dos vías"
+    },
+    "prisms": {
+      "title": "Prismas"
+    },
+    "rainbows": {
+      "title": "Arcoíris",
+      "sunlight": "Luz solar",
+      "raindrop": "Gota de lluvia",
+      "primaryrainbow": "Arcoíris primario"
+    },
+    "minimumDeviationAngle": {
+      "examplea": "Ejemplo A",
+      "examplec": "Ejemplo C",
+      "exampleb": "Ejemplo B",
+      "dragtorotate": "Arrastre para rotar",
+      "deviationangle": "Ángulo de desviación",
+      "incidenceangle": "Ángulo de incidencia",
+      "dragtoadjustbeamwidt": "Arrastre para ajustar el ancho de los haces",
+      "usethebuiltinzoomtob": "Use el zoom integrado para una mejor interactividad con la simulación"
+    },
+    "mazeSolution": {
+      "mazeexit": "Salida del laberinto",
+      "title": "Solución del puzle"
+    },
+    "specularAndDiffuseReflection": {
+      "title": "Reflexión especular y difusa",
+      "diffuse": "Difusa"
+    },
+    "chaffCountermeasure": {
+      "radar": "Radar",
+      "plane": "Avión"
+    },
+    "cameraObscura": {
+      "observer2": "Observador"
+    },
+    "blackCatBecomesWhite": {
+      "eyes": "Ojos",
+      "dragtomovethebagouto": "Arrastre para sacar la bolsa del agua"
+    },
+    "pairOfAxiconsMakingARainbowRing": {
+      "ringaperture": "Apertura de anillo"
+    },
+    "keplerianTelescope": {
+      "realimage": "Imagen real",
+      "thekepleriantelescop": "El telescopio kepleriano",
+      "eye": "ojo",
+      "lightfromstar": "Luz de una estrella",
+      "virtualimage": "Imagen virtual",
+      "title": "Telescopio kepleriano",
+      "description": "En esta simulación se describe el diagrama de rayos de un telescopio kepleriano."
+    },
+    "augustinFresnelsLighthouseOptics": {
+      "howitworks": "Cómo funciona",
+      "mirrorsorreflectorsc": "Los espejos o reflectores pueden redirigir haces con ángulos grandes, pero los reflectores de 1820 disipaban la mitad de la luz."
+    },
+    "opticsOfHumanEye": {
+      "title": "Óptica del ojo humano",
+      "description": "Accede a una simulación sobre el funcionamiento del ojo. Puedes cambiar el tamaño de la pupila y la distancia focal de la lente."
+    },
+    "monochromaticAberrations": {
+      "sphericalaberration": "Aberración esférica",
+      "screen": "Pantalla",
+      "title": "Aberraciones monocromáticas",
+      "commaaberration": "Aberración de coma"
+    },
+    "moduleExampleParameters": {
+      "title": "Ejemplo de módulo - Parámetros"
+    },
+    "moduleExampleControlPoints": {
+      "hereisthemidpoint": "↙Aquí está el punto intermedio",
+      "title": "Ejemplo de módulo - Puntos de control"
+    },
+    "luneburgLens": {
+      "title": "Lente de Luneburg",
+      "approximatedmultilay1": "Lente de Luneburg multicapa aproximada (puedes elegir y cambiar N, el número de capas)"
+    },
+    "aplanaticPoints": {
+      "title": "Puntos aplanáticos",
+      "sphericallens": "Lente esférica",
+      "ellipticallens": "Lente elíptica",
+      "yaxis": "Eje Y"
+    },
+    "concaveLens": {
+      "title": "Lente cóncava",
+      "description": "Esta simulación muestra cómo una lente cóncava diverge un haz."
+    },
+    "convexLens": {
+      "title": "Lente convexa",
+      "description": "Esta simulación muestra cómo una lente convexa converge un haz."
+    },
+    "lensImages": {
+      "title": "Imágenes de lentes",
+      "description": "Esta simulación muestra las imágenes de un haz y fuentes puntuales producidas por lentes ideales."
+    },
+    "zoomLens": {
+      "zoom": "← zoom →",
+      "title": "Zoom de lente",
+      "description": "Accede a una simulación que muestra el zoom de una lente, en la que podrás cambiar el zoom arrastrando la lente cóncava que hay en medio.",
+      "dragtomovethelens": "Arrastra para mover la lente"
+    },
+    "classicalCassegrainTelescopes": {
+      "collimator": "Colimador"
+    },
+    "compoundMicroscope": {
+      "objective": "Objetivo"
+    },
+    "chromaticAberration": {
+      "title": "Aberración cromática"
+    },
+    "beamDirectors": {
+      "biprism": "Biprisma"
+    },
+    "apparentDepth": {
+      "title": "Profundidad aparente",
+      "observer": "Observador",
+      "observedimageorange": "Imagen observada (naranja)"
+    },
+    "virtualImageFormation": {
+      "object2": "Objeto",
+      "converginglensf1000u": "Lente convergente (F=1000 unidades)",
+      "virtualimagehighlyen": "Imagen virtual\nMucho mayor\nDerecha/Erguida"
+    },
+    "theMirascope": {
+      "object1": "Objeto",
+      "realimage1": "Imagen real"
+    },
+    "reflect": {
+      "title": "Reflexión y refracción",
+      "description": "En esta simulación se muestra el fenómeno de reflexión y de refracción en una superficie."
+    },
+    "koehlerIllumination": {
+      "sample": "muestra",
+      "sampleisnowilluminat": "ahora, la muestra \nestá iluminada homogéneamente",
+      "title": "Iluminación Köhler"
+    },
+    "inferiorMirage": {
+      "airwithinferiormirag": "Aire (con espejismo inferior)",
+      "ground": "Tierra",
+      "airwithoutinferiormi": "Aire (sin espejismo inferior)",
+      "observerseyenottosca1": "Ojo del observador (no está a escala)"
+    },
+    "rochesterCloak": {
+      "t8objects": "8 objetos",
+      "visibilityarea": "Área de visibilidad",
+      "object": "Objeto"
+    },
+    "seaMirage": {
+      "atmosphere": "Atmósfera",
+      "earthssurface": "Superficie de la Tierra",
+      "observer1": "Observador",
+      "vacuum": "Vacío",
+      "virtualimage1": "Imagen virtual"
+    },
+    "logarithmicSpiralLens": {
+      "dragtochangetheiniti": "Arrastra para cambiar\nla dirección inicial del rayo",
+      "title": "Camino del rayo en espiral logarítmica"
+    },
+    "chromaticDispersion": {
+      "dragheretorotatethep": "Arrastra aquí\npara rotar el prisma",
+      "title": "Dispersión cromática"
+    },
+    "resonator": {
+      "flatmirror": "Espejo plano",
+      "sphericalconcavemirr": "Espejo cóncavo esférico",
+      "unstableresonator": "Resonador inestable",
+      "stableresonator": "Resonador estable"
+    },
+    "moduleExampleArraysAndConditionals": {
+      "thistextisshownonlyw": "Este texto solo aparece cuando n>5"
+    },
+    "moduleExampleVariables": {
+      "title": "Ejemplo de módulo - Variables"
+    },
+    "moduleExampleCustomEquation": {
+      "title": "Ejemplo de módulo - Ecuación personalizada"
+    },
+    "moduleExampleBasics": {
+      "thistextisnotinamodu": "Este texto no está en un módulo.",
+      "thistextisalsonotina": "Este texto tampoco está en un módulo."
+    },
+    "moduleExampleShapeParametrization": {
+      "alensdefinedbydr1r2": "Una lente definida por d, R_1, R_2"
+    }
+  }
+}

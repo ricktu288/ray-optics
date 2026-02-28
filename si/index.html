@@ -1,0 +1,497 @@
+<!--
+  Copyright 2024 The Ray Optics Simulation authors and contributors
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!DOCTYPE html>
+<html lang="si">
+
+<head>
+  <!--
+    Copyright 2024 The Ray Optics Simulation authors and contributors
+  
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+  
+        http://www.apache.org/licenses/LICENSE-2.0
+  
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  -->
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ray Optics Simulation - PhyDemo</title>
+  <meta property="og:title" content="Ray Optics Simulation - PhyDemo">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://phydemo.app/ray-optics/si/">
+  <meta property="og:image" content="https://phydemo.app/ray-optics/img/image.png">
+  <meta property="og:description" content="Ray Optics Simulation">
+  <meta property="og:locale" content="si">
+  <link rel="canonical" href="https://phydemo.app/ray-optics/si/">
+  <link rel="alternate" hreflang="en" href="https://phydemo.app/ray-optics/">
+  <link rel="alternate" hreflang="de" href="https://phydemo.app/ray-optics/de/">
+  <link rel="alternate" hreflang="es" href="https://phydemo.app/ray-optics/es/">
+  <link rel="alternate" hreflang="fr" href="https://phydemo.app/ray-optics/fr/">
+  <link rel="alternate" hreflang="ja" href="https://phydemo.app/ray-optics/jp/">
+  <link rel="alternate" hreflang="km" href="https://phydemo.app/ray-optics/km/">
+  <link rel="alternate" hreflang="ko" href="https://phydemo.app/ray-optics/ko/">
+  <link rel="alternate" hreflang="nl" href="https://phydemo.app/ray-optics/nl/">
+  <link rel="alternate" hreflang="pl" href="https://phydemo.app/ray-optics/pl/">
+  <link rel="alternate" hreflang="pt-BR" href="https://phydemo.app/ray-optics/pt-BR/">
+  <link rel="alternate" hreflang="pt-PT" href="https://phydemo.app/ray-optics/pt-PT/">
+  <link rel="alternate" hreflang="ru" href="https://phydemo.app/ray-optics/ru/">
+  <link rel="alternate" hreflang="si" href="https://phydemo.app/ray-optics/si/">
+  <link rel="alternate" hreflang="ta" href="https://phydemo.app/ray-optics/ta/">
+  <link rel="alternate" hreflang="zh-CN" href="https://phydemo.app/ray-optics/cn/">
+  <link rel="alternate" hreflang="zh-TW" href="https://phydemo.app/ray-optics/tw/">
+  <link rel="stylesheet" href="../thirdparty/bootstrap/bootstrap.min.css">
+  <link rel="icon" href="../img/icon.png" type="image/png">
+  <style>
+    .brand {
+      font-size: 12pt;
+      color: #888;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-left: 5px;
+      margin-right: 5px;
+      padding: 0px;
+      height: 40px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+    }
+  
+    .brand:hover {
+      text-decoration: none;
+    }
+  
+    .github-button-container {
+      color: #888;
+      margin-top: 7px;
+      margin-bottom: 0px;
+      margin-left: 0px;
+      margin-right: 0px;
+      padding: 0px;
+      height: 40px;
+      width: 92px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      float: right;
+    }
+  
+    .github-button-container a {
+      color: transparent;
+    }
+  
+    .navul {
+      font-size: 11pt;
+    }
+  
+    .navul a {
+      color: #555;
+      float: left;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-left: 5px;
+      margin-right: 5px;
+      padding: 2px;
+      height: 40px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+    }
+  
+    .clearfix {
+      clear: both;
+    }
+  
+    .navul a:hover {
+      border-bottom: 3px solid #CCC;
+      text-decoration: none;
+    }
+  
+    .navul a.active {
+      color: #000;
+      border-bottom: 3px solid gray;
+    }
+  
+    body {
+      padding-top: 72px;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    }
+  </style>
+  <script defer src="../thirdparty/jquery.min.js"></script>
+  <script defer src="../thirdparty/bootstrap/bootstrap.min.js"></script>
+  <script async defer src="https://buttons.github.io/buttons.js"></script>  <style>
+    .preview-image {
+      width: 100%;
+    }
+
+    .thumbnail.right-caption>img {
+      float: left;
+      margin-right: 9px;
+    }
+
+    .thumbnail {
+      margin-bottom: 5px;
+    }
+
+    .tool-title {
+      font-size: 16pt;
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+
+    .mode-title {
+      font-size: 16pt;
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+  </style>
+</head>
+
+<body>
+  <!--
+    Copyright 2024 The Ray Optics Simulation authors and contributors
+  
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+  
+        http://www.apache.org/licenses/LICENSE-2.0
+  
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  -->
+  
+  <div class="navbar navbar-fixed-top container" style="background-color:white;max-height:90px;overflow:hidden">
+  
+    <a href="../si/" class="navbar-left brand">
+      <img src="../img/icon.png" alt="" style="width:18pt; height:18pt"> Ray Optics Simulation
+    </a>
+    <div class="navbar-right">
+  
+      <span class="navul">
+        <a href="../si/" class="active">මුල් පිටුව</a>
+        <a href="../gallery/" class="">Gallery</a>
+        <a href="../about" class="">මේ පිළිබඳව</a>
+      </span>
+      <span class="github-button-container">
+        <a class="github-button" href="https://github.com/ricktu288/ray-optics" data-show-count="true"
+          aria-label="Star ricktu288/ray-optics on GitHub">Star</a>
+      </span>
+    </div>
+  
+  </div>  <div class="container">
+    <div align="center">
+      <h1><b><span>Ray Optics Simulation</span></b></h1>
+      <p>
+        Create &amp; simulate 2D geometric optical scenes interactively.<br>Totally free and web-based. Source code is <a href="https://github.com/ricktu288/ray-optics">available on GitHub</a>.
+      </p>
+      <p>
+        <a href="../simulator/?si" target="_blank" class="btn btn-success btn-lg">Simulator Launch කරන්න</a>
+      </p>
+    </div>
+    <br>
+    <div id="screenshots" class="carousel slide" data-ride="carousel" style="aspect-ratio: 940/440; max-width: 1140px">
+      <ol class="carousel-indicators">
+        <li data-target="#screenshots" data-slide-to="0" class="active"></li>
+        <li data-target="#screenshots" data-slide-to="1"></li>
+        <li data-target="#screenshots" data-slide-to="2"></li>
+        <li data-target="#screenshots" data-slide-to="3"></li>
+        <li data-target="#screenshots" data-slide-to="4"></li>
+      </ol>
+
+      <div class="carousel-inner" role="listbox">
+        <div class="item active">
+          <a href="../simulator/?si#spherical-lens-and-mirror" target="_blank"><img src="../img/spherical-lens-and-mirror.jpg"
+              alt="Spherical Lens and Mirror" class="preview-image"></a>
+        </div>
+        <div class="item">
+          <a href="../simulator/?si#compound-microscope" target="_blank">
+            <picture>
+              <source srcset="../gallery/compound-microscope.avif" type="image/avif">
+              <img src="../gallery/compound-microscope.jpg" alt="Compound Microscope" class="preview-image">
+            </picture>
+          </a>
+        </div>
+        <div class="item">
+          <a href="../simulator/?si#apparent-depth" target="_blank">
+            <picture>
+              <source srcset="../gallery/apparent-depth.avif" type="image/avif">
+              <img src="../gallery/apparent-depth.jpg" alt="Apparent Depth" class="preview-image">
+            </picture>
+          </a>
+        </div>
+        <div class="item">
+          <a href="../simulator/?si#chromatic-dispersion" target="_blank">
+            <picture>
+              <source srcset="../gallery/chromatic-dispersion.avif" type="image/avif">
+              <img src="../gallery/chromatic-dispersion.jpg" alt="Chromatic dispersion" class="preview-image">
+            </picture>
+          </a>
+        </div>
+        <div class="item">
+          <a href="../simulator/?si#images-formed-by-two-mirrors" target="_blank"><img src="../img/images-formed-by-two-mirrors.svg"
+              alt="Images from Two Mirrors" class="preview-image"></a>
+        </div>
+      </div>
+
+      <a class="left carousel-control" href="#screenshots" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="right carousel-control" href="#screenshots" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+
+    <div class="row" style="font-size: 10pt">
+      <div class="col-sm-6">
+        <div class="col-sm-12">
+          <h2>Tools</h2>
+          <div class="row thumbnail right-caption">
+            <img src="../img/SingleRay.svg" alt="තනි ආලෝක කිරණයක්" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">තනි ආලෝක කිරණයක්</p>
+              <span>ලක්ෂ්‍යය දෙකකින් අර්ථ දක්වා ඇති තනි ආලෝක කිරණකි.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/Beam.svg" alt="ආලෝක කදම්භය" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">ආලෝක කදම්භය</p>
+              <span>රේඛීය සමාන්තර හෝ අපසාරී කිරණ කදම්භයක් මතු වන අතර &#39;කිරණ ඝනත්වය&#39; slider මගින් ඝනත්වය පාලනය කරයි.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/PointSource.svg" alt="ආලෝක ප්‍රභවය" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">ආලෝක ප්‍රභවය</p>
+              <span>එක් ලක්ෂ්‍යයකින් කිරණ මතු වේ.&#39;කිරණ ඝනත්වය&#39; slider මඟින් සංඛ්‍යාව පාලනය වේ.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/Mirror.svg" alt="දර්පණ" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">දර්පණ</p>
+              <span>දර්පණයක් මත ආලෝකයේ පරාවර්තනය අනුකරණය (simulate) කරන්න.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/ArcMirror.svg" alt="දර්පණ (Custom සමීකරණ)" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">දර්පණ (Custom සමීකරණ)</p>
+              <span>අභිරුචි සමීකරණයකින් y = f(x) හැඩය නිර්වචනය කරන ලද කැඩපතක්, එහිදී (x,y) පාලන ලක්ෂ්‍ය දෙක (-1,0) සහ (1,0) වන පරිණාමනය වූ ඛණ්ඩාංකවල ඇත.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/IdealMirror.svg" alt="පරිපූර්ණ වක්‍ර" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">පරිපූර්ණ වක්‍ර</p>
+              <span>(1/p + 1/q = 1/f) දර්පණ සමීකරණයට ඒකග වන දර්ශීය &#39;වක්‍ර&#39; දර්පණය. නාභීය දුර සෘජුවම සැකසිය හැක.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/BeamSplitter.svg" alt="කදම්භ විබෙදුම" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">කදම්භ විබෙදුම</p>
+              <span>එන ආලෝකයේ ප්‍රතිශතයක් සම්ප්‍රේෂණය කරන කැඩපතක්.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/PlaneGlass.svg" alt="වීදුරු" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">වීදුරු</p>
+              <span>පෘෂ්ඨයක් මත ආලෝකයේ වර්තනය සහ පරාවර්තනය අනුකරණය කරන්න.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/Glass.svg" alt="වීදුරු (Custom සමීකරණ)" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">වීදුරු (Custom සමීකරණ)</p>
+              <span>අභිරුචි අසමානතාවයකින් අර්ථ දක්වා ඇති හැඩය සහිත වීදුරු f(x) &lt; y &lt; g(x), (x,y) යනු පාලන ලක්ෂ්‍ය දෙක (-1,0) සහ (1,0) වන පරිණාමනය කරන ලද ඛණ්ඩාංකවල ඇත.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/CircleGrinGlass.svg" alt="අනුක්‍රමිකව වර්තනාංකය වෙනස් වන වීදුරු" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">අනුක්‍රමිකව වර්තනාංකය වෙනස් වන වීදුරු</p>
+              <span>Material with a custom refractive index function n(x,y).</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/IdealLens.svg" alt="පරිපූර්ණ කාච" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">පරිපූර්ණ කාච</p>
+              <span>සිහින් කාච සමීකරණයට (1/p + 1/q = 1/f) අවනත වන දර්ශීය කාචයකි. නාභීය දුර සෘජුවම සැකසිය හැක.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/Blocker.svg" alt="බාධක" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">බාධක</p>
+              <span>රේඛීය ආලෝක අවහිරකයක්.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/DiffractionGrating.svg" alt="විවර්තන තලය" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">විවර්තන තලය</p>
+              <span>තරංග ආයාමය මත විවිධ කෝණවලින් ආලෝකය වර්තන කරන විවර්තන තලයක්.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/Ruler.svg" alt="රූල" style="width:100px;height:100px;" class="img-rounded">
+            <div class="caption" class="img-rounded">
+              <p class="tool-title">රූල</p>
+              <span>පරිමාණය ඇති රූලක්.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/Protractor.svg" alt="කෝණමානය" style="width:100px;height:100px;" class="img-rounded">
+            <div class="caption" class="img-rounded">
+              <p class="tool-title">කෝණමානය</p>
+              <span>පරිමාණය අංශක වලින් ඇති කෝණමානයක්.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/Detector.svg" alt="අනාවරකය" style="width:100px;height:100px;" class="img-rounded">
+            <div class="caption" class="img-rounded">
+              <p class="tool-title">අනාවරකය</p>
+              <span>ශක්ති ප්‍රවාහයේ වේගය (P), ලම්බක ගම්‍යතා ප්‍රවාහයේ වේගය (F⊥) සහ රේඛා ඛණ්ඩයක් හරහා සමාන්තර ගම්‍යතා ප්‍රවාහයේ වේගය (F∥) මැනීම සඳහා මෙවලමකි.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="col-sm-12">
+          <h2>View</h2>
+          <div class="row thumbnail">
+            <div class="caption">
+              <p class="mode-title">කිරණ</p>
+              <span>කිරණ පෙන්වන්න. &#39;කිරණ ඝනත්වය&#39; වැඩි වූ විට ඒවා අඛණ්ඩව පවතින බව පෙනේ.</span>
+            </div>
+            <div align="center">
+              <div style="aspect-ratio: 519/163; max-width: 510px">
+                <img src="../img/high_density.png" alt="කිරණ" style="width:100%" class="img-rounded">
+              </div>
+              <div style="aspect-ratio: 519/163; max-width: 510px">
+                <img src="../img/low_density.svg" alt="කිරණ" class="img-rounded" style="margin-top:5px; width:100%">
+              </div>
+            </div>
+          </div>
+          <div class="row thumbnail">
+            <div class="caption">
+              <p class="mode-title">දිගුකල කිරණ</p>
+              <span>කිරණ සහ එහි දිගු දෙකම පෙන්වන්න. තැඹිලි මගින් පසුගාමී දිගුවන් සහ අළු යනු මගින් ඉදිරි දිගුවන් පෙන්නුම් කරයි.</span>
+            </div>
+            <div align="center">
+              <div style="aspect-ratio: 445/216; max-width: 510px">
+                <img src="../img/extended_rays.svg" alt="දිගුකල කිරණ" class="img-rounded" style="width:100%">
+              </div>
+            </div>
+          </div>
+          <div class="row thumbnail">
+            <div class="caption">
+              <p class="mode-title">ප්‍රතිබිම්භ සියල්ල</p>
+              <span>සියලුම ප්‍රතිබිම්භ පිහිටීම පෙන්වන්න. කහ පැහැති ලක්ෂ්‍ය තාත්වික ප්‍රතිබිම්භ ද, තැඹිලි පැහැයෙන් අතාත්වික ප්‍රතිබිම්භ ද, අළු (මෙම පින්තූරයේ කිසිවක් නැත) අථත්‍ය වස්තු ද දක්වයි. &#39;කිරණ ඝනත්වය&#39; ප්‍රමාණවත් නොවේ නම් සමහර පින්තූර අනාවරණය කර ගත නොහැකි බව සලකන්න.</span>
+            </div>
+            <div align="center">
+              <div style="aspect-ratio: 445/216; max-width: 510px">
+                <img src="../img/all_images.svg" alt="ප්‍රතිබිම්භ සියල්ල" class="img-rounded" style="width:100%">
+              </div>
+            </div>
+          </div>
+          <div class="row thumbnail">
+            <div class="caption">
+              <p class="mode-title">නිරීක්ෂකයාට පෙනෙන පරිදි</p>
+              <span>යම් ස්ථානයක සිට දකින කිරණ සහ රූප අනුකරණය කරන්න. නිල් කවය නිරීක්ෂකයා වේ. එය හරහා යන ඕනෑම කිරණ &#39;නිරීක්ෂණය&#39; ලෙස සැලකේ. කිරණ ඇත්ත වශයෙන්ම ආරම්භ වන්නේ කොතැනින්ද යන්න නිරීක්ෂකයා නොදනී, නමුත් ඒවා යම් ස්ථානයක ඡේදනය වුවහොත් ඒවා ආරම්භ වන්නේ යැයි සිතිය හැකිය. කිරණ නිල් පැහැයෙන් ද, ලක්ෂ්‍ය කහ (තාත්වික ප්‍රතිබිම්භ) හෝ තැඹිලි (අතාත්වික ප්‍රතිබිම්භ) ලෙස ද දැක්වේ.</span>
+            </div>
+            <div align="center">
+              <div style="aspect-ratio: 445/216; max-width: 510px">
+                <img src="../img/seen_by_observer.svg" alt="නිරීක්ෂකයාට පෙනෙන පරිදි" class="img-rounded" style="width:100%">
+              </div>
+            </div>
+          </div>
+          <div class="row thumbnail">
+            <div class="caption">
+              <p class="mode-title">වර්ණ අනුකරණය</p>
+              <span>Simulate colors (wavelengths) of light sources, mixture of colors, color filtering of blockers and mirrors, and chromatic dispersion of glasses.</span>
+            </div>
+            <div align="center">
+              <div style="aspect-ratio: 445/216; max-width: 510px">
+                <img src="../img/simulate_colors.png" alt="වර්ණ අනුකරණය" class="img-rounded" style="width:100%">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      Copyright 2024 The Ray Optics Simulation authors and contributors
+    
+      Licensed under the Apache License, Version 2.0 (the "License");
+      you may not use this file except in compliance with the License.
+      You may obtain a copy of the License at
+    
+          http://www.apache.org/licenses/LICENSE-2.0
+    
+      Unless required by applicable law or agreed to in writing, software
+      distributed under the License is distributed on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      See the License for the specific language governing permissions and
+      limitations under the License.
+    -->
+    
+    <div style="float: right; padding-bottom: 1em;">
+      <div class="dropup">
+        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+          <span id="language">භාෂාව: සිංහල</span>
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a href="../">English<span style="color:gray"></span></a></li>
+          <li><a href="../de/">Deutsch<span style="color:gray"></span></a></li>
+          <li><a href="../es/">Español<span style="color:gray"></span></a></li>
+          <li><a href="../fr/">Français<span style="color:gray"></span></a></li>
+          <li><a href="../jp/">日本語<span style="color:gray"></span></a></li>
+          <li><a href="../km/">ភាសាខ្មែរ<span style="color:gray"></span></a></li>
+          <li><a href="../ko/">한국어<span style="color:gray"></span></a></li>
+          <li><a href="../nl/">Nederlands<span style="color:gray"></span></a></li>
+          <li><a href="../pl/">polski<span style="color:gray"></span></a></li>
+          <li><a href="../pt-BR/">Português (Brasil)<span style="color:gray"></span></a></li>
+          <li><a href="../pt-PT/">Português (Portugal)<span style="color:gray"></span></a></li>
+          <li><a href="../ru/">Русский<span style="color:gray"></span></a></li>
+          <li><a href="../si/">සිංහල<span style="color:gray"></span></a></li>
+          <li><a href="../ta/">தமிழ்<span style="color:gray"></span></a></li>
+          <li><a href="../cn/">简体中文<span style="color:gray"></span></a></li>
+          <li><a href="../tw/">正體中文<span style="color:gray"></span></a></li>
+        </ul>
+      </div>
+    </div>  </div>
+</body>

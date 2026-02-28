@@ -1,0 +1,46 @@
+{
+  "name": "Module Example - Parameters",
+  "version": 5,
+  "modules": {
+    "ExampleModule": {
+      "numPoints": 0,
+      "params": [
+        "n=1:1:10:1",
+        "theta=0:0.01:5*pi:0"
+      ],
+      "objs": [
+        {
+          "type": "TextLabel",
+          "x": 600,
+          "y": 400,
+          "text": "This module has two parameters: n=`n` and theta=`theta`.\nYou can select and drag the sliders to adjust them."
+        },
+        {
+          "type": "TextLabel",
+          "x": 600,
+          "y": 550,
+          "text": "The size of this text oscillates as a function of theta.",
+          "fontSize": "`24+3*cos(theta)`"
+        }
+      ]
+    }
+  },
+  "objs": [
+    {
+      "type": "ModuleObj",
+      "module": "ExampleModule",
+      "points": [],
+      "params": {
+        "n": 1,
+        "theta": 1.23
+      }
+    }
+  ],
+  "width": 1000,
+  "height": 400,
+  "origin": {
+    "x": 92.44791666666666,
+    "y": -68.02083333333334
+  },
+  "scale": 0.5787037037037037
+}

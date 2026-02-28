@@ -1,0 +1,58 @@
+{
+  "name": "模組範例 - 陣列與條件",
+  "version": 5,
+  "modules": {
+    "ExampleModule": {
+      "numPoints": 0,
+      "params": [
+        "n=1:1:10:1"
+      ],
+      "objs": [
+        {
+          "for": "i=1:1:n",
+          "type": "TextLabel",
+          "x": 600,
+          "y": "`300+50i`",
+          "text": "一維陣列：i=`i`"
+        },
+        {
+          "if": "n>5",
+          "type": "TextLabel",
+          "x": 600,
+          "y": 250,
+          "text": "這段文字只在 n>5 時顯示"
+        },
+        {
+          "for": [
+            "i=-10:1:10",
+            "j=-10:1:10"
+          ],
+          "if": "i^2+j^2<11^2",
+          "type": "TextLabel",
+          "x": "`1100+25i`",
+          "y": "`550+25j`",
+          "text": "`i`,`j`",
+          "fontSize": 9,
+          "alignment": "center"
+        }
+      ]
+    }
+  },
+  "objs": [
+    {
+      "type": "ModuleObj",
+      "module": "ExampleModule",
+      "points": [],
+      "params": {
+        "n": 10
+      }
+    }
+  ],
+  "width": 1200,
+  "height": 400,
+  "origin": {
+    "x": 298.0105908080373,
+    "y": 19.812605130125487
+  },
+  "scale": 0.45976518247654025
+}

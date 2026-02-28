@@ -1,0 +1,114 @@
+{
+  "welcome": {
+    "title": "光学シミュレーションの世界へようこそ",
+    "instruction": "光学部品を追加するには、ツールを選択し、空白部分をクリックします。\n例を読み込むには[ギャラリーページに移動してください。](/gallery)."
+  },
+  "common": {
+    "saveButton": "保存",
+    "cancelButton": "キャンセル"
+  },
+  "file": {
+    "title": "ファイル",
+    "undo": {
+      "title": "元に戻す"
+    },
+    "redo": {
+      "title": "やり直し"
+    },
+    "reset": {
+      "title": "リセット"
+    },
+    "save": {
+      "title": "保存"
+    },
+    "open": {
+      "title": "開く",
+      "description": "既存のファイルまたは背景画像を開きます。 背景画像は座標原点から表示されます。 (またはファイルをドロップします)"
+    },
+    "viewGallery": {
+      "title": "ギャラリーを見る",
+      "description": "ギャラリー Web ページに移動してサンプルをロードします。"
+    }
+  },
+  "settings": {
+    "title": "設定",
+    "rayDensity": {
+      "title": "光線密度"
+    },
+    "layoutAids": {
+      "showGrid": "グリッド",
+      "snapToGrid": "グリッドにスナップ",
+      "lockObjs": "オブジェクトを固定"
+    },
+    "zoom": {
+      "title": "ズーム"
+    },
+    "language": {
+      "title": "言語"
+    }
+  },
+  "objBar": {
+    "applyToAll": {
+      "title": "すべてに適用"
+    },
+    "duplicate": {
+      "title": "複製"
+    },
+    "delete": {
+      "title": "消去"
+    }
+  },
+  "sceneObjs": {
+    "common": {
+      "brightness": "明るさ",
+      "wavelength": "波長",
+      "emisAngle": "放射角度",
+      "random": "ランダム",
+      "lambert": "ランバーシアン",
+      "focalLength": "焦点距離"
+    },
+    "AngleSource": {
+      "symmetric": "対称"
+    },
+    "BaseFilter": {
+      "filter": "フィルタ",
+      "bandwidth": "帯域幅",
+      "invert": "反転"
+    },
+    "BeamSplitter": {
+      "transRatio": "透過率"
+    },
+    "BaseGlass": {
+      "refIndex": "屈折率",
+      "refIndexInfo": {
+        "effective": "もし（絶対）屈折率n₁でシミュレートされる物体があったとしても、別の屈折率n₀のガラスの中に置かれる場合、ここで屈折率をn₁/n₀に設定する必要があります。複数のガラスが重なり合うような複雑なケースでは、重なり合う領域の実効反射率は、個々のものの反射率の積に等しくなります。"
+      }
+    },
+    "TextLabel": {
+      "fontSize": "フォントサイズ",
+      "font": "フォント",
+      "fontStyle": "スタイル",
+      "alignment": "文字揃え",
+      "smallCaps": "スモールキャピタル",
+      "angle": "角度"
+    },
+    "CropBox": {
+      "svgWarning": "SVG にエクスポートします。 色の混合と 1 未満の相対屈折率はサポートされていません."
+    }
+  },
+  "saveModal": {
+    "title": "保存",
+    "fileName": "名前"
+  },
+  "languageModal": {
+    "title": "言語",
+    "translatedFraction": "翻訳済み",
+    "helpTranslate": "このアプリの翻訳にご協力ください"
+  },
+  "generalWarnings": {
+    "shareLinkTooLong": "URL が長すぎるため、一部のプラットフォームでは機能しない可能性があります。 代わりに「保存」を使用してファイルを共有する必要がある場合があります。"
+  },
+  "footer": {
+    "processing": "処理中...停止するにはここをクリックしてください."
+  }
+}

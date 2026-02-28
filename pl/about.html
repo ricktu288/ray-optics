@@ -1,0 +1,326 @@
+<!--
+  Copyright 2024 The Ray Optics Simulation authors and contributors
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+  <!--
+    Copyright 2024 The Ray Optics Simulation authors and contributors
+  
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+  
+        http://www.apache.org/licenses/LICENSE-2.0
+  
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  -->
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>O aplikacji - Symulacja biegu promieni</title>
+  <meta property="og:title" content="O aplikacji - Symulacja biegu promieni">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://phydemo.app/ray-optics/pl/about">
+  <meta property="og:image" content="https://phydemo.app/ray-optics/img/image.png">
+  <meta property="og:description" content="Symulacja biegu promieni">
+  <meta property="og:locale" content="pl">
+  <link rel="canonical" href="https://phydemo.app/ray-optics/pl/about">
+  <link rel="alternate" hreflang="en" href="https://phydemo.app/ray-optics/about">
+  <link rel="alternate" hreflang="fr" href="https://phydemo.app/ray-optics/fr/about">
+  <link rel="alternate" hreflang="km" href="https://phydemo.app/ray-optics/km/about">
+  <link rel="alternate" hreflang="ko" href="https://phydemo.app/ray-optics/ko/about">
+  <link rel="alternate" hreflang="pl" href="https://phydemo.app/ray-optics/pl/about">
+  <link rel="alternate" hreflang="pt-BR" href="https://phydemo.app/ray-optics/pt-BR/about">
+  <link rel="alternate" hreflang="pt-PT" href="https://phydemo.app/ray-optics/pt-PT/about">
+  <link rel="alternate" hreflang="ru" href="https://phydemo.app/ray-optics/ru/about">
+  <link rel="alternate" hreflang="ta" href="https://phydemo.app/ray-optics/ta/about">
+  <link rel="alternate" hreflang="zh-CN" href="https://phydemo.app/ray-optics/cn/about">
+  <link rel="alternate" hreflang="zh-TW" href="https://phydemo.app/ray-optics/tw/about">
+  <link rel="stylesheet" href="../thirdparty/bootstrap/bootstrap.min.css">
+  <link rel="icon" href="../img/icon.png" type="image/png">
+  <style>
+    .brand {
+      font-size: 12pt;
+      color: #888;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-left: 5px;
+      margin-right: 5px;
+      padding: 0px;
+      height: 40px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+    }
+  
+    .brand:hover {
+      text-decoration: none;
+    }
+  
+    .github-button-container {
+      color: #888;
+      margin-top: 7px;
+      margin-bottom: 0px;
+      margin-left: 0px;
+      margin-right: 0px;
+      padding: 0px;
+      height: 40px;
+      width: 92px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      float: right;
+    }
+  
+    .github-button-container a {
+      color: transparent;
+    }
+  
+    .navul {
+      font-size: 11pt;
+    }
+  
+    .navul a {
+      color: #555;
+      float: left;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-left: 5px;
+      margin-right: 5px;
+      padding: 2px;
+      height: 40px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+    }
+  
+    .clearfix {
+      clear: both;
+    }
+  
+    .navul a:hover {
+      border-bottom: 3px solid #CCC;
+      text-decoration: none;
+    }
+  
+    .navul a.active {
+      color: #000;
+      border-bottom: 3px solid gray;
+    }
+  
+    body {
+      padding-top: 72px;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    }
+  </style>
+  <script defer src="../thirdparty/jquery.min.js"></script>
+  <script defer src="../thirdparty/bootstrap/bootstrap.min.js"></script>
+  <script async defer src="https://buttons.github.io/buttons.js"></script></head>
+
+<body>
+  <!--
+    Copyright 2024 The Ray Optics Simulation authors and contributors
+  
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+  
+        http://www.apache.org/licenses/LICENSE-2.0
+  
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  -->
+  
+  <div class="navbar navbar-fixed-top container" style="background-color:white;max-height:90px;overflow:hidden">
+  
+    <a href="../pl/" class="navbar-left brand">
+      <img src="../img/icon.png" alt="" style="width:18pt; height:18pt"> Symulacja biegu promieni
+    </a>
+    <div class="navbar-right">
+  
+      <span class="navul">
+        <a href="../pl/" class="">Strona główna</a>
+        <a href="../pl/gallery/" class="">Galeria</a>
+        <a href="../pl/about" class="active">O aplikacji</a>
+      </span>
+      <span class="github-button-container">
+        <a class="github-button" href="https://github.com/ricktu288/ray-optics" data-show-count="true"
+          aria-label="Star ricktu288/ray-optics on GitHub">Star</a>
+      </span>
+    </div>
+  
+  </div>  <div class="container">
+    <div align="center">
+      <h3 style="margin-bottom: 4px"><img src="../img/icon.png" alt="Icon" width="64" height="64" style="margin-bottom: 3px;"><br>
+        Symulacja biegu promieni</h3>
+      <b>Aplikacja internetowa open source umożliwiająca symulację odbicia i załamania światła.</b><br>
+      <div style="font-size: 12px; margin-top: 4px;"><span style="font-family: monospace;">v5.4+20260227.4611bd3</span></div>
+    </div>
+    <br>
+    <p>Ten projekt, w tym zawartość galerii, jest objęty licencją <a href="https://github.com/ricktu288/ray-optics/blob/master/LICENSE">Apache License 2.0</a> i jest oficjalnie hostowany na stronie <a href="https://phydemo.app/">PhyDemo (phydemo.app)</a> (wcześniej na ricktu288.github.io). Kod źródłowy jest <a href="https://github.com/ricktu288/ray-optics">dostępny na GitHub</a>, a ty możesz <a href="https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md">wnieść swój wkład</a>. Jeśli masz pytania lub sugestie, możesz otworzyć <a href="https://github.com/ricktu288/ray-optics/issues">issues</a> lub <a href="https://github.com/ricktu288/ray-optics/discussions">discussions</a> na GitHub lub wysłać do nas e-mail na adres <a href="mailto:ray-optics@phydemo.app" style="white-space: nowrap;">ray-optics@phydemo.app</a>, jeśli nie korzystasz z GitHub.</p>
+
+    <p>
+      <b><a href="https://github.com/ricktu288/ray-optics/blob/master/CITATION.md">Cytowanie tego projektu</a></b>
+    </p>
+    <p><strong>Główny autor</strong></p>
+    <ul>
+      <li><a href="https://yitingtu.com">Yi-Ting Tu</a> (kod, projekt UI, galeria, moduł, <span style="font-family: monospace;">zh-TW</span> & <span style="font-family: monospace;">zh-CN</span> tłumaczenia)</li>
+    </ul>
+    <p><strong>Współtwórcy</strong></p>
+    <ul>
+      <li>Stas Fainer (kod, galeria, moduł)</li>
+      <li>Pedro Braga (<span style="font-family: monospace;">pt-BR</span> tłumaczenie)</li>
+      <li>Fundacja Nauka i Wiedza (<span style="font-family: monospace;">pl</span> tłumaczenie)</li>
+      <li>Hong Phong Kim (<span style="font-family: monospace;">km</span> tłumaczenie)</li>
+      <li>Wei-Fang Sun (kod, projekt UI)</li>
+      <li>Paul Falstad (kod, galeria)</li>
+      <li>James Garrard (kod, galeria)</li>
+      <li>Brianna D'Urso (kod)</li>
+      <li>digitalgreenery (kod)</li>
+      <li>Scott Cheng (kod)</li>
+      <li>Levent Candan (<span style="font-family: monospace;">tr</span> tłumaczenie)</li>
+      <li>Silvério Santos (<span style="font-family: monospace;">pt-PT</span> tłumaczenie)</li>
+      <li>Qurbonsaid (<span style="font-family: monospace;">uz</span> tłumaczenie)</li>
+      <li>Ettore Atalan (<span style="font-family: monospace;">de</span> tłumaczenie)</li>
+      <li>BlueCl0wn (<span style="font-family: monospace;">de</span> tłumaczenie)</li>
+      <li>Lo-Chen Cheng (<span style="font-family: monospace;">de</span> tłumaczenie)</li>
+      <li>Artuom Jdkd (<span style="font-family: monospace;">ru</span> tłumaczenie)</li>
+      <li>Rémi Berthoz (<span style="font-family: monospace;">fr</span> tłumaczenie)</li>
+      <li>Eno Lak (<span style="font-family: monospace;">fr</span> tłumaczenie)</li>
+      <li>Mars goshi (<span style="font-family: monospace;">ar</span> tłumaczenie)</li>
+      <li>Rai Gar (<span style="font-family: monospace;">es</span> tłumaczenie)</li>
+      <li>Estyx Translations (<span style="font-family: monospace;">es</span> tłumaczenie)</li>
+      <li>Michael Heise (<span style="font-family: monospace;">de</span> tłumaczenie)</li>
+      <li>sadajun916 (<span style="font-family: monospace;">ja</span> tłumaczenie)</li>
+      <li>Miguel Sánchez Palomino (<span style="font-family: monospace;">es</span> tłumaczenie)</li>
+      <li>Savva (<span style="font-family: monospace;">ru</span> tłumaczenie)</li>
+      <li>GLmontanari (kod)</li>
+      <li>Adrian Dorrington (kod)</li>
+      <li>Tharusha Theekshana (<span style="font-family: monospace;">si</span> tłumaczenie)</li>
+      <li>mcornillon (<span style="font-family: monospace;">fr</span> tłumaczenie)</li>
+      <li>Sepp Vogel (kod)</li>
+      <li>Bearia (<span style="font-family: monospace;">ja</span> tłumaczenie)</li>
+      <li>Lorenzo Trevisanello (<span style="font-family: monospace;">it</span> tłumaczenie)</li>
+      <li>cyamahat (kod)</li>
+      <li>kqakqakqa (kod, <span style="font-family: monospace;">zh-CN</span> tłumaczenie)</li>
+      <li>SukkaW (kod)</li>
+      <li>Abhinandan Kushwaha (kod)</li>
+      <li>Artyom Vasilenko (<span style="font-family: monospace;">ru</span> tłumaczenie)</li>
+      <li>German Abelentsev (<span style="font-family: monospace;">ru</span> tłumaczenie)</li>
+      <li>Nicolás De Francesco (<span style="font-family: monospace;">es</span> tłumaczenie)</li>
+      <li>corentin N (<span style="font-family: monospace;">fr</span> tłumaczenie)</li>
+      <li>Georges Le Goaster (<span style="font-family: monospace;">fr</span> tłumaczenie)</li>
+      <li>Martin Poitras (kod)</li>
+      <li>BoopSnoot (<span style="font-family: monospace;">ru</span> tłumaczenie)</li>
+      <li>mahjsa (<span style="font-family: monospace;">nl</span> tłumaczenie)</li>
+      <li>Wen Zhou (galeria)</li>
+      <li>Cutivel Dimitri (<span style="font-family: monospace;">fr</span> tłumaczenie)</li>
+      <li>Vincent Fan (kod, projekt UI, galeria)</li>
+      <li>Victory Science (galeria)</li>
+      <li>Matteo Ricci Cipolloni (galeria)</li>
+      <li>Mikhail Kochiev (galeria)</li>
+      <li>Steve Stonebraker (galeria)</li>
+      <li>krzysztofkrzeslak (projekt UI)</li>
+      <li>Young-Gi Kim (<span style="font-family: monospace;">ko</span> tłumaczenie)</li>
+      <li>chuangyu J (galeria)</li>
+      <li>Georg Nadorff (galeria)</li>
+      <li>Rene (galeria)</li>
+      <li>josephernest (moduł)</li>
+      <li>Alex (galeria)</li>
+      <li>Liu Quanhong (galeria)</li>
+      <li>Peter Becher (galeria)</li>
+      <li>Mario Petitclerc (galeria)</li>
+      <li>Matthias Guillon (galeria)</li>
+      <li>Andreas Arnold (<span style="font-family: monospace;">fr</span> tłumaczenie)</li>
+      <li>Leon Seidel (galeria)</li>
+      <li>TamilNeram (<span style="font-family: monospace;">ta</span> tłumaczenie)</li>
+      <li>sasavladimirov6 (<span style="font-family: monospace;">ru</span> tłumaczenie)</li>
+      <li>Patrick Gretzki (<span style="font-family: monospace;">de</span> tłumaczenie)</li>
+      <li>Rafael Bastin (<span style="font-family: monospace;">fr</span> tłumaczenie)</li>
+      <li>Daniel Anya (galeria)</li>
+      <li>Shahar Seifer (galeria)</li>
+      <li>Ilya Vasilenko (<span style="font-family: monospace;">ru</span> tłumaczenie)</li>
+      <li>Feng (moduł)</li>
+      <li>vanapro1 (<span style="font-family: monospace;">ru</span> tłumaczenie)</li>
+      <li>Florence (<span style="font-family: monospace;">fr</span> tłumaczenie)</li>
+      <li>Alvise Di Rienzo (<span style="font-family: monospace;">it</span> tłumaczenie)</li>
+      <li>Jan Pražák (<span style="font-family: monospace;">cs</span> tłumaczenie)</li>
+      <li>gert jansen (<span style="font-family: monospace;">nl</span> tłumaczenie)</li>
+      <li>Mohammed B (<span style="font-family: monospace;">ar</span> tłumaczenie)</li>
+      <li>Richard Ruh (galeria)</li>
+      <li>vimalrajrm (<span style="font-family: monospace;">ta</span> tłumaczenie)</li>
+      <li>bri (galeria)</li>
+      <li>Adrián González Rodríguez (<span style="font-family: monospace;">es</span> tłumaczenie)</li>
+      <li>bird0cosmic (galeria)</li>
+      <li>Márk Fazekas (<span style="font-family: monospace;">hu</span> tłumaczenie)</li>
+      <li>Jorge Bodroghy Leite (galeria)</li>
+      <li>Brad Goodman (moduł)</li>
+      <li>DeadeyeSun (galeria)</li>
+      <li>Dullayachat Boonudom (<span style="font-family: monospace;">lo</span> tłumaczenie)</li>
+    </ul>
+     (Współtwórcy z GitHub jako pierwsi; pozostali w kolejności chronologicznej.)
+
+    <!--
+      Copyright 2024 The Ray Optics Simulation authors and contributors
+    
+      Licensed under the Apache License, Version 2.0 (the "License");
+      you may not use this file except in compliance with the License.
+      You may obtain a copy of the License at
+    
+          http://www.apache.org/licenses/LICENSE-2.0
+    
+      Unless required by applicable law or agreed to in writing, software
+      distributed under the License is distributed on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      See the License for the specific language governing permissions and
+      limitations under the License.
+    -->
+    
+    <div style="float: right; padding-bottom: 1em;">
+      <div class="dropup">
+        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+          <span id="language">Język: polski</span>
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a href="../about">English<span style="color:gray"></span></a></li>
+          <li><a href="../fr/about">Français<span style="color:gray"></span></a></li>
+          <li><a href="../km/about">ភាសាខ្មែរ<span style="color:gray"></span></a></li>
+          <li><a href="../ko/about">한국어<span style="color:gray"></span></a></li>
+          <li><a href="../pl/about">polski<span style="color:gray"></span></a></li>
+          <li><a href="../pt-BR/about">Português (Brasil)<span style="color:gray"></span></a></li>
+          <li><a href="../pt-PT/about">Português (Portugal)<span style="color:gray"></span></a></li>
+          <li><a href="../ru/about">Русский<span style="color:gray"></span></a></li>
+          <li><a href="../ta/about">தமிழ்<span style="color:gray"></span></a></li>
+          <li><a href="../cn/about">简体中文<span style="color:gray"></span></a></li>
+          <li><a href="../tw/about">正體中文<span style="color:gray"></span></a></li>
+        </ul>
+      </div>
+    </div>  </div>
+
+</body>
+</html>

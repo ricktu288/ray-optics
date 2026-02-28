@@ -1,0 +1,38 @@
+{
+  "modulesPage": {
+    "description": {
+      "makeNewTools": "La función \"Módulo\" permite crear nuevas herramientas mediante la combinación, especialización o reparametrización de objectos creados con las herramientas existentes en este simulador.",
+      "appearAsTools": "Los módulos importados aparecen como herramientas en la categoría \"otros\". Selecciona y haz clic en el espacio en blanco de acuerdo con el orden de la secuencia de puntos de control (véase \"Especificación\").",
+      "embeddedInScene": "Los módulos importados están incrustados en los datos de la escena, por lo que no se actualizarán automáticamente cuando los autores de los módulos los actualicen."
+    },
+    "import": "Importar",
+    "imported": "Importado",
+    "specification": {
+      "title": "Especificación",
+      "controlPointSequence": "Secuencia de puntos de control",
+      "parameters": "Parámetros"
+    },
+    "customization": {
+      "title": "Personalización",
+      "description": "Los módulos pueden ser creados o personalizados directamente dentro de la aplicación web utilizando el editor de JSON incorporado. Véase [el tutorial](/modules/tutorial). La personalización de módulos importados solamente afectará a la escena actual."
+    },
+    "contribution": {
+      "title": "Contribución",
+      "description": "Contribuciones a la lista superior son bienvenidas. Para contribuir tu módulo, vea [Contribuir módulos](/contributing/modules)."
+    }
+  },
+  "moduleData": {
+    "FresnelLens": {
+      "title": "Lente de Fresnel",
+      "description": "Una lente de Fresnel a partir de un vidrio semicircular. Versión modular de [este ejemplo en la Galería](/gallery/fresnel-lens).",
+      "point1": "Primer extremo de la lente",
+      "point2": "Segundo extremo de la lente",
+      "Nslice": "Número de secciones",
+      "refIndex": "Índice de refracción de la lente"
+    },
+    "ContSpectrum": {
+      "title": "Fuente de luz de espectro constante",
+      "description": "Una fuente de luz con un espectro uniforme discretizado dado un paso constante. Solo funciona cuando está activada la opción \"Simular Colores\"."
+    }
+  }
+}

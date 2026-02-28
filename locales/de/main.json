@@ -1,0 +1,188 @@
+{
+  "project": {
+    "name": "Strahlenoptik-Simulation",
+    "shortName": "Strahlenoptik",
+    "description": "Eine freie, open-source Web-Applikation zum Erzeugen und Simulieren von optischen 2D-Szenen."
+  },
+  "pages": {
+    "simulator": "Simulator",
+    "home": "Home",
+    "gallery": "Galerie",
+    "modules": "Module",
+    "about": "Über",
+    "github": "GitHub"
+  },
+  "homePage": {
+    "description": "Erstellen und simulieren Sie 2D geometrische optische Szenen interaktiv.\nVöllig kostenlos und webbasiert. Der Quellcode ist [auf GitHub verfügbar](/github).",
+    "launchSimulator": "Simulator starten"
+  },
+  "tools": {
+    "title": "Werkzeuge",
+    "categories": {
+      "lightSource": "Lichtquelle",
+      "mirror": "Spiegel",
+      "glass": "Gläser",
+      "blocker": "Absorber",
+      "other": "Andere"
+    },
+    "common": {
+      "clickInstruction": "Klicken zum Erzeugen.",
+      "lineInstruction": "Ziehen oder Klicken zum Erzeugen.",
+      "circleInstruction": "Ziehen oder Klicken zum Erzeugen."
+    },
+    "SingleRay": {
+      "title": "Strahl",
+      "description": "Ein einzelner Lichtstrahl, der durch zwei Punkte definiert ist.",
+      "instruction": "Ziehen oder Klicken zum Erzeugen. Der erste Punkt ist die Quelle, die in Richtung des zweiten Punkts zielt."
+    },
+    "Beam": {
+      "title": "Bündel"
+    },
+    "PointSource": {
+      "title": "Punktquelle",
+      "description": "Strahlen entspringen aus einem einzigen Punkt, wobei die Zahl durch den Schieberegler \"Strahl-Anzahldichte\" eingestellt wird."
+    },
+    "AngleSource": {
+      "instruction": "Ziehen oder Klicken zum Erzeugen. Der erste Punkt ist die Quelle, die in Richtung des zweiten Punkts zielt.",
+      "description": "Punktquelle mit definiertem Emissions-Winkel."
+    },
+    "Mirror": {
+      "title": "Segment",
+      "description": "Simulieren Sie die Reflexion von Licht auf einem Spiegel."
+    },
+    "otherMirror": {
+      "title": "gebogen",
+      "description": "Ein Spiegel, dessen Form gebogen ist. Es kann kreisförmig, parabolisch oder durch eine benutzerdefinierte Gleichung y = f(x) definiert sein."
+    },
+    "ArcMirror": {
+      "title": "Kreisbogen",
+      "description": "Ein Spiegel bestehend aus einem Kreisbogen, definiert durch drei Punkte.",
+      "instruction": "Ziehen oder Klicken zum Erzeugen. Die ersten 2 Punkte definieren die Länge des Bogens, der letzte die Bogenkrümmung."
+    },
+    "ParabolicMirror": {
+      "title": "Parabolspiegel",
+      "description": "Ein parabolischer Spiegel, definiert durch drei Punkte.",
+      "instruction": "Ziehen oder Klicken zum Erzeugen."
+    },
+    "IdealMirror": {
+      "title": "Ideal gebogen",
+      "description": "Der idealisierte \"gekrümmte\" Spiegel, der die Spiegelgleichung (1/p + 1/q = 1/f) erfüllt. Die Brennweite kann direkt eingestellt werden."
+    },
+    "BeamSplitter": {
+      "title": "Strahlteiler",
+      "description": "Ein Spiegel, der einen Teil der Lichtstrahlen durchlässt."
+    },
+    "CustomMirror": {
+      "title": "Benutzerdefinierte Gleichung",
+      "description": "Ein Spiegel dessen Form durch eine Gleichung y = f(x) bestimmt ist, wobei (x,y) transformierte Koordinaten sind mit den Randpunkten (-1,0) und (1,0)."
+    },
+    "ConcaveDiffractionGrating": {
+      "title": "Konkaves Reflexionsgitter"
+    },
+    "PlaneGlass": {
+      "title": "Halbraum",
+      "description": "Simulieren Sie die Brechung und Reflexion von Licht auf einer Oberfläche.",
+      "instruction": "Ziehen oder Klicken zum Erzeugen."
+    },
+    "otherGlass": {
+      "title": "andere Formen",
+      "description": "Glas mit beliebigen Formen, die aus Segmenten und Kreisbögen bestehen, oder Formen, die durch eine benutzerdefinierte Ungleichung f(x) < y < g(x) definiert sind."
+    },
+    "CircleGlass": {
+      "title": "Kugellinse",
+      "description": "Kreisförmiger Glaskörper, definiert durch Mittelpunkt und einen Punkt auf dem Umfang."
+    },
+    "Glass": {
+      "description": "Beliebig gefortmer Glaskörper aus Liniensegmenten und Kreisbögen konstruiert.",
+      "instruction": "Klicken, um ein Liniensegment zu erzeugen; Ziehen, um einen Kreisbogen zu erzeugen; auf den Startpunkt klicken, um die Form abzuschließen."
+    },
+    "IdealLens": {
+      "title": "Ideale Linse",
+      "description": "Eine ideale Linse, die Linsengleichung (1/p + 1/q = 1/f) erfüllt. Die Brennweite kann direkt eingestellt werden."
+    },
+    "SphericalLens": {
+      "title": "Sphärische Linse",
+      "description": "Eine sphärische Linse."
+    },
+    "CustomGlass": {
+      "title": "Benutzerdefinierte Gleichung",
+      "description": "Glaskörper mit einer Form, welche durch eine benutzerspezifische Ungleichung f(x) < y < g(x) definiert ist, wobei (x,y) trransformierte Koordinaten sind mit den Randpunkten (-1,0) und (1,0)."
+    },
+    "Blocker": {
+      "title": "Linienförmiger Absorber",
+      "description": "Ein linienförmiger Absorber, der die einfallenden Strahlen absorbiert."
+    },
+    "CircleBlocker": {
+      "title": "Kreisförmiger Absorber",
+      "description": "Ein kreisförmiger Absorber."
+    },
+    "Ruler": {
+      "title": "Lineal",
+      "description": "Ein Lineal von einem Nullpunkt bis zu einem anderen Punkt."
+    },
+    "Protractor": {
+      "title": "Winkelmesser",
+      "description": "Ein Winkelmesser, der vom Zentrum und einem anderen Punkt für die Nullrichtung definiert ist. Die Skala ist in Grad."
+    },
+    "Detector": {
+      "title": "Detektor",
+      "description": "Ein Messwerkzeug für Energieflussrate (P), der Rate des senkrechten Impulsflusses (F∩) und der Rate des parallelen Impulsflusses (F∥) durch ein Segment.  Die Einheiten sind willkürlich."
+    },
+    "TextLabel": {
+      "title": "Text",
+      "description": "Ein Text-Label."
+    },
+    "moveView": {
+      "title": "Ansicht bewegen",
+      "description": "Ziehen um die Ansicht zu Verschieben. (Rechte Maustaste hat die gleiche Funktion.)"
+    }
+  },
+  "view": {
+    "title": "Ansicht",
+    "rays": {
+      "title": "Strahlen",
+      "description": "In dieser Ansicht werden die Lichtstrahlen angezeigt. Wenn die \"Strahl-Anzahldichte\" hoch ist, scheinen sie kontinuierlich zu sein."
+    },
+    "extended": {
+      "title": "Virtuelle Strahlen",
+      "description": "In dieser Ansicht werden die Lichtstrahlen als auch ihre Verlängerungen angezeigt. Orange bezeichnet die Rückwärtsverlängerung, während Grau vorwärts deutet.",
+      "simulateColorsNote": "Wenn 'Farben simulieren' aktiv ist, werden die Quellfarben verwendet und stattdessen durch Strichelung unterschieden."
+    },
+    "images": {
+      "title": "Alle Abbildungen",
+      "description": "In dieser Ansicht wird die Position aller Bilder angezeigt. Gelb bedeutet echtes Bild, orange steht für virtuelle Bilder und grau (nicht in diesem Bild dargestellt) bedeutet virtuelles Objekt. Beachten Sie, dass einige Bilder nicht erkannt werden können, wenn die \"Strahl-Anzahldichte\" nicht hoch genug ist.",
+      "simulateColorsNote": "Wenn 'Farben simulieren' aktiv ist, werden Bilder in der Quellfarbe angezeigt, und stattdessen nach Punktgröße unterschieden."
+    },
+    "observer": {
+      "title": "Beobachterperspektive",
+      "description": "In dieser Ansicht werden die Strahlen und Bilder von der Beobachterperspektive angezeigt. Der blaue Punkt ist der Beobachter. Alle Strahlen, die ihn kreuzen, gelten als \"wird beobachtet\". Der Beobachter weiß nicht, wo die Strahlen tatsächlich beginnen, 'denkt' aber, dass sie an einem Punkt beginnen, an dem sie sich schneiden. Die Strahlen sind blau und die Punkte gelb (real) oder orange (virtuell) dargestellt.",
+      "simulateColorsNote": "Wenn 'Farben simulieren' aktiv ist, werden die Strahlen mit den Quellfarben dargestellt.",
+      "instruction": "Ziehen Sie den großen blauen Kreis um den Beobachter zu bewegen."
+    }
+  },
+  "simulateColors": {
+    "title": "Farben simulieren"
+  },
+  "aboutPage": {
+    "cite": "Dieses Projekt zitieren",
+    "mainAuthors_one": "Hauptautor",
+    "mainAuthors_other": "Hauptautoren",
+    "contributionCategories": {
+      "code": "Code",
+      "gallery": "Galerie",
+      "module": "Modul",
+      "translations_one": "{{languages}} Übersetzung",
+      "translations_other": "{{languages}} Übersetzungen"
+    }
+  },
+  "languageDropdown": {
+    "title": "Sprache: {{language}}",
+    "translatedFraction": "{{fraction}} übersetzt"
+  },
+  "meta": {
+    "languageName": "Deutsch",
+    "parentheses": "{{main}} ({{sub}})",
+    "colon": "{{name}}: {{value}}",
+    "list": "{{first}}, {{others}}"
+  }
+}

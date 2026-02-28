@@ -1,0 +1,46 @@
+{
+  "name": "模块示例 - 参数",
+  "version": 5,
+  "modules": {
+    "ExampleModule": {
+      "numPoints": 0,
+      "params": [
+        "n=1:1:10:1",
+        "theta=0:0.01:5*pi:0"
+      ],
+      "objs": [
+        {
+          "type": "TextLabel",
+          "x": 600,
+          "y": 400,
+          "text": "本模块有两个参数：n=`n`与theta=`theta`。\n您可以选取并拖曳数值滑杆来调整它们。"
+        },
+        {
+          "type": "TextLabel",
+          "x": 600,
+          "y": 550,
+          "text": "这段文字的大小会随theta震荡。",
+          "fontSize": "`24+3*cos(theta)`"
+        }
+      ]
+    }
+  },
+  "objs": [
+    {
+      "type": "ModuleObj",
+      "module": "ExampleModule",
+      "points": [],
+      "params": {
+        "n": 1,
+        "theta": 1.23
+      }
+    }
+  ],
+  "width": 1000,
+  "height": 400,
+  "origin": {
+    "x": 92.44791666666666,
+    "y": -68.02083333333334
+  },
+  "scale": 0.5787037037037037
+}

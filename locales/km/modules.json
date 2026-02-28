@@ -1,0 +1,25 @@
+{
+  "modulesPage": {
+    "import": "បញ្ចូល",
+    "imported": "បានបញ្ចូល",
+    "specification": {
+      "parameters": "ប៉ារ៉ាម៉ែត្រ"
+    }
+  },
+  "moduleData": {
+    "FresnelLens": {
+      "refIndex": "សន្ទស្សន៍ចំណាំងបែរនៃឡង់ទី"
+    },
+    "CircleSource": {
+      "point1": "ផ្ចឹតនៃរង្វង់",
+      "r": "កាំនៃរង្វង់"
+    },
+    "RayRelay": {
+      "d": "ចម្ងាយរវាងឡង់ទីនីមួយៗ",
+      "N": "ចំនួនឡង់ទី"
+    }
+  },
+  "moduleTutorial": {
+    "title": "កាណែនាំសម្រាប់ការបង្កើត"
+  }
+}

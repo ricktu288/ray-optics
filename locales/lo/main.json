@@ -1,0 +1,12 @@
+{
+  "project": {
+    "name": "ການຈຳລອງແສງເລຂາ",
+    "shortName": "ແສງເລຂາ"
+  },
+  "meta": {
+    "languageName": "ລາວ",
+    "parentheses": "{{main}} ({{sub}})",
+    "colon": "{{name}}: {{value}}",
+    "list": "{{first}}, {{others}}"
+  }
+}

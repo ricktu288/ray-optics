@@ -1,0 +1,54 @@
+{
+  "name": "தொகுதி எடுத்துக்காட்டு - மாறிகள்",
+  "version": 5,
+  "modules": {
+    "ExampleModule": {
+      "numPoints": 1,
+      "params": [
+        "a=1:1:10:1"
+      ],
+      "vars": [
+        "b=a+1",
+        "c=x_1+b",
+        "f(n)=n^2"
+      ],
+      "objs": [
+        {
+          "type": "TextLabel",
+          "x": 600,
+          "y": 250,
+          "text": "a = `a`, b = `b`, c = `c`"
+        },
+        {
+          "for": "n=1:1:5",
+          "type": "TextLabel",
+          "x": "`600 + 5 * f(n)`",
+          "y": "`300+50n`",
+          "text": "f(`n`) = `f(n)`"
+        }
+      ]
+    }
+  },
+  "objs": [
+    {
+      "type": "ModuleObj",
+      "module": "ExampleModule",
+      "points": [
+        {
+          "x": 798,
+          "y": 275
+        }
+      ],
+      "params": {
+        "a": 1
+      }
+    }
+  ],
+  "width": 1200,
+  "height": 400,
+  "origin": {
+    "x": 299.87928937957486,
+    "y": 16.027042926691525
+  },
+  "scale": 0.584233693651281
+}

@@ -1,0 +1,497 @@
+<!--
+  Copyright 2024 The Ray Optics Simulation authors and contributors
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <!--
+    Copyright 2024 The Ray Optics Simulation authors and contributors
+  
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+  
+        http://www.apache.org/licenses/LICENSE-2.0
+  
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  -->
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Strahlenoptik-Simulation - PhyDemo</title>
+  <meta property="og:title" content="Strahlenoptik-Simulation - PhyDemo">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://phydemo.app/ray-optics/de/">
+  <meta property="og:image" content="https://phydemo.app/ray-optics/img/image.png">
+  <meta property="og:description" content="Strahlenoptik-Simulation">
+  <meta property="og:locale" content="de">
+  <link rel="canonical" href="https://phydemo.app/ray-optics/de/">
+  <link rel="alternate" hreflang="en" href="https://phydemo.app/ray-optics/">
+  <link rel="alternate" hreflang="de" href="https://phydemo.app/ray-optics/de/">
+  <link rel="alternate" hreflang="es" href="https://phydemo.app/ray-optics/es/">
+  <link rel="alternate" hreflang="fr" href="https://phydemo.app/ray-optics/fr/">
+  <link rel="alternate" hreflang="ja" href="https://phydemo.app/ray-optics/jp/">
+  <link rel="alternate" hreflang="km" href="https://phydemo.app/ray-optics/km/">
+  <link rel="alternate" hreflang="ko" href="https://phydemo.app/ray-optics/ko/">
+  <link rel="alternate" hreflang="nl" href="https://phydemo.app/ray-optics/nl/">
+  <link rel="alternate" hreflang="pl" href="https://phydemo.app/ray-optics/pl/">
+  <link rel="alternate" hreflang="pt-BR" href="https://phydemo.app/ray-optics/pt-BR/">
+  <link rel="alternate" hreflang="pt-PT" href="https://phydemo.app/ray-optics/pt-PT/">
+  <link rel="alternate" hreflang="ru" href="https://phydemo.app/ray-optics/ru/">
+  <link rel="alternate" hreflang="si" href="https://phydemo.app/ray-optics/si/">
+  <link rel="alternate" hreflang="ta" href="https://phydemo.app/ray-optics/ta/">
+  <link rel="alternate" hreflang="zh-CN" href="https://phydemo.app/ray-optics/cn/">
+  <link rel="alternate" hreflang="zh-TW" href="https://phydemo.app/ray-optics/tw/">
+  <link rel="stylesheet" href="../thirdparty/bootstrap/bootstrap.min.css">
+  <link rel="icon" href="../img/icon.png" type="image/png">
+  <style>
+    .brand {
+      font-size: 12pt;
+      color: #888;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-left: 5px;
+      margin-right: 5px;
+      padding: 0px;
+      height: 40px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+    }
+  
+    .brand:hover {
+      text-decoration: none;
+    }
+  
+    .github-button-container {
+      color: #888;
+      margin-top: 7px;
+      margin-bottom: 0px;
+      margin-left: 0px;
+      margin-right: 0px;
+      padding: 0px;
+      height: 40px;
+      width: 92px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      float: right;
+    }
+  
+    .github-button-container a {
+      color: transparent;
+    }
+  
+    .navul {
+      font-size: 11pt;
+    }
+  
+    .navul a {
+      color: #555;
+      float: left;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-left: 5px;
+      margin-right: 5px;
+      padding: 2px;
+      height: 40px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+    }
+  
+    .clearfix {
+      clear: both;
+    }
+  
+    .navul a:hover {
+      border-bottom: 3px solid #CCC;
+      text-decoration: none;
+    }
+  
+    .navul a.active {
+      color: #000;
+      border-bottom: 3px solid gray;
+    }
+  
+    body {
+      padding-top: 72px;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    }
+  </style>
+  <script defer src="../thirdparty/jquery.min.js"></script>
+  <script defer src="../thirdparty/bootstrap/bootstrap.min.js"></script>
+  <script async defer src="https://buttons.github.io/buttons.js"></script>  <style>
+    .preview-image {
+      width: 100%;
+    }
+
+    .thumbnail.right-caption>img {
+      float: left;
+      margin-right: 9px;
+    }
+
+    .thumbnail {
+      margin-bottom: 5px;
+    }
+
+    .tool-title {
+      font-size: 16pt;
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+
+    .mode-title {
+      font-size: 16pt;
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+  </style>
+</head>
+
+<body>
+  <!--
+    Copyright 2024 The Ray Optics Simulation authors and contributors
+  
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+  
+        http://www.apache.org/licenses/LICENSE-2.0
+  
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  -->
+  
+  <div class="navbar navbar-fixed-top container" style="background-color:white;max-height:90px;overflow:hidden">
+  
+    <a href="../de/" class="navbar-left brand">
+      <img src="../img/icon.png" alt="" style="width:18pt; height:18pt"> Strahlenoptik-Simulation
+    </a>
+    <div class="navbar-right">
+  
+      <span class="navul">
+        <a href="../de/" class="active">Home</a>
+        <a href="../de/gallery/" class="">Galerie</a>
+        <a href="../about" class="">Über</a>
+      </span>
+      <span class="github-button-container">
+        <a class="github-button" href="https://github.com/ricktu288/ray-optics" data-show-count="true"
+          aria-label="Star ricktu288/ray-optics on GitHub">Star</a>
+      </span>
+    </div>
+  
+  </div>  <div class="container">
+    <div align="center">
+      <h1><b><span>Strahlenoptik-Simulation</span></b></h1>
+      <p>
+        Erstellen und simulieren Sie 2D geometrische optische Szenen interaktiv.<br>Völlig kostenlos und webbasiert. Der Quellcode ist <a href="https://github.com/ricktu288/ray-optics">auf GitHub verfügbar</a>.
+      </p>
+      <p>
+        <a href="../simulator/?de" target="_blank" class="btn btn-success btn-lg">Simulator starten</a>
+      </p>
+    </div>
+    <br>
+    <div id="screenshots" class="carousel slide" data-ride="carousel" style="aspect-ratio: 940/440; max-width: 1140px">
+      <ol class="carousel-indicators">
+        <li data-target="#screenshots" data-slide-to="0" class="active"></li>
+        <li data-target="#screenshots" data-slide-to="1"></li>
+        <li data-target="#screenshots" data-slide-to="2"></li>
+        <li data-target="#screenshots" data-slide-to="3"></li>
+        <li data-target="#screenshots" data-slide-to="4"></li>
+      </ol>
+
+      <div class="carousel-inner" role="listbox">
+        <div class="item active">
+          <a href="../simulator/?de#spherical-lens-and-mirror" target="_blank"><img src="../img/spherical-lens-and-mirror.jpg"
+              alt="Spherical Lens and Mirror" class="preview-image"></a>
+        </div>
+        <div class="item">
+          <a href="../simulator/?de#compound-microscope" target="_blank">
+            <picture>
+              <source srcset="../gallery/compound-microscope.avif" type="image/avif">
+              <img src="../gallery/compound-microscope.jpg" alt="Compound Microscope" class="preview-image">
+            </picture>
+          </a>
+        </div>
+        <div class="item">
+          <a href="../simulator/?de#apparent-depth" target="_blank">
+            <picture>
+              <source srcset="../gallery/apparent-depth.avif" type="image/avif">
+              <img src="../gallery/apparent-depth.jpg" alt="Apparent Depth" class="preview-image">
+            </picture>
+          </a>
+        </div>
+        <div class="item">
+          <a href="../simulator/?de#chromatic-dispersion" target="_blank">
+            <picture>
+              <source srcset="../gallery/chromatic-dispersion.avif" type="image/avif">
+              <img src="../gallery/chromatic-dispersion.jpg" alt="Chromatic dispersion" class="preview-image">
+            </picture>
+          </a>
+        </div>
+        <div class="item">
+          <a href="../simulator/?de#images-formed-by-two-mirrors" target="_blank"><img src="../img/images-formed-by-two-mirrors.svg"
+              alt="Bilder von zwei Spiegeln" class="preview-image"></a>
+        </div>
+      </div>
+
+      <a class="left carousel-control" href="#screenshots" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="right carousel-control" href="#screenshots" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+
+    <div class="row" style="font-size: 10pt">
+      <div class="col-sm-6">
+        <div class="col-sm-12">
+          <h2>Werkzeuge</h2>
+          <div class="row thumbnail right-caption">
+            <img src="../img/SingleRay.svg" alt="Strahl" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">Strahl</p>
+              <span>Ein einzelner Lichtstrahl, der durch zwei Punkte definiert ist.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/Beam.svg" alt="Bündel" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">Bündel</p>
+              <span>A parallel or divergent beam of rays emerges from a line segment, with density controlled by the &#39;Ray density&#39; slider.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/PointSource.svg" alt="Punktquelle" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">Punktquelle</p>
+              <span>Strahlen entspringen aus einem einzigen Punkt, wobei die Zahl durch den Schieberegler &quot;Strahl-Anzahldichte&quot; eingestellt wird.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/Mirror.svg" alt="Spiegel" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">Spiegel</p>
+              <span>Simulieren Sie die Reflexion von Licht auf einem Spiegel.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/ArcMirror.svg" alt="Spiegel (gebogen)" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">Spiegel (gebogen)</p>
+              <span>Ein Spiegel, dessen Form gebogen ist. Es kann kreisförmig, parabolisch oder durch eine benutzerdefinierte Gleichung y = f(x) definiert sein.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/IdealMirror.svg" alt="Ideal gebogen" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">Ideal gebogen</p>
+              <span>Der idealisierte &quot;gekrümmte&quot; Spiegel, der die Spiegelgleichung (1/p + 1/q = 1/f) erfüllt. Die Brennweite kann direkt eingestellt werden.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/BeamSplitter.svg" alt="Strahlteiler" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">Strahlteiler</p>
+              <span>Ein Spiegel, der einen Teil der Lichtstrahlen durchlässt.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/PlaneGlass.svg" alt="Gläser" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">Gläser</p>
+              <span>Simulieren Sie die Brechung und Reflexion von Licht auf einer Oberfläche.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/Glass.svg" alt="Gläser (andere Formen)" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">Gläser (andere Formen)</p>
+              <span>Glas mit beliebigen Formen, die aus Segmenten und Kreisbögen bestehen, oder Formen, die durch eine benutzerdefinierte Ungleichung f(x) &lt; y &lt; g(x) definiert sind.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/CircleGrinGlass.svg" alt="Gradient-index glass" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">Gradient-index glass</p>
+              <span>Material with a custom refractive index function n(x,y).</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/IdealLens.svg" alt="Ideale Linse" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">Ideale Linse</p>
+              <span>Eine ideale Linse, die Linsengleichung (1/p + 1/q = 1/f) erfüllt. Die Brennweite kann direkt eingestellt werden.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/Blocker.svg" alt="Absorber" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">Absorber</p>
+              <span>Ein linienförmiger Absorber, der die einfallenden Strahlen absorbiert.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/DiffractionGrating.svg" alt="Diffraction Grating" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">Diffraction Grating</p>
+              <span>A diffraction grating that splits light at an angle depending on wavelength.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/Ruler.svg" alt="Lineal" style="width:100px;height:100px;" class="img-rounded">
+            <div class="caption" class="img-rounded">
+              <p class="tool-title">Lineal</p>
+              <span>Ein Lineal von einem Nullpunkt bis zu einem anderen Punkt.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/Protractor.svg" alt="Winkelmesser" style="width:100px;height:100px;" class="img-rounded">
+            <div class="caption" class="img-rounded">
+              <p class="tool-title">Winkelmesser</p>
+              <span>Ein Winkelmesser, der vom Zentrum und einem anderen Punkt für die Nullrichtung definiert ist. Die Skala ist in Grad.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/Detector.svg" alt="Detektor" style="width:100px;height:100px;" class="img-rounded">
+            <div class="caption" class="img-rounded">
+              <p class="tool-title">Detektor</p>
+              <span>Ein Messwerkzeug für Energieflussrate (P), der Rate des senkrechten Impulsflusses (F∩) und der Rate des parallelen Impulsflusses (F∥) durch ein Segment.  Die Einheiten sind willkürlich.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="col-sm-12">
+          <h2>Ansicht</h2>
+          <div class="row thumbnail">
+            <div class="caption">
+              <p class="mode-title">Strahlen</p>
+              <span>In dieser Ansicht werden die Lichtstrahlen angezeigt. Wenn die &quot;Strahl-Anzahldichte&quot; hoch ist, scheinen sie kontinuierlich zu sein.</span>
+            </div>
+            <div align="center">
+              <div style="aspect-ratio: 519/163; max-width: 510px">
+                <img src="../img/high_density.png" alt="Strahlen" style="width:100%" class="img-rounded">
+              </div>
+              <div style="aspect-ratio: 519/163; max-width: 510px">
+                <img src="../img/low_density.svg" alt="Strahlen" class="img-rounded" style="margin-top:5px; width:100%">
+              </div>
+            </div>
+          </div>
+          <div class="row thumbnail">
+            <div class="caption">
+              <p class="mode-title">Virtuelle Strahlen</p>
+              <span>In dieser Ansicht werden die Lichtstrahlen als auch ihre Verlängerungen angezeigt. Orange bezeichnet die Rückwärtsverlängerung, während Grau vorwärts deutet.</span>
+            </div>
+            <div align="center">
+              <div style="aspect-ratio: 445/216; max-width: 510px">
+                <img src="../img/extended_rays.svg" alt="Virtuelle Strahlen" class="img-rounded" style="width:100%">
+              </div>
+            </div>
+          </div>
+          <div class="row thumbnail">
+            <div class="caption">
+              <p class="mode-title">Alle Abbildungen</p>
+              <span>In dieser Ansicht wird die Position aller Bilder angezeigt. Gelb bedeutet echtes Bild, orange steht für virtuelle Bilder und grau (nicht in diesem Bild dargestellt) bedeutet virtuelles Objekt. Beachten Sie, dass einige Bilder nicht erkannt werden können, wenn die &quot;Strahl-Anzahldichte&quot; nicht hoch genug ist.</span>
+            </div>
+            <div align="center">
+              <div style="aspect-ratio: 445/216; max-width: 510px">
+                <img src="../img/all_images.svg" alt="Alle Abbildungen" class="img-rounded" style="width:100%">
+              </div>
+            </div>
+          </div>
+          <div class="row thumbnail">
+            <div class="caption">
+              <p class="mode-title">Beobachterperspektive</p>
+              <span>In dieser Ansicht werden die Strahlen und Bilder von der Beobachterperspektive angezeigt. Der blaue Punkt ist der Beobachter. Alle Strahlen, die ihn kreuzen, gelten als &quot;wird beobachtet&quot;. Der Beobachter weiß nicht, wo die Strahlen tatsächlich beginnen, &#39;denkt&#39; aber, dass sie an einem Punkt beginnen, an dem sie sich schneiden. Die Strahlen sind blau und die Punkte gelb (real) oder orange (virtuell) dargestellt.</span>
+            </div>
+            <div align="center">
+              <div style="aspect-ratio: 445/216; max-width: 510px">
+                <img src="../img/seen_by_observer.svg" alt="Beobachterperspektive" class="img-rounded" style="width:100%">
+              </div>
+            </div>
+          </div>
+          <div class="row thumbnail">
+            <div class="caption">
+              <p class="mode-title">Farben simulieren</p>
+              <span>Simulate colors (wavelengths) of light sources, mixture of colors, color filtering of blockers and mirrors, and chromatic dispersion of glasses.</span>
+            </div>
+            <div align="center">
+              <div style="aspect-ratio: 445/216; max-width: 510px">
+                <img src="../img/simulate_colors.png" alt="Farben simulieren" class="img-rounded" style="width:100%">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      Copyright 2024 The Ray Optics Simulation authors and contributors
+    
+      Licensed under the Apache License, Version 2.0 (the "License");
+      you may not use this file except in compliance with the License.
+      You may obtain a copy of the License at
+    
+          http://www.apache.org/licenses/LICENSE-2.0
+    
+      Unless required by applicable law or agreed to in writing, software
+      distributed under the License is distributed on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      See the License for the specific language governing permissions and
+      limitations under the License.
+    -->
+    
+    <div style="float: right; padding-bottom: 1em;">
+      <div class="dropup">
+        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+          <span id="language">Sprache: Deutsch</span>
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a href="../">English<span style="color:gray"></span></a></li>
+          <li><a href="../de/">Deutsch<span style="color:gray"></span></a></li>
+          <li><a href="../es/">Español<span style="color:gray"></span></a></li>
+          <li><a href="../fr/">Français<span style="color:gray"></span></a></li>
+          <li><a href="../jp/">日本語<span style="color:gray"></span></a></li>
+          <li><a href="../km/">ភាសាខ្មែរ<span style="color:gray"></span></a></li>
+          <li><a href="../ko/">한국어<span style="color:gray"></span></a></li>
+          <li><a href="../nl/">Nederlands<span style="color:gray"></span></a></li>
+          <li><a href="../pl/">polski<span style="color:gray"></span></a></li>
+          <li><a href="../pt-BR/">Português (Brasil)<span style="color:gray"></span></a></li>
+          <li><a href="../pt-PT/">Português (Portugal)<span style="color:gray"></span></a></li>
+          <li><a href="../ru/">Русский<span style="color:gray"></span></a></li>
+          <li><a href="../si/">සිංහල<span style="color:gray"></span></a></li>
+          <li><a href="../ta/">தமிழ்<span style="color:gray"></span></a></li>
+          <li><a href="../cn/">简体中文<span style="color:gray"></span></a></li>
+          <li><a href="../tw/">正體中文<span style="color:gray"></span></a></li>
+        </ul>
+      </div>
+    </div>  </div>
+</body>
