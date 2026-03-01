@@ -49,11 +49,11 @@
         @select="handleSelect"
       >
         <template #content="{ item, index }">
-          <ObjListItemContent
+          <ObjTemplateListItemContent
             :item="item"
             :index="index"
-            :isTemplate="true"
             @update:name="(v) => onNameUpdate(item, index, v)"
+            @update:obj-data="(raw) => onObjDataUpdate(index, raw)"
             @blur="commitName"
           />
         </template>
@@ -88,11 +88,11 @@ import { useSceneStore } from '../../store/scene'
 import { app } from '../../services/app'
 import SidebarItemList from './SidebarItemList.vue'
 import InfoPopoverIcon from '../InfoPopoverIcon.vue'
-import ObjListItemContent from './ObjListItemContent.vue'
+import ObjTemplateListItemContent from './ObjTemplateListItemContent.vue'
 
 export default {
   name: 'ModuleEditor',
-  components: { SidebarItemList, InfoPopoverIcon, ObjListItemContent },
+  components: { SidebarItemList, InfoPopoverIcon, ObjTemplateListItemContent },
   props: {
     moduleName: { type: String, required: true }
   },
@@ -248,6 +248,7 @@ export default {
       app.scene.modules[props.moduleName].objs = nextObjs
       app.scene.reloadModule?.(props.moduleName)
       syncModuleItems()
+      console.log('updateModuleObjs', nextObjs)
       app.simulator?.updateSimulation(false, true)
       app.editor?.onActionComplete()
     }
@@ -404,6 +405,14 @@ export default {
       }
     }
 
+    const onObjDataUpdate = (index, raw) => {
+      if (!app.scene?.modules?.[props.moduleName] || !raw) return
+      const current = app.scene.modules[props.moduleName].objs || []
+      const next = [...current]
+      next[index] = raw
+      updateModuleObjs(next)
+    }
+
     const commitName = () => {
       app.simulator?.updateSimulation(true, true)
       app.editor?.onActionComplete()
@@ -452,9 +461,15 @@ export default {
       { immediate: true }
     )
 
+    const onSceneChanged = () => {
+      syncModuleItems()
+    }
+
     onMounted(() => {
       document.addEventListener('clearVisualEditorSelection', onClearVisualSelection)
       document.addEventListener('sceneObjSelectionChanged', onEditorSelectionChange)
+      document.addEventListener('sceneChanged', onSceneChanged)
+      document.addEventListener('sceneObjsChanged', onSceneChanged)
       editorSelectedIndex.value = app.editor?.selectedObjIndex ?? -1
     })
 
@@ -462,6 +477,8 @@ export default {
       applyModuleHighlights([])
       document.removeEventListener('clearVisualEditorSelection', onClearVisualSelection)
       document.removeEventListener('sceneObjSelectionChanged', onEditorSelectionChange)
+      document.removeEventListener('sceneChanged', onSceneChanged)
+      document.removeEventListener('sceneObjsChanged', onSceneChanged)
     })
 
     return {
@@ -473,6 +490,7 @@ export default {
       handleDuplicate,
       handleReorder,
       onNameUpdate,
+      onObjDataUpdate,
       commitName,
       commitAndBlur,
       handleHover,

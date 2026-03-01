@@ -647,7 +647,11 @@
       "expand": "Expand to show properties",
       "collapse": "Collapse properties",
       "showAllProperties": "Show all properties",
-      "hideDefaultProperties": "Hide default properties"
+      "hideDefaultProperties": "Hide default properties",
+      "createArrayAndConditional": "Create array and conditional",
+      "removeArrayAndConditional": "Remove array and conditional",
+      "arrayBadge": "Array",
+      "conditionalBadge": "Conditional"
     },
     "visualSubTabs": {
       "scene": "Scene",

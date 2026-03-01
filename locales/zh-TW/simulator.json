@@ -647,7 +647,11 @@
       "expand": "展開以顯示屬性",
       "collapse": "收起屬性",
       "showAllProperties": "顯示所有屬性",
-      "hideDefaultProperties": "隱藏預設屬性"
+      "hideDefaultProperties": "隱藏預設屬性",
+      "createArrayAndConditional": "建立陣列和條件",
+      "removeArrayAndConditional": "移除陣列和條件",
+      "arrayBadge": "陣列",
+      "conditionalBadge": "條件"
     },
     "visualSubTabs": {
       "scene": "場景",

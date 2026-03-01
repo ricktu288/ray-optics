@@ -404,7 +404,7 @@ export default {
 }
 
 .sidebar-item-list-row.is-selected {
-  background: rgba(86, 219, 240, 0.25);
+  background: rgba(86, 219, 240, 0.2);
 }
 
 .sidebar-item-list-row.is-drop-before::before,

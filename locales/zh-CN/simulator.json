@@ -647,7 +647,11 @@
       "expand": "展开以显示属性",
       "collapse": "收起属性",
       "showAllProperties": "显示所有属性",
-      "hideDefaultProperties": "隐藏默认属性"
+      "hideDefaultProperties": "隐藏默认属性",
+      "createArrayAndConditional": "创建数组和条件",
+      "removeArrayAndConditional": "移除数组和条件",
+      "arrayBadge": "数组",
+      "conditionalBadge": "条件"
     },
     "visualSubTabs": {
       "scene": "场景",

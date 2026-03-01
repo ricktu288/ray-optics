@@ -88,8 +88,6 @@ const PROPERTY_CALLBACKS = {
 
 // Create a single instance of the store
 let storeInstance = null
-const objIdMap = new WeakMap()
-let nextObjId = 1
 
 /**
  * Create a Vue store for the scene, which is a wrapper around the Ray Optics Simulation core library Scene class.
@@ -115,22 +113,13 @@ export const useSceneStore = () => {
     )
   })
 
-  const getObjId = (obj) => {
-    if (!objIdMap.has(obj)) {
-      objIdMap.set(obj, `scene-obj-${nextObjId}`)
-      nextObjId += 1
-    }
-    return objIdMap.get(obj)
-  }
-
   const syncObjList = () => {
-    console.log('syncObjList')
     if (!app.scene) {
       state.objList = []
       return
     }
-    state.objList = app.scene.objs.map((obj) => ({
-      id: getObjId(obj),
+    state.objList = app.scene.objs.map((obj, index) => ({
+      id: `scene-obj-${index}`,
       obj,
       type: obj?.constructor?.type || 'Unknown'
     }))

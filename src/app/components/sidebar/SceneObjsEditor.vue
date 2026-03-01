@@ -61,10 +61,9 @@
         @selection-change="handleSelectionChange"
       >
         <template #content="{ item, index }">
-          <ObjListItemContent
+          <SceneObjListItemContent
             :item="item"
             :index="index"
-            :isTemplate="false"
             @update:name="(v) => onNameUpdate(item, v)"
             @blur="commitName"
           />
@@ -82,7 +81,7 @@ import { computed, onMounted, onUnmounted, ref, toRef } from 'vue'
 import i18next from 'i18next'
 import SidebarItemList from './SidebarItemList.vue'
 import InfoPopoverIcon from '../InfoPopoverIcon.vue'
-import ObjListItemContent from './ObjListItemContent.vue'
+import SceneObjListItemContent from './SceneObjListItemContent.vue'
 import { useSceneStore } from '../../store/scene'
 import { app } from '../../services/app'
 
@@ -91,7 +90,7 @@ export default {
   components: {
     SidebarItemList,
     InfoPopoverIcon,
-    ObjListItemContent
+    SceneObjListItemContent
   },
   setup() {
     const sceneStore = useSceneStore()

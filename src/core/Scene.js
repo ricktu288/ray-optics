@@ -847,18 +847,27 @@ class Scene {
 
   /**
    * Reload a module definition and re-expand its objects.
+   * ModuleObj holds a reference to this.modules[moduleName], so after the definition
+   * is updated, we just call expandObjs() to regenerate expanded objs (no serialize).
+   * Also handles nested instances (e.g. Module A containing Module B when B is reloaded).
    * @param {string} moduleName
    */
   reloadModule(moduleName) {
     if (!this.modules[moduleName]) {
       return;
     }
-    for (let i = 0; i < this.objs.length; i++) {
-      const obj = this.objs[i];
-      if (obj.constructor.type === "ModuleObj" && obj.module === moduleName) {
-        this.objs[i] = new sceneObjs.ModuleObj(this, obj.serialize());
+    const reloadInObjs = (objs) => {
+      if (!Array.isArray(objs)) return;
+      for (const obj of objs) {
+        if (obj?.constructor?.type !== 'ModuleObj') continue;
+        if (obj.module === moduleName) {
+          obj.expandObjs();
+        } else {
+          reloadInObjs(obj.objs);
+        }
       }
-    }
+    };
+    reloadInObjs(this.objs);
   }
 
   /**

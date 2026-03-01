@@ -17,24 +17,43 @@
 /**
  * Get a value from an object by a dot-separated key path.
  * Numeric segments are treated as array indices.
- * @param {Object} obj - The object to read from.
+ * @param {Object} obj - The object to read from (root).
  * @param {string} path - Dot-separated path (e.g. 'focalLength', 'path.0', 'params.r1').
  *   Empty string returns the root object.
- * @returns {*} The value at the path, or undefined if any segment is missing.
+ * @param {Object} [defaults] - Optional defaults. When value is undefined, returns getByKeyPath(defaults, path).
+ * @returns {*} The value at the path, or undefined (or default) if any segment is missing.
  */
-export function getByKeyPath(obj, path) {
+const FOR_IF_DEFAULTS = { for: [], if: true };
+
+export function getForIfDefault(key) {
+  return key in FOR_IF_DEFAULTS ? FOR_IF_DEFAULTS[key] : undefined;
+}
+
+export function getByKeyPath(obj, path, defaults) {
   if (path === '') {
     return obj;
   }
   const segments = path.split('.');
+  const lastSeg = segments[segments.length - 1];
   let current = obj;
   for (const seg of segments) {
     if (current == null) {
-      return undefined;
+      if (defaults != null) {
+        return getByKeyPath(defaults, path);
+      }
+      const forIfDef = getForIfDefault(lastSeg);
+      return forIfDef !== undefined ? forIfDef : undefined;
     }
     const num = Number(seg);
     const key = Number.isNaN(num) ? seg : num;
     current = current[key];
+  }
+  if (current === undefined && defaults != null) {
+    return getByKeyPath(defaults, path);
+  }
+  if (current === undefined) {
+    const forIfDef = getForIfDefault(lastSeg);
+    return forIfDef !== undefined ? forIfDef : undefined;
   }
   return current;
 }
@@ -42,17 +61,21 @@ export function getByKeyPath(obj, path) {
 /**
  * Set a value in an object by a dot-separated key path.
  * Creates intermediate objects/arrays as needed.
- * @param {Object} obj - The object to mutate.
+ * When a parent is undefined (using default), materializes it from defaults before modifying.
+ * @param {Object} obj - The object to mutate (root).
  * @param {string} path - Dot-separated path (e.g. 'focalLength', 'path.0', 'params.r1').
  *   Empty string is not valid for set (would replace root).
  * @param {*} value - The value to set.
+ * @param {Object} [defaults] - Optional defaults. When an intermediate is null/undefined, materializes from defaults first.
+ * When the path ends with "for" or "if" (module template keys), setting to their default values deletes the key instead.
  */
-export function setByKeyPath(obj, path, value) {
+export function setByKeyPath(obj, path, value, defaults) {
   if (path === '') {
     throw new Error('keyPath: empty path is not valid for setByKeyPath');
   }
   const segments = path.split('.');
   let current = obj;
+  let partialPath = '';
   for (let i = 0; i < segments.length - 1; i++) {
     const seg = segments[i];
     const num = Number(seg);
@@ -61,14 +84,33 @@ export function setByKeyPath(obj, path, value) {
     const nextNum = Number(nextKey);
     const isNextArray = !Number.isNaN(nextNum);
     if (current[key] == null) {
-      current[key] = isNextArray ? [] : {};
+      if (defaults != null) {
+        const nextPartial = partialPath ? `${partialPath}.${seg}` : seg;
+        const defVal = getByKeyPath(defaults, nextPartial);
+        if (defVal != null) {
+          current[key] = JSON.parse(JSON.stringify(defVal));
+        } else {
+          current[key] = isNextArray ? [] : {};
+        }
+      } else {
+        current[key] = isNextArray ? [] : {};
+      }
     }
+    partialPath = partialPath ? `${partialPath}.${seg}` : seg;
     current = current[key];
   }
   const lastSeg = segments[segments.length - 1];
   const lastNum = Number(lastSeg);
   const lastKey = Number.isNaN(lastNum) ? lastSeg : lastNum;
-  current[lastKey] = value;
+
+  const forIfDef = getForIfDefault(lastSeg);
+  if (forIfDef !== undefined && JSON.stringify(value) === JSON.stringify(forIfDef)) {
+    if (current != null && typeof current === 'object' && !Array.isArray(current)) {
+      delete current[lastKey];
+    }
+  } else {
+    current[lastKey] = value;
+  }
 }
 
 /**
@@ -100,7 +142,7 @@ function isNonBasicProperty(descriptor) {
  * Check whether the value at the given descriptor key path differs from the default.
  * Non-basic properties (points, equations, arrays of objects) are always treated as non-default.
  * Basic properties use serializableDefaults for comparison.
- * @param {Object} objData - The object data (scene object or template JSON).
+ * @param {Object} objData - Raw/serialized object data (plain object with type and properties; never a class instance).
  * @param {Object} descriptor - PropertyDescriptor with a `key` property (dot-separated path).
  * @param {Object} serializableDefaults - The default values structure (e.g. from constructor.serializableDefaults).
  * @param {string} [basePath=''] - Optional base path when used in nested contexts (e.g. array items).
@@ -115,12 +157,7 @@ export function isNonDefault(objData, descriptor, serializableDefaults, basePath
     return false;
   }
   const fullPath = [basePath, key].filter(Boolean).join('.');
-  let current = getByKeyPath(objData, fullPath);
+  const current = getByKeyPath(objData, fullPath, serializableDefaults);
   const def = getByKeyPath(serializableDefaults, fullPath);
-  // For raw objects (e.g. module templates), absent properties mean "use default".
-  // Treat undefined current as equal to default so we don't mark everything non-default.
-  if (current === undefined) {
-    current = def;
-  }
   return JSON.stringify(current) !== JSON.stringify(def);
 }
