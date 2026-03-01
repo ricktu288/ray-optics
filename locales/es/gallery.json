@@ -93,7 +93,8 @@
     },
     "mazeSolution": {
       "mazeexit": "Salida del laberinto",
-      "title": "Solución del puzle"
+      "title": "Solución del puzle",
+      "notethatthesimulatio": "Recuerda que el procesado de la simulación concluirá solo cuando\nel mensaje de procesado de la esquina inferior izquierda desaparezca."
     },
     "specularAndDiffuseReflection": {
       "title": "Reflexión especular y difusa",
@@ -104,11 +105,13 @@
       "plane": "Avión"
     },
     "cameraObscura": {
-      "observer2": "Observador"
+      "observer2": "Observador",
+      "darkroom1": "Cuarto oscuro"
     },
     "blackCatBecomesWhite": {
       "eyes": "Ojos",
-      "dragtomovethebagouto": "Arrastre para sacar la bolsa del agua"
+      "dragtomovethebagouto": "Arrastre para sacar la bolsa del agua",
+      "lightfromthepaper": "Luz del papel"
     },
     "pairOfAxiconsMakingARainbowRing": {
       "ringaperture": "Apertura de anillo"
@@ -137,11 +140,14 @@
       "commaaberration": "Aberración de coma"
     },
     "moduleExampleParameters": {
-      "title": "Ejemplo de módulo - Parámetros"
+      "title": "Ejemplo de módulo - Parámetros",
+      "thesizeofthistextosc": "El tamaño de este texto oscila en función del valor de theta."
     },
     "moduleExampleControlPoints": {
       "hereisthemidpoint": "↙Aquí está el punto intermedio",
-      "title": "Ejemplo de módulo - Puntos de control"
+      "title": "Ejemplo de módulo - Puntos de control",
+      "hereisthefirstdragga": "↙Este es el primer punto de control (arrastrable) del módulo",
+      "hereistheseconddragg": "↙Este es el segundo punto de control (arrastrable) del módulo"
     },
     "luneburgLens": {
       "title": "Lente de Luneburg",
@@ -181,7 +187,8 @@
       "title": "Aberración cromática"
     },
     "beamDirectors": {
-      "biprism": "Biprisma"
+      "biprism": "Biprisma",
+      "fresnelbiprism": "Biprisma de Fresnel"
     },
     "apparentDepth": {
       "title": "Profundidad aparente",
@@ -191,7 +198,9 @@
     "virtualImageFormation": {
       "object2": "Objeto",
       "converginglensf1000u": "Lente convergente (F=1000 unidades)",
-      "virtualimagehighlyen": "Imagen virtual\nMucho mayor\nDerecha/Erguida"
+      "virtualimagehighlyen": "Imagen virtual\nMucho mayor\nDerecha/Erguida",
+      "title": "Formación de imagen virtual",
+      "description": "En esta simulación, podrás ver cómo se forma una imagen virtual y qué características tiene, usando una lente convergente."
     },
     "theMirascope": {
       "object1": "Objeto",
@@ -210,7 +219,9 @@
       "airwithinferiormirag": "Aire (con espejismo inferior)",
       "ground": "Tierra",
       "airwithoutinferiormi": "Aire (sin espejismo inferior)",
-      "observerseyenottosca1": "Ojo del observador (no está a escala)"
+      "observerseyenottosca1": "Ojo del observador (no está a escala)",
+      "title": "Espejismo inferior",
+      "raysemittedreflected": "Rayos emitidos/reflejados\nde un objeto"
     },
     "rochesterCloak": {
       "t8objects": "8 objetos",
@@ -222,21 +233,25 @@
       "earthssurface": "Superficie de la Tierra",
       "observer1": "Observador",
       "vacuum": "Vacío",
-      "virtualimage1": "Imagen virtual"
+      "virtualimage1": "Imagen virtual",
+      "title": "Espejismo del mar",
+      "description": "En esta simulación cualitativa, podrás observar el efecto por el que un objeto que está más allá del horizonte puede verse como espejismo superior."
     },
     "logarithmicSpiralLens": {
       "dragtochangetheiniti": "Arrastra para cambiar\nla dirección inicial del rayo",
       "title": "Camino del rayo en espiral logarítmica"
     },
     "chromaticDispersion": {
-      "dragheretorotatethep": "Arrastra aquí\npara rotar el prisma",
-      "title": "Dispersión cromática"
+      "dragheretorotatethep": "Arrastre aquí\npara rotar el prisma",
+      "title": "Dispersión cromática",
+      "dragheretoadjustbeam": "Arrastre aquí para\najustar anchura del haz"
     },
     "resonator": {
       "flatmirror": "Espejo plano",
       "sphericalconcavemirr": "Espejo cóncavo esférico",
       "unstableresonator": "Resonador inestable",
-      "stableresonator": "Resonador estable"
+      "stableresonator": "Resonador estable",
+      "title": "Resonador plano-cóncavo"
     },
     "moduleExampleArraysAndConditionals": {
       "thistextisshownonlyw": "Este texto solo aparece cuando n>5"
@@ -245,14 +260,56 @@
       "title": "Ejemplo de módulo - Variables"
     },
     "moduleExampleCustomEquation": {
-      "title": "Ejemplo de módulo - Ecuación personalizada"
+      "title": "Ejemplo de módulo - Ecuación personalizada",
+      "amirrorofshapeycos2p": "Un espejo con forma dada por y=cos(2 pi x + `phi`)"
     },
     "moduleExampleBasics": {
       "thistextisnotinamodu": "Este texto no está en un módulo.",
-      "thistextisalsonotina": "Este texto tampoco está en un módulo."
+      "thistextisalsonotina": "Este texto tampoco está en un módulo.",
+      "thistextisinexamplem": "Este texto está en ExampleModule.",
+      "thistextisalsoinexam": "Este texto también está en ExampleModule."
     },
     "moduleExampleShapeParametrization": {
       "alensdefinedbydr1r2": "Una lente definida por d, R_1, R_2"
+    },
+    "reflectingMonochromator": {
+      "exitslitmonochromati": "Ranura de salida\n\nLuz monocromática"
+    },
+    "ganBasedLcdPixel": {
+      "liquidcrystal": "Cristal líquido",
+      "lightfilters": "Filtros de luz"
+    },
+    "distortionInWindowsAndBacksideMirrors": {
+      "window": "ventana"
+    },
+    "bendedPencil": {
+      "dielectricmaterial": "material dieléctrico",
+      "originalpencilgreen": "lápiz original (verde)",
+      "observerseye": "ojo del observador",
+      "ignoretheorangesquar": "¡Ignora los cuadrados naranjas!"
+    },
+    "brokenPencil": {
+      "title": "Lápiz roto"
+    },
+    "transverseAndLongitudinalMagnification": {
+      "title": "Aumento transversal y longitudinal"
+    },
+    "telescope": {
+      "lightfromstar1": "Luz de estrella 1"
+    },
+    "solarEclipses": {
+      "totaleclipse": "Eclipse total",
+      "title": "Eclipses solares"
+    },
+    "dichroicRbgSplitterAndCombiner": {
+      "lightsource": "Fuente de luz",
+      "dichroiccube": "Cubo dicroico"
+    },
+    "concaveMirrorWearableDisplay": {
+      "tft09display": "Pantalla TFT de 0,9\"",
+      "concavemirror": "espejo cóncavo",
+      "eye1": "ojo",
+      "nose": "nariz"
     }
   }
 }
