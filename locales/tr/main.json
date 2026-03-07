@@ -48,7 +48,41 @@
       "description": "Belirli bir emisyon açısına sahip nokta kaynağı."
     },
     "Mirror": {
-      "title": "Bölüm(segment)"
+      "title": "Bölüm(segment)",
+      "description": "Aynada ışığın yansımasını simüle edin."
+    },
+    "otherMirror": {
+      "title": "Kavisli",
+      "description": "Eğri şekilli bir ayna. Dairesel, parabolik veya y = f(x) özel denklemiyle tanımlanabilir."
+    },
+    "ArcMirror": {
+      "title": "Dairesel Yay",
+      "description": "Üç nokta ile tanımlanan bir dairenin parçası olan bir ayna.",
+      "instruction": "Oluşturmak için iki uç noktayı sürükleyin veya tıklayın, ardından eğriliği tanımlamak için yay üzerinde üçüncü bir noktayı tıklayın."
+    },
+    "ParabolicMirror": {
+      "title": "Parabolik",
+      "description": "Üç nokta ile tanımlanan parabol şeklinde bir ayna.",
+      "instruction": "Oluşturmak için iki uç noktayı sürükleyin veya tıklayın, ardından köşeyi tıklayın."
+    },
+    "IdealMirror": {
+      "title": "İdeal kavisli ayna",
+      "description": "Ayna denklemini (1/p + 1/q = 1/f) tam olarak karşılayan idealize edilmiş ‘eğri’ ayna. Odak uzaklığı doğrudan ayarlanabilir."
+    },
+    "BeamSplitter": {
+      "title": "Işın Bölücü",
+      "description": "Gelen ışığın bir yüzdesini ileten ayna."
+    },
+    "CustomMirror": {
+      "title": "Özel Denklem",
+      "description": "Şekli y = f(x) özel fonksiyonuyla belirlenen bir ayna. Burada(x,y) koordinatları, iki kontrol noktasının (−1,0) ve (1,0) olduğu dönüştürülmüş koordinat sistemindeki koordinatları ifade eder."
+    },
+    "ParamMirror": {
+      "title": "Parametrik Eğri",
+      "description": "Özel parametrik denklemlerle şekli tanımlanan bir ayna."
+    },
+    "ConcaveDiffractionGrating": {
+      "title": "İçbükey Izgara"
     }
   },
   "meta": {

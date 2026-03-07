@@ -44,7 +44,29 @@
       "title": "Kaplamalı Küresel Mercek",
       "description": "Her iki tarafında tek katmanlı kaplamalar bulunan küresel bir mercek. Bu modüle gömülü olan `ArcCoating` modülü, cam yüzeyi ile örtüştüğünde kaplaması haline gelen tek bir ince film tabakasını temsil eder.",
       "point1": "Merceğin merkezi",
-      "h": "Merceğin yüksekliği"
+      "h": "Merceğin yüksekliği",
+      "d": "Mercek kalınlığı",
+      "R1": "Ön yüzeyin eğrilik yarıçapı",
+      "R2": "Arka yüzeyin eğrilik yarıçapı",
+      "A": "Camın Cauchy katsayısı \\(A\\)",
+      "B": "Camın cauchy katsayısı \\(B\\) mikrometre kare cinsinden",
+      "dc": "Kaplama tabakasının kalınlığı nanometre cinsinden",
+      "Ac": "Kaplama malzemesinin Cauchy katsayısı \\(A\\)",
+      "Bc": "Mikrometre kare cinsinden kaplama malzemesinin Cauchy katsayısı \\(B\\)"
+    },
+    "RainbowPointSource": {
+      "title": "Gökkuşağı Nokta Kaynağı",
+      "description": "Nokta ışık kaynağı <360 derece - ancak bir renk spektrumu yayar. “Renkleri Simüle Et” seçeneği açık olarak çalıştırılmalıdır.",
+      "point1": "Kaynak",
+      "N": "Işınların sayısı",
+      "brightness": "Toplam parlaklık",
+      "angle": "Emisyon açısı",
+      "lambdaMin": "Minimum dalga boyu",
+      "lambdaMax": "Maksimum dalga boyu"
+    },
+    "CircleSource": {
+      "title": "Dairesel ışık kaynağı",
+      "description": "Çevresi boyunca 180 derecelik eşit nokta kaynakları bulunan bir daire."
     }
   }
 }
