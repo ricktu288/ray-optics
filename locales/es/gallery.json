@@ -79,7 +79,8 @@
       "title": "Arcoíris",
       "sunlight": "Luz solar",
       "raindrop": "Gota de lluvia",
-      "primaryrainbow": "Arcoíris primario"
+      "primaryrainbow": "Arcoíris primario",
+      "alexandersdarkband": "Banda oscura de Alejandro"
     },
     "minimumDeviationAngle": {
       "examplea": "Ejemplo A",
@@ -102,7 +103,9 @@
     },
     "chaffCountermeasure": {
       "radar": "Radar",
-      "plane": "Avión"
+      "plane": "Avión",
+      "title": "Contramedida chaff",
+      "description": "En esta simulación, podrás ver el efecto cualitativo que tiene una contramedida chaff en un radar (ignorando los efectos de difracción)."
     },
     "cameraObscura": {
       "observer2": "Observador",
@@ -111,7 +114,8 @@
     "blackCatBecomesWhite": {
       "eyes": "Ojos",
       "dragtomovethebagouto": "Arrastre para sacar la bolsa del agua",
-      "lightfromthepaper": "Luz del papel"
+      "lightfromthepaper": "Luz del papel",
+      "lightfromtheplastics": "Luz de la superficie de plástico"
     },
     "pairOfAxiconsMakingARainbowRing": {
       "ringaperture": "Apertura de anillo"
@@ -226,7 +230,9 @@
     "rochesterCloak": {
       "t8objects": "8 objetos",
       "visibilityarea": "Área de visibilidad",
-      "object": "Objeto"
+      "object": "Objeto",
+      "partialinvisibilitya": "Área de invisibilidad parcial",
+      "title": "Capa de Rochester"
     },
     "seaMirage": {
       "atmosphere": "Atmósfera",
@@ -235,7 +241,8 @@
       "vacuum": "Vacío",
       "virtualimage1": "Imagen virtual",
       "title": "Espejismo del mar",
-      "description": "En esta simulación cualitativa, podrás observar el efecto por el que un objeto que está más allá del horizonte puede verse como espejismo superior."
+      "description": "En esta simulación cualitativa, podrás observar el efecto por el que un objeto que está más allá del horizonte puede verse como espejismo superior.",
+      "architecturealpine": "Arquitectura / Alpino"
     },
     "logarithmicSpiralLens": {
       "dragtochangetheiniti": "Arrastra para cambiar\nla dirección inicial del rayo",
@@ -273,7 +280,10 @@
       "alensdefinedbydr1r2": "Una lente definida por d, R_1, R_2"
     },
     "reflectingMonochromator": {
-      "exitslitmonochromati": "Ranura de salida\n\nLuz monocromática"
+      "exitslitmonochromati": "Ranura de salida\n\nLuz monocromática",
+      "title": "Monocromador reflectante",
+      "reflectingmonochroma": "Monocromador reflectante",
+      "description": "Esta simulación muestra un monocromador reflectante, que usa una red de difracción reflectante y una ranura en el foco para obtener intervalos de longitudes de onda muy pequeños a partir de la luz compuesta (luz blanca)."
     },
     "ganBasedLcdPixel": {
       "liquidcrystal": "Cristal líquido",
@@ -286,7 +296,8 @@
       "dielectricmaterial": "material dieléctrico",
       "originalpencilgreen": "lápiz original (verde)",
       "observerseye": "ojo del observador",
-      "ignoretheorangesquar": "¡Ignora los cuadrados naranjas!"
+      "ignoretheorangesquar": "¡Ignora los cuadrados naranjas!",
+      "title": "Lápiz doblado"
     },
     "brokenPencil": {
       "title": "Lápiz roto"
@@ -310,6 +321,29 @@
       "concavemirror": "espejo cóncavo",
       "eye1": "ojo",
       "nose": "nariz"
+    },
+    "branchedFlow": {
+      "title": "Flujo bifurcado"
+    },
+    "beamExpanders": {
+      "keplerianbeamexpande": "Expansor de haz kepleriano",
+      "gallileanbeamexpande": "Expansor de haz galileano",
+      "title": "Expansores de haz",
+      "inbothcasesthedistan": "En ambos casos, la distancia entre las lentes es igual a la suma de sus distancias focales"
+    },
+    "rayRelaying": {
+      "youcanselectanylenst": "Puedes elegir cualquier lente para ver y ajustar los parámetros de la matriz."
+    },
+    "simpleDoubleGaussLens": {
+      "description": "Esta es una demostración simple de una lente doble de Gauss."
+    },
+    "orientationsOfPlanoConvexLens": {
+      "title": "Orientaciones de la lente plano-convexa"
+    },
+    "opticalCavity": {
+      "dragtomovetheidealmi": "Arrastra para mover\nel espejo ideal",
+      "concaveconvexresonat": "Resonador cóncavo-convexo",
+      "planoconcaveresonato": "Resonador plano-cóncavo"
     }
   }
 }

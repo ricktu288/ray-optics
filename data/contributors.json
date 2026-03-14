@@ -874,5 +874,17 @@
       ]
     },
     "firstCommit": "2026-02-18"
+  },
+  {
+    "name": "A. Name",
+    "githubEmails": [
+      "anom.9ine@gmail.com"
+    ],
+    "contributions": {
+      "translations": [
+        "fr"
+      ]
+    },
+    "firstCommit": "2026-03-11"
   }
 ]
