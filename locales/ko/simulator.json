@@ -29,6 +29,9 @@
     "viewGallery": {
       "title": "갤러리 보기",
       "description": "예제를 불러오기 위해 갤러리로 이동."
+    },
+    "copyLink": {
+      "description": "복사 및 현재 장면의 직접 URL로 이동, 공유에 사용할 수 있습니다 (URL 단축기를 통해 가능). 또한 설정 -> 자동 동기화 URL."
     }
   },
   "settings": {
@@ -54,7 +57,28 @@
       "title": "도움말 팝업 표시",
       "description": "버튼 위를 지날 때 도움말을 표시할 지 결정합니다."
     },
-    "advancedHelp": "추가적인 설명이 필요한 경우 우측 하단의 도움말 아이콘을 클릭하십시오."
+    "advancedHelp": "추가적인 설명이 필요한 경우 우측 하단의 도움말 아이콘을 클릭하십시오.",
+    "lengthScale": {
+      "description": "길이의 기본 단위가 너무 작거나 너무 큰 경우 일반적인 물리적 단위 (예 : 밀리미터)로 해석 할 때 물리적 시스템을 모델링 할 수 있습니다. 이 요인은 장면에서 외관 (예 : 라인 폭)을 스케일로 사용할 수 있습니다."
+    },
+    "correctBrightness": {
+      "description": "기본적으로 화면의 밝기는 최근에 특정한이 아닌 광선의 밝기를 나타냅니다.이 옵션은 전문 렌더러를 사용하여 수정하지만 일부 장치에서의 성능을 줄일 수 있습니다. (실제로는 실제로 호출되는 경우)."
+    },
+    "autoSyncUrl": {
+      "description": "사용 가능한 경우 URL은 현재 장면에서 자동으로 업데이트되므로 장면을 수동으로 저장하지 않습니다. 제목을 설정하려면 파일 -> 저장 -> 이름 바꾸기를 사용하십시오."
+    },
+    "showJsonEditor": {
+      "description": "사용자 지정 모듈을 만들 때 필요한 경우 필요한 장면의 JSON 표현에 대한 코드 편집기를 표시합니다 (See Tools -> Other -> 수입 모듈 -> 사용자 정의 모듈을 만드십시오."
+    },
+    "colorMode": {
+      "description": "밝기 (및 색상이 \"색상\"이 켜지면) 밝기 또는 이미지는 화면에 색상으로 맵핑됩니다. \"Correct 광도\"를 사용할 때만 구성할 수 있습니다."
+    },
+    "showStatusBox": {
+      "description": "마우스 좌표, 성능 정보, 트럭이 빛 된 밝기 (무한 시리얼의 무선 시리얼에서 잘라낸 광선의 전체 밝기)를 포함하는 보 스토우 상자를 표시합니다."
+    },
+    "showSimulatorControls": {
+      "description": "Simulator의 수동 제어를 허용, 장면이 실행하는 긴 시간이 걸릴 때 유용합니다, JSON에서로드 느리거나 임의화가 포함되어 있습니다."
+    }
   },
   "objBar": {
     "showAdvanced": {
@@ -79,13 +103,18 @@
       "brightness": "밝기",
       "brightnessInfo": {
         "rayDensity": "'광선 밀도'가 충분히 높을 때 유효합니다.",
-        "rayDensitySlider": "방출되는 광선의 개수를 조절하려면 '광선 밀도' 슬라이더를 조절하십시오."
+        "rayDensitySlider": "방출되는 광선의 개수를 조절하려면 '광선 밀도' 슬라이더를 조절하십시오.",
+        "newColorModes": "\"Correct Brightness\"가 켜지면, \"Ray density\"의 동작은 기본적으로 다릅니다. 단위의 경우, 선택할 때 검출기의 정보 상자를 참조하십시오."
       },
       "wavelength": "파장",
       "emisAngle": "방출 각",
       "random": "랜덤",
       "lambert": "램버시안 (Lambertian)",
-      "focalLength": "초점 거리"
+      "focalLength": "초점 거리",
+      "lengthUnitInfo": "이 시뮬레이터에서 사용 된 길이의 단위 (파열을 제외하고)는 모든 물리적 단위 (예를들면 밀리미터)로 해석 할 수있는 임의 단위입니다. 단위가 너무 작거나 너무 큰 경우에, 조정을 조정하십시오 -> 길이 가늠자.",
+      "eqnInfo": {
+        "module": "사용자 지정 매개 변수 또는 복잡한 평등을 갖기 위해서는 사용자 지정 모듈을 만들 수 있습니다. 도구 -> 다른 -> 수입 모듈 보기 자세한 내용을 참조하십시오."
+      }
     },
     "Beam": {
       "imageDetectionWarning": "발산하거나 랜덤한 빔의 경우 정상적으로 인식되지 않거나 작동하지 않을 수 있습니다."
@@ -118,10 +147,52 @@
       "fontStyle": "스타일",
       "alignment": "정렬",
       "smallCaps": "Small Caps",
-      "angle": "각도"
+      "angle": "각도",
+      "fonts": "Serif: 세리프\nArial: 아랄\n헬베티카: 헬베티카\n시간 새로운 로마: 시간 새로운 로마\n조지아: 조지아\nCourier 새로운: 특사 새로운\nVerdana: 베르다나\nTahoma: 타오마\nTrebuchet MS : Trebuchet MS\n충격: 충격\n프로젝트 산: 루시다 산"
     },
     "CropBox": {
-      "svgWarning": "SVG로 추출하기. 색상 혼합, 실제 밝기, 또는 1 미만의 상대 굴절률은 지원되지 않습니다."
+      "svgWarning": "SVG로 추출하기. 색상 혼합, 실제 밝기, 또는 1 미만의 상대 굴절률은 지원되지 않습니다.",
+      "rayCountWarning": "장면에서 광선의 현재 수는 레이 카운트 제한보다 크다. Crop Box 옵션의 레이 카운트 제한을 늘릴 필요가 있습니다."
+    },
+    "DiffractionGrating": {
+      "customBrightnessInfo": "회절 광선의 욕실에 M = 0, 1, -1, 2, -2에 해당하는 수의 배열에 맞춤 설정할 때, 숫자는 입사 광의 밝기에 정규화되어야한다. 배열의 값은 0으로 설정됩니다. 예제의 0으로 설정된 경우 예제는 0으로 설정됩니다. 예제는 동일한 입사실, ray, m = 1 및 m = -1 광선이 밝기가 낮고 다른 모든 광선이 무시됩니다."
+    },
+    "BaseCustomSurface": {
+      "info": {
+        "coating": "이 객체는 공동의 역할을 할 수 있습니다. \"이 이름은 재료의 자신의 굴절률입니다. 재료의 견고한 칼럼은 좌석의 견고한 좌석이 각각 AC {{n_0}} {{n_1}}의 동일한 반대쪽에 첨부 된 것입니다. 여기서이 객체가 유리 객체 내부에 있으면 값은 상대적입니다.",
+        "otherParams": "사용 가능한 사건 광선의 다른 모수는 {{lambda}} (nm에 있는 파장)와 {{p}} (0 양극 처리하는, 1를 위해 양극 처리하는) 입니다. 그들은 나가는 광선에 동일하게 남아 있습니다.",
+        "previousFormulas": "수식은 이전 수식의 결과를 참조할 수 있습니다. 수식이 잘못된 값을 나타내면 그 출력 광선은 무시되고 밝기가 0로 처리됩니다.",
+        "module": "사용자 정의 매개 변수, 복잡한 수식, 또는 많은 양의 윤곽선, 당신은 사용자 정의 모듈을 만들 수 있습니다. 도구 보기 -> 기타 -> 더 많은 정보를 위한 수입품 단위.",
+        "angles": "{{theta_0}} 및 {{theta_j}}는 사건의 각도와 Jth 출력 광선, 각각, 방사선과 정상 방향에 비해.",
+        "brightnesses": "{{P_0}}와 {{P_j}}는 검출기 공구와 같은 단위에서 사건과 jth 나가는 광선의 광도입니다.",
+        "twoSides": "이 표면의 두 측면이 다른 수식을 갖고 싶다면 반대 방향으로 두 개의 단일 측면 표면을 덮을 수 있습니다."
+      }
+    },
+    "BaseGrinGlass": {
+      "symbolicBodyMergingInfo": {
+        "implNote": "숫자의 구현은 더 빠르지만 항상 제대로 작동하지 않습니다 (특수한 경우에 따라 다름) 시나리오에서 하나 이상의 GRIN 객체와 함께 사용 될 때, 적어도 그들 중 하나는 전체면에서 정의되지 않는 굴절률 기능을 가지고, 상징적 인 구현은 느리지만 이러한 문제로 견고합니다.",
+        "impl": "이 시뮬레이터는 현재 GRIN 개체에 대해 서로 다른 미디어 간의 빛 확산을 두 가지 구현으로 - 수적 및 상징적 (BaseGrinGlass.js의 'multRefIndex'와 'devRefIndex' 함수를 참조)."
+      },
+      "refIndexFnInfo": {
+        "origin": "n(x,y)의 기원은 절대 좌표에 있으며 객체와 함께 움직이지 않습니다. 제어점을 두 번 클릭하여 절대 좌표를 확인할 수 있습니다."
+      },
+      "stepSizeInfo": "Euler의 단계 크기 이코널 라인 방정식을 해결하는 방법 - '단계' 기능 및 'BaseGrinGlass.js' 파일 내 문서 참조, 자세한 내용은."
+    },
+    "Detector": {
+      "info": {
+        "s": "치수가없는 요소는 설정 ->에서 보이는 \"Brightness Scale\"입니다. \"Ray 밀도\"가 약간의 임계값과 비례가 있을 때 1과 동일하게 표시된 상태 상자.",
+        "B": "B는 비 Lambertian 광속을 위한 B/L이고 점 근원을 위한 500B/360°인 “Brightness” 선택권의 단위에 대응하는 빛난 유출의 임의 단위입니다."
+      }
+    },
+    "CustomArcSurface": {
+      "info": {
+        "incidentPos": "절개 지점의 위치는 {{t}}으로 구분하기 위해, 채우기는 -1에서 1에서 1까지의 균일 (토팅 톨)을 보안하고, ARC의 다음 ~."
+      }
+    },
+    "CustomSurface": {
+      "info": {
+        "incidentPos": "사건 점의 위치는 선 세그먼트의 2개의 끝점 사이에서 -1에서 1 사이에서 선형으로 interpolates {{t}}로 불릴 수 있습니다."
+      }
     }
   },
   "saveModal": {
@@ -134,9 +205,46 @@
     "helpTranslate": "이 앱의 번역 참여"
   },
   "generalWarnings": {
-    "shareLinkTooLong": "URL이 너무 길어서 일부 플랫폼에서 작동하지 않을 수 있습니다. 이 경우 \"저장\"을 사용해 파일을 공유하십시오."
+    "shareLinkTooLong": "URL이 너무 길어서 일부 플랫폼에서 작동하지 않을 수 있습니다. 이 경우 \"저장\"을 사용해 파일을 공유하십시오.",
+    "blackBecomesTransparent": "비블랙 배경을 가진 \"Correct 광도\"를 사용할 때, 빛의 색깔의 까만 부분은 첨가물 색깔 섞기 때문에 투명하게 됩니다. 이 문제를 피하기 위해 단위 HSV 값을 가지고 빛의 모든 테마 색상을 설정하십시오.",
+    "brightnessInconsistent": "두 개 이상의 광원의 밝기는 일관성 비율로 포화됩니다. 이것은 잘못된 발견자 판독과 색깔 연출에 지도할지도 모릅니다. 광선 조밀도를 증가하거나 광원의 광도를 감소시키십시오.",
+    "undefinedBehaviorOverlapping": "표면 merging은 \"{{involvedObj1}}\"과 \"{{involvedObj2}}\" 사이의 오버랩에 대해 지원되지 않습니다. 물체를 약간 이동하십시오 (또는 광원을 이동하십시오) 잘 정의된 행동을 얻기 위하여."
   },
   "footer": {
-    "processing": "작업 중... 클릭하여 중단."
+    "processing": "작업 중... 클릭하여 중단.",
+    "helpPopup": {
+      "groupRotateScale": {
+        "description": "Ctrl을 누르고 하나 또는 이전 (outsidual 제어점, 예 : 엔트 포인트)를 클릭 한 다음 빈 공간을 클릭하여 핸들 (화살표 아이콘)을 그룹화하고 만들 수 있습니다.옵니다. 흐리게 변환하려면 원하는 트랜스 타입 TY 및 스텝 크기를 선택한 다음 손으로 끕니다. 회전 / 스케일링의 경우 \"+\"를 끌어서 \"+\"를 끌어서 + \"를 눌러 그룹을 클릭하고 그룹을 복제하십시오. 그룹을 복제하십시오. 그룹을 복제하십시오. 그룹을 복제하십시오."
+      },
+      "constrainedDragging": {
+        "description": "객체를 드래킹 할 때, 움직임을 수평 / 수직으로 제한하십시오. CTRL을 복제하십시오. 응답으로 CTRL을 보냅니다. 선형 사파이버 모드를 만들어서 끝점을 드래그하면 냉각을 고정하거나 냉각 장치를 잠그고 0 °, 45 °, 90 °로 켜십시오. CTRL을 넣고 / 배율을 회전하십시오."
+      },
+      "arrayFormula": {
+        "description": "물체의 배열을 정의하기 위해 (예 : 조정 가능한 간격으로 거울의 격자) 또는 수식 (예 : 조정 각도로 사다리꼴 프리즘), \"도구 -> 기타 -> 수입 모듈 -> 사용자 지정 모듈 만들기."
+      },
+      "keyboardShortcuts": {
+        "description": "객체가 선택되면 (클릭하여), 객체를 이동하기 위해 화살표 키를 누릅니다. +/- 객체를 회전; Ctrl + D 객체를 중복; 객체를 삭제하려면 키를 삭제합니다."
+      },
+      "contactUs": {
+        "description": "제안된 방법은 GitHub에서 [Discussions](/github/discussions) 또는 [Issues](/github/ issues)로 이동하는 것입니다. GitHub를 사용하지 않는 경우 [ray-optics@phydemo.app](/email)에도 이메일을 보내주시면 됩니다."
+      }
+    },
+    "betaFeatures": {
+      "details": "Beta 특징은 불안정할지도 모르고 뒤 겸용성 없이 변화할지도 모릅니다. 버그를 보고하려면 GitHub에서 [Issues](/github/issue)로 이동하거나 [ray-optics@phydemo.app](/email)로 이메일을 보내 주십시오."
+    }
+  },
+  "colorModeModal": {
+    "linear": {
+      "description": "HSV 색 공간의 값 V는 \"색깔\"이 꺼지고 420 ~ 620 nm 사이의 단색 빛의 총 밝기를 동등합니다. V는 1에 모자를 씌우고 H와 S를 보존하는 동안. 색상은 감마 수정."
+    },
+    "colorizedIntensity": {
+      "description": "100, 10, ..., 10−5의 총 밝기는 각각 빨간색, 오렌지, 노란색, 녹색, 시안, 파.고 검정색과 블랙으로 표현되며 로그 스케일로 부드럽게 인터폴라됩니다."
+    },
+    "reinhard": {
+      "description": "Reinhard 톤 지도는 전체 상대성에 적용되었습니다. 낮은 밝기 한도에서 색상은 \"선형 가치\"와 일치합니다."
+    }
+  },
+  "moduleModal": {
+    "conflict": "같은 이름을 가진 다른 단위는 이미 현재 장면에 존재합니다. 새 이름을 입력하거나 기존 모듈을 덮기와 동일하게 남길 수 있습니다."
   }
 }

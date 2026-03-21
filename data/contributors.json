@@ -886,5 +886,26 @@
       ]
     },
     "firstCommit": "2026-03-11"
+  },
+  {
+    "name": "clearstripe",
+    "contributions": {
+      "translations": [
+        "ko"
+      ]
+    },
+    "firstCommit": "2026-03-14"
+  },
+  {
+    "name": "Clément Bourguignon",
+    "githubEmails": [
+      "clement.bourguignon@mail.mcgill.ca"
+    ],
+    "contributions": {
+      "translations": [
+        "fr"
+      ]
+    },
+    "firstCommit": "2026-03-18"
   }
 ]

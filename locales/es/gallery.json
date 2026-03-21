@@ -60,7 +60,9 @@
       "description": "Esta simulación muestra la refracción y la reflexión interna en una superficie."
     },
     "hyperbolicLens": {
-      "title": "Lente hiperbólica"
+      "title": "Lente hiperbólica",
+      "thefocallengthofthis": "La distancia focal de esta lente esférica (considerando la aproximación paraxial) es:\nf=R/(n-1)=200/(1.5-1)=400",
+      "selectthishyperbolic": "(elige esta lente hiperbólica para ver su ecuación personalizada)"
     },
     "interrogationRoom": {
       "darkroom": "Cuarto oscuro",
@@ -188,7 +190,9 @@
       "objective": "Objetivo"
     },
     "chromaticAberration": {
-      "title": "Aberración cromática"
+      "title": "Aberración cromática",
+      "description": "En esta simulación, se mostrará la aberración cromática de una lente esférica. En ella, la luz blanca se forma al mezclar los colores rojo, naranja, amarillo, verde, cian, azul y violeta. La distancia focal de la luz roja es la más grande, mientras que la de la luz violeta es la más pequeña.",
+      "dragtoadjustbeamwidt1": "Arrastra para ajustar la anchura del haz"
     },
     "beamDirectors": {
       "biprism": "Biprisma",
@@ -338,12 +342,18 @@
       "description": "Esta es una demostración simple de una lente doble de Gauss."
     },
     "orientationsOfPlanoConvexLens": {
-      "title": "Orientaciones de la lente plano-convexa"
+      "title": "Orientaciones de la lente plano-convexa",
+      "description": "En esta simulación, se compararán las dos orientaciones de una lente plano-convexa que está enfocando un haz, destacándose la diferencia en los tamaños de las aberraciones esféricas."
     },
     "opticalCavity": {
       "dragtomovetheidealmi": "Arrastra para mover\nel espejo ideal",
       "concaveconvexresonat": "Resonador cóncavo-convexo",
       "planoconcaveresonato": "Resonador plano-cóncavo"
+    },
+    "fresnelLens": {
+      "title": "Lente de Fresnel",
+      "description": "Esta simulación permite comparar una lente esférica y una lente de Fresnel. Una de las ventajas de la lente de Fresnel es evidente: funciona de manera similar a una lente esférica normal, pero ocupa mucho menos espacio (y, por lo tanto, es un dispositivo que pesa menos).",
+      "thisfresnellensismad": "Esta lente de Fresnel se ha fabricado a partir del vidrio semicircular mostrado a continuación.\nPuedes elegir la lente y ajustar el parámetro N_slice."
     }
   }
 }
