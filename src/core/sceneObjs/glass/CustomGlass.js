@@ -20,6 +20,7 @@ import i18next from 'i18next';
 import Simulator from '../../Simulator.js';
 import geometry from '../../geometry.js';
 import { evaluateLatex } from '../../equation.js';
+import { equationValueForListDisplay } from '../../propertyUtils/equationConversion.js';
 import escapeHtml from 'escape-html';
 
 /**
@@ -59,7 +60,7 @@ class CustomGlass extends LineObjMixin(BaseGlass) {
     }
     const eqn1 = objData?.eqn1 ?? '';
     const eqn2 = objData?.eqn2 ?? '';
-    const parts = [eqn1, eqn2].filter(Boolean).map(escapeHtml);
+    const parts = [eqn1, eqn2].filter(Boolean).map((v) => escapeHtml(equationValueForListDisplay(v)));
     return parts.length ? i18next.t('main:meta.colon', { name: base, value: '<span style="font-family: monospace">' + parts.join(', ') + '</span>' }) : base;
   }
 

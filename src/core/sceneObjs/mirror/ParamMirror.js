@@ -19,6 +19,7 @@ import ParamCurveObjMixin from '../ParamCurveObjMixin.js';
 import i18next from 'i18next';
 import Simulator from '../../Simulator.js';
 import geometry from '../../geometry.js';
+import { equationValueForListDisplay } from '../../propertyUtils/equationConversion.js';
 import escapeHtml from 'escape-html';
 
 /**
@@ -63,7 +64,8 @@ class ParamMirror extends ParamCurveObjMixin(BaseFilter) {
       return i18next.t('main:meta.parentheses', { main: base, sub: i18next.t('main:tools.ParamMirror.title') });
     }
     const pieces = objData?.pieces ?? [];
-    const parts = pieces.map(p => '(' + escapeHtml(p.eqnX ?? '') + ',' + escapeHtml(p.eqnY ?? '') + ')').filter(c => c !== '(,)');
+    const fmt = (v) => escapeHtml(equationValueForListDisplay(v));
+    const parts = pieces.map((p) => '(' + fmt(p.eqnX ?? '') + ',' + fmt(p.eqnY ?? '') + ')').filter((c) => c !== '(,)');
     return parts.length ? i18next.t('main:meta.colon', { name: base, value: '<span style="font-family: monospace">' + parts.join(', ') + '</span>' }) : base;
   }
 
