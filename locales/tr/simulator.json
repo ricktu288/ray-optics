@@ -56,6 +56,45 @@
       "showGrid": "Izgara",
       "snapToGrid": "Izgara'ya Yapıştır",
       "lockObjs": "Nesneleri Kilitle"
+    },
+    "showRayArrows": {
+      "title": "Ray Oklarını Göster"
+    },
+    "correctBrightness": {
+      "title": "Doğru Parlaklık",
+      "description": "Varsayılan olarak, ekrandaki parlaklık ışınların parlaklığını tutarlı bir şekilde yansıtmaz. Bu seçenek, özel bir görüntü işleyici kullanarak bu sorunu giderir, ancak bazı cihazlarda performansı düşürebilir. (Bazı diğer cihazlarda ise performansı artırır.)",
+      "error": "“Doğru Parlaklık” özelliğini etkinleştiremedi. Tarayıcınız WebGL kayan nokta dokularını desteklemiyor olabilir."
+    },
+    "gridSize": {
+      "title": "Izgara Boyutu"
+    },
+    "observerSize": {
+      "title": "Gözlemci Boyutu"
+    },
+    "lengthScale": {
+      "title": "Uzunluk Ölçeği",
+      "description": "Varsayılan uzunluk birimi, ortak bir fiziksel birim (örneğin milimetre) olarak yorumlandığında fiziksel bir sistemi modellemek için çok küçük veya çok büyükse, bu faktör sahnedeki görünümü (örneğin çizgi genişlikleri) ölçeklendirmek için kullanılabilir."
+    },
+    "zoom": {
+      "title": "Yakınlaştır"
+    },
+    "showAdvancedSettings": {
+      "title": "Daha fazla sahne ayarı…"
+    },
+    "theme": {
+      "title": "Tema"
+    },
+    "colorMode": {
+      "title": "Renk Modu",
+      "description": "Işınların veya görüntülerin parlaklıklarının (ve “Renkleri Simüle Et” seçeneği açıksa renklerinin) ekrandaki renklere nasıl eşleneceğini belirler. Yalnızca “Parlaklığı Düzelt” seçeneği kullanıldığında yapılandırılabilir."
+    },
+    "redWavelength": {
+      "title": "Kırmızı dalga boyu",
+      "description": "“Renkleri Simüle Et” seçeneği açıkken kırmızı olarak gösterilecek dalga boyu. Görünmez ışığı sahte renk spektrumuyla görselleştirmek için kullanışlıdır."
+    },
+    "violetWavelength": {
+      "title": "Mor dalga boyu",
+      "description": "“Renkleri Simüle Et” seçeneği açıkken mor olarak gösterilecek dalga boyu. Görünmez ışığı sahte renk spektrumuyla görselleştirmek için kullanışlıdır."
     }
   }
 }

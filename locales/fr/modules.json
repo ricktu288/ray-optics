@@ -59,6 +59,11 @@
     },
     "Chaff": {
       "L": "La longueur des miroirs"
+    },
+    "RainbowPointSource": {
+      "N": "Le nombre de rayons",
+      "point1": "La source",
+      "angle": "L'angle d'émission"
     }
   }
 }

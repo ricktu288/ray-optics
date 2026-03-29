@@ -21,7 +21,7 @@
       "warningthesequenceof": "Atención: La secuencia de luz apareciendo no representa realmente la velocidad de la luz - solo la imagen final es significante."
     },
     "imagesFormedByTwoMirrors": {
-      "title": "Imágenes de Dos Espejos",
+      "title": "Imágenes de dos espejos",
       "description": "La simulación muestra imágenes formadas por dos espejos. La \"L\" verde es el objeto. Si el ángulo entre ambos espejos es \\(\\frac{360^\\circ}{n}\\), entonces \\(n-1\\) imágenes virtuales (las L's naranjas) se formarán. Puedes arrastrar el punto final del espejo para cambiar el ángulo entre ellos."
     },
     "parabolicMirror": {
@@ -60,18 +60,29 @@
       "description": "Esta simulación muestra la refracción y la reflexión interna en una superficie."
     },
     "hyperbolicLens": {
-      "title": "Lente hiperbólica"
+      "title": "Lente hiperbólica",
+      "thefocallengthofthis": "La distancia focal de esta lente esférica (considerando la aproximación paraxial) es:\nf=R/(n-1)=200/(1.5-1)=400",
+      "selectthishyperbolic": "(elige esta lente hiperbólica para ver su ecuación personalizada)"
     },
     "interrogationRoom": {
       "darkroom": "Cuarto oscuro",
-      "lamp": "Lámpara"
+      "lamp": "Lámpara",
+      "interrogationroom": "Sala de interrogatorio",
+      "observerseyeris": "Ojo del observador",
+      "suspectseyeris": "Ojo del sospechoso",
+      "thelampsreflection": "El reflejo de la lámpara",
+      "title": "Sala de interrogatorio",
+      "twowaymirror": "Espejo de dos vías"
     },
     "prisms": {
       "title": "Prismas"
     },
     "rainbows": {
       "title": "Arcoíris",
-      "sunlight": "Luz solar"
+      "sunlight": "Luz solar",
+      "raindrop": "Gota de lluvia",
+      "primaryrainbow": "Arcoíris primario",
+      "alexandersdarkband": "Banda oscura de Alejandro"
     },
     "minimumDeviationAngle": {
       "examplea": "Ejemplo A",
@@ -79,25 +90,34 @@
       "exampleb": "Ejemplo B",
       "dragtorotate": "Arrastre para rotar",
       "deviationangle": "Ángulo de desviación",
-      "incidenceangle": "Ángulo de incidencia"
+      "incidenceangle": "Ángulo de incidencia",
+      "dragtoadjustbeamwidt": "Arrastre para ajustar el ancho de los haces",
+      "usethebuiltinzoomtob": "Use el zoom integrado para una mejor interactividad con la simulación"
     },
     "mazeSolution": {
       "mazeexit": "Salida del laberinto",
-      "title": "Solución del puzle"
+      "title": "Solución del puzle",
+      "notethatthesimulatio": "Recuerda que el procesado de la simulación concluirá solo cuando\nel mensaje de procesado de la esquina inferior izquierda desaparezca."
     },
     "specularAndDiffuseReflection": {
       "title": "Reflexión especular y difusa",
       "diffuse": "Difusa"
     },
     "chaffCountermeasure": {
-      "radar": "Radar"
+      "radar": "Radar",
+      "plane": "Avión",
+      "title": "Contramedida chaff",
+      "description": "En esta simulación, podrás ver el efecto cualitativo que tiene una contramedida chaff en un radar (ignorando los efectos de difracción)."
     },
     "cameraObscura": {
-      "observer2": "Observador"
+      "observer2": "Observador",
+      "darkroom1": "Cuarto oscuro"
     },
     "blackCatBecomesWhite": {
       "eyes": "Ojos",
-      "dragtomovethebagouto": "Arrastre para sacar la bolsa del agua"
+      "dragtomovethebagouto": "Arrastre para sacar la bolsa del agua",
+      "lightfromthepaper": "Luz del papel",
+      "lightfromtheplastics": "Luz de la superficie de plástico"
     },
     "pairOfAxiconsMakingARainbowRing": {
       "ringaperture": "Apertura de anillo"
@@ -105,10 +125,15 @@
     "keplerianTelescope": {
       "realimage": "Imagen real",
       "thekepleriantelescop": "El telescopio kepleriano",
-      "eye": "ojo"
+      "eye": "ojo",
+      "lightfromstar": "Luz de una estrella",
+      "virtualimage": "Imagen virtual",
+      "title": "Telescopio kepleriano",
+      "description": "En esta simulación se describe el diagrama de rayos de un telescopio kepleriano."
     },
     "augustinFresnelsLighthouseOptics": {
-      "howitworks": "Cómo funciona"
+      "howitworks": "Cómo funciona",
+      "mirrorsorreflectorsc": "Los espejos o reflectores pueden redirigir haces con ángulos grandes, pero los reflectores de 1820 disipaban la mitad de la luz."
     },
     "opticsOfHumanEye": {
       "title": "Óptica del ojo humano",
@@ -117,16 +142,22 @@
     "monochromaticAberrations": {
       "sphericalaberration": "Aberración esférica",
       "screen": "Pantalla",
-      "title": "Aberraciones monocromáticas"
+      "title": "Aberraciones monocromáticas",
+      "commaaberration": "Aberración de coma"
     },
     "moduleExampleParameters": {
-      "title": "Ejemplo de módulo - Parámetros"
+      "title": "Ejemplo de módulo - Parámetros",
+      "thesizeofthistextosc": "El tamaño de este texto oscila en función del valor de theta."
     },
     "moduleExampleControlPoints": {
-      "hereisthemidpoint": "↙Aquí está el punto intermedio"
+      "hereisthemidpoint": "↙Aquí está el punto intermedio",
+      "title": "Ejemplo de módulo - Puntos de control",
+      "hereisthefirstdragga": "↙Este es el primer punto de control (arrastrable) del módulo",
+      "hereistheseconddragg": "↙Este es el segundo punto de control (arrastrable) del módulo"
     },
     "luneburgLens": {
-      "title": "Lente de Luneburg"
+      "title": "Lente de Luneburg",
+      "approximatedmultilay1": "Lente de Luneburg multicapa aproximada (puedes elegir y cambiar N, el número de capas)"
     },
     "aplanaticPoints": {
       "title": "Puntos aplanáticos",
@@ -154,6 +185,175 @@
     },
     "classicalCassegrainTelescopes": {
       "collimator": "Colimador"
+    },
+    "compoundMicroscope": {
+      "objective": "Objetivo"
+    },
+    "chromaticAberration": {
+      "title": "Aberración cromática",
+      "description": "En esta simulación, se mostrará la aberración cromática de una lente esférica. En ella, la luz blanca se forma al mezclar los colores rojo, naranja, amarillo, verde, cian, azul y violeta. La distancia focal de la luz roja es la más grande, mientras que la de la luz violeta es la más pequeña.",
+      "dragtoadjustbeamwidt1": "Arrastra para ajustar la anchura del haz"
+    },
+    "beamDirectors": {
+      "biprism": "Biprisma",
+      "fresnelbiprism": "Biprisma de Fresnel"
+    },
+    "apparentDepth": {
+      "title": "Profundidad aparente",
+      "observer": "Observador",
+      "observedimageorange": "Imagen observada (naranja)"
+    },
+    "virtualImageFormation": {
+      "object2": "Objeto",
+      "converginglensf1000u": "Lente convergente (F=1000 unidades)",
+      "virtualimagehighlyen": "Imagen virtual\nMucho mayor\nDerecha/Erguida",
+      "title": "Formación de imagen virtual",
+      "description": "En esta simulación, podrás ver cómo se forma una imagen virtual y qué características tiene, usando una lente convergente."
+    },
+    "theMirascope": {
+      "object1": "Objeto",
+      "realimage1": "Imagen real"
+    },
+    "reflect": {
+      "title": "Reflexión y refracción",
+      "description": "En esta simulación se muestra el fenómeno de reflexión y de refracción en una superficie."
+    },
+    "koehlerIllumination": {
+      "sample": "muestra",
+      "sampleisnowilluminat": "ahora, la muestra \nestá iluminada homogéneamente",
+      "title": "Iluminación Köhler"
+    },
+    "inferiorMirage": {
+      "airwithinferiormirag": "Aire (con espejismo inferior)",
+      "ground": "Tierra",
+      "airwithoutinferiormi": "Aire (sin espejismo inferior)",
+      "observerseyenottosca1": "Ojo del observador (no está a escala)",
+      "title": "Espejismo inferior",
+      "raysemittedreflected": "Rayos emitidos/reflejados\nde un objeto"
+    },
+    "rochesterCloak": {
+      "t8objects": "8 objetos",
+      "visibilityarea": "Área de visibilidad",
+      "object": "Objeto",
+      "partialinvisibilitya": "Área de invisibilidad parcial",
+      "title": "Capa de Rochester"
+    },
+    "seaMirage": {
+      "atmosphere": "Atmósfera",
+      "earthssurface": "Superficie de la Tierra",
+      "observer1": "Observador",
+      "vacuum": "Vacío",
+      "virtualimage1": "Imagen virtual",
+      "title": "Espejismo del mar",
+      "description": "En esta simulación cualitativa, podrás observar el efecto por el que un objeto que está más allá del horizonte puede verse como espejismo superior.",
+      "architecturealpine": "Arquitectura / Alpino"
+    },
+    "logarithmicSpiralLens": {
+      "dragtochangetheiniti": "Arrastra para cambiar\nla dirección inicial del rayo",
+      "title": "Camino del rayo en espiral logarítmica"
+    },
+    "chromaticDispersion": {
+      "dragheretorotatethep": "Arrastre aquí\npara rotar el prisma",
+      "title": "Dispersión cromática",
+      "dragheretoadjustbeam": "Arrastre aquí para\najustar anchura del haz"
+    },
+    "resonator": {
+      "flatmirror": "Espejo plano",
+      "sphericalconcavemirr": "Espejo cóncavo esférico",
+      "unstableresonator": "Resonador inestable",
+      "stableresonator": "Resonador estable",
+      "title": "Resonador plano-cóncavo"
+    },
+    "moduleExampleArraysAndConditionals": {
+      "thistextisshownonlyw": "Este texto solo aparece cuando n>5"
+    },
+    "moduleExampleVariables": {
+      "title": "Ejemplo de módulo - Variables"
+    },
+    "moduleExampleCustomEquation": {
+      "title": "Ejemplo de módulo - Ecuación personalizada",
+      "amirrorofshapeycos2p": "Un espejo con forma dada por y=cos(2 pi x + `phi`)"
+    },
+    "moduleExampleBasics": {
+      "thistextisnotinamodu": "Este texto no está en un módulo.",
+      "thistextisalsonotina": "Este texto tampoco está en un módulo.",
+      "thistextisinexamplem": "Este texto está en ExampleModule.",
+      "thistextisalsoinexam": "Este texto también está en ExampleModule."
+    },
+    "moduleExampleShapeParametrization": {
+      "alensdefinedbydr1r2": "Una lente definida por d, R_1, R_2"
+    },
+    "reflectingMonochromator": {
+      "exitslitmonochromati": "Ranura de salida\n\nLuz monocromática",
+      "title": "Monocromador reflectante",
+      "reflectingmonochroma": "Monocromador reflectante",
+      "description": "Esta simulación muestra un monocromador reflectante, que usa una red de difracción reflectante y una ranura en el foco para obtener intervalos de longitudes de onda muy pequeños a partir de la luz compuesta (luz blanca)."
+    },
+    "ganBasedLcdPixel": {
+      "liquidcrystal": "Cristal líquido",
+      "lightfilters": "Filtros de luz"
+    },
+    "distortionInWindowsAndBacksideMirrors": {
+      "window": "ventana"
+    },
+    "bendedPencil": {
+      "dielectricmaterial": "material dieléctrico",
+      "originalpencilgreen": "lápiz original (verde)",
+      "observerseye": "ojo del observador",
+      "ignoretheorangesquar": "¡Ignora los cuadrados naranjas!",
+      "title": "Lápiz doblado"
+    },
+    "brokenPencil": {
+      "title": "Lápiz roto"
+    },
+    "transverseAndLongitudinalMagnification": {
+      "title": "Aumento transversal y longitudinal"
+    },
+    "telescope": {
+      "lightfromstar1": "Luz de estrella 1"
+    },
+    "solarEclipses": {
+      "totaleclipse": "Eclipse total",
+      "title": "Eclipses solares"
+    },
+    "dichroicRbgSplitterAndCombiner": {
+      "lightsource": "Fuente de luz",
+      "dichroiccube": "Cubo dicroico"
+    },
+    "concaveMirrorWearableDisplay": {
+      "tft09display": "Pantalla TFT de 0,9\"",
+      "concavemirror": "espejo cóncavo",
+      "eye1": "ojo",
+      "nose": "nariz"
+    },
+    "branchedFlow": {
+      "title": "Flujo bifurcado"
+    },
+    "beamExpanders": {
+      "keplerianbeamexpande": "Expansor de haz kepleriano",
+      "gallileanbeamexpande": "Expansor de haz galileano",
+      "title": "Expansores de haz",
+      "inbothcasesthedistan": "En ambos casos, la distancia entre las lentes es igual a la suma de sus distancias focales"
+    },
+    "rayRelaying": {
+      "youcanselectanylenst": "Puedes elegir cualquier lente para ver y ajustar los parámetros de la matriz."
+    },
+    "simpleDoubleGaussLens": {
+      "description": "Esta es una demostración simple de una lente doble de Gauss."
+    },
+    "orientationsOfPlanoConvexLens": {
+      "title": "Orientaciones de la lente plano-convexa",
+      "description": "En esta simulación, se compararán las dos orientaciones de una lente plano-convexa que está enfocando un haz, destacándose la diferencia en los tamaños de las aberraciones esféricas."
+    },
+    "opticalCavity": {
+      "dragtomovetheidealmi": "Arrastra para mover\nel espejo ideal",
+      "concaveconvexresonat": "Resonador cóncavo-convexo",
+      "planoconcaveresonato": "Resonador plano-cóncavo"
+    },
+    "fresnelLens": {
+      "title": "Lente de Fresnel",
+      "description": "Esta simulación permite comparar una lente esférica y una lente de Fresnel. Una de las ventajas de la lente de Fresnel es evidente: funciona de manera similar a una lente esférica normal, pero ocupa mucho menos espacio (y, por lo tanto, es un dispositivo que pesa menos).",
+      "thisfresnellensismad": "Esta lente de Fresnel se ha fabricado a partir del vidrio semicircular mostrado a continuación.\nPuedes elegir la lente y ajustar el parámetro N_slice."
     }
   }
 }

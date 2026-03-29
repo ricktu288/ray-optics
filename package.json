@@ -13,7 +13,7 @@
     "bezier-js": "^6.1.4",
     "bootstrap": "5.1.3",
     "canvas2svg": "github:gliffy/canvas2svg",
-    "copy-webpack-plugin": "^12.0.2",
+    "copy-webpack-plugin": "^14.0.0",
     "css-loader": "^7.1.2",
     "evaluatex": "^2.2.0",
     "file-loader": "^6.2.0",
@@ -41,14 +41,14 @@
     "@inquirer/prompts": "^7.1.0",
     "bootstrap3": "npm:bootstrap@^3.3.7",
     "canvas": "^2.11.2",
-    "handlebars": "^4.7.8",
+    "handlebars": "^4.7.9",
     "inquirer": "^12.1.0",
     "jest": "^29.7.0",
     "jsdoc": "^4.0.4",
     "marked": "^15.0.3",
     "mathjax": "^3.2.2",
     "sharp": "^0.33.5",
-    "simple-git": "^3.27.0"
+    "simple-git": "^3.32.3"
   },
   "scripts": {
     "test": "npm run test:sceneObjs && npm run test:scenes",
