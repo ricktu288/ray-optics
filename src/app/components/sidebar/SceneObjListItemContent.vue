@@ -46,7 +46,7 @@
           @keydown.enter.prevent="commitAndBlur"
           @keydown.stop
         >
-        <div class="obj-list-item-description">{{ objDescription }}</div>
+        <div class="obj-list-item-description" v-html="objDescription"></div>
       </div>
       <button
         type="button"

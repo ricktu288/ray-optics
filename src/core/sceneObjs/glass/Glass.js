@@ -51,7 +51,7 @@ class Glass extends BaseGlass {
     return [
       { key: 'path', type: 'array', label: i18next.t('simulator:sceneObjs.Glass.vertices'),
         itemSchema: [
-          { key: '', type: 'point', label: '' },
+          { key: '', type: 'point', label: i18next.t('simulator:sceneObjs.Glass.vertex') },
           { key: 'arc', type: 'boolean', label: i18next.t('simulator:sceneObjs.Glass.arc') },
         ],
       },

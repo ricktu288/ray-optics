@@ -17,6 +17,7 @@
 import BaseSceneObj from '../BaseSceneObj.js';
 import i18next from 'i18next';
 import geometry from '../../geometry.js';
+import escapeHtml from 'escape-html';
 
 /**
  * Text label
@@ -54,7 +55,7 @@ class TextLabel extends BaseSceneObj {
     const baseTitle = i18next.t('main:tools.TextLabel.title');
     if (!detailed) return baseTitle;
     const text = objData?.text ?? '';
-    return text ? i18next.t('main:meta.colon', { name: baseTitle, value: text }) : baseTitle;
+    return text ? i18next.t('main:meta.colon', { name: baseTitle, value: escapeHtml(text) }) : baseTitle;
   }
 
   static getPropertySchema(objData, scene) {

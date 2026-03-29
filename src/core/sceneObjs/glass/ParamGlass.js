@@ -19,6 +19,7 @@ import ParamCurveObjMixin from '../ParamCurveObjMixin.js';
 import i18next from 'i18next';
 import Simulator from '../../Simulator.js';
 import geometry from '../../geometry.js';
+import escapeHtml from 'escape-html';
 
 /**
  * Glass with shape defined by parametric curve pieces.
@@ -60,8 +61,8 @@ class ParamGlass extends ParamCurveObjMixin(BaseGlass) {
       return i18next.t('main:meta.parentheses', { main: base, sub: i18next.t('main:tools.ParamGlass.title') });
     }
     const pieces = objData?.pieces ?? [];
-    const parts = pieces.map(p => '(' + (p.eqnX ?? '') + ',' + (p.eqnY ?? '') + ')').filter(c => c !== '(,)');
-    return parts.length ? i18next.t('main:meta.colon', { name: base, value: parts.join(', ') }) : base;
+    const parts = pieces.map(p => '(' + escapeHtml(p.eqnX ?? '') + ',' + escapeHtml(p.eqnY ?? '') + ')').filter(c => c !== '(,)');
+    return parts.length ? i18next.t('main:meta.colon', { name: base, value: '<span style="font-family: monospace">' + parts.join(', ') + '</span>' }) : base;
   }
 
   static getPropertySchema(objData, scene) {

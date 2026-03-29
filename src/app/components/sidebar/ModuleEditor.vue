@@ -67,9 +67,8 @@
         class="module-editor-move-in-btn is-highlighted"
         type="button"
         @click.stop="moveSelectedObjIn"
-      >
-        {{ $t('simulator:sidebar.moduleEditor.moveIntoModule', { name: selectedMoveInLabel }) }}
-      </button>
+        v-html="$t('simulator:sidebar.moduleEditor.moveIntoModule', { name: selectedMoveInLabel })"
+      ></button>
     </div>
     <div class="module-editor-footer">
       <button type="button" class="module-editor-btn" @click="onRenameClick">
@@ -85,6 +84,7 @@
 <script>
 import { computed, onMounted, onUnmounted, ref, toRef, watch } from 'vue'
 import i18next from 'i18next'
+import escapeHtml from 'escape-html'
 import { useSceneStore } from '../../store/scene'
 import { app } from '../../services/app'
 import SidebarItemList from './SidebarItemList.vue'
@@ -181,7 +181,7 @@ export default {
       const obj = selectedMoveInObj.value
       const fallback = i18next.t('simulator:sidebar.objectList.unknownType')
       if (!obj) return fallback
-      if (obj.name) return obj.name
+      if (obj.name) return escapeHtml(obj.name)
       const Ctor = obj?.constructor
       const scene = app.scene
       if (Ctor && scene && typeof Ctor.getDescription === 'function') {

@@ -62,7 +62,7 @@ class DiffractionGrating extends LineObjMixin(BaseSceneObj) {
         info: i18next.t('simulator:sceneObjs.DiffractionGrating.customBrightnessInfo') },
       { key: 'brightnesses', type: 'array', label: i18next.t('simulator:sceneObjs.DiffractionGrating.brightnesses'),
         itemSchema: [
-          { key: '', type: 'number', label: '' },
+          { key: '', type: 'number', label: i18next.t('simulator:sceneObjs.DiffractionGrating.brightness') },
         ],
       },
       { key: 'slitRatio', type: 'number', label: i18next.t('simulator:sceneObjs.DiffractionGrating.slitRatio') },

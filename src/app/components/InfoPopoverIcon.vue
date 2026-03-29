@@ -63,9 +63,11 @@ export default {
   setup(props) {
     const iconEl = ref(null)
 
+    const renderBackticks = (text) => text.replace(/`([^`]+)`/g, '<code>$1</code>')
+
     const popoverOptions = computed(() => ({
       title: props.title || '',
-      content: props.content,
+      content: props.html ? renderBackticks(props.content) : props.content,
       trigger: props.trigger,
       placement: props.placement,
       html: props.html,

@@ -15,6 +15,7 @@
     "canvas2svg": "github:gliffy/canvas2svg",
     "copy-webpack-plugin": "^14.0.0",
     "css-loader": "^7.1.2",
+    "escape-html": "^1.0.3",
     "evaluatex": "^2.2.0",
     "file-loader": "^6.2.0",
     "file-saver": "^2.0.5",

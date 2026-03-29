@@ -47,7 +47,7 @@
           @keydown.stop
         >
         <div class="obj-list-item-description-row">
-          <span class="obj-list-item-description">{{ objDescription }}</span>
+          <span class="obj-list-item-description" v-html="objDescription"></span>
           <span v-if="!expanded && (hasForBadge || hasIfBadge)" class="obj-list-item-badges">
             <span v-if="hasForBadge" class="obj-list-item-badge">{{ $t('simulator:sidebar.objectList.arrayAndConditional.arrayBadge') }}</span>
             <span v-if="hasIfBadge" class="obj-list-item-badge">{{ $t('simulator:sidebar.objectList.arrayAndConditional.conditionalBadge') }}</span>
@@ -182,7 +182,7 @@ export default {
 
     const templateLockPopoverOptions = computed(() => ({
       title: '',
-      content: i18next.t('simulator:sidebar.objectList.templateLockInfo'),
+      content: i18next.t('simulator:sidebar.objectList.templateLockInfo').replace(/`([^`]+)`/g, '<code>$1</code>'),
       trigger: 'click',
       placement: 'bottom',
       html: true

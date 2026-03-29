@@ -19,6 +19,7 @@ import geometry from '../../geometry.js';
 import i18next from 'i18next';
 import * as sceneObjs from '../../sceneObjs.js';
 import * as math from 'mathjs';
+import escapeHtml from 'escape-html';
 
 /**
  * @typedef {Object} ModuleDef
@@ -61,7 +62,7 @@ class ModuleObj extends BaseSceneObj {
 
     // Check if the module definition exists
     if (!this.moduleDef) {
-      this.scene.error = i18next.t('simulator:generalErrors.unknownModule', { module: this.module }); // Here the error is stored in the scene, not the object, as it is logically similar to an unknown object type in the scene.
+      this.scene.error = i18next.t('simulator:generalErrors.unknownModule', { module: escapeHtml(this.module) }); // Here the error is stored in the scene, not the object, as it is logically similar to an unknown object type in the scene.
       
       // Create an empty module definition
       this.moduleDef = {
@@ -75,7 +76,7 @@ class ModuleObj extends BaseSceneObj {
     const knownModuleKeys = ['importedFromBeta', 'numPoints', 'params', 'vars', 'objs', 'maxLoopLength'];
     for (const key in this.moduleDef) {
       if (!knownModuleKeys.includes(key)) {
-        this.scene.error = i18next.t('simulator:generalErrors.unknownModuleKey', { key, module: this.module }); // Here the error is stored in the scene, not the object, to prevent further errors occurring in the module from replacing it, and also because this error likely indicates an incompatible scene version.
+        this.scene.error = i18next.t('simulator:generalErrors.unknownModuleKey', { key: escapeHtml(key), module: escapeHtml(this.module) }); // Here the error is stored in the scene, not the object, to prevent further errors occurring in the module from replacing it, and also because this error likely indicates an incompatible scene version.
       }
     }
 
@@ -104,35 +105,33 @@ class ModuleObj extends BaseSceneObj {
   static getDescription(objData, scene, detailed = false) {
     const baseLabel = i18next.t('simulator:sceneObjs.ModuleObj.module');
     const moduleName = objData?.module ?? '';
-    return moduleName ? i18next.t('main:meta.colon', { name: baseLabel, value: moduleName }) : baseLabel;
+    return moduleName ? i18next.t('main:meta.colon', { name: i18next.t('simulator:sceneObjs.ModuleObj.module'), value: '<span style="font-family: monospace; padding-right:2px">' + escapeHtml(moduleName) + '</span>' }) : baseLabel;
   }
 
   static getPropertySchema(objData, scene) {
     const moduleDef = scene?.modules?.[objData.module];
-    const schema = [
-      { key: 'module', type: 'text', label: i18next.t('simulator:sceneObjs.ModuleObj.module'), readOnly: true },
-    ];
+    const schema = [];
     if (moduleDef) {
       for (let i = 0; i < (moduleDef.numPoints || 0); i++) {
         schema.push({ key: `points.${i}`, type: 'point', label: i18next.t('simulator:sceneObjs.common.pointN', { i: i + 1 }) });
       }
       for (const param of moduleDef.params || []) {
         const name = param.split('=')[0].trim();
-        schema.push({ key: `params.${name}`, type: 'number', label: name });
+        schema.push({ key: `params.${name}`, type: 'number', label: '<span style="font-family: monospace;">' + escapeHtml(name) + '</span>' });
       }
     }
     return schema;
   }
 
   populateObjBar(objBar) {
-    objBar.setTitle(i18next.t('main:meta.colon', { name: i18next.t('simulator:sceneObjs.ModuleObj.module'), value: '<span style="font-family: monospace; padding-right:2px">' + this.module + '</span>' }));
+    objBar.setTitle(i18next.t('main:meta.colon', { name: i18next.t('simulator:sceneObjs.ModuleObj.module'), value: '<span style="font-family: monospace; padding-right:2px">' + escapeHtml(this.module) + '</span>' }));
 
     if (this.notDone) return;
 
     try {
       for (let param of this.moduleDef.params) {
         const parsed = this.parseVariableRange(param, {});
-        objBar.createNumber('<span style="font-family: monospace;">' + parsed.name + '</span>', parsed.start, parsed.end, parsed.step, this.params[parsed.name], function (obj, value) {
+        objBar.createNumber('<span style="font-family: monospace;">' + escapeHtml(parsed.name) + '</span>', parsed.start, parsed.end, parsed.step, this.params[parsed.name], function (obj, value) {
           obj.params[parsed.name] = value;
           obj.expandObjs();
         });

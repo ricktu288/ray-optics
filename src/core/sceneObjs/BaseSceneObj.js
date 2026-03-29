@@ -166,7 +166,7 @@ class BaseSceneObj {
    * @param {Object} objData - The raw JSON data of the object (or template).
    * @param {Scene|null} scene - The scene instance. Provides access to scene-level definitions (e.g. `scene.modules` for ModuleObj). May be null if not available.
    * @param {boolean} [detailed=false] - If true, include more contextual information (e.g. for TextLabel, the actual text content; for ModuleObj, the module name is always shown).
-   * @returns {string} A plain-text description. For most objects when not detailed, this should match what objBar.setTitle would show conceptually (but as plain text, not HTML).
+   * @returns {string} An HTML description. Any dynamic user content must be escaped with `escapeHtml` before interpolation.
    */
   static getDescription(objData, scene, detailed = false) {
     return objData?.type || '';

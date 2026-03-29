@@ -20,6 +20,7 @@ import i18next from 'i18next';
 import Simulator from '../../Simulator.js';
 import geometry from '../../geometry.js';
 import { evaluateLatex } from '../../equation.js';
+import escapeHtml from 'escape-html';
 
 /**
  * Mirror with shape defined by a custom equation.
@@ -58,7 +59,7 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
       return i18next.t('main:meta.parentheses', { main: base, sub: i18next.t('main:tools.CustomMirror.title') });
     }
     const eqn = objData?.eqn ?? '';
-    return eqn ? i18next.t('main:meta.colon', { name: base, value: eqn }) : base;
+    return eqn ? i18next.t('main:meta.colon', { name: base, value: '<span style="font-family: monospace">' + escapeHtml(eqn) + '</span>' }) : base;
   }
 
   static getPropertySchema(objData, scene) {
