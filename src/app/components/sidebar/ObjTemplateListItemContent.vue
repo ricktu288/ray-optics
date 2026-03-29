@@ -49,8 +49,8 @@
         <div class="obj-list-item-description-row">
           <span class="obj-list-item-description">{{ objDescription }}</span>
           <span v-if="!expanded && (hasForBadge || hasIfBadge)" class="obj-list-item-badges">
-            <span v-if="hasForBadge" class="obj-list-item-badge">{{ $t('simulator:sidebar.objectList.arrayBadge') }}</span>
-            <span v-if="hasIfBadge" class="obj-list-item-badge">{{ $t('simulator:sidebar.objectList.conditionalBadge') }}</span>
+            <span v-if="hasForBadge" class="obj-list-item-badge">{{ $t('simulator:sidebar.objectList.arrayAndConditional.arrayBadge') }}</span>
+            <span v-if="hasIfBadge" class="obj-list-item-badge">{{ $t('simulator:sidebar.objectList.arrayAndConditional.conditionalBadge') }}</span>
           </span>
         </div>
       </div>
@@ -78,6 +78,7 @@
           :is-template="true"
           base-path=""
           :serializable-defaults="serializableDefaults"
+          :module-name="moduleName"
           @update:obj-data="onObjDataUpdate"
         />
       </div>
@@ -109,6 +110,10 @@ export default {
     index: {
       type: Number,
       required: true
+    },
+    moduleName: {
+      type: String,
+      default: ''
     }
   },
   emits: ['update:name', 'update:objData', 'blur'],

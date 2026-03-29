@@ -96,7 +96,7 @@
       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
         <path d="M8 4a.5.5 0 0 1 .5.5V7.5H11.5a.5.5 0 0 1 0 1H8.5V11.5a.5.5 0 0 1-1 0V8.5H4.5a.5.5 0 0 1 0-1H7.5V4.5A.5.5 0 0 1 8 4z"/>
       </svg>
-      <span>New item</span>
+      <span>{{ addLabel }}</span>
     </button>
   </div>
 </template>
@@ -124,6 +124,10 @@ export default {
     showAddButton: {
       type: Boolean,
       default: true
+    },
+    addLabel: {
+      type: String,
+      default: ''
     }
   },
   emits: ['update:selectedIds', 'remove', 'duplicate', 'reorder', 'create', 'selection-change', 'hover', 'select'],
@@ -404,7 +408,7 @@ export default {
 }
 
 .sidebar-item-list-row.is-selected {
-  background: rgba(86, 219, 240, 0.2);
+  background: rgba(86, 219, 240, 0.15);
 }
 
 .sidebar-item-list-row.is-drop-before::before,
@@ -536,8 +540,9 @@ export default {
   cursor: pointer;
 }
 
-.sidebar-item-list-row:hover .sidebar-item-control,
-.sidebar-item-list-row:hover .sidebar-item-checkbox {
+.sidebar-item-list-row:hover > .sidebar-item-list-left > .sidebar-item-control,
+.sidebar-item-list-row:hover > .sidebar-item-list-left > .sidebar-item-checkbox,
+.sidebar-item-list-row:hover > .sidebar-item-list-actions > .sidebar-item-action {
   opacity: 1;
   pointer-events: auto;
 }

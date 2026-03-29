@@ -16,75 +16,189 @@
 
 <template>
   <div class="property-list">
+    <!-- Module for/if: shown before properties, outside the vertical line -->
+    <div v-if="canShowForIf && showForIf" class="for-if-box">
+        <div class="property-list-item">
+          <PropertyControlLabel
+            :label="$t('simulator:sidebar.objectList.arrayAndConditional.repeatFor')"
+            :info="$t('simulator:sidebar.objectList.arrayAndConditional.info')"
+          />
+          <div class="property-list-array-body">
+            <SidebarItemList
+              :items="forDrafts"
+              :show-add-button="true"
+              :add-label="$t('simulator:sidebar.objectList.arrayAndConditional.newLoopVariable')"
+              @remove="(item, index) => onForLoopRemove(index)"
+              @duplicate="(item, index) => onForLoopDuplicate(index)"
+              @reorder="onForLoopReorder"
+              @create="onForLoopCreate"
+            >
+              <template #content="{ item, index }">
+                <div class="for-loop-item" @focusout="onForItemFocusOut">
+                  <input
+                    class="for-loop-input"
+                    :value="item.name"
+                    :style="{ width: Math.max(item.name.length, 1) + 'ch' }"
+                    @keydown.stop
+                    @keydown.enter="commitForDrafts"
+                    @input="(e) => onForFieldInput(index, 'name', e.target.value)"
+                  />
+                  <span class="for-loop-keyword">{{ $t('simulator:sidebar.objectList.arrayAndConditional.forFrom') }}</span>
+                  <input
+                    class="for-loop-input"
+                    :value="item.start"
+                    :style="{ width: Math.max(item.start.length, 1) + 'ch' }"
+                    @keydown.stop
+                    @keydown.enter="commitForDrafts"
+                    @input="(e) => onForFieldInput(index, 'start', e.target.value)"
+                  />
+                  <span class="for-loop-keyword">{{ $t('simulator:sidebar.objectList.arrayAndConditional.forTo') }}</span>
+                  <input
+                    class="for-loop-input"
+                    :value="item.end"
+                    :style="{ width: Math.max(item.end.length, 1) + 'ch' }"
+                    @keydown.stop
+                    @keydown.enter="commitForDrafts"
+                    @input="(e) => onForFieldInput(index, 'end', e.target.value)"
+                  />
+                  <span class="for-loop-keyword">{{ $t('simulator:sidebar.objectList.arrayAndConditional.forStep') }}</span>
+                  <input
+                    class="for-loop-input"
+                    :value="item.step"
+                    :style="{ width: Math.max(item.step.length, 1) + 'ch' }"
+                    @keydown.stop
+                    @keydown.enter="commitForDrafts"
+                    @input="(e) => onForFieldInput(index, 'step', e.target.value)"
+                  />
+                </div>
+              </template>
+            </SidebarItemList>
+          </div>
+        </div>
+        <div class="property-list-item">
+          <BooleanPropertyControl
+            :label="$t('simulator:sidebar.objectList.arrayAndConditional.withCondition')"
+            :obj-data="conditionObjData"
+            key-path="__if"
+            :default="true"
+            :is-template="true"
+            :module-name="moduleName"
+            @update:value="onConditionUpdate"
+          />
+        </div>
+      </div>
     <TransitionGroup name="property-drawer" tag="div" class="property-list-items">
-      <!-- Module for/if: shown at beginning when in template and not primitive array -->
-      <template v-if="canShowForIf && showForIf">
-        <div class="property-list-item" key="for-if-for">
-          <span class="property-list-item-label">for</span>
-          <div class="property-list-item-editor">
-            <input
-              type="text"
-              class="property-list-input"
-              :value="getForIfValueString('for')"
-              @keydown.stop
-              @input="(e) => onForIfInput('for', e.target.value)"
-            >
-          </div>
-        </div>
-        <div class="property-list-item" key="for-if-if">
-          <span class="property-list-item-label">if</span>
-          <div class="property-list-item-editor">
-            <input
-              type="text"
-              class="property-list-input"
-              :value="getForIfValueString('if')"
-              @keydown.stop
-              @input="(e) => onForIfInput('if', e.target.value)"
-            >
-          </div>
-        </div>
-      </template>
       <div
         v-for="(descriptor, idx) in visibleProperties"
         :key="fullPath(descriptor) || `prop-${idx}`"
         class="property-list-item"
       >
-        <span class="property-list-item-label" v-html="descriptor.label || descriptor.key"></span>
-        <div class="property-list-item-editor">
-          <!-- Non-point, non-array: text box with JSON.stringify value -->
-          <template v-if="descriptor.type !== 'point' && descriptor.type !== 'array'">
-            <input
-              type="text"
-              class="property-list-input"
-              :value="getValueString(descriptor)"
-              @keydown.stop
-              @input="(e) => onValueInput(descriptor, e.target.value)"
-            >
-          </template>
-          <!-- Point: two text boxes for x and y -->
-          <template v-else-if="descriptor.type === 'point'">
-            <input
-              type="text"
-              class="property-list-input property-list-input--coord"
-              :placeholder="fullPath(descriptor) + '.x'"
-              :value="getPointCoord(descriptor, 'x')"
-              @keydown.stop
-              @input="(e) => onPointCoordInput(descriptor, 'x', e.target.value)"
-            >
-            <input
-              type="text"
-              class="property-list-input property-list-input--coord"
-              :placeholder="fullPath(descriptor) + '.y'"
-              :value="getPointCoord(descriptor, 'y')"
-              @keydown.stop
-              @input="(e) => onPointCoordInput(descriptor, 'y', e.target.value)"
-            >
-          </template>
-          <!-- Array: SidebarItemList with recursive PropertyList -->
-          <template v-else-if="descriptor.type === 'array' && Array.isArray(descriptor.itemSchema)">
+        <!-- Number: component handles its own label -->
+        <template v-if="descriptor.type === 'number'">
+          <NumberPropertyControl
+            :label="descriptor.label || descriptor.key"
+            :info="descriptor.info || ''"
+            :obj-data="objData"
+            :key-path="fullPath(descriptor)"
+            :default="getDefaultValue(descriptor)"
+            :is-template="isTemplate"
+            :module-name="moduleName"
+            @update:value="(v) => onPropertyUpdate(descriptor, v)"
+          />
+        </template>
+        <!-- Boolean: component handles its own label -->
+        <template v-else-if="descriptor.type === 'boolean'">
+          <BooleanPropertyControl
+            :label="descriptor.label || descriptor.key"
+            :info="descriptor.info || ''"
+            :obj-data="objData"
+            :key-path="fullPath(descriptor)"
+            :default="getDefaultValue(descriptor)"
+            :is-template="isTemplate"
+            :module-name="moduleName"
+            @update:value="(v) => onPropertyUpdate(descriptor, v)"
+          />
+        </template>
+        <!-- Dropdown: component handles its own label -->
+        <template v-else-if="descriptor.type === 'dropdown'">
+          <DropdownPropertyControl
+            :label="descriptor.label || descriptor.key"
+            :info="descriptor.info || ''"
+            :obj-data="objData"
+            :key-path="fullPath(descriptor)"
+            :options="descriptor.options || {}"
+            :default="getDefaultValue(descriptor)"
+            :is-template="isTemplate"
+            :module-name="moduleName"
+            @update:value="(v) => onPropertyUpdate(descriptor, v)"
+          />
+        </template>
+        <!-- Text: component handles its own label -->
+        <template v-else-if="descriptor.type === 'text'">
+          <TextPropertyControl
+            :label="descriptor.label || descriptor.key"
+            :info="descriptor.info || ''"
+            :obj-data="objData"
+            :key-path="fullPath(descriptor)"
+            :default="getDefaultValue(descriptor)"
+            :read-only="!!descriptor.readOnly"
+            :is-template="isTemplate"
+            :module-name="moduleName"
+            @update:value="(v) => onPropertyUpdate(descriptor, v)"
+          />
+        </template>
+        <!-- Point: component handles its own label -->
+        <template v-else-if="descriptor.type === 'point'">
+          <PointPropertyControl
+            :label="descriptor.label || descriptor.key"
+            :info="descriptor.info || ''"
+            :obj-data="objData"
+            :key-path="fullPath(descriptor)"
+            :default="getDefaultValue(descriptor)"
+            :is-template="isTemplate"
+            :module-name="moduleName"
+            @update:value="(v) => onPropertyUpdate(descriptor, v)"
+          />
+        </template>
+        <!-- Style: component handles its own label -->
+        <template v-else-if="descriptor.type === 'style'">
+          <StylePropertyControl
+            :label="descriptor.label || descriptor.key"
+            :info="descriptor.info || ''"
+            :obj-data="objData"
+            :key-path="fullPath(descriptor)"
+            :default="getDefaultValue(descriptor)"
+            :style-kind="descriptor.styleKind || 'stroke'"
+            :is-template="isTemplate"
+            :module-name="moduleName"
+            @update:value="(v) => onPropertyUpdate(descriptor, v)"
+          />
+        </template>
+        <!-- Equation: component handles its own label -->
+        <template v-else-if="descriptor.type === 'equation'">
+          <EquationPropertyControl
+            :label="descriptor.label || descriptor.key"
+            :info="descriptor.info || ''"
+            :obj-data="objData"
+            :key-path="fullPath(descriptor)"
+            :default="getDefaultValue(descriptor)"
+            :is-template="isTemplate"
+            :module-name="moduleName"
+            @update:value="(v) => onPropertyUpdate(descriptor, v)"
+          />
+        </template>
+        <!-- Array: PropertyControlLabel + indented SidebarItemList -->
+        <template v-else-if="descriptor.type === 'array' && Array.isArray(descriptor.itemSchema)">
+          <PropertyControlLabel
+            :label="descriptor.label || descriptor.key"
+            :info="descriptor.info || ''"
+            :key-paths="[fullPath(descriptor)]"
+          />
+          <div class="property-list-array-body">
             <SidebarItemList
               :items="getArrayItems(descriptor)"
               :show-add-button="true"
+              :add-label="$t('simulator:sidebar.objectList.newItem')"
               @remove="(item, index) => onArrayRemove(descriptor, index)"
               @duplicate="(item, index) => onArrayDuplicate(descriptor, index)"
               @reorder="onArrayReorder(descriptor, $event)"
@@ -97,15 +211,25 @@
                   :is-template="isTemplate"
                   :base-path="fullPath(descriptor) + '.' + index"
                   :serializable-defaults="serializableDefaults"
+                  :module-name="moduleName"
                   @update:obj-data="onNestedUpdate"
                 />
               </template>
             </SidebarItemList>
-          </template>
-          <template v-else>
-            <span class="property-list-item-value">({{ descriptor.type }})</span>
-          </template>
+          </div>
+        </template>
+        <template v-else>
+        <span class="property-list-item-label" v-html="descriptor.label || descriptor.key"></span>
+        <div class="property-list-item-editor">
+            <input
+              type="text"
+              class="property-list-input"
+              :value="getValueString(descriptor)"
+              @keydown.stop
+              @input="(e) => onValueInput(descriptor, e.target.value)"
+            >
         </div>
+        </template>
       </div>
     </TransitionGroup>
     <div v-if="(schema && schema.length > 0 && !basePath) || showForIfToggle" class="property-list-visibility-row">
@@ -123,25 +247,71 @@
         class="property-list-visibility-link"
         @click="onToggleForIf"
       >
-        {{ showForIf ? $t('simulator:sidebar.objectList.removeArrayAndConditional') : $t('simulator:sidebar.objectList.createArrayAndConditional') }}
+        {{ showForIf ? $t('simulator:sidebar.objectList.arrayAndConditional.remove') : $t('simulator:sidebar.objectList.arrayAndConditional.create') }}
       </button>
     </div>
   </div>
 </template>
 
 <script>
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { isNonDefault, getByKeyPath, setByKeyPath, getForIfDefault } from '../../../core/propertyUtils/keyPath.js'
 import SidebarItemList from './SidebarItemList.vue'
+import NumberPropertyControl from './controls/NumberPropertyControl.vue'
+import BooleanPropertyControl from './controls/BooleanPropertyControl.vue'
+import DropdownPropertyControl from './controls/DropdownPropertyControl.vue'
+import TextPropertyControl from './controls/TextPropertyControl.vue'
+import PointPropertyControl from './controls/PointPropertyControl.vue'
+import StylePropertyControl from './controls/StylePropertyControl.vue'
+import EquationPropertyControl from './controls/EquationPropertyControl.vue'
+import PropertyControlLabel from './controls/PropertyControlLabel.vue'
 
 function isPrimitiveArrayItem(schema) {
   return schema?.length === 1 &&
     (schema[0]?.type === 'number' || schema[0]?.type === 'text')
 }
 
+function parseForString(str) {
+  try {
+    const parts = str.split('=')
+    const name = parts[0].trim()
+    const parts2 = (parts[1] || '').split(':')
+    return {
+      name,
+      start: parts2[0]?.trim() || '',
+      step: parts2[1]?.trim() || '',
+      end: parts2[2]?.trim() || ''
+    }
+  } catch {
+    return { name: '', start: '', step: '', end: '' }
+  }
+}
+
+function formatForString(item) {
+  return `${item.name}=${item.start}:${item.step}:${item.end}`
+}
+
+function normalizeForValue(value) {
+  if (!value || (Array.isArray(value) && value.length === 0)) return []
+  if (typeof value === 'string') return [value]
+  if (Array.isArray(value)) return value.filter(s => typeof s === 'string')
+  return []
+}
+
+function getNextVarName(existingNames) {
+  for (const name of ['i', 'j', 'k']) {
+    if (!existingNames.includes(name)) return name
+  }
+  for (let c = 97; c <= 122; c++) {
+    const name = String.fromCharCode(c)
+    if (!existingNames.includes(name)) return name
+  }
+  return 'x'
+}
+
 export default {
   name: 'PropertyList',
-  components: { SidebarItemList },
+  components: { SidebarItemList, NumberPropertyControl, BooleanPropertyControl, DropdownPropertyControl, TextPropertyControl, PointPropertyControl, StylePropertyControl, EquationPropertyControl, PropertyControlLabel },
   emits: ['update:objData'],
   props: {
     schema: {
@@ -163,6 +333,10 @@ export default {
     serializableDefaults: {
       type: Object,
       default: () => ({})
+    },
+    moduleName: {
+      type: String,
+      default: ''
     }
   },
   setup(props, { emit }) {
@@ -214,29 +388,6 @@ export default {
 
     const getForIfValue = (key) => getByKeyPath(props.objData, forIfPath(key))
 
-    const getForIfValueString = (key) => {
-      const v = getForIfValue(key)
-      if (v === undefined) return ''
-      try {
-        return JSON.stringify(v)
-      } catch {
-        return String(v)
-      }
-    }
-
-    const onForIfInput = (key, raw) => {
-      const path = forIfPath(key)
-      let value
-      try {
-        value = JSON.parse(raw)
-      } catch {
-        value = raw
-      }
-      const next = JSON.parse(JSON.stringify(props.objData || {}))
-      setByKeyPath(next, path, value, props.serializableDefaults)
-      emit('update:objData', next)
-    }
-
     const onToggleForIf = () => {
       if (showForIf.value) {
         showForIf.value = false
@@ -247,6 +398,89 @@ export default {
       } else {
         showForIf.value = true
       }
+    }
+
+    // --- For loop drafts ---
+    const forDrafts = ref([])
+    const currentForValue = computed(() => getForIfValue('for'))
+
+    watch(currentForValue, (forValue) => {
+      forDrafts.value = normalizeForValue(forValue).map(parseForString)
+    }, { immediate: true, deep: true })
+
+    const onForFieldInput = (index, field, value) => {
+      if (forDrafts.value[index]) {
+        forDrafts.value[index][field] = value
+      }
+    }
+
+    const commitForDrafts = () => {
+      const strings = forDrafts.value.map(formatForString)
+      let value
+      if (strings.length === 0) {
+        value = []
+      } else if (strings.length === 1) {
+        value = strings[0]
+      } else {
+        value = strings
+      }
+      applyUpdate(forIfPath('for'), value)
+    }
+
+    const onForItemFocusOut = (event) => {
+      const container = event.currentTarget
+      if (container && !container.contains(event.relatedTarget)) {
+        commitForDrafts()
+      }
+    }
+
+    const onForLoopCreate = () => {
+      const existingNames = forDrafts.value.map(d => d.name)
+      const name = getNextVarName(existingNames)
+      forDrafts.value = [...forDrafts.value, { name, start: '1', step: '1', end: '5' }]
+      commitForDrafts()
+    }
+
+    const onForLoopRemove = (index) => {
+      forDrafts.value = forDrafts.value.filter((_, i) => i !== index)
+      commitForDrafts()
+    }
+
+    const onForLoopDuplicate = (index) => {
+      const item = { ...forDrafts.value[index] }
+      const next = [...forDrafts.value]
+      next.splice(index + 1, 0, item)
+      forDrafts.value = next
+      commitForDrafts()
+    }
+
+    const onForLoopReorder = ({ fromIndex, toIndex }) => {
+      const next = [...forDrafts.value]
+      const [moved] = next.splice(fromIndex, 1)
+      next.splice(toIndex, 0, moved)
+      forDrafts.value = next
+      commitForDrafts()
+    }
+
+    // --- Condition (if) adapter for BooleanPropertyControl ---
+    const conditionObjData = computed(() => {
+      const v = getForIfValue('if')
+      let displayed = v
+      if (typeof v === 'string' && !v.startsWith('`')) {
+        displayed = '`' + v + '`'
+      }
+      return { __if: displayed }
+    })
+
+    const onConditionUpdate = (value) => {
+      if (value === undefined) {
+        applyUpdate(forIfPath('if'), true)
+        return
+      }
+      if (typeof value === 'string' && value.startsWith('`') && value.endsWith('`')) {
+        value = value.slice(1, -1)
+      }
+      applyUpdate(forIfPath('if'), value)
     }
 
     const visibleProperties = computed(() => {
@@ -271,6 +505,15 @@ export default {
       return getByKeyPath(props.objData, path, props.serializableDefaults)
     }
 
+    const getDefaultValue = (descriptor) => {
+      const path = fullPath(descriptor)
+      return getByKeyPath(props.serializableDefaults, path)
+    }
+
+    const onPropertyUpdate = (descriptor, value) => {
+      applyUpdate(fullPath(descriptor), value)
+    }
+
     const getValueString = (descriptor) => {
       const v = getValue(descriptor)
       if (v === undefined) return ''
@@ -279,14 +522,6 @@ export default {
       } catch {
         return String(v)
       }
-    }
-
-    const getPointCoord = (descriptor, coord) => {
-      const base = fullPath(descriptor)
-      const coordPath = base ? `${base}.${coord}` : coord
-      const v = getByKeyPath(props.objData, coordPath, props.serializableDefaults)
-      if (v === undefined) return ''
-      return typeof v === 'string' ? v : String(v)
     }
 
     const applyUpdate = (path, value) => {
@@ -308,15 +543,6 @@ export default {
         value = raw
       }
       applyUpdate(path, value)
-    }
-
-    const onPointCoordInput = (descriptor, coord, raw) => {
-      const base = fullPath(descriptor)
-      const pt = getValue(descriptor)
-      const existing = pt != null && typeof pt === 'object' ? { ...pt } : {}
-      const num = Number(raw)
-      existing[coord] = Number.isNaN(num) ? raw : num
-      applyUpdate(base || '', existing)
     }
 
     const getArrayItems = (descriptor) => {
@@ -378,15 +604,23 @@ export default {
       showForIf,
       canShowForIf,
       showForIfToggle,
-      getForIfValueString,
-      onForIfInput,
       onToggleForIf,
+      forDrafts,
+      onForFieldInput,
+      commitForDrafts,
+      onForItemFocusOut,
+      onForLoopCreate,
+      onForLoopRemove,
+      onForLoopDuplicate,
+      onForLoopReorder,
+      conditionObjData,
+      onConditionUpdate,
       visibleProperties,
       fullPath,
+      getDefaultValue,
       getValueString,
-      getPointCoord,
+      onPropertyUpdate,
       onValueInput,
-      onPointCoordInput,
       getArrayItems,
       onArrayRemove,
       onArrayDuplicate,
@@ -403,9 +637,9 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  padding-left: 8px;
   margin-top: 6px;
-  border-left: 1px solid rgba(255, 255, 255, 0.15);
+  width: 100%;
+  min-width: 0;
 }
 
 .property-list-items {
@@ -413,6 +647,8 @@ export default {
   flex-direction: column;
   gap: 4px;
   overflow: hidden;
+  padding-left: 8px;
+  border-left: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 /* Show all / hide default properties transition */
@@ -515,5 +751,50 @@ export default {
 
 .property-list-visibility-link:hover {
   color: rgba(140, 218, 255, 0.95);
+}
+
+.property-list-array-body {
+  width: 100%;
+  margin-top: 2px;
+}
+
+.for-if-box {
+  background: rgba(120, 198, 255, 0.15);
+  border: 1px solid rgba(120, 198, 255, 0.5);
+  border-radius: 6px;
+  padding: 10px 8px;
+  margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.for-loop-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+}
+
+.for-loop-input {
+  font-size: 11px;
+  font-family: monospace;
+  padding: 2px 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  color: rgba(255, 255, 255, 0.9);
+  box-sizing: content-box;
+  min-width: 25px;
+}
+
+.for-loop-input:focus {
+  outline: none;
+  border-color: rgba(120, 198, 255, 0.6);
+}
+
+.for-loop-keyword {
+  white-space: nowrap;
 }
 </style>

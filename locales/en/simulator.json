@@ -169,6 +169,11 @@
       "lineStyle": "Line style",
       "fillStyle": "Fill style",
       "useThemeStyle": "Use theme style",
+      "styleRed": "Red",
+      "styleGreen": "Green",
+      "styleBlue": "Blue",
+      "styleAlpha": "Alpha",
+      "styleWidth": "Width",
       "eqnInfo": {
         "constants": "Supported constants",
         "operators": "Supported operators",
@@ -648,10 +653,24 @@
       "collapse": "Collapse properties",
       "showAllProperties": "Show all properties",
       "hideDefaultProperties": "Hide default properties",
-      "createArrayAndConditional": "Create array and conditional",
-      "removeArrayAndConditional": "Remove array and conditional",
-      "arrayBadge": "Array",
-      "conditionalBadge": "Conditional"
+      "newItem": "New item",
+      "arrayAndConditional": {
+        "info": "Create multiple copies of this object and/or include this object only when a condition is met. For example, to copy this object 5 times horizontally with 10 units between each, you can create a loop variable i from 1 to 5 and set the coordinates of points to x_1+i*10, y_1, etc. To show the object only when a variable n is greater than 0, you can set the \"with condition\" box to n > 0.",
+        "create": "Create array and conditional",
+        "remove": "Remove array and conditional",
+        "arrayBadge": "Array",
+        "conditionalBadge": "Conditional",
+        "repeatFor": "Repeat for",
+        "withCondition": "with condition",
+        "forFrom": "from",
+        "forTo": "to",
+        "forStep": "step",
+        "newLoopVariable": "New loop variable"
+      },
+      "formulaRequiresModule": "To use a formula, you must first move the object into a module.",
+      "invalidPointFormat": "Point must have exactly two coordinates separated by a comma.",
+      "unsupportedVisualValue": "This value is not supported by the visual editor. Please switch to the Code tab to edit this property.",
+      "latexConversionFailed": "Failed to convert the expression to the internal format. Please check the syntax."
     },
     "visualSubTabs": {
       "scene": "Scene",

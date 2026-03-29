@@ -52,6 +52,7 @@
           <ObjTemplateListItemContent
             :item="item"
             :index="index"
+            :module-name="moduleName"
             @update:name="(v) => onNameUpdate(item, index, v)"
             @update:obj-data="(raw) => onObjDataUpdate(index, raw)"
             @blur="commitName"

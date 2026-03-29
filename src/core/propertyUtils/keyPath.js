@@ -67,7 +67,7 @@ export function getByKeyPath(obj, path, defaults) {
  *   Empty string is not valid for set (would replace root).
  * @param {*} value - The value to set.
  * @param {Object} [defaults] - Optional defaults. When an intermediate is null/undefined, materializes from defaults first.
- * When the path ends with "for" or "if" (module template keys), setting to their default values deletes the key instead.
+ * When the value being set matches the default (from `defaults` or the built-in for/if defaults), the property is deleted instead of set.
  */
 export function setByKeyPath(obj, path, value, defaults) {
   if (path === '') {
@@ -103,14 +103,49 @@ export function setByKeyPath(obj, path, value, defaults) {
   const lastNum = Number(lastSeg);
   const lastKey = Number.isNaN(lastNum) ? lastSeg : lastNum;
 
+  let isDefault = false;
   const forIfDef = getForIfDefault(lastSeg);
   if (forIfDef !== undefined && JSON.stringify(value) === JSON.stringify(forIfDef)) {
-    if (current != null && typeof current === 'object' && !Array.isArray(current)) {
-      delete current[lastKey];
+    isDefault = true;
+  } else if (defaults != null) {
+    const defVal = getByKeyPath(defaults, path);
+    if (defVal !== undefined && JSON.stringify(value) === JSON.stringify(defVal)) {
+      isDefault = true;
     }
+  }
+
+  if (isDefault && current != null && typeof current === 'object' && !Array.isArray(current)) {
+    delete current[lastKey];
   } else {
     current[lastKey] = value;
   }
+}
+
+const RESERVED_KEYS = new Set(['for', 'if']);
+
+/**
+ * Format a dot-separated key path into a more familiar bracket notation.
+ * Numeric segments become array indices: path.1.x → path[1].x
+ * Reserved JS keywords (for, if) use bracket notation: obj.if → obj["if"]
+ * @param {string} path - Dot-separated key path.
+ * @returns {string} The formatted path.
+ */
+export function formatKeyPath(path) {
+  if (!path) return '';
+  const segments = path.split('.');
+  let result = '';
+  for (let i = 0; i < segments.length; i++) {
+    const seg = segments[i];
+    const num = Number(seg);
+    if (!Number.isNaN(num)) {
+      result += `[${seg}]`;
+    } else if (RESERVED_KEYS.has(seg)) {
+      result += `["${seg}"]`;
+    } else {
+      result += (i === 0 ? '' : '.') + seg;
+    }
+  }
+  return result;
 }
 
 /**
