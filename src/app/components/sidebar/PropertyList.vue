@@ -254,7 +254,7 @@
 </template>
 
 <script>
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch, onMounted, onUnmounted, nextTick } from 'vue'
 import { isNonDefault, getByKeyPath, setByKeyPath, getForIfDefault } from '../../../core/propertyUtils/keyPath.js'
 import SidebarItemList from './SidebarItemList.vue'
 import NumberPropertyControl from './controls/NumberPropertyControl.vue'
@@ -265,6 +265,7 @@ import PointPropertyControl from './controls/PointPropertyControl.vue'
 import StylePropertyControl from './controls/StylePropertyControl.vue'
 import EquationPropertyControl from './controls/EquationPropertyControl.vue'
 import PropertyControlLabel from './controls/PropertyControlLabel.vue'
+import { app } from '../../services/app'
 
 function isPrimitiveArrayItem(schema) {
   return schema?.length === 1 &&
@@ -380,7 +381,40 @@ export default {
     const initShowForIf = () => {
       showForIf.value = hasForOrIfInData.value
     }
-    initShowForIf()
+
+    watch(
+      () => props.basePath,
+      () => {
+        initShowForIf()
+      },
+      { immediate: true }
+    )
+
+    watch(hasForOrIfInData, (has, prev) => {
+      if (has) {
+        showForIf.value = true
+      } else if (prev === true) {
+        showForIf.value = false
+      }
+    })
+
+    const onSceneDocumentEvent = () => {
+      nextTick(() => {
+        if (hasForOrIfInData.value || !showForIf.value) {
+          initShowForIf()
+        }
+      })
+    }
+
+    onMounted(() => {
+      document.addEventListener('sceneChanged', onSceneDocumentEvent)
+      document.addEventListener('sceneObjsChanged', onSceneDocumentEvent)
+    })
+
+    onUnmounted(() => {
+      document.removeEventListener('sceneChanged', onSceneDocumentEvent)
+      document.removeEventListener('sceneObjsChanged', onSceneDocumentEvent)
+    })
 
     const forIfPath = (key) => {
       return props.basePath ? `${props.basePath}.${key}` : key
@@ -531,7 +565,11 @@ export default {
       } else {
         setByKeyPath(next, path, value, props.serializableDefaults)
       }
+      const prevSelection = app.editor?.selectedObjIndex ?? -1
       emit('update:objData', next)
+      if (!props.isTemplate && prevSelection >= 0) {
+        app.editor?.selectObj(prevSelection)
+      }
     }
 
     const onValueInput = (descriptor, raw) => {
