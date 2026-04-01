@@ -59,6 +59,74 @@ export function getByKeyPath(obj, path, defaults) {
 }
 
 /**
+ * Returns true when `arr` looks like a module-expanded list: at least one element is a
+ * non-null object with a numeric `_sourceIndex` (see ModuleObj.expandArray).
+ * @param {Array} arr
+ * @returns {boolean}
+ */
+export function isSourceIndexArray(arr) {
+  if (!Array.isArray(arr) || arr.length === 0) {
+    return false;
+  }
+  return arr.some(
+    (item) =>
+      item != null &&
+      typeof item === 'object' &&
+      typeof item._sourceIndex === 'number'
+  );
+}
+
+/**
+ * Read values along a dot-separated key path, returning an array of results (one per branch).
+ * Like {@link getByKeyPath}, but when a numeric segment follows an array that
+ * {@link isSourceIndexArray} marks as source-indexed, the segment selects every element whose
+ * `_sourceIndex` equals that number (not the array index). Remaining segments are applied
+ * to each branch; the final return is the list of leaf values (possibly empty).
+ * @param {Object} obj - Root object.
+ * @param {string} path - Dot-separated path (e.g. `expanded.2.x`). Empty string returns `[obj]`.
+ * @returns {Array} All values at the path; `[]` if no branches match or all branches hit null.
+ */
+export function getAllByKeyPath(obj, path) {
+  if (path === '') {
+    return [obj];
+  }
+  const segments = path.split('.');
+  let batch = [obj];
+
+  for (const seg of segments) {
+    const num = Number(seg);
+    const key = Number.isNaN(num) ? seg : num;
+    const nextBatch = [];
+    for (const v of batch) {
+      if (v == null) {
+        continue;
+      }
+      if (Array.isArray(v)) {
+        if (typeof key === 'number' && isSourceIndexArray(v)) {
+          for (const item of v) {
+            if (
+              item != null &&
+              typeof item === 'object' &&
+              item._sourceIndex === key
+            ) {
+              nextBatch.push(item);
+            }
+          }
+        } else {
+          nextBatch.push(v[key]);
+        }
+      } else if (typeof v === 'object') {
+        nextBatch.push(v[key]);
+      } else {
+        nextBatch.push(undefined);
+      }
+    }
+    batch = nextBatch;
+  }
+  return batch;
+}
+
+/**
  * Set a value in an object by a dot-separated key path.
  * Creates intermediate objects/arrays as needed.
  * When a parent is undefined (using default), materializes it from defaults before modifying.

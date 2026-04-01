@@ -26,10 +26,16 @@
       <PropertyControlError :message="$t('simulator:sidebar.objectList.unsupportedVisualValue')" />
     </template>
     <template v-else>
-      <FormulaInput
-        :model-value="displayValue"
-        @update:model-value="onCommit"
-      />
+      <div class="number-property-control-input-wrap">
+        <FormulaInput
+          class="number-property-control-formula"
+          :model-value="displayValue"
+          :module-instance-key-paths="isTemplate ? keyPath : undefined"
+          :module-name="moduleName"
+          :template-source-index="templateSourceIndex"
+          @update:model-value="onCommit"
+        />
+      </div>
       <PropertyControlError :message="error" />
     </template>
   </div>
@@ -80,6 +86,10 @@ export default {
     moduleName: {
       type: String,
       default: ''
+    },
+    templateSourceIndex: {
+      type: Number,
+      default: -1
     }
   },
   emits: ['update:value'],
@@ -135,5 +145,15 @@ export default {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.number-property-control-input-wrap {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.number-property-control-formula {
+  flex: 1 1 0;
+  min-width: 0;
 }
 </style>

@@ -19,6 +19,7 @@
     ref="labelRef"
     class="property-control-label"
     @dblclick="showKeyPath"
+    @mouseleave="hideKeyPathTooltip"
   >
     <span class="property-control-label-text" v-html="label"></span>
     <InfoPopoverIcon
@@ -54,15 +55,13 @@ export default {
   },
   setup(props) {
     const labelRef = ref(null)
-    let hideTimer = null
     let activeTooltip = null
 
     const formattedKeyPaths = computed(() =>
       props.keyPaths.map(formatKeyPath).filter(Boolean).join(', ')
     )
 
-    const cleanup = () => {
-      clearTimeout(hideTimer)
+    const hideKeyPathTooltip = () => {
       if (activeTooltip) {
         activeTooltip.dispose()
         activeTooltip = null
@@ -74,7 +73,7 @@ export default {
       const text = formattedKeyPaths.value
       if (!el || !text) return
 
-      cleanup()
+      hideKeyPathTooltip()
 
       activeTooltip = new bootstrap.Tooltip(el, {
         title: `<code>${text}</code>`,
@@ -83,20 +82,14 @@ export default {
         placement: 'top'
       })
       activeTooltip.show()
-
-      hideTimer = setTimeout(() => {
-        if (activeTooltip) {
-          activeTooltip.dispose()
-          activeTooltip = null
-        }
-      }, 2000)
     }
 
-    onBeforeUnmount(cleanup)
+    onBeforeUnmount(hideKeyPathTooltip)
 
     return {
       labelRef,
-      showKeyPath
+      showKeyPath,
+      hideKeyPathTooltip
     }
   }
 }

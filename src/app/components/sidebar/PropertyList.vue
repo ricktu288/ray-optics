@@ -103,6 +103,7 @@
             :default="getDefaultValue(descriptor)"
             :is-template="isTemplate"
             :module-name="moduleName"
+            :template-source-index="templateSourceIndex"
             @update:value="(v) => onPropertyUpdate(descriptor, v)"
           />
         </template>
@@ -116,6 +117,7 @@
             :default="getDefaultValue(descriptor)"
             :is-template="isTemplate"
             :module-name="moduleName"
+            :template-source-index="templateSourceIndex"
             @update:value="(v) => onPropertyUpdate(descriptor, v)"
           />
         </template>
@@ -157,6 +159,7 @@
             :default="getDefaultValue(descriptor)"
             :is-template="isTemplate"
             :module-name="moduleName"
+            :template-source-index="templateSourceIndex"
             @update:value="(v) => onPropertyUpdate(descriptor, v)"
           />
         </template>
@@ -171,6 +174,7 @@
             :style-kind="descriptor.styleKind || 'stroke'"
             :is-template="isTemplate"
             :module-name="moduleName"
+            :template-source-index="templateSourceIndex"
             @update:value="(v) => onPropertyUpdate(descriptor, v)"
           />
         </template>
@@ -212,6 +216,7 @@
                   :base-path="fullPath(descriptor) + '.' + index"
                   :serializable-defaults="serializableDefaults"
                   :module-name="moduleName"
+                  :template-source-index="templateSourceIndex"
                   @update:obj-data="onNestedUpdate"
                 />
               </template>
@@ -338,6 +343,10 @@ export default {
     moduleName: {
       type: String,
       default: ''
+    },
+    templateSourceIndex: {
+      type: Number,
+      default: -1
     }
   },
   setup(props, { emit }) {

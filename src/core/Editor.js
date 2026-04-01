@@ -1298,6 +1298,44 @@ class Editor {
   }
 
   /**
+   * Return {@link sceneObjs.ModuleObj} instances for a given module name that are considered “active” for
+   * sidebar / batch property behavior.
+   *
+   * If the top-level {@link Editor#selectedObjIndex} points to a {@link sceneObjs.ModuleObj} with the same
+   * `module`, that instance is the only active one. Otherwise every instance in the scene is active, including
+   * instances nested under another module’s expanded `objs`.
+   *
+   * @param {string} moduleId - The module name (`ModuleObj#module`), same as in `scene.modules`.
+   * @returns {import('./sceneObjs.js').ModuleObj[]} Module instances (possibly empty).
+   */
+  getActiveModuleInstances(moduleId) {
+    /** @type {import('./sceneObjs.js').ModuleObj[]} */
+    const all = [];
+    const collect = (objs) => {
+      if (!Array.isArray(objs)) return;
+      for (const obj of objs) {
+        if (!obj) continue;
+        if (obj.constructor?.type === 'ModuleObj') {
+          if (obj.module === moduleId) {
+            all.push(obj);
+          }
+          collect(obj.objs);
+        }
+      }
+    };
+    collect(this.scene.objs);
+
+    const i = this.selectedObjIndex;
+    if (i >= 0 && i < this.scene.objs.length) {
+      const sel = this.scene.objs[i];
+      if (sel?.constructor?.type === 'ModuleObj' && sel.module === moduleId) {
+        return [sel];
+      }
+    }
+    return all;
+  }
+
+  /**
    * Confirm the positioning in the coordinate box.
    * @param {number} x - The x-coordinate.
    * @param {number} y - The y-coordinate.

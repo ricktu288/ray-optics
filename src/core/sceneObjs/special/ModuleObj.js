@@ -20,6 +20,7 @@ import i18next from 'i18next';
 import * as sceneObjs from '../../sceneObjs.js';
 import * as math from 'mathjs';
 import escapeHtml from 'escape-html';
+import { getAllByKeyPath } from '../../propertyUtils/keyPath.js';
 
 /**
  * @typedef {Object} ModuleDef
@@ -41,6 +42,7 @@ import escapeHtml from 'escape-html';
  * @property {Array<Point>} points - The control points of the module.
  * @property {Object} params - The parameters of the module.
  * @property {Array<BaseSceneObj>} objs - The expanded objects in the module.
+ * @property {Array} expandedObjsWithSource - Plain expanded template objects (same order as {@link ModuleObj#objs}), still carrying `_sourceIndex` from {@link ModuleObj#expandArray}. Not scene instances.
  */
 class ModuleObj extends BaseSceneObj {
   static type = 'ModuleObj';
@@ -165,7 +167,11 @@ class ModuleObj extends BaseSceneObj {
     for (let j = 0; j < this.objs.length; j++) {
       let i = mapped[j].index;
       const obj = this.objs[i];
-      const sourceIndex = obj?._moduleSourceIndex;
+      const plain = this.expandedObjsWithSource?.[i];
+      const sourceIndex =
+        plain != null && typeof plain === 'object' && !Array.isArray(plain)
+          ? plain._sourceIndex
+          : undefined;
       const isSourceHighlighted = Number.isInteger(sourceIndex)
         && (this.highlightSourceIndices || []).includes(sourceIndex);
       obj.draw(canvasRenderer, isAboveLight, isHovered || isSourceHighlighted);
@@ -288,6 +294,7 @@ class ModuleObj extends BaseSceneObj {
       }
       this.points = [];
       this.objs = [];
+      this.expandedObjsWithSource = [];
     }
 
     if (this.points.length < this.moduleDef.numPoints) {
@@ -669,13 +676,15 @@ class ModuleObj extends BaseSceneObj {
 
   /**
    * Expand an array with template syntax, where the string values of the array are interpreted with template syntax. Arrays and objects are expanded recursively. If an object in the array has a key "for", then the object is expanded multiple times with the given range of values. If the value of "for" is a string, then the range is interpreted with `parseVariableRange`. If the value of "for" is an array of strings, then each string is witn `parseVariableRange` and there are multiple loop variable. If an object in the array has a key "if", then the object is included only if the condition is true.
+   * Plain objects produced from each template slot are assigned `_sourceIndex` equal to that slot's index in `arr`.
    * @param {Array} arr - The array with template syntax.
    * @param {Object} params - The parameters to be used for evaluating the expressions.
    * @returns {Array} The expanded array.
    */
-  expandArray(arr, params, sourceIndex = null) {
+  expandArray(arr, params) {
     let result = [];
-    for (let obj of arr) {
+    for (let sourceIndex = 0; sourceIndex < arr.length; sourceIndex++) {
+      const obj = arr[sourceIndex];
       try {
         const isPlainObject = typeof obj === 'object' && obj !== null && !Array.isArray(obj);
         if (isPlainObject && 'for' in obj) {
@@ -723,8 +732,8 @@ class ModuleObj extends BaseSceneObj {
                 continue;
               }
               const expanded = this.expandObject(obj, loopParam);
-              if (sourceIndex !== null && typeof expanded === 'object' && !Array.isArray(expanded)) {
-                expanded.__moduleSourceIndex = sourceIndex;
+              if (typeof expanded === 'object' && expanded !== null && !Array.isArray(expanded)) {
+                expanded._sourceIndex = sourceIndex;
               }
               result.push(expanded);
             }
@@ -733,8 +742,8 @@ class ModuleObj extends BaseSceneObj {
         } else if (isPlainObject && 'if' in obj) {
           if (math.evaluate(obj['if'], params)) {
             const expanded = this.expandObject(obj, params);
-            if (sourceIndex !== null && typeof expanded === 'object' && !Array.isArray(expanded)) {
-              expanded.__moduleSourceIndex = sourceIndex;
+            if (typeof expanded === 'object' && expanded !== null && !Array.isArray(expanded)) {
+              expanded._sourceIndex = sourceIndex;
             }
             result.push(expanded);
           }
@@ -744,8 +753,8 @@ class ModuleObj extends BaseSceneObj {
           result.push(this.expandArray(obj, params));
         } else if (isPlainObject) {
           const expanded = this.expandObject(obj, params);
-          if (sourceIndex !== null && typeof expanded === 'object' && !Array.isArray(expanded)) {
-            expanded.__moduleSourceIndex = sourceIndex;
+          if (typeof expanded === 'object' && expanded !== null && !Array.isArray(expanded)) {
+            expanded._sourceIndex = sourceIndex;
           }
           result.push(expanded);
         } else {
@@ -762,6 +771,7 @@ class ModuleObj extends BaseSceneObj {
    * Expand the objects in the module.
    */
   expandObjs() {
+    this.expandedObjsWithSource = [];
     // Construct the full parameters including the coordinates of points with names "x_1", "y_1", "x_2", "y_2", ...
     const fullParams = {};
     for (let name in this.params) {
@@ -804,28 +814,50 @@ class ModuleObj extends BaseSceneObj {
     this.error = null;
 
     try {
-      const expandedObjs = [];
-      for (let i = 0; i < this.moduleDef.objs.length; i++) {
-        expandedObjs.push(...this.expandArray([this.moduleDef.objs[i]], fullParams, i));
-      }
+      const expanded = this.expandArray(this.moduleDef.objs, fullParams);
+      this.expandedObjsWithSource = structuredClone(expanded);
+      ModuleObj.stripSourceIndices(expanded);
 
       this.objs = [];
-      for (const objData of expandedObjs) {
-        const sourceIndex = typeof objData.__moduleSourceIndex === 'number' ? objData.__moduleSourceIndex : -1;
-        if (objData && typeof objData === 'object') {
-          delete objData.__moduleSourceIndex;
-        }
+      for (let i = 0; i < expanded.length; i++) {
+        const objData = expanded[i];
         if (!sceneObjs[objData.type]) {
           this.error = i18next.t('simulator:generalErrors.unknownObjectType', { type: objData.type });
           return;
         }
         const expandedObj = new sceneObjs[objData.type](this.scene, objData);
         expandedObj.isInModule = true;
-        expandedObj._moduleSourceIndex = sourceIndex;
+        const plain = this.expandedObjsWithSource[i];
+        if (
+          plain != null &&
+          typeof plain === 'object' &&
+          !Array.isArray(plain) &&
+          Number.isInteger(plain._sourceIndex)
+        ) {
+          expandedObj._moduleSourceIndex = plain._sourceIndex;
+        }
         this.objs.push(expandedObj);
       }
     } catch (e) {
       this.error = e;
+    }
+  }
+
+  /**
+   * Remove every `_sourceIndex` property from expanded template data (recursive).
+   * Mutates `root` in place. Used so scene object constructors never see module-only metadata.
+   * @param {*} root
+   */
+  static stripSourceIndices(root) {
+    if (Array.isArray(root)) {
+      for (const el of root) {
+        ModuleObj.stripSourceIndices(el);
+      }
+    } else if (root != null && typeof root === 'object') {
+      delete root._sourceIndex;
+      for (const k of Object.keys(root)) {
+        ModuleObj.stripSourceIndices(root[k]);
+      }
     }
   }
 
@@ -838,9 +870,9 @@ class ModuleObj extends BaseSceneObj {
     for (let obj of this.objs) {
       obj.isInModule = false;
       this.scene.objs.push(obj);
-      if (this.scene.editor) {
-        this.scene.editor.selectObj(-1);
-      }
+    }
+    if (this.scene.editor) {
+      this.scene.editor.selectObj(-1);
     }
   }
 
@@ -851,6 +883,26 @@ class ModuleObj extends BaseSceneObj {
     }
     this.highlightSourceIndices = indices.filter((index) => Number.isInteger(index));
   }
+
+  /**
+   * Read values from this module's expanded `objs` array using a key path whose first segment is the
+   * template row index (`_sourceIndex` from expandArray), followed by the property path on each
+   * expanded object (same dot rules as getAllByKeyPath).
+   * Example: `'2.focalLength'` or `'0.path.1.x'`.
+   * @param {string} sourceKeyPath
+   * @returns {Array<*>}
+   */
+  getExpandedPropertyValues(sourceKeyPath) {
+    if (
+      sourceKeyPath == null ||
+      sourceKeyPath === '' ||
+      !Array.isArray(this.expandedObjsWithSource)
+    ) {
+      return [];
+    }
+    return getAllByKeyPath(this.expandedObjsWithSource, sourceKeyPath);
+  }
+
 }
 
 export default ModuleObj;

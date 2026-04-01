@@ -28,6 +28,9 @@
     <template v-else-if="isTemplate">
       <FormulaInput
         :model-value="displayValue"
+        :module-instance-key-paths="keyPath"
+        :module-name="moduleName"
+        :template-source-index="templateSourceIndex"
         @update:model-value="onCommit"
       />
       <PropertyControlError :message="error" />
@@ -90,6 +93,10 @@ export default {
     moduleName: {
       type: String,
       default: ''
+    },
+    templateSourceIndex: {
+      type: Number,
+      default: -1
     }
   },
   emits: ['update:value'],

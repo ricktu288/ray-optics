@@ -42,6 +42,7 @@
             :key-path="keyPath + '.color.r'"
             :is-template="isTemplate"
             :module-name="moduleName"
+            :template-source-index="templateSourceIndex"
             @update:value="(v) => onSubUpdate('color.r', v)"
           />
           <NumberPropertyControl
@@ -50,6 +51,7 @@
             :key-path="keyPath + '.color.g'"
             :is-template="isTemplate"
             :module-name="moduleName"
+            :template-source-index="templateSourceIndex"
             @update:value="(v) => onSubUpdate('color.g', v)"
           />
           <NumberPropertyControl
@@ -58,6 +60,7 @@
             :key-path="keyPath + '.color.b'"
             :is-template="isTemplate"
             :module-name="moduleName"
+            :template-source-index="templateSourceIndex"
             @update:value="(v) => onSubUpdate('color.b', v)"
           />
           <NumberPropertyControl
@@ -66,6 +69,7 @@
             :key-path="keyPath + '.color.a'"
             :is-template="isTemplate"
             :module-name="moduleName"
+            :template-source-index="templateSourceIndex"
             @update:value="(v) => onSubUpdate('color.a', v)"
           />
           <NumberPropertyControl
@@ -75,6 +79,7 @@
             :key-path="keyPath + '.width'"
             :is-template="isTemplate"
             :module-name="moduleName"
+            :template-source-index="templateSourceIndex"
             @update:value="(v) => onSubUpdate('width', v)"
           />
         </div>
@@ -126,6 +131,10 @@ export default {
     moduleName: {
       type: String,
       default: ''
+    },
+    templateSourceIndex: {
+      type: Number,
+      default: -1
     }
   },
   emits: ['update:value'],

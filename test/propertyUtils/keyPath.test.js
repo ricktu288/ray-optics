@@ -17,6 +17,8 @@
 import {
   getForIfDefault,
   getByKeyPath,
+  getAllByKeyPath,
+  isSourceIndexArray,
   setByKeyPath,
   formatKeyPath,
   isNonDefault
@@ -54,6 +56,80 @@ describe('keyPath', () => {
 
     it('uses for/if defaults when chain breaks on null parent', () => {
       expect(getByKeyPath({ x: null }, 'x.if')).toBe(true);
+    });
+  });
+
+  describe('isSourceIndexArray', () => {
+    it('is false for non-arrays and empty arrays', () => {
+      expect(isSourceIndexArray(null)).toBe(false);
+      expect(isSourceIndexArray({})).toBe(false);
+      expect(isSourceIndexArray([])).toBe(false);
+    });
+
+    it('is false when no element has numeric _sourceIndex', () => {
+      expect(isSourceIndexArray([{ a: 1 }, { b: 2 }])).toBe(false);
+      expect(isSourceIndexArray([1, 2, 3])).toBe(false);
+    });
+
+    it('is true when some object element has numeric _sourceIndex', () => {
+      expect(
+        isSourceIndexArray([
+          { _sourceIndex: 0, x: 1 },
+          { _sourceIndex: 1, x: 2 }
+        ])
+      ).toBe(true);
+    });
+  });
+
+  describe('getAllByKeyPath', () => {
+    it('returns root wrapped in an array for empty path', () => {
+      const o = { a: 1 };
+      expect(getAllByKeyPath(o, '')).toEqual([o]);
+    });
+
+    it('collects property values for all items matching _sourceIndex', () => {
+      const obj = {
+        items: [
+          { _sourceIndex: 0, name: 'a' },
+          { _sourceIndex: 1, name: 'b' },
+          { _sourceIndex: 1, name: 'c' }
+        ]
+      };
+      expect(getAllByKeyPath(obj, 'items.1.name')).toEqual(['b', 'c']);
+      expect(getAllByKeyPath(obj, 'items.0.name')).toEqual(['a']);
+    });
+
+    it('returns [] when no item has the given _sourceIndex', () => {
+      const obj = {
+        items: [{ _sourceIndex: 0, x: 1 }]
+      };
+      expect(getAllByKeyPath(obj, 'items.5.x')).toEqual([]);
+    });
+
+    it('uses numeric segments as array indices when _sourceIndex is absent', () => {
+      const obj = {
+        path: [{ x: 10 }, { x: 20 }]
+      };
+      expect(getAllByKeyPath(obj, 'path.1.x')).toEqual([20]);
+    });
+
+    it('applies nested paths after filtering, including normal array indices', () => {
+      const obj = {
+        objs: [
+          {
+            _sourceIndex: 2,
+            pts: [{ y: 1 }, { y: 2 }]
+          }
+        ]
+      };
+      expect(getAllByKeyPath(obj, 'objs.2.pts.1.y')).toEqual([2]);
+    });
+
+    it('returns [] when an intermediate segment is missing (null/undefined)', () => {
+      const obj = {
+        nested: { items: [{ _sourceIndex: 0, v: 1 }] }
+      };
+      expect(getAllByKeyPath(obj, 'missing.0.x')).toEqual([]);
     });
   });
 

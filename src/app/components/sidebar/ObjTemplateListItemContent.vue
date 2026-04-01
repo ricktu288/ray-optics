@@ -79,6 +79,7 @@
           base-path=""
           :serializable-defaults="serializableDefaults"
           :module-name="moduleName"
+          :template-source-index="index"
           @update:obj-data="onObjDataUpdate"
         />
       </div>
