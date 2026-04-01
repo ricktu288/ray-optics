@@ -131,6 +131,8 @@ class Editor {
     this.externalHoverIndex = -1;
     /** @property {number[]} externalHighlightIndices - Multi-highlight from UI list. */
     this.externalHighlightIndices = [];
+    /** @property {{x: number, y: number}[]} externalHighlightPoints - Scene points to highlight from sidebar (e.g. point property hover). */
+    this.externalHighlightPoints = [];
 
     /** @property {string} addingObjType - The type of the object that will be added when the user clicks on the canvas. Empty if 'Move view' tool is selected so that no object will be added. */
     this.addingObjType = '';
@@ -1770,6 +1772,26 @@ class Editor {
       return;
     }
     this.externalHighlightIndices = indices.filter((index) => Number.isInteger(index));
+  }
+
+  /**
+   * Set external highlight points (scene coordinates) for UI-driven preview.
+   * @param {{x: number, y: number}[]} points
+   */
+  setExternalHighlightPoints(points) {
+    if (!Array.isArray(points)) {
+      this.externalHighlightPoints = [];
+      return;
+    }
+    this.externalHighlightPoints = points.filter(
+      (p) =>
+        p &&
+        typeof p === 'object' &&
+        typeof p.x === 'number' &&
+        typeof p.y === 'number' &&
+        Number.isFinite(p.x) &&
+        Number.isFinite(p.y)
+    );
   }
 
   /**

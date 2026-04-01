@@ -285,14 +285,19 @@ export default {
       .filter((index) => index >= 0)
 
     const applyModuleHighlights = (indices) => {
-      const visited = new Set()
+      const activeInstances = app.editor?.getActiveModuleInstances?.(props.moduleName)
+      const activeSet = activeInstances != null ? new Set(activeInstances) : null
+
       const applyToObj = (obj) => {
         if (!obj || obj.constructor?.type !== 'ModuleObj') {
           return
         }
-        if (obj.module === props.moduleName && typeof obj.setHighlightedSourceIndices === 'function') {
-          obj.setHighlightedSourceIndices(indices)
-          visited.add(obj)
+        if (obj.module === props.moduleName) {
+          if (activeSet && !activeSet.has(obj)) {
+            obj.setHighlightedSourceIndices([])
+          } else {
+            obj.setHighlightedSourceIndices(indices)
+          }
         }
         if (Array.isArray(obj.objs)) {
           for (const child of obj.objs) {
@@ -449,6 +454,7 @@ export default {
 
     const onEditorSelectionChange = (event) => {
       editorSelectedIndex.value = event?.detail?.index ?? -1
+      updateHighlights()
     }
 
     watch(

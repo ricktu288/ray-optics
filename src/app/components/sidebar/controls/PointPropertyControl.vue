@@ -15,7 +15,11 @@
 -->
 
 <template>
-  <div class="point-property-control">
+  <div
+    class="point-property-control"
+    @mouseenter="onHostMouseEnter"
+    @mouseleave="onHostMouseLeave"
+  >
     <PropertyControlLabel
       class="point-property-control-label"
       :label="label"
@@ -39,7 +43,7 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue'
+import { computed, ref, watch, onBeforeUnmount } from 'vue'
 import i18next from 'i18next'
 import { getByKeyPath } from '../../../../core/propertyUtils/keyPath.js'
 import {
@@ -49,9 +53,80 @@ import {
   isFormula,
   isFormulaValueSupported
 } from '../../../../core/propertyUtils/formulaParsing.js'
+import { app } from '../../../services/app'
+import { useSceneStore } from '../../../store/scene'
 import PropertyControlLabel from './PropertyControlLabel.vue'
 import FormulaInput from './FormulaInput.vue'
 import PropertyControlError from './PropertyControlError.vue'
+
+const LITERAL_NUMERIC_TOKEN =
+  /^-?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$/
+
+function isLiteralNumericPair(display) {
+  if (typeof display !== 'string') {
+    return false
+  }
+  const parts = splitTopLevelCommas(display.trim())
+  if (parts.length !== 2) {
+    return false
+  }
+  return parts.every((p) => LITERAL_NUMERIC_TOKEN.test(p.trim()))
+}
+
+function parseLiteralPoint(display) {
+  const parts = splitTopLevelCommas(display.trim())
+  if (parts.length !== 2) {
+    return []
+  }
+  const x = Number(parts[0].trim())
+  const y = Number(parts[1].trim())
+  if (!Number.isFinite(x) || !Number.isFinite(y)) {
+    return []
+  }
+  return [{ x, y }]
+}
+
+function tupleCellsAllMissing(tuple) {
+  return tuple.every((cell) => cell === undefined || cell === null)
+}
+
+function collectExpandedTemplatePoints(displayValue, moduleName, templateSourceIndex, xPathStr, yPathStr) {
+  if (isLiteralNumericPair(displayValue)) {
+    return parseLiteralPoint(displayValue)
+  }
+  if (!moduleName || templateSourceIndex < 0) {
+    return []
+  }
+  const instances = app.editor?.getActiveModuleInstances?.(moduleName)
+  if (!instances?.length) {
+    return []
+  }
+  const paths = [xPathStr, yPathStr]
+  /** @type {{ x: number, y: number }[]} */
+  const out = []
+  for (const inst of instances) {
+    if (!inst || typeof inst.getExpandedPropertyValues !== 'function') {
+      continue
+    }
+    const valueArrays = paths.map((kp) => {
+      const sourceKeyPath = `${templateSourceIndex}.${kp}`
+      return inst.getExpandedPropertyValues(sourceKeyPath)
+    })
+    const maxLen = Math.max(...valueArrays.map((a) => a.length), 0)
+    for (let j = 0; j < maxLen; j++) {
+      const tuple = valueArrays.map((arr) => arr[j])
+      if (tupleCellsAllMissing(tuple)) {
+        continue
+      }
+      const x = tuple[0]
+      const y = tuple[1]
+      if (typeof x === 'number' && typeof y === 'number' && Number.isFinite(x) && Number.isFinite(y)) {
+        out.push({ x, y })
+      }
+    }
+  }
+  return out
+}
 
 export default {
   name: 'PointPropertyControl',
@@ -93,6 +168,8 @@ export default {
   emits: ['update:value'],
   setup(props, { emit }) {
     const error = ref('')
+    const hoveringHost = ref(false)
+    const sceneStore = useSceneStore()
 
     const xPath = computed(() => props.keyPath ? `${props.keyPath}.x` : 'x')
     const yPath = computed(() => props.keyPath ? `${props.keyPath}.y` : 'y')
@@ -142,13 +219,74 @@ export default {
       emit('update:value', pt)
     }
 
+    const pushHoveredPointsToEditor = () => {
+      if (!hoveringHost.value) {
+        return
+      }
+      if (unsupported.value) {
+        app.editor?.setExternalHighlightPoints([])
+        app.simulator?.updateSimulation(true, true)
+        return
+      }
+      let points
+      if (!props.isTemplate) {
+        points = parseLiteralPoint(displayValue.value)
+      } else {
+        points = collectExpandedTemplatePoints(
+          displayValue.value,
+          props.moduleName,
+          props.templateSourceIndex,
+          xPath.value,
+          yPath.value
+        )
+      }
+      app.editor?.setExternalHighlightPoints(points)
+      app.simulator?.updateSimulation(true, true)
+    }
+
+    const onHostMouseEnter = () => {
+      hoveringHost.value = true
+      pushHoveredPointsToEditor()
+    }
+
+    const onHostMouseLeave = () => {
+      hoveringHost.value = false
+      app.editor?.setExternalHighlightPoints([])
+      app.simulator?.updateSimulation(true, true)
+    }
+
+    watch(
+      [
+        displayValue,
+        unsupported,
+        xPath,
+        yPath,
+        () => props.isTemplate,
+        () => props.moduleName,
+        () => props.templateSourceIndex,
+        () => sceneStore.state.objList.length
+      ],
+      () => {
+        pushHoveredPointsToEditor()
+      }
+    )
+
+    onBeforeUnmount(() => {
+      if (hoveringHost.value) {
+        app.editor?.setExternalHighlightPoints([])
+        app.simulator?.updateSimulation(true, true)
+      }
+    })
+
     return {
       error,
       xPath,
       yPath,
       unsupported,
       displayValue,
-      onCommit
+      onCommit,
+      onHostMouseEnter,
+      onHostMouseLeave
     }
   }
 }
