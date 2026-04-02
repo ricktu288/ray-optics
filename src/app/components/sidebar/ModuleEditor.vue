@@ -19,6 +19,41 @@
     <p v-if="!hasModuleInstance" class="module-editor-warning is-highlighted">
       {{ $t('simulator:sidebar.moduleEditor.noInstances', { name: moduleName }) }}
     </p>
+    <div class="module-editor-section module-editor-vars">
+      <div class="module-editor-title module-editor-title-plain">
+        <span class="module-editor-title-label">
+          {{ $t('simulator:sidebar.variableList.title') }}
+          <InfoPopoverIcon
+            :content="$t('simulator:sidebar.variableList.info')"
+          />
+        </span>
+      </div>
+      <div class="module-editor-body">
+        <SidebarItemList
+          :items="variableItems"
+          :show-add-button="true"
+          :add-label="$t('simulator:sidebar.variableList.newItem')"
+          :show-checkbox="false"
+          :active-id="variableActiveId"
+          @remove="handleVarRemove"
+          @duplicate="handleVarDuplicate"
+          @reorder="handleVarReorder"
+          @create="handleVarCreate"
+          @select="handleVarSelect"
+        >
+          <template #content="{ item, index }">
+            <ModuleVariableListItem
+              :module-name="moduleName"
+              :name="item.name"
+              :expression="item.expression"
+              @update:name="(v) => onVarNameUpdate(index, v)"
+              @update:expression="(v) => onVarExprUpdate(index, v)"
+              @commit="commitVariableDefs"
+            />
+          </template>
+        </SidebarItemList>
+      </div>
+    </div>
     <div class="module-editor-title">
       <span class="module-editor-title-label">
         {{ $t('simulator:sidebar.objectList.title') }}
@@ -90,10 +125,55 @@ import { app } from '../../services/app'
 import SidebarItemList from './SidebarItemList.vue'
 import InfoPopoverIcon from '../InfoPopoverIcon.vue'
 import ObjTemplateListItemContent from './ObjTemplateListItemContent.vue'
+import ModuleVariableListItem from './ModuleVariableListItem.vue'
+
+/** One sidebar list may have selection at a time; add keys when adding new lists (see clearOtherModuleSidebarLists). */
+const MODULE_EDITOR_LIST = Object.freeze({
+  OBJECTS: 'objects',
+  VARIABLES: 'variables'
+})
+
+function parseVarDef(entry) {
+  const str = typeof entry === 'string' ? entry : String(entry ?? '')
+  const idx = str.indexOf('=')
+  if (idx < 0) {
+    return { name: '', expression: str.trim() }
+  }
+  return {
+    name: str.slice(0, idx).trim(),
+    expression: str.slice(idx + 1).trim()
+  }
+}
+
+function serializeVarDef(name, expression) {
+  const n = (name ?? '').trim()
+  const e = (expression ?? '').trim()
+  if (!n && !e) {
+    return ''
+  }
+  if (!n) {
+    return e
+  }
+  if (!e) {
+    return n
+  }
+  return `${n} = ${e}`
+}
+
+function getNextModuleVarName(existingNames) {
+  for (const name of ['a', 'b', 'c']) {
+    if (!existingNames.includes(name)) return name
+  }
+  for (let c = 97; c <= 122; c++) {
+    const name = String.fromCharCode(c)
+    if (!existingNames.includes(name)) return name
+  }
+  return 'x'
+}
 
 export default {
   name: 'ModuleEditor',
-  components: { SidebarItemList, InfoPopoverIcon, ObjTemplateListItemContent },
+  components: { SidebarItemList, InfoPopoverIcon, ObjTemplateListItemContent, ModuleVariableListItem },
   props: {
     moduleName: { type: String, required: true }
   },
@@ -103,6 +183,8 @@ export default {
     const moduleIds = toRef(scene, 'moduleIds')
     const selectedIds = ref([])
     const moduleItems = ref([])
+    const variableItems = ref([])
+    const variableActiveId = ref(null)
     const hoveredIndex = ref(-1)
     const activeId = ref(null)
     const hasSelection = computed(() => selectedIds.value.length > 0 || activeId.value !== null)
@@ -231,6 +313,17 @@ export default {
       emit('module-removed', name)
     }
 
+    const syncVariableItems = () => {
+      const raw = app.scene?.modules?.[props.moduleName]?.vars || []
+      variableItems.value = raw.map((entry, index) => ({
+        id: `${props.moduleName}-var-${index}`,
+        ...parseVarDef(entry)
+      }))
+      if (!variableItems.value.some((item) => item.id === variableActiveId.value)) {
+        variableActiveId.value = null
+      }
+    }
+
     const syncModuleItems = () => {
       const objs = app.scene?.modules?.[props.moduleName]?.objs || []
       moduleItems.value = objs.map((obj, index) => ({
@@ -240,6 +333,74 @@ export default {
       selectedIds.value = selectedIds.value.filter((id) =>
         moduleItems.value.some((item) => item.id === id)
       )
+    }
+
+    const commitVariableDefs = () => {
+      if (!app.scene?.modules?.[props.moduleName]) {
+        return
+      }
+      const next = variableItems.value
+        .map((it) => serializeVarDef(it.name, it.expression))
+        .filter((s) => s !== '')
+      app.scene.modules[props.moduleName].vars = next
+      app.scene.reloadModule?.(props.moduleName)
+      syncVariableItems()
+      app.simulator?.updateSimulation(false, true)
+      app.editor?.onActionComplete()
+    }
+
+    const onVarNameUpdate = (index, value) => {
+      const row = variableItems.value[index]
+      if (row) {
+        row.name = value
+      }
+    }
+
+    const onVarExprUpdate = (index, value) => {
+      const row = variableItems.value[index]
+      if (row) {
+        row.expression = value
+      }
+    }
+
+    const handleVarRemove = (item, index) => {
+      const next = variableItems.value.filter((_, i) => i !== index)
+      variableItems.value = next
+      commitVariableDefs()
+    }
+
+    const handleVarDuplicate = (item, index) => {
+      const row = variableItems.value[index]
+      if (!row) return
+      const clone = { id: `${props.moduleName}-var-${variableItems.value.length}`, name: row.name, expression: row.expression }
+      const next = [...variableItems.value]
+      next.splice(index + 1, 0, clone)
+      variableItems.value = next
+      commitVariableDefs()
+    }
+
+    const handleVarReorder = ({ fromIndex, toIndex }) => {
+      if (fromIndex === toIndex) {
+        return
+      }
+      const next = [...variableItems.value]
+      const [moved] = next.splice(fromIndex, 1)
+      next.splice(toIndex, 0, moved)
+      variableItems.value = next
+      commitVariableDefs()
+    }
+
+    const handleVarCreate = () => {
+      const names = variableItems.value.map((r) => r.name)
+      variableItems.value = [
+        ...variableItems.value,
+        {
+          id: `${props.moduleName}-var-${variableItems.value.length}`,
+          name: getNextModuleVarName(names),
+          expression: '1'
+        }
+      ]
+      commitVariableDefs()
     }
 
     const updateModuleObjs = (nextObjs) => {
@@ -314,6 +475,22 @@ export default {
       app.simulator?.updateSimulation(true, true)
     }
 
+    /**
+     * Clears all module sidebar lists except `keepKind` (when adding a new list, add another branch).
+     * Pass `null` to clear every list.
+     */
+    const clearOtherModuleSidebarLists = (keepKind) => {
+      if (keepKind !== MODULE_EDITOR_LIST.VARIABLES) {
+        variableActiveId.value = null
+      }
+      if (keepKind !== MODULE_EDITOR_LIST.OBJECTS) {
+        selectedIds.value = []
+        activeId.value = null
+        hoveredIndex.value = -1
+        applyModuleHighlights([])
+      }
+    }
+
     const updateHighlights = () => {
       const indices = getSelectedIndices()
       if (hoveredIndex.value >= 0 && !indices.includes(hoveredIndex.value)) {
@@ -328,6 +505,9 @@ export default {
     }
 
     const handleSelectionChange = () => {
+      if (selectedIds.value.length > 0) {
+        variableActiveId.value = null
+      }
       updateHighlights()
     }
 
@@ -335,11 +515,20 @@ export default {
       if (!item) {
         return
       }
+      clearOtherModuleSidebarLists(MODULE_EDITOR_LIST.OBJECTS)
       if (selectedIds.value.length) {
         selectedIds.value = []
       }
       activeId.value = item.id
       updateHighlights()
+    }
+
+    const handleVarSelect = ({ item }) => {
+      if (!item) {
+        return
+      }
+      clearOtherModuleSidebarLists(MODULE_EDITOR_LIST.VARIABLES)
+      variableActiveId.value = item.id
     }
 
     const onMoveOut = () => {
@@ -363,6 +552,7 @@ export default {
       scene.syncObjList?.()
       selectedIds.value = []
       activeId.value = null
+      variableActiveId.value = null
       hoveredIndex.value = -1
       applyModuleHighlights([])
     }
@@ -383,10 +573,16 @@ export default {
       selectModuleInstance()
     }
 
-    const resetListSelection = () => {
-      if (!selectedIds.value.length && activeId.value === null) {
+    const resetAllModuleSidebarListSelections = () => {
+      if (
+        !selectedIds.value.length &&
+        activeId.value === null &&
+        hoveredIndex.value < 0 &&
+        variableActiveId.value === null
+      ) {
         return
       }
+      variableActiveId.value = null
       selectedIds.value = []
       activeId.value = null
       hoveredIndex.value = -1
@@ -397,7 +593,7 @@ export default {
       if (event?.target?.closest?.('.sidebar-item-list')) {
         return
       }
-      resetListSelection()
+      resetAllModuleSidebarListSelections()
     }
 
     const onNameUpdate = (item, index, value) => {
@@ -449,7 +645,7 @@ export default {
     }
 
     const onClearVisualSelection = () => {
-      resetListSelection()
+      resetAllModuleSidebarListSelections()
     }
 
     const onEditorSelectionChange = (event) => {
@@ -461,8 +657,10 @@ export default {
       () => props.moduleName,
       () => {
         syncModuleItems()
+        syncVariableItems()
         selectModuleInstance()
         hoveredIndex.value = -1
+        variableActiveId.value = null
         applyModuleHighlights([])
       },
       { immediate: true }
@@ -470,6 +668,7 @@ export default {
 
     const onSceneChanged = () => {
       syncModuleItems()
+      syncVariableItems()
     }
 
     onMounted(() => {
@@ -491,6 +690,16 @@ export default {
     return {
       selectedIds,
       moduleItems,
+      variableItems,
+      variableActiveId,
+      onVarNameUpdate,
+      onVarExprUpdate,
+      commitVariableDefs,
+      handleVarRemove,
+      handleVarDuplicate,
+      handleVarReorder,
+      handleVarCreate,
+      handleVarSelect,
       onRenameClick,
       onRemoveClick,
       handleRemove,
@@ -510,7 +719,7 @@ export default {
       selectedMoveInLabel,
       hasModuleInstance,
       moveSelectedObjIn,
-      resetListSelection,
+      resetAllModuleSidebarListSelections,
       handleEditorClick,
       selectModuleInstance
     }
@@ -525,6 +734,16 @@ export default {
   min-height: 0;
 }
 
+.module-editor-section {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.module-editor-vars {
+  margin-bottom: 4px;
+}
+
 .module-editor-title {
   display: flex;
   align-items: center;
@@ -532,6 +751,10 @@ export default {
   font-weight: 600;
   margin-bottom: 8px;
   color: rgba(255, 255, 255, 0.92);
+}
+
+.module-editor-title-plain {
+  justify-content: flex-start;
 }
 
 .module-editor-title-label {

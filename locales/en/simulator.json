@@ -674,6 +674,11 @@
       "unsupportedVisualValue": "This value is not supported by the visual editor. Please switch to the Code tab to edit this property.",
       "latexConversionFailed": "Failed to convert the expression to the internal format. Please check the syntax."
     },
+    "variableList": {
+      "title": "Variables",
+      "newItem": "New variable",
+      "info": "Each item is a math.js statement that defines a name: a value such as `a = 1`, or a function such as `f(x) = x^2`. Definitions are evaluated in order, so later lines may use names defined earlier, as well as module parameters and control points (`x_1`, `y_1`, …). For functions to be used in equation-type properties, they can only involve operations supported by that property."
+    },
     "visualSubTabs": {
       "scene": "Scene",
       "createModule": "Create Module",

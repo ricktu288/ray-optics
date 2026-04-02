@@ -43,6 +43,7 @@ import { getAllByKeyPath } from '../../propertyUtils/keyPath.js';
  * @property {Object} params - The parameters of the module.
  * @property {Array<BaseSceneObj>} objs - The expanded objects in the module.
  * @property {Array} expandedObjsWithSource - Plain expanded template objects (same order as {@link ModuleObj#objs}), still carrying `_sourceIndex` from {@link ModuleObj#expandArray}. Not scene instances.
+ * @property {Object|null} [moduleVarScopeAfterDefs] - Shallow snapshot of the math scope after `moduleDef.vars` are evaluated (params, points, rng, and assigned variables). Used by the UI for expanded-instance tooltips.
  */
 class ModuleObj extends BaseSceneObj {
   static type = 'ModuleObj';
@@ -772,6 +773,7 @@ class ModuleObj extends BaseSceneObj {
    */
   expandObjs() {
     this.expandedObjsWithSource = [];
+    this.moduleVarScopeAfterDefs = null;
     // Construct the full parameters including the coordinates of points with names "x_1", "y_1", "x_2", "y_2", ...
     const fullParams = {};
     for (let name in this.params) {
@@ -814,6 +816,7 @@ class ModuleObj extends BaseSceneObj {
     this.error = null;
 
     try {
+      this.moduleVarScopeAfterDefs = { ...fullParams };
       const expanded = this.expandArray(this.moduleDef.objs, fullParams);
       this.expandedObjsWithSource = structuredClone(expanded);
       ModuleObj.stripSourceIndices(expanded);
@@ -901,6 +904,28 @@ class ModuleObj extends BaseSceneObj {
       return [];
     }
     return getAllByKeyPath(this.expandedObjsWithSource, sourceKeyPath);
+  }
+
+  /**
+   * Evaluated value of a module variable (or expression) in {@link ModuleObj#moduleVarScopeAfterDefs}.
+   * One value per module instance is listed in the UI by querying each {@link ModuleObj}.
+   * @param {string} varName - Name or expression to evaluate with math.js.
+   * @returns {*|undefined} The value, or `undefined` if unavailable or evaluation fails.
+   */
+  getModuleVarValue(varName) {
+    if (varName == null || typeof varName !== 'string' || this.moduleVarScopeAfterDefs == null) {
+      return undefined;
+    }
+    const trimmed = varName.trim();
+    if (!trimmed) {
+      return undefined;
+    }
+    try {
+      const scope = { ...this.moduleVarScopeAfterDefs };
+      return math.evaluate(trimmed, scope);
+    } catch {
+      return undefined;
+    }
   }
 
 }
