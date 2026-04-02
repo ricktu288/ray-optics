@@ -33,7 +33,12 @@
       @click="onRowClick(item, index)"
       >
         <div class="sidebar-item-list-left">
-        <label class="sidebar-item-checkbox" :class="{ 'is-checked': isSelected(item, index) }" @click.stop>
+        <label
+          v-if="showCheckbox"
+          class="sidebar-item-checkbox"
+          :class="{ 'is-checked': isSelected(item, index) }"
+          @click.stop
+        >
             <input
               type="checkbox"
               class="sidebar-item-checkbox-input"
@@ -128,6 +133,11 @@ export default {
     addLabel: {
       type: String,
       default: ''
+    },
+    /** When false, row selection checkbox is omitted (e.g. nested array items with no selection wiring). */
+    showCheckbox: {
+      type: Boolean,
+      default: true
     }
   },
   emits: ['update:selectedIds', 'remove', 'duplicate', 'reorder', 'create', 'selection-change', 'hover', 'select'],

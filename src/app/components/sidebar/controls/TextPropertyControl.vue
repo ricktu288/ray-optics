@@ -146,7 +146,7 @@ export default {
 .text-property-control {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
+  align-items: center;
   gap: 4px 8px;
   width: 100%;
 }

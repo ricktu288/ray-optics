@@ -444,7 +444,7 @@ export default {
 .formula-input {
   width: 100%;
   box-sizing: border-box;
-  font-size: 11px;
+  font-size: 12px;
   font-family: monospace;
   line-height: 1.4;
   padding: 3px 6px;

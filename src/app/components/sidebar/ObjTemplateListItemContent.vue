@@ -375,6 +375,7 @@ export default {
   flex-shrink: 0;
   display: flex;
   gap: 4px;
+  padding-right: 2px;
 }
 
 .obj-list-item-badge {

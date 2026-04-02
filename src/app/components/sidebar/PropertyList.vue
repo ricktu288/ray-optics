@@ -27,6 +27,7 @@
             <SidebarItemList
               :items="forDrafts"
               :show-add-button="true"
+              :show-checkbox="false"
               :add-label="$t('simulator:sidebar.objectList.arrayAndConditional.newLoopVariable')"
               @remove="(item, index) => onForLoopRemove(index)"
               @duplicate="(item, index) => onForLoopDuplicate(index)"
@@ -34,7 +35,7 @@
               @create="onForLoopCreate"
             >
               <template #content="{ item, index }">
-                <div class="for-loop-item" @focusout="onForItemFocusOut">
+                <div class="for-loop-item" @focusin="onForItemFocusIn" @focusout="onForItemFocusOut">
                   <input
                     class="for-loop-input"
                     :value="item.name"
@@ -202,6 +203,7 @@
             <SidebarItemList
               :items="getArrayItems(descriptor)"
               :show-add-button="true"
+              :show-checkbox="false"
               :add-label="$t('simulator:sidebar.objectList.newItem')"
               @remove="(item, index) => onArrayRemove(descriptor, index)"
               @duplicate="(item, index) => onArrayDuplicate(descriptor, index)"
@@ -295,6 +297,18 @@ function parseForString(str) {
 
 function formatForString(item) {
   return `${item.name}=${item.start}:${item.step}:${item.end}`
+}
+
+/** Same shape as passed to applyUpdate in commitForDrafts (for equality checks). */
+function draftsToCommittedValue(drafts) {
+  const strings = drafts.map(formatForString)
+  if (strings.length === 0) {
+    return []
+  }
+  if (strings.length === 1) {
+    return strings[0]
+  }
+  return strings
 }
 
 function normalizeForValue(value) {
@@ -445,6 +459,8 @@ export default {
 
     // --- For loop drafts ---
     const forDrafts = ref([])
+    /** JSON snapshot when focus entered a for-loop row; blur skips emit if unchanged (like FormulaInput). */
+    const forDraftsAtFocus = ref('')
     const currentForValue = computed(() => getForIfValue('for'))
 
     watch(currentForValue, (forValue) => {
@@ -458,22 +474,20 @@ export default {
     }
 
     const commitForDrafts = () => {
-      const strings = forDrafts.value.map(formatForString)
-      let value
-      if (strings.length === 0) {
-        value = []
-      } else if (strings.length === 1) {
-        value = strings[0]
-      } else {
-        value = strings
-      }
-      applyUpdate(forIfPath('for'), value)
+      applyUpdate(forIfPath('for'), draftsToCommittedValue(forDrafts.value))
+    }
+
+    const onForItemFocusIn = () => {
+      forDraftsAtFocus.value = JSON.stringify(draftsToCommittedValue(forDrafts.value))
     }
 
     const onForItemFocusOut = (event) => {
       const container = event.currentTarget
       if (container && !container.contains(event.relatedTarget)) {
-        commitForDrafts()
+        const now = JSON.stringify(draftsToCommittedValue(forDrafts.value))
+        if (now !== forDraftsAtFocus.value) {
+          commitForDrafts()
+        }
       }
     }
 
@@ -655,6 +669,7 @@ export default {
       forDrafts,
       onForFieldInput,
       commitForDrafts,
+      onForItemFocusIn,
       onForItemFocusOut,
       onForLoopCreate,
       onForLoopRemove,
@@ -694,8 +709,8 @@ export default {
   flex-direction: column;
   gap: 4px;
   overflow: hidden;
-  padding-left: 8px;
-  border-left: 1px solid rgba(255, 255, 255, 0.15);
+  padding-left: 2px;
+  padding-right: 3px;
 }
 
 /* Show all / hide default properties transition */
@@ -721,7 +736,7 @@ export default {
 }
 
 .property-list-item {
-  font-size: 11px;
+  font-size: 12px;
   color: rgba(255, 255, 255, 0.75);
   display: flex;
   flex-direction: column;
@@ -809,8 +824,10 @@ export default {
   background: rgba(120, 198, 255, 0.15);
   border: 1px solid rgba(120, 198, 255, 0.5);
   border-radius: 6px;
-  padding: 10px 8px;
+  padding: 8px;
   margin-bottom: 8px;
+  margin-left: 5px;
+  margin-right: 4px;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -822,10 +839,11 @@ export default {
   align-items: center;
   gap: 5px;
   width: 100%;
+  padding-left: 2px;
 }
 
 .for-loop-input {
-  font-size: 11px;
+  font-size: 12px;
   font-family: monospace;
   padding: 2px 4px;
   background: rgba(255, 255, 255, 0.08);
