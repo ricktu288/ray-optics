@@ -310,9 +310,9 @@ class Simulator {
     var ls = canvasRenderer.lengthScale;
     ctx.save();
     ctx.globalAlpha = 1;
-    ctx.lineWidth = 1 * ls;
+    ctx.lineWidth = 1.5 * ls;
     ctx.strokeStyle = this.scene.highlightColorCss;
-    ctx.setLineDash([2 * ls, 2 * ls]);
+    ctx.setLineDash([2.1 * ls, 2.1 * ls]);
     for (var i = 0; i < pts.length; i++) {
       var p = pts[i];
       if (!p || typeof p.x !== 'number' || typeof p.y !== 'number') {
@@ -322,7 +322,7 @@ class Simulator {
         continue;
       }
       ctx.beginPath();
-      ctx.arc(p.x, p.y, 5 * ls, 0, Math.PI * 2, false);
+      ctx.arc(p.x, p.y, 6 * ls, 0, Math.PI * 2, false);
       ctx.stroke();
     }
     ctx.setLineDash([]);

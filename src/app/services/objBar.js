@@ -142,10 +142,14 @@ class ObjBar {
    * @param {objBarValueChangeCallback} func - The function to call when the value changes.
    * @param {string|null} info - The HTML content for the popover info box. If null (default), no info box is created.
    * @param {boolean} hideSlider - Whether to hide the slider (that is, only show the text input). Default is false.
+   * @param {boolean} highlightGroup - When true, emphasize this control group in the object bar (e.g. module parameter linked from the sidebar).
    */
-  createNumber(label, min, max, step, value, func, info, hideSlider) {
+  createNumber(label, min, max, step, value, func, info, hideSlider, highlightGroup) {
     var nobr = document.createElement('span');
     nobr.className = 'obj-bar-nobr';
+    if (highlightGroup) {
+      nobr.classList.add('obj-bar-nobr--highlighted');
+    }
 
     if (info) {
       var p_name = document.createElement('span');

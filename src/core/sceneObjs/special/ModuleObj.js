@@ -59,6 +59,10 @@ class ModuleObj extends BaseSceneObj {
     super(scene, jsonObj);
 
     this.highlightSourceIndices = [];
+    /** @type {string|null} Parameter name to frame in the object bar when picked in the module editor sidebar. */
+    this.highlightedParamName = null;
+    /** @type {number|null} 0-based control point index to emphasize on canvas when picked in the module editor sidebar. */
+    this.highlightedPointIndex = null;
     if (!this.module) return;
     this.moduleDef = this.scene.modules[this.module];
     this.highlightSourceIndices = [];
@@ -134,10 +138,22 @@ class ModuleObj extends BaseSceneObj {
     try {
       for (let param of this.moduleDef.params) {
         const parsed = this.parseVariableRange(param, {});
-        objBar.createNumber('<span style="font-family: monospace;">' + escapeHtml(parsed.name) + '</span>', parsed.start, parsed.end, parsed.step, this.params[parsed.name], function (obj, value) {
-          obj.params[parsed.name] = value;
-          obj.expandObjs();
-        });
+        const sidebarHighlightParam =
+          this.highlightedParamName != null && parsed.name === this.highlightedParamName;
+        objBar.createNumber(
+          '<span style="font-family: monospace;">' + escapeHtml(parsed.name) + '</span>',
+          parsed.start,
+          parsed.end,
+          parsed.step,
+          this.params[parsed.name],
+          function (obj, value) {
+            obj.params[parsed.name] = value;
+            obj.expandObjs();
+          },
+          null,
+          false,
+          sidebarHighlightParam
+        );
       }
     } catch (e) {
       this.error = e;
@@ -178,17 +194,32 @@ class ModuleObj extends BaseSceneObj {
       obj.draw(canvasRenderer, isAboveLight, isHovered || isSourceHighlighted);
     }
 
-    // Draw the control points if not nested in another module
-    if (!this.isInModule) {
-      ctx.lineWidth = 1 * ls;
-      for (let point of this.points) {
+    ctx.lineWidth = 1 * ls;
+    for (let i = 0; i < this.points.length; i++) {
+      const point = this.points[i];
+      const isPointHighlighted =
+        Number.isInteger(this.highlightedPointIndex) && i === this.highlightedPointIndex;
+      const useHighlight = isHovered || isPointHighlighted;
+      const strokeColor = useHighlight
+        ? this.scene.highlightColorCss
+        : canvasRenderer.rgbaToCssColor(this.scene.theme.handlePoint.color);
+
+      if (!this.isInModule) {
+        ctx.setLineDash([]);
+        ctx.strokeStyle = strokeColor;
         ctx.beginPath();
-        ctx.strokeStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.theme.handlePoint.color);
         ctx.arc(point.x, point.y, 2 * ls, 0, Math.PI * 2, false);
         ctx.stroke();
         ctx.beginPath();
         ctx.arc(point.x, point.y, 5 * ls, 0, Math.PI * 2, false);
         ctx.stroke();
+      } else if (isPointHighlighted) {
+        ctx.strokeStyle = this.scene.highlightColorCss;
+        ctx.setLineDash([2 * ls, 2 * ls]);
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, 5 * ls, 0, Math.PI * 2, false);
+        ctx.stroke();
+        ctx.setLineDash([]);
       }
     }
   }
@@ -885,6 +916,30 @@ class ModuleObj extends BaseSceneObj {
       return;
     }
     this.highlightSourceIndices = indices.filter((index) => Number.isInteger(index));
+  }
+
+  /**
+   * Highlight a module parameter row in the object bar (emphasized control group).
+   * @param {string|null|undefined} name - Parameter id matching `parseVariableRange` `name`; null/empty clears.
+   */
+  setHighlightedParamName(name) {
+    if (name == null || typeof name !== 'string' || !name.trim()) {
+      this.highlightedParamName = null;
+      return;
+    }
+    this.highlightedParamName = name.trim();
+  }
+
+  /**
+   * Highlight a module control point row in the sidebar (canvas emphasis).
+   * @param {number|null|undefined} index - 0-based index into {@link ModuleObj#points}; null clears.
+   */
+  setHighlightedPointIndex(index) {
+    if (!Number.isInteger(index) || index < 0) {
+      this.highlightedPointIndex = null;
+      return;
+    }
+    this.highlightedPointIndex = index;
   }
 
   /**

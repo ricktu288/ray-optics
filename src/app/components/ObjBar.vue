@@ -206,6 +206,16 @@ export default {
   padding-right: 3px;
 }
 
+.obj-bar .obj-bar-nobr--highlighted {
+  /* Atomic inline-level box: Chrome draws one outline; plain inline can fragment.
+     inline-block keeps inner inline layout (cf. inline-flex which recenters items). */
+  display: inline-block;
+  vertical-align: baseline;
+  border-radius: 6px;
+  outline: 1px dashed cyan;
+  outline-offset: 2px;
+}
+
 .obj-bar-vue-control {
   display: inline-block;
   vertical-align: middle;

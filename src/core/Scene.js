@@ -883,6 +883,36 @@ class Scene {
   }
 
   /**
+   * ModuleObj refs for a module name: each {@link sceneObjs.ModuleObj} at top level of {@link Scene#objs},
+   * and each module instance template (`type: 'ModuleObj'`) at top level of every {@link ModuleDef#objs}.
+   * Live references only; not expanded objects inside module instances.
+   *
+   * @param {string} moduleId - The module name (`ModuleObj#module`), same as keys of {@link Scene#modules}.
+   * @returns {Array<sceneObjs.ModuleObj|Object>} Scene instances, then definition templates (serialized-shape plain objects).
+   */
+  getModuleObjRefsById(moduleId) {
+    /** @type {Array<sceneObjs.ModuleObj|Object>} */
+    const moduleObjRefs = [];
+
+    for (const obj of this.objs) {
+      if (obj?.constructor?.type === 'ModuleObj' && obj.module === moduleId) {
+        moduleObjRefs.push(obj);
+      }
+    }
+
+    for (const moduleDef of Object.values(this.modules)) {
+      if (!moduleDef || !Array.isArray(moduleDef.objs)) continue;
+      for (const obj of moduleDef.objs) {
+        if (obj && typeof obj === 'object' && obj.type === 'ModuleObj' && obj.module === moduleId) {
+          moduleObjRefs.push(obj);
+        }
+      }
+    }
+
+    return moduleObjRefs;
+  }
+
+  /**
    * Move objects into a module definition.
    * @param {number[]} indices
    * @param {string} moduleName
