@@ -704,6 +704,7 @@
       "emptyHint": "To create an object, please use the toolbar and create it in the canvas."
     },
     "moduleEditor": {
+      "settingsTitle": "Settings",
       "renameButton": "Rename",
       "removeButton": "Remove Module",
       "moveOut": "Move out",
@@ -714,7 +715,8 @@
       "errorEmptyName": "Module name cannot be empty.",
       "errorComma": "Module name cannot contain commas.",
       "errorNameExists": "A module named \"{{name}}\" already exists.",
-      "confirmRemove": "Remove module \"{{name}}\"?"
+      "confirmRemove": "Remove module \"{{name}}\"?",
+      "maxLoopLength": "Max loop length"
     },
     "aiAssistant": {
       "title": "AI Assistant",

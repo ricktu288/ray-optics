@@ -704,6 +704,7 @@
       "emptyHint": "要建立物件，請使用工具列並在畫布中建立。"
     },
     "moduleEditor": {
+      "settingsTitle": "設定",
       "renameButton": "重新命名",
       "removeButton": "移除模組",
       "moveOut": "移出模組",
@@ -714,7 +715,8 @@
       "errorEmptyName": "模組名稱不能為空。",
       "errorComma": "模組名稱不能包含逗號。",
       "errorNameExists": "名為「{{name}}」的模組已存在。",
-      "confirmRemove": "移除模組「{{name}}」？"
+      "confirmRemove": "移除模組「{{name}}」？",
+      "maxLoopLength": "最大迴圈長度"
     },
     "aiAssistant": {
       "title": "AI 輔助",

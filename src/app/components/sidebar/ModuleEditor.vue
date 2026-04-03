@@ -178,13 +178,39 @@
         v-html="$t('simulator:sidebar.moduleEditor.moveIntoModule', { name: selectedMoveInLabel })"
       ></button>
     </div>
-    <div class="module-editor-footer">
-      <button type="button" class="module-editor-btn" @click="onRenameClick">
-        {{ $t('simulator:sidebar.moduleEditor.renameButton') }}
-      </button>
-      <button type="button" class="module-editor-btn is-danger" @click="onRemoveClick">
-        {{ $t('simulator:sidebar.moduleEditor.removeButton') }}
-      </button>
+    <div class="module-editor-section module-editor-settings">
+      <div class="module-editor-title module-editor-title-plain">
+        <span class="module-editor-title-label">
+          {{ $t('simulator:sidebar.moduleEditor.settingsTitle') }}
+        </span>
+      </div>
+      <div class="module-editor-body module-editor-settings-body">
+        <div
+          class="module-editor-max-loop-section"
+          @focusin="onMaxLoopLengthFocusIn"
+          @focusout="onMaxLoopLengthFocusOut"
+        >
+          <div class="module-param-field">
+            <span class="module-param-keyword">{{ $t('simulator:sidebar.moduleEditor.maxLoopLength') }}</span>
+            <input
+              class="module-param-input"
+              v-model="maxLoopLengthInput"
+              :style="{ width: Math.max(maxLoopLengthInput.length, 1) + 'ch' }"
+              spellcheck="false"
+              @keydown.stop
+              @keydown.enter.prevent="onMaxLoopLengthEnter"
+            />
+          </div>
+        </div>
+        <div class="module-editor-settings-actions">
+          <button type="button" class="module-editor-btn" @click="onRenameClick">
+            {{ $t('simulator:sidebar.moduleEditor.renameButton') }}
+          </button>
+          <button type="button" class="module-editor-btn is-danger" @click="onRemoveClick">
+            {{ $t('simulator:sidebar.moduleEditor.removeButton') }}
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -298,6 +324,8 @@ function controlPointId(moduleName, index) {
   return `${moduleName}-cp-${index}`
 }
 
+const DEFAULT_MODULE_MAX_LOOP_LENGTH = 1000
+
 /** Index `s` after moving one item from `from` to `to`. */
 function controlPointIndexAfterReorder(s, from, to) {
   if (s === from) {
@@ -406,6 +434,66 @@ export default {
     const paramActiveId = ref(null)
     const variableItems = ref([])
     const variableActiveId = ref(null)
+    const maxLoopLengthInput = ref(String(DEFAULT_MODULE_MAX_LOOP_LENGTH))
+    const maxLoopLengthCommittedSnapshot = ref(maxLoopLengthInput.value)
+
+    const syncMaxLoopLengthField = () => {
+      const mod = app.scene?.modules?.[props.moduleName]
+      const v = mod?.maxLoopLength
+      maxLoopLengthInput.value = String(
+        v !== undefined && v !== null ? v : DEFAULT_MODULE_MAX_LOOP_LENGTH
+      )
+    }
+
+    const commitMaxLoopLength = () => {
+      const mod = app.scene?.modules?.[props.moduleName]
+      if (!mod) {
+        return
+      }
+      const trimmed = maxLoopLengthInput.value.trim()
+      const n = parseInt(trimmed, 10)
+      if (trimmed === '' || !Number.isFinite(n) || n < 1) {
+        syncMaxLoopLengthField()
+        maxLoopLengthCommittedSnapshot.value = maxLoopLengthInput.value
+        return
+      }
+      const had = Object.prototype.hasOwnProperty.call(mod, 'maxLoopLength')
+      const beforeVal = mod.maxLoopLength
+      if (n === DEFAULT_MODULE_MAX_LOOP_LENGTH) {
+        if (had) {
+          delete mod.maxLoopLength
+        }
+      } else {
+        mod.maxLoopLength = n
+      }
+      const changed =
+        (n === DEFAULT_MODULE_MAX_LOOP_LENGTH && had) ||
+        (n !== DEFAULT_MODULE_MAX_LOOP_LENGTH && (!had || beforeVal !== n))
+      syncMaxLoopLengthField()
+      maxLoopLengthCommittedSnapshot.value = maxLoopLengthInput.value
+      if (changed) {
+        app.scene.reloadAllModules?.()
+        app.simulator?.updateSimulation(false, true)
+        app.editor?.onActionComplete()
+      }
+    }
+
+    const onMaxLoopLengthFocusIn = () => {
+      maxLoopLengthCommittedSnapshot.value = maxLoopLengthInput.value
+    }
+
+    const onMaxLoopLengthFocusOut = (event) => {
+      const container = event.currentTarget
+      if (container && !container.contains(event.relatedTarget)) {
+        if (maxLoopLengthInput.value !== maxLoopLengthCommittedSnapshot.value) {
+          commitMaxLoopLength()
+        }
+      }
+    }
+
+    const onMaxLoopLengthEnter = () => {
+      commitMaxLoopLength()
+    }
 
     const getOccupiedModuleNames = () => {
       const paramNames = paramItems.value.map((r) => String(r.name ?? '').trim()).filter(Boolean)
@@ -1310,6 +1398,8 @@ export default {
         syncControlPointItems()
         syncParamItems()
         syncVariableItems()
+        syncMaxLoopLengthField()
+        maxLoopLengthCommittedSnapshot.value = maxLoopLengthInput.value
         selectModuleInstance()
         hoveredIndex.value = -1
         variableActiveId.value = null
@@ -1328,6 +1418,8 @@ export default {
       syncControlPointItems()
       syncParamItems()
       syncVariableItems()
+      syncMaxLoopLengthField()
+      maxLoopLengthCommittedSnapshot.value = maxLoopLengthInput.value
     }
 
     onMounted(() => {
@@ -1403,7 +1495,11 @@ export default {
       moveSelectedObjIn,
       resetAllModuleSidebarListSelections,
       handleEditorClick,
-      selectModuleInstance
+      selectModuleInstance,
+      maxLoopLengthInput,
+      onMaxLoopLengthFocusIn,
+      onMaxLoopLengthFocusOut,
+      onMaxLoopLengthEnter
     }
   }
 }
@@ -1422,10 +1518,12 @@ export default {
   min-height: 0;
 }
 
-.module-editor-control-points,
-.module-editor-params,
-.module-editor-vars {
-  margin-bottom: 4px;
+/* Rhythm between major blocks only (not above the first block). */
+.module-editor > .module-editor-warning + .module-editor-section,
+.module-editor > .module-editor-section + .module-editor-section,
+.module-editor > .module-editor-section + .module-editor-title,
+.module-editor > .module-editor-body + .module-editor-section {
+  margin-top: 14px;
 }
 
 .module-editor-title {
@@ -1433,7 +1531,6 @@ export default {
   align-items: center;
   justify-content: space-between;
   font-weight: 600;
-  margin-bottom: 8px;
   color: rgba(255, 255, 255, 0.92);
 }
 
@@ -1524,11 +1621,9 @@ export default {
   gap: 10px;
 }
 
-.module-editor-footer {
-  margin-top: 12px;
-  padding-top: 10px;
-  border-top: 1px solid rgba(255, 255, 255, 0.10);
+.module-editor-settings-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
 }
 
@@ -1563,6 +1658,42 @@ export default {
 .module-editor-btn.is-danger:hover {
   background: rgba(120, 40, 40, 0.22);
   border-color: rgba(255, 90, 90, 0.50);
+}
+
+.module-editor-max-loop-section {
+  padding-left: 2px;
+  padding-right: 3px;
+}
+
+.module-editor-max-loop-section .module-param-field {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 5px;
+  flex-shrink: 0;
+}
+
+.module-editor-max-loop-section .module-param-keyword {
+  white-space: nowrap;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.module-editor-max-loop-section .module-param-input {
+  font-size: 12px;
+  font-family: monospace;
+  padding: 2px 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  color: rgba(255, 255, 255, 0.9);
+  box-sizing: content-box;
+  min-width: 24px;
+}
+
+.module-editor-max-loop-section .module-param-input:focus {
+  outline: none;
+  border-color: rgba(120, 198, 255, 0.6);
 }
 </style>
 
