@@ -202,6 +202,24 @@ export default {
       activeTab.value = tab
     }
 
+    const handleOpenVisualModuleEditor = async (event) => {
+      const moduleName = event?.detail?.moduleName
+      if (!moduleName) return
+      showSidebar.value = true
+      activeTab.value = 'visual'
+      await nextTick()
+      document.dispatchEvent(new CustomEvent('selectVisualModuleTab', { detail: { moduleName } }))
+    }
+
+    const handleOpenVisualCreateModule = async (event) => {
+      const moduleName = event?.detail?.moduleName
+      if (!moduleName) return
+      showSidebar.value = true
+      activeTab.value = 'visual'
+      await nextTick()
+      document.dispatchEvent(new CustomEvent('applyVisualNewModule', { detail: { moduleName } }))
+    }
+
     // If we show the code editor after being hidden or after being on another tab,
     // ask Ace to re-measure.
     const resizeAceSoon = async () => {
@@ -227,6 +245,8 @@ export default {
     })
     
     onMounted(() => {
+      document.addEventListener('openVisualModuleEditor', handleOpenVisualModuleEditor)
+      document.addEventListener('openVisualCreateModule', handleOpenVisualCreateModule)
       // Add keyboard event listeners to prevent propagation from JSON editor
       const jsonEditor = document.getElementById('jsonEditor')
       
@@ -238,6 +258,8 @@ export default {
     })
     
     onUnmounted(() => {
+      document.removeEventListener('openVisualModuleEditor', handleOpenVisualModuleEditor)
+      document.removeEventListener('openVisualCreateModule', handleOpenVisualCreateModule)
       // Clean up event listeners if component is destroyed during resize
       document.removeEventListener('mousemove', handleResize)
       document.removeEventListener('mouseup', stopResize)

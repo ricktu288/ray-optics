@@ -203,6 +203,8 @@
     },
     "modules": {
       "import": "导入模块…",
+      "createModule": "创建模块…",
+      "description": "通过组合现有工具来制作新工具。",
       "remove": "移除模块"
     },
     "moveView": {

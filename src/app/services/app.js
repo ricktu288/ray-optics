@@ -120,6 +120,14 @@ function initAppService() {
     objBar.shouldApplyToAll = this.checked;
   });
 
+  document.addEventListener('selectSceneObjByIndex', function (e) {
+    const idx = e?.detail?.index;
+    if (Number.isInteger(idx)) {
+      editor.selectObj(idx);
+      document.dispatchEvent(new Event('sceneChanged'));
+    }
+  });
+
 
 
 
@@ -960,6 +968,59 @@ function openSample(name) {
   client.send();
 }
 
+function mergeModulesFromMap(moduleMap) {
+  if (!moduleMap || typeof moduleMap !== 'object' || Array.isArray(moduleMap)) {
+    return;
+  }
+  for (const moduleName in moduleMap) {
+    if (!Object.prototype.hasOwnProperty.call(moduleMap, moduleName)) {
+      continue;
+    }
+    let newModuleName = moduleName;
+    if (scene.modules[moduleName] && JSON.stringify(scene.modules[moduleName]) !== JSON.stringify(moduleMap[moduleName])) {
+      newModuleName = prompt(i18next.t('simulator:moduleModal.conflict'), moduleName);
+      if (!newModuleName) {
+        continue;
+      }
+    }
+    scene.addModule(newModuleName, moduleMap[moduleName]);
+  }
+}
+
+function finalizeSuccessfulModuleImport() {
+  document.dispatchEvent(new Event('sceneChanged'));
+  simulator.updateSimulation(false, true);
+  editor.onActionComplete();
+}
+
+/**
+ * Merge module definitions from a parsed scene (or module package) JSON object.
+ * @param {object} parsedJson
+ * @returns {boolean} Whether the file contained a valid `modules` object.
+ */
+function importModulesFromSceneFile(parsedJson) {
+  if (typeof parsedJson !== 'object' || parsedJson === null) {
+    return false;
+  }
+  if (!Object.prototype.hasOwnProperty.call(parsedJson, 'modules')) {
+    return false;
+  }
+  const moduleMap = parsedJson.modules;
+  if (typeof moduleMap !== 'object' || moduleMap === null || Array.isArray(moduleMap)) {
+    return false;
+  }
+  document.getElementById('welcome').style.display = 'none';
+  try {
+    mergeModulesFromMap(moduleMap);
+  } catch (e) {
+    error = "importModulesFromSceneFile: " + e;
+    updateErrorAndWarning();
+    return false;
+  }
+  finalizeSuccessfulModuleImport();
+  return true;
+}
+
 function importModule(name) {
   var client = new XMLHttpRequest();
   client.open('GET', '../modules/' + name);
@@ -972,26 +1033,13 @@ function importModule(name) {
     }
     try {
       const moduleJSON = JSON.parse(client.responseText);
-      for (let moduleName in moduleJSON.modules) {
-        if (moduleJSON.modules.hasOwnProperty(moduleName)) {
-          let newModuleName = moduleName;
-          if (scene.modules[moduleName] && JSON.stringify(scene.modules[moduleName]) != JSON.stringify(moduleJSON.modules[moduleName])) {
-            newModuleName = prompt(i18next.t('simulator:moduleModal.conflict'), moduleName);
-            if (!newModuleName) {
-              continue;
-            }
-          }
-          scene.addModule(newModuleName, moduleJSON.modules[moduleName]);
-        }
-      }
+      mergeModulesFromMap(moduleJSON.modules);
     } catch (e) {
       error = "importModule: " + e;
       updateErrorAndWarning();
       return;
     }
-    document.dispatchEvent(new Event('sceneChanged'));
-    simulator.updateSimulation(false, true);
-    editor.onActionComplete();
+    finalizeSuccessfulModuleImport();
   }
   client.onerror = function () {
     error = "importModule: " + i18next.t('simulator:appErrors.httpError');
@@ -1193,4 +1241,5 @@ export const app = {
   save,
   syncUrl,
   setHasUnsavedChange,
+  importModulesFromSceneFile,
 }

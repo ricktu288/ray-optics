@@ -953,6 +953,68 @@ class Scene {
   }
 
   /**
+   * Convert a handle into a new module: one control point at the handle position, bound scene objects
+   * moved into the module definition, the handle removed, and a new {@link sceneObjs.ModuleObj} added.
+   * @param {number} handleIndex - Index of the {@link sceneObjs.Handle} in {@link Scene#objs}.
+   * @param {string} moduleName - Name for the new module (must not already exist).
+   * @returns {{ ok: boolean, moduleObjIndex?: number }}
+   */
+  convertHandleToModule(handleIndex, moduleName) {
+    if (!Number.isInteger(handleIndex) || handleIndex < 0 || handleIndex >= this.objs.length) {
+      return { ok: false };
+    }
+    if (this.modules[moduleName]) {
+      return { ok: false };
+    }
+    const handle = this.objs[handleIndex];
+    if (!handle || handle.constructor.type !== 'Handle') {
+      return { ok: false };
+    }
+
+    const p1 = { x: handle.p1.x, y: handle.p1.y };
+
+    const indicesSet = new Set();
+    for (const idx of handle.objIndices || []) {
+      if (Number.isInteger(idx) && idx >= 0 && idx !== handleIndex) {
+        indicesSet.add(idx);
+      }
+    }
+    for (const cp of handle.controlPoints || []) {
+      const idx = cp.targetObjIndex;
+      if (Number.isInteger(idx) && idx >= 0 && idx !== handleIndex) {
+        indicesSet.add(idx);
+      }
+    }
+
+    this.modules[moduleName] = {
+      numPoints: 1,
+      params: [],
+      vars: [],
+      objs: []
+    };
+
+    const indices = Array.from(indicesSet).sort((a, b) => b - a);
+    this.moveObjsToModule(indices, moduleName);
+
+    const hi = this.objs.indexOf(handle);
+    if (hi < 0) {
+      return { ok: false };
+    }
+    this.removeObj(hi);
+
+    const moduleObjJson = {
+      type: 'ModuleObj',
+      module: moduleName,
+      points: [{ x: p1.x, y: p1.y }],
+      params: {}
+    };
+    this.objs.push(new sceneObjs.ModuleObj(this, moduleObjJson));
+    const moduleObjIndex = this.objs.length - 1;
+    this.reloadAllModules();
+    return { ok: true, moduleObjIndex };
+  }
+
+  /**
    * Move module definition objects out into the scene.
    * @param {string} moduleName
    * @param {number[]} sourceIndices

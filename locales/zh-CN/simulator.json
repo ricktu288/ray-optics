@@ -407,6 +407,7 @@
     },
     "ModuleObj": {
       "module": "模块",
+      "editModule": "编辑模块",
       "demodulize": "取消模块化",
       "loopVariableTooLarge": "循环变量“{{name}}”的长度过大。请设置更大的 maxLoopLength 值。",
       "loopTooLarge": "循环的长度过大。请设置更大的 maxLoopLength 值。",
@@ -427,7 +428,8 @@
         "scaling": "缩放"
       },
       "step": "步长",
-      "transformationWarning": "对“{{obj}}”进行“{{transformation}}”可能会产生非预期的结果。"
+      "transformationWarning": "对“{{obj}}”进行“{{transformation}}”可能会产生非预期的结果。",
+      "convertToModule": "转为模块…"
     },
     "CropBox": {
       "title": "导出",
@@ -454,7 +456,12 @@
   "moduleModal": {
     "title": "导入模块",
     "makeCustomModules": "创建自定义模块",
-    "conflict": "场景中已有一个同名但不相同的模块。您可以指定新的名称，或保留相同名称以取代原模块。"
+    "conflict": "场景中已有一个同名但不相同的模块。您可以指定新的名称，或保留相同名称以取代原模块。",
+    "importFromFile": {
+      "title": "从文件导入",
+      "description": "从场景 JSON 文件导入所有模块。",
+      "error": "此文件不包含有效的模块。"
+    }
   },
   "colorModeModal": {
     "linear": {
@@ -711,6 +718,7 @@
       "moveInHint": "要将物件加入此模块，请先使用工具栏创建物件，或在画布中选择现有物件。",
       "moveIntoModule": "将「{{name}}」移入此模块",
       "noInstances": "此模块目前没有任何实例在场景中。若要创建实例，请使用工具->其他->{{name}}。",
+      "emptyModuleExamplesHint": "模块示例请见工具->其他->导入模块",
       "promptNewName": "新模块名称：（通常为 PascalCase 格式）",
       "errorEmptyName": "模块名称不能为空。",
       "errorComma": "模块名称不能包含逗号。",

@@ -26,9 +26,20 @@
         <div class="modal-body module-modal-body">
           <iframe id="moduleIframe" loading="lazy" :src="modulesUrl"></iframe>
         </div>
-        <div class="modal-footer">
-          <a class="btn btn-success me-auto" :href="tutorialUrl" target="_blank" v-html="$t('simulator:moduleModal.makeCustomModules')"></a>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" v-html="$t('simulator:common.closeButton')"></button>
+        <div class="modal-footer d-flex justify-content-between">
+          <div>
+            <button
+              type="button"
+              class="btn btn-outline-secondary me-2"
+              v-tooltip-popover:[tooltipType]="{ content: $t('simulator:moduleModal.importFromFile.description'), placement: 'top' }"
+              @click="importFromFile"
+              v-html="$t('simulator:moduleModal.importFromFile.title')"
+            ></button>
+            <input type="file" ref="fileInput" accept=".json" style="display: none" @change="handleFileSelect" />
+          </div>
+          <div>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" v-html="$t('simulator:common.closeButton')"></button>
+          </div>
         </div>
       </div>
     </div>
@@ -40,13 +51,25 @@
  * @module ModuleModal
  * @description The Vue component for the pop-up modal for Tools -> Other -> Import Modules.
  */
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed, toRef } from 'vue'
 import { mapURL } from '../utils/links.js'
+import { vTooltipPopover } from '../directives/tooltip-popover.js'
+import { usePreferencesStore } from '../store/preferences.js'
+import * as bootstrap from 'bootstrap'
+import i18next from 'i18next'
+import { app } from '../services/app.js'
 
 export default {
   name: 'ModuleModal',
+  directives: {
+    'tooltip-popover': vTooltipPopover
+  },
   setup() {
     const isModalOpen = ref(false)
+    const fileInput = ref(null)
+    const preferences = usePreferencesStore()
+    const help = toRef(preferences, 'help')
+    const tooltipType = computed(() => (help.value ? 'popover' : null))
 
     onMounted(() => {
       const modal = document.getElementById('moduleModal')
@@ -67,13 +90,50 @@ export default {
     }
 
     const modulesUrl = mapURL('/modules/modules')
-    const tutorialUrl = mapURL('/modules/tutorial')
+
+    const importFromFile = () => {
+      fileInput.value.click()
+    }
+
+    const handleFileSelect = (event) => {
+      const file = event.target.files[0]
+      if (!file) return
+
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        try {
+          const jsonData = JSON.parse(e.target.result)
+          if (app.importModulesFromSceneFile(jsonData)) {
+            const modalEl = document.getElementById('moduleModal')
+            const bsModal = bootstrap.Modal.getInstance(modalEl)
+            if (bsModal) {
+              bsModal.hide()
+            } else {
+              closeModal()
+            }
+          } else {
+            alert(i18next.t('simulator:moduleModal.importFromFile.error'))
+          }
+        } catch (err) {
+          console.error(err)
+          alert(i18next.t('simulator:moduleModal.importFromFile.error'))
+        }
+      }
+      reader.onerror = () => {
+        alert(i18next.t('simulator:moduleModal.importFromFile.error'))
+      }
+      reader.readAsText(file)
+      event.target.value = ''
+    }
 
     return {
       modulesUrl,
-      tutorialUrl,
       isModalOpen,
-      closeModal
+      closeModal,
+      fileInput,
+      tooltipType,
+      importFromFile,
+      handleFileSelect
     }
   }
 }

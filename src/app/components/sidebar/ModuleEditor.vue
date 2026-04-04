@@ -19,6 +19,9 @@
     <p v-if="!hasModuleInstance" class="module-editor-warning is-highlighted">
       {{ $t('simulator:sidebar.moduleEditor.noInstances', { name: moduleName }) }}
     </p>
+    <p v-if="isModuleEmpty" class="module-editor-notice">
+      {{ $t('simulator:sidebar.moduleEditor.emptyModuleExamplesHint') }}
+    </p>
     <div class="module-editor-section module-editor-control-points">
       <div class="module-editor-title module-editor-title-plain">
         <span class="module-editor-title-label">
@@ -590,6 +593,15 @@ export default {
         return false
       }
       return hasInstanceInObjs(app.scene?.objs || [])
+    })
+
+    const isModuleEmpty = computed(() => {
+      return (
+        controlPointItems.value.length === 0 &&
+        paramItems.value.length === 0 &&
+        variableItems.value.length === 0 &&
+        moduleItems.value.length === 0
+      )
     })
 
     const hasNestedModuleInstance = (obj, moduleName) => {
@@ -1487,6 +1499,7 @@ export default {
       canMoveSelectedObjIn,
       selectedMoveInLabel,
       hasModuleInstance,
+      isModuleEmpty,
       moveSelectedObjIn,
       resetAllModuleSidebarListSelections,
       handleEditorClick,
@@ -1514,6 +1527,8 @@ export default {
 
 /* Rhythm between major blocks only (not above the first block). */
 .module-editor > .module-editor-warning + .module-editor-section,
+.module-editor > .module-editor-warning + .module-editor-notice,
+.module-editor > .module-editor-notice + .module-editor-section,
 .module-editor > .module-editor-section + .module-editor-section,
 .module-editor > .module-editor-section + .module-editor-title,
 .module-editor > .module-editor-body + .module-editor-section {
@@ -1583,6 +1598,18 @@ export default {
   margin: 0;
   font-size: 11px;
   color: rgba(255, 255, 255, 0.55);
+}
+
+.module-editor-notice {
+  margin: 0;
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: rgba(225, 246, 252, 0.94);
+  background: rgba(100, 190, 220, 0.20);
+  border: 1px solid rgba(120, 210, 235, 0.32);
+  box-shadow: 0 0 0 1px rgba(100, 200, 230, 0.07);
 }
 
 .module-editor-warning {

@@ -407,6 +407,7 @@
     },
     "ModuleObj": {
       "module": "模組",
+      "editModule": "編輯模組",
       "demodulize": "取消模組化",
       "loopVariableTooLarge": "迴圈變數「{{name}}」的長度過大。請設定更大的 maxLoopLength 值。",
       "loopTooLarge": "迴圈的長度過大。請設定更大的 maxLoopLength 值。",
@@ -427,7 +428,8 @@
         "scaling": "縮放"
       },
       "step": "步長",
-      "transformationWarning": "對「{{obj}}」進行「{{transformation}}」可能會產生非預期的結果。"
+      "transformationWarning": "對「{{obj}}」進行「{{transformation}}」可能會產生非預期的結果。",
+      "convertToModule": "轉為模組…"
     },
     "CropBox": {
       "title": "匯出",
@@ -454,7 +456,12 @@
   "moduleModal": {
     "title": "匯入模組",
     "makeCustomModules": "製作自訂模組",
-    "conflict": "場景中已有一個同名但不相同的模組。您可以指定新的名稱，或保留相同名稱以取代原模組。"
+    "conflict": "場景中已有一個同名但不相同的模組。您可以指定新的名稱，或保留相同名稱以取代原模組。",
+    "importFromFile": {
+      "title": "從檔案匯入",
+      "description": "從場景 JSON 檔案匯入所有模組。",
+      "error": "此檔案不包含有效的模組。"
+    }
   },
   "colorModeModal": {
     "linear": {
@@ -711,6 +718,7 @@
       "moveInHint": "要將物件加入此模組，請先使用工具列建立物件，或在畫布中選取現有物件。",
       "moveIntoModule": "將「{{name}}」移入此模組",
       "noInstances": "此模組目前沒有任何實例在場景中。若要建立實例，請使用工具->其他->{{name}}。",
+      "emptyModuleExamplesHint": "模組範例請見工具->其他->匯入模組",
       "promptNewName": "新模組名稱：（通常為 PascalCase 格式）",
       "errorEmptyName": "模組名稱不能為空。",
       "errorComma": "模組名稱不能包含逗號。",

@@ -203,6 +203,8 @@
     },
     "modules": {
       "import": "Import Modules…",
+      "createModule": "Create Module…",
+      "description": "Make new tools by combining existing tools.",
       "remove": "Remove module"
     },
     "moveView": {

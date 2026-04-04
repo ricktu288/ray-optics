@@ -72,9 +72,9 @@
 
 <script>
 import { computed, onMounted, onUnmounted, ref, toRef, watch } from 'vue'
-import i18next from 'i18next'
 import { useSceneStore } from '../../store/scene'
 import { app } from '../../services/app'
+import { promptNewModuleName } from '../../utils/promptNewModuleName.js'
 import SceneObjsEditor from './SceneObjsEditor.vue'
 import ModuleEditor from './ModuleEditor.vue'
 import InfoPopoverIcon from '../InfoPopoverIcon.vue'
@@ -94,38 +94,21 @@ export default {
     // NOTE: kept local per request (no store binding)
     const activeTabId = ref('scene')
 
-    const suggestNewModuleName = (names) => {
-      const base = 'NewModule'
-      if (!names.includes(base)) return base
-      for (let i = 2; i < 10000; i++) {
-        const candidate = `${base}${i}`
-        if (!names.includes(candidate)) return candidate
-      }
-      // Extremely unlikely, but keep the UI unblocked.
-      return `${base}${Date.now()}`
+    const applyNewModule = (moduleName) => {
+      scene.createModule(moduleName)
+      activeTabId.value = `module:${moduleName}`
     }
 
     const onCreateModuleClick = () => {
-      const defaultName = suggestNewModuleName(moduleNames.value)
-      const proposed = window.prompt(i18next.t('simulator:sidebar.moduleEditor.promptNewName'), defaultName)
-      if (proposed == null) return
+      const newName = promptNewModuleName(moduleNames.value)
+      if (newName == null) return
+      applyNewModule(newName)
+    }
 
-      const newName = proposed.trim()
-      if (!newName) {
-        window.alert(i18next.t('simulator:sidebar.moduleEditor.errorEmptyName'))
-        return
-      }
-      if (newName.includes(',')) {
-        window.alert(i18next.t('simulator:sidebar.moduleEditor.errorComma'))
-        return
-      }
-      if (moduleNames.value.includes(newName)) {
-        window.alert(i18next.t('simulator:sidebar.moduleEditor.errorNameExists', { name: newName }))
-        return
-      }
-
-      scene.createModule(newName)
-      activeTabId.value = `module:${newName}`
+    const handleApplyVisualNewModule = (event) => {
+      const moduleName = event?.detail?.moduleName
+      if (!moduleName) return
+      applyNewModule(moduleName)
     }
 
     const handleSelectModuleTab = (event) => {
@@ -158,11 +141,13 @@ export default {
     onMounted(() => {
       document.addEventListener('selectVisualModuleTab', handleSelectModuleTab)
       document.addEventListener('selectVisualSceneTab', handleSelectSceneTab)
+      document.addEventListener('applyVisualNewModule', handleApplyVisualNewModule)
     })
 
     onUnmounted(() => {
       document.removeEventListener('selectVisualModuleTab', handleSelectModuleTab)
       document.removeEventListener('selectVisualSceneTab', handleSelectSceneTab)
+      document.removeEventListener('applyVisualNewModule', handleApplyVisualNewModule)
     })
 
     watch(activeTabId, (nextValue) => {

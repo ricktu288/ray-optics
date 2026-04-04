@@ -407,6 +407,7 @@
     },
     "ModuleObj": {
       "module": "Module",
+      "editModule": "Edit module",
       "demodulize": "Demodulize",
       "loopVariableTooLarge": "The length of the loop variable \"{{name}}\" is too large. Please set maxLoopLength to a larger value.",
       "loopTooLarge": "The length of the loop is too large. Please set maxLoopLength to a larger value.",
@@ -427,7 +428,8 @@
         "scaling": "Scaling"
       },
       "step": "Step",
-      "transformationWarning": "Applying \"{{transformation}}\" to \"{{obj}}\" may give unexpected results."
+      "transformationWarning": "Applying \"{{transformation}}\" to \"{{obj}}\" may give unexpected results.",
+      "convertToModule": "To module…"
     },
     "CropBox": {
       "title": "Export",
@@ -454,7 +456,12 @@
   "moduleModal": {
     "title": "Import Modules",
     "makeCustomModules": "Make custom modules",
-    "conflict": "A different module with the same name already exists in the current scene. You may enter a new name, or leave it the same to overwrite the existing module."
+    "conflict": "A different module with the same name already exists in the current scene. You may enter a new name, or leave it the same to overwrite the existing module.",
+    "importFromFile": {
+      "title": "Import from file",
+      "description": "Import all modules from a scene JSON file.",
+      "error": "The file does not contain valid modules."
+    }
   },
   "colorModeModal": {
     "linear": {
@@ -711,6 +718,7 @@
       "moveInHint": "To add an object to this module, please first create the object using the toolbar or select an existing object in the canvas.",
       "moveIntoModule": "Move \"{{name}}\" into this module",
       "noInstances": "No instances of this module are currently in the scene. To create an instance, use Tools -> Other -> {{name}}.",
+      "emptyModuleExamplesHint": "For examples of modules, see Tools -> Other -> Import Modules",
       "promptNewName": "New module name: (usually in PascalCase)",
       "errorEmptyName": "Module name cannot be empty.",
       "errorComma": "Module name cannot contain commas.",
