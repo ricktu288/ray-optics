@@ -35,7 +35,7 @@
               @create="onForLoopCreate"
             >
               <template #content="{ item, index }">
-                <div class="for-loop-item" @focusin="onForItemFocusIn" @focusout="onForItemFocusOut">
+                <div class="for-loop-item" @focusout="onForItemFocusOut">
                   <input
                     class="for-loop-input"
                     :value="item.name"
@@ -459,12 +459,15 @@ export default {
 
     // --- For loop drafts ---
     const forDrafts = ref([])
-    /** JSON snapshot when focus entered a for-loop row; blur skips emit if unchanged (like FormulaInput). */
-    const forDraftsAtFocus = ref('')
+    /** JSON of `draftsToCommittedValue(forDrafts)` after last parent sync / commit; blur uses this so Enter+blur does not double-apply. */
+    const forDraftsLastCommitted = ref('')
     const currentForValue = computed(() => getForIfValue('for'))
+
+    const forDraftsSnapshot = () => JSON.stringify(draftsToCommittedValue(forDrafts.value))
 
     watch(currentForValue, (forValue) => {
       forDrafts.value = normalizeForValue(forValue).map(parseForString)
+      forDraftsLastCommitted.value = forDraftsSnapshot()
     }, { immediate: true, deep: true })
 
     const onForFieldInput = (index, field, value) => {
@@ -477,15 +480,11 @@ export default {
       applyUpdate(forIfPath('for'), draftsToCommittedValue(forDrafts.value))
     }
 
-    const onForItemFocusIn = () => {
-      forDraftsAtFocus.value = JSON.stringify(draftsToCommittedValue(forDrafts.value))
-    }
-
     const onForItemFocusOut = (event) => {
       const container = event.currentTarget
       if (container && !container.contains(event.relatedTarget)) {
-        const now = JSON.stringify(draftsToCommittedValue(forDrafts.value))
-        if (now !== forDraftsAtFocus.value) {
+        const now = forDraftsSnapshot()
+        if (now !== forDraftsLastCommitted.value) {
           commitForDrafts()
         }
       }
@@ -669,7 +668,6 @@ export default {
       forDrafts,
       onForFieldInput,
       commitForDrafts,
-      onForItemFocusIn,
       onForItemFocusOut,
       onForLoopCreate,
       onForLoopRemove,

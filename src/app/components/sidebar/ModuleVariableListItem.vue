@@ -15,7 +15,7 @@
 -->
 
 <template>
-  <div class="module-var-item" @focusin="onRowFocusIn" @focusout="onRowFocusOut">
+  <div class="module-var-item" @focusout="onRowFocusOut">
     <div class="module-var-name-wrap">
       <textarea
         ref="nameRef"
@@ -79,8 +79,8 @@ export default {
     const sceneStore = useSceneStore()
     const editorSelectedObjIndex = ref(-1)
 
-    /** JSON snapshot at row focus-in; same idea as for-loop drafts in PropertyList. */
-    const committedSnapshotAtFocus = ref('')
+    /** Last row state that matches the parent store; blur commits only when the row differs from this (Enter updates this nextTick so a later blur does not double-commit). */
+    const lastCommittedSnapshot = ref('')
 
     const rowSnapshot = () => JSON.stringify({ name: props.name, expression: props.expression })
 
@@ -152,15 +152,14 @@ export default {
       disposeModuleInstancesTooltip()
     }
 
-    const onRowFocusIn = () => {
-      committedSnapshotAtFocus.value = rowSnapshot()
-    }
-
     const onRowFocusOut = (event) => {
       const container = event.currentTarget
       if (container && !container.contains(event.relatedTarget)) {
-        if (rowSnapshot() !== committedSnapshotAtFocus.value) {
+        if (rowSnapshot() !== lastCommittedSnapshot.value) {
           emit('commit')
+          nextTick(() => {
+            lastCommittedSnapshot.value = rowSnapshot()
+          })
         }
       }
     }
@@ -187,6 +186,9 @@ export default {
     const onEnterCommit = () => {
       disposeModuleInstancesTooltip()
       emit('commit')
+      nextTick(() => {
+        lastCommittedSnapshot.value = rowSnapshot()
+      })
       reshowTooltipIfFocused()
     }
 
@@ -257,6 +259,7 @@ export default {
     }
 
     onMounted(() => {
+      lastCommittedSnapshot.value = rowSnapshot()
       syncEditorSelection()
       document.addEventListener('sceneObjSelectionChanged', onSceneObjSelectionChanged)
       document.addEventListener('sceneChanged', onSceneStructureMaybeChanged)
@@ -277,7 +280,6 @@ export default {
       onNameInput,
       onExprInput,
       autoResize,
-      onRowFocusIn,
       onRowFocusOut,
       onEnterCommit,
       onNameFocus,

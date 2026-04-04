@@ -69,8 +69,8 @@ export default {
   setup(props, { emit }) {
     const textareaRef = ref(null)
     const localValue = ref(props.modelValue)
-    /** Snapshot when focus started; blur skips emit if text unchanged. */
-    const valueAtFocus = ref('')
+    /** Last value aligned with parent `modelValue` / last emit; blur skips emit if unchanged (avoids double-emit after Enter). */
+    const lastCommittedValue = ref(props.modelValue)
     let focused = false
 
     const sceneStore = useSceneStore()
@@ -161,21 +161,26 @@ export default {
       disposeModuleInstancesTooltip()
     }
 
-    watch(() => props.modelValue, (v) => {
-      if (!focused) {
-        localValue.value = v
-        nextTick(autoResize)
-      }
-    })
-
-    watch(sidebarWidth, () => nextTick(autoResize))
-
     const autoResize = () => {
       const el = textareaRef.value
       if (!el) return
       el.style.height = 'auto'
       el.style.height = el.scrollHeight + 'px'
     }
+
+    watch(
+      () => props.modelValue,
+      (v) => {
+        if (!focused) {
+          localValue.value = v
+          lastCommittedValue.value = v
+          nextTick(autoResize)
+        }
+      },
+      { immediate: true }
+    )
+
+    watch(sidebarWidth, () => nextTick(autoResize))
 
     const syncEditorSelection = () => {
       editorSelectedObjIndex.value = app.editor?.selectedObjIndex ?? -1
@@ -205,7 +210,6 @@ export default {
     })
 
     const onFocus = () => {
-      valueAtFocus.value = localValue.value
       focused = true
       showModuleInstancesTooltip(textareaRef.value)
     }
@@ -223,9 +227,12 @@ export default {
     const commitBlur = () => {
       focused = false
       disposeModuleInstancesTooltip()
-      if (localValue.value !== valueAtFocus.value) {
+      if (localValue.value !== lastCommittedValue.value) {
         emit('update:modelValue', localValue.value)
       }
+      nextTick(() => {
+        lastCommittedValue.value = props.modelValue
+      })
     }
 
     /**
@@ -237,6 +244,7 @@ export default {
       disposeModuleInstancesTooltip()
       emit('update:modelValue', localValue.value)
       nextTick(() => {
+        lastCommittedValue.value = props.modelValue
         if (localValue.value !== props.modelValue) {
           return
         }

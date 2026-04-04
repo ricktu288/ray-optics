@@ -15,7 +15,7 @@
 -->
 
 <template>
-  <div class="sidebar-item-list" role="list" ref="listRoot" @dragover.prevent="onDragOverList" @drop.prevent="onDropList" @click.stop>
+  <div class="sidebar-item-list" role="list" ref="listRoot" @dragover.prevent="onDragOverList" @drop.prevent="onDropList">
     <div class="sidebar-item-list-rows">
       <div
         v-for="(item, index) in items"

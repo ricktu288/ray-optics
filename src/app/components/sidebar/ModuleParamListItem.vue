@@ -18,7 +18,6 @@
   <div
     ref="tooltipHostRef"
     class="module-param-item"
-    @focusin="onRowFocusIn"
     @focusout="onRowFocusOut"
     @click="onItemClick"
     @mouseleave="onItemMouseLeave"
@@ -107,7 +106,8 @@ export default {
     const tooltipHostRef = ref(null)
     const sceneStore = useSceneStore()
     const editorSelectedObjIndex = ref(-1)
-    const committedSnapshotAtFocus = ref('')
+    /** Last row state that matches the parent store; blur commits only when the row differs from this (Enter updates this nextTick so a later blur does not double-commit). */
+    const lastCommittedSnapshot = ref('')
 
     let moduleInstancesTooltip = null
 
@@ -197,15 +197,14 @@ export default {
       disposeModuleInstancesTooltip()
     }
 
-    const onRowFocusIn = () => {
-      committedSnapshotAtFocus.value = rowSnapshot()
-    }
-
     const onRowFocusOut = (event) => {
       const container = event.currentTarget
       if (container && !container.contains(event.relatedTarget)) {
-        if (rowSnapshot() !== committedSnapshotAtFocus.value) {
+        if (rowSnapshot() !== lastCommittedSnapshot.value) {
           emit('commit')
+          nextTick(() => {
+            lastCommittedSnapshot.value = rowSnapshot()
+          })
         }
       }
     }
@@ -213,6 +212,9 @@ export default {
     const onEnterCommit = () => {
       disposeModuleInstancesTooltip()
       emit('commit')
+      nextTick(() => {
+        lastCommittedSnapshot.value = rowSnapshot()
+      })
     }
 
     const syncEditorSelection = () => {
@@ -229,6 +231,7 @@ export default {
     }
 
     onMounted(() => {
+      lastCommittedSnapshot.value = rowSnapshot()
       syncEditorSelection()
       document.addEventListener('sceneObjSelectionChanged', onSceneObjSelectionChanged)
       document.addEventListener('sceneChanged', onSceneStructureMaybeChanged)
@@ -244,7 +247,6 @@ export default {
 
     return {
       tooltipHostRef,
-      onRowFocusIn,
       onRowFocusOut,
       onEnterCommit,
       onItemClick,

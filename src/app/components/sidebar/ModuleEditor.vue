@@ -184,10 +184,9 @@
           {{ $t('simulator:sidebar.moduleEditor.settingsTitle') }}
         </span>
       </div>
-      <div class="module-editor-body module-editor-settings-body">
+      <div class="module-editor-body">
         <div
           class="module-editor-max-loop-section"
-          @focusin="onMaxLoopLengthFocusIn"
           @focusout="onMaxLoopLengthFocusOut"
         >
           <div class="module-param-field">
@@ -476,10 +475,6 @@ export default {
         app.simulator?.updateSimulation(false, true)
         app.editor?.onActionComplete()
       }
-    }
-
-    const onMaxLoopLengthFocusIn = () => {
-      maxLoopLengthCommittedSnapshot.value = maxLoopLengthInput.value
     }
 
     const onMaxLoopLengthFocusOut = (event) => {
@@ -1497,7 +1492,6 @@ export default {
       handleEditorClick,
       selectModuleInstance,
       maxLoopLengthInput,
-      onMaxLoopLengthFocusIn,
       onMaxLoopLengthFocusOut,
       onMaxLoopLengthEnter
     }
@@ -1662,7 +1656,7 @@ export default {
 
 .module-editor-max-loop-section {
   padding-left: 2px;
-  padding-right: 3px;
+  padding-top: 4px;
 }
 
 .module-editor-max-loop-section .module-param-field {

@@ -88,7 +88,7 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue'
+import { computed, ref, watch, onMounted, nextTick } from 'vue'
 import i18next from 'i18next'
 import { app } from '../../services/app'
 import * as sceneObjs from '../../../core/sceneObjs.js'
@@ -121,6 +121,9 @@ export default {
   setup(props, { emit }) {
     const expanded = ref(false)
     const templateLockEl = ref(null)
+
+    /** Last name when `blur` was emitted (simulation commit); avoids double `commitName` on Enter then blur. */
+    const lastCommittedName = ref('')
 
     const objData = computed(() => props.item?.obj)
 
@@ -209,12 +212,30 @@ export default {
       emit('update:name', event.target.value)
     }
 
+    watch(
+      () => props.index,
+      () => {
+        lastCommittedName.value = nameValue.value
+      }
+    )
+
+    onMounted(() => {
+      lastCommittedName.value = nameValue.value
+    })
+
     const onBlur = () => {
+      if (nameValue.value === lastCommittedName.value) {
+        return
+      }
       emit('blur')
+      nextTick(() => {
+        lastCommittedName.value = nameValue.value
+      })
     }
 
     const commitAndBlur = (event) => {
       emit('blur')
+      lastCommittedName.value = nameValue.value
       event.target.blur()
     }
 

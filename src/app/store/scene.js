@@ -211,7 +211,10 @@ export const useSceneStore = () => {
   }
   const createModule = (moduleName) => {
     if (app.scene) {
-      app.scene.createModule(moduleName)
+      const created = app.scene.createModule(moduleName)
+      if (created) {
+        app.hideWelcome()
+      }
       // Update moduleIds
       state.moduleIds = Object.keys(app.scene.modules).join(',')
       // Trigger necessary updates
