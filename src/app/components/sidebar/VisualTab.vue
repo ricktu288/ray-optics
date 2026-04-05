@@ -353,6 +353,16 @@ export default {
   padding: 8px;
   -webkit-overflow-scrolling: touch;
 }
+
+/* Sidebar contrast; link decoration is global. */
+.visual-tab :deep(a) {
+  color: #8ec5ff;
+}
+
+.visual-tab :deep(a:hover),
+.visual-tab :deep(a:focus-visible) {
+  color: #b8d9ff;
+}
 </style>
 
 

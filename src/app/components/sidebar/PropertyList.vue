@@ -774,7 +774,7 @@ export default {
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 4px;
-  color: rgba(255, 255, 255, 0.9);
+  color: #fff;
 }
 
 .property-list-input--coord {
@@ -817,11 +817,14 @@ export default {
   font-size: 11px;
   color: rgba(120, 198, 255, 0.9);
   cursor: pointer;
-  text-decoration: underline;
+  text-decoration: none;
+  text-underline-offset: 2px;
 }
 
-.property-list-visibility-link:hover {
+.property-list-visibility-link:hover,
+.property-list-visibility-link:focus-visible {
   color: rgba(140, 218, 255, 0.95);
+  text-decoration: underline;
 }
 
 .property-list-array-body {
@@ -830,7 +833,7 @@ export default {
 }
 
 .for-if-box {
-  background: rgba(120, 198, 255, 0.15);
+  background: rgba(120, 198, 255, 0.1);
   border: 1px solid rgba(120, 198, 255, 0.5);
   border-radius: 6px;
   padding: 8px;
@@ -858,7 +861,7 @@ export default {
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 3px;
-  color: rgba(255, 255, 255, 0.9);
+  color: #fff;
   box-sizing: content-box;
   min-width: 25px;
 }

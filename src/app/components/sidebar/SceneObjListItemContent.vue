@@ -343,7 +343,7 @@ export default {
   background: transparent;
   border: none;
   border-radius: 0;
-  color: rgba(255, 255, 255, 0.92);
+  color: #fff;
   font-weight: 600;
   font-size: 12px;
   line-height: 1.2;

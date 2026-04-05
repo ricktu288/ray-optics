@@ -229,7 +229,7 @@ export default {
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 4px;
-  color: rgba(255, 255, 255, 0.9);
+  color: #fff;
   resize: none;
   overflow: hidden;
   field-sizing: content;
