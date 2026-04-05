@@ -226,9 +226,10 @@ class ModuleObj extends BaseSceneObj {
         ctx.stroke();
       } else if (isPointHighlighted) {
         ctx.strokeStyle = this.scene.highlightColorCss;
-        ctx.setLineDash([2 * ls, 2 * ls]);
+        ctx.lineWidth = 1.5 * ls;
+        ctx.setLineDash([2.1 * ls, 2.1 * ls]);
         ctx.beginPath();
-        ctx.arc(point.x, point.y, 5 * ls, 0, Math.PI * 2, false);
+        ctx.arc(point.x, point.y, 4 * ls, 0, Math.PI * 2, false);
         ctx.stroke();
         ctx.setLineDash([]);
       }

@@ -193,15 +193,15 @@ class Handle extends BaseSceneObj {
   draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
     const ls = canvasRenderer.lengthScale;
-    ctx.lineWidth = 1 * ls;
+    ctx.lineWidth = 1.5 * ls;
 
     if (this.transformation == "default" || isHovered || this.notDone) {
       for (var i in this.controlPoints) {
         ctx.globalAlpha = 1;
         ctx.beginPath();
         ctx.strokeStyle = this.notDone ? this.scene.highlightColorCss : isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.theme.handlePoint.color);
-        ctx.setLineDash([2 * ls, 2 * ls]);
-        ctx.arc(this.controlPoints[i].newPoint.x, this.controlPoints[i].newPoint.y, 5 * ls, 0, Math.PI * 2, false);
+        ctx.setLineDash([2.1 * ls, 2.1 * ls]);
+        ctx.arc(this.controlPoints[i].newPoint.x, this.controlPoints[i].newPoint.y, 4 * ls, 0, Math.PI * 2, false);
         ctx.stroke();
         ctx.setLineDash([]);
       }

@@ -322,7 +322,7 @@ class Simulator {
         continue;
       }
       ctx.beginPath();
-      ctx.arc(p.x, p.y, 6 * ls, 0, Math.PI * 2, false);
+      ctx.arc(p.x, p.y, 4 * ls, 0, Math.PI * 2, false);
       ctx.stroke();
     }
     ctx.setLineDash([]);
