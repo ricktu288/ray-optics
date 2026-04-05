@@ -97,8 +97,7 @@
       "description": "Jeśli włączone, adres URL będzie aktualizowany automatycznie wraz z bieżącą sceną, więc nie trzeba ręcznie zapisywać sceny. Aby ustawić tytuł, użyj Plik -> Zapisz -> Zmień nazwę."
     },
     "showSidebar": {
-      "title": "Pokaż edytor JSON",
-      "description": "Pokaż edytor kodu dla reprezentacji JSON sceny, który jest potrzebny podczas tworzenia niestandardowego modułu (patrz Narzędzia -> Inne -> Importuj moduły -> Twórz własne moduły)."
+      "title": "Pokaż edytor JSON"
     },
     "showStatusBox": {
       "title": "Pokaż pole stanu",
@@ -162,8 +161,7 @@
       "eqnInfo": {
         "constants": "Obsługiwane stałe",
         "operators": "Obsługiwane operatory",
-        "functions": "Obsługiwane funkcje",
-        "module": "Aby mieć niestandardowe parametry lub skomplikowane równania, możesz utworzyć moduł niestandardowy. Więcej informacji znajdziesz w Narzędzia -> Inne -> Importuj moduły ->."
+        "functions": "Obsługiwane funkcje"
       },
       "imageDetectionWarning": "To narzędzie nie obsługuje wykrywania obrazów.",
       "nonSimulateColorsWarning": "To narzędzie działa tylko wtedy, gdy \"Symuluj kolory\" jest włączone.",
@@ -339,8 +337,7 @@
         "previousFormulas": "Formuła może odwoływać się do wyników poprzednich formuł. Jeśli formuła daje nieprawidłową wartość, promień wychodzący jest ignorowany, a jego jasność jest traktowana jako 0.",
         "otherParams": "Inne parametry promieni padających, które można wykorzystać, to {{lambda}} (długość fali w nm) i {{p}} (0 dla polaryzacji s, 1 dla polaryzacji p). Pozostają one takie same dla promieni wychodzących.",
         "coating": "Obiekt ten może działać jako powłoka szklanych obiektów, nakładając się na ich powierzchnie. W tym przypadku samo załamanie również musi być obsługiwane przez formuły tego obiektu. Współczynniki załamania materiału przylegającego do tej samej i przeciwnej strony co padający promień mogą być określane odpowiednio jako {{n_0}} i {{n_1}}. Jeśli ten obiekt znajduje się wewnątrz szklanego obiektu, wartości są względem niego.",
-        "twoSides": "Jeśli chcesz, aby dwie strony tej powierzchni miały różne formuły, możesz nałożyć na siebie dwie jednostronne powierzchnie o przeciwnych orientacjach.",
-        "module": "Aby uzyskać niestandardowe parametry, skomplikowane formuły lub dużą liczbę promieni wychodzących, możesz utworzyć moduł niestandardowy. Więcej informacji znajdziesz w Narzędzia -> Inne -> Importuj moduły -> ."
+        "twoSides": "Jeśli chcesz, aby dwie strony tej powierzchni miały różne formuły, możesz nałożyć na siebie dwie jednostronne powierzchnie o przeciwnych orientacjach."
       },
       "twoSided": "Dwustronny",
       "addOutgoingRay": "Dodaj promień wychodzący",
@@ -648,8 +645,7 @@
         "contribute": "Bezpośrednie wsparcie jest również mile widziane (patrz [przewodnik dotyczący wsparcia](/contributing))."
       },
       "arrayFormula": {
-        "title": "Tablice i obiekty ze wzorów",
-        "description": "Aby zdefiniować tablice obiektów (np. siatkę luster z regulowanymi odstępami) lub obiekty ze wzorów (np. graniastosłup trapezowy z regulowanymi kątami), zobacz \"Narzędzia -> Inne -> Importuj moduły -> Utwórz własne moduły\"."
+        "title": "Tablice i obiekty ze wzorów"
       }
     },
     "betaFeatures": {

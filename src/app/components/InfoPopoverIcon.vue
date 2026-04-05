@@ -63,7 +63,13 @@ export default {
   setup(props) {
     const iconEl = ref(null)
 
-    const renderBackticks = (text) => text.replace(/`([^`]+)`/g, '<code>$1</code>')
+    // In i18n strings, use \` for a literal backtick. Unescaped `…` pairs become <code>…</code>.
+    const LITERAL_BACKTICK = '\uE000'
+    const renderBackticks = (text) => {
+      const escaped = text.replace(/\\`/g, LITERAL_BACKTICK)
+      const coded = escaped.replace(/`([^`]+)`/g, '<code>$1</code>')
+      return coded.split(LITERAL_BACKTICK).join('`')
+    }
 
     const popoverOptions = computed(() => ({
       title: props.title || '',

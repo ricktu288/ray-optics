@@ -204,7 +204,7 @@
     "modules": {
       "import": "Import Modules…",
       "createModule": "Create Module…",
-      "description": "Make new tools by combining existing tools.",
+      "description": "Make new tools by combining existing tools. See \"Import Modules\" for examples.",
       "remove": "Remove module"
     },
     "moveView": {

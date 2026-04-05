@@ -14,7 +14,7 @@
     },
     "customization": {
       "title": "Customization",
-      "description": "Modules can be made or customized directly within the web app using the built-in JSON editor. See [the tutorial](/modules/tutorial). Customization of imported modules will only affect the current scene."
+      "description": "Modules can be made or customized directly in the sidebar of the web app (see Settings -> Show sidebar). Customization of imported modules will only affect the current scene. Use \"Import from file\" below to import custom modules from another scene."
     },
     "contribution": {
       "title": "Contribution",

@@ -204,7 +204,7 @@
     "modules": {
       "import": "匯入模組…",
       "createModule": "建立模組…",
-      "description": "透過組合現有工具來製作新工具。",
+      "description": "透過組合現有工具來製作新工具。範例請見「匯入模組」。",
       "remove": "移除模組"
     },
     "moveView": {

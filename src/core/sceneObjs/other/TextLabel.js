@@ -61,7 +61,7 @@ class TextLabel extends BaseSceneObj {
   static getPropertySchema(objData, scene) {
     return [
       { key: '', type: 'point', label: i18next.t('simulator:sceneObjs.common.coordOrigin') },
-      { key: 'text', type: 'text', label: i18next.t('simulator:sceneObjs.TextLabel.text') },
+      { key: 'text', type: 'text', label: i18next.t('simulator:sceneObjs.TextLabel.text'), info: i18next.t('simulator:sceneObjs.TextLabel.moduleInfo') },
       { key: 'fontSize', type: 'number', label: i18next.t('simulator:sceneObjs.TextLabel.fontSize') },
       { key: 'font', type: 'text', label: i18next.t('simulator:sceneObjs.TextLabel.font') },
       { key: 'fontStyle', type: 'dropdown', label: i18next.t('simulator:sceneObjs.TextLabel.fontStyle'), options: {

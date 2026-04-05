@@ -13,8 +13,7 @@
       "parameters": "Parametry"
     },
     "customization": {
-      "title": "Dostosowywanie",
-      "description": "Moduły można tworzyć lub dostosowywać bezpośrednio w aplikacji internetowej, korzystając z wbudowanego edytora JSON. Zobacz [samouczek](/modules/tutorial). Dostosowywanie zaimportowanych modułów będzie miało wpływ tylko na bieżącą scenę."
+      "title": "Dostosowywanie"
     },
     "contribution": {
       "title": "Wkład",

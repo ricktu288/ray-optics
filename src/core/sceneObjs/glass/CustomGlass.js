@@ -65,10 +65,11 @@ class CustomGlass extends LineObjMixin(BaseGlass) {
   }
 
   static getPropertySchema(objData, scene) {
+    const info = '<ul><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.mathjs') + '<br><code>+ - * / ^ sqrt sin cos tan sec csc cot sinh cosh tanh log exp asin acos atan asinh acosh atanh floor round ceil max min abs sign</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.customFunctions') + '</li></ul>';
     return [
       ...super.getPropertySchema(objData, scene),
-      { key: 'eqn1', type: 'equation', label: 'f(x)', variables: ['x'] },
-      { key: 'eqn2', type: 'equation', label: 'g(x)', variables: ['x'] },
+      { key: 'eqn1', type: 'equation', label: 'f(x)', variables: ['x'], info: info },
+      { key: 'eqn2', type: 'equation', label: 'g(x)', variables: ['x'], info: info },
     ];
   }
 

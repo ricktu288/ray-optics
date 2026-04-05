@@ -13,8 +13,7 @@
       "parameters": "Değişkenler"
     },
     "customization": {
-      "title": "Kişiselleştirme",
-      "description": "Modüller, yerleşik JSON düzenleyicisi kullanılarak doğrudan web uygulaması içinde oluşturulabilir veya özelleştirilebilir. [Öğreticiye bakın](/modules/tutorial). İçe aktarılan modüllerin özelleştirilmesi yalnızca mevcut sahneyi etkiler."
+      "title": "Kişiselleştirme"
     },
     "contribution": {
       "title": "Katkı",

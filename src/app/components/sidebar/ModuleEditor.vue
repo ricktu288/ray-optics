@@ -16,9 +16,11 @@
 
 <template>
   <div class="module-editor" @click.capture="selectModuleInstance" @click="handleEditorClick">
-    <p v-if="!hasModuleInstance" class="module-editor-warning is-highlighted">
-      {{ $t('simulator:sidebar.moduleEditor.noInstances', { name: moduleName }) }}
-    </p>
+    <p
+      v-if="!hasModuleInstance"
+      class="module-editor-warning is-highlighted"
+      v-html="noInstancesWarningHtml"
+    ></p>
     <p v-if="isModuleEmpty" class="module-editor-notice">
       {{ $t('simulator:sidebar.moduleEditor.emptyModuleExamplesHint') }}
     </p>
@@ -221,6 +223,7 @@
 import { computed, onMounted, onUnmounted, ref, toRef, watch } from 'vue'
 import i18next from 'i18next'
 import escapeHtml from 'escape-html'
+import { parseLinks } from '../../utils/links.js'
 import * as math from 'mathjs'
 import { useSceneStore } from '../../store/scene'
 import { app } from '../../services/app'
@@ -593,6 +596,14 @@ export default {
         return false
       }
       return hasInstanceInObjs(app.scene?.objs || [])
+    })
+
+    const noInstancesWarningHtml = computed(() => {
+      const safeName = escapeHtml(String(props.moduleName ?? ''))
+      const nameSpan = `<span class="module-editor-module-id">${safeName}</span>`
+      return parseLinks(
+        i18next.t('simulator:sidebar.moduleEditor.noInstances', { name: nameSpan })
+      )
     })
 
     const isModuleEmpty = computed(() => {
@@ -1499,6 +1510,7 @@ export default {
       canMoveSelectedObjIn,
       selectedMoveInLabel,
       hasModuleInstance,
+      noInstancesWarningHtml,
       isModuleEmpty,
       moveSelectedObjIn,
       resetAllModuleSidebarListSelections,
@@ -1630,7 +1642,7 @@ export default {
   color: rgba(255, 245, 235, 0.98);
 }
 
-.module-editor-module-id {
+.module-editor :deep(.module-editor-module-id) {
   font-family: monospace;
 }
 

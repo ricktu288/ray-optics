@@ -28,13 +28,14 @@ import i18next from 'i18next';
 const ParamCurveObjMixin = Base => class extends Base {
 
   static getPropertySchema(objData, scene) {
+    const info = '<ul><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.mathjs') + '<br><code>+ - * / ^ sqrt sin cos tan sec csc cot sinh cosh tanh log exp asin acos atan asinh acosh atanh floor round ceil max min abs sign</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.customFunctions') + '</li></ul>';
     return [
       { key: 'origin', type: 'point', label: i18next.t('simulator:sceneObjs.common.coordOrigin') },
       { key: 'pieces', type: 'array',
         label: i18next.t('simulator:sceneObjs.ParamCurveObjMixin.pieces'),
         itemSchema: [
-          { key: 'eqnX', type: 'equation', label: 'x(t)', variables: ['t'] },
-          { key: 'eqnY', type: 'equation', label: 'y(t)', variables: ['t'] },
+          { key: 'eqnX', type: 'equation', label: 'x(t)', variables: ['t'], info: info },
+          { key: 'eqnY', type: 'equation', label: 'y(t)', variables: ['t'], info: info },
           { key: 'tMin', type: 'number', label: 't<sub>min</sub>' },
           { key: 'tMax', type: 'number', label: 't<sub>max</sub>' },
           { key: 'tStep', type: 'number', label: i18next.t('simulator:sceneObjs.ParamCurveObjMixin.step') },

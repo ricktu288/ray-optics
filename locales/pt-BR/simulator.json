@@ -97,8 +97,7 @@
       "description": "Quando habilitado, a URL será atualizada automaticamente com a cena atual, então você não precisa de ficar salvando a cena manualmente. Para definir o título, use Arquivo -> Salvar -> Renomear."
     },
     "showSidebar": {
-      "title": "Exibir editor JSON",
-      "description": "Exibir o editor de código para a representação JSON da cena, que é necessária quando criando um módulo personalizado (Ver Ferramentas -> Outros -> Importar Módulos -> Criar módulos personalizados)."
+      "title": "Exibir editor JSON"
     },
     "showStatusBox": {
       "title": "Exibir caixa de status",
@@ -168,8 +167,7 @@
       "eqnInfo": {
         "constants": "Constantes suportadas",
         "operators": "Operadores suportados",
-        "functions": "Funções suportadas",
-        "module": "Para adicionar parâmetros personalizados ou equações mais complexas, você pode criar um módulo personalizado. Para mais informações, veja em Ferramentas -> Outros -> Importar Módulos."
+        "functions": "Funções suportadas"
       },
       "imageDetectionWarning": "Esta ferramenta não suporta detecção de imagem.",
       "nonSimulateColorsWarning": "Esta ferramenta só funciona quando \"Simular Cores\" está ligado.",
@@ -345,8 +343,7 @@
         "previousFormulas": "Uma fórmula pode se referir aos resultados de fórmulas anteriores. Se uma fórmula der um valor inválido, o raio que sai é ignorado e seu brilho é tratado como 0.",
         "otherParams": "Outros parâmetros dos raios incidentes que podem ser usados são {{lambda}} (comprimento de onda em nm) e {{p}} (0 para polarização S, 1 para polarização P). Eles permanecem iguais para os raios que saem.",
         "coating": "Este objeto pode agir como um revestimento de objetos de vidro ao sobrepor com suas superfícies. Nesse caso, a refração em si também precisa de ser definida pelas fórmulas deste objeto. Os índices refrativos do material associado ao mesmo lado, e ao lado oposto do raio incidente podem ser referidos como {{n_0}} e {{n_1}}, respectivamente. Se este objeto está dentro de um objeto de vidro, os valores são relativos a ele.",
-        "twoSides": "Se você quiser que os dois lados dessa superfície tenham fórmulas diferentes, você pode sobrepor duas superfícies unilaterais com orientações opostas.",
-        "module": "Para ter parâmetros personalizados, fórmulas complexas, ou um grande número de raios de saída, você pode criar um módulo personalizado, Veja Ferramentas -> Outros -> Importar Módulos para mais informação."
+        "twoSides": "Se você quiser que os dois lados dessa superfície tenham fórmulas diferentes, você pode sobrepor duas superfícies unilaterais com orientações opostas."
       },
       "twoSided": "Bilateral",
       "addOutgoingRay": "Adicionar raio de saída",
@@ -637,8 +634,7 @@
         "description": "Clique duplo ou clique com botão direito no ponto de controle do objeto, edite as coordenadas (x,y), então aperte Enter."
       },
       "arrayFormula": {
-        "title": "Listas e objetos a partir de fórmulas",
-        "description": "Para definir listas de objetos (ex.: uma grade de espelhos com espaçamento ajustável) ou objetos a partir de fórmulas (ex.: um prisma trapezoidal com ângulos ajustáveis), veja \"Ferramentas -> Outros -> Importar Módulos -> Criar módulos personalizados\"."
+        "title": "Listas e objetos a partir de fórmulas"
       },
       "keyboardShortcuts": {
         "title": "Atalhos de teclado",

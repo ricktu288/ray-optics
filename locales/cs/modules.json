@@ -13,8 +13,7 @@
       "parameters": "Parametry"
     },
     "customization": {
-      "title": "Přizpůsobení",
-      "description": "Moduly lze vytvářet nebo upravovat přímo v této webové aplikaci pomocí vestavěného editoru JSON. Viz [tutoriál](/modules/tutorial). Úpravy importovaných modulů ovlivní pouze aktuální scénu."
+      "title": "Přizpůsobení"
     },
     "contribution": {
       "title": "Příspěvek",

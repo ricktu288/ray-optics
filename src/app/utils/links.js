@@ -36,7 +36,8 @@ export function mapURL(url) {
     "/contributing/modules": "https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-modules",
     "/weblate": "https://hosted.weblate.org/engage/ray-optics-simulation/",
     "/ai-tools/chatgpt": "https://chatgpt.com/g/g-6777588b53708191b66722e353e95125-ray-optics-coder",
-    "/ai-tools/instructions": "https://github.com/ricktu288/ray-optics/blob/master/ai-tools"
+    "/ai-tools/instructions": "https://github.com/ricktu288/ray-optics/blob/master/ai-tools",
+    "/mathjs/syntax": "https://mathjs.org/docs/expressions/syntax.html"
   };
   return urlMap[url] || url;
 }

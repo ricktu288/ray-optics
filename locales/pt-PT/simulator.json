@@ -95,8 +95,7 @@
       "description": "Quando ativado, a URL será atualizada automaticamente com a cena atual, então não precisa de ficar a gravar a cena manualmente. Para definir o título, use Ficheiro -> Gravar -> Renomear."
     },
     "showSidebar": {
-      "title": "Exibir editor JSON",
-      "description": "Exibir o editor de código para a representação JSON da cena, que é necessária quando criando um módulo personalizado (Ver Ferramentas -> Outros -> Importar Módulos -> Criar módulos personalizados)."
+      "title": "Exibir editor JSON"
     },
     "showStatusBox": {
       "title": "Exibir caixa de estado",

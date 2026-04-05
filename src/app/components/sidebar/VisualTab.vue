@@ -243,7 +243,7 @@ export default {
   border: none; /* no border for the new module button */
   background: transparent;
   padding-left: 5px;
-  padding-right: 5px;
+  padding-right: 0px;
 }
 
 .visual-subtab:hover {
