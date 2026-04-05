@@ -351,6 +351,7 @@ export default {
   width: 100%;
   min-width: 0;
   transition: color 120ms ease;
+  margin-top: 2px;
 }
 
 .obj-list-item-name-input::placeholder {

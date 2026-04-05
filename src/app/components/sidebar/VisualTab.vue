@@ -59,21 +59,27 @@
     </div>
 
     <div class="visual-subtab-content" role="tabpanel" @click="handleContentClick">
-      <SceneObjsEditor v-if="activeTabId === 'scene'" />
-      <ModuleEditor
-        v-else
-        :moduleName="activeTabId.slice('module:'.length)"
-        @module-renamed="activeTabId = `module:${$event}`"
-        @module-removed="activeTabId = 'scene'"
-      />
+      <div ref="scenePanelEl" class="visual-subtab-panel" v-show="activeTabId === 'scene'">
+        <SceneObjsEditor />
+      </div>
+      <div ref="modulePanelEl" class="visual-subtab-panel" v-show="activeModuleName != null">
+        <KeepAlive :max="16">
+          <ModuleEditor
+            v-if="activeModuleName != null"
+            :key="activeModuleName"
+            :moduleName="activeModuleName"
+            @module-renamed="onModuleRenamed"
+            @module-removed="onModuleRemoved"
+          />
+        </KeepAlive>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { computed, onMounted, onUnmounted, ref, toRef, watch } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref, toRef, watch } from 'vue'
 import { useSceneStore } from '../../store/scene'
-import { app } from '../../services/app'
 import { promptNewModuleName } from '../../utils/promptNewModuleName.js'
 import SceneObjsEditor from './SceneObjsEditor.vue'
 import ModuleEditor from './ModuleEditor.vue'
@@ -93,6 +99,70 @@ export default {
 
     // NOTE: kept local per request (no store binding)
     const activeTabId = ref('scene')
+
+    const activeModuleName = computed(() => {
+      const id = activeTabId.value
+      if (!id.startsWith('module:')) return null
+      const name = id.slice('module:'.length)
+      return name || null
+    })
+
+    const scenePanelEl = ref(null)
+    const modulePanelEl = ref(null)
+    const sceneScrollTop = ref(0)
+    const moduleScrollByName = new Map()
+
+    const stashSubtabScroll = (prevTabId) => {
+      if (prevTabId === 'scene' && scenePanelEl.value) {
+        sceneScrollTop.value = scenePanelEl.value.scrollTop
+      } else if (prevTabId?.startsWith('module:') && modulePanelEl.value) {
+        moduleScrollByName.set(prevTabId.slice('module:'.length), modulePanelEl.value.scrollTop)
+      }
+    }
+
+    const restoreSubtabScrollSoon = () => {
+      nextTick(() => {
+        requestAnimationFrame(() => {
+          const id = activeTabId.value
+          if (id === 'scene' && scenePanelEl.value) {
+            scenePanelEl.value.scrollTop = sceneScrollTop.value
+          } else if (id.startsWith('module:') && modulePanelEl.value) {
+            const name = id.slice('module:'.length)
+            modulePanelEl.value.scrollTop = moduleScrollByName.get(name) ?? 0
+          }
+        })
+      })
+    }
+
+    watch(activeTabId, (next, prev) => {
+      const prevMod = prev?.startsWith('module:') ? prev.slice('module:'.length) : null
+      const nextMod = next.startsWith('module:') ? next.slice('module:'.length) : null
+      const renamedAway =
+        prevMod &&
+        nextMod &&
+        prevMod !== nextMod &&
+        !moduleNames.value.includes(prevMod)
+
+      if (renamedAway && modulePanelEl.value) {
+        moduleScrollByName.delete(prevMod)
+        moduleScrollByName.set(nextMod, modulePanelEl.value.scrollTop)
+      } else {
+        stashSubtabScroll(prev)
+      }
+
+      restoreSubtabScrollSoon()
+    })
+
+    const onModuleRenamed = (newName) => {
+      activeTabId.value = `module:${newName}`
+    }
+
+    const onModuleRemoved = (name) => {
+      moduleScrollByName.delete(name)
+      if (activeTabId.value === `module:${name}`) {
+        activeTabId.value = 'scene'
+      }
+    }
 
     const applyNewModule = (moduleName) => {
       scene.createModule(moduleName)
@@ -150,16 +220,15 @@ export default {
       document.removeEventListener('applyVisualNewModule', handleApplyVisualNewModule)
     })
 
-    watch(activeTabId, (nextValue) => {
-      if (nextValue === 'scene') {
-        app.editor?.selectObj(-1)
-      }
-    })
-
     return {
       activeTabId,
+      activeModuleName,
       moduleNames,
+      scenePanelEl,
+      modulePanelEl,
       onCreateModuleClick,
+      onModuleRenamed,
+      onModuleRemoved,
       handleContentClick
     }
   }
@@ -178,7 +247,7 @@ export default {
 .visual-subtabs {
   display: flex;
   gap: 4px;
-  padding: 10px 8px 0 8px;
+  padding: 6px 8px 0 8px;
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
@@ -271,9 +340,18 @@ export default {
 .visual-subtab-content {
   flex-grow: 1;
   min-height: 0;
-  padding: 8px;
+  position: relative;
   background: rgba(80, 85, 90, 0.5); /* same as active tab, but dim */
+  overflow: hidden;
+}
+
+/* Separate scroll surfaces per subtab so scene/module switches do not reset scroll. */
+.visual-subtab-panel {
+  position: absolute;
+  inset: 0;
   overflow: auto;
+  padding: 8px;
+  -webkit-overflow-scrolling: touch;
 }
 </style>
 

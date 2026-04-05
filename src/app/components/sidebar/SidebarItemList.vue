@@ -393,14 +393,14 @@ export default {
 .sidebar-item-list-rows {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   position: relative;
 }
 
 .sidebar-item-list-row {
   display: flex;
   align-items: stretch;
-  padding: 6px;
+  padding: 2px 5px;
   border-radius: 6px;
   background: rgba(255, 255, 255, 0.06);
   position: relative;
@@ -456,6 +456,7 @@ export default {
   cursor: pointer;
   opacity: 0;
   pointer-events: none;
+  margin-top: 3px;
 }
 
 .sidebar-item-checkbox-input {

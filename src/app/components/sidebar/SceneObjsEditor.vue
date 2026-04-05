@@ -238,8 +238,11 @@ export default {
       if (selectedIds.value.length) {
         return
       }
-      if (index >= 0 && items.value[index]) {
-        activeId.value = items.value[index].id
+      // Selection updates run before `sceneObjsChanged` refreshes `objList` (e.g. right after
+      // creating an object). Use the scene row as source of truth so `activeId` still matches
+      // SidebarItemList keys once the list catches up.
+      if (index >= 0 && app.scene?.objs?.[index]) {
+        activeId.value = items.value[index]?.id ?? `scene-obj-${index}`
       } else {
         activeId.value = null
       }

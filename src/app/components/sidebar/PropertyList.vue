@@ -239,9 +239,9 @@
         </template>
       </div>
     </TransitionGroup>
-    <div v-if="(schema && schema.length > 0 && !basePath) || showForIfToggle" class="property-list-visibility-row">
+    <div v-if="showAllPropertiesToggleVisible || showForIfToggle" class="property-list-visibility-row">
       <button
-        v-if="schema && schema.length > 0 && !basePath"
+        v-if="showAllPropertiesToggleVisible"
         type="button"
         class="property-list-visibility-link"
         @click="showAllProperties = !showAllProperties"
@@ -251,7 +251,7 @@
       <button
         v-if="showForIfToggle"
         type="button"
-        class="property-list-visibility-link"
+        class="property-list-visibility-link property-list-visibility-link--for-if"
         @click="onToggleForIf"
       >
         {{ showForIf ? $t('simulator:sidebar.objectList.arrayAndConditional.remove') : $t('simulator:sidebar.objectList.arrayAndConditional.create') }}
@@ -539,6 +539,13 @@ export default {
       applyUpdate(forIfPath('if'), value)
     }
 
+    const showAllPropertiesToggleVisible = computed(() => {
+      if (props.basePath) return false
+      const schema = props.schema || []
+      if (schema.length === 0) return false
+      return schema.some((d) => !isNonDefault(props.objData, d, props.serializableDefaults, props.basePath))
+    })
+
     const visibleProperties = computed(() => {
       const schema = props.schema || []
       if (props.basePath) {
@@ -661,6 +668,7 @@ export default {
 
     return {
       showAllProperties,
+      showAllPropertiesToggleVisible,
       showForIf,
       canShowForIf,
       showForIfToggle,
@@ -791,11 +799,14 @@ export default {
 .property-list-visibility-row {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
   align-items: center;
   gap: 4px 8px;
   margin-top: 4px;
   min-width: 0;
+}
+
+.property-list-visibility-link--for-if {
+  margin-left: auto;
 }
 
 .property-list-visibility-link {

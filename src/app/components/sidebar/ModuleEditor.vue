@@ -77,6 +77,7 @@
           @reorder="handleParamReorder"
           @create="handleParamCreate"
           @select="handleParamSelect"
+          @hover="handleParamListHover"
         >
           <template #content="{ item, index }">
             <ModuleParamListItem
@@ -220,7 +221,7 @@
 </template>
 
 <script>
-import { computed, onMounted, onUnmounted, ref, toRef, watch } from 'vue'
+import { computed, nextTick, onActivated, onMounted, onUnmounted, ref, toRef, watch } from 'vue'
 import i18next from 'i18next'
 import escapeHtml from 'escape-html'
 import { parseLinks } from '../../utils/links.js'
@@ -437,6 +438,8 @@ export default {
     })
     const paramItems = ref([])
     const paramActiveId = ref(null)
+    /** True only after an explicit param row click; cleared on row mouse-leave so hover never re-highlights the slider. */
+    const paramSliderHighlightActive = ref(false)
     const variableItems = ref([])
     const variableActiveId = ref(null)
     const maxLoopLengthInput = ref(String(DEFAULT_MODULE_MAX_LOOP_LENGTH))
@@ -559,7 +562,6 @@ export default {
       for (const obj of app.scene?.objs || []) {
         applyToObj(obj)
       }
-      reselectEditorModuleInstanceIfNeeded()
       app.simulator?.updateSimulation?.(true, true)
     }
 
@@ -734,6 +736,7 @@ export default {
       })
       if (!paramItems.value.some((item) => item.id === paramActiveId.value)) {
         paramActiveId.value = null
+        paramSliderHighlightActive.value = false
         applyModuleParamHighlight(null)
       }
     }
@@ -863,7 +866,11 @@ export default {
       syncParamItems()
       app.scene.reloadAllModules?.()
       const activeParamRow = paramItems.value.find((r) => r.id === paramActiveId.value)
-      applyModuleParamHighlight(activeParamRow?.name ?? null)
+      if (paramSliderHighlightActive.value && activeParamRow) {
+        applyModuleParamHighlight(activeParamRow.name)
+      } else {
+        applyModuleParamHighlight(null)
+      }
 
       app.simulator?.updateSimulation(false, true)
       app.editor?.onActionComplete()
@@ -1205,6 +1212,7 @@ export default {
       }
       if (keepKind !== MODULE_EDITOR_LIST.PARAMS) {
         paramActiveId.value = null
+        paramSliderHighlightActive.value = false
         applyModuleParamHighlight(null)
       }
       if (keepKind !== MODULE_EDITOR_LIST.CONTROL_POINTS) {
@@ -1237,6 +1245,7 @@ export default {
       if (selectedIds.value.length > 0) {
         variableActiveId.value = null
         paramActiveId.value = null
+        paramSliderHighlightActive.value = false
         applyModuleParamHighlight(null)
         controlPointHoverIndex.value = -1
         controlPointSelectedIndex.value = -1
@@ -1271,7 +1280,18 @@ export default {
       }
       clearOtherModuleSidebarLists(MODULE_EDITOR_LIST.PARAMS)
       paramActiveId.value = item.id
+      paramSliderHighlightActive.value = true
       applyModuleParamHighlight(item.name)
+    }
+
+    const handleParamListHover = ({ item, index }) => {
+      if (item == null || typeof index !== 'number' || index < 0) {
+        if (!paramSliderHighlightActive.value) {
+          return
+        }
+        paramSliderHighlightActive.value = false
+        applyModuleParamHighlight(null)
+      }
     }
 
     const onMoveOut = () => {
@@ -1297,6 +1317,7 @@ export default {
       activeId.value = null
       variableActiveId.value = null
       paramActiveId.value = null
+      paramSliderHighlightActive.value = false
       controlPointHoverIndex.value = -1
       controlPointSelectedIndex.value = -1
       hoveredIndex.value = -1
@@ -1335,6 +1356,7 @@ export default {
       }
       variableActiveId.value = null
       paramActiveId.value = null
+      paramSliderHighlightActive.value = false
       controlPointHoverIndex.value = -1
       controlPointSelectedIndex.value = -1
       selectedIds.value = []
@@ -1422,6 +1444,7 @@ export default {
         hoveredIndex.value = -1
         variableActiveId.value = null
         paramActiveId.value = null
+        paramSliderHighlightActive.value = false
         controlPointHoverIndex.value = -1
         controlPointSelectedIndex.value = -1
         applyModuleHighlights([])
@@ -1430,6 +1453,14 @@ export default {
       },
       { immediate: true }
     )
+
+    // KeepAlive deactivates when leaving this module subtab (Scene or another module);
+    // `watch(moduleName)` does not re-run when returning to the same module.
+    onActivated(() => {
+      nextTick(() => {
+        selectModuleInstance()
+      })
+    })
 
     const onSceneChanged = () => {
       syncModuleItems()
@@ -1449,6 +1480,7 @@ export default {
     })
 
     onUnmounted(() => {
+      paramSliderHighlightActive.value = false
       applyModuleHighlights([])
       applyModuleParamHighlight(null)
       applyModulePointHighlight(null)
@@ -1484,6 +1516,7 @@ export default {
       handleParamReorder,
       handleParamCreate,
       handleParamSelect,
+      handleParamListHover,
       onVarNameUpdate,
       onVarExprUpdate,
       commitVariableDefs,
@@ -1544,7 +1577,8 @@ export default {
 .module-editor > .module-editor-section + .module-editor-section,
 .module-editor > .module-editor-section + .module-editor-title,
 .module-editor > .module-editor-body + .module-editor-section {
-  margin-top: 14px;
+  margin-top: 10px;
+  margin-bottom: 4px;
 }
 
 .module-editor-title {

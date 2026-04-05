@@ -25,11 +25,11 @@
     <textarea
       ref="textareaRef"
       class="text-property-control-input"
-      :value="displayValue"
+      :value="localValue"
       :readonly="readOnly"
       rows="1"
       spellcheck="false"
-      @keydown.stop
+      @keydown.stop="onKeydown"
       @focus="onFocus"
       @blur="onBlur"
       @input="onInput"
@@ -38,9 +38,13 @@
 </template>
 
 <script>
-import { computed, ref, watch, onMounted, nextTick, toRef } from 'vue'
+import { computed, ref, watch, onMounted, onBeforeUnmount, nextTick, toRef } from 'vue'
 import { getByKeyPath } from '../../../../core/propertyUtils/keyPath.js'
 import { usePreferencesStore } from '../../../store/preferences'
+import {
+  applyTextareaAutoResize,
+  observeTextareasResizeWhenVisible
+} from '../../../utils/textareaAutoResize.js'
 import PropertyControlLabel from './PropertyControlLabel.vue'
 
 export default {
@@ -84,6 +88,8 @@ export default {
   setup(props, { emit }) {
     const textareaRef = ref(null)
     const localValue = ref('')
+    /** Last value aligned with parent data / last emit; blur skips emit if unchanged. */
+    const lastCommittedValue = ref('')
     let focused = false
 
     const preferences = usePreferencesStore()
@@ -94,49 +100,105 @@ export default {
       return v !== undefined && v !== null ? v : props.default
     })
 
-    const displayValue = computed(() => {
-      if (focused) return localValue.value
+    const committedDisplayString = computed(() => {
       const v = rawValue.value
       if (v === undefined || v === null) return ''
       return String(v)
     })
 
     const autoResize = () => {
-      const el = textareaRef.value
-      if (!el) return
-      el.style.height = 'auto'
-      el.style.height = el.scrollHeight + 'px'
+      applyTextareaAutoResize(textareaRef.value)
     }
 
-    watch(() => rawValue.value, () => {
-      if (!focused) nextTick(autoResize)
-    })
+    let visibilityResizeObserver = null
+
+    watch(
+      committedDisplayString,
+      (s) => {
+        if (!focused) {
+          localValue.value = s
+          lastCommittedValue.value = s
+          nextTick(autoResize)
+        }
+      },
+      { immediate: true }
+    )
 
     watch(sidebarWidth, () => nextTick(autoResize))
 
-    onMounted(autoResize)
+    onMounted(() => {
+      autoResize()
+      visibilityResizeObserver = observeTextareasResizeWhenVisible(
+        () => [textareaRef.value],
+        autoResize
+      )
+    })
+
+    onBeforeUnmount(() => {
+      visibilityResizeObserver?.disconnect()
+      visibilityResizeObserver = null
+    })
+
+    const emitCommit = (text) => {
+      if (text === '') {
+        emit('update:value', undefined)
+      } else {
+        emit('update:value', text)
+      }
+    }
 
     const onFocus = () => {
       focused = true
-      localValue.value = displayValue.value
+      localValue.value = committedDisplayString.value
     }
 
     const onInput = (e) => {
       localValue.value = e.target.value
       autoResize()
-      emit('update:value', e.target.value)
     }
 
-    const onBlur = () => {
+    const commitBlur = () => {
       focused = false
+      if (props.readOnly) return
+      if (localValue.value !== lastCommittedValue.value) {
+        emitCommit(localValue.value)
+      }
+      nextTick(() => {
+        lastCommittedValue.value = committedDisplayString.value
+      })
+    }
+
+    /** Enter commits (FormulaInput); Shift+Enter inserts a newline. Restore `focused` if still in field after accept. */
+    const commitEnter = () => {
+      if (props.readOnly) return
+      focused = false
+      emitCommit(localValue.value)
+      nextTick(() => {
+        lastCommittedValue.value = committedDisplayString.value
+        if (localValue.value !== committedDisplayString.value) {
+          return
+        }
+        const el = textareaRef.value
+        if (!el || document.activeElement !== el) {
+          return
+        }
+        focused = true
+      })
+    }
+
+    const onKeydown = (e) => {
+      if (e.key !== 'Enter' || e.shiftKey || e.isComposing) return
+      e.preventDefault()
+      commitEnter()
     }
 
     return {
       textareaRef,
-      displayValue,
+      localValue,
       onFocus,
       onInput,
-      onBlur
+      onBlur: commitBlur,
+      onKeydown
     }
   }
 }

@@ -43,6 +43,10 @@ import {
   isLiteralNumericFieldValue,
   tooltipTupleAllCellsMissing
 } from '../../../utils/moduleInstanceTooltipHtml.js'
+import {
+  applyTextareaAutoResize,
+  observeTextareasResizeWhenVisible
+} from '../../../utils/textareaAutoResize.js'
 
 export default {
   name: 'FormulaInput',
@@ -162,11 +166,10 @@ export default {
     }
 
     const autoResize = () => {
-      const el = textareaRef.value
-      if (!el) return
-      el.style.height = 'auto'
-      el.style.height = el.scrollHeight + 'px'
+      applyTextareaAutoResize(textareaRef.value)
     }
+
+    let visibilityResizeObserver = null
 
     watch(
       () => props.modelValue,
@@ -200,9 +203,15 @@ export default {
       document.addEventListener('sceneChanged', onSceneStructureMaybeChanged)
       document.addEventListener('sceneObjsChanged', onSceneStructureMaybeChanged)
       autoResize()
+      visibilityResizeObserver = observeTextareasResizeWhenVisible(
+        () => [textareaRef.value],
+        autoResize
+      )
     })
 
     onBeforeUnmount(() => {
+      visibilityResizeObserver?.disconnect()
+      visibilityResizeObserver = null
       document.removeEventListener('sceneObjSelectionChanged', onSceneObjSelectionChanged)
       document.removeEventListener('sceneChanged', onSceneStructureMaybeChanged)
       document.removeEventListener('sceneObjsChanged', onSceneStructureMaybeChanged)

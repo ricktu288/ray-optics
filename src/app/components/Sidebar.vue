@@ -66,7 +66,8 @@
       </div>
 
       <div class="sidebar-tab-content">
-        <VisualTab v-if="showSidebar && activeTab === 'visual'" />
+        <!-- Keep VisualTab alive while the drawer is open (tab switches); unmount when collapsed to save work. -->
+        <VisualTab v-if="showSidebar" v-show="activeTab === 'visual'" />
         <div id="jsonEditor" v-show="activeTab === 'code'"></div>
         <AITab v-show="activeTab === 'ai'" />
       </div>
@@ -87,6 +88,7 @@
     <button
       type="button"
       class="drawer-toggle-expand"
+      :class="{ 'drawer-toggle-expand--hint': expandHintPeek }"
       aria-label="Show sidebar"
       @click="expandSidebar"
     >
@@ -121,6 +123,18 @@ export default {
     const isResizing = ref(false)
     const startX = ref(0)
     const startWidth = ref(0)
+
+    /** Briefly show the expand control after closing the sidebar so users notice where to reopen it. */
+    const EXPAND_HINT_VISIBLE_MS = 1200
+    const expandHintPeek = ref(false)
+    let expandHintHideTimer = null
+
+    const clearExpandHintTimer = () => {
+      if (expandHintHideTimer !== null) {
+        clearTimeout(expandHintHideTimer)
+        expandHintHideTimer = null
+      }
+    }
     
     // Keyboard event handler to prevent propagation
     const handleKeyboardEvent = (e) => {
@@ -242,6 +256,17 @@ export default {
         // Wait for the drawer slide-in transition as well.
         setTimeout(() => resizeAceSoon(), 320)
       }
+      if (isShown) {
+        clearExpandHintTimer()
+        expandHintPeek.value = false
+      } else {
+        clearExpandHintTimer()
+        expandHintPeek.value = true
+        expandHintHideTimer = window.setTimeout(() => {
+          expandHintHideTimer = null
+          expandHintPeek.value = false
+        }, EXPAND_HINT_VISIBLE_MS)
+      }
     })
     
     onMounted(() => {
@@ -258,6 +283,7 @@ export default {
     })
     
     onUnmounted(() => {
+      clearExpandHintTimer()
       document.removeEventListener('openVisualModuleEditor', handleOpenVisualModuleEditor)
       document.removeEventListener('openVisualCreateModule', handleOpenVisualCreateModule)
       // Clean up event listeners if component is destroyed during resize
@@ -280,6 +306,7 @@ export default {
       showSidebar,
       sidebarWidth,
       activeTab,
+      expandHintPeek,
       startResize,
       hideSidebar,
       expandSidebar,
@@ -430,6 +457,8 @@ export default {
   border-radius: 4px;
   width: 14px;
   height: 40px;
+  padding: 0;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -481,22 +510,37 @@ export default {
   background-color: rgb(55, 60, 65);
   border: none;
   border-radius: 0 4px 4px 0;
-  width: 14px;
+  width: 20px;
   height: 40px;
-  margin-top: 30px;
+  margin-top: 18px;
+  padding: 0 3px;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
   color: rgba(255, 255, 255, 0.25);
   cursor: pointer;
-  transition: opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease, width 0.2s ease;
+  /* Ease-out fades when the post-collapse hint ends; hover still feels responsive via width/color. */
+  transition:
+    opacity 0.4s ease-out,
+    background-color 0.4s ease-out,
+    color 0.4s ease-out,
+    width 0.2s ease-out;
   opacity: 0;
 }
 
 .drawer-toggle-expand svg {
   display: block;
+  flex-shrink: 0;
   width: 14px;
   height: 14px;
+}
+
+.drawer-toggle-expand.drawer-toggle-expand--hint {
+  opacity: 1;
+  background-color: rgba(52, 56, 60, 0.72);
+  color: rgba(255, 255, 255, 0.52);
+  width: 22px;
 }
 
 .drawer-hover-region:hover .drawer-toggle-expand,
@@ -504,14 +548,14 @@ export default {
   opacity: 1;
   background-color: rgba(60, 65, 70, 0.85);
   color: rgba(255, 255, 255, 0.7);
-  width: 18px;
+  width: 22px;
 }
 
 .drawer-toggle-expand:hover,
 .drawer-toggle-expand:focus-visible {
   background-color: rgba(70, 75, 80, 0.95);
   color: rgba(255, 255, 255, 0.9);
-  width: 20px;
+  width: 24px;
 }
 
 .drawer-toggle-expand:active {
