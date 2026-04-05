@@ -50,6 +50,15 @@
       "title": "Teleskop Newtona",
       "description": "Model teleskopu Newtona z okularem Plössla."
     },
+    "classicalCassegrainTelescopes": {
+      "title": "Klasyczne teleskopy Cassegraina",
+      "description": "Symulacja przedstawia dwa typy klasycznych teleskopów Cassegraina.",
+      "concaveparabolicmirr": "wklęsłe zwierciadło paraboliczne",
+      "convexhyperbolicmirr": "wypukłe zwierciadło hiperboliczne",
+      "convexparabolicmirro": "wypukłe zwierciadło paraboliczne",
+      "classicalcassegrain": "klasyczny Cassegrain",
+      "collimator": "kolimator"
+    },
     "penroseUnilluminableRoom": {
       "title": "Nieoświetlony pokój Penrose'a",
       "description": "Niemożliwy do oświetlenia pokój Penrose'a jest zbudowany z luster eliptycznych, kołowych i liniowych. Ma tą interesującą właściwość, że źródło punktowe (zielone) w pomieszczeniu nie oświetli całego pomieszczenia, bez względu na to, gdzie je umieścisz. Możesz przeciągnąć zielony punkt, aby przesunąć źródło.",
@@ -437,6 +446,10 @@
       "camera": "Kamera",
       "cmos": "CMOS"
     },
+    "digitalCamera": {
+      "title": "Aparat cyfrowy",
+      "description": "Prosty schemat przedstawiający pojęcia ostrości i przysłony w aparacie cyfrowym."
+    },
     "nlSimulation": {
       "title": "Lornetki NL",
       "description": "Symulacja przedstawia zgrubny szkic zasady działania lornetki Swarovski NL."
@@ -491,6 +504,10 @@
       "rotatediffractiongra": "Obróć siatkę dyfrakcyjną, \naby uzyskać wąskie pasmo \ndługości fal ze \nświatła złożonego",
       "exitslitmonochromati": "Szczelina wyjściowa\n\nŚwiatło monochromatyczne"
     },
+    "gratingPulseCompressor": {
+      "title": "Kompresor impulsów z siatką dyfrakcyjną",
+      "description": "Złożony kompresor impulsów Treacy'ego wykorzystujący siatkę transmisyjną. Długości fal mieszczą się w zakresie podczerwieni i są przedstawione w postaci fałszywych kolorów."
+    },
     "solarEclipses": {
       "title": "Zaćmienia Słońca",
       "description": "Ta symulacja pokazuje różne rodzaje zaćmień Słońca. Diagram w prawym górnym rogu przedstawia zaćmienie Słońca, w którym cień Księżyca zakrywa Słońce, co powoduje całkowite zaćmienie w centrum i częściowe zaćmienie w otaczających obszarach. Diagram w prawym dolnym rogu ilustruje zaćmienie obrączkowe, w którym Księżyc jest zbyt daleko od Ziemi, aby całkowicie zakryć Słońce, pozostawiając jasny pierścień w środku (w tym dwuwymiarowym symulatorze \"pierścień\" jest demonstrowany przez światło słoneczne pochodzące tylko z górnej i dolnej części Słońca), a także częściowe zaćmienie w otaczających obszarach.",
@@ -501,58 +518,6 @@
       "annulareclipse": "Zaćmienie obrączkowe",
       "earth": "Ziemia",
       "totaleclipse": "Zaćmienie całkowite"
-    },
-    "moduleExampleBasics": {
-      "title": "Przykład modułu - Podstawy",
-      "thistextisinexamplem": "Ten tekst jest w ExampleModule.",
-      "thistextisalsoinexam": "Ten tekst jest również w ExampleModule.",
-      "thistextisnotinamodu": "Ten tekst nie znajduje się w module.",
-      "thistextisalsonotina": "Ten tekst jest również nie w module."
-    },
-    "moduleExampleParameters": {
-      "title": "Przykład modułu - Parametry",
-      "thismodulehastwopara": "Moduł ten zawiera dwa parametry: n=`n` i theta=`theta`.\nMożesz wybrać i przeciągnąć suwaki, aby je regulować.",
-      "thesizeofthistextosc": "Rozmiar tego tekstu oscyluje w funkcji theta."
-    },
-    "moduleExampleControlPoints": {
-      "title": "Przykład modułu - punkty kontrolne",
-      "hereisthefirstdragga": "↙Oto pierwszy (przeciągalny) punkt kontrolny modułu",
-      "hereistheseconddragg": "↙Tutaj jest drugi (przeciągalny) punkt kontrolny modułu",
-      "hereisthemidpoint": "↙Tutaj jest punkt środkowy"
-    },
-    "moduleExampleArraysAndConditionals": {
-      "title": "Przykład modułu - tablice i instrukcje warunkowe",
-      "a1darrayii": "A 1D tablica: i=`i`",
-      "thistextisshownonlyw": "Ten tekst jest wyświetlany tylko wtedy, gdy n>5"
-    },
-    "moduleExampleVariables": {
-      "title": "Przykład modułu – zmienne"
-    },
-    "moduleExampleCustomEquation": {
-      "title": "Przykład modułu - równanie niestandardowe",
-      "amirrorofshapeycos2p": "Zwierciadło kształtu y=cos(2 pi x + `phi`)"
-    },
-    "moduleExampleShapeParametrization": {
-      "title": "Przykład modułu - parametryzacja kształtu",
-      "alensdefinedbydr1r2": "Soczewka zdefiniowana przez d, R_1, R_2",
-      "alensdefinedbydffdbf": "Soczewka zdefiniowana przez d, FFD, BFD"
-    },
-    "digitalCamera": {
-      "description": "Prosty schemat przedstawiający pojęcia ostrości i przysłony w aparacie cyfrowym.",
-      "title": "Aparat cyfrowy"
-    },
-    "classicalCassegrainTelescopes": {
-      "title": "Klasyczne teleskopy Cassegraina",
-      "description": "Symulacja przedstawia dwa typy klasycznych teleskopów Cassegraina.",
-      "concaveparabolicmirr": "wklęsłe zwierciadło paraboliczne",
-      "convexhyperbolicmirr": "wypukłe zwierciadło hiperboliczne",
-      "convexparabolicmirro": "wypukłe zwierciadło paraboliczne",
-      "classicalcassegrain": "klasyczny Cassegrain",
-      "collimator": "kolimator"
-    },
-    "gratingPulseCompressor": {
-      "title": "Kompresor impulsów z siatką dyfrakcyjną",
-      "description": "Złożony kompresor impulsów Treacy'ego wykorzystujący siatkę transmisyjną. Długości fal mieszczą się w zakresie podczerwieni i są przedstawione w postaci fałszywych kolorów."
     }
   }
 }

@@ -39,6 +39,11 @@
       "max": "La longueur d'onde maximale",
       "brightness": "Intensité totale"
     },
+    "RainbowPointSource": {
+      "point1": "La source",
+      "N": "Le nombre de rayons",
+      "angle": "L'angle d'émission"
+    },
     "CoatedLens": {
       "title": "Lentille sphérique traitée en surface",
       "description": "Une lentilles sphérique avec une seul couche de revêtements de chaque cotés. Les module \"ArcCoating\" intégrés dans ce module représente une seule couche de film fin, qui quand il a un chevauchement avec une surface en verre celle-ci devient son revêtement.",
@@ -58,11 +63,6 @@
     },
     "Chaff": {
       "L": "La longueur des miroirs"
-    },
-    "RainbowPointSource": {
-      "N": "Le nombre de rayons",
-      "point1": "La source",
-      "angle": "L'angle d'émission"
     }
   }
 }

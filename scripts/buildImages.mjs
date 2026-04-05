@@ -254,7 +254,7 @@ function exportImagesPromise(dir, itemId, lang, isThumbnail) {
 }
 
 // Get all JSON files in the gallery directory
-const galleryItems = fs.readdirSync(galleryDirs.en).filter(file => file.endsWith('.json') && file !== 'data.json').map(file => file.slice(0, -5)).filter(file => !file.startsWith('module-example-'));
+const galleryItems = fs.readdirSync(galleryDirs.en).filter(file => file.endsWith('.json') && file !== 'data.json').map(file => file.slice(0, -5));
 
 async function exportAllGalleryImages(itemId) {
   const beginTime = Date.now();

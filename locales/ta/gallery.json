@@ -491,41 +491,6 @@
       "annulareclipse": "ஆண்டு கிரகணம்",
       "earth": "பூமி",
       "totaleclipse": "மொத்த கிரகணம்"
-    },
-    "moduleExampleBasics": {
-      "title": "தொகுதி எடுத்துக்காட்டு - அடிப்படைகள்",
-      "thistextisinexamplem": "இந்த உரை எடுத்துக்காட்டுகளில் உள்ளது.",
-      "thistextisalsoinexam": "இந்த உரை ஆய்வு.",
-      "thistextisnotinamodu": "இந்த உரை ஒரு தொகுதியில் இல்லை.",
-      "thistextisalsonotina": "இந்த உரை ஒரு தொகுதியில் இல்லை."
-    },
-    "moduleExampleParameters": {
-      "title": "தொகுதி எடுத்துக்காட்டு - அளவுருக்கள்",
-      "thismodulehastwopara": "இந்த தொகுதி இரண்டு அளவுருக்களைக் கொண்டுள்ளது: n = `n` மற்றும் தீட்டா =` தீட்டா`.\n அவற்றை சரிசெய்ய ச்லைடர்களைத் தேர்ந்தெடுத்து இழுக்கலாம்.",
-      "thesizeofthistextosc": "இந்த உரையின் அளவு தீட்டாவின் செயல்பாடாக ஊசலாடுகிறது."
-    },
-    "moduleExampleControlPoints": {
-      "title": "தொகுதி எடுத்துக்காட்டு - கட்டுப்பாட்டு புள்ளிகள்",
-      "hereisthefirstdragga": "↙ இங்கே தொகுதியின் முதல் (இழுக்கக்கூடிய) கட்டுப்பாட்டு புள்ளி",
-      "hereistheseconddragg": "↙ இங்கே தொகுதியின் இரண்டாவது (இழுக்கக்கூடிய) கட்டுப்பாட்டு புள்ளி",
-      "hereisthemidpoint": "↙ இங்கே நடுப்பகுதி"
-    },
-    "moduleExampleArraysAndConditionals": {
-      "title": "தொகுதி எடுத்துக்காட்டு - வரிசைகள் மற்றும் நிபந்தனைகள்",
-      "a1darrayii": "ஒரு 1 டி வரிசை: i = `i`",
-      "thistextisshownonlyw": "இந்த உரை n> 5 ஆக இருக்கும்போது மட்டுமே காட்டப்படும்"
-    },
-    "moduleExampleVariables": {
-      "title": "தொகுதி எடுத்துக்காட்டு - மாறிகள்"
-    },
-    "moduleExampleCustomEquation": {
-      "title": "தொகுதி எடுத்துக்காட்டு - தனிப்பயன் சமன்பாடு",
-      "amirrorofshapeycos2p": "வடிவத்தின் கண்ணாடி ஒய் = cos (2 pi ஃச் + `phi`)"
-    },
-    "moduleExampleShapeParametrization": {
-      "title": "தொகுதி எடுத்துக்காட்டு - வடிவ அளவுரு",
-      "alensdefinedbydr1r2": "டி, ஆர்_1, ஆர்_2 ஆல் வரையறுக்கப்பட்ட லென்ச்",
-      "alensdefinedbydffdbf": "டி, எஃப்.எஃப்.டி, பி.எஃப்.டி ஆல் வரையறுக்கப்பட்ட லென்ச்"
     }
   }
 }

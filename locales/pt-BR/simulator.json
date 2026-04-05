@@ -88,6 +88,18 @@
       "title": "Modo de Cor",
       "description": "Determina como os brilhos (e cores se \"Simular Cores\" estiver ligado) dos raios ou imagens são mapeados a cores na tela. É configurável somente enquanto se utiliza \"Corrigir Brilho\"."
     },
+    "redWavelength": {
+      "title": "Comprimento de onda vermelho",
+      "description": "O comprimento de onda exibido como vermelho quando \"Simular Cores\" está ligado. Útil para visualizar luz não visível com espectro de cor falsa."
+    },
+    "violetWavelength": {
+      "title": "Comprimento de onda violeta",
+      "description": "O comprimento de onda exibido como violeta quando \"Simular Cores\" está ligado. Útil para visualizar luz não visível com espectro de cor falsa."
+    },
+    "maxRayDepth": {
+      "title": "Profundidade Máxima de Raio",
+      "description": "Número máximo de interações raio-objeto antes de truncar raios. Use \"inf\" para remover o limite."
+    },
     "language": {
       "title": "Linguagem",
       "lowFraction": "Esta linguagem está apenas {{fraction}} traduzida. Você pode ajudar a completá-la [no Weblate](/weblate)."
@@ -111,19 +123,7 @@
       "title": "Exibir popups de ajuda",
       "description": "Define se vai exibir popups de ajuda quando pairando sobre botões."
     },
-    "advancedHelp": "Para ajuda avançada, veja o ícone de ajuda no canto inferior direito.",
-    "redWavelength": {
-      "title": "Comprimento de onda vermelho",
-      "description": "O comprimento de onda exibido como vermelho quando \"Simular Cores\" está ligado. Útil para visualizar luz não visível com espectro de cor falsa."
-    },
-    "violetWavelength": {
-      "title": "Comprimento de onda violeta",
-      "description": "O comprimento de onda exibido como violeta quando \"Simular Cores\" está ligado. Útil para visualizar luz não visível com espectro de cor falsa."
-    },
-    "maxRayDepth": {
-      "title": "Profundidade Máxima de Raio",
-      "description": "Número máximo de interações raio-objeto antes de truncar raios. Use \"inf\" para remover o limite."
-    }
+    "advancedHelp": "Para ajuda avançada, veja o ícone de ajuda no canto inferior direito."
   },
   "editor": {
     "objectBodyHint": "Para rotação, agrupamento, etc., veja o ícone de ajuda no canto inferior direito.",
@@ -164,16 +164,16 @@
       "lambert": "Lambertiano",
       "coordOrigin": "Origem",
       "focalLength": "Comprimento focal",
+      "lineStyle": "Estilo de linha",
+      "fillStyle": "Estilo de preenchimento",
+      "useThemeStyle": "Usar estilo do tema",
       "eqnInfo": {
         "constants": "Constantes suportadas",
         "operators": "Operadores suportados",
         "functions": "Funções suportadas"
       },
       "imageDetectionWarning": "Esta ferramenta não suporta detecção de imagem.",
-      "nonSimulateColorsWarning": "Esta ferramenta só funciona quando \"Simular Cores\" está ligado.",
-      "lineStyle": "Estilo de linha",
-      "fillStyle": "Estilo de preenchimento",
-      "useThemeStyle": "Usar estilo do tema"
+      "nonSimulateColorsWarning": "Esta ferramenta só funciona quando \"Simular Cores\" está ligado."
     },
     "ParamCurveObjMixin": {
       "addPiece": "Adicionar segmento",
@@ -622,6 +622,13 @@
   },
   "footer": {
     "processing": "Processando... Clique aqui para parar.",
+    "betaFeatures": {
+      "title": "Recursos beta",
+      "description": "Você está utilizando os seguintes recursos beta:",
+      "details": "Recursos beta podem ser insáveis e podem mudar sem retrocompatibilidade. Para reportar bugs, por favor visite [Issues](/github/issues) no GitHub ou nos mande um email em [ray-optics@phydemo.app](/email).",
+      "sceneFromBeta": "Esta cena é importada de um item beta na Galeria (reimporte para atualizar).",
+      "moduleFromBeta": "O módulo `{{moduleId}}` é importado de um item beta na lista de módulos (reimporte para atualizar)."
+    },
     "helpPopup": {
       "constrainedDragging": {
         "title": "Arraste restrito",
@@ -655,13 +662,6 @@
         "description": "O jeito sugerido é ir até [Discussões](/github/discussions) ou [Problemas](/github/issues) no GitHub. Se você não usar o GitHub, pode nos mandar um email em [ray-optics@phydemo.app](/email) (por favor use Inglês).",
         "contribute": "Contribuições diretas também são bem-vindas (ver [o guia de contribuições](/contributing))."
       }
-    },
-    "betaFeatures": {
-      "title": "Recursos beta",
-      "description": "Você está utilizando os seguintes recursos beta:",
-      "details": "Recursos beta podem ser insáveis e podem mudar sem retrocompatibilidade. Para reportar bugs, por favor visite [Issues](/github/issues) no GitHub ou nos mande um email em [ray-optics@phydemo.app](/email).",
-      "sceneFromBeta": "Esta cena é importada de um item beta na Galeria (reimporte para atualizar).",
-      "moduleFromBeta": "O módulo `{{moduleId}}` é importado de um item beta na lista de módulos (reimporte para atualizar)."
     }
   }
 }

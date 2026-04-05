@@ -8,11 +8,11 @@
     "saveButton": "Zapisz",
     "cancelButton": "Anuluj",
     "defaultOption": "Domyślnie",
+    "legacyOption": "Stara wersja",
     "customOption": "Niestandardowy",
     "closeButton": "Zamknij",
     "resetButton": "Resetuj",
-    "reloadToTakeEffect": "Przeładuj stronę, aby uzyskać efekt.",
-    "legacyOption": "Stara wersja"
+    "reloadToTakeEffect": "Przeładuj stronę, aby uzyskać efekt."
   },
   "file": {
     "title": "Plik",
@@ -88,6 +88,18 @@
       "title": "Tryb kolorów",
       "description": "Określa sposób mapowania jasności (i kolorów, jeśli włączona jest opcja \"Symuluj kolory\") promieni lub obrazów na kolory na ekranie. Konfigurowalne tylko w trybie \"Koryguj jasność\"."
     },
+    "redWavelength": {
+      "title": "Długość fali czerwonej",
+      "description": "Długość fali pokazywana jako czerwona, gdy włączone jest \"Symuluj kolory\". Przydatna do wizualizacji światła niewidzialnego za pomocą fałszywego spektrum kolorów."
+    },
+    "violetWavelength": {
+      "title": "Długość fali fioletowej",
+      "description": "Długość fali pokazywana jako fioletowa, gdy włączone jest \"Symuluj kolory\". Przydatna do wizualizacji światła niewidzialnego za pomocą fałszywego spektrum kolorów."
+    },
+    "maxRayDepth": {
+      "title": "Maksymalna głębokość promienia",
+      "description": "Maksymalna liczba interakcji promień-obiekt przed ucięciem promieni. Użyj \"inf\", aby nie ustawiać limitu."
+    },
     "language": {
       "title": "Język",
       "lowFraction": "Ten język jest tylko w {{fraction}} przetłumaczony. Możesz pomóc w jego ukończeniu [na Weblate](/weblate)."
@@ -111,19 +123,13 @@
       "title": "Pokaż okienka pomocy",
       "description": "Określa, czy wyświetlać wyskakujące okienka pomocy po najechaniu kursorem na przyciski."
     },
-    "advancedHelp": "Aby uzyskać zaawansowaną pomoc, zobacz ikonę pomocy w prawym dolnym rogu.",
-    "redWavelength": {
-      "title": "Długość fali czerwonej",
-      "description": "Długość fali pokazywana jako czerwona, gdy włączone jest \"Symuluj kolory\". Przydatna do wizualizacji światła niewidzialnego za pomocą fałszywego spektrum kolorów."
-    },
-    "violetWavelength": {
-      "title": "Długość fali fioletowej",
-      "description": "Długość fali pokazywana jako fioletowa, gdy włączone jest \"Symuluj kolory\". Przydatna do wizualizacji światła niewidzialnego za pomocą fałszywego spektrum kolorów."
-    },
-    "maxRayDepth": {
-      "title": "Maksymalna głębokość promienia",
-      "description": "Maksymalna liczba interakcji promień-obiekt przed ucięciem promieni. Użyj \"inf\", aby nie ustawiać limitu."
-    }
+    "advancedHelp": "Aby uzyskać zaawansowaną pomoc, zobacz ikonę pomocy w prawym dolnym rogu."
+  },
+  "editor": {
+    "objectBodyHint": "Odnośnie obracania, grupowania itp., zobacz ikonę pomocy w prawym dolnym rogu.",
+    "coordinatesHint": "Odnośnie przekształcania obiektów, definiowania współrzędnych na podstawie wzorów itp., zobacz ikonę pomocy w prawym dolnym rogu.",
+    "handleHint": "Aby przesunąć wiele obiektów jednocześnie, kliknij puste miejsce, aby utworzyć uchwyt.",
+    "handleArrowHint": "Aby przełączać się między trybem poziomo/pionowo/obrót/skalowanie, kliknij uchwyt (strzałkę) i zmień opcję \"transformacji\" powyżej."
   },
   "objBar": {
     "showAdvanced": {
@@ -158,16 +164,16 @@
       "lambert": "Lambertowskie",
       "coordOrigin": "Początek",
       "focalLength": "Ogniskowa",
+      "lineStyle": "Styl linii",
+      "fillStyle": "Styl wypełnienia",
+      "useThemeStyle": "Użyj stylu motywu",
       "eqnInfo": {
         "constants": "Obsługiwane stałe",
         "operators": "Obsługiwane operatory",
         "functions": "Obsługiwane funkcje"
       },
       "imageDetectionWarning": "To narzędzie nie obsługuje wykrywania obrazów.",
-      "nonSimulateColorsWarning": "To narzędzie działa tylko wtedy, gdy \"Symuluj kolory\" jest włączone.",
-      "lineStyle": "Styl linii",
-      "fillStyle": "Styl wypełnienia",
-      "useThemeStyle": "Użyj stylu motywu"
+      "nonSimulateColorsWarning": "To narzędzie działa tylko wtedy, gdy \"Symuluj kolory\" jest włączone."
     },
     "ParamCurveObjMixin": {
       "addPiece": "Dodaj element",
@@ -542,6 +548,9 @@
     "decoration": {
       "title": "Styl dekoracji"
     },
+    "handlePoint": {
+      "title": "Punkt sterowania modułem"
+    },
     "handleArrow": {
       "title": "Strzałka uchwytu"
     },
@@ -552,9 +561,6 @@
       "title": "Importuj",
       "description": "Importuj motyw z pliku JSON sceny.",
       "error": "Plik nie zawiera motywu."
-    },
-    "handlePoint": {
-      "title": "Punkt sterowania modułem"
     }
   },
   "languageModal": {
@@ -616,6 +622,13 @@
   },
   "footer": {
     "processing": "Przetwarzanie… Kliknij tutaj, aby zatrzymać.",
+    "betaFeatures": {
+      "title": "Funkcje wersji beta",
+      "description": "Korzystasz z następujących funkcji beta:",
+      "details": "Funkcje beta mogą być niestabilne i mogą ulec zmianie bez zapewnienia wstecznej kompatybilności. Aby zgłosić błędy, przejdź do sekcji [Issues](/github/issues) w serwisie GitHub lub napisz do nas na adres [ray-optics@phydemo.app](/email).",
+      "sceneFromBeta": "Ta scena została zaimportowana z elementu beta w Galerii (ponowny import w celu aktualizacji).",
+      "moduleFromBeta": "Moduł `{{moduleId}}` jest importowany z pozycji beta na liście modułów (ponowny import w celu aktualizacji)."
+    },
     "helpPopup": {
       "constrainedDragging": {
         "title": "Przeciąganie ograniczone",
@@ -628,6 +641,9 @@
       "editCoordinates": {
         "title": "Bezpośrednio edytuj współrzędne",
         "description": "Kliknij dwukrotnie lub prawym przyciskiem myszy punkt kontrolny (np. punkt końcowy) obiektu, edytuj współrzędne (x,y), a następnie naciśnij klawisz Enter."
+      },
+      "arrayFormula": {
+        "title": "Tablice i obiekty ze wzorów"
       },
       "keyboardShortcuts": {
         "title": "Skróty klawiaturowe",
@@ -645,23 +661,7 @@
         "title": "Skontaktuj się z nami",
         "description": "Zalecany sposób to przejście do [Discussions](/github/discussions) lub [Issues](/github/issues) na GitHub. Jeśli nie korzystasz z GitHub, możesz również wysłać do nas wiadomość e-mail na adres [ray-optics@phydemo.app](/email).",
         "contribute": "Bezpośrednie wsparcie jest również mile widziane (patrz [przewodnik dotyczący wsparcia](/contributing))."
-      },
-      "arrayFormula": {
-        "title": "Tablice i obiekty ze wzorów"
       }
-    },
-    "betaFeatures": {
-      "moduleFromBeta": "Moduł `{{moduleId}}` jest importowany z pozycji beta na liście modułów (ponowny import w celu aktualizacji).",
-      "title": "Funkcje wersji beta",
-      "description": "Korzystasz z następujących funkcji beta:",
-      "details": "Funkcje beta mogą być niestabilne i mogą ulec zmianie bez zapewnienia wstecznej kompatybilności. Aby zgłosić błędy, przejdź do sekcji [Issues](/github/issues) w serwisie GitHub lub napisz do nas na adres [ray-optics@phydemo.app](/email).",
-      "sceneFromBeta": "Ta scena została zaimportowana z elementu beta w Galerii (ponowny import w celu aktualizacji)."
     }
-  },
-  "editor": {
-    "objectBodyHint": "Odnośnie obracania, grupowania itp., zobacz ikonę pomocy w prawym dolnym rogu.",
-    "coordinatesHint": "Odnośnie przekształcania obiektów, definiowania współrzędnych na podstawie wzorów itp., zobacz ikonę pomocy w prawym dolnym rogu.",
-    "handleHint": "Aby przesunąć wiele obiektów jednocześnie, kliknij puste miejsce, aby utworzyć uchwyt.",
-    "handleArrowHint": "Aby przełączać się między trybem poziomo/pionowo/obrót/skalowanie, kliknij uchwyt (strzałkę) i zmień opcję \"transformacji\" powyżej."
   }
 }

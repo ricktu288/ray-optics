@@ -23,7 +23,6 @@ export function mapURL(url) {
     "/home": rootURL + (localeData.home ? route : '') + '/',
     "/gallery": rootURL + (localeData.gallery ? route : '') + '/gallery/',
     "/modules/modules": rootURL + (localeData.modules ? route : '') + '/modules/modules.html',
-    "/modules/tutorial": rootURL + (localeData.moduleTutorial ? route : '') + '/modules/tutorial',
     "/about": rootURL + (localeData.about ? route : '') + '/about',
     "/email": "mailto:ray-optics@phydemo.app",
     "/github": "https://github.com/ricktu288/ray-optics",

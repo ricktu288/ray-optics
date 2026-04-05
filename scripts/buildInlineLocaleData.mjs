@@ -94,12 +94,6 @@ export default function() {
       localeData[lang].modules = true;
     }
 
-    // Set whether the module tutorial is available.
-    const moduleTutorialPath = path.join(__dirname, `../dist${route}/modules/tutorial.html`);
-    if (fs.existsSync(moduleTutorialPath)) {
-      localeData[lang].moduleTutorial = true;
-    }
-
     // Set whether the about page is available
     const aboutPath = path.join(__dirname, `../dist${route}/about.html`);
     if (fs.existsSync(aboutPath)) {

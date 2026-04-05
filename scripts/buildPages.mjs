@@ -215,8 +215,6 @@ const galleryLangs = [];
 const galleryItemsLangs = {};
 const modulesLangs = [];
 const moduleItemsLangs = {};
-const moduleTutorialLangs = [];
-
 for (const id of galleryIDs) {
   galleryItemsLangs[id] = [];
 }
@@ -323,13 +321,6 @@ for (const lang of langs) {
     }
   }
 
-  //console.log(`The module tutorial of ${lang} has ${countStrings(modulesData.moduleTutorial)} strings.`);
-  if (countStrings(modulesData.moduleTutorial) > 12) {
-    moduleTutorialLangs.push(lang);
-    urlMaps[lang]['/modules/tutorial'] = routesData[lang] + '/modules/tutorial';
-  } else {
-    urlMaps[lang]['/modules/tutorial'] = '/modules/tutorial';
-  }
 }
 
 // Calculate the fraction of the gallery items that are translated for each language
@@ -676,44 +667,5 @@ for (const lang of homeLangs) {
       }),
     }
     fs.writeFileSync(path.join(modulesDir, 'modules.html'), modulesTemplate(modulePageData));
-
-    // Create the module tutorial webpage
-    if (moduleTutorialLangs.includes(lang)) {
-      const moduleTutorialTemplate = Handlebars.compile(fs.readFileSync(path.join(__dirname, '../src/pages/moduleTutorial.hbs'), 'utf8'));
-
-      const galleryHashUrl = lang == 'en' ? '' : '..' + routesData[lang] + '/gallery/';
-      const moduleTutorialData = {
-        title: i18next.t('modules:moduleTutorial.title') + ' - ' + i18next.t('main:project.name'),
-        ogImage: rootAbsUrl + '/img/image.png',
-        absUrl: rootAbsUrl + urlMaps[lang]['/modules/tutorial'],
-        lang: lang,
-        langName: langNames[lang],
-        supportedLangs: moduleTutorialLangs.map((lang) => {
-          return {
-            lang: lang,
-            name: langNames[lang],
-            url: rootUrl + urlMaps[lang]['/modules/tutorial'],
-            absUrl: rootAbsUrl + urlMaps[lang]['/modules/tutorial'],
-          };
-        }),
-        imgUrl: rootUrl + '/img',
-        thirdpartyUrl: rootUrl + '/thirdparty',
-        homeUrl: rootUrl + urlMaps[lang]['/home'],
-        aboutUrl: rootUrl + urlMaps[lang]['/about'],
-        galleryUrl: rootUrl + urlMaps[lang]['/gallery'],
-        simulatorUrl: rootUrl + urlMaps[lang]['/simulator'],
-        isHome: false,
-        isGallery: false,
-        isAbout: false,
-        moduleExampleBasicsHashUrl: (galleryItemsLangs['module-example-basics'].includes(lang) ? galleryHashUrl : '') + 'module-example-basics',
-        moduleExampleParametersHashUrl: (galleryItemsLangs['module-example-parameters'].includes(lang) ? galleryHashUrl : '') + 'module-example-parameters',
-        moduleExampleControlPointsHashUrl: (galleryItemsLangs['module-example-control-points'].includes(lang) ? galleryHashUrl : '') + 'module-example-control-points',
-        moduleExampleArraysAndConditionalsHashUrl: (galleryItemsLangs['module-example-arrays-and-conditionals'].includes(lang) ? galleryHashUrl : '') + 'module-example-arrays-and-conditionals',
-        moduleExampleVariablesHashUrl: (galleryItemsLangs['module-example-variables'].includes(lang) ? galleryHashUrl : '') + 'module-example-variables',
-        moduleExampleCustomEquationHashUrl: (galleryItemsLangs['module-example-custom-equation'].includes(lang) ? galleryHashUrl : '') + 'module-example-custom-equation',
-        moduleExampleShapeParametrizationHashUrl: (galleryItemsLangs['module-example-shape-parametrization'].includes(lang) ? galleryHashUrl : '') + 'module-example-shape-parametrization',
-      }
-      fs.writeFileSync(path.join(modulesDir, 'tutorial.html'), moduleTutorialTemplate(moduleTutorialData));
-    }
   }
 }
