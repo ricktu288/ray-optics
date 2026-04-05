@@ -59,9 +59,11 @@ class ModuleObj extends BaseSceneObj {
     super(scene, jsonObj);
 
     this.highlightSourceIndices = [];
-    /** @type {string|null} Parameter name to frame in the object bar when picked in the module editor sidebar. */
+    /** Parameter name to frame in the object bar when picked in the module editor sidebar. */
+    /** @type {string|null} */
     this.highlightedParamName = null;
-    /** @type {number|null} 0-based control point index to emphasize on canvas when picked in the module editor sidebar. */
+    /** 0-based control point index to emphasize on canvas when picked in the module editor sidebar. */
+    /** @type {number|null} */
     this.highlightedPointIndex = null;
     if (!this.module) return;
     this.moduleDef = this.scene.modules[this.module];

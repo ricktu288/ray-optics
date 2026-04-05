@@ -47,9 +47,9 @@ export function applyTextareaAutoResize(el) {
 /**
  * When a textarea lives under tabs / `v-show` / sidebar chrome, it can become visible after
  * `sidebarWidth` updates while hidden. Observe intersection and re-measure when shown.
- * @param {() => (HTMLElement|null|undefined)[]} getElements
- * @param {() => void} resizeAll
- * @returns {{ disconnect: () => void }}
+ * @param {Function} getElements - Returns textareas to observe (may include null/undefined entries).
+ * @param {Function} resizeAll - Re-measure all linked textareas.
+ * @returns {Object} `{ disconnect }` — call `disconnect()` to stop observing.
  */
 export function observeTextareasResizeWhenVisible(getElements, resizeAll) {
   if (typeof IntersectionObserver === 'undefined') {

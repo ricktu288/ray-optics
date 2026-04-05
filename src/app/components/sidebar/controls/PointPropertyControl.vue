@@ -102,7 +102,7 @@ function collectExpandedTemplatePoints(displayValue, moduleName, templateSourceI
     return []
   }
   const paths = [xPathStr, yPathStr]
-  /** @type {{ x: number, y: number }[]} */
+  /** @type {Array.<{x: number, y: number}>} */
   const out = []
   for (const inst of instances) {
     if (!inst || typeof inst.getExpandedPropertyValues !== 'function') {

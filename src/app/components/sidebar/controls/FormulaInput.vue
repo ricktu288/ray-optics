@@ -113,7 +113,8 @@ export default {
       }
       const paths = normalizedModuleKeyPaths.value
 
-      /** @type {Array<Array<*>>} One row per expanded slot: tuple of raw cells per key path */
+      /** One row per expanded slot: tuple of raw cells per key path */
+      /** @type {Array.<Array<*>>} */
       const allRows = []
       for (const inst of instances) {
         if (!inst || typeof inst.getExpandedPropertyValues !== 'function') {

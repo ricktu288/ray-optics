@@ -122,7 +122,7 @@ class Handle extends BaseSceneObj {
   /**
    * Convert this handle into a new module (see {@link Scene#convertHandleToModule}).
    * @param {string} moduleName
-   * @returns {{ ok: boolean, moduleObjIndex?: number }}
+   * @returns {{ok: boolean, moduleObjIndex: (number|undefined)}}
    */
   convertToModule(moduleName) {
     const idx = this.scene.objs.indexOf(this);

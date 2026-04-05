@@ -295,7 +295,7 @@ class Simulator {
 
   /**
    * Draw editor-driven highlight points on the above-light layer (same style as {@link sceneObjs.Handle} control-point dashed circles when highlighted).
-   * @param {import('./CanvasRenderer.js').default|null} canvasRenderer
+   * @param {Object|null} canvasRenderer - {@link CanvasRenderer} instance or null.
    * @returns {void}
    */
   drawExternalHighlightPoints(canvasRenderer) {

@@ -131,7 +131,7 @@ class Editor {
     this.externalHoverIndex = -1;
     /** @property {number[]} externalHighlightIndices - Multi-highlight from UI list. */
     this.externalHighlightIndices = [];
-    /** @property {{x: number, y: number}[]} externalHighlightPoints - Scene points to highlight from sidebar (e.g. point property hover). */
+    /** @property {Array.<{x: number, y: number}>} externalHighlightPoints - Scene points to highlight from sidebar (e.g. point property hover). */
     this.externalHighlightPoints = [];
 
     /** @property {string} addingObjType - The type of the object that will be added when the user clicks on the canvas. Empty if 'Move view' tool is selected so that no object will be added. */
@@ -1308,10 +1308,10 @@ class Editor {
    * instances nested under another module’s expanded `objs`.
    *
    * @param {string} moduleId - The module name (`ModuleObj#module`), same as in `scene.modules`.
-   * @returns {import('./sceneObjs.js').ModuleObj[]} Module instances (possibly empty).
+   * @returns {Array} Module instances (possibly empty). Elements are {@link sceneObjs.ModuleObj}.
    */
   getActiveModuleInstances(moduleId) {
-    /** @type {import('./sceneObjs.js').ModuleObj[]} */
+    /** @type {Array} */
     const all = [];
     const collect = (objs) => {
       if (!Array.isArray(objs)) return;
@@ -1776,7 +1776,7 @@ class Editor {
 
   /**
    * Set external highlight points (scene coordinates) for UI-driven preview.
-   * @param {{x: number, y: number}[]} points
+   * @param {Array.<{x: number, y: number}>} points
    */
   setExternalHighlightPoints(points) {
     if (!Array.isArray(points)) {

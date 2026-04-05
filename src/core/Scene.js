@@ -957,7 +957,7 @@ class Scene {
    * moved into the module definition, the handle removed, and a new {@link sceneObjs.ModuleObj} added.
    * @param {number} handleIndex - Index of the {@link sceneObjs.Handle} in {@link Scene#objs}.
    * @param {string} moduleName - Name for the new module (must not already exist).
-   * @returns {{ ok: boolean, moduleObjIndex?: number }}
+   * @returns {{ok: boolean, moduleObjIndex: (number|undefined)}}
    */
   convertHandleToModule(handleIndex, moduleName) {
     if (!Number.isInteger(handleIndex) || handleIndex < 0 || handleIndex >= this.objs.length) {
