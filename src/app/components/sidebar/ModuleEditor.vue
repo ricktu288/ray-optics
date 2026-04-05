@@ -352,14 +352,57 @@ function controlPointIndexAfterReorder(s, from, to) {
   return s
 }
 
-function dedupeParamName(base, occupied) {
-  const b = (base ?? '').trim() || 'p'
-  if (!occupied.includes(b)) return b
-  for (let i = 1; i < 100000; i++) {
-    const c = `${b}${i}`
-    if (!occupied.includes(c)) return c
+/**
+ * Next unused identifier when duplicating a parameter or variable row (the symbol name used in math.js expressions).
+ * - Increments a trailing integer (`a1` → `a2`), instead of appending (`a1` → `a11`).
+ * - For function-style LHS `f(...)`, only the function symbol before `(` changes (`f(x)` → `f1(x)`).
+ */
+function nextDuplicateIdentifier(rawName, occupied) {
+  const occ = new Set(
+    (occupied ?? []).map((s) => String(s ?? '').trim()).filter(Boolean)
+  )
+  const trimmed = String(rawName ?? '').trim()
+  const base = trimmed || 'p'
+
+  const open = base.indexOf('(')
+  const isFnForm =
+    open > 0 &&
+    base.lastIndexOf(')') === base.length - 1 &&
+    base.lastIndexOf(')') > open
+
+  const idSource = (isFnForm ? base.slice(0, open).trim() : base) || (isFnForm ? 'f' : 'p')
+
+  const buildFull = (idPart) => {
+    if (!isFnForm) return idPart
+    return `${idPart}${base.slice(open)}`
   }
-  return `${b}x`
+
+  const digitTail = /^(.*?)(\d+)$/.exec(idSource)
+  let candidateId
+  let guard = 0
+  const max = 100_000
+
+  if (digitTail) {
+    const prefix = digitTail[1]
+    let k = parseInt(digitTail[2], 10)
+    if (!Number.isFinite(k)) k = 0
+    do {
+      k += 1
+      candidateId = `${prefix}${k}`
+      guard += 1
+      if (guard > max) return `${buildFull(idSource)}x`
+    } while (occ.has(buildFull(candidateId)))
+  } else {
+    let j = 1
+    do {
+      candidateId = `${idSource}${j}`
+      j += 1
+      guard += 1
+      if (guard > max) return `${buildFull(idSource)}x`
+    } while (occ.has(buildFull(candidateId)))
+  }
+
+  return buildFull(candidateId)
 }
 
 function parseVarDef(entry) {
@@ -499,7 +542,8 @@ export default {
       commitMaxLoopLength()
     }
 
-    const getOccupiedModuleNames = () => {
+    /** LHS identifier strings already used by this module’s parameter and variable rows (not the module’s id). */
+    const getOccupiedIdentifiers = () => {
       const paramNames = paramItems.value.map((r) => String(r.name ?? '').trim()).filter(Boolean)
       const varNames = variableItems.value.map((r) => String(r.name ?? '').trim()).filter(Boolean)
       return [...paramNames, ...varNames]
@@ -911,7 +955,7 @@ export default {
     const handleParamDuplicate = (item, index) => {
       const row = paramItems.value[index]
       if (!row) return
-      const newName = dedupeParamName(row.name, getOccupiedModuleNames())
+      const newName = nextDuplicateIdentifier(row.name, getOccupiedIdentifiers())
       const clone = {
         id: `${props.moduleName}-param-${paramItems.value.length}`,
         name: newName,
@@ -1068,7 +1112,7 @@ export default {
     }
 
     const handleParamCreate = () => {
-      const name = getNextModuleIdentifierName(getOccupiedModuleNames())
+      const name = getNextModuleIdentifierName(getOccupiedIdentifiers())
       paramItems.value = [
         ...paramItems.value,
         {
@@ -1106,7 +1150,7 @@ export default {
     const handleVarDuplicate = (item, index) => {
       const row = variableItems.value[index]
       if (!row) return
-      const newName = dedupeParamName(row.name, getOccupiedModuleNames())
+      const newName = nextDuplicateIdentifier(row.name, getOccupiedIdentifiers())
       const clone = { id: `${props.moduleName}-var-${variableItems.value.length}`, name: newName, expression: row.expression }
       const next = [...variableItems.value]
       next.splice(index + 1, 0, clone)
@@ -1130,7 +1174,7 @@ export default {
         ...variableItems.value,
         {
           id: `${props.moduleName}-var-${variableItems.value.length}`,
-          name: getNextModuleIdentifierName(getOccupiedModuleNames()),
+          name: getNextModuleIdentifierName(getOccupiedIdentifiers()),
           expression: '1'
         }
       ]
