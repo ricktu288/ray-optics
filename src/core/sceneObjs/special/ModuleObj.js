@@ -670,7 +670,12 @@ class ModuleObj extends BaseSceneObj {
             } else {
               let result = [];
               let loopVars1 = loopVars.slice(1);
-              const loopLength = (loopVars[0].end - loopVars[0].start) / loopVars[0].step + 1;
+              const span = loopVars[0].end - loopVars[0].start;
+              const step = loopVars[0].step;
+              if (step === 0 || span * step < 0) {
+                throw i18next.t('simulator:sceneObjs.ModuleObj.loopVariableTooLarge', { name: loopVars[0].name });
+              }
+              const loopLength = span / step + 1;
               if (loopLength > (self.moduleDef.maxLoopLength || 1000)) {
                 throw i18next.t('simulator:sceneObjs.ModuleObj.loopVariableTooLarge', { name: loopVars[0].name });
               }
