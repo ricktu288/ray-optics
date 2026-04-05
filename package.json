@@ -15,6 +15,7 @@
     "canvas2svg": "github:gliffy/canvas2svg",
     "copy-webpack-plugin": "^14.0.0",
     "css-loader": "^7.1.2",
+    "escape-html": "^1.0.3",
     "evaluatex": "^2.2.0",
     "file-loader": "^6.2.0",
     "file-saver": "^2.0.5",
@@ -51,7 +52,8 @@
     "simple-git": "^3.32.3"
   },
   "scripts": {
-    "test": "npm run test:sceneObjs && npm run test:scenes",
+    "test": "npm run test:propertyUtils && npm run test:sceneObjs && npm run test:scenes",
+    "test:propertyUtils": "jest test/propertyUtils",
     "test:sceneObjs": "jest test/sceneObjs",
     "test:scenes": "npm run build-node && jest test/scenes",
     "build-pages": "node ./scripts/buildPages.mjs",

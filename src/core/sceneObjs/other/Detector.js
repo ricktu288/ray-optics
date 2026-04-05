@@ -55,6 +55,18 @@ class Detector extends LineObjMixin(BaseSceneObj) {
     this.binData = null;
   }
 
+  static getDescription(objData, scene, detailed = false) {
+    return i18next.t('main:tools.Detector.title');
+  }
+
+  static getPropertySchema(objData, scene) {
+    return [
+      ...super.getPropertySchema(objData, scene),
+      { key: 'irradMap', type: 'boolean', label: i18next.t('simulator:sceneObjs.Detector.irradMap') },
+      { key: 'binSize', type: 'number', label: i18next.t('simulator:sceneObjs.Detector.binSize') },
+    ];
+  }
+
   populateObjBar(objBar) {
     if (this.scene.colorMode !== 'default') {
       var sInfo = i18next.t('simulator:sceneObjs.Detector.info.sNewColorModes');

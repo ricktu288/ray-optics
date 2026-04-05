@@ -27,6 +27,16 @@ import geometry from '../geometry.js';
  */
 class BaseGlass extends BaseSceneObj {
 
+  static getPropertySchema(objData, scene) {
+    return [
+      { key: 'refIndex', type: 'number',
+        label: i18next.t('main:meta.parentheses', { main: i18next.t('simulator:sceneObjs.BaseGlass.refIndex'), sub: i18next.t('simulator:sceneObjs.BaseGlass.cauchyCoeff') + ' A' }),
+        info: '<p>' + i18next.t('simulator:sceneObjs.BaseGlass.refIndexInfo.dualMeaning') + '</p><p>*' + i18next.t('simulator:sceneObjs.BaseGlass.refIndexInfo.relative') + '</p><p>' + i18next.t('simulator:sceneObjs.BaseGlass.refIndexInfo.effective') + '</p>' },
+      { key: 'cauchyB', type: 'number', label: i18next.t('simulator:sceneObjs.BaseGlass.cauchyCoeff') + ' B (μm²)' },
+      { key: 'partialReflect', type: 'boolean', label: i18next.t('simulator:sceneObjs.BaseGlass.partialReflect') },
+    ];
+  }
+
   populateObjBar(objBar) {
     if (this.scene.simulateColors) {
       objBar.createNumber(i18next.t('simulator:sceneObjs.BaseGlass.cauchyCoeff') + " A", 1, 3, 0.01, this.refIndex, function (obj, value) {

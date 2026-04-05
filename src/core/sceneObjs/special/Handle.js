@@ -20,6 +20,46 @@ import Mouse from '../../Mouse.js';
 import i18next from 'i18next';
 
 /**
+ * Prompt for a new module name using the same rules as the module editor (for handle → module conversion).
+ * @param {Object} scene
+ * @returns {string|null}
+ */
+function promptNewModuleNameForHandle(scene) {
+  const existing = Object.keys(scene.modules || {});
+  const base = 'NewModule';
+  let defaultName = base;
+  if (existing.includes(base)) {
+    for (let i = 2; i < 10000; i++) {
+      const candidate = `${base}${i}`;
+      if (!existing.includes(candidate)) {
+        defaultName = candidate;
+        break;
+      }
+    }
+  }
+
+  const proposed = window.prompt(
+    i18next.t('simulator:sidebar.visual.moduleEditor.new.promptNewName'),
+    defaultName
+  );
+  if (proposed == null) return null;
+  const newName = proposed.trim();
+  if (!newName) {
+    window.alert(i18next.t('simulator:sidebar.visual.moduleEditor.new.errorEmptyName'));
+    return null;
+  }
+  if (newName.includes(',')) {
+    window.alert(i18next.t('simulator:sidebar.visual.moduleEditor.new.errorComma'));
+    return null;
+  }
+  if (existing.includes(newName)) {
+    window.alert(i18next.t('simulator:sidebar.visual.moduleEditor.new.errorNameExists', { name: newName }));
+    return null;
+  }
+  return newName;
+}
+
+/**
  * The handle created when holding ctrl and click several points.
  * @class
  * @extends BaseSceneObj
@@ -69,6 +109,29 @@ class Handle extends BaseSceneObj {
     return jsonObj;
   }
 
+  static getDescription(objData, scene, detailed = false) {
+    const base = i18next.t('simulator:sceneObjs.Handle.handle');
+    if (!detailed) return base;
+    const transformation = objData?.transformation || 'default';
+    const transformationLabel = transformation === 'default'
+      ? i18next.t('simulator:common.legacyOption')
+      : i18next.t(`simulator:sceneObjs.Handle.transformations.${transformation}`);
+    return i18next.t('main:meta.colon', { name: base, value: transformationLabel });
+  }
+
+  /**
+   * Convert this handle into a new module (see {@link Scene#convertHandleToModule}).
+   * @param {string} moduleName
+   * @returns {{ok: boolean, moduleObjIndex: (number|undefined)}}
+   */
+  convertToModule(moduleName) {
+    const idx = this.scene.objs.indexOf(this);
+    if (idx < 0) {
+      return { ok: false };
+    }
+    return this.scene.convertHandleToModule(idx, moduleName);
+  }
+
   populateObjBar(objBar) {
     objBar.setTitle(i18next.t('simulator:sceneObjs.Handle.handle'));
     const transformations = {
@@ -77,9 +140,37 @@ class Handle extends BaseSceneObj {
       'translation': i18next.t('simulator:sceneObjs.Handle.transformations.translation'),
       'rotation': i18next.t('simulator:sceneObjs.Handle.transformations.rotation'),
       'scaling': i18next.t('simulator:sceneObjs.Handle.transformations.scaling'),
-      'default': i18next.t('simulator:common.legacyOption')
+      'default': i18next.t('simulator:common.legacyOption'),
+      '_module': i18next.t('simulator:sceneObjs.Handle.convertToModule')
     };
     objBar.createDropdown(i18next.t('simulator:sceneObjs.Handle.transformation'), this.transformation, transformations, function (obj, value) {
+      if (value === '_module') {
+        const moduleName = promptNewModuleNameForHandle(obj.scene);
+        if (moduleName == null) {
+          setTimeout(function () {
+            objBar.emit('requestUpdate', null);
+          }, 0);
+          return;
+        }
+        const result = obj.convertToModule(moduleName);
+        if (!result.ok) {
+          setTimeout(function () {
+            objBar.emit('requestUpdate', null);
+          }, 0);
+          return;
+        }
+        // Clear indices invalidated by moveObjsToModule / removeObj before selecting the new ModuleObj,
+        // so sidebar selection state (e.g. module "move into" hint) does not briefly use a stale index.
+        const editor = obj.scene.editor;
+        if (editor) {
+          editor.selectObj(-1);
+        }
+        setTimeout(function () {
+          document.dispatchEvent(new CustomEvent('selectSceneObjByIndex', { detail: { index: result.moduleObjIndex } }));
+          document.dispatchEvent(new CustomEvent('openVisualModuleEditor', { detail: { moduleName } }));
+        }, 0);
+        return;
+      }
       obj.transformation = value;
     }, null, true);
 
@@ -110,15 +201,15 @@ class Handle extends BaseSceneObj {
   draw(canvasRenderer, isAboveLight, isHovered) {
     const ctx = canvasRenderer.ctx;
     const ls = canvasRenderer.lengthScale;
-    ctx.lineWidth = 1 * ls;
+    ctx.lineWidth = 1.5 * ls;
 
     if (this.transformation == "default" || isHovered || this.notDone) {
       for (var i in this.controlPoints) {
         ctx.globalAlpha = 1;
         ctx.beginPath();
         ctx.strokeStyle = this.notDone ? this.scene.highlightColorCss : isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.theme.handlePoint.color);
-        ctx.setLineDash([2 * ls, 2 * ls]);
-        ctx.arc(this.controlPoints[i].newPoint.x, this.controlPoints[i].newPoint.y, 5 * ls, 0, Math.PI * 2, false);
+        ctx.setLineDash([2.1 * ls, 2.1 * ls]);
+        ctx.arc(this.controlPoints[i].newPoint.x, this.controlPoints[i].newPoint.y, 4 * ls, 0, Math.PI * 2, false);
         ctx.stroke();
         ctx.setLineDash([]);
       }

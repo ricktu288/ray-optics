@@ -46,6 +46,21 @@ class AngleSource extends LineObjMixin(BaseSceneObj) {
     symmetric: true
   };
 
+  static getDescription(objData, scene, detailed = false) {
+    return i18next.t('main:tools.PointSource.title') + ' (<360°)';
+  }
+
+  static getPropertySchema(objData, scene) {
+    return [
+      { key: 'p1', type: 'point', label: i18next.t('simulator:sceneObjs.LineObjMixin.sourcePoint') },
+      { key: 'p2', type: 'point', label: i18next.t('simulator:sceneObjs.LineObjMixin.directionPoint') },
+      { key: 'brightness', type: 'number', label: i18next.t('simulator:sceneObjs.common.brightness') },
+      { key: 'wavelength', type: 'number', label: i18next.t('simulator:sceneObjs.common.wavelength') + ' (nm)' },
+      { key: 'emisAngle', type: 'number', label: i18next.t('simulator:sceneObjs.common.emisAngle') + ' (\u00B0)' },
+      { key: 'symmetric', type: 'boolean', label: i18next.t('simulator:sceneObjs.AngleSource.symmetric') },
+    ];
+  }
+
   populateObjBar(objBar) {
     if (this.scene.colorMode !== 'default') {
       var brightnessInfo = i18next.t('simulator:sceneObjs.common.brightnessInfo.newColorModes');

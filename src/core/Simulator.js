@@ -294,6 +294,42 @@ class Simulator {
    */
 
   /**
+   * Draw editor-driven highlight points on the above-light layer (same style as {@link sceneObjs.Handle} control-point dashed circles when highlighted).
+   * @param {Object|null} canvasRenderer - {@link CanvasRenderer} instance or null.
+   * @returns {void}
+   */
+  drawExternalHighlightPoints(canvasRenderer) {
+    if (!canvasRenderer || !canvasRenderer.ctx || !this.scene.editor) {
+      return;
+    }
+    var pts = this.scene.editor.externalHighlightPoints;
+    if (!pts || !pts.length) {
+      return;
+    }
+    var ctx = canvasRenderer.ctx;
+    var ls = canvasRenderer.lengthScale;
+    ctx.save();
+    ctx.globalAlpha = 1;
+    ctx.lineWidth = 1.5 * ls;
+    ctx.strokeStyle = this.scene.highlightColorCss;
+    ctx.setLineDash([2.1 * ls, 2.1 * ls]);
+    for (var i = 0; i < pts.length; i++) {
+      var p = pts[i];
+      if (!p || typeof p.x !== 'number' || typeof p.y !== 'number') {
+        continue;
+      }
+      if (!Number.isFinite(p.x) || !Number.isFinite(p.y)) {
+        continue;
+      }
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 4 * ls, 0, Math.PI * 2, false);
+      ctx.stroke();
+    }
+    ctx.setLineDash([]);
+    ctx.restore();
+  }
+
+  /**
    * Run the simulation and draw the this.scene on the canvases.
    * @param {boolean} skipLight - Whether to skip the light layer.
    * @param {boolean} skipGrid - Whether to skip the grid layer.
@@ -495,10 +531,12 @@ class Simulator {
     if (skipLight && hasDrawingCanvas) {
       // Draw the "above light" layer of this.scene.objs. Note that we only draw this when skipLight is true because otherwise processRays() will be called and the "above light" layer will still be drawn, since draw() is called again in processRays() with skipLight set to true.
 
+      var aboveLightRenderer = (!this.ctxAboveLight) ? this.canvasRendererMain : this.canvasRendererAboveLight;
       for (var i = 0; i < this.scene.objs.length; i++) {
         var isHighlighted = this.scene.editor ? this.scene.editor.isObjHighlighted(i) : false;
-        this.scene.objs[i].draw((!this.ctxAboveLight) ? this.canvasRendererMain : this.canvasRendererAboveLight, true, isHighlighted); // Draw this.scene.objs[i]
+        this.scene.objs[i].draw(aboveLightRenderer, true, isHighlighted); // Draw this.scene.objs[i]
       }
+      this.drawExternalHighlightPoints(aboveLightRenderer);
       if (this.scene.mode == 'observer' && this.ctxAboveLight) {
         // Draw the observer
         this.ctxAboveLight.globalAlpha = 1;

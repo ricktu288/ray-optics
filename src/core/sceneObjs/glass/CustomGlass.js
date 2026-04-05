@@ -20,6 +20,8 @@ import i18next from 'i18next';
 import Simulator from '../../Simulator.js';
 import geometry from '../../geometry.js';
 import { evaluateLatex } from '../../equation.js';
+import { equationValueForListDisplay } from '../../propertyUtils/equationConversion.js';
+import escapeHtml from 'escape-html';
 
 /**
  * Glass defined by a custom inequality.
@@ -50,6 +52,26 @@ class CustomGlass extends LineObjMixin(BaseGlass) {
     cauchyB: 0.004,
     partialReflect: true
   };
+
+  static getDescription(objData, scene, detailed = false) {
+    const base = i18next.t('main:tools.categories.glass');
+    if (!detailed) {
+      return i18next.t('main:meta.parentheses', { main: base, sub: i18next.t('main:tools.CustomGlass.title') });
+    }
+    const eqn1 = objData?.eqn1 ?? '';
+    const eqn2 = objData?.eqn2 ?? '';
+    const parts = [eqn1, eqn2].filter(Boolean).map((v) => escapeHtml(equationValueForListDisplay(v)));
+    return parts.length ? i18next.t('main:meta.colon', { name: base, value: '<span style="font-family: monospace">' + parts.join(', ') + '</span>' }) : base;
+  }
+
+  static getPropertySchema(objData, scene) {
+    const info = '<ul><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.mathjs') + '<br><code>+ - * / ^ sqrt sin cos tan sec csc cot sinh cosh tanh log exp asin acos atan asinh acosh atanh floor round ceil max min abs sign</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.customFunctions') + '</li></ul>';
+    return [
+      ...super.getPropertySchema(objData, scene),
+      { key: 'eqn1', type: 'equation', label: 'f(x)', variables: ['x'], info: info },
+      { key: 'eqn2', type: 'equation', label: 'g(x)', variables: ['x'], info: info },
+    ];
+  }
 
   populateObjBar(objBar) {
     objBar.setTitle(i18next.t('main:tools.categories.glass'));

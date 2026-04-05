@@ -16,22 +16,6 @@
     "openInSimulator": "Simülatörde aç"
   },
   "galleryData": {
-    "retroreflectors": {
-      "description": "Bu, iki tür retroreflektörün simülasyonudur:\n\n1. Köşe retroreflektörü.\n2. Kedi gözü retroreflektörü.",
-      "dragtorotatethebeam": "Sürükleyerek\nışını döndürün",
-      "catseyeretroreflecto": "Kedi gözü retroreflektör",
-      "cornerretroreflector": "Köşe retroreflektör",
-      "title": "Geri yansıtıcılar (reflektörler)"
-    },
-    "periscope": {
-      "title": "Periskop",
-      "description": "Bu, iki düz ayna ve bazı ışık engelleyicilerden yapılmış bir periskop simülasyonudur.",
-      "observerseyenottosca": "Gözlemcinin gözü (ölçekli değildir)"
-    },
-    "newtonianTelescope": {
-      "title": "Newtoniyen Teleskop",
-      "description": "Bu, Plössl okülerli bir Newtoniyen teleskop modelidir."
-    },
     "common": {
       "warningthesequenceof": "Uyarı: Işığın görünme süresi, ışığın gerçek hızını temsil etmez - sadece son görüntü anlamlıdır."
     },
@@ -48,6 +32,22 @@
       "description": "Bu, hiperbolik aynanın yansıma özelliğinin bir göstergesidir: Bir odaktan hiperbolik aynaya doğru hareket eden ışık ışınları, diğer odaktan uzaklaşarak yansır.\n\nHiperbolin iki odak noktası sapmasız (aberasyonusuz) noktalardır (bkz. [Aplanatik noktalar](/gallery/aplanatic-points)).",
       "theorangeraysareimag": "Turuncu ışınlar, yansıyan sarı ışınlardan uzayan hayali ışınlardır.\nBu hayali ışınlar diğer odak noktasında birleşir.",
       "pointlightsourceaton": "Odak noktalarından birinde noktasal ışık kaynağı"
+    },
+    "retroreflectors": {
+      "title": "Geri yansıtıcılar (reflektörler)",
+      "description": "Bu, iki tür retroreflektörün simülasyonudur:\n\n1. Köşe retroreflektörü.\n2. Kedi gözü retroreflektörü.",
+      "dragtorotatethebeam": "Sürükleyerek\nışını döndürün",
+      "catseyeretroreflecto": "Kedi gözü retroreflektör",
+      "cornerretroreflector": "Köşe retroreflektör"
+    },
+    "periscope": {
+      "title": "Periskop",
+      "description": "Bu, iki düz ayna ve bazı ışık engelleyicilerden yapılmış bir periskop simülasyonudur.",
+      "observerseyenottosca": "Gözlemcinin gözü (ölçekli değildir)"
+    },
+    "newtonianTelescope": {
+      "title": "Newtoniyen Teleskop",
+      "description": "Bu, Plössl okülerli bir Newtoniyen teleskop modelidir."
     },
     "classicalCassegrainTelescopes": {
       "title": "Klasik Cassegrain teleskoplar",

@@ -43,6 +43,22 @@ class Glass extends BaseGlass {
     partialReflect: true
   };
 
+  static getDescription(objData, scene, detailed = false) {
+    return i18next.t('main:meta.parentheses', { main: i18next.t('main:tools.categories.glass'), sub: i18next.t('main:tools.Glass.title') });
+  }
+
+  static getPropertySchema(objData, scene) {
+    return [
+      { key: 'path', type: 'array', label: i18next.t('simulator:sceneObjs.Glass.vertices'),
+        itemSchema: [
+          { key: '', type: 'point', label: i18next.t('simulator:sceneObjs.Glass.vertex') },
+          { key: 'arc', type: 'boolean', label: i18next.t('simulator:sceneObjs.Glass.arc') },
+        ],
+      },
+      ...super.getPropertySchema(objData, scene),
+    ];
+  }
+
   populateObjBar(objBar) {
     objBar.setTitle(i18next.t('main:tools.categories.glass'));
     super.populateObjBar(objBar);

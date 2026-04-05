@@ -19,6 +19,8 @@ import geometry from '../../geometry.js';
 import i18next from 'i18next';
 import * as sceneObjs from '../../sceneObjs.js';
 import * as math from 'mathjs';
+import escapeHtml from 'escape-html';
+import { getAllByKeyPath } from '../../propertyUtils/keyPath.js';
 
 /**
  * @typedef {Object} ModuleDef
@@ -40,6 +42,8 @@ import * as math from 'mathjs';
  * @property {Array<Point>} points - The control points of the module.
  * @property {Object} params - The parameters of the module.
  * @property {Array<BaseSceneObj>} objs - The expanded objects in the module.
+ * @property {Array} expandedObjsWithSource - Plain expanded template objects (same order as {@link ModuleObj#objs}), still carrying `_sourceIndex` from {@link ModuleObj#expandArray}. Not scene instances.
+ * @property {Object|null} [moduleVarScopeAfterDefs] - Shallow snapshot of the math scope after `moduleDef.vars` are evaluated (params, points, rng, and assigned variables). Used by the UI for expanded-instance tooltips.
  */
 class ModuleObj extends BaseSceneObj {
   static type = 'ModuleObj';
@@ -54,12 +58,20 @@ class ModuleObj extends BaseSceneObj {
   constructor(scene, jsonObj) {
     super(scene, jsonObj);
 
+    this.highlightSourceIndices = [];
+    /** Parameter name to frame in the object bar when picked in the module editor sidebar. */
+    /** @type {string|null} */
+    this.highlightedParamName = null;
+    /** 0-based control point index to emphasize on canvas when picked in the module editor sidebar. */
+    /** @type {number|null} */
+    this.highlightedPointIndex = null;
     if (!this.module) return;
     this.moduleDef = this.scene.modules[this.module];
+    this.highlightSourceIndices = [];
 
     // Check if the module definition exists
     if (!this.moduleDef) {
-      this.scene.error = i18next.t('simulator:generalErrors.unknownModule', { module: this.module }); // Here the error is stored in the scene, not the object, as it is logically similar to an unknown object type in the scene.
+      this.scene.error = i18next.t('simulator:generalErrors.unknownModule', { module: escapeHtml(this.module) }); // Here the error is stored in the scene, not the object, as it is logically similar to an unknown object type in the scene.
       
       // Create an empty module definition
       this.moduleDef = {
@@ -73,7 +85,7 @@ class ModuleObj extends BaseSceneObj {
     const knownModuleKeys = ['importedFromBeta', 'numPoints', 'params', 'vars', 'objs', 'maxLoopLength'];
     for (const key in this.moduleDef) {
       if (!knownModuleKeys.includes(key)) {
-        this.scene.error = i18next.t('simulator:generalErrors.unknownModuleKey', { key, module: this.module }); // Here the error is stored in the scene, not the object, to prevent further errors occurring in the module from replacing it, and also because this error likely indicates an incompatible scene version.
+        this.scene.error = i18next.t('simulator:generalErrors.unknownModuleKey', { key: escapeHtml(key), module: escapeHtml(this.module) }); // Here the error is stored in the scene, not the object, to prevent further errors occurring in the module from replacing it, and also because this error likely indicates an incompatible scene version.
       }
     }
 
@@ -99,21 +111,65 @@ class ModuleObj extends BaseSceneObj {
     this.expandObjs();
   }
 
+  static getDescription(objData, scene, detailed = false) {
+    const baseLabel = i18next.t('simulator:sceneObjs.ModuleObj.module');
+    const moduleName = objData?.module ?? '';
+    return moduleName ? i18next.t('main:meta.colon', { name: i18next.t('simulator:sceneObjs.ModuleObj.module'), value: '<span style="font-family: monospace; padding-right:2px">' + escapeHtml(moduleName) + '</span>' }) : baseLabel;
+  }
+
+  static getPropertySchema(objData, scene) {
+    const moduleDef = scene?.modules?.[objData.module];
+    const schema = [];
+    if (moduleDef) {
+      for (let i = 0; i < (moduleDef.numPoints || 0); i++) {
+        schema.push({ key: `points.${i}`, type: 'point', label: i18next.t('simulator:sceneObjs.common.pointN', { i: i + 1 }) });
+      }
+      for (const param of moduleDef.params || []) {
+        const name = param.split('=')[0].trim();
+        schema.push({ key: `params.${name}`, type: 'number', label: '<span style="font-family: monospace;">' + escapeHtml(name) + '</span>' });
+      }
+    }
+    return schema;
+  }
+
   populateObjBar(objBar) {
-    objBar.setTitle(i18next.t('main:meta.colon', { name: i18next.t('simulator:sceneObjs.ModuleObj.module'), value: '<span style="font-family: monospace; padding-right:2px">' + this.module + '</span>' }));
+    objBar.setTitle(i18next.t('main:meta.colon', { name: i18next.t('simulator:sceneObjs.ModuleObj.module'), value: '<span style="font-family: monospace; padding-right:2px">' + escapeHtml(this.module) + '</span>' }));
 
     if (this.notDone) return;
 
     try {
       for (let param of this.moduleDef.params) {
         const parsed = this.parseVariableRange(param, {});
-        objBar.createNumber('<span style="font-family: monospace;">' + parsed.name + '</span>', parsed.start, parsed.end, parsed.step, this.params[parsed.name], function (obj, value) {
-          obj.params[parsed.name] = value;
-          obj.expandObjs();
-        });
+        const sidebarHighlightParam =
+          this.highlightedParamName != null && parsed.name === this.highlightedParamName;
+        objBar.createNumber(
+          '<span style="font-family: monospace;">' + escapeHtml(parsed.name) + '</span>',
+          parsed.start,
+          parsed.end,
+          parsed.step,
+          this.params[parsed.name],
+          function (obj, value) {
+            obj.params[parsed.name] = value;
+            obj.expandObjs();
+          },
+          null,
+          false,
+          sidebarHighlightParam
+        );
       }
     } catch (e) {
       this.error = e;
+    }
+
+    if (localStorage.getItem('rayOpticsShowSidebar') !== 'on') {
+      objBar.createButton(i18next.t('simulator:sceneObjs.ModuleObj.editModule'), function (obj) {
+        if (!obj.module) return
+        document.dispatchEvent(new CustomEvent('openVisualModuleEditor', { detail: { moduleName: obj.module } }))
+      }, false, `
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+      <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+    </svg>
+    `);
     }
 
     objBar.createButton(i18next.t('simulator:sceneObjs.ModuleObj.demodulize'), function (obj) {
@@ -140,20 +196,44 @@ class ModuleObj extends BaseSceneObj {
     // Draw the expanded objects
     for (let j = 0; j < this.objs.length; j++) {
       let i = mapped[j].index;
-      this.objs[i].draw(canvasRenderer, isAboveLight, isHovered);
+      const obj = this.objs[i];
+      const plain = this.expandedObjsWithSource?.[i];
+      const sourceIndex =
+        plain != null && typeof plain === 'object' && !Array.isArray(plain)
+          ? plain._sourceIndex
+          : undefined;
+      const isSourceHighlighted = Number.isInteger(sourceIndex)
+        && (this.highlightSourceIndices || []).includes(sourceIndex);
+      obj.draw(canvasRenderer, isAboveLight, isHovered || isSourceHighlighted);
     }
 
-    // Draw the control points if not nested in another module
-    if (!this.isInModule) {
-      ctx.lineWidth = 1 * ls;
-      for (let point of this.points) {
+    ctx.lineWidth = 1 * ls;
+    for (let i = 0; i < this.points.length; i++) {
+      const point = this.points[i];
+      const isPointHighlighted =
+        Number.isInteger(this.highlightedPointIndex) && i === this.highlightedPointIndex;
+      const useHighlight = isHovered || isPointHighlighted;
+      const strokeColor = useHighlight
+        ? this.scene.highlightColorCss
+        : canvasRenderer.rgbaToCssColor(this.scene.theme.handlePoint.color);
+
+      if (!this.isInModule) {
+        ctx.setLineDash([]);
+        ctx.strokeStyle = strokeColor;
         ctx.beginPath();
-        ctx.strokeStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.theme.handlePoint.color);
         ctx.arc(point.x, point.y, 2 * ls, 0, Math.PI * 2, false);
         ctx.stroke();
         ctx.beginPath();
         ctx.arc(point.x, point.y, 5 * ls, 0, Math.PI * 2, false);
         ctx.stroke();
+      } else if (isPointHighlighted) {
+        ctx.strokeStyle = this.scene.highlightColorCss;
+        ctx.lineWidth = 1.5 * ls;
+        ctx.setLineDash([2.1 * ls, 2.1 * ls]);
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, 4 * ls, 0, Math.PI * 2, false);
+        ctx.stroke();
+        ctx.setLineDash([]);
       }
     }
   }
@@ -260,6 +340,7 @@ class ModuleObj extends BaseSceneObj {
       }
       this.points = [];
       this.objs = [];
+      this.expandedObjsWithSource = [];
     }
 
     if (this.points.length < this.moduleDef.numPoints) {
@@ -641,13 +722,15 @@ class ModuleObj extends BaseSceneObj {
 
   /**
    * Expand an array with template syntax, where the string values of the array are interpreted with template syntax. Arrays and objects are expanded recursively. If an object in the array has a key "for", then the object is expanded multiple times with the given range of values. If the value of "for" is a string, then the range is interpreted with `parseVariableRange`. If the value of "for" is an array of strings, then each string is witn `parseVariableRange` and there are multiple loop variable. If an object in the array has a key "if", then the object is included only if the condition is true.
+   * Plain objects produced from each template slot are assigned `_sourceIndex` equal to that slot's index in `arr`.
    * @param {Array} arr - The array with template syntax.
    * @param {Object} params - The parameters to be used for evaluating the expressions.
    * @returns {Array} The expanded array.
    */
   expandArray(arr, params) {
     let result = [];
-    for (let obj of arr) {
+    for (let sourceIndex = 0; sourceIndex < arr.length; sourceIndex++) {
+      const obj = arr[sourceIndex];
       try {
         const isPlainObject = typeof obj === 'object' && obj !== null && !Array.isArray(obj);
         if (isPlainObject && 'for' in obj) {
@@ -670,7 +753,12 @@ class ModuleObj extends BaseSceneObj {
             } else {
               let result = [];
               let loopVars1 = loopVars.slice(1);
-              const loopLength = (loopVars[0].end - loopVars[0].start) / loopVars[0].step + 1;
+              const span = loopVars[0].end - loopVars[0].start;
+              const step = loopVars[0].step;
+              if (step === 0 || span * step < 0) {
+                throw i18next.t('simulator:sceneObjs.ModuleObj.loopVariableTooLarge', { name: loopVars[0].name });
+              }
+              const loopLength = span / step + 1;
               if (loopLength > (self.moduleDef.maxLoopLength || 1000)) {
                 throw i18next.t('simulator:sceneObjs.ModuleObj.loopVariableTooLarge', { name: loopVars[0].name });
               }
@@ -694,20 +782,32 @@ class ModuleObj extends BaseSceneObj {
               if ('if' in obj && !math.evaluate(obj['if'], loopParam)) {
                 continue;
               }
-              result.push(this.expandObject(obj, loopParam));
+              const expanded = this.expandObject(obj, loopParam);
+              if (typeof expanded === 'object' && expanded !== null && !Array.isArray(expanded)) {
+                expanded._sourceIndex = sourceIndex;
+              }
+              result.push(expanded);
             }
           }
 
         } else if (isPlainObject && 'if' in obj) {
           if (math.evaluate(obj['if'], params)) {
-            result.push(this.expandObject(obj, params));
+            const expanded = this.expandObject(obj, params);
+            if (typeof expanded === 'object' && expanded !== null && !Array.isArray(expanded)) {
+              expanded._sourceIndex = sourceIndex;
+            }
+            result.push(expanded);
           }
         } else if (typeof obj === 'string') {
           result.push(this.expandString(obj, params));
         } else if (Array.isArray(obj)) {
           result.push(this.expandArray(obj, params));
         } else if (isPlainObject) {
-          result.push(this.expandObject(obj, params));
+          const expanded = this.expandObject(obj, params);
+          if (typeof expanded === 'object' && expanded !== null && !Array.isArray(expanded)) {
+            expanded._sourceIndex = sourceIndex;
+          }
+          result.push(expanded);
         } else {
           result.push(obj);
         }
@@ -722,6 +822,8 @@ class ModuleObj extends BaseSceneObj {
    * Expand the objects in the module.
    */
   expandObjs() {
+    this.expandedObjsWithSource = [];
+    this.moduleVarScopeAfterDefs = null;
     // Construct the full parameters including the coordinates of points with names "x_1", "y_1", "x_2", "y_2", ...
     const fullParams = {};
     for (let name in this.params) {
@@ -764,19 +866,51 @@ class ModuleObj extends BaseSceneObj {
     this.error = null;
 
     try {
-      const expandedObjs = this.expandArray(this.moduleDef.objs, fullParams);
+      this.moduleVarScopeAfterDefs = { ...fullParams };
+      const expanded = this.expandArray(this.moduleDef.objs, fullParams);
+      this.expandedObjsWithSource = structuredClone(expanded);
+      ModuleObj.stripSourceIndices(expanded);
 
       this.objs = [];
-      for (const objData of expandedObjs) {
+      for (let i = 0; i < expanded.length; i++) {
+        const objData = expanded[i];
         if (!sceneObjs[objData.type]) {
           this.error = i18next.t('simulator:generalErrors.unknownObjectType', { type: objData.type });
           return;
         }
-        this.objs.push(new sceneObjs[objData.type](this.scene, objData));
-        this.objs[this.objs.length - 1].isInModule = true;
+        const expandedObj = new sceneObjs[objData.type](this.scene, objData);
+        expandedObj.isInModule = true;
+        const plain = this.expandedObjsWithSource[i];
+        if (
+          plain != null &&
+          typeof plain === 'object' &&
+          !Array.isArray(plain) &&
+          Number.isInteger(plain._sourceIndex)
+        ) {
+          expandedObj._moduleSourceIndex = plain._sourceIndex;
+        }
+        this.objs.push(expandedObj);
       }
     } catch (e) {
       this.error = e;
+    }
+  }
+
+  /**
+   * Remove every `_sourceIndex` property from expanded template data (recursive).
+   * Mutates `root` in place. Used so scene object constructors never see module-only metadata.
+   * @param {*} root
+   */
+  static stripSourceIndices(root) {
+    if (Array.isArray(root)) {
+      for (const el of root) {
+        ModuleObj.stripSourceIndices(el);
+      }
+    } else if (root != null && typeof root === 'object') {
+      delete root._sourceIndex;
+      for (const k of Object.keys(root)) {
+        ModuleObj.stripSourceIndices(root[k]);
+      }
     }
   }
 
@@ -789,11 +923,85 @@ class ModuleObj extends BaseSceneObj {
     for (let obj of this.objs) {
       obj.isInModule = false;
       this.scene.objs.push(obj);
-      if (this.scene.editor) {
-        this.scene.editor.selectObj(-1);
-      }
+    }
+    if (this.scene.editor) {
+      this.scene.editor.selectObj(-1);
     }
   }
+
+  setHighlightedSourceIndices(indices) {
+    if (!Array.isArray(indices)) {
+      this.highlightSourceIndices = [];
+      return;
+    }
+    this.highlightSourceIndices = indices.filter((index) => Number.isInteger(index));
+  }
+
+  /**
+   * Highlight a module parameter row in the object bar (emphasized control group).
+   * @param {string|null|undefined} name - Parameter id matching `parseVariableRange` `name`; null/empty clears.
+   */
+  setHighlightedParamName(name) {
+    if (name == null || typeof name !== 'string' || !name.trim()) {
+      this.highlightedParamName = null;
+      return;
+    }
+    this.highlightedParamName = name.trim();
+  }
+
+  /**
+   * Highlight a module control point row in the sidebar (canvas emphasis).
+   * @param {number|null|undefined} index - 0-based index into {@link ModuleObj#points}; null clears.
+   */
+  setHighlightedPointIndex(index) {
+    if (!Number.isInteger(index) || index < 0) {
+      this.highlightedPointIndex = null;
+      return;
+    }
+    this.highlightedPointIndex = index;
+  }
+
+  /**
+   * Read values from this module's expanded `objs` array using a key path whose first segment is the
+   * template row index (`_sourceIndex` from expandArray), followed by the property path on each
+   * expanded object (same dot rules as getAllByKeyPath).
+   * Example: `'2.focalLength'` or `'0.path.1.x'`.
+   * @param {string} sourceKeyPath
+   * @returns {Array<*>}
+   */
+  getExpandedPropertyValues(sourceKeyPath) {
+    if (
+      sourceKeyPath == null ||
+      sourceKeyPath === '' ||
+      !Array.isArray(this.expandedObjsWithSource)
+    ) {
+      return [];
+    }
+    return getAllByKeyPath(this.expandedObjsWithSource, sourceKeyPath);
+  }
+
+  /**
+   * Evaluated value of a module variable (or expression) in {@link ModuleObj#moduleVarScopeAfterDefs}.
+   * One value per module instance is listed in the UI by querying each {@link ModuleObj}.
+   * @param {string} varName - Name or expression to evaluate with math.js.
+   * @returns {*|undefined} The value, or `undefined` if unavailable or evaluation fails.
+   */
+  getModuleVarValue(varName) {
+    if (varName == null || typeof varName !== 'string' || this.moduleVarScopeAfterDefs == null) {
+      return undefined;
+    }
+    const trimmed = varName.trim();
+    if (!trimmed) {
+      return undefined;
+    }
+    try {
+      const scope = { ...this.moduleVarScopeAfterDefs };
+      return math.evaluate(trimmed, scope);
+    } catch {
+      return undefined;
+    }
+  }
+
 }
 
 export default ModuleObj;

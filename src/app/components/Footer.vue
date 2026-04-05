@@ -126,7 +126,7 @@ export default {
 }
 
 .help-divider-dot {
-  color: var(--bs-dropdown-divider-bg, #e9ecef);
+  color: rgba(255, 255, 255, 0.45);
   margin: 0 0.35rem;
   font-size: 0.95em;
 }
@@ -148,7 +148,7 @@ export default {
   background: linear-gradient(
     to bottom,
     transparent,
-    rgb(64, 64, 64)
+    rgb(36, 41, 46)
   );
   pointer-events: none;
   z-index: 1;

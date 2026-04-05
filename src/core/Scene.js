@@ -739,6 +739,55 @@ class Scene {
   }
 
   /**
+   * Reorder an object in the scene.
+   * @param {number} fromIndex - The original index.
+   * @param {number} toIndex - The destination index.
+   */
+  reorderObj(fromIndex, toIndex) {
+    if (fromIndex === toIndex) {
+      return;
+    }
+    if (fromIndex < 0 || toIndex < 0 || fromIndex >= this.objs.length || toIndex >= this.objs.length) {
+      return;
+    }
+
+    const moved = this.objs.splice(fromIndex, 1)[0];
+    this.objs.splice(toIndex, 0, moved);
+
+    const remapIndex = (oldIndex) => {
+      if (oldIndex === fromIndex) {
+        return toIndex;
+      }
+      if (fromIndex < toIndex) {
+        if (oldIndex > fromIndex && oldIndex <= toIndex) {
+          return oldIndex - 1;
+        }
+      } else {
+        if (oldIndex >= toIndex && oldIndex < fromIndex) {
+          return oldIndex + 1;
+        }
+      }
+      return oldIndex;
+    };
+
+    for (let i = 0; i < this.objs.length; i++) {
+      if (this.objs[i].constructor.type === "Handle") {
+        const handle = this.objs[i];
+        if (Array.isArray(handle.controlPoints)) {
+          for (let j = 0; j < handle.controlPoints.length; j++) {
+            if (typeof handle.controlPoints[j].targetObjIndex === 'number') {
+              handle.controlPoints[j].targetObjIndex = remapIndex(handle.controlPoints[j].targetObjIndex);
+            }
+          }
+        }
+        if (Array.isArray(handle.objIndices)) {
+          handle.objIndices = handle.objIndices.map(remapIndex);
+        }
+      }
+    }
+  }
+
+  /**
    * Clone the object at an index.
    * @param {number} index
    * @returns {BaseSceneObj} The cloned object
@@ -797,6 +846,241 @@ class Scene {
   }
 
   /**
+   * Reload a module definition and re-expand its objects.
+   * ModuleObj holds a reference to this.modules[moduleName], so after the definition
+   * is updated, we just call expandObjs() to regenerate expanded objs (no serialize).
+   * Also handles nested instances (e.g. Module A containing Module B when B is reloaded).
+   * @param {string} moduleName
+   */
+  reloadModule(moduleName) {
+    if (!this.modules[moduleName]) {
+      return;
+    }
+    const reloadInObjs = (objs) => {
+      if (!Array.isArray(objs)) return;
+      for (const obj of objs) {
+        if (obj?.constructor?.type !== 'ModuleObj') continue;
+        if (obj.module === moduleName) {
+          obj.expandObjs();
+        } else {
+          reloadInObjs(obj.objs);
+        }
+      }
+    };
+    reloadInObjs(this.objs);
+  }
+
+  /**
+   * Reload all module objects in the scene.
+   */
+  reloadAllModules() {
+    for (let i = 0; i < this.objs.length; i++) {
+      const obj = this.objs[i];
+      if (obj.constructor.type === "ModuleObj") {
+        this.objs[i] = new sceneObjs.ModuleObj(this, obj.serialize());
+      }
+    }
+  }
+
+  /**
+   * ModuleObj refs for a module name: each {@link sceneObjs.ModuleObj} at top level of {@link Scene#objs},
+   * and each module instance template (`type: 'ModuleObj'`) at top level of every {@link ModuleDef#objs}.
+   * Live references only; not expanded objects inside module instances.
+   *
+   * @param {string} moduleId - The module name (`ModuleObj#module`), same as keys of {@link Scene#modules}.
+   * @returns {Array<sceneObjs.ModuleObj|Object>} Scene instances, then definition templates (serialized-shape plain objects).
+   */
+  getModuleObjRefsById(moduleId) {
+    /** @type {Array<sceneObjs.ModuleObj|Object>} */
+    const moduleObjRefs = [];
+
+    for (const obj of this.objs) {
+      if (obj?.constructor?.type === 'ModuleObj' && obj.module === moduleId) {
+        moduleObjRefs.push(obj);
+      }
+    }
+
+    for (const moduleDef of Object.values(this.modules)) {
+      if (!moduleDef || !Array.isArray(moduleDef.objs)) continue;
+      for (const obj of moduleDef.objs) {
+        if (obj && typeof obj === 'object' && obj.type === 'ModuleObj' && obj.module === moduleId) {
+          moduleObjRefs.push(obj);
+        }
+      }
+    }
+
+    return moduleObjRefs;
+  }
+
+  /**
+   * Move objects into a module definition.
+   * @param {number[]} indices
+   * @param {string} moduleName
+   * @returns {{ moved: number, skipped: number }}
+   */
+  moveObjsToModule(indices, moduleName) {
+    if (!Array.isArray(indices) || !this.modules[moduleName]) {
+      return { moved: 0, skipped: 0 };
+    }
+
+    const unique = Array.from(new Set(indices.filter(Number.isInteger))).sort((a, b) => b - a);
+    const moduleDef = this.modules[moduleName];
+    if (!Array.isArray(moduleDef.objs)) {
+      moduleDef.objs = [];
+    }
+
+    const movedObjs = [];
+    let skipped = 0;
+    for (const index of unique) {
+      const obj = this.objs[index];
+      if (!obj) {
+        continue;
+      }
+      if (obj.constructor.type === "Handle") {
+        skipped += 1;
+        continue;
+      }
+      movedObjs.unshift(obj.serialize());
+      this.removeObj(index);
+    }
+
+    if (movedObjs.length > 0) {
+      moduleDef.objs.push(...movedObjs);
+      this.reloadAllModules();
+    }
+
+    return { moved: movedObjs.length, skipped };
+  }
+
+  /**
+   * Convert a handle into a new module: one control point at the handle position, bound scene objects
+   * moved into the module definition, the handle removed, and a new {@link sceneObjs.ModuleObj} added.
+   * @param {number} handleIndex - Index of the {@link sceneObjs.Handle} in {@link Scene#objs}.
+   * @param {string} moduleName - Name for the new module (must not already exist).
+   * @returns {{ok: boolean, moduleObjIndex: (number|undefined)}}
+   */
+  convertHandleToModule(handleIndex, moduleName) {
+    if (!Number.isInteger(handleIndex) || handleIndex < 0 || handleIndex >= this.objs.length) {
+      return { ok: false };
+    }
+    if (this.modules[moduleName]) {
+      return { ok: false };
+    }
+    const handle = this.objs[handleIndex];
+    if (!handle || handle.constructor.type !== 'Handle') {
+      return { ok: false };
+    }
+
+    const p1 = { x: handle.p1.x, y: handle.p1.y };
+
+    const indicesSet = new Set();
+    for (const idx of handle.objIndices || []) {
+      if (Number.isInteger(idx) && idx >= 0 && idx !== handleIndex) {
+        indicesSet.add(idx);
+      }
+    }
+    for (const cp of handle.controlPoints || []) {
+      const idx = cp.targetObjIndex;
+      if (Number.isInteger(idx) && idx >= 0 && idx !== handleIndex) {
+        indicesSet.add(idx);
+      }
+    }
+
+    this.modules[moduleName] = {
+      numPoints: 1,
+      params: [],
+      vars: [],
+      objs: []
+    };
+
+    const indices = Array.from(indicesSet).sort((a, b) => b - a);
+    this.moveObjsToModule(indices, moduleName);
+
+    const hi = this.objs.indexOf(handle);
+    if (hi < 0) {
+      return { ok: false };
+    }
+    this.removeObj(hi);
+
+    const moduleObjJson = {
+      type: 'ModuleObj',
+      module: moduleName,
+      points: [{ x: p1.x, y: p1.y }],
+      params: {}
+    };
+    this.objs.push(new sceneObjs.ModuleObj(this, moduleObjJson));
+    const moduleObjIndex = this.objs.length - 1;
+    this.reloadAllModules();
+    return { ok: true, moduleObjIndex };
+  }
+
+  /**
+   * Move module definition objects out into the scene.
+   * @param {string} moduleName
+   * @param {number[]} sourceIndices
+   * @returns {{ moved: number }}
+   */
+  moveModuleObjsToScene(moduleName, sourceIndices) {
+    if (!this.modules[moduleName] || !Array.isArray(sourceIndices)) {
+      return { moved: 0 };
+    }
+
+    const moduleDef = this.modules[moduleName];
+    const unique = Array.from(new Set(sourceIndices.filter(Number.isInteger))).sort((a, b) => a - b);
+    const sourceSet = new Set(unique);
+    if (!Array.isArray(moduleDef.objs)) {
+      moduleDef.objs = [];
+    }
+
+    const movedObjs = [];
+    moduleDef.objs = moduleDef.objs.filter((obj, index) => {
+      if (sourceSet.has(index)) {
+        movedObjs.push(obj);
+        return false;
+      }
+      return true;
+    });
+
+    if (!movedObjs.length) {
+      return { moved: 0 };
+    }
+
+    const appendExpanded = (moduleObj) => {
+      if (!moduleObj?.objs) return;
+      for (const obj of moduleObj.objs) {
+        if (obj?.constructor?.type === 'ModuleObj') {
+          appendExpanded(obj);
+        } else if (Number.isInteger(obj?._moduleSourceIndex) && sourceSet.has(obj._moduleSourceIndex)) {
+          const serialized = obj.serialize();
+          const newObj = new sceneObjs[serialized.type](this, serialized);
+          this.objs.push(newObj);
+        }
+      }
+    };
+
+    const walkModuleInstances = (obj) => {
+      if (!obj) return;
+      if (obj.constructor?.type === 'ModuleObj') {
+        if (obj.module === moduleName) {
+          appendExpanded(obj);
+        }
+        if (Array.isArray(obj.objs)) {
+          for (const child of obj.objs) {
+            walkModuleInstances(child);
+          }
+        }
+      }
+    };
+
+    for (const obj of this.objs) {
+      walkModuleInstances(obj);
+    }
+
+    this.reloadAllModules();
+    return { moved: movedObjs.length };
+  }
+
+  /**
    * Remove a given module and demodulize all corresponding module objects.
    * @param {string} moduleName 
    */
@@ -812,6 +1096,66 @@ class Scene {
     }
 
     delete this.modules[moduleName];
+  }
+
+  /**
+   * Rename a module.
+   * @param {string} oldName - The old name of the module.
+   * @param {string} newName - The new name of the module.
+   * @returns {boolean} Whether the module is successfully renamed.
+   */
+  renameModule(oldName, newName) {
+    if (oldName === newName) {
+      return false;
+    }
+    if (!this.modules[oldName]) {
+      return false;
+    }
+    if (this.modules[newName]) {
+      return false;
+    }
+
+    // Rename the module definition.
+    this.modules[newName] = this.modules[oldName];
+    delete this.modules[oldName];
+    
+    // Rename the module objects in the scene.
+    for (let obj of this.objs) {
+      if (obj.constructor.type === "ModuleObj" && obj.module === oldName) {
+        obj.module = newName;
+      }
+    }
+
+    // Rename the module objects in the module definitions.
+    for (let moduleDef of Object.values(this.modules)) {
+      if (!moduleDef || !Array.isArray(moduleDef.objs)) continue;
+      for (let obj of moduleDef.objs) {
+        if (obj.type === "ModuleObj" && obj.module === oldName) {
+          obj.module = newName;
+        }
+      }
+    }
+
+    return true;
+  }
+
+  /**
+   * Create a blank module and add a blank instance of it to the scene.
+   * @param {string} moduleName - The name of the module.
+   * @returns {boolean} Whether the module is successfully created.
+   */
+  createModule(moduleName) {
+    if (this.modules[moduleName]) {
+      return false;
+    }
+    this.modules[moduleName] = {
+      numPoints: 0,
+      params: [],
+      vars: [],
+      objs: [],
+    };
+    this.objs.push(new sceneObjs.ModuleObj(this, { module: moduleName }));
+    return true;
   }
 
   /**

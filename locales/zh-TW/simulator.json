@@ -8,7 +8,7 @@
     "saveButton": "儲存",
     "cancelButton": "取消",
     "defaultOption": "預設",
-    "legacyOption": "舊版",
+    "legacyOption": "舊版模式",
     "customOption": "自訂",
     "closeButton": "關閉",
     "resetButton": "重設",
@@ -108,9 +108,9 @@
       "title": "自動同步網址",
       "description": "啟用時，網址會隨著場景自動更新，而不必持續手動儲存場景。如需設定標題，請用檔案->儲存->重新命名。"
     },
-    "showJsonEditor": {
-      "title": "顯示 JSON 編輯器",
-      "description": "顯示表達場景原始碼的 JSON 編輯器。在建立自訂模組時需要使用（見工具->其他->匯入模組->建立自訂模組）。"
+    "showSidebar": {
+      "title": "顯示側邊欄",
+      "description": "顯示包含物件清單、模組編輯器、JSON 程式碼編輯器和 AI 助理的側邊欄。"
     },
     "showStatusBox": {
       "title": "顯示狀態方塊",
@@ -164,20 +164,40 @@
       "random": "隨機",
       "lambert": "朗伯",
       "coordOrigin": "原點",
+      "bezierControlPoints": "貝茲控制點",
       "focalLength": "焦距",
       "lineStyle": "線條樣式",
       "fillStyle": "填充樣式",
       "useThemeStyle": "使用主題樣式",
+      "styleRed": "紅色",
+      "styleGreen": "綠色",
+      "styleBlue": "藍色",
+      "styleAlpha": "透明度",
+      "styleWidth": "寬度",
       "eqnInfo": {
         "constants": "支援的常數",
         "operators": "支援的運算子",
         "functions": "支援的函數",
-        "module": "如需自訂參數或使用複雜的方程式，請建立自訂模組。詳見工具->其他->匯入模組。"
+        "module": "如需自訂參數或使用複雜的方程式，請使用工具->其他->建立模組並將此物件移入模組。",
+        "mathjs": "僅支援以下 math.js 運算：",
+        "customFunctions": "您可以使用從模組編輯器中的「變數」部分定義的自訂函數，但其定義最終必須由支援的運算組成。"
       },
+      "pointN": "點 {{i}}",
       "imageDetectionWarning": "本工具不支援像的偵測。",
       "nonSimulateColorsWarning": "本工具只在「模擬色彩」模式下運作。"
     },
+    "LineObjMixin": {
+      "endpoint1": "第一端點",
+      "endpoint2": "第二端點",
+      "sourcePoint": "起始點",
+      "directionPoint": "方向點"
+    },
+    "CircleObjMixin": {
+      "center": "圓心",
+      "radiusPoint": "圓上的點"
+    },
     "ParamCurveObjMixin": {
+      "pieces": "片段",
       "addPiece": "新增片段",
       "removePiece": "移除片段",
       "step": "步長",
@@ -202,6 +222,12 @@
     "IdealMirror": {
       "cartesianSign": "卡氏符號約定"
     },
+    "ArcMirror": {
+      "pointOnArc": "圓弧上的點"
+    },
+    "ParabolicMirror": {
+      "vertex": "頂點"
+    },
     "BeamSplitter": {
       "transRatio": "透光率"
     },
@@ -209,10 +235,16 @@
       "refIndex": "折射率",
       "refIndexInfo": {
         "relative": "於另一透光物內部時為相對值",
-        "effective": "如需模擬此物件之（絕對）折射率為 n₁，但其位於折射率為 n₀ 之另一透光物內部的情形，則此處折射率應設為 n₁/n₀ 。在更複雜的組合中，若多個透光物互相重疊，則重疊區域之等效折射率為個別折射率之乘積。"
+        "effective": "如需模擬此物件之（絕對）折射率為 n₁，但其位於折射率為 n₀ 之另一透光物內部的情形，則此處折射率應設為 n₁/n₀ 。在更複雜的組合中，若多個透光物互相重疊，則重疊區域之等效折射率為個別折射率之乘積。",
+        "dualMeaning": "啟用「模擬色彩」時，此處改為柯西係數 A。"
       },
       "cauchyCoeff": "柯西係數",
       "partialReflect": "模擬部分反射"
+    },
+    "Glass": {
+      "vertices": "頂點",
+      "vertex": "頂點",
+      "arc": "圓弧"
     },
     "SphericalLens": {
       "defBy": {
@@ -284,11 +316,17 @@
       "lineDensity": "線數/{{lengthUnit}}",
       "customBrightness": "自訂亮度",
       "customBrightnessInfo": "啟用時，繞射光的亮度將由一數值陣列來決定，對應到 m = 0, 1, -1, 2, -2, …。這些數字為相對於入射光的亮度。陣列中沒有的數值將被設為 0。例如，\"1, 0.5, 0.5\" 表示 m=0 的光線與入射光的亮度相同，m=1 與 m=-1 的光線為入射光的一半，其他光線則被忽略。",
+      "brightnesses": "亮度",
+      "brightness": "亮度",
       "slitRatio": "狹縫寬度 / 線間距",
       "mirrored": "反射"
     },
     "Ruler": {
+      "zeroPoint": "零點",
       "scaleInterval": "刻度間距"
+    },
+    "Protractor": {
+      "zeroPoint": "零點"
     },
     "Detector": {
       "info": {
@@ -307,7 +345,9 @@
       "exportData": "匯出數據"
     },
     "TextLabel": {
+      "text": "文字",
       "textHere": "在此輸入文字",
+      "moduleInfo": "在模組中，文字可以包含用反引號包圍的 math.js 公式，將在模組的上下文中求值。例如當 `a` 為 2 時，「有 \\`a+1\\` 個項目」會變成「有 3 個項目」。",
       "fontSize": "字型大小",
       "font": "字型",
       "fonts": "Serif: 襯線體\nMicrosoft JhengHei: 微軟正黑體\nPMingLiU: 新細明體\nKaiU: 標楷體\nPingFang TC: 蘋方\nNoto Sans CJK TC: 思源黑體\nNoto Serif CJK TC: 思源宋體\nArial: Arial\nTimes New Roman: Times New Roman",
@@ -346,9 +386,10 @@
         "otherParams": "其他可用的入射光參數為 {{lambda}}（波長，單位為 nm）及 {{p}}（0 表示 s 偏振，1 表示 p 偏振）。出射光線將保持相同的參數。",
         "coating": "此物件可與透光物表面重疊來作為塗層。在這種情況下，折射本身也須包含於此物件的公式中。公式中可用 {{n_0}} 和 {{n_1}} 來分別代表與入射光的同側和對側相接的材料折射率。如果此物件位於一透光物內部，則這些值相對於該透光物。",
         "twoSides": "如需讓表面的兩側以不同公式定義，可重疊兩個方向相反的單面表面。",
-        "module": "如需自訂參數、使用複雜的公式或定義大量出射光線，可使用自訂模組。更多資訊請參見工具->其他->匯入模組。"
+        "module": "如需自訂參數、使用複雜的公式或定義大量出射光線，可使用工具->其他->建立模組並將此物件移入模組。"
       },
       "twoSided": "雙面",
+      "outgoingRays": "出射光線",
       "addOutgoingRay": "新增出射光線",
       "removeOutgoingRay": "移除出射光線"
     },
@@ -369,6 +410,7 @@
     },
     "ModuleObj": {
       "module": "模組",
+      "editModule": "編輯模組",
       "demodulize": "取消模組化",
       "loopVariableTooLarge": "迴圈變數「{{name}}」的長度過大。請設定更大的 maxLoopLength 值。",
       "loopTooLarge": "迴圈的長度過大。請設定更大的 maxLoopLength 值。",
@@ -389,10 +431,12 @@
         "scaling": "縮放"
       },
       "step": "步長",
-      "transformationWarning": "對「{{obj}}」進行「{{transformation}}」可能會產生非預期的結果。"
+      "transformationWarning": "對「{{obj}}」進行「{{transformation}}」可能會產生非預期的結果。",
+      "convertToModule": "轉為模組…"
     },
     "CropBox": {
       "title": "匯出",
+      "label": "剪取框",
       "cropBoxSize": "剪取框大小",
       "format": "格式",
       "width": "寬度",
@@ -415,7 +459,12 @@
   "moduleModal": {
     "title": "匯入模組",
     "makeCustomModules": "製作自訂模組",
-    "conflict": "場景中已有一個同名但不相同的模組。您可以指定新的名稱，或保留相同名稱以取代原模組。"
+    "conflict": "場景中已有一個同名但不相同的模組。您可以指定新的名稱，或保留相同名稱以取代原模組。",
+    "importFromFile": {
+      "title": "從檔案匯入",
+      "description": "匯入場景 JSON 檔案中的所有模組。",
+      "error": "此檔案不包含有效的模組。"
+    }
   },
   "colorModeModal": {
     "linear": {
@@ -597,9 +646,100 @@
     "invalidFile": "此檔案既不是有效的 JSON 場景，也不是圖片檔案。"
   },
   "sidebar": {
-    "aiAssistant": {
-      "title": "AI 輔助",
-      "description": "連結至 ChatGPT 上的 Ray Optics Coder。更多資訊請參見工具->其他->匯入模組->建立自訂模組。"
+    "tabs": {
+      "visual": "視覺化",
+      "code": "程式碼",
+      "ai": "AI"
+    },
+    "visual": {
+      "tabs": {
+        "scene": "場景",
+        "createModule": "新增模組",
+        "createModuleInfo": "模組可讓您組合現有工具來製作新工具。範例請見工具->其他->匯入模組。"
+      },
+      "sceneObjects": {
+        "title": "物件",
+        "info": "直接位於場景中的物件清單。若要以自訂變數、陣列等來參數化，需先將其移入模組。模組內的物件不會直接列出，而是每個模組實例以單一物件顯示。",
+        "moveIntoModule": "移入模組",
+        "createModule": "建立新模組",
+        "emptyHint": "要建立物件，請使用工具列並在畫布中建立。",
+        "lockLocked": "總是鎖定。點擊以變更",
+        "lockUnlocked": "總是解鎖。點擊以變更",
+        "lockDefault": "跟隨場景設定決定是否鎖定。點擊以變更",
+        "unnamedObject": "未命名物件",
+        "unknownType": "未知類型",
+        "collapse": "收起屬性",
+        "showAllProperties": "顯示所有屬性",
+        "expand": "展開以顯示屬性",
+        "hideDefaultProperties": "隱藏預設屬性",
+        "newItem": "新增項目",
+        "formulaRequiresModule": "要使用公式，請先將物件移入模組。",
+        "invalidPointFormat": "點必須恰好有兩個以逗號分隔的座標。",
+        "unsupportedVisualValue": "此值不受視覺化編輯器支援。請切換至程式碼分頁來編輯此屬性。",
+        "latexConversionFailed": "無法將表達式轉換為內部格式。請檢查語法。"
+      },
+      "moduleEditor": {
+        "new": {
+          "promptNewName": "新模組名稱：（通常為 PascalCase 格式）",
+          "errorEmptyName": "模組名稱不能為空。",
+          "errorComma": "模組名稱不能包含逗號。",
+          "errorNameExists": "名為「{{name}}」的模組已存在。"
+        },
+        "noInstances": "場景中目前沒有此模組的任何實例。若要建立實例，請使用工具->其他-> {{name}} 並在畫布上點擊對應控制點順序的位置。",
+        "emptyModuleExamplesHint": "模組範例請見工具->其他->匯入模組",
+        "controlPoints": {
+          "title": "控制點",
+          "newItem": "新增控制點",
+          "info": "在畫布上可拖曳的點。其座標（`x_1`、`y_1` 等）可用於本模組中的所有公式。"
+        },
+        "parameters": {
+          "title": "參數",
+          "newItem": "新增參數",
+          "min": "最小",
+          "max": "最大",
+          "step": "步長",
+          "default": "預設",
+          "info": "在物件列顯示為滑桿的參數。其名稱（如 `a`、`foo` 等）可用於本模組中的所有公式。"
+        },
+        "variables": {
+          "title": "變數",
+          "newItem": "新增變數",
+          "info": "命名值（例如 `b` = `a+1`）或函數（例如 `f(x)` = `x^2+b`）。定義使用 [math.js 公式](/mathjs/syntax)，並依序求值。"
+        },
+        "objects": {
+          "info": "此模組中的物件。其屬性可設為 [math.js 公式](/mathjs/syntax)，其中可包含上述定義的名稱。例如，要將一點設為上方定義的兩個控制點的平均值，可以將其座標設為 `(x_1+x_2)/2, (y_1+y_2)/2`。要建立物件陣列，請展開屬性並點擊「建立陣列和條件」。",
+          "moveOut": "移出模組",
+          "moveInHint": "要將物件加入此模組，請先使用工具列建立物件，或在畫布中選取現有物件。",
+          "moveIntoModule": "將「{{name}}」移入此模組",
+          "templateLockInfo": "若要讓模組內的物件可移動，請先在上方建立控制點，然後點擊 ▸ 展開物件，並將數值座標替換為控制點（如 `x_1,y_1`）或公式（如 `(x_1+x_2)/2, (y_1+y_2)/2`）。",
+          "arrayAndConditional": {
+            "info": "建立此物件的多個副本和/或僅在滿足條件時包含此物件。例如，要將此物件水平複製 5 次，每次間隔 10 個單位，可以建立一個從 1 到 5 的迴圈變數 `i`，並將各點的座標設為 `x_1+i*10, y_1` 等。若要僅在變數 `a` 大於 0 時顯示此物件，可以將「附加條件為」設為 `a > 0`。",
+            "create": "建立陣列和條件",
+            "remove": "移除陣列和條件",
+            "arrayBadge": "陣列",
+            "conditionalBadge": "條件",
+            "repeatFor": "重複",
+            "withCondition": "附加條件為",
+            "forFrom": "從",
+            "forTo": "到",
+            "forStep": "步長",
+            "newLoopVariable": "新增迴圈變數"
+          }
+        },
+        "settings": {
+          "title": "設定",
+          "maxLoopLength": "最大迴圈長度",
+          "renameButton": "重新命名",
+          "removeButton": "移除模組",
+          "confirmRemove": "移除模組「{{name}}」？"
+        }
+      }
+    },
+    "ai": {
+      "title": "使用 AI 輔助",
+      "description": "ChatGPT 上的 [Ray Optics Coder](/ai-tools/chatgpt) 可以幫助您編寫「線光學模擬」模組。它會根據您的描述生成場景的 JSON 程式碼，您只需要將其複製到 JSON 編輯器 (上方的「程式碼」分頁) 即可。您也可以使用它來編輯現有模組或模組化場景。",
+      "limitation": "由聊天機器人生成的程式碼可能無法直接運作。如果出現錯誤，建議將錯誤訊息複製到聊天機器人中，可能能夠得到解決。",
+      "otherServices": "聊天機器人的指引和知識檔案可在[這裡](/ai-tools/instructions)取得。如果您偏好其他 LLM 服務，您可以提供這些檔案，教它如何寫出「線光學模擬」模組。"
     }
   },
   "statusBox": {
@@ -645,7 +785,7 @@
       },
       "arrayFormula": {
         "title": "從公式定義物件或陣列",
-        "description": "欲定義陣列（例如可調整間距的鏡子網格）或從公式定義物件（例如可調整角度的梯形棱鏡），請參閱工具 -> 其他 -> 匯入模組 -> 建立自訂模組。"
+        "description": "欲定義陣列（例如可調整間距的鏡子網格）或從公式定義物件（例如可調整角度的梯形棱鏡），請參閱工具 -> 其他 -> 建立模組。"
       },
       "keyboardShortcuts": {
         "title": "鍵盤快速鍵",

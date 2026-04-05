@@ -15,6 +15,22 @@
 -->
 
 <template>
+  <li>
+    <button
+      type="button"
+      class="dropdown-item"
+      :id="'create_module_tool' + (layout === 'mobile' ? '_mobile' : '')"
+      v-tooltip-popover:[tooltipType]="layout === 'desktop' && $t('main:tools.modules.description') ? {
+        content: $t('main:tools.modules.description'),
+        html: true,
+        placement: 'right',
+        offset: [0, 8]
+      } : undefined"
+      @click="onCreateModuleClick"
+    >
+      <i>{{ $t('main:tools.modules.createModule') }}<sup>Alpha</sup></i>
+    </button>
+  </li>
   <li :id="'module_start' + (layout === 'mobile' ? '_mobile' : '')">
     <button class="dropdown-item" type="button" :id="'import_modules' + (layout === 'mobile' ? '_mobile' : '')" data-bs-toggle="modal" data-bs-target="#moduleModal">
       <i>{{ $t('main:tools.modules.import') }}</i>
@@ -53,23 +69,47 @@
  * @description The Vue component for the module tool list in the end of the Tools -> Others list.
  * @vue-prop {String} layout - The layout of the toolbar. Can be 'mobile' or 'desktop'.
  */
+import { vTooltipPopover } from '../../directives/tooltip-popover'
+import { usePreferencesStore } from '../../store/preferences'
 import { useSceneStore } from '../../store/scene'
 import { computed, toRef } from 'vue'
 import { app } from '../../services/app.js'
+import { promptNewModuleName } from '../../utils/promptNewModuleName.js'
 
 export default {
   name: 'ModuleTools',
+  directives: {
+    'tooltip-popover': vTooltipPopover
+  },
   props: {
     layout: String
   },
-  setup() {
+  setup(props) {
     const scene = useSceneStore()
+    const preferences = usePreferencesStore()
     const moduleIds = toRef(scene, 'moduleIds')
+    const help = toRef(preferences, 'help')
+    const tooltipType = computed(() => help.value ? 'popover' : null)
 
-    // Compute module names from scene's moduleIds
     const moduleNames = computed(() => {
-      return moduleIds.value ? moduleIds.value.split(',') : []
+      const raw = moduleIds.value ? moduleIds.value.split(',') : []
+      return raw.map((s) => s.trim()).filter(Boolean)
     })
+
+    const onCreateModuleClick = () => {
+      const suffix = props.layout === 'mobile' ? '_mobile' : ''
+      const labelEl = document.getElementById('create_module_tool' + suffix)
+      if (labelEl && labelEl._popover) {
+        labelEl._popover.hide()
+      }
+      const newName = promptNewModuleName(moduleNames.value)
+      if (newName == null) return
+      app.hideWelcome()
+      app.resetDropdownButtons?.()
+      document.dispatchEvent(
+        new CustomEvent('openVisualCreateModule', { detail: { moduleName: newName } })
+      )
+    }
 
     // Handle module selection
     const onModuleSelect = (moduleName, event) => {
@@ -92,7 +132,9 @@ export default {
     return {
       moduleNames,
       onModuleSelect,
-      removeModule: handleRemoveModule
+      removeModule: handleRemoveModule,
+      tooltipType,
+      onCreateModuleClick
     }
   }
 }

@@ -37,6 +37,10 @@ class Drawing extends BaseSceneObj {
     lineStyle: null
   };
 
+  static getDescription(objData, scene, detailed = false) {
+    return i18next.t('main:tools.Drawing.title');
+  }
+
   populateObjBar(objBar) {
     objBar.setTitle(i18next.t('main:tools.Drawing.title'));
     if (this.isDrawing) {

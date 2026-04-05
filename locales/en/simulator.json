@@ -108,9 +108,9 @@
       "title": "Auto sync URL",
       "description": "When enabled, the URL will be updated automatically with the current scene, so you don't need to keep saving the scene manually. To set the title, use File -> Save -> Rename."
     },
-    "showJsonEditor": {
-      "title": "Show JSON editor",
-      "description": "Show the code editor for the JSON representation of the scene, which is needed when creating a custom module (See Tools -> Other -> Import Modules -> Make custom modules)."
+    "showSidebar": {
+      "title": "Show sidebar",
+      "description": "Show the sidebar that contains list of objects, module editor, JSON code editor, and AI assistant."
     },
     "showStatusBox": {
       "title": "Show status box",
@@ -164,20 +164,40 @@
       "random": "Random",
       "lambert": "Lambertian",
       "coordOrigin": "Origin",
+      "bezierControlPoints": "Bézier control points",
       "focalLength": "Focal length",
       "lineStyle": "Line style",
       "fillStyle": "Fill style",
       "useThemeStyle": "Use theme style",
+      "styleRed": "Red",
+      "styleGreen": "Green",
+      "styleBlue": "Blue",
+      "styleAlpha": "Alpha",
+      "styleWidth": "Width",
       "eqnInfo": {
         "constants": "Supported constants",
         "operators": "Supported operators",
         "functions": "Supported functions",
-        "module": "To have custom parameters or complicated equations, you can create a custom module. See Tools -> Other -> Import Modules for more information."
+        "module": "To have custom parameters or complicated equations, use Tools -> Other -> Create Module and move this object into the module.",
+        "mathjs": "Only supports the following math.js operations: ",
+        "customFunctions": "You can use custom functions defined in the \"Variables\" section of the module editor, but their definitions must ultimately consist of supported operations."
       },
+      "pointN": "Point {{i}}",
       "imageDetectionWarning": "This tool does not support image detection.",
       "nonSimulateColorsWarning": "This tool only works when \"Simulate Colors\" is on."
     },
+    "LineObjMixin": {
+      "endpoint1": "1st endpoint",
+      "endpoint2": "2nd endpoint",
+      "sourcePoint": "Source point",
+      "directionPoint": "Direction point"
+    },
+    "CircleObjMixin": {
+      "center": "Center",
+      "radiusPoint": "Point on circle"
+    },
     "ParamCurveObjMixin": {
+      "pieces": "Pieces",
       "addPiece": "Add piece",
       "removePiece": "Remove piece",
       "step": "Step",
@@ -202,6 +222,12 @@
     "IdealMirror": {
       "cartesianSign": "Cartesian Sign Convention"
     },
+    "ArcMirror": {
+      "pointOnArc": "Point on arc"
+    },
+    "ParabolicMirror": {
+      "vertex": "Vertex"
+    },
     "BeamSplitter": {
       "transRatio": "Transmission Ratio"
     },
@@ -209,10 +235,16 @@
       "refIndex": "Refractive index",
       "refIndexInfo": {
         "relative": "Relative if inside another glass",
-        "effective": "If this object is to be simulated with (absolute) refractive index n₁, but is placed inside another glass with refractive index n₀, then you should set the refractive index to n₁/n₀ here. In more complicated cases that several glasses overlap together, the effective refractive index of the overlapping region equals the product of the refractive indices of individual ones."
+        "effective": "If this object is to be simulated with (absolute) refractive index n₁, but is placed inside another glass with refractive index n₀, then you should set the refractive index to n₁/n₀ here. In more complicated cases that several glasses overlap together, the effective refractive index of the overlapping region equals the product of the refractive indices of individual ones.",
+        "dualMeaning": "When \"Simulate Colors\" is on, it serves as the Cauchy coefficient A instead."
       },
       "cauchyCoeff": "Cauchy coefficient",
       "partialReflect": "Simulate partial reflections"
+    },
+    "Glass": {
+      "vertices": "Vertices",
+      "vertex": "Vertex",
+      "arc": "Circular arc"
     },
     "SphericalLens": {
       "defBy": {
@@ -284,11 +316,17 @@
       "lineDensity": "Lines/{{lengthUnit}}",
       "customBrightness": "Custom Brightness",
       "customBrightnessInfo": "When on, the brightnesses of the diffracted rays are customized by an array of numbers corresponding to m = 0, 1, -1, 2, -2, …. The number is to be normalized to the brightness of the incident ray. The values not in the array are set to 0. For example, \"1, 0.5, 0.5\" means the m=0 ray has the same brightness as the incident ray, the m=1 and m=-1 rays have half the brightness, and all other rays are ignored.",
+      "brightnesses": "Brightnesses",
+      "brightness": "Brightness",
       "slitRatio": "Slit width / line spacing",
       "mirrored": "Mirrored"
     },
     "Ruler": {
+      "zeroPoint": "Zero point",
       "scaleInterval": "Scale interval"
+    },
+    "Protractor": {
+      "zeroPoint": "Zero point"
     },
     "Detector": {
       "info": {
@@ -307,7 +345,9 @@
       "exportData": "Export data"
     },
     "TextLabel": {
+      "text": "Text",
       "textHere": "Text Here",
+      "moduleInfo": "In a module, the text can contain math.js formulas wrapped in backticks, which will be evaluated in the context of the module. For example, \"there are \\`a+1\\` items\" becomes \"there are 3 items\" when `a` is 2.",
       "fontSize": "Font Size",
       "font": "Font",
       "fonts": "Serif: Serif\nArial: Arial\nHelvetica: Helvetica\nTimes New Roman: Times New Roman\nGeorgia: Georgia\nCourier New: Courier New\nVerdana: Verdana\nTahoma: Tahoma\nTrebuchet MS: Trebuchet MS\nImpact: Impact\nLucida Sans: Lucida Sans",
@@ -346,9 +386,10 @@
         "otherParams": "Other parameters of the incident rays that can be used are {{lambda}} (wavelength in nm) and {{p}} (0 for s-polarized, 1 for p-polarized). They remain the same for the outgoing rays.",
         "coating": "This object can act as a coating of glass objects by overlapping with their surfaces. In this case, the refraction itself also needs to be handled by the formulas of this object. The refractive indices of the material attached to the same and opposite sides of the incident ray can be referred to as {{n_0}} and {{n_1}}, respectively. If this object is inside a glass object, the values are relative to it.",
         "twoSides": "If you want the two sides of this surface to have different formulas, you can overlap two single-sided surfaces with opposite orientations.",
-        "module": "To have custom parameters, complicated formulas, or a large number of outgoing rays, you can create a custom module. See Tools -> Other -> Import Modules for more information."
+        "module": "To have custom parameters, complicated formulas, or a large number of outgoing rays, use Tools -> Other -> Create Module and move this object into the module."
       },
       "twoSided": "Two-sided",
+      "outgoingRays": "Outgoing Rays",
       "addOutgoingRay": "Add outgoing ray",
       "removeOutgoingRay": "Remove outgoing ray"
     },
@@ -369,6 +410,7 @@
     },
     "ModuleObj": {
       "module": "Module",
+      "editModule": "Edit module",
       "demodulize": "Demodulize",
       "loopVariableTooLarge": "The length of the loop variable \"{{name}}\" is too large. Please set maxLoopLength to a larger value.",
       "loopTooLarge": "The length of the loop is too large. Please set maxLoopLength to a larger value.",
@@ -389,10 +431,12 @@
         "scaling": "Scaling"
       },
       "step": "Step",
-      "transformationWarning": "Applying \"{{transformation}}\" to \"{{obj}}\" may give unexpected results."
+      "transformationWarning": "Applying \"{{transformation}}\" to \"{{obj}}\" may give unexpected results.",
+      "convertToModule": "To module…"
     },
     "CropBox": {
       "title": "Export",
+      "label": "Crop Box",
       "cropBoxSize": "Crop Box Size",
       "format": "Format",
       "width": "Width",
@@ -415,7 +459,12 @@
   "moduleModal": {
     "title": "Import Modules",
     "makeCustomModules": "Make custom modules",
-    "conflict": "A different module with the same name already exists in the current scene. You may enter a new name, or leave it the same to overwrite the existing module."
+    "conflict": "A different module with the same name already exists in the current scene. You may enter a new name, or leave it the same to overwrite the existing module.",
+    "importFromFile": {
+      "title": "Import from file",
+      "description": "Import all modules contained in a scene JSON file.",
+      "error": "The file does not contain valid modules."
+    }
   },
   "colorModeModal": {
     "linear": {
@@ -597,9 +646,100 @@
     "invalidFile": "The file is neither a valid JSON scene nor an image file."
   },
   "sidebar": {
-    "aiAssistant": {
-      "title": "AI Assistant",
-      "description": "Link to Ray Optics Coder on ChatGPT. See Tools -> Other -> Import module -> Make custom modules for more information."
+    "tabs": {
+      "visual": "Visual",
+      "code": "Code",
+      "ai": "AI"
+    },
+    "visual": {
+      "tabs": {
+        "scene": "Scene",
+        "createModule": "Create Module",
+        "createModuleInfo": "Modules allow you to make new tools by combining existing tools. See Tools -> Other -> Import Modules for examples."
+      },
+      "sceneObjects": {
+        "title": "Objects",
+        "info": "List of objects which are directly in the scene. To parametrize them (with custom variables, arrays, etc.), you need to move them into a module. Objects inside modules are not directly listed here, and each instance of a module is shown as a single object.",
+        "moveIntoModule": "Move into module",
+        "createModule": "Create Module",
+        "emptyHint": "To create an object, please use the toolbar and create it in the canvas.",
+        "lockLocked": "Locked (always). Click to change",
+        "lockUnlocked": "Unlocked (always). Click to change",
+        "lockDefault": "Follow scene lock. Click to change",
+        "unnamedObject": "Unnamed object",
+        "unknownType": "Unknown type",
+        "collapse": "Collapse properties",
+        "showAllProperties": "Show all properties",
+        "expand": "Expand to show properties",
+        "hideDefaultProperties": "Hide default properties",
+        "newItem": "New item",
+        "formulaRequiresModule": "To use a formula, you must first move the object into a module.",
+        "invalidPointFormat": "Point must have exactly two coordinates separated by a comma.",
+        "unsupportedVisualValue": "This value is not supported by the visual editor. Please switch to the Code tab to edit this property.",
+        "latexConversionFailed": "Failed to convert the expression to the internal format. Please check the syntax."
+      },
+      "moduleEditor": {
+        "new": {
+          "promptNewName": "New module name: (usually in PascalCase)",
+          "errorEmptyName": "Module name cannot be empty.",
+          "errorComma": "Module name cannot contain commas.",
+          "errorNameExists": "A module named \"{{name}}\" already exists."
+        },
+        "noInstances": "No instances of this module are currently in the scene. To create an instance, use Tools -> Other -> {{name}} and click the canvas at the desired locations corresponding to the control point sequence.",
+        "emptyModuleExamplesHint": "For examples of modules, see Tools -> Other -> Import Modules",
+        "controlPoints": {
+          "title": "Control points",
+          "newItem": "New control point",
+          "info": "Points for the module that are draggable in the canvas. The coordinates (`x_1`, `y_1`, etc) can be used in all formulas below."
+        },
+        "parameters": {
+          "title": "Parameters",
+          "newItem": "New parameter",
+          "min": "min",
+          "max": "max",
+          "step": "step",
+          "default": "default",
+          "info": "Parameters for the module shown as sliders in the object bar. The names (`a`, `foo`, etc) can be used in all formulas below."
+        },
+        "variables": {
+          "title": "Variables",
+          "newItem": "New variable",
+          "info": "Named values (e.g. `b` = `a+1`) or functions (e.g. `f(x)` = `x^2+b`). The definitions are [math.js formulas](/mathjs/syntax), and are evaluated in order."
+        },
+        "objects": {
+          "info": "Objects inside this module. Their properties can be set to [math.js formulas](/mathjs/syntax) involving names defined above. For example, to set a point to the average of two control points created above, you can set its coordinates to `(x_1+x_2)/2, (y_1+y_2)/2`. To create an array of objects, expand the property and click \"Create array and conditional\".",
+          "moveOut": "Move out",
+          "moveInHint": "To add an object to this module, please first create the object using the toolbar or select an existing object in the canvas.",
+          "moveIntoModule": "Move \"{{name}}\" into this module",
+          "templateLockInfo": "To make objects in module movable, first create some control points above, and then click ▸ to expand the object and replace numeric coordinates with control points like `x_1,y_1`, or formulas such as `(x_1+x_2)/2, (y_1+y_2)/2`.",
+          "arrayAndConditional": {
+            "info": "Create multiple copies of this object and/or include this object only when a condition is met. For example, to copy this object 5 times horizontally with 10 units between each, you can create a loop variable `i` from 1 to 5 and set the coordinates of points to `x_1+i*10, y_1`, etc. To show the object only when a variable `a` is greater than 0, you can set the \"with the condition\" box to `a > 0`.",
+            "create": "Create array and conditional",
+            "remove": "Remove array and conditional",
+            "arrayBadge": "Array",
+            "conditionalBadge": "Conditional",
+            "repeatFor": "Repeat for",
+            "withCondition": "with the condition",
+            "forFrom": "from",
+            "forTo": "to",
+            "forStep": "step",
+            "newLoopVariable": "New loop variable"
+          }
+        },
+        "settings": {
+          "title": "Settings",
+          "maxLoopLength": "Max loop length",
+          "renameButton": "Rename",
+          "removeButton": "Remove Module",
+          "confirmRemove": "Remove module \"{{name}}\"?"
+        }
+      }
+    },
+    "ai": {
+      "title": "Using AI Assistant",
+      "description": "The [Ray Optics Coder](/ai-tools/chatgpt) on ChatGPT can help you write Ray Optics modules. It generates the JSON code for the scene containing the module based on your description, and you can then copy the code to the JSON editor (the \"Code\" tab above). You can also use it to edit existing modules or to modularize scenes.",
+      "limitation": "The code generated by the chatbot may not work directly. If an error occurs, copying and pasting the error message to the chatbot may help.",
+      "otherServices": "The instruction and knowledge files for the chatbot are available [here](/ai-tools/instructions). If you prefer another LLM service, you may provide those files to teach it how to write Ray Optics modules."
     }
   },
   "statusBox": {
@@ -645,7 +785,7 @@
       },
       "arrayFormula": {
         "title": "Arrays and objects from formulas",
-        "description": "To define arrays of objects (e.g. a grid of mirrors with adjustable spacing) or objects from formulas (e.g. a trapezoidal prism with adjustable angles), see \"Tools -> Other -> Import Modules -> Make custom modules\"."
+        "description": "To define arrays of objects (e.g. a grid of mirrors with adjustable spacing) or objects from formulas (e.g. a trapezoidal prism with adjustable angles), see Tools -> Other -> Create Module."
       },
       "keyboardShortcuts": {
         "title": "Keyboard shortcuts",

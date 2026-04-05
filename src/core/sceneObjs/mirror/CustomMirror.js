@@ -20,6 +20,8 @@ import i18next from 'i18next';
 import Simulator from '../../Simulator.js';
 import geometry from '../../geometry.js';
 import { evaluateLatex } from '../../equation.js';
+import { equationValueForListDisplay } from '../../propertyUtils/equationConversion.js';
+import escapeHtml from 'escape-html';
 
 /**
  * Mirror with shape defined by a custom equation.
@@ -51,6 +53,29 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
     wavelength: Simulator.GREEN_WAVELENGTH,
     bandwidth: 10
   };
+
+  static getDescription(objData, scene, detailed = false) {
+    const base = i18next.t('main:tools.categories.mirror');
+    if (!detailed) {
+      return i18next.t('main:meta.parentheses', { main: base, sub: i18next.t('main:tools.CustomMirror.title') });
+    }
+    const eqn = objData?.eqn ?? '';
+    const shown = equationValueForListDisplay(eqn);
+    return shown ? i18next.t('main:meta.colon', { name: base, value: '<span style="font-family: monospace">' + escapeHtml(shown) + '</span>' }) : base;
+  }
+
+  static getPropertySchema(objData, scene) {
+    return [
+      ...super.getPropertySchema(objData, scene),
+      {
+        key: 'eqn',
+        type: 'equation',
+        label: 'f(x)',
+        variables: ['x'],
+        info: '<ul><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.mathjs') + '<br><code>+ - * / ^ sqrt sin cos tan sec csc cot sinh cosh tanh log exp asin acos atan asinh acosh atanh floor round ceil max min abs sign</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.customFunctions') + '</li></ul>'
+      },
+    ];
+  }
 
   populateObjBar(objBar) {
     objBar.setTitle(i18next.t('main:tools.categories.mirror'));

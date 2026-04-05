@@ -49,6 +49,28 @@ import * as math from 'mathjs';
  */
 class BaseGrinGlass extends BaseGlass {
 
+  static getPropertySchema(objData, scene) {
+    const refIndexFnInfo = '<ul><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.mathjs') + '<br><code>+ - * / ^ sqrt sin cos tan sec csc cot sinh cosh tanh log asin acos atan asinh acosh atanh</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.customFunctions') + '</li><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.lambda', { lambda: '<code>lambda</code>' }) + '</li><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.diff') + '</li></ul>';
+
+    const absorptionFnInfo = '<ul><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.absorptionFnInfo.absorption') + '</li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.mathjs') + '<br><code>+ - * / ^ sqrt sin cos tan sec csc cot sinh cosh tanh log exp asin acos atan asinh acosh atanh floor round ceil max min abs sign</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.customFunctions') + '</li></ul>';
+
+    const intersectTolInfo = '<p>' + i18next.t(`simulator:sceneObjs.${objData.type}.epsInfo.units`) + '</p><p>' + i18next.t(`simulator:sceneObjs.${objData.type}.epsInfo.functions`) + '</p>';
+
+    return [
+      { key: 'refIndexFn', type: 'equation', label: 'n(x,y)',
+        variables: ['x', 'y', 'lambda'], differentiable: true,
+        info: refIndexFnInfo },
+      { key: 'absorptionFn', type: 'equation', label: 'α(x,y)',
+        variables: ['x', 'y', 'lambda'],
+        info: absorptionFnInfo },
+      { key: 'stepSize', type: 'number', label: i18next.t('simulator:sceneObjs.BaseGrinGlass.stepSize'),
+        info: '<p>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.stepSizeInfo') + '</p>' },
+      { key: 'intersectTol', type: 'number', label: i18next.t('simulator:sceneObjs.BaseGrinGlass.intersectTol'),
+        info: intersectTolInfo },
+      { key: 'partialReflect', type: 'boolean', label: i18next.t('simulator:sceneObjs.BaseGlass.partialReflect') },
+    ];
+  }
+
   constructor(scene, jsonObj) {
     super(scene, jsonObj);
     this.initFns();

@@ -7,12 +7,12 @@
   "common": {
     "saveButton": "Guardar",
     "cancelButton": "Cancelar",
-    "closeButton": "Cerrar",
-    "customOption": "Personalizado",
-    "reloadToTakeEffect": "Por favor, reinicie la página para que haga efecto.",
-    "resetButton": "Reiniciar",
+    "defaultOption": "Predeterminado",
     "legacyOption": "Heredado",
-    "defaultOption": "Predeterminado"
+    "customOption": "Personalizado",
+    "closeButton": "Cerrar",
+    "resetButton": "Reiniciar",
+    "reloadToTakeEffect": "Por favor, reinicie la página para que haga efecto."
   },
   "file": {
     "title": "Archivo",
@@ -57,28 +57,6 @@
       "snapToGrid": "Ajustar a la cuadrícula",
       "lockObjs": "Bloquear objetos"
     },
-    "gridSize": {
-      "title": "Tamaño de la Cuadrícula"
-    },
-    "observerSize": {
-      "title": "Tamaño del Observador"
-    },
-    "zoom": {
-      "title": "Zoom"
-    },
-    "language": {
-      "title": "Idioma",
-      "lowFraction": "Este idioma solo está un {{fraction}} traducido. Puedes ayudar a completarlo [en Weblate](/weblate)."
-    },
-    "showStatusBox": {
-      "title": "Mostrar diálogo de estado",
-      "description": "Muestra el diálogo de estado, que incluye las coordenadas del ratón, información sobre el rendimiento, y el brillo truncado (el brillo total de los rayos truncados en la serie infinita de reflexión interna)."
-    },
-    "showHelpPopups": {
-      "title": "Mostrar ventanas de ayuda",
-      "description": "Definir si mostrar ventanas de ayuda al pasar sobre los botones."
-    },
-    "advancedHelp": "Para ayuda avanzada, vea el icono de ayuda en la esquina inferior derecha.",
     "showRayArrows": {
       "title": "Mostrar Flechas de Rayos"
     },
@@ -87,9 +65,18 @@
       "description": "Por defecto, el brillo en la pantalla no representa consistentemente el brillo de los rayos. Esta opción lo soluciona utilizando un renderizador especializado, pero podría reducir el rendimiento en algunos dispositivos. (En otros dispositivos, sin embargo, el rendimiento podría mejorar).",
       "error": "Error al activar \"Corregir Brillo\". Puede que tu navegador no sea compatible con texturas WebGL de punto flotante."
     },
+    "gridSize": {
+      "title": "Tamaño de la Cuadrícula"
+    },
+    "observerSize": {
+      "title": "Tamaño del Observador"
+    },
     "lengthScale": {
       "title": "Escala de Longitud",
       "description": "Si la unidad de longitud predeterminada es demasiado pequeña o demasiado grande para modelar un sistema físico cuando se interpreta como una unidad física común (por ejemplo, milímetros), este factor se puede utilizar para cambiar la escala aparente (por ejemplo, los anchos de línea) de la escena."
+    },
+    "zoom": {
+      "title": "Zoom"
     },
     "showAdvancedSettings": {
       "title": "Más configuraciones de escena…"
@@ -113,18 +100,33 @@
       "title": "Profundidad Máxima de los Rayos",
       "description": "Número máximo de interacciones rayo-objeto antes de que estos sean truncados. Utiliza \"inf\" para que no haya límite."
     },
+    "language": {
+      "title": "Idioma",
+      "lowFraction": "Este idioma solo está un {{fraction}} traducido. Puedes ayudar a completarlo [en Weblate](/weblate)."
+    },
     "autoSyncUrl": {
       "title": "Sincronizar URL Automáticamente",
       "description": "Cuando esté activado, la URL será actualizada automáticamente con la escena actual, por lo que no tendrás que guardarla manualmente cada vez. Para cambiar el título ve a Archivo -> Guardar -> Renombrar."
     },
-    "showJsonEditor": {
-      "title": "Mostrar editor de JSON",
-      "description": "Muestra el editor de código para la representación JSON de la escena, lo que es necesario cuando se crea un módulo personalizado (véase Herramientas -> Otros -> Importar Módulos -> Hacer Módulos Personalizados)."
+    "showStatusBox": {
+      "title": "Mostrar diálogo de estado",
+      "description": "Muestra el diálogo de estado, que incluye las coordenadas del ratón, información sobre el rendimiento, y el brillo truncado (el brillo total de los rayos truncados en la serie infinita de reflexión interna)."
     },
     "showSimulatorControls": {
       "title": "Mostrar controles del simulador",
       "description": "Permite el control manual del simulador. Útil cuando la escena tarda en ejecutarse, carga lento desde el JSON, o contiene aleatorización."
-    }
+    },
+    "showHelpPopups": {
+      "title": "Mostrar ventanas de ayuda",
+      "description": "Definir si mostrar ventanas de ayuda al pasar sobre los botones."
+    },
+    "advancedHelp": "Para ayuda avanzada, vea el icono de ayuda en la esquina inferior derecha."
+  },
+  "editor": {
+    "objectBodyHint": "Para rotación, agrupación, etc., véase el icono de ayuda en la esquina inferior derecha.",
+    "coordinatesHint": "Para transformar objetos, definir coordenadas desde formulas, etc., véase el icono de ayuda en la esquina inferior derecha.",
+    "handleHint": "Para mover varios objetos juntos, haz clic en el espacio vacío para crear un agarre.",
+    "handleArrowHint": "Para alternar entre horizontal/vertical/rotación/escala, haz clic en el agarre (flecha) y cambia la opción \"transformación\" encima."
   },
   "objBar": {
     "showAdvanced": {
@@ -146,6 +148,7 @@
   },
   "sceneObjs": {
     "common": {
+      "lengthUnitInfo": "La unidad de medida utilizada en este simulador (excepto las longitudes de onda) es una unidad arbitraria, que puede ser interpretada como cualquier unidad física (por ejemplo, milímetros) siempre que sea consistente a través de toda la simulación. Si la unidad parece demasiado pequeña o demasiado grande, ajuste Configuración -> Escala de Longitud.",
       "brightness": "Brillo",
       "brightnessInfo": {
         "rayDensity": "Solo es efectivo si la 'Densidad de rayos' es suficientemente alta.",
@@ -156,9 +159,8 @@
       "emisAngle": "Angulo de emisión",
       "random": "Aleatorio",
       "lambert": "Lambertiana",
-      "focalLength": "Distancia focal",
-      "lengthUnitInfo": "La unidad de medida utilizada en este simulador (excepto las longitudes de onda) es una unidad arbitraria, que puede ser interpretada como cualquier unidad física (por ejemplo, milímetros) siempre que sea consistente a través de toda la simulación. Si la unidad parece demasiado pequeña o demasiado grande, ajuste Configuración -> Escala de Longitud.",
-      "coordOrigin": "Origen"
+      "coordOrigin": "Origen",
+      "focalLength": "Distancia focal"
     },
     "Beam": {
       "imageDetectionWarning": "Detección de imagen puede no funcionar con rayos divergentes/ aleatorios."
@@ -279,11 +281,5 @@
   },
   "footer": {
     "processing": "Procesando... Click aquí para detener."
-  },
-  "editor": {
-    "objectBodyHint": "Para rotación, agrupación, etc., véase el icono de ayuda en la esquina inferior derecha.",
-    "coordinatesHint": "Para transformar objetos, definir coordenadas desde formulas, etc., véase el icono de ayuda en la esquina inferior derecha.",
-    "handleHint": "Para mover varios objetos juntos, haz clic en el espacio vacío para crear un agarre.",
-    "handleArrowHint": "Para alternar entre horizontal/vertical/rotación/escala, haz clic en el agarre (flecha) y cambia la opción \"transformación\" encima."
   }
 }

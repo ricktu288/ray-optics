@@ -94,9 +94,8 @@
       "title": "Sincronizar URL automaticamente",
       "description": "Quando ativado, a URL será atualizada automaticamente com a cena atual, então não precisa de ficar a gravar a cena manualmente. Para definir o título, use Ficheiro -> Gravar -> Renomear."
     },
-    "showJsonEditor": {
-      "title": "Exibir editor JSON",
-      "description": "Exibir o editor de código para a representação JSON da cena, que é necessária quando criando um módulo personalizado (Ver Ferramentas -> Outros -> Importar Módulos -> Criar módulos personalizados)."
+    "showSidebar": {
+      "title": "Exibir editor JSON"
     },
     "showStatusBox": {
       "title": "Exibir caixa de estado",
@@ -523,9 +522,11 @@
     "invalidFile": "O ficheiro não é nem uma cena JSON válida nem um ficheiro de imagem."
   },
   "sidebar": {
-    "aiAssistant": {
-      "title": "Assistente de IA",
-      "description": "Ligação para Ray Optics Coder no ChatGPT. Ver Ferramentas -> Outros -> Importar módulo -> Criar módulos personalizados para mais informação."
+    "ai": {
+      "title": "Usar o Assistente de IA",
+      "description": "O [Ray Optics Coder](/ai-tools/chatgpt) no ChatGPT pode ajudá-lo a escrever módulos de Óptica de Raios. Ele gera o código JSON para a cena contendo o módulo baseado na sua descrição e depois pode copiar o código para o editor JSON (the \"Code\" tab above). Também pode usá-lo para editar módulos existentes ou modularizar cenas.",
+      "limitation": "O código gerado pelo chatbot pode não funcionar diretamente. Se um erro ocorrer, copiar e colar a mensagem de erro para o chatbot pode ajudar.",
+      "otherServices": "Os ficheiros de instrução e conhecimento para o chatbot estão disponíveis [aqui](/ai-tools/instructions). Se preferir outro serviço LLM, pode fornecer esses ficheiros para ensiná-lo a escrever módulos de Ótica de Raios."
     }
   },
   "statusBox": {

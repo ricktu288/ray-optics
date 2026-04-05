@@ -13,8 +13,7 @@
       "parameters": "Parametri"
     },
     "customization": {
-      "title": "Personalizzazione",
-      "description": "I moduli possono essere realizzati o personalizzati direttamente all'interno dell'app web utilizzando l'editor JSON integrato. Vedi [il tutorial](/modules/tutorial). La personalizzazione dei moduli importati influenzerà solo la scena corrente."
+      "title": "Personalizzazione"
     },
     "contribution": {
       "title": "Contributo",

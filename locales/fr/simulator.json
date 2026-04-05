@@ -130,6 +130,12 @@
   "languageModal": {
     "title": "Langue"
   },
+  "generalWarnings": {
+    "blackBecomesTransparent": ""
+  },
+  "appErrors": {
+    "invalidFile": "Le fichier n'est ni une scène JSON valide ni un fichier d'image"
+  },
   "footer": {
     "processing": "En cours de traitement… Cliquez ici pour arrêter.",
     "helpPopup": {
@@ -154,11 +160,5 @@
         "contribute": "Les contributions directes sont également les bienvenues (voir [le guide du contributeur](/contributing))."
       }
     }
-  },
-  "appErrors": {
-    "invalidFile": "Le fichier n'est ni une scène JSON valide ni un fichier d'image"
-  },
-  "generalWarnings": {
-    "blackBecomesTransparent": ""
   }
 }

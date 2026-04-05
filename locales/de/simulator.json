@@ -65,7 +65,7 @@
     "language": {
       "title": "Sprache"
     },
-    "showJsonEditor": {
+    "showSidebar": {
       "title": "JSON-Editor anzeigen"
     },
     "showStatusBox": {
@@ -210,11 +210,7 @@
   "appErrors": {
     "jsError": "JavaScript-Fehler: {{msg}} bei {{url}}"
   },
-  "sidebar": {
-    "aiAssistant": {
-      "title": "KI-Assistent"
-    }
-  },
+  "sidebar": {},
   "statusBox": {
     "mouseCoordinates": "Mauskoordinaten"
   },

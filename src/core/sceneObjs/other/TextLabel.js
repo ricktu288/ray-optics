@@ -17,6 +17,7 @@
 import BaseSceneObj from '../BaseSceneObj.js';
 import i18next from 'i18next';
 import geometry from '../../geometry.js';
+import escapeHtml from 'escape-html';
 
 /**
  * Text label
@@ -49,6 +50,38 @@ class TextLabel extends BaseSceneObj {
     angle: 0,
     fillStyle: null
   };
+
+  static getDescription(objData, scene, detailed = false) {
+    const baseTitle = i18next.t('main:tools.TextLabel.title');
+    if (!detailed) return baseTitle;
+    const text = objData?.text ?? '';
+    return text ? i18next.t('main:meta.colon', { name: baseTitle, value: escapeHtml(text) }) : baseTitle;
+  }
+
+  static getPropertySchema(objData, scene) {
+    return [
+      { key: '', type: 'point', label: i18next.t('simulator:sceneObjs.common.coordOrigin') },
+      { key: 'text', type: 'text', label: i18next.t('simulator:sceneObjs.TextLabel.text'), info: i18next.t('simulator:sceneObjs.TextLabel.moduleInfo') },
+      { key: 'fontSize', type: 'number', label: i18next.t('simulator:sceneObjs.TextLabel.fontSize') },
+      { key: 'font', type: 'text', label: i18next.t('simulator:sceneObjs.TextLabel.font') },
+      { key: 'fontStyle', type: 'dropdown', label: i18next.t('simulator:sceneObjs.TextLabel.fontStyle'), options: {
+        'Normal': i18next.t('simulator:sceneObjs.TextLabel.fontStyles.normal'),
+        'Bold': i18next.t('simulator:sceneObjs.TextLabel.fontStyles.bold'),
+        'Italic': i18next.t('simulator:sceneObjs.TextLabel.fontStyles.italic'),
+        'Bold Italic': i18next.t('simulator:sceneObjs.TextLabel.fontStyles.boldItalic'),
+        'Oblique': i18next.t('simulator:sceneObjs.TextLabel.fontStyles.oblique'),
+        'Bold Oblique': i18next.t('simulator:sceneObjs.TextLabel.fontStyles.boldOblique'),
+      }},
+      { key: 'alignment', type: 'dropdown', label: i18next.t('simulator:sceneObjs.TextLabel.alignment'), options: {
+        'left': i18next.t('simulator:sceneObjs.TextLabel.alignments.left'),
+        'center': i18next.t('simulator:sceneObjs.TextLabel.alignments.center'),
+        'right': i18next.t('simulator:sceneObjs.TextLabel.alignments.right'),
+      }},
+      { key: 'smallCaps', type: 'boolean', label: i18next.t('simulator:sceneObjs.TextLabel.smallCaps') },
+      { key: 'angle', type: 'number', label: i18next.t('simulator:sceneObjs.TextLabel.angle') + ' (\u00B0)' },
+      { key: 'fillStyle', type: 'style', styleKind: 'fill', label: i18next.t('simulator:sceneObjs.common.fillStyle') },
+    ];
+  }
 
   populateObjBar(objBar) {
     objBar.setTitle(i18next.t('main:tools.TextLabel.title'));

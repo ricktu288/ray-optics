@@ -104,6 +104,26 @@ export default {
 
 /* modifications to Bootstrap style */
 
+/* Underline links on hover / keyboard focus only; colors stay Bootstrap defaults. */
+a {
+  text-decoration: none;
+  text-underline-offset: 2px;
+}
+
+a:hover,
+a:focus-visible {
+  text-decoration: underline;
+}
+
+a.btn-link {
+  text-decoration: none;
+}
+
+a.btn-link:hover,
+a.btn-link:focus-visible {
+  text-decoration: underline;
+}
+
 .btn-group {
   padding-left: 0px;
   padding-right: 0px;
@@ -163,13 +183,18 @@ export default {
   color: rgba(0, 0, 0, 0.5);
 }
 
+/* Opaque fill = rgba(45, 51, 57, 0.8) composited over black (matches sidebar on dark canvas). */
 #help-dropdown {
-  width:300px;
-  background: rgb(64, 64, 64);
-  color: white;
+  width: 300px;
+  background-color: rgb(36, 41, 46);
+  color: rgba(255, 255, 255, 0.82);
   max-height: 80vh;
   overflow: hidden;
   padding: 0;
+}
+
+#help-dropdown b {
+  color: rgba(255, 255, 255, 0.92);
 }
 
 #help-dropdown .help-dropdown-inner {
@@ -197,18 +222,15 @@ export default {
 }
 
 #help-dropdown a {
-  color: #a9ccff;
-  text-decoration: none;
+  color: #8ec5ff;
 }
 
 #help-dropdown a:hover {
-  color: #bdd6f9;
-  text-decoration: underline;
+  color: #b8d9ff;
 }
 
 #welcome_instruction a:hover {
   color: #3685f9 !important;
-  text-decoration: underline !important;
 }
 
 ::-webkit-scrollbar {

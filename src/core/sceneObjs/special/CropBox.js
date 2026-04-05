@@ -55,6 +55,10 @@ class CropBox extends BaseSceneObj {
     }
   }
 
+  static getDescription(objData, scene, detailed = false) {
+    return i18next.t('simulator:sceneObjs.CropBox.label');
+  }
+
   populateObjBar(objBar) {
     objBar.setTitle(i18next.t('simulator:sceneObjs.CropBox.title'));
 

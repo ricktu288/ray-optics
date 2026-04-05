@@ -8,9 +8,9 @@
     "simulator": "Simulador",
     "home": "Inicio",
     "gallery": "Galería",
+    "modules": "Módulos",
     "about": "Acerca de",
-    "github": "GitHub",
-    "modules": "Módulos"
+    "github": "GitHub"
   },
   "homePage": {
     "description": "Crea y simula escenas 2D de óptica geométrica de manera interactiva.\nTotalmente gratuito y basado en web. El código fuente está [disponible en GitHub](/github).",
@@ -77,6 +77,14 @@
       "title": "Ecuación personalizada",
       "description": "Un espejo cuya forma está definida por una ecuación de la forma y = f(x), donde (x,y) está en las coordenadas transformadas donde los dos puntos de control son (-1,0) y (1,0)."
     },
+    "ParamMirror": {
+      "title": "Curva paramétrica",
+      "description": "Un espejo cuya forma viene definida por ecuaciones paramétricas personalizables."
+    },
+    "ConcaveDiffractionGrating": {
+      "title": "Red cóncava",
+      "description": "Una rejilla de difracción cóncava cuya forma es la de una sección de un círculo."
+    },
     "PlaneGlass": {
       "title": "Semi-plano",
       "description": "Simular la refracción y la reflexión de luz sobre una superficie.",
@@ -107,6 +115,15 @@
       "title": "Ecuación personalizada",
       "description": "Vidrio con una forma definida por una desigualdad f(x) < y < g(x), donde (x,y) está en las coordenadas transformadas donde los dos puntos de control son (-1,0) y (1,0)."
     },
+    "ParamGlass": {
+      "title": "Curva paramétrica",
+      "description": "Vidrio con forma definida por ecuaciones paramétricas personalizadas."
+    },
+    "CurveGlass": {
+      "title": "Curvas de Bézier",
+      "description": "Vidrio encerrado por curvas cúbicas de Bézier.",
+      "instruction": "Haz clic para crear una pieza. Haz clic en el punto inicial al terminar de dibujar. Después, arrastra las cajas para manipular los puntos de control, cambiando la curvatura."
+    },
     "CircleGrinGlass": {
       "title": "Círculo GRIN",
       "description": "Vidrio con una función de índice refractivo n(x,y) y un borde circular."
@@ -116,6 +133,14 @@
       "description": "Vidrio con una función de índice de refracción n(x,y) y un borde poligonal.",
       "instruction": "Clique para crear un segmento, clique en el punto de inicio cuando haya finalizado el dibujo.",
       "warning": "ATENCIÓN: Sólo se soportan polígonos simples, de otro modo el comportamiento es impredecible."
+    },
+    "ParamGrinGlass": {
+      "title": "Curva paramétrica GRIN",
+      "description": "Vidrio con gradiente de índice, delimitado por ecuaciones paramétricas personalizadas."
+    },
+    "CurveGrinGlass": {
+      "title": "Curvas de Bézier GRIN",
+      "description": "Vidrio con gradiente de índice, delimitado por curvas cúbicas de Bézier."
     },
     "otherGrinGlass": {
       "title": "Polígono con gradiente de índice",
@@ -133,6 +158,11 @@
       "title": "Apertura",
       "description": "Un par de bloqueadores de luz que absorben los rayos incidentes. El tamaño del agujero puede ajustarse simétricamente.",
       "instruction": "Arrastre o clique los dos puntos extremales para crear."
+    },
+    "DiffractionGrating": {
+      "title": "Red de difracción",
+      "description": "Una red de difracción que separa la luz en un ángulo que dependerá de la longitud de onda.",
+      "warning": "Aviso: Las intensidades de los rayos difractados podrían no ser precisas."
     },
     "Ruler": {
       "title": "Regla",
@@ -159,58 +189,28 @@
       "description": "Una herramienta para dibujar a mano alzada.",
       "instruction": "Arrastre para dibujar."
     },
-    "moveView": {
-      "title": "Mover vista",
-      "description": "Arrastre para mover la vista. (El botón derecho del ratón tiene la misma función.)"
+    "CustomSurface": {
+      "title": "Línea personalizada",
+      "description": "Una superficie con segmentos de línea personalizados donde los ángulos (θ) y brillos (P) de los rayos salientes (si existe un rayo incidente) se definen mediante ecuaciones personalizadas."
     },
-    "ParamMirror": {
-      "title": "Curva paramétrica",
-      "description": "Un espejo cuya forma viene definida por ecuaciones paramétricas personalizables."
-    },
-    "ConcaveDiffractionGrating": {
-      "description": "Una rejilla de difracción cóncava cuya forma es la de una sección de un círculo.",
-      "title": "Red cóncava"
-    },
-    "ParamGlass": {
-      "title": "Curva paramétrica",
-      "description": "Vidrio con forma definida por ecuaciones paramétricas personalizadas."
-    },
-    "modules": {
-      "import": "Importar módulos…",
-      "remove": "Eliminar módulo"
-    },
-    "moreTools": {
-      "title": "Más herramientas…"
-    },
-    "CurveGlass": {
-      "title": "Curvas de Bézier",
-      "description": "Vidrio encerrado por curvas cúbicas de Bézier.",
-      "instruction": "Haz clic para crear una pieza. Haz clic en el punto inicial al terminar de dibujar. Después, arrastra las cajas para manipular los puntos de control, cambiando la curvatura."
+    "CustomArcSurface": {
+      "title": "Arco personalizado",
+      "description": "Una superficie personalizada con la forma de un arco de circunferencia."
     },
     "CustomParamSurface": {
       "title": "Curva paramétrica personalizada",
       "description": "Una superficie personalizada con una forma definida mediante ecuaciones paramétricas."
     },
-    "DiffractionGrating": {
-      "title": "Red de difracción",
-      "warning": "Aviso: Las intensidades de los rayos difractados podrían no ser precisas.",
-      "description": "Una red de difracción que separa la luz en un ángulo que dependerá de la longitud de onda."
+    "modules": {
+      "import": "Importar módulos…",
+      "remove": "Eliminar módulo"
     },
-    "CustomArcSurface": {
-      "description": "Una superficie personalizada con la forma de un arco de circunferencia.",
-      "title": "Arco personalizado"
+    "moveView": {
+      "title": "Mover vista",
+      "description": "Arrastre para mover la vista. (El botón derecho del ratón tiene la misma función.)"
     },
-    "CustomSurface": {
-      "title": "Línea personalizada",
-      "description": "Una superficie con segmentos de línea personalizados donde los ángulos (θ) y brillos (P) de los rayos salientes (si existe un rayo incidente) se definen mediante ecuaciones personalizadas."
-    },
-    "CurveGrinGlass": {
-      "title": "Curvas de Bézier GRIN",
-      "description": "Vidrio con gradiente de índice, delimitado por curvas cúbicas de Bézier."
-    },
-    "ParamGrinGlass": {
-      "title": "Curva paramétrica GRIN",
-      "description": "Vidrio con gradiente de índice, delimitado por ecuaciones paramétricas personalizadas."
+    "moreTools": {
+      "title": "Más herramientas…"
     }
   },
   "view": {

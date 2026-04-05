@@ -38,7 +38,7 @@ If you already started the translation using the old json format before Dec 11, 
 
 ## Contributing modules
 
-See Tools -> Others -> Import Modules for more information about modules. See [this tutorial](https://phydemo.app/ray-optics/modules/tutorial) for how to create a new module.
+Contributed modules will be shown in the list in Tools -> Others -> Import Modules.
 
 **Method 1: By e-mail**
 

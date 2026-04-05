@@ -8,7 +8,7 @@
     "saveButton": "保存",
     "cancelButton": "取消",
     "defaultOption": "默认",
-    "legacyOption": "旧版",
+    "legacyOption": "旧版模式",
     "customOption": "自定义",
     "closeButton": "关闭",
     "resetButton": "重置",
@@ -108,9 +108,9 @@
       "title": "自动同步网址",
       "description": "启用时，网址会随着场景自动更新，而不必持续手动储存场景。如需设定标题，请用文件->保存->重命名。"
     },
-    "showJsonEditor": {
-      "title": "显示 JSON 编辑器",
-      "description": "显示表达场景代码的 JSON 编辑器。在创建自定义模块时需要使用（见工具->其他->导入模块->创建自定义模块）。"
+    "showSidebar": {
+      "title": "显示侧边栏",
+      "description": "显示包含对象列表、模块编辑器、JSON 代码编辑器和 AI 助理的侧边栏。"
     },
     "showStatusBox": {
       "title": "显示状态方块",
@@ -164,20 +164,40 @@
       "random": "随机",
       "lambert": "朗伯",
       "coordOrigin": "原点",
+      "bezierControlPoints": "贝塞尔控制点",
       "focalLength": "焦距",
       "lineStyle": "线条样式",
       "fillStyle": "填充样式",
       "useThemeStyle": "使用主题样式",
+      "styleRed": "红色",
+      "styleGreen": "绿色",
+      "styleBlue": "蓝色",
+      "styleAlpha": "透明度",
+      "styleWidth": "宽度",
       "eqnInfo": {
         "constants": "支持的常数",
         "operators": "支持的运算符",
         "functions": "支持的函数",
-        "module": "如需自定义参数或使用复杂的方程式，请建立自定义模块。详见工具->其他->导入模块。"
+        "module": "如需自定义参数或使用复杂的方程式，请使用工具->其他->创建模块并將此物件移入模块。",
+        "mathjs": "仅支持以下 math.js 运算：",
+        "customFunctions": "您可以使用从模块编辑器中的「变量」部分定义的自订函数，但其定义最终必须由支援的运算组成。"
       },
+      "pointN": "点 {{i}}",
       "imageDetectionWarning": "本工具不支持像的侦测。",
       "nonSimulateColorsWarning": "本工具只在「模拟色彩」模式下运作。"
     },
+    "LineObjMixin": {
+      "endpoint1": "第一端点",
+      "endpoint2": "第二端点",
+      "sourcePoint": "起始点",
+      "directionPoint": "方向点"
+    },
+    "CircleObjMixin": {
+      "center": "圆心",
+      "radiusPoint": "圆上的点"
+    },
     "ParamCurveObjMixin": {
+      "pieces": "片段",
       "addPiece": "添加片段",
       "removePiece": "移除片段",
       "step": "步长",
@@ -202,6 +222,12 @@
     "IdealMirror": {
       "cartesianSign": "笛卡尔符号约定"
     },
+    "ArcMirror": {
+      "pointOnArc": "圆弧上的点"
+    },
+    "ParabolicMirror": {
+      "vertex": "顶点"
+    },
     "BeamSplitter": {
       "transRatio": "透光率"
     },
@@ -209,10 +235,16 @@
       "refIndex": "折射率",
       "refIndexInfo": {
         "relative": "于另一透光物内部时为相对值",
-        "effective": "如需模拟此物件之（绝对）折射率为 n₁，但其位于折射率为 n₀ 之另一透光物内部的情形，则此处折射率应设为 n₁/n₀ 。在更复杂的组合中，若多个透光物互相重叠，则重叠区域之等效折射率为个别折射率之乘积。"
+        "effective": "如需模拟此物件之（绝对）折射率为 n₁，但其位于折射率为 n₀ 之另一透光物内部的情形，则此处折射率应设为 n₁/n₀ 。在更复杂的组合中，若多个透光物互相重叠，则重叠区域之等效折射率为个别折射率之乘积。",
+        "dualMeaning": "启用「模拟色彩」时，此处改为柯西系数 A。"
       },
       "cauchyCoeff": "柯西系数",
       "partialReflect": "模拟部分反射"
+    },
+    "Glass": {
+      "vertices": "顶点",
+      "vertex": "顶点",
+      "arc": "圆弧"
     },
     "SphericalLens": {
       "defBy": {
@@ -284,11 +316,17 @@
       "lineDensity": "线数/{{lengthUnit}}",
       "customBrightness": "自定义亮度",
       "customBrightnessInfo": "启用时，衍射光的亮度将由一数值数组来决定，对应到 m = 0, 1, -1, 2, -2, …。这些数字为相对于入射光的亮度。数组中没有的数值将被设为0。例如，\"1, 0.5, 0.5\" 表示 m=0 的光线与入射光的亮度相同，m=1 与 m=-1 的光线为入射光的一半，其他光线则被忽略。",
+      "brightnesses": "亮度",
+      "brightness": "亮度",
       "slitRatio": "狭缝宽度 / 线间距",
       "mirrored": "反射"
     },
     "Ruler": {
+      "zeroPoint": "零点",
       "scaleInterval": "刻度间距"
+    },
+    "Protractor": {
+      "zeroPoint": "零点"
     },
     "Detector": {
       "info": {
@@ -307,7 +345,9 @@
       "exportData": "导出数据"
     },
     "TextLabel": {
+      "text": "文字",
       "textHere": "在此输入文字",
+      "moduleInfo": "在模块中，文字可以包含用反引号包围的 math.js 公式，将在模块的上下文中求值。例如当 `a` 为 2 时，「有 \\`a+1\\` 个项目」会变成「有 3 个项目」。",
       "fontSize": "字型大小",
       "font": "字型",
       "fonts": "Serif: 衬线体\nMicrosoft YaHei: 微软雅黑\nSimSun: 宋体\nPingFang SC: 苹方\nNoto Sans CJK SC: 思源黑体\nNoto Serif CJK SC: 思源宋体\nArial: Arial\nTimes New Roman: Times New Roman",
@@ -346,9 +386,10 @@
         "otherParams": "其他可用的入射光线参数为 {{lambda}}（波长，单位为 nm）和 {{p}}（0 表示 s 偏振，1 表示 p 偏振）。出射光线将保持相同的参数。",
         "coating": "此物件可与透光物表面重叠来作为涂层。在这种情况下，折射本身也需要包含在此物件的公式中。公式中可用 {{n_0}} 和 {{n_1}} 来分别代表与入射光线同侧和对侧相接的材料折射率。如果此物件位于一个透光物内部，则这些值相对于该透光物。",
         "twoSides": "如需让表面的两侧以不同公式定义，可重叠两个方向相反的单面表面。",
-        "module": "如需自定义参数、使用复杂的公式或定义大量出射光线，可使用自定义模块。更多信息请参见工具->其他->导入模块。"
+        "module": "如需自定义参数、使用复杂的公式或定义大量出射光线，可使用工具->其他->创建模块并將此物件移入模块。"
       },
       "twoSided": "双面",
+      "outgoingRays": "出射光线",
       "addOutgoingRay": "添加出射光线",
       "removeOutgoingRay": "移除出射光线"
     },
@@ -369,6 +410,7 @@
     },
     "ModuleObj": {
       "module": "模块",
+      "editModule": "编辑模块",
       "demodulize": "取消模块化",
       "loopVariableTooLarge": "循环变量“{{name}}”的长度过大。请设置更大的 maxLoopLength 值。",
       "loopTooLarge": "循环的长度过大。请设置更大的 maxLoopLength 值。",
@@ -389,10 +431,12 @@
         "scaling": "缩放"
       },
       "step": "步长",
-      "transformationWarning": "对“{{obj}}”进行“{{transformation}}”可能会产生非预期的结果。"
+      "transformationWarning": "对“{{obj}}”进行“{{transformation}}”可能会产生非预期的结果。",
+      "convertToModule": "转为模块…"
     },
     "CropBox": {
       "title": "导出",
+      "label": "剪取框",
       "cropBoxSize": "剪取框大小",
       "format": "格式",
       "width": "宽度",
@@ -415,7 +459,12 @@
   "moduleModal": {
     "title": "导入模块",
     "makeCustomModules": "创建自定义模块",
-    "conflict": "场景中已有一个同名但不相同的模块。您可以指定新的名称，或保留相同名称以取代原模块。"
+    "conflict": "场景中已有一个同名但不相同的模块。您可以指定新的名称，或保留相同名称以取代原模块。",
+    "importFromFile": {
+      "title": "从文件导入",
+      "description": "导入场景 JSON 文件中的所有模块。",
+      "error": "此文件不包含有效的模块。"
+    }
   },
   "colorModeModal": {
     "linear": {
@@ -597,9 +646,100 @@
     "invalidFile": "此文件既不是有效的 JSON 场景，也不是图片文件。"
   },
   "sidebar": {
-    "aiAssistant": {
-      "title": "AI 助手",
-      "description": "链接到 ChatGPT 上的 Ray Optics Coder。更多信息请参见工具->其他->导入模块->创建自定义模块。"
+    "tabs": {
+      "visual": "可视化",
+      "code": "代码",
+      "ai": "AI"
+    },
+    "visual": {
+      "tabs": {
+        "scene": "场景",
+        "createModule": "创建模块",
+        "createModuleInfo": "模块可让您组合现有工具来制作新工具。范例请见工具->其他->导入模块。"
+      },
+      "sceneObjects": {
+        "title": "物件",
+        "info": "直接位于场景中的物件列表。若要以自定义变量、数组等来参数化，需先将其移入模块。模块内的物件不会直接列出，而是每个模块实例以单一物件显示。",
+        "moveIntoModule": "移入模块",
+        "createModule": "创建新模块",
+        "emptyHint": "要创建物件，请使用工具栏并在画布中创建。",
+        "lockLocked": "总是锁定。点击以更改",
+        "lockUnlocked": "总是解锁。点击以更改",
+        "lockDefault": "跟随场景设定决定是否锁定。点击以更改",
+        "unnamedObject": "未命名物件",
+        "unknownType": "未知类型",
+        "collapse": "收起属性",
+        "showAllProperties": "显示所有属性",
+        "expand": "展开以显示属性",
+        "hideDefaultProperties": "隐藏默认属性",
+        "newItem": "新建项目",
+        "formulaRequiresModule": "要使用公式，请先将物件移入模块。",
+        "invalidPointFormat": "点必须恰好有两个以逗号分隔的坐标。",
+        "unsupportedVisualValue": "此值不受可视化编辑器支持。请切换至代码选项卡来编辑此属性。",
+        "latexConversionFailed": "无法将表达式转换为内部格式。请检查语法。"
+      },
+      "moduleEditor": {
+        "new": {
+          "promptNewName": "新模块名称：（通常为 PascalCase 格式）",
+          "errorEmptyName": "模块名称不能为空。",
+          "errorComma": "模块名称不能包含逗号。",
+          "errorNameExists": "名为「{{name}}」的模块已存在。"
+        },
+        "noInstances": "场景中目前没有此模块的任何实例。若要创建实例，请使用工具->其他-> {{name}} 并在画布上点击对应控制点顺序的位置。",
+        "emptyModuleExamplesHint": "模块示例请见工具->其他->导入模块",
+        "controlPoints": {
+          "title": "控制点",
+          "newItem": "新建控制点",
+          "info": "在画布上可拖曳的点。其坐标（`x_1`、`y_1` 等）可用于本模块中的所有公式。"
+        },
+        "parameters": {
+          "title": "参数",
+          "newItem": "新建参数",
+          "min": "最小",
+          "max": "最大",
+          "step": "步长",
+          "default": "默认",
+          "info": "在物件栏以滑杆显示的参数。其名称（如 `a`、`foo` 等）可用于本模块中的所有公式。"
+        },
+        "variables": {
+          "title": "变量",
+          "newItem": "新建变量",
+          "info": "命名值（例如 `b` = `a+1`）或函数（例如 `f(x)` = `x^2+b`）。定义使用 [math.js 公式](/mathjs/syntax)，并依序求值。"
+        },
+        "objects": {
+          "info": "此模块中的物件。其属性可设置为 [math.js 公式](/mathjs/syntax)，其中可包含上述定义的名称。例如，要将一点设置为上方定义的两个控制点的平均值，可以将其坐标设置为 `(x_1+x_2)/2, (y_1+y_2)/2`。要创建物件数组，请展开属性并点击「创建数组和条件」。",
+          "moveOut": "移出模块",
+          "moveInHint": "要将物件加入此模块，请先使用工具栏创建物件，或在画布中选择现有物件。",
+          "moveIntoModule": "将「{{name}}」移入此模块",
+          "templateLockInfo": "若要让模块内的物件可移动，请先在上方创建控制点，然后点击 ▸ 展开物件，并将数值坐标替换为控制点（如 `x_1,y_1`）或公式（如 `(x_1+x_2)/2, (y_1+y_2)/2`）。",
+          "arrayAndConditional": {
+            "info": "创建此物件的多个副本和/或仅在满足条件时包含此物件。例如，要将此物件水平复制 5 次，每次间隔 10 个单位，可以创建一个从 1 到 5 的循环变量 `i`，并将各点的坐标设为 `x_1+i*10, y_1` 等。若要仅在变量 `a` 大于 0 时显示此物件，可以將「附加条件为」設為 `a > 0`。",
+            "create": "创建数组和条件",
+            "remove": "移除数组和条件",
+            "arrayBadge": "数组",
+            "conditionalBadge": "条件",
+            "repeatFor": "重复",
+            "withCondition": "附加条件为",
+            "forFrom": "从",
+            "forTo": "到",
+            "forStep": "步长",
+            "newLoopVariable": "新建循环变量"
+          }
+        },
+        "settings": {
+          "title": "设置",
+          "maxLoopLength": "最大循环长度",
+          "renameButton": "重命名",
+          "removeButton": "移除模块",
+          "confirmRemove": "移除模块「{{name}}」？"
+        }
+      }
+    },
+    "ai": {
+      "title": "使用 AI 助手",
+      "description": "ChatGPT 上的 [Ray Optics Coder](/ai-tools/chatgpt) 可以帮助您编写「射线光学模拟」模块。它会根据您的描述生成场景的 JSON 代码，您只需要将其复制到 JSON 编辑器 (上方的「代码」分页) 即可。您也可以使用它来编辑现有模组或模组化场景。",
+      "limitation": "由聊天机器人生成的代码可能无法直接运作。如果出现错误，建议将错误讯息复制到聊天机器人中，可能能够得到解决。",
+      "otherServices": "聊天机器人的指引和知识文件可在[这里](/ai-tools/instructions)取得。如果您偏好其他 LLM 服务，您可以提供这些文件，教它如何写出「射线光学模拟」模块。"
     }
   },
   "statusBox": {
@@ -645,7 +785,7 @@
       },
       "arrayFormula": {
         "title": "从公式定义物件或阵列",
-        "description": "要定义阵列（例如可调整间距的镜子网格）或从公式定义物件（例如可调整角度的梯形棱镜），请参阅工具 -> 其他 -> 导入模块 -> 创建自定义模块。"
+        "description": "要定义阵列（例如可调整间距的镜子网格）或从公式定义物件（例如可调整角度的梯形棱镜），请参阅工具 -> 其他 -> 创建模块。"
       },
       "keyboardShortcuts": {
         "title": "键盘快速键",

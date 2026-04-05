@@ -135,11 +135,13 @@ The tests are run automatically when you commit your changes.
 
 The above command will run the following tests:
 ```bash
+npm run test:propertyUtils
 npm run test:sceneObjs
 npm run test:scenes
 ```
-the first one tests the user creation, dragging, and changing properties for each scene object in the source code.
-the second one runs the scene JSONs in `test/scenes/` with the node module version of the simulator, and compares the output of `CropBox`/`Detector` with the corresponding PNG/CSV files.
+the first one is unit tests for `src/core/propertyUtils` (formula parsing, key paths, equation conversion, and parametrization helpers).
+the second one tests the user creation, dragging, and changing properties for each scene object in the source code.
+the third one runs the scene JSONs in `test/scenes/` with the node module version of the simulator, and compares the output of `CropBox`/`Detector` with the corresponding PNG/CSV files.
 
 If you modify the appearance of some objects or rays, the images in `test/scenes/` may need to be updated. Also if you add new scene tests, the corresponding PNG and CSV files nees to be initialized. In these cases, run the following command to regenerate all the PNG/CSV files after you make sure that all the failing tests are due to the changes you made:
 ```bash

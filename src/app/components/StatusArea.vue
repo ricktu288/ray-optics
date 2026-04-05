@@ -18,6 +18,20 @@
   <div class="footer-left" id="footer-left" :style="notificationStyle">
     <div class="status-inline">
       <span
+        v-show="alphaFeatures.length > 0"
+        class="alpha-icon"
+        v-tooltip-popover:popover="{
+          title: 'Alpha features',
+          content: alphaPopoverContent,
+          trigger: 'click',
+          placement: 'top',
+          html: true
+        }"
+        @click.stop
+      >
+        Alpha
+      </span>
+      <span
         v-show="betaFeatures.length > 0"
         class="beta-icon"
         v-tooltip-popover:popover="{
@@ -44,13 +58,13 @@
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill" viewBox="0 0 16 20">
         <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
       </svg>
-      <span v-html="warnings.join('<br>')"></span>
+      <span v-html="formattedWarningsHtml"></span>
     </div>
     <div id="error" v-show="errors.length > 0">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-circle-fill" viewBox="0 0 16 20">
         <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4m.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2"/>
       </svg>
-      <span v-html="errors.join('<br>')"></span>
+      <span v-html="formattedErrorsHtml"></span>
     </div>
     <VirtualKeyboard />
   </div>
@@ -70,6 +84,7 @@ import { app } from '../services/app'
 import VirtualKeyboard from './VirtualKeyboard.vue'
 import { vTooltipPopover } from '../directives/tooltip-popover'
 import { parseLinks } from '../utils/links.js'
+import escapeHtml from 'escape-html'
 
 export default {
   name: 'StatusArea',
@@ -83,11 +98,11 @@ export default {
     const preferences = usePreferencesStore()
     const themeStore = useThemeStore()
     const status = useStatus()
-    const showJsonEditor = toRef(preferences, 'showJsonEditor')
+    const showSidebar = toRef(preferences, 'showSidebar')
     const sidebarWidth = toRef(preferences, 'sidebarWidth')
     
     const notificationStyle = computed(() => ({
-      left: showJsonEditor.value ? `${sidebarWidth.value}px` : '0px'
+      left: showSidebar.value ? `${sidebarWidth.value}px` : '0px'
     }))
 
     // Computed styles that adapt to theme - status overlay uses scene background color
@@ -130,6 +145,25 @@ export default {
       return parseLinks(`${description}<ul>${listItems}</ul>${details}`)
     })
 
+    const alphaPopoverContent = computed(() => {
+      if (!status.activeAlphaFeatures.value?.length) {
+        return ''
+      }
+
+      const listItems = status.activeAlphaFeatures.value
+        .map((feature) => `<li>${feature}</li>`)
+        .join('')
+
+      return `You are using the following alpha features:<ul>${listItems}</ul>Alpha features are still in development and may be incomplete or buggy.`
+    })
+
+    const formattedWarningsHtml = computed(() =>
+      status.activeWarnings.value.map((line) => escapeHtml(String(line))).join('<br>')
+    )
+    const formattedErrorsHtml = computed(() =>
+      status.activeErrors.value.map((line) => escapeHtml(String(line))).join('<br>')
+    )
+
     return {
       showStatus: preferences.showStatus,
       notificationStyle,
@@ -141,8 +175,12 @@ export default {
       errors: status.activeErrors,
       warnings: status.activeWarnings,
       betaFeatures: status.activeBetaFeatures,
+      alphaFeatures: status.activeAlphaFeatures,
       simulatorStatus: status.simulatorStatus,
       betaPopoverContent,
+      alphaPopoverContent,
+      formattedWarningsHtml,
+      formattedErrorsHtml,
       // Methods
       handleForceStop
     }
@@ -174,8 +212,8 @@ export default {
   pointer-events: auto;
 }
 
+.alpha-icon,
 .beta-icon {
-  color: #f28d28d0;
   border: 1px solid currentColor;
   border-radius: 9px;
   display: inline-flex;
@@ -189,6 +227,14 @@ export default {
   font-weight: 600;
   line-height: 1;
   cursor: pointer;
+}
+
+.alpha-icon {
+  color: #9b59b6d0;
+}
+
+.beta-icon {
+  color: #f28d28d0;
 }
 
 #forceStop .spinner-border {

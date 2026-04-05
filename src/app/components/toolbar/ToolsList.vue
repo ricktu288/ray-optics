@@ -328,8 +328,8 @@
         :verticalOffset="0"
         :layout="layout"
       />
-      <li><hr class="dropdown-divider"></li>
     </MoreToolsCollapsible>
+    <li><hr class="dropdown-divider"></li>
     <ModuleTools :layout="layout" />
   </ToolsCategory>
 </template>

@@ -23,7 +23,6 @@ export function mapURL(url) {
     "/home": rootURL + (localeData.home ? route : '') + '/',
     "/gallery": rootURL + (localeData.gallery ? route : '') + '/gallery/',
     "/modules/modules": rootURL + (localeData.modules ? route : '') + '/modules/modules.html',
-    "/modules/tutorial": rootURL + (localeData.moduleTutorial ? route : '') + '/modules/tutorial',
     "/about": rootURL + (localeData.about ? route : '') + '/about',
     "/email": "mailto:ray-optics@phydemo.app",
     "/github": "https://github.com/ricktu288/ray-optics",
@@ -36,7 +35,8 @@ export function mapURL(url) {
     "/contributing/modules": "https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-modules",
     "/weblate": "https://hosted.weblate.org/engage/ray-optics-simulation/",
     "/ai-tools/chatgpt": "https://chatgpt.com/g/g-6777588b53708191b66722e353e95125-ray-optics-coder",
-    "/ai-tools/instructions": "https://github.com/ricktu288/ray-optics/blob/master/ai-tools"
+    "/ai-tools/instructions": "https://github.com/ricktu288/ray-optics/blob/master/ai-tools",
+    "/mathjs/syntax": "https://mathjs.org/docs/expressions/syntax.html"
   };
   return urlMap[url] || url;
 }

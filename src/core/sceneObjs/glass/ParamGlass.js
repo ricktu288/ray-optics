@@ -19,6 +19,8 @@ import ParamCurveObjMixin from '../ParamCurveObjMixin.js';
 import i18next from 'i18next';
 import Simulator from '../../Simulator.js';
 import geometry from '../../geometry.js';
+import { equationValueForListDisplay } from '../../propertyUtils/equationConversion.js';
+import escapeHtml from 'escape-html';
 
 /**
  * Glass with shape defined by parametric curve pieces.
@@ -53,6 +55,23 @@ class ParamGlass extends ParamCurveObjMixin(BaseGlass) {
     cauchyB: 0.004,
     partialReflect: true
   };
+
+  static getDescription(objData, scene, detailed = false) {
+    const base = i18next.t('main:tools.categories.glass');
+    if (!detailed) {
+      return i18next.t('main:meta.parentheses', { main: base, sub: i18next.t('main:tools.ParamGlass.title') });
+    }
+    const pieces = objData?.pieces ?? [];
+    const fmt = (v) => escapeHtml(equationValueForListDisplay(v));
+    const parts = pieces.map((p) => '(' + fmt(p.eqnX ?? '') + ',' + fmt(p.eqnY ?? '') + ')').filter((c) => c !== '(,)');
+    return parts.length ? i18next.t('main:meta.colon', { name: base, value: '<span style="font-family: monospace">' + parts.join(', ') + '</span>' }) : base;
+  }
+
+  static getPropertySchema(objData, scene) {
+    return [
+      ...super.getPropertySchema(objData, scene),
+    ];
+  }
 
   populateObjBar(objBar) {
     objBar.setTitle(i18next.t('main:tools.categories.glass'));

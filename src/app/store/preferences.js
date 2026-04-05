@@ -21,11 +21,12 @@ import { app } from '../services/app.js'
 // Define default preferences and their callbacks
 const PREFERENCES_DEFAULTS = {
   autoSyncUrl: false,
-  showJsonEditor: false,
+  showSidebar: false,
+  sidebarTab: 'visual',
+  sidebarWidth: 400,
   showStatus: false,
   showSimulatorControls: false,
   help: true,
-  sidebarWidth: 400,
 }
 
 // Callbacks for preference changes
@@ -40,7 +41,7 @@ const PREFERENCES_CALLBACKS = {
     }
     app.autoSyncUrl = value
   },
-  showJsonEditor: (value) => {
+  showSidebar: (value) => {
     if (value) {
       // Initialize JSON editor
       jsonEditorService.initialize()

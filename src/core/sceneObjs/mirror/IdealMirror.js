@@ -45,6 +45,17 @@ class IdealMirror extends LineObjMixin(BaseFilter) {
     bandwidth: 10
   };
 
+  static getDescription(objData, scene, detailed = false) {
+    return i18next.t('main:tools.IdealMirror.title');
+  }
+
+  static getPropertySchema(objData, scene) {
+    return [
+      ...super.getPropertySchema(objData, scene),
+      { key: 'focalLength', type: 'number', label: i18next.t('simulator:sceneObjs.common.focalLength') },
+    ];
+  }
+
   populateObjBar(objBar) {
     objBar.setTitle(i18next.t('main:tools.IdealMirror.title'));
     var cartesianSign = false;

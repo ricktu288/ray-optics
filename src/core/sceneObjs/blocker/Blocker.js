@@ -46,6 +46,16 @@ class Blocker extends LineObjMixin(BaseFilter) {
     bandwidth: 10
   };
 
+  static getDescription(objData, scene, detailed = false) {
+    return i18next.t('main:tools.Blocker.title');
+  }
+
+  static getPropertySchema(objData, scene) {
+    return [
+      ...super.getPropertySchema(objData, scene),
+    ];
+  }
+
   populateObjBar(objBar) {
     objBar.setTitle(i18next.t('main:tools.Blocker.title'));
     super.populateObjBar(objBar);
