@@ -28,7 +28,7 @@
             :aria-selected="activeTab === 'visual'"
             @click="setActiveTab('visual')"
           >
-            {{ $t('simulator:sidebar.tabs.visual') }}<sup>Alpha</sup>
+            {{ $t('simulator:sidebar.tabs.visual') }}<sup>Beta</sup>
           </button>
           <button
             type="button"

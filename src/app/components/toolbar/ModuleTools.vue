@@ -28,7 +28,7 @@
       } : undefined"
       @click="onCreateModuleClick"
     >
-      <i>{{ $t('main:tools.modules.createModule') }}<sup>Alpha</sup></i>
+      <i>{{ $t('main:tools.modules.createModule') }}<sup>Beta</sup></i>
     </button>
   </li>
   <li :id="'module_start' + (layout === 'mobile' ? '_mobile' : '')">

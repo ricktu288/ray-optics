@@ -887,12 +887,12 @@ function getBetaFeaturesInUse() {
 
   const usesName = allObjs.some((obj) => obj && obj.name)
   if (usesName) {
-    alphaFeatures.push('<code>sceneObj.name</code>');
+    betaFeatures.push('<code>sceneObj.name</code>');
   }
 
   const usesLock = allObjs.some((obj) => obj && obj.locked !== 'default')
   if (usesLock) {
-    alphaFeatures.push(i18next.t('<code>obj.locked</code>'));
+    betaFeatures.push(i18next.t('<code>obj.locked</code>'));
   }
 
   try {
@@ -901,12 +901,9 @@ function getBetaFeaturesInUse() {
     const tabStored = localStorage.getItem('rayOpticsSidebarTab');
     const tab = tabStored === null ? 'visual' : JSON.parse(tabStored);
     if (showSidebar && tab === 'visual') {
-      alphaFeatures.push(i18next.t('simulator:settings.showSidebar.title') + ' > ' + i18next.t('simulator:sidebar.tabs.visual'));
+      betaFeatures.push(i18next.t('simulator:settings.showSidebar.title') + ' -> ' + i18next.t('simulator:sidebar.tabs.visual'));
     }
   } catch (_) {}
-
-  // When new alpha features are added, add them as follows:
-  // alphaFeatures.push("Alpha Feature Name");
 
   return { betaFeatures, alphaFeatures };
 }
