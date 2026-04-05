@@ -159,8 +159,16 @@ class Handle extends BaseSceneObj {
           }, 0);
           return;
         }
-        document.dispatchEvent(new CustomEvent('selectSceneObjByIndex', { detail: { index: result.moduleObjIndex } }));
-        document.dispatchEvent(new CustomEvent('openVisualModuleEditor', { detail: { moduleName } }));
+        // Clear indices invalidated by moveObjsToModule / removeObj before selecting the new ModuleObj,
+        // so sidebar selection state (e.g. module "move into" hint) does not briefly use a stale index.
+        const editor = obj.scene.editor;
+        if (editor) {
+          editor.selectObj(-1);
+        }
+        setTimeout(function () {
+          document.dispatchEvent(new CustomEvent('selectSceneObjByIndex', { detail: { index: result.moduleObjIndex } }));
+          document.dispatchEvent(new CustomEvent('openVisualModuleEditor', { detail: { moduleName } }));
+        }, 0);
         return;
       }
       obj.transformation = value;

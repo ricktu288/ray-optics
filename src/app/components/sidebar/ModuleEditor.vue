@@ -638,11 +638,17 @@ export default {
       return hasInstanceInObjs(obj?.objs || [])
     }
 
+    const MOVE_INTO_MODULE_EXCLUDED_TYPES = new Set(['Handle', 'CropBox'])
+
     const canMoveSelectedObjIn = computed(() => {
       const selectedIndex = editorSelectedIndex.value
       if (selectedIndex < 0) return false
       const obj = selectedMoveInObj.value
       if (!obj) return false
+      const type = obj.constructor?.type
+      if (type && MOVE_INTO_MODULE_EXCLUDED_TYPES.has(type)) {
+        return false
+      }
       if (obj.constructor?.type === 'ModuleObj' && obj.module === props.moduleName) {
         return false
       }
@@ -1335,11 +1341,13 @@ export default {
         return
       }
       app.scene?.moveObjsToModule?.([selectedIndex], props.moduleName)
+      app.editor?.selectObj(-1)
       app.simulator?.updateSimulation(false, true)
       app.editor?.onActionComplete()
-      app.editor?.selectObj(-1)
       syncModuleItems()
-      selectModuleInstance()
+      nextTick(() => {
+        selectModuleInstance()
+      })
     }
 
     const resetAllModuleSidebarListSelections = () => {

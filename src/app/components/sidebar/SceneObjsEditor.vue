@@ -77,7 +77,7 @@
 </template>
 
 <script>
-import { computed, onMounted, onUnmounted, ref, toRef } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref, toRef } from 'vue'
 import i18next from 'i18next'
 import SidebarItemList from './SidebarItemList.vue'
 import InfoPopoverIcon from '../InfoPopoverIcon.vue'
@@ -195,11 +195,14 @@ export default {
         }
       }
       app.scene?.moveObjsToModule?.(indices, moduleName)
+      app.editor?.selectObj(-1)
       app.simulator?.updateSimulation(false, true)
       app.editor?.onActionComplete()
       selectedIds.value = []
       setEditorHighlights([])
-      document.dispatchEvent(new CustomEvent('selectVisualModuleTab', { detail: { moduleName } }))
+      nextTick(() => {
+        document.dispatchEvent(new CustomEvent('selectVisualModuleTab', { detail: { moduleName } }))
+      })
     }
 
     const onCreateModule = () => {
