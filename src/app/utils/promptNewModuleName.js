@@ -38,23 +38,23 @@ export function suggestNewModuleName(names) {
 export function promptNewModuleName(moduleNames) {
   const defaultName = suggestNewModuleName(moduleNames)
   const proposed = window.prompt(
-    i18next.t('simulator:sidebar.moduleEditor.promptNewName'),
+    i18next.t('simulator:sidebar.visual.moduleEditor.new.promptNewName'),
     defaultName
   )
   if (proposed == null) return null
 
   const newName = proposed.trim()
   if (!newName) {
-    window.alert(i18next.t('simulator:sidebar.moduleEditor.errorEmptyName'))
+    window.alert(i18next.t('simulator:sidebar.visual.moduleEditor.new.errorEmptyName'))
     return null
   }
   if (newName.includes(',')) {
-    window.alert(i18next.t('simulator:sidebar.moduleEditor.errorComma'))
+    window.alert(i18next.t('simulator:sidebar.visual.moduleEditor.new.errorComma'))
     return null
   }
   if (moduleNames.includes(newName)) {
     window.alert(
-      i18next.t('simulator:sidebar.moduleEditor.errorNameExists', { name: newName })
+      i18next.t('simulator:sidebar.visual.moduleEditor.new.errorNameExists', { name: newName })
     )
     return null
   }

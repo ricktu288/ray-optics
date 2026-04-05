@@ -20,15 +20,15 @@
     <div v-if="canShowForIf && showForIf" class="for-if-box">
         <div class="property-list-item">
           <PropertyControlLabel
-            :label="$t('simulator:sidebar.objectList.arrayAndConditional.repeatFor')"
-            :info="$t('simulator:sidebar.objectList.arrayAndConditional.info')"
+            :label="$t('simulator:sidebar.visual.moduleEditor.objects.arrayAndConditional.repeatFor')"
+            :info="$t('simulator:sidebar.visual.moduleEditor.objects.arrayAndConditional.info')"
           />
           <div class="property-list-array-body">
             <SidebarItemList
               :items="forDrafts"
               :show-add-button="true"
               :show-checkbox="false"
-              :add-label="$t('simulator:sidebar.objectList.arrayAndConditional.newLoopVariable')"
+              :add-label="$t('simulator:sidebar.visual.moduleEditor.objects.arrayAndConditional.newLoopVariable')"
               @remove="(item, index) => onForLoopRemove(index)"
               @duplicate="(item, index) => onForLoopDuplicate(index)"
               @reorder="onForLoopReorder"
@@ -44,7 +44,7 @@
                     @keydown.enter="commitForDrafts"
                     @input="(e) => onForFieldInput(index, 'name', e.target.value)"
                   />
-                  <span class="for-loop-keyword">{{ $t('simulator:sidebar.objectList.arrayAndConditional.forFrom') }}</span>
+                  <span class="for-loop-keyword">{{ $t('simulator:sidebar.visual.moduleEditor.objects.arrayAndConditional.forFrom') }}</span>
                   <input
                     class="for-loop-input"
                     :value="item.start"
@@ -53,7 +53,7 @@
                     @keydown.enter="commitForDrafts"
                     @input="(e) => onForFieldInput(index, 'start', e.target.value)"
                   />
-                  <span class="for-loop-keyword">{{ $t('simulator:sidebar.objectList.arrayAndConditional.forTo') }}</span>
+                  <span class="for-loop-keyword">{{ $t('simulator:sidebar.visual.moduleEditor.objects.arrayAndConditional.forTo') }}</span>
                   <input
                     class="for-loop-input"
                     :value="item.end"
@@ -62,7 +62,7 @@
                     @keydown.enter="commitForDrafts"
                     @input="(e) => onForFieldInput(index, 'end', e.target.value)"
                   />
-                  <span class="for-loop-keyword">{{ $t('simulator:sidebar.objectList.arrayAndConditional.forStep') }}</span>
+                  <span class="for-loop-keyword">{{ $t('simulator:sidebar.visual.moduleEditor.objects.arrayAndConditional.forStep') }}</span>
                   <input
                     class="for-loop-input"
                     :value="item.step"
@@ -78,7 +78,7 @@
         </div>
         <div class="property-list-item">
           <BooleanPropertyControl
-            :label="$t('simulator:sidebar.objectList.arrayAndConditional.withCondition')"
+            :label="$t('simulator:sidebar.visual.moduleEditor.objects.arrayAndConditional.withCondition')"
             :obj-data="conditionObjData"
             key-path="__if"
             :default="true"
@@ -204,7 +204,7 @@
               :items="getArrayItems(descriptor)"
               :show-add-button="true"
               :show-checkbox="false"
-              :add-label="$t('simulator:sidebar.objectList.newItem')"
+              :add-label="$t('simulator:sidebar.visual.sceneObjects.newItem')"
               @remove="(item, index) => onArrayRemove(descriptor, index)"
               @duplicate="(item, index) => onArrayDuplicate(descriptor, index)"
               @reorder="onArrayReorder(descriptor, $event)"
@@ -246,7 +246,7 @@
         class="property-list-visibility-link"
         @click="showAllProperties = !showAllProperties"
       >
-        {{ showAllProperties ? $t('simulator:sidebar.objectList.hideDefaultProperties') : $t('simulator:sidebar.objectList.showAllProperties') }}
+        {{ showAllProperties ? $t('simulator:sidebar.visual.sceneObjects.hideDefaultProperties') : $t('simulator:sidebar.visual.sceneObjects.showAllProperties') }}
       </button>
       <button
         v-if="showForIfToggle"
@@ -254,7 +254,7 @@
         class="property-list-visibility-link property-list-visibility-link--for-if"
         @click="onToggleForIf"
       >
-        {{ showForIf ? $t('simulator:sidebar.objectList.arrayAndConditional.remove') : $t('simulator:sidebar.objectList.arrayAndConditional.create') }}
+        {{ showForIf ? $t('simulator:sidebar.visual.moduleEditor.objects.arrayAndConditional.remove') : $t('simulator:sidebar.visual.moduleEditor.objects.arrayAndConditional.create') }}
       </button>
     </div>
   </div>

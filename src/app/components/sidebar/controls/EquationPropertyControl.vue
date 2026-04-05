@@ -23,7 +23,7 @@
       :key-paths="[keyPath]"
     />
     <template v-if="unsupported">
-      <PropertyControlError :message="$t('simulator:sidebar.objectList.unsupportedVisualValue')" />
+      <PropertyControlError :message="$t('simulator:sidebar.visual.sceneObjects.unsupportedVisualValue')" />
     </template>
     <template v-else>
       <FormulaInput
@@ -106,7 +106,7 @@ export default {
       try {
         emit('update:value', equationDisplayToValue(text, props.isTemplate))
       } catch {
-        error.value = i18next.t('simulator:sidebar.objectList.latexConversionFailed')
+        error.value = i18next.t('simulator:sidebar.visual.sceneObjects.latexConversionFailed')
       }
     }
 

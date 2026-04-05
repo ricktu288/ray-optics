@@ -23,7 +23,7 @@
       :key-paths="[keyPath]"
     />
     <template v-if="unsupported">
-      <PropertyControlError :message="$t('simulator:sidebar.objectList.unsupportedVisualValue')" />
+      <PropertyControlError :message="$t('simulator:sidebar.visual.sceneObjects.unsupportedVisualValue')" />
     </template>
     <template v-else-if="isTemplate">
       <FormulaInput
@@ -121,7 +121,7 @@ export default {
       }
 
       if (!props.isTemplate && isFormula(text, 'boolean')) {
-        error.value = i18next.t('simulator:sidebar.objectList.formulaRequiresModule')
+        error.value = i18next.t('simulator:sidebar.visual.sceneObjects.formulaRequiresModule')
         return
       }
 

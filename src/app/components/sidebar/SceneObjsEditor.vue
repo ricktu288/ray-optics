@@ -18,9 +18,9 @@
   <div class="scene-objs-editor" @click="handleEditorClick">
     <div class="scene-objs-editor-title">
       <span class="scene-objs-editor-title-label">
-        {{ $t('simulator:sidebar.objectList.title') }}
+        {{ $t('simulator:sidebar.visual.sceneObjects.title') }}
         <InfoPopoverIcon
-          :content="$t('simulator:sidebar.objectList.sceneInfo')"
+          :content="$t('simulator:sidebar.visual.sceneObjects.info')"
         />
       </span>
       <div class="scene-objs-editor-actions dropdown" @click.stop>
@@ -31,7 +31,7 @@
           aria-expanded="false"
           :disabled="!hasSelection"
         >
-          {{ $t('simulator:sidebar.sceneObjsEditor.moveIntoModule') }}
+          {{ $t('simulator:sidebar.visual.sceneObjects.moveIntoModule') }}
         </button>
         <ul class="dropdown-menu dropdown-menu-end">
           <li v-for="moduleName in moduleNames" :key="moduleName">
@@ -41,7 +41,7 @@
           </li>
           <li>
             <button class="dropdown-item" type="button" @click="onCreateModule">
-              {{ $t('simulator:sidebar.sceneObjsEditor.createModule') }}
+              {{ $t('simulator:sidebar.visual.sceneObjects.createModule') }}
             </button>
           </li>
         </ul>
@@ -70,7 +70,7 @@
         </template>
       </SidebarItemList>
       <p v-if="items.length === 0" class="scene-objs-editor-move-in-hint">
-        {{ $t('simulator:sidebar.sceneObjsEditor.emptyHint') }}
+        {{ $t('simulator:sidebar.visual.sceneObjects.emptyHint') }}
       </p>
     </div>
   </div>
@@ -217,19 +217,19 @@ export default {
         return `${base}${Date.now()}`
       }
       const defaultName = suggestNewModuleName()
-      const proposed = window.prompt(i18next.t('simulator:sidebar.moduleEditor.promptNewName'), defaultName)
+      const proposed = window.prompt(i18next.t('simulator:sidebar.visual.moduleEditor.new.promptNewName'), defaultName)
       if (proposed == null) return
       const newName = proposed.trim()
       if (!newName) {
-        window.alert(i18next.t('simulator:sidebar.moduleEditor.errorEmptyName'))
+        window.alert(i18next.t('simulator:sidebar.visual.moduleEditor.new.errorEmptyName'))
         return
       }
       if (newName.includes(',')) {
-        window.alert(i18next.t('simulator:sidebar.moduleEditor.errorComma'))
+        window.alert(i18next.t('simulator:sidebar.visual.moduleEditor.new.errorComma'))
         return
       }
       if (existing.includes(newName)) {
-        window.alert(i18next.t('simulator:sidebar.moduleEditor.errorNameExists', { name: newName }))
+        window.alert(i18next.t('simulator:sidebar.visual.moduleEditor.new.errorNameExists', { name: newName }))
         return
       }
       sceneStore.createModule(newName)

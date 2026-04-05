@@ -21,7 +21,7 @@
       <button
         type="button"
         class="obj-list-item-chevron"
-        :aria-label="expanded ? $t('simulator:sidebar.objectList.collapse') : $t('simulator:sidebar.objectList.expand')"
+        :aria-label="expanded ? $t('simulator:sidebar.visual.sceneObjects.collapse') : $t('simulator:sidebar.visual.sceneObjects.expand')"
         @click="onChevronClick"
       >
         <svg
@@ -40,7 +40,7 @@
           class="obj-list-item-name-input"
           type="text"
           :value="nameValue"
-          :placeholder="$t('simulator:sidebar.objectList.unnamedObject')"
+          :placeholder="$t('simulator:sidebar.visual.sceneObjects.unnamedObject')"
           @input="onNameInput"
           @blur="onBlur"
           @keydown.enter.prevent="commitAndBlur"
@@ -172,9 +172,9 @@ export default {
       const instance = obj.value
       if (!instance) return ''
       const state = instance.locked ?? 'default'
-      if (state === 'locked') return i18next.t('simulator:sidebar.objectList.lockLocked')
-      if (state === 'unlocked') return i18next.t('simulator:sidebar.objectList.lockUnlocked')
-      return i18next.t('simulator:sidebar.objectList.lockDefault')
+      if (state === 'locked') return i18next.t('simulator:sidebar.visual.sceneObjects.lockLocked')
+      if (state === 'unlocked') return i18next.t('simulator:sidebar.visual.sceneObjects.lockUnlocked')
+      return i18next.t('simulator:sidebar.visual.sceneObjects.lockDefault')
     })
 
     const onObjDataUpdate = (raw) => {

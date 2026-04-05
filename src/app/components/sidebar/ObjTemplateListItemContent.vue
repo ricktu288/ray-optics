@@ -21,7 +21,7 @@
       <button
         type="button"
         class="obj-list-item-chevron"
-        :aria-label="expanded ? $t('simulator:sidebar.objectList.collapse') : $t('simulator:sidebar.objectList.expand')"
+        :aria-label="expanded ? $t('simulator:sidebar.visual.sceneObjects.collapse') : $t('simulator:sidebar.visual.sceneObjects.expand')"
         @click="onChevronClick"
       >
         <svg
@@ -40,7 +40,7 @@
           class="obj-list-item-name-input"
           type="text"
           :value="nameValue"
-          :placeholder="$t('simulator:sidebar.objectList.unnamedObject')"
+          :placeholder="$t('simulator:sidebar.visual.sceneObjects.unnamedObject')"
           @input="onNameInput"
           @blur="onBlur"
           @keydown.enter.prevent="commitAndBlur"
@@ -49,8 +49,8 @@
         <div class="obj-list-item-description-row">
           <span class="obj-list-item-description" v-html="objDescription"></span>
           <span v-if="!expanded && (hasForBadge || hasIfBadge)" class="obj-list-item-badges">
-            <span v-if="hasForBadge" class="obj-list-item-badge">{{ $t('simulator:sidebar.objectList.arrayAndConditional.arrayBadge') }}</span>
-            <span v-if="hasIfBadge" class="obj-list-item-badge">{{ $t('simulator:sidebar.objectList.arrayAndConditional.conditionalBadge') }}</span>
+            <span v-if="hasForBadge" class="obj-list-item-badge">{{ $t('simulator:sidebar.visual.moduleEditor.objects.arrayAndConditional.arrayBadge') }}</span>
+            <span v-if="hasIfBadge" class="obj-list-item-badge">{{ $t('simulator:sidebar.visual.moduleEditor.objects.arrayAndConditional.conditionalBadge') }}</span>
           </span>
         </div>
       </div>
@@ -60,7 +60,7 @@
         class="obj-list-item-lock obj-list-item-lock--template"
         role="button"
         tabindex="0"
-        :aria-label="$t('simulator:sidebar.objectList.templateLockInfo')"
+        :aria-label="$t('simulator:sidebar.visual.moduleEditor.objects.templateLockInfo')"
         v-tooltip-popover:popover="templateLockPopoverOptions"
         @keydown.enter.prevent="onTemplateLockKeyActivate"
         @keydown.space.prevent="onTemplateLockKeyActivate"
@@ -186,7 +186,7 @@ export default {
 
     const templateLockPopoverOptions = computed(() => ({
       title: '',
-      content: i18next.t('simulator:sidebar.objectList.templateLockInfo').replace(/`([^`]+)`/g, '<code>$1</code>'),
+      content: i18next.t('simulator:sidebar.visual.moduleEditor.objects.templateLockInfo').replace(/`([^`]+)`/g, '<code>$1</code>'),
       trigger: 'click',
       placement: 'bottom',
       html: true

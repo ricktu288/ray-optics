@@ -651,83 +651,89 @@
       "code": "程式碼",
       "ai": "AI"
     },
-    "objectList": {
-      "title": "物件",
-      "lockLocked": "總是鎖定。點擊以變更",
-      "lockUnlocked": "總是解鎖。點擊以變更",
-      "lockDefault": "跟隨場景設定決定是否鎖定。點擊以變更",
-      "unnamedObject": "未命名物件",
-      "unknownType": "未知類型",
-      "sceneInfo": "直接位於場景中的物件清單。若要以自訂變數、陣列等來參數化，需先將其移入模組。模組內的物件不會直接列出，而是每個模組實例以單一物件顯示。",
-      "moduleInfo": "此模組中的物件。其屬性可設為 [math.js 公式](/mathjs/syntax)，其中可包含上述定義的名稱。例如，要將一點設為上方定義的兩個控制點的平均值，可以將其座標設為 `(x_1+x_2)/2, (y_1+y_2)/2`。要建立物件陣列，請展開屬性並點擊「建立陣列和條件」。",
-      "templateLockInfo": "若要讓模組內的物件可移動，請先在上方建立控制點，然後點擊 ▸ 展開物件，並將數值座標替換為控制點（如 `x_1,y_1`）或公式（如 `(x_1+x_2)/2, (y_1+y_2)/2`）。",
-      "expand": "展開以顯示屬性",
-      "collapse": "收起屬性",
-      "showAllProperties": "顯示所有屬性",
-      "hideDefaultProperties": "隱藏預設屬性",
-      "newItem": "新增項目",
-      "arrayAndConditional": {
-        "info": "建立此物件的多個副本和/或僅在滿足條件時包含此物件。例如，要將此物件水平複製 5 次，每次間隔 10 個單位，可以建立一個從 1 到 5 的迴圈變數 `i`，並將各點的座標設為 `x_1+i*10, y_1` 等。若要僅在變數 `a` 大於 0 時顯示此物件，可以將「附加條件為」設為 `a > 0`。",
-        "create": "建立陣列和條件",
-        "remove": "移除陣列和條件",
-        "arrayBadge": "陣列",
-        "conditionalBadge": "條件",
-        "repeatFor": "重複",
-        "withCondition": "附加條件為",
-        "forFrom": "從",
-        "forTo": "到",
-        "forStep": "步長",
-        "newLoopVariable": "新增迴圈變數"
+    "visual": {
+      "tabs": {
+        "scene": "場景",
+        "createModule": "新增模組",
+        "createModuleInfo": "模組可讓您組合現有工具來製作新工具。範例請見工具->其他->匯入模組。"
       },
-      "formulaRequiresModule": "要使用公式，請先將物件移入模組。",
-      "invalidPointFormat": "點必須恰好有兩個以逗號分隔的座標。",
-      "unsupportedVisualValue": "此值不受視覺化編輯器支援。請切換至程式碼分頁來編輯此屬性。",
-      "latexConversionFailed": "無法將表達式轉換為內部格式。請檢查語法。"
-    },
-    "controlPointList": {
-      "title": "控制點",
-      "newItem": "新增控制點",
-      "info": "在畫布上可拖曳的點。其座標（`x_1`、`y_1` 等）可用於本模組中的所有公式。"
-    },
-    "parameterList": {
-      "title": "參數",
-      "newItem": "新增參數",
-      "min": "最小",
-      "max": "最大",
-      "step": "步長",
-      "default": "預設",
-      "info": "在物件列顯示為滑桿的參數。其名稱（如 `a`、`foo` 等）可用於本模組中的所有公式。"
-    },
-    "variableList": {
-      "title": "變數",
-      "newItem": "新增變數",
-      "info": "命名值（例如 `b` = `a+1`）或函數（例如 `f(x)` = `x^2+b`）。定義使用 [math.js 公式](/mathjs/syntax)，並依序求值。"
-    },
-    "visualSubTabs": {
-      "scene": "場景",
-      "createModule": "新增模組",
-      "createModuleInfo": "模組可讓您組合現有工具來製作新工具。範例請見工具->其他->匯入模組。"
-    },
-    "sceneObjsEditor": {
-      "moveIntoModule": "移入模組",
-      "createModule": "建立新模組",
-      "emptyHint": "要建立物件，請使用工具列並在畫布中建立。"
-    },
-    "moduleEditor": {
-      "settingsTitle": "設定",
-      "renameButton": "重新命名",
-      "removeButton": "移除模組",
-      "moveOut": "移出模組",
-      "moveInHint": "要將物件加入此模組，請先使用工具列建立物件，或在畫布中選取現有物件。",
-      "moveIntoModule": "將「{{name}}」移入此模組",
-      "noInstances": "場景中目前沒有此模組的任何實例。若要建立實例，請使用工具->其他-> {{name}} 並在畫布上點擊對應控制點順序的位置。",
-      "emptyModuleExamplesHint": "模組範例請見工具->其他->匯入模組",
-      "promptNewName": "新模組名稱：（通常為 PascalCase 格式）",
-      "errorEmptyName": "模組名稱不能為空。",
-      "errorComma": "模組名稱不能包含逗號。",
-      "errorNameExists": "名為「{{name}}」的模組已存在。",
-      "confirmRemove": "移除模組「{{name}}」？",
-      "maxLoopLength": "最大迴圈長度"
+      "sceneObjects": {
+        "title": "物件",
+        "info": "直接位於場景中的物件清單。若要以自訂變數、陣列等來參數化，需先將其移入模組。模組內的物件不會直接列出，而是每個模組實例以單一物件顯示。",
+        "moveIntoModule": "移入模組",
+        "createModule": "建立新模組",
+        "emptyHint": "要建立物件，請使用工具列並在畫布中建立。",
+        "lockLocked": "總是鎖定。點擊以變更",
+        "lockUnlocked": "總是解鎖。點擊以變更",
+        "lockDefault": "跟隨場景設定決定是否鎖定。點擊以變更",
+        "unnamedObject": "未命名物件",
+        "unknownType": "未知類型",
+        "collapse": "收起屬性",
+        "showAllProperties": "顯示所有屬性",
+        "expand": "展開以顯示屬性",
+        "hideDefaultProperties": "隱藏預設屬性",
+        "newItem": "新增項目",
+        "formulaRequiresModule": "要使用公式，請先將物件移入模組。",
+        "invalidPointFormat": "點必須恰好有兩個以逗號分隔的座標。",
+        "unsupportedVisualValue": "此值不受視覺化編輯器支援。請切換至程式碼分頁來編輯此屬性。",
+        "latexConversionFailed": "無法將表達式轉換為內部格式。請檢查語法。"
+      },
+      "moduleEditor": {
+        "new": {
+          "promptNewName": "新模組名稱：（通常為 PascalCase 格式）",
+          "errorEmptyName": "模組名稱不能為空。",
+          "errorComma": "模組名稱不能包含逗號。",
+          "errorNameExists": "名為「{{name}}」的模組已存在。"
+        },
+        "noInstances": "場景中目前沒有此模組的任何實例。若要建立實例，請使用工具->其他-> {{name}} 並在畫布上點擊對應控制點順序的位置。",
+        "emptyModuleExamplesHint": "模組範例請見工具->其他->匯入模組",
+        "controlPoints": {
+          "title": "控制點",
+          "newItem": "新增控制點",
+          "info": "在畫布上可拖曳的點。其座標（`x_1`、`y_1` 等）可用於本模組中的所有公式。"
+        },
+        "parameters": {
+          "title": "參數",
+          "newItem": "新增參數",
+          "min": "最小",
+          "max": "最大",
+          "step": "步長",
+          "default": "預設",
+          "info": "在物件列顯示為滑桿的參數。其名稱（如 `a`、`foo` 等）可用於本模組中的所有公式。"
+        },
+        "variables": {
+          "title": "變數",
+          "newItem": "新增變數",
+          "info": "命名值（例如 `b` = `a+1`）或函數（例如 `f(x)` = `x^2+b`）。定義使用 [math.js 公式](/mathjs/syntax)，並依序求值。"
+        },
+        "objects": {
+          "info": "此模組中的物件。其屬性可設為 [math.js 公式](/mathjs/syntax)，其中可包含上述定義的名稱。例如，要將一點設為上方定義的兩個控制點的平均值，可以將其座標設為 `(x_1+x_2)/2, (y_1+y_2)/2`。要建立物件陣列，請展開屬性並點擊「建立陣列和條件」。",
+          "moveOut": "移出模組",
+          "moveInHint": "要將物件加入此模組，請先使用工具列建立物件，或在畫布中選取現有物件。",
+          "moveIntoModule": "將「{{name}}」移入此模組",
+          "templateLockInfo": "若要讓模組內的物件可移動，請先在上方建立控制點，然後點擊 ▸ 展開物件，並將數值座標替換為控制點（如 `x_1,y_1`）或公式（如 `(x_1+x_2)/2, (y_1+y_2)/2`）。",
+          "arrayAndConditional": {
+            "info": "建立此物件的多個副本和/或僅在滿足條件時包含此物件。例如，要將此物件水平複製 5 次，每次間隔 10 個單位，可以建立一個從 1 到 5 的迴圈變數 `i`，並將各點的座標設為 `x_1+i*10, y_1` 等。若要僅在變數 `a` 大於 0 時顯示此物件，可以將「附加條件為」設為 `a > 0`。",
+            "create": "建立陣列和條件",
+            "remove": "移除陣列和條件",
+            "arrayBadge": "陣列",
+            "conditionalBadge": "條件",
+            "repeatFor": "重複",
+            "withCondition": "附加條件為",
+            "forFrom": "從",
+            "forTo": "到",
+            "forStep": "步長",
+            "newLoopVariable": "新增迴圈變數"
+          }
+        },
+        "settings": {
+          "title": "設定",
+          "maxLoopLength": "最大迴圈長度",
+          "renameButton": "重新命名",
+          "removeButton": "移除模組",
+          "confirmRemove": "移除模組「{{name}}」？"
+        }
+      }
     },
     "ai": {
       "title": "使用 AI 輔助",

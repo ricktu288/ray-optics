@@ -23,7 +23,7 @@
       :key-paths="[keyPath]"
     />
     <template v-if="unsupported">
-      <PropertyControlError :message="$t('simulator:sidebar.objectList.unsupportedVisualValue')" />
+      <PropertyControlError :message="$t('simulator:sidebar.visual.sceneObjects.unsupportedVisualValue')" />
     </template>
     <template v-else>
       <div class="number-property-control-input-wrap">
@@ -114,7 +114,7 @@ export default {
       }
 
       if (!props.isTemplate && isFormula(text)) {
-        error.value = i18next.t('simulator:sidebar.objectList.formulaRequiresModule')
+        error.value = i18next.t('simulator:sidebar.visual.sceneObjects.formulaRequiresModule')
         return
       }
 

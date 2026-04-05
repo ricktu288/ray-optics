@@ -33,7 +33,7 @@
     />
     <div class="module-param-right">
       <div class="module-param-field">
-        <span class="module-param-keyword">{{ $t('simulator:sidebar.parameterList.min') }}</span>
+        <span class="module-param-keyword">{{ $t('simulator:sidebar.visual.moduleEditor.parameters.min') }}</span>
         <input
           class="module-param-input"
           :value="min"
@@ -45,7 +45,7 @@
         />
       </div>
       <div class="module-param-field">
-        <span class="module-param-keyword">{{ $t('simulator:sidebar.parameterList.max') }}</span>
+        <span class="module-param-keyword">{{ $t('simulator:sidebar.visual.moduleEditor.parameters.max') }}</span>
         <input
           class="module-param-input"
           :value="max"
@@ -57,7 +57,7 @@
         />
       </div>
       <div class="module-param-field">
-        <span class="module-param-keyword">{{ $t('simulator:sidebar.parameterList.step') }}</span>
+        <span class="module-param-keyword">{{ $t('simulator:sidebar.visual.moduleEditor.parameters.step') }}</span>
         <input
           class="module-param-input"
           :value="step"
@@ -69,7 +69,7 @@
         />
       </div>
       <div class="module-param-field">
-        <span class="module-param-keyword">{{ $t('simulator:sidebar.parameterList.default') }}</span>
+        <span class="module-param-keyword">{{ $t('simulator:sidebar.visual.moduleEditor.parameters.default') }}</span>
         <input
           class="module-param-input"
           :value="defaultVal"

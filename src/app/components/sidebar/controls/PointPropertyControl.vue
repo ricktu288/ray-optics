@@ -27,7 +27,7 @@
       :key-paths="[xPath, yPath]"
     />
     <template v-if="unsupported">
-      <PropertyControlError :message="$t('simulator:sidebar.objectList.unsupportedVisualValue')" />
+      <PropertyControlError :message="$t('simulator:sidebar.visual.sceneObjects.unsupportedVisualValue')" />
     </template>
     <template v-else>
       <FormulaInput
@@ -196,14 +196,14 @@ export default {
 
       const parts = splitTopLevelCommas(text)
       if (parts.length !== 2) {
-        error.value = i18next.t('simulator:sidebar.objectList.invalidPointFormat')
+        error.value = i18next.t('simulator:sidebar.visual.sceneObjects.invalidPointFormat')
         return
       }
 
       const [xText, yText] = parts
 
       if (!props.isTemplate && (isFormula(xText) || isFormula(yText))) {
-        error.value = i18next.t('simulator:sidebar.objectList.formulaRequiresModule')
+        error.value = i18next.t('simulator:sidebar.visual.sceneObjects.formulaRequiresModule')
         return
       }
 

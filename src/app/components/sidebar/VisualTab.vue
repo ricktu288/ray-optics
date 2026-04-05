@@ -25,7 +25,7 @@
         :aria-selected="activeTabId === 'scene'"
         @click="activeTabId = 'scene'"
       >
-        {{ $t('simulator:sidebar.visualSubTabs.scene') }}
+        {{ $t('simulator:sidebar.visual.tabs.scene') }}
       </button>
 
       <button
@@ -49,10 +49,10 @@
           aria-selected="false"
           @click="onCreateModuleClick"
         >
-          {{ $t('simulator:sidebar.visualSubTabs.createModule') }}
+          {{ $t('simulator:sidebar.visual.tabs.createModule') }}
         </button>
         <InfoPopoverIcon
-          :content="$t('simulator:sidebar.visualSubTabs.createModuleInfo')"
+          :content="$t('simulator:sidebar.visual.tabs.createModuleInfo')"
           aria-label="Modules info"
         />
       </div>

@@ -22,14 +22,14 @@
       v-html="noInstancesWarningHtml"
     ></p>
     <p v-if="isModuleEmpty" class="module-editor-notice">
-      {{ $t('simulator:sidebar.moduleEditor.emptyModuleExamplesHint') }}
+      {{ $t('simulator:sidebar.visual.moduleEditor.emptyModuleExamplesHint') }}
     </p>
     <div class="module-editor-section module-editor-control-points">
       <div class="module-editor-title module-editor-title-plain">
         <span class="module-editor-title-label">
-          {{ $t('simulator:sidebar.controlPointList.title') }}
+          {{ $t('simulator:sidebar.visual.moduleEditor.controlPoints.title') }}
           <InfoPopoverIcon
-            :content="$t('simulator:sidebar.controlPointList.info')"
+            :content="$t('simulator:sidebar.visual.moduleEditor.controlPoints.info')"
           />
         </span>
       </div>
@@ -37,7 +37,7 @@
         <SidebarItemList
           :items="controlPointItems"
           :show-add-button="true"
-          :add-label="$t('simulator:sidebar.controlPointList.newItem')"
+          :add-label="$t('simulator:sidebar.visual.moduleEditor.controlPoints.newItem')"
           :show-checkbox="false"
           :active-id="controlPointListActiveId"
           @remove="handleControlPointRemove"
@@ -59,9 +59,9 @@
     <div class="module-editor-section module-editor-params">
       <div class="module-editor-title module-editor-title-plain">
         <span class="module-editor-title-label">
-          {{ $t('simulator:sidebar.parameterList.title') }}
+          {{ $t('simulator:sidebar.visual.moduleEditor.parameters.title') }}
           <InfoPopoverIcon
-            :content="$t('simulator:sidebar.parameterList.info')"
+            :content="$t('simulator:sidebar.visual.moduleEditor.parameters.info')"
           />
         </span>
       </div>
@@ -69,7 +69,7 @@
         <SidebarItemList
           :items="paramItems"
           :show-add-button="true"
-          :add-label="$t('simulator:sidebar.parameterList.newItem')"
+          :add-label="$t('simulator:sidebar.visual.moduleEditor.parameters.newItem')"
           :show-checkbox="false"
           :active-id="paramActiveId"
           @remove="handleParamRemove"
@@ -101,9 +101,9 @@
     <div class="module-editor-section module-editor-vars">
       <div class="module-editor-title module-editor-title-plain">
         <span class="module-editor-title-label">
-          {{ $t('simulator:sidebar.variableList.title') }}
+          {{ $t('simulator:sidebar.visual.moduleEditor.variables.title') }}
           <InfoPopoverIcon
-            :content="$t('simulator:sidebar.variableList.info')"
+            :content="$t('simulator:sidebar.visual.moduleEditor.variables.info')"
           />
         </span>
       </div>
@@ -111,7 +111,7 @@
         <SidebarItemList
           :items="variableItems"
           :show-add-button="true"
-          :add-label="$t('simulator:sidebar.variableList.newItem')"
+          :add-label="$t('simulator:sidebar.visual.moduleEditor.variables.newItem')"
           :show-checkbox="false"
           :active-id="variableActiveId"
           @remove="handleVarRemove"
@@ -135,9 +135,9 @@
     </div>
     <div class="module-editor-title">
       <span class="module-editor-title-label">
-        {{ $t('simulator:sidebar.objectList.title') }}
+        {{ $t('simulator:sidebar.visual.sceneObjects.title') }}
         <InfoPopoverIcon
-          :content="$t('simulator:sidebar.objectList.moduleInfo')"
+          :content="$t('simulator:sidebar.visual.moduleEditor.objects.info')"
         />
       </span>
       <button
@@ -146,7 +146,7 @@
         :disabled="!hasSelection"
         @click.stop="onMoveOut"
       >
-        {{ $t('simulator:sidebar.moduleEditor.moveOut') }}
+        {{ $t('simulator:sidebar.visual.moduleEditor.objects.moveOut') }}
       </button>
     </div>
     <div class="module-editor-body">
@@ -174,20 +174,20 @@
         </template>
       </SidebarItemList>
       <p v-if="!canMoveSelectedObjIn" class="module-editor-move-in-hint">
-        {{ $t('simulator:sidebar.moduleEditor.moveInHint') }}
+        {{ $t('simulator:sidebar.visual.moduleEditor.objects.moveInHint') }}
       </p>
       <button
         v-else
         class="module-editor-move-in-btn is-highlighted"
         type="button"
         @click.stop="moveSelectedObjIn"
-        v-html="$t('simulator:sidebar.moduleEditor.moveIntoModule', { name: selectedMoveInLabel })"
+        v-html="$t('simulator:sidebar.visual.moduleEditor.objects.moveIntoModule', { name: selectedMoveInLabel })"
       ></button>
     </div>
     <div class="module-editor-section module-editor-settings">
       <div class="module-editor-title module-editor-title-plain">
         <span class="module-editor-title-label">
-          {{ $t('simulator:sidebar.moduleEditor.settingsTitle') }}
+          {{ $t('simulator:sidebar.visual.moduleEditor.settings.title') }}
         </span>
       </div>
       <div class="module-editor-body">
@@ -196,7 +196,7 @@
           @focusout="onMaxLoopLengthFocusOut"
         >
           <div class="module-param-field">
-            <span class="module-param-keyword">{{ $t('simulator:sidebar.moduleEditor.maxLoopLength') }}</span>
+            <span class="module-param-keyword">{{ $t('simulator:sidebar.visual.moduleEditor.settings.maxLoopLength') }}</span>
             <input
               class="module-param-input"
               v-model="maxLoopLengthInput"
@@ -209,10 +209,10 @@
         </div>
         <div class="module-editor-settings-actions">
           <button type="button" class="module-editor-btn" @click="onRenameClick">
-            {{ $t('simulator:sidebar.moduleEditor.renameButton') }}
+            {{ $t('simulator:sidebar.visual.moduleEditor.settings.renameButton') }}
           </button>
           <button type="button" class="module-editor-btn is-danger" @click="onRemoveClick">
-            {{ $t('simulator:sidebar.moduleEditor.removeButton') }}
+            {{ $t('simulator:sidebar.visual.moduleEditor.settings.removeButton') }}
           </button>
         </div>
       </div>
@@ -604,7 +604,7 @@ export default {
       const safeName = escapeHtml(String(props.moduleName ?? ''))
       const nameSpan = `<span class="module-editor-module-id">${safeName}</span>`
       return parseLinks(
-        i18next.t('simulator:sidebar.moduleEditor.noInstances', { name: nameSpan })
+        i18next.t('simulator:sidebar.visual.moduleEditor.noInstances', { name: nameSpan })
       )
     })
 
@@ -664,7 +664,7 @@ export default {
 
     const selectedMoveInLabel = computed(() => {
       const obj = selectedMoveInObj.value
-      const fallback = i18next.t('simulator:sidebar.objectList.unknownType')
+      const fallback = i18next.t('simulator:sidebar.visual.sceneObjects.unknownType')
       if (!obj) return fallback
       if (obj.name) return escapeHtml(obj.name)
       const Ctor = obj?.constructor
@@ -682,17 +682,17 @@ export default {
 
     const onRenameClick = () => {
       const oldName = props.moduleName
-      const proposed = window.prompt(i18next.t('simulator:sidebar.moduleEditor.promptNewName'), oldName)
+      const proposed = window.prompt(i18next.t('simulator:sidebar.visual.moduleEditor.new.promptNewName'), oldName)
       if (proposed == null) return
 
       const newName = proposed.trim()
       if (!newName) {
-        window.alert(i18next.t('simulator:sidebar.moduleEditor.errorEmptyName'))
+        window.alert(i18next.t('simulator:sidebar.visual.moduleEditor.new.errorEmptyName'))
         return
       }
 
       if (newName.includes(',')) {
-        window.alert(i18next.t('simulator:sidebar.moduleEditor.errorComma'))
+        window.alert(i18next.t('simulator:sidebar.visual.moduleEditor.new.errorComma'))
         return
       }
 
@@ -700,7 +700,7 @@ export default {
 
       // Conflict check must live in ModuleEditor (not in the store).
       if (moduleNames.value.includes(newName)) {
-        window.alert(i18next.t('simulator:sidebar.moduleEditor.errorNameExists', { name: newName }))
+        window.alert(i18next.t('simulator:sidebar.visual.moduleEditor.new.errorNameExists', { name: newName }))
         return
       }
 
@@ -710,7 +710,7 @@ export default {
 
     const onRemoveClick = () => {
       const name = props.moduleName
-      const ok = window.confirm(i18next.t('simulator:sidebar.moduleEditor.confirmRemove', { name }))
+      const ok = window.confirm(i18next.t('simulator:sidebar.visual.moduleEditor.settings.confirmRemove', { name }))
       if (!ok) return
       scene.removeModule(name)
       emit('module-removed', name)

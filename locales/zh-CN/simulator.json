@@ -651,83 +651,89 @@
       "code": "代码",
       "ai": "AI"
     },
-    "objectList": {
-      "title": "物件",
-      "lockLocked": "总是锁定。点击以更改",
-      "lockUnlocked": "总是解锁。点击以更改",
-      "lockDefault": "跟随场景设定决定是否锁定。点击以更改",
-      "unnamedObject": "未命名物件",
-      "unknownType": "未知类型",
-      "sceneInfo": "直接位于场景中的物件列表。若要以自定义变量、数组等来参数化，需先将其移入模块。模块内的物件不会直接列出，而是每个模块实例以单一物件显示。",
-      "moduleInfo": "此模块中的物件。其属性可设置为 [math.js 公式](/mathjs/syntax)，其中可包含上述定义的名称。例如，要将一点设置为上方定义的两个控制点的平均值，可以将其坐标设置为 `(x_1+x_2)/2, (y_1+y_2)/2`。要创建物件数组，请展开属性并点击「创建数组和条件」。",
-      "templateLockInfo": "若要让模块内的物件可移动，请先在上方创建控制点，然后点击 ▸ 展开物件，并将数值坐标替换为控制点（如 `x_1,y_1`）或公式（如 `(x_1+x_2)/2, (y_1+y_2)/2`）。",
-      "expand": "展开以显示属性",
-      "collapse": "收起属性",
-      "showAllProperties": "显示所有属性",
-      "hideDefaultProperties": "隐藏默认属性",
-      "newItem": "新建项目",
-      "arrayAndConditional": {
-        "info": "创建此物件的多个副本和/或仅在满足条件时包含此物件。例如，要将此物件水平复制 5 次，每次间隔 10 个单位，可以创建一个从 1 到 5 的循环变量 `i`，并将各点的坐标设为 `x_1+i*10, y_1` 等。若要仅在变量 `a` 大于 0 时显示此物件，可以將「附加条件为」設為 `a > 0`。",
-        "create": "创建数组和条件",
-        "remove": "移除数组和条件",
-        "arrayBadge": "数组",
-        "conditionalBadge": "条件",
-        "repeatFor": "重复",
-        "withCondition": "附加条件为",
-        "forFrom": "从",
-        "forTo": "到",
-        "forStep": "步长",
-        "newLoopVariable": "新建循环变量"
+    "visual": {
+      "tabs": {
+        "scene": "场景",
+        "createModule": "创建模块",
+        "createModuleInfo": "模块可让您组合现有工具来制作新工具。范例请见工具->其他->导入模块。"
       },
-      "formulaRequiresModule": "要使用公式，请先将物件移入模块。",
-      "invalidPointFormat": "点必须恰好有两个以逗号分隔的坐标。",
-      "unsupportedVisualValue": "此值不受可视化编辑器支持。请切换至代码选项卡来编辑此属性。",
-      "latexConversionFailed": "无法将表达式转换为内部格式。请检查语法。"
-    },
-    "controlPointList": {
-      "title": "控制点",
-      "newItem": "新建控制点",
-      "info": "在画布上可拖曳的点。其坐标（`x_1`、`y_1` 等）可用于本模块中的所有公式。"
-    },
-    "parameterList": {
-      "title": "参数",
-      "newItem": "新建参数",
-      "min": "最小",
-      "max": "最大",
-      "step": "步长",
-      "default": "默认",
-      "info": "在物件栏以滑杆显示的参数。其名称（如 `a`、`foo` 等）可用于本模块中的所有公式。"
-    },
-    "variableList": {
-      "title": "变量",
-      "newItem": "新建变量",
-      "info": "命名值（例如 `b` = `a+1`）或函数（例如 `f(x)` = `x^2+b`）。定义使用 [math.js 公式](/mathjs/syntax)，并依序求值。"
-    },
-    "visualSubTabs": {
-      "scene": "场景",
-      "createModule": "创建模块",
-      "createModuleInfo": "模块可让您组合现有工具来制作新工具。范例请见工具->其他->导入模块。"
-    },
-    "sceneObjsEditor": {
-      "moveIntoModule": "移入模块",
-      "createModule": "创建新模块",
-      "emptyHint": "要创建物件，请使用工具栏并在画布中创建。"
-    },
-    "moduleEditor": {
-      "settingsTitle": "设置",
-      "renameButton": "重命名",
-      "removeButton": "移除模块",
-      "moveOut": "移出模块",
-      "moveInHint": "要将物件加入此模块，请先使用工具栏创建物件，或在画布中选择现有物件。",
-      "moveIntoModule": "将「{{name}}」移入此模块",
-      "noInstances": "场景中目前没有此模块的任何实例。若要创建实例，请使用工具->其他-> {{name}} 并在画布上点击对应控制点顺序的位置。",
-      "emptyModuleExamplesHint": "模块示例请见工具->其他->导入模块",
-      "promptNewName": "新模块名称：（通常为 PascalCase 格式）",
-      "errorEmptyName": "模块名称不能为空。",
-      "errorComma": "模块名称不能包含逗号。",
-      "errorNameExists": "名为「{{name}}」的模块已存在。",
-      "confirmRemove": "移除模块「{{name}}」？",
-      "maxLoopLength": "最大循环长度"
+      "sceneObjects": {
+        "title": "物件",
+        "info": "直接位于场景中的物件列表。若要以自定义变量、数组等来参数化，需先将其移入模块。模块内的物件不会直接列出，而是每个模块实例以单一物件显示。",
+        "moveIntoModule": "移入模块",
+        "createModule": "创建新模块",
+        "emptyHint": "要创建物件，请使用工具栏并在画布中创建。",
+        "lockLocked": "总是锁定。点击以更改",
+        "lockUnlocked": "总是解锁。点击以更改",
+        "lockDefault": "跟随场景设定决定是否锁定。点击以更改",
+        "unnamedObject": "未命名物件",
+        "unknownType": "未知类型",
+        "collapse": "收起属性",
+        "showAllProperties": "显示所有属性",
+        "expand": "展开以显示属性",
+        "hideDefaultProperties": "隐藏默认属性",
+        "newItem": "新建项目",
+        "formulaRequiresModule": "要使用公式，请先将物件移入模块。",
+        "invalidPointFormat": "点必须恰好有两个以逗号分隔的坐标。",
+        "unsupportedVisualValue": "此值不受可视化编辑器支持。请切换至代码选项卡来编辑此属性。",
+        "latexConversionFailed": "无法将表达式转换为内部格式。请检查语法。"
+      },
+      "moduleEditor": {
+        "new": {
+          "promptNewName": "新模块名称：（通常为 PascalCase 格式）",
+          "errorEmptyName": "模块名称不能为空。",
+          "errorComma": "模块名称不能包含逗号。",
+          "errorNameExists": "名为「{{name}}」的模块已存在。"
+        },
+        "noInstances": "场景中目前没有此模块的任何实例。若要创建实例，请使用工具->其他-> {{name}} 并在画布上点击对应控制点顺序的位置。",
+        "emptyModuleExamplesHint": "模块示例请见工具->其他->导入模块",
+        "controlPoints": {
+          "title": "控制点",
+          "newItem": "新建控制点",
+          "info": "在画布上可拖曳的点。其坐标（`x_1`、`y_1` 等）可用于本模块中的所有公式。"
+        },
+        "parameters": {
+          "title": "参数",
+          "newItem": "新建参数",
+          "min": "最小",
+          "max": "最大",
+          "step": "步长",
+          "default": "默认",
+          "info": "在物件栏以滑杆显示的参数。其名称（如 `a`、`foo` 等）可用于本模块中的所有公式。"
+        },
+        "variables": {
+          "title": "变量",
+          "newItem": "新建变量",
+          "info": "命名值（例如 `b` = `a+1`）或函数（例如 `f(x)` = `x^2+b`）。定义使用 [math.js 公式](/mathjs/syntax)，并依序求值。"
+        },
+        "objects": {
+          "info": "此模块中的物件。其属性可设置为 [math.js 公式](/mathjs/syntax)，其中可包含上述定义的名称。例如，要将一点设置为上方定义的两个控制点的平均值，可以将其坐标设置为 `(x_1+x_2)/2, (y_1+y_2)/2`。要创建物件数组，请展开属性并点击「创建数组和条件」。",
+          "moveOut": "移出模块",
+          "moveInHint": "要将物件加入此模块，请先使用工具栏创建物件，或在画布中选择现有物件。",
+          "moveIntoModule": "将「{{name}}」移入此模块",
+          "templateLockInfo": "若要让模块内的物件可移动，请先在上方创建控制点，然后点击 ▸ 展开物件，并将数值坐标替换为控制点（如 `x_1,y_1`）或公式（如 `(x_1+x_2)/2, (y_1+y_2)/2`）。",
+          "arrayAndConditional": {
+            "info": "创建此物件的多个副本和/或仅在满足条件时包含此物件。例如，要将此物件水平复制 5 次，每次间隔 10 个单位，可以创建一个从 1 到 5 的循环变量 `i`，并将各点的坐标设为 `x_1+i*10, y_1` 等。若要仅在变量 `a` 大于 0 时显示此物件，可以將「附加条件为」設為 `a > 0`。",
+            "create": "创建数组和条件",
+            "remove": "移除数组和条件",
+            "arrayBadge": "数组",
+            "conditionalBadge": "条件",
+            "repeatFor": "重复",
+            "withCondition": "附加条件为",
+            "forFrom": "从",
+            "forTo": "到",
+            "forStep": "步长",
+            "newLoopVariable": "新建循环变量"
+          }
+        },
+        "settings": {
+          "title": "设置",
+          "maxLoopLength": "最大循环长度",
+          "renameButton": "重命名",
+          "removeButton": "移除模块",
+          "confirmRemove": "移除模块「{{name}}」？"
+        }
+      }
     },
     "ai": {
       "title": "使用 AI 助手",

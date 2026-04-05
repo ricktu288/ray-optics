@@ -32,7 +32,7 @@
     </select>
     <template v-if="isCustom">
       <template v-if="unsupported">
-        <PropertyControlError :message="$t('simulator:sidebar.objectList.unsupportedVisualValue')" />
+        <PropertyControlError :message="$t('simulator:sidebar.visual.sceneObjects.unsupportedVisualValue')" />
       </template>
       <template v-else>
         <div class="style-property-control-children">
