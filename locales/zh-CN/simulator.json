@@ -729,9 +729,11 @@
       "confirmRemove": "移除模块「{{name}}」？",
       "maxLoopLength": "最大循环长度"
     },
-    "aiAssistant": {
-      "title": "AI 助手",
-      "description": "链接到 ChatGPT 上的 Ray Optics Coder。更多信息请参见工具->其他->导入模块->创建自定义模块。"
+    "ai": {
+      "title": "使用 AI 助手",
+      "description": "ChatGPT 上的 [Ray Optics Coder](/ai-tools/chatgpt) 可以帮助您编写「射线光学模拟」模块。它会根据您的描述生成场景的 JSON 代码，您只需要将其复制到 JSON 编辑器 (上方的「代码」分页) 即可。您也可以使用它来编辑现有模组或模组化场景。",
+      "limitation": "由聊天机器人生成的代码可能无法直接运作。如果出现错误，建议将错误讯息复制到聊天机器人中，可能能够得到解决。",
+      "otherServices": "聊天机器人的指引和知识文件可在[这里](/ai-tools/instructions)取得。如果您偏好其他 LLM 服务，您可以提供这些文件，教它如何写出「射线光学模拟」模块。"
     }
   },
   "statusBox": {

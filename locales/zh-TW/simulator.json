@@ -729,9 +729,11 @@
       "confirmRemove": "移除模組「{{name}}」？",
       "maxLoopLength": "最大迴圈長度"
     },
-    "aiAssistant": {
-      "title": "AI 輔助",
-      "description": "連結至 ChatGPT 上的 Ray Optics Coder。更多資訊請參見工具->其他->匯入模組->建立自訂模組。"
+    "ai": {
+      "title": "使用 AI 輔助",
+      "description": "ChatGPT 上的 [Ray Optics Coder](/ai-tools/chatgpt) 可以幫助您編寫「線光學模擬」模組。它會根據您的描述生成場景的 JSON 程式碼，您只需要將其複製到 JSON 編輯器 (上方的「程式碼」分頁) 即可。您也可以使用它來編輯現有模組或模組化場景。",
+      "limitation": "由聊天機器人生成的程式碼可能無法直接運作。如果出現錯誤，建議將錯誤訊息複製到聊天機器人中，可能能夠得到解決。",
+      "otherServices": "聊天機器人的指引和知識檔案可在[這裡](/ai-tools/instructions)取得。如果您偏好其他 LLM 服務，您可以提供這些檔案，教它如何寫出「線光學模擬」模組。"
     }
   },
   "statusBox": {

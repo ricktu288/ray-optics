@@ -588,9 +588,11 @@
     "invalidFile": "Plik nie jest prawidłową sceną JSON ani plikiem obrazu."
   },
   "sidebar": {
-    "aiAssistant": {
-      "title": "Asystent AI",
-      "description": "Link do Ray Optics Coder na ChatGPT. Zobacz Narzędzia -> Inne -> Importuj moduł -> Twórz niestandardowe moduły, aby uzyskać więcej informacji."
+    "ai": {
+      "title": "Korzystanie z asystenta AI",
+      "description": "[Ray Optics Coder](/ai-tools/chatgpt) w ChatGPT pomoże Ci pisać moduły Ray Optics. Generuje on kod JSON dla sceny zawierającej moduł na podstawie Twojego opisu, a następnie możesz skopiować ten kod do edytora JSON (the \"Code\" tab above). Możesz go również użyć do edycji istniejących modułów lub modularyzacji scen.",
+      "limitation": "Kod wygenerowany przez chatbota może nie działać bezpośrednio. W przypadku wystąpienia błędu, skopiowanie i wklejenie komunikatu o błędzie do chatbota może pomóc.",
+      "otherServices": "Pliki z instrukcjami i wiedzą dla chatbota są dostępne [tutaj](/ai-tools/instructions). Jeśli wolisz inną usługę LLM, możesz udostępnić te pliki, aby nauczyć go pisania modułów Ray Optics."
     }
   },
   "statusBox": {
