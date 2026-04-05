@@ -283,7 +283,11 @@
     },
     "opticsOfHumanEye": {
       "title": "Optics of human eye",
-      "description": "This is a simulation about the workings of the eye. You can change the pupil size and the focal length of the lens."
+      "description": "This is a simulation about the workings of the eye. You can change the pupil size and the focal length of the lens.\n\nFor a more detailed simulation, see [Schematic Eye](/gallery/schematic-eye)."
+    },
+    "schematicEye": {
+      "title": "Schematic Eye",
+      "description": "Simplified model of the human eye, also called Schematic Eye.\n\nConstructed using data from _Optics of the Human Eye_ by David A. Atchison and George Smith (http://dx.doi.org/10.1201/9781003128601)"
     },
     "zoomLens": {
       "title": "Zoom Lens",

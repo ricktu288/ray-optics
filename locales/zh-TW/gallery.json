@@ -282,7 +282,11 @@
     },
     "opticsOfHumanEye": {
       "title": "人眼的光學",
-      "description": "這是一個關於眼睛如何運作的模擬。您可以調整瞳孔大小和水晶體的焦距。"
+      "description": "這是一個關於眼睛如何運作的模擬。您可以調整瞳孔大小和水晶體的焦距。\n\n如需更詳細的模擬，請參見[示意眼](/gallery/schematic-eye)。"
+    },
+    "schematicEye": {
+      "title": "示意眼",
+      "description": "人眼的簡化模型，亦稱示意眼。\n\n模型建構資料取自 David A. Atchison 與 George Smith 所著之 _Optics of the Human Eye_ (http://dx.doi.org/10.1201/9781003128601)"
     },
     "zoomLens": {
       "title": "變焦鏡頭",

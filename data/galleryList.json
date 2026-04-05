@@ -257,6 +257,13 @@
         "contributors": [
           "bri"
         ]
+      },
+      {
+        "id": "schematic-eye",
+        "beta": true,
+        "contributors": [
+          "Yoyobuae"
+        ]
       }
     ]
   },

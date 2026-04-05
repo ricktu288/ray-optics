@@ -282,7 +282,11 @@
     },
     "opticsOfHumanEye": {
       "title": "人眼的光学",
-      "description": "这是一个关于眼睛如何运作的模拟。您可以调整瞳孔大小和晶状体的焦距。"
+      "description": "这是一个关于眼睛如何运作的模拟。您可以调整瞳孔大小和晶状体的焦距。\n\n如需更详细的模拟，请参见[示意眼](/gallery/schematic-eye)。"
+    },
+    "schematicEye": {
+      "title": "示意眼",
+      "description": "人眼的简化模型，亦称示意眼。\n\n模型构建数据取自 David A. Atchison 与 George Smith 所著之 _Optics of the Human Eye_ (http://dx.doi.org/10.1201/9781003128601)"
     },
     "zoomLens": {
       "title": "变焦镜头",
