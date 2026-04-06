@@ -109,7 +109,8 @@
       "description": "Quando habilitado, a URL será atualizada automaticamente com a cena atual, então você não precisa de ficar salvando a cena manualmente. Para definir o título, use Arquivo -> Salvar -> Renomear."
     },
     "showSidebar": {
-      "title": "Exibir editor JSON"
+      "title": "Exibir editor JSON",
+      "description": "Exibir o painel lateral contendo lista de objetos, editor de módulos, editor de código JSON e assistente IA."
     },
     "showStatusBox": {
       "title": "Exibir caixa de status",
@@ -170,10 +171,20 @@
       "eqnInfo": {
         "constants": "Constantes suportadas",
         "operators": "Operadores suportados",
-        "functions": "Funções suportadas"
+        "functions": "Funções suportadas",
+        "module": "Para adicionar parâmetros personalizados ou equações complicadas, use Ferramentas -> Outros -> Criar Módulo e mova este objeto para o módulo.",
+        "mathjs": "Somente suporta as operações a seguir do math.js: ",
+        "customFunctions": "Você pode usar funções personalizadas definidas na seção \"Variáveis\" do editor de módulos, mas suas definições devem consistir de operações suportadas."
       },
       "imageDetectionWarning": "Esta ferramenta não suporta detecção de imagem.",
-      "nonSimulateColorsWarning": "Esta ferramenta só funciona quando \"Simular Cores\" está ligado."
+      "nonSimulateColorsWarning": "Esta ferramenta só funciona quando \"Simular Cores\" está ligado.",
+      "bezierControlPoints": "Pontos de controle Bézier",
+      "styleRed": "Vermelho",
+      "styleGreen": "Verde",
+      "styleBlue": "Azul",
+      "styleAlpha": "Alfa",
+      "styleWidth": "Largura",
+      "pointN": "Ponto {{i}}"
     },
     "ParamCurveObjMixin": {
       "addPiece": "Adicionar segmento",
@@ -207,7 +218,8 @@
       "refIndex": "Índice refrativo",
       "refIndexInfo": {
         "relative": "Relativo se dentro de outro vidro",
-        "effective": "Se este objeto deve ser simulado com índice refrativo absoluto n₁, mas estiver dentro de outro vidro de índice refrativo n₀, então você deve definir o índice refrativo como n₁/n₀ aqui. Em casos mais complicados que vários vidros se sobreponham, o índice refrativo efetivo da região sobreposta é igual ao produto dos índices refrativos individuais."
+        "effective": "Se este objeto deve ser simulado com índice refrativo absoluto n₁, mas estiver dentro de outro vidro de índice refrativo n₀, então você deve definir o índice refrativo como n₁/n₀ aqui. Em casos mais complicados que vários vidros se sobreponham, o índice refrativo efetivo da região sobreposta é igual ao produto dos índices refrativos individuais.",
+        "dualMeaning": "Quando \"Simular Cores\" estiver ligado, serve como o coeficiente de Cauchy A."
       },
       "cauchyCoeff": "Coeficiente de Cauchy",
       "partialReflect": "Simular reflexões parciais"
@@ -283,10 +295,13 @@
       "customBrightness": "Brilho Personalizado",
       "customBrightnessInfo": "Quando ligado, os brilhos dos raios difratados são personalizados por uma lista de números correspndendo a m = 0, 1, -1, 2, -2, …. O número será normalizado ao brilho do raio incidente. Os valores não na lista são definidos como 0. Por exemplo, \"1, 0.5, 0.5\" significa que o raio m=0 tem o mesmo brilho que o raio incidente, os raios m=1 e m=-1 têm metade do brilho, e todos os outros raios são ignorados.",
       "slitRatio": "Largura de vão / Espaçamento de linha",
-      "mirrored": "Espelhado"
+      "mirrored": "Espelhado",
+      "brightnesses": "Brilhos",
+      "brightness": "Brilho"
     },
     "Ruler": {
-      "scaleInterval": "Intervalo da escala"
+      "scaleInterval": "Intervalo da escala",
+      "zeroPoint": "Ponto zero"
     },
     "Detector": {
       "info": {
@@ -327,7 +342,9 @@
         "right": "Direita"
       },
       "smallCaps": "Maiúsculo pequeno",
-      "angle": "Ângulo"
+      "angle": "Ângulo",
+      "text": "Texto",
+      "moduleInfo": "Em um módulo, o texto pode conter fórmulas do math.js cercadas por crases, que serão evaluadas no contexto do módulo. Por exemplo, \"há \\`a+1\\` itens\" se torna \"há 3 itens\" quando `a` é 2."
     },
     "LineArrow": {
       "arrow": "Seta frontal",
@@ -343,11 +360,13 @@
         "previousFormulas": "Uma fórmula pode se referir aos resultados de fórmulas anteriores. Se uma fórmula der um valor inválido, o raio que sai é ignorado e seu brilho é tratado como 0.",
         "otherParams": "Outros parâmetros dos raios incidentes que podem ser usados são {{lambda}} (comprimento de onda em nm) e {{p}} (0 para polarização S, 1 para polarização P). Eles permanecem iguais para os raios que saem.",
         "coating": "Este objeto pode agir como um revestimento de objetos de vidro ao sobrepor com suas superfícies. Nesse caso, a refração em si também precisa de ser definida pelas fórmulas deste objeto. Os índices refrativos do material associado ao mesmo lado, e ao lado oposto do raio incidente podem ser referidos como {{n_0}} e {{n_1}}, respectivamente. Se este objeto está dentro de um objeto de vidro, os valores são relativos a ele.",
-        "twoSides": "Se você quiser que os dois lados dessa superfície tenham fórmulas diferentes, você pode sobrepor duas superfícies unilaterais com orientações opostas."
+        "twoSides": "Se você quiser que os dois lados dessa superfície tenham fórmulas diferentes, você pode sobrepor duas superfícies unilaterais com orientações opostas.",
+        "module": "Para obter parâmetros personalizados, fórmulas complicads, ou um grande número de raios saindo, vá para Ferramentas -> Outros -> Criar Módulo e mova este objeto para o módulo."
       },
       "twoSided": "Bilateral",
       "addOutgoingRay": "Adicionar raio de saída",
-      "removeOutgoingRay": "Remover raio de saída"
+      "removeOutgoingRay": "Remover raio de saída",
+      "outgoingRays": "Raios Saindo"
     },
     "CustomSurface": {
       "info": {
@@ -373,7 +392,8 @@
       "stringExpansionError": "Erro expandindo string \"{{str}}\" com parâmetros {{params}}: {{error}}",
       "objectExpansionError": "Erro expandindo objeto {{obj}} em lista com parâmetros {{params}}: {{error}}",
       "variableDefinitionError": "Erro avaliando definições de variável com parâmetros {{params}}: {{error}}",
-      "unclosedMathBlock": "Bloco de matemática não fechado: {{str}}"
+      "unclosedMathBlock": "Bloco de matemática não fechado: {{str}}",
+      "editModule": "Editar módulo"
     },
     "Handle": {
       "handle": "Ponto de manuseio",
@@ -386,7 +406,8 @@
         "scaling": "Escala"
       },
       "step": "Passo",
-      "transformationWarning": "Aplicar \"{{transformation}}\" a \"{{obj}}\" pode ter resultados inesperados."
+      "transformationWarning": "Aplicar \"{{transformation}}\" a \"{{obj}}\" pode ter resultados inesperados.",
+      "convertToModule": "Para módulo…"
     },
     "CropBox": {
       "title": "Exportar",
@@ -396,7 +417,32 @@
       "rayCountLimit": "Limite de quantidade de raios",
       "transparent": "Fundo transparente",
       "svgWarning": "Exportar como SVG: Misturas de cores, brilhos corrigidos, e índices refrativos relativos abaixo de 1 não são suportados.",
-      "rayCountWarning": "O número atual de raios na cena é maior que o limite de número de raios. Você pode precisar de aumentar o limite nas opções da Caixa de Corte."
+      "rayCountWarning": "O número atual de raios na cena é maior que o limite de número de raios. Você pode precisar de aumentar o limite nas opções da Caixa de Corte.",
+      "label": "Caixa de Corte"
+    },
+    "LineObjMixin": {
+      "endpoint1": "1º ponto",
+      "endpoint2": "2º ponto",
+      "sourcePoint": "Ponto fonte",
+      "directionPoint": "Ponto de direção"
+    },
+    "CircleObjMixin": {
+      "center": "Centro",
+      "radiusPoint": "Ponto em círculo"
+    },
+    "ArcMirror": {
+      "pointOnArc": "Ponto em arco"
+    },
+    "ParabolicMirror": {
+      "vertex": "Vértice"
+    },
+    "Glass": {
+      "vertices": "Vértices",
+      "vertex": "Vértice",
+      "arc": "Arco circular"
+    },
+    "Protractor": {
+      "zeroPoint": "Ponto zero"
     }
   },
   "saveModal": {
@@ -412,7 +458,12 @@
   "moduleModal": {
     "title": "Importar Módulos",
     "makeCustomModules": "Criar módulos personalizados",
-    "conflict": "Outro módulo com o mesmo nome já existe na cena atual. Você pode colocar outro nome, ou deixá-lo igual para sobrepor o módulo existente."
+    "conflict": "Outro módulo com o mesmo nome já existe na cena atual. Você pode colocar outro nome, ou deixá-lo igual para sobrepor o módulo existente.",
+    "importFromFile": {
+      "title": "Importar de arquivo",
+      "description": "Importar todos os módulos contidos em um arquivo JSON de cena.",
+      "error": "O arquivo não contém módulos válidos."
+    }
   },
   "colorModeModal": {
     "linear": {
@@ -599,6 +650,21 @@
       "description": "O [Ray Optics Coder](/ai-tools/chatgpt) no ChatGPT pode ajudá-lo a escrever módulos de Óptica de Raios. Ele gera o código JSON para a cena contendo o módulo baseado em sua descrição, e você pode então copiar o código para o editor JSON (the \"Code\" tab above). Você também pode usá-lo para editar módulos existentes ou modularizar cenas.",
       "limitation": "O código gerado pelo chatbot pode não funcionar diretamente. Se um erro ocorrer, copiar e colar a mensagem de erro para o chatbot pode ajudar.",
       "otherServices": "Os arquivos de instrução e conhecimento para o chatbot estão disponíveis [aqui](/ai-tools/instructions). Se você preferir outro serviço LLM, você pode o fornecer esses arquivos para ensiná-lo a escrever módulos de Óptica de Raios."
+    },
+    "tabs": {
+      "visual": "Visual",
+      "code": "Código",
+      "ai": "IA"
+    },
+    "visual": {
+      "tabs": {
+        "scene": "Cena",
+        "createModule": "Criar Módulo",
+        "createModuleInfo": "Módulos lhe permitem criar novas ferramentas combinando ferramentas existentes. Veja Ferramentas -> Outros -> Importar Módulos para exemplos."
+      },
+      "sceneObjects": {
+        "title": "Objetos"
+      }
     }
   },
   "statusBox": {
