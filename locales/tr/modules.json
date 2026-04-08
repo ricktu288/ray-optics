@@ -13,7 +13,8 @@
       "parameters": "Değişkenler"
     },
     "customization": {
-      "title": "Kişiselleştirme"
+      "title": "Kişiselleştirme",
+      "description": "Modüller doğrudan web uygulamasının kenar çubuğunda yapılabilir veya özelleştirilmiş olabilir (görüler -> Show sidebar). ithal modüllerin özelleştirmesi yalnızca mevcut sahneyi etkileyecektir. Başka bir sahneden özel modüller ithal etmek için aşağıdaki \"Import from file\" below to import custom modülleri from another scene."
     },
     "contribution": {
       "title": "Katkı",
@@ -65,7 +66,63 @@
     },
     "CircleSource": {
       "title": "Dairesel ışık kaynağı",
-      "description": "Çevresi boyunca 180 derecelik eşit nokta kaynakları bulunan bir daire."
+      "description": "Çevresi boyunca 180 derecelik eşit nokta kaynakları bulunan bir daire.",
+      "point1": "Çemberin merkezi",
+      "r": "Dairenin yarıçapı",
+      "N": "Noktasal kaynakların sayısı",
+      "brightness": "Toplam parlaklık"
+    },
+    "CubeBeamSplitter": {
+      "splitRatio": "Diyagonal ışın ayırıcının iletim oranı",
+      "cauchyB": "Küpün Cauchy katsayısı \\(B\\) (kare mikrometre cinsinden)",
+      "refIndex": "Küpün kırılma indisi (“Renkleri Simüle Et” seçeneği etkin olduğunda Cauchy katsayısı \\(A\\))",
+      "angle": "Küpün dönme açısı (derece cinsinden)",
+      "size": "Küpün boyutu",
+      "point1": "Küpün (karenin) merkezi",
+      "description": "Küp ışın ayırıcı, yaygın olarak kullanılan bir optik bileşendir. Bu, boyut ve açı açısından ayarlanabilen bir küp ışın ayırıcı modülüdür.",
+      "title": "Küp Işın Ayırıcı"
+    },
+    "OpticalFiber": {
+      "n2": "Kaplamanın kırılma indisi",
+      "Y": "Kaplamanın kalınlığı",
+      "point2": "Optik fiberin ikinci uç noktası",
+      "point1": "Optik fiberin ilk uç noktası",
+      "description": "Belirli bir çekirdek ve kaplama kalınlığına ve kırılma indislerine sahip çizgi şeklindeki optik fiber.",
+      "title": "Optik Fiber"
+    },
+    "RayRelay": {
+      "N": "Lens sayısı",
+      "d": "Mercekler arasındaki mesafe",
+      "f": "Merceklerin odak uzaklığı",
+      "point2": "İlk merceğin ikinci uç noktası (ilk nokta ile aynı \\(x\\) değerine sahip olmalıdır)",
+      "title": "Işın Aktarıcı",
+      "description": "Odak uzaklığı \\(f\\) olan ve mercekler arasındaki mesafe \\(d\\) olan bir dizi ideal özdeş mercek. Işın yörüngesinin sapmaması, ancak ve ancak \\(d\\leq 4f\\) olduğunda garanti edilir. [Bu Galeri örneğinin](/gallery/ray-relaying) modülerleştirilmiş versiyonu.",
+      "point1": "İlk merceğin ilk odak noktası"
+    },
+    "EllipticalMirror": {
+      "title": "Eliptik Ayna",
+      "description": "İki odak noktası ve büyük yarı eksenin uzunluğu ile tanımlanan eliptik bir ayna.",
+      "point1": "İlk odak noktası",
+      "point2": "İkinci odak noktası",
+      "a": "Yarı büyük eksen uzunluğu",
+      "tMin": "Eğrinin minimum açısı",
+      "tMax": "Eğrinin maksimum açısı",
+      "tStep": "Eğrinin adım açısı"
+    },
+    "Chaff": {
+      "title": "Chaff(Yanıltıcı)",
+      "description": "Rastgele ayna parçalarından oluşan dikdörtgen şeklindeki yanıltıcı(Chaff). [Bu Galeri örneğinin](/gallery/chaff-countermeasure) modüler bir versiyonu.",
+      "point1": "Chaff sol üst köşesi",
+      "point2": "chaff sağ alt köşesi",
+      "N": "Chaff içindeki ayna sayısı",
+      "L": "Aynaların uzunluğu"
+    },
+    "BeamExpander": {
+      "title": "Işın Genişletici",
+      "description": "Odak uzaklıklarının toplamı, aralarındaki mesafeye eşit olan iki ideal merceğin birleşimi. Bu mercekler, paralel ışık demetinin çapını genişletir veya daraltır. [Bu Galeri örneğinin](/gallery/beam-expanders) modüler versiyonu.",
+      "point1": "İlk merceğin merkezi",
+      "point2": "İkinci merceğin ikinci noktası",
+      "point3": "Lenslerin ortak odak noktasını belirler"
     }
   }
 }
