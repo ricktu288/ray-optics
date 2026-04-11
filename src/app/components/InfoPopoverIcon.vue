@@ -22,6 +22,7 @@
     tabindex="0"
     :aria-label="ariaLabel"
     v-tooltip-popover:popover="popoverOptions"
+    @blur="onPopoverBlur"
     @keydown.enter.prevent="onKeyActivate"
     @keydown.space.prevent="onKeyActivate"
   >
@@ -43,6 +44,7 @@
 
 <script>
 import { computed, ref } from 'vue'
+import * as bootstrap from 'bootstrap'
 import { vTooltipPopover } from '../directives/tooltip-popover'
 
 export default {
@@ -86,10 +88,36 @@ export default {
       iconEl.value?.click?.()
     }
 
+    const onPopoverBlur = (event) => {
+      const el = iconEl.value
+      if (!el) return
+      const instance = bootstrap.Popover.getInstance(el)
+      if (!instance) return
+
+      const tip = instance.getTipElement()
+      const focusStaysInPopover = (target) =>
+        target instanceof Node && (el.contains(target) || (tip && tip.contains(target)))
+
+      const related = event.relatedTarget
+      if (related instanceof Node) {
+        if (!focusStaysInPopover(related)) {
+          instance.hide()
+        }
+        return
+      }
+      requestAnimationFrame(() => {
+        const active = document.activeElement
+        if (!focusStaysInPopover(active)) {
+          instance.hide()
+        }
+      })
+    }
+
     return {
       iconEl,
       popoverOptions,
-      onKeyActivate
+      onKeyActivate,
+      onPopoverBlur
     }
   }
 }

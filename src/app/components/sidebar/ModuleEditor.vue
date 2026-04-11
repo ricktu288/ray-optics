@@ -1091,6 +1091,12 @@ export default {
         }
       }
       commitControlPointGeometry()
+      const lastIdx = controlPointItems.value.length - 1
+      if (lastIdx >= 0) {
+        clearOtherModuleSidebarLists(MODULE_EDITOR_LIST.CONTROL_POINTS)
+        controlPointSelectedIndex.value = lastIdx
+        applyModulePointHighlight(lastIdx)
+      }
     }
 
     const handleControlPointHover = ({ item, index }) => {
@@ -1125,6 +1131,13 @@ export default {
         }
       ]
       commitParamDefs()
+      const last = paramItems.value[paramItems.value.length - 1]
+      if (last) {
+        clearOtherModuleSidebarLists(MODULE_EDITOR_LIST.PARAMS)
+        paramActiveId.value = last.id
+        paramSliderHighlightActive.value = true
+        applyModuleParamHighlight(last.name)
+      }
     }
 
     const onVarNameUpdate = (index, value) => {
@@ -1179,6 +1192,11 @@ export default {
         }
       ]
       commitVariableDefs()
+      const last = variableItems.value[variableItems.value.length - 1]
+      if (last) {
+        clearOtherModuleSidebarLists(MODULE_EDITOR_LIST.VARIABLES)
+        variableActiveId.value = last.id
+      }
     }
 
     const updateModuleObjs = (nextObjs) => {
@@ -1384,11 +1402,21 @@ export default {
       if (selectedIndex < 0) {
         return
       }
-      app.scene?.moveObjsToModule?.([selectedIndex], props.moduleName)
+      const moveResult = app.scene?.moveObjsToModule?.([selectedIndex], props.moduleName)
       app.editor?.selectObj(-1)
       app.simulator?.updateSimulation(false, true)
       app.editor?.onActionComplete()
       syncModuleItems()
+      if (moveResult && moveResult.moved > 0) {
+        const last = moduleItems.value[moduleItems.value.length - 1]
+        if (last) {
+          clearOtherModuleSidebarLists(MODULE_EDITOR_LIST.OBJECTS)
+          selectedIds.value = []
+          activeId.value = last.id
+          hoveredIndex.value = -1
+          applyModuleHighlights([])
+        }
+      }
       nextTick(() => {
         selectModuleInstance()
       })
