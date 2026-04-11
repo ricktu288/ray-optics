@@ -82,7 +82,7 @@
       var route = (localeData[lang].route !== undefined) ? localeData[lang].route : '/' + lang;
       document.getElementById("welcome_title").innerHTML = (localeData[lang].welcome && localeData[lang].welcome.title) || localeData.en.welcome.title;
       document.getElementById("welcome_instruction").innerHTML = ((localeData[lang].welcome && localeData[lang].welcome.instruction) || localeData.en.welcome.instruction).replace('\n', '<br>').replace(/\[([^\]]+)\]\(\/gallery\)/g, function (match, text) {
-        return `<a href="..${localeData[lang].gallery ? route : ''}/gallery/" style="color: #1b77ff; text-decoration: none;">${text}</a>`;
+        return `<a href="..${localeData[lang].gallery ? route : ''}/gallery/" style="color: #1b77ff;">${text}</a>`;
       });
       document.getElementById("welcome_loading").innerHTML = (localeData[lang].welcome && localeData[lang].welcome.loading) || localeData.en.welcome.loading;
       
@@ -98,6 +98,16 @@
       @keyframes spin {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
+      }
+
+      /* Match app link UX before the bundle loads (inline styles on the <a> cannot set hover). */
+      #welcome_instruction a {
+        text-decoration: none;
+        text-underline-offset: 2px;
+      }
+      #welcome_instruction a:hover,
+      #welcome_instruction a:focus-visible {
+        text-decoration: underline;
       }
     </style>
     

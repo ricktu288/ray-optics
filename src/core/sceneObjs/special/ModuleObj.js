@@ -33,7 +33,7 @@ import { getAllByKeyPath } from '../../propertyUtils/keyPath.js';
 
 /**
  * The class for a module object.
- * Currently, there is no UI for creating a module object. You can create a module object by directly editing the JSON data of the scene.
+ * Tools -> Other -> Create Module is used to create a module.
  * @class
  * @memberof sceneObjs
  * @extends BaseSceneObj

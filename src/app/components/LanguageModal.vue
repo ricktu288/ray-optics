@@ -128,6 +128,12 @@ export default {
   margin: 0.25rem 0 1rem 0;
 }
 
+/* Keep list rows un-underlined; global App.vue adds underline on a:hover. */
+.language-list a:hover,
+.language-list a:focus-visible {
+  text-decoration: none;
+}
+
 .language-header {
   padding: 0 0.75rem;
 }
