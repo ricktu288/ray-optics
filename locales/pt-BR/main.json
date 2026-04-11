@@ -203,7 +203,9 @@
     },
     "modules": {
       "import": "Importar Módulos…",
-      "remove": "Remover módulo"
+      "remove": "Remover módulo",
+      "createModule": "Criar Módulo…",
+      "description": "Crie novas ferramentas combinando ferramentas existentes. Veja \"Importar Módulos\" para exemplos."
     },
     "moveView": {
       "title": "Mover Vista",

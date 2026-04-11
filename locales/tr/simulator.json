@@ -95,6 +95,108 @@
     "violetWavelength": {
       "title": "Mor dalga boyu",
       "description": "“Renkleri Simüle Et” seçeneği açıkken mor olarak gösterilecek dalga boyu. Görünmez ışığı sahte renk spektrumuyla görselleştirmek için kullanışlıdır."
+    },
+    "maxRayDepth": {
+      "description": "Işınların kesilmesinden önce izin verilen maksimum ışın-nesne etkileşimi sayısı. Sınırlama olmaması için “inf” değerini kullanın."
+    },
+    "language": {
+      "title": "Dil",
+      "lowFraction": "Bu dilin yalnızca {{fraction}}'ı çevrilmiştir. [Weblate'te](/weblate) çevirinin tamamlanmasına katkıda bulunabilirsiniz."
+    },
+    "autoSyncUrl": {
+      "title": "URL'yi otomatik olarak senkronize et",
+      "description": "Bu özellik etkinleştirildiğinde, URL mevcut sahneye göre otomatik olarak güncellenecektir; böylece sahneyi manuel olarak kaydetmeye gerek kalmaz. Başlığı ayarlamak için Dosya -> Kaydet -> Yeniden Adlandır seçeneğini kullanın."
+    },
+    "showSidebar": {
+      "title": "Kenar çubuğunu göster",
+      "description": "Nesnelerin listesini, modül düzenleyicisini, JSON kod düzenleyicisini ve yapay zeka asistanını içeren kenar çubuğunu göster."
+    },
+    "showStatusBox": {
+      "title": "Durum kutucuğunu göster",
+      "description": "Fare koordinatlarını, performans bilgilerini ve kesik parlaklığı (sonsuz iç yansıma dizisinde kesilen ışınların toplam parlaklığı) içeren durum kutucuğunu göster."
+    },
+    "showSimulatorControls": {
+      "title": "Simülatör kontrollerini göster",
+      "description": "Simülatörün manuel olarak kontrol edilmesini sağlar; bu özellik, sahnenin çalışması uzun sürdüğünde, JSON dosyasından yüklenmesi yavaş olduğunda veya rastgele öğeler içerdiğinde kullanışlıdır."
+    },
+    "showHelpPopups": {
+      "title": "Yardım pencerelerini göster",
+      "description": "Düğmelerin üzerine fareyi getirdiğinizde yardım pencerelerinin gösterilip gösterilmeyeceğini belirler."
+    },
+    "advancedHelp": "Daha ayrıntılı yardım için sağ alt köşedeki yardım simgesine bakın."
+  },
+  "editor": {
+    "objectBodyHint": "Döndürme, gruplama vb. işlemler için sağ alt köşedeki yardım simgesine bakın.",
+    "coordinatesHint": "Nesneleri dönüştürmek, formüllerden koordinatları belirlemek vb. için sağ alt köşedeki yardım simgesine bakın.",
+    "handleHint": "Birden fazla nesneyi aynı anda taşımak için boş alana tıklayarak bir tutamaç oluşturun.",
+    "handleArrowHint": "Yatay/dikey/dönüş/ölçeklendirme arasında geçiş yapmak için tutamağı (ok) tıklayın ve üstteki “dönüşüm” seçeneğini değiştirin."
+  },
+  "objBar": {
+    "showAdvanced": {
+      "title": "Daha fazla seçenek…"
+    },
+    "applyToAll": {
+      "title": "Tümüne Uygula"
+    },
+    "duplicate": {
+      "title": "Çoğalt"
+    },
+    "delete": {
+      "title": "Sil"
+    },
+    "unselect": {
+      "title": "Seçimi kaldır",
+      "description": "Bu nesnenin seçimini kaldırın (Boş bir alana sağ tıklamak da aynı işlevi görür.)"
+    }
+  },
+  "sceneObjs": {
+    "common": {
+      "lengthUnitInfo": "Bu simülatörde kullanılan uzunluk birimi (dalga boyları hariç), simülasyon boyunca tutarlı olduğu sürece herhangi bir fiziksel birim (ör. milimetre) olarak yorumlanabilen keyfi bir birimdir. Birim çok küçük veya çok büyük görünüyorsa lütfen Ayarlar -> Uzunluk Ölçeği'ni ayarlayın.",
+      "brightness": "Parlaklık",
+      "brightnessInfo": {
+        "rayDensity": "Yalnızca ‘Işın Yoğunluğu’ yeterince yüksekse etkilidir.",
+        "rayDensitySlider": "Yayılan ışın sayısını kontrol etmek için lütfen bunun yerine genel “Işın Yoğunluğu” kaydırma çubuğunu ayarlayın.",
+        "newColorModes": "“Doğru Parlaklık” seçeneği etkin olduğunda, düşük “Işın Yoğunluğu” ayarında davranış varsayılan ayardan farklıdır. Birim bilgisi için, bir dedektör seçildiğinde görüntülenen bilgi kutusuna bakın."
+      },
+      "wavelength": "Dalga boyu",
+      "emisAngle": "Yayılma Açısı",
+      "random": "Rastgele",
+      "coordOrigin": "Referans noktası",
+      "bezierControlPoints": "Bézier kontrol noktaları",
+      "focalLength": "Odak uzaklığı",
+      "lineStyle": "Çizgi stili",
+      "fillStyle": "Doldurma stili",
+      "useThemeStyle": "Tema stilini kullan",
+      "styleRed": "Kırmızı",
+      "styleGreen": "Yeşil",
+      "styleBlue": "Mavi",
+      "styleAlpha": "Alfa",
+      "styleWidth": "Genişlik",
+      "eqnInfo": {
+        "constants": "Desteklenen sabitler",
+        "operators": "Desteklenen operatörler",
+        "functions": "Desteklenen işlevler",
+        "module": "Özel parametreler veya karmaşık denklemler kullanmak istiyorsanız, Araçlar -> Diğer -> Modül Oluştur seçeneğini kullanın ve bu nesneyi modüle taşıyın.",
+        "mathjs": "Yalnızca aşağıdaki math.js işlemlerini destekler: ",
+        "customFunctions": "Modül düzenleyicisinin “Değişkenler” bölümünde tanımlanmış özel işlevleri kullanabilirsiniz, ancak bu işlevlerin tanımları nihai olarak desteklenen işlemlerden oluşmalıdır."
+      },
+      "pointN": "Nokta {{i}}",
+      "imageDetectionWarning": "Bu araç görüntü algılamayı desteklemiyor.",
+      "nonSimulateColorsWarning": "Bu araç yalnızca “Renkleri Simüle Et” seçeneği etkin olduğunda çalışır."
+    },
+    "LineObjMixin": {
+      "endpoint1": "1. uç nokta",
+      "endpoint2": "2. uç nokta",
+      "sourcePoint": "Kaynak noktası",
+      "directionPoint": "Yön noktası"
+    },
+    "CircleObjMixin": {
+      "center": "Merkez"
+    },
+    "ParamCurveObjMixin": {
+      "pieces": "Parçalar",
+      "addPiece": "Parça ekle",
+      "removePiece": "Parçayı kaldır"
     }
   }
 }

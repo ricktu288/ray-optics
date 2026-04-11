@@ -13,7 +13,8 @@
       "parameters": "Parâmetros"
     },
     "customization": {
-      "title": "Personalização"
+      "title": "Personalização",
+      "description": "Módulos podem ser feitos ou personalizados diretamente na barra lateral do app web (ver Configurações -> Mostrar painel lateral). Personalização de módulos importados afetará apenas a cena atual. Use \"Importar de arquivo\" abaixo para importar módulos personalizados de outra cena"
     },
     "contribution": {
       "title": "Contribuição",

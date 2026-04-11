@@ -83,6 +83,44 @@
     },
     "ConcaveDiffractionGrating": {
       "title": "İçbükey Izgara"
+    },
+    "PlaneGlass": {
+      "title": "Yarım düzlem",
+      "description": "Bir yüzeyde ışığın kırılmasını ve yansımasını simüle edin.",
+      "instruction": "Oluşturmak için yüzey üzerinde iki noktayı sürükleyin veya tıklayın."
+    },
+    "otherGlass": {
+      "title": "Diğer şekiller",
+      "description": "Çizgi parçaları ve daire yaylarından oluşan herhangi bir şekle sahip camlar veya f(x) < y < g(x) şeklinde tanımlanan özel bir eşitsizlikle belirlenen şekiller."
+    },
+    "CircleGlass": {
+      "title": "Daire",
+      "description": "Merkezi ve yüzeyindeki bir nokta ile tanımlanan daire şeklindeki cam."
+    },
+    "Glass": {
+      "title": "Çokgen / Dairesel Yaylar",
+      "description": "Çizgi parçaları ve daire yaylarından oluşan her türlü şekle sahip cam.",
+      "instruction": "Bir kesit oluşturmak için tıklayın, bir yay çizmek için sürükleyin, çizimi bitirdiğinizde başlangıç noktasına tıklayın."
+    },
+    "IdealLens": {
+      "description": "İnce mercek denklemini (1/p + 1/q = 1/f) tam olarak karşılayan ideal bir mercek. Odak uzaklığı doğrudan ayarlanabilir."
+    },
+    "SphericalLens": {
+      "title": "Küresel Lens",
+      "description": "Şekli çeşitli parametreler kullanılarak tanımlanabilen küresel bir mercek."
+    },
+    "CustomGlass": {
+      "title": "Özel Denklem",
+      "description": "(x, y) koordinatlarının, iki kontrol noktası (-1,0) ve (1,0) olan dönüştürülmüş koordinat sisteminde yer aldığı, f(x) < y < g(x) şeklinde tanımlanan özel bir eşitsizlikle şekli belirlenen cam."
+    },
+    "ParamGlass": {
+      "title": "Parametrik Eğri",
+      "description": "Özel parametrik denklemlerle şekli tanımlanan cam."
+    },
+    "CurveGlass": {
+      "title": "Bézier Eğrileri",
+      "description": "Kübik Bézier eğrileriyle sınırlandırılmış cam.",
+      "instruction": "Bir şekil oluşturmak için tıklayın, çizimi bitirdiğinizde başlangıç noktasına tıklayın. Ardından, kutuları sürükleyerek kontrol noktalarını ayarlayın ve eğriyi değiştirin."
     }
   },
   "meta": {

@@ -284,7 +284,7 @@
     },
     "opticsOfHumanEye": {
       "title": "Ótica do olho humano",
-      "description": "Esta é uma simulação sobre o funcionamento do olho. Você pode mudar o tamanho da pupila e o comprimento focal da lente."
+      "description": "Esta é uma simulação sobre o funcionamento do olho. Você pode mudar o tamanho da pupila e o comprimento focal da lente.\n\nPara uma simulação mais detalhada, veja [Olho Esquemático](/gallery/schematic-eye)."
     },
     "zoomLens": {
       "title": "Lente de Zoom",
@@ -518,6 +518,10 @@
       "annulareclipse": "Eclipse anular",
       "earth": "Terra",
       "totaleclipse": "Eclipse total"
+    },
+    "schematicEye": {
+      "title": "Olho Esquemático",
+      "description": "Modelo simplificado do olho humano, também chamado de Olho Esquemático.\n\nConstruído usando dados de _Optics of the Human Eye_ por David A. Atchison e George Smith (http://dx.doi.org/10.1201/9781003128601)"
     }
   }
 }
