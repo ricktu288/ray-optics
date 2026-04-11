@@ -21,6 +21,7 @@ import "ace-builds/src-noconflict/worker-json";
 import { Range } from 'ace-builds';
 import { app } from '../services/app'
 import { CustomJsonMode } from '../utils/customJsonMode'
+import { sanitizePastedJson } from '../utils/sanitizePastedJson'
 
 /**
  * Service to manage the JSON editor instance and its interactions with the scene
@@ -56,6 +57,11 @@ class JsonEditorService {
 
     // Set up change listener
     this.aceEditor.session.on('change', this.handleEditorChange.bind(this))
+
+    this.aceEditor.on('paste', (e) => {
+      const cleaned = sanitizePastedJson(e.text)
+      if (cleaned !== e.text) e.text = cleaned
+    })
   }
 
   /**
