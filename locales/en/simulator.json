@@ -423,6 +423,8 @@
     },
     "Handle": {
       "handle": "Handle",
+      "handlePoint": "Handle position",
+      "rotationScalingCenter": "Rotation/scaling center",
       "transformation": "Transformation",
       "transformations": {
         "translation": "Translation",
@@ -433,6 +435,7 @@
       },
       "step": "Step",
       "transformationWarning": "Applying \"{{transformation}}\" to \"{{obj}}\" may give unexpected results.",
+      "placeOnCanvasHint": "Click empty space on the canvas to place the handle.",
       "convertToModule": "To module…"
     },
     "CropBox": {
@@ -661,8 +664,11 @@
       "sceneObjects": {
         "title": "Objects",
         "info": "List of objects which are directly in the scene. To parametrize them (with custom variables, arrays, etc.), you need to move them into a module. Objects inside modules are not directly listed here, and each instance of a module is shown as a single object.",
-        "moveIntoModule": "Move into module",
-        "createModule": "Create Module",
+        "bindToHandle": "Bind to",
+        "createHandle": "Create new handle",
+        "unbindHandle": "Unbind",
+        "moveIntoModule": "Move to",
+        "createModule": "Create new module",
         "emptyHint": "To create an object, please use the toolbar and create it in the canvas.",
         "lockLocked": "Locked (always). Click to change",
         "lockUnlocked": "Unlocked (always). Click to change",
@@ -677,7 +683,10 @@
         "formulaRequiresModule": "To use a formula, you must first move the object into a module.",
         "invalidPointFormat": "Point must have exactly two coordinates separated by a comma.",
         "unsupportedVisualValue": "This value is not supported by the visual editor. Please switch to the Code tab to edit this property.",
-        "latexConversionFailed": "Failed to convert the expression to the internal format. Please check the syntax."
+        "latexConversionFailed": "Failed to convert the expression to the internal format. Please check the syntax.",
+        "handleBadge": "Handle {{n}}",
+        "noModulesHint": "Move objects into a module to parametrize them or create arrays.",
+        "noHandlesHint": "Bind objects to a handle to translate/rotate/scale them as a group."
       },
       "moduleEditor": {
         "new": {

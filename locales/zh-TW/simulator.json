@@ -423,6 +423,8 @@
     },
     "Handle": {
       "handle": "控制桿",
+      "handlePoint": "控制桿位置",
+      "rotationScalingCenter": "旋轉/縮放中心",
       "transformation": "變換",
       "transformations": {
         "translation": "平移",
@@ -433,6 +435,7 @@
       },
       "step": "步長",
       "transformationWarning": "對「{{obj}}」進行「{{transformation}}」可能會產生非預期的結果。",
+      "placeOnCanvasHint": "請點擊畫布空白處放置控制桿。",
       "convertToModule": "轉為模組…"
     },
     "CropBox": {
@@ -661,7 +664,10 @@
       "sceneObjects": {
         "title": "物件",
         "info": "直接位於場景中的物件清單。若要以自訂變數、陣列等來參數化，需先將其移入模組。模組內的物件不會直接列出，而是每個模組實例以單一物件顯示。",
-        "moveIntoModule": "移入模組",
+        "bindToHandle": "綁定至",
+        "createHandle": "建立新控制桿",
+        "unbindHandle": "解除綁定",
+        "moveIntoModule": "移動至",
         "createModule": "建立新模組",
         "emptyHint": "要建立物件，請使用工具列並在畫布中建立。",
         "lockLocked": "總是鎖定。點擊以變更",
@@ -677,7 +683,10 @@
         "formulaRequiresModule": "要使用公式，請先將物件移入模組。",
         "invalidPointFormat": "點必須恰好有兩個以逗號分隔的座標。",
         "unsupportedVisualValue": "此值不受視覺化編輯器支援。請切換至程式碼分頁來編輯此屬性。",
-        "latexConversionFailed": "無法將表達式轉換為內部格式。請檢查語法。"
+        "latexConversionFailed": "無法將表達式轉換為內部格式。請檢查語法。",
+        "handleBadge": "控制桿 {{n}}",
+        "noModulesHint": "將物件移入模組，以便用公式參數化或建立陣列。",
+        "noHandlesHint": "將物件綁定到控制桿以將其作為群組來移動、旋轉和縮放。"
       },
       "moduleEditor": {
         "new": {

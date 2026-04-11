@@ -110,6 +110,10 @@ class Handle extends BaseSceneObj {
   }
 
   static getDescription(objData, scene, detailed = false) {
+    if (objData?.notDone) {
+      const hint = i18next.t('simulator:sceneObjs.Handle.placeOnCanvasHint');
+      return `<span style='color:#fbbf24;font-weight:500'>${hint}</span>`;
+    }
     const base = i18next.t('simulator:sceneObjs.Handle.handle');
     if (!detailed) return base;
     const transformation = objData?.transformation || 'default';
@@ -117,6 +121,52 @@ class Handle extends BaseSceneObj {
       ? i18next.t('simulator:common.legacyOption')
       : i18next.t(`simulator:sceneObjs.Handle.transformations.${transformation}`);
     return i18next.t('main:meta.colon', { name: base, value: transformationLabel });
+  }
+
+  static getPropertySchema(objData, scene) {
+    const transformationOptions = {
+      default: i18next.t('simulator:common.legacyOption'),
+      translation: i18next.t('simulator:sceneObjs.Handle.transformations.translation'),
+      xTranslation: i18next.t('simulator:sceneObjs.Handle.transformations.xTranslation'),
+      yTranslation: i18next.t('simulator:sceneObjs.Handle.transformations.yTranslation'),
+      rotation: i18next.t('simulator:sceneObjs.Handle.transformations.rotation'),
+      scaling: i18next.t('simulator:sceneObjs.Handle.transformations.scaling'),
+    };
+    const stepWord = i18next.t('simulator:sceneObjs.Handle.step');
+    return [
+      { key: 'p1', type: 'point', label: i18next.t('simulator:sceneObjs.Handle.handlePoint') },
+      { key: 'p2', type: 'point', label: i18next.t('simulator:sceneObjs.Handle.rotationScalingCenter') },
+      {
+        key: 'transformation',
+        type: 'dropdown',
+        label: i18next.t('simulator:sceneObjs.Handle.transformation'),
+        options: transformationOptions,
+      },
+      {
+        key: 'moveStep',
+        type: 'number',
+        label: i18next.t('main:meta.parentheses', {
+          main: stepWord,
+          sub: i18next.t('simulator:sceneObjs.Handle.transformations.translation'),
+        }),
+      },
+      {
+        key: 'rotateStep',
+        type: 'number',
+        label: i18next.t('main:meta.parentheses', {
+          main: stepWord,
+          sub: i18next.t('simulator:sceneObjs.Handle.transformations.rotation') + ' \u00b0',
+        }),
+      },
+      {
+        key: 'scaleStep',
+        type: 'number',
+        label: i18next.t('main:meta.parentheses', {
+          main: stepWord,
+          sub: i18next.t('simulator:sceneObjs.Handle.transformations.scaling') + ' %',
+        }),
+      },
+    ];
   }
 
   /**

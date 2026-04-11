@@ -423,6 +423,8 @@
     },
     "Handle": {
       "handle": "控制杆",
+      "handlePoint": "控制杆位置",
+      "rotationScalingCenter": "旋转/缩放中心",
       "transformation": "变换",
       "transformations": {
         "translation": "平移",
@@ -433,6 +435,7 @@
       },
       "step": "步长",
       "transformationWarning": "对“{{obj}}”进行“{{transformation}}”可能会产生非预期的结果。",
+      "placeOnCanvasHint": "请点击画布空白处放置控制杆。",
       "convertToModule": "转为模块…"
     },
     "CropBox": {
@@ -661,7 +664,10 @@
       "sceneObjects": {
         "title": "物件",
         "info": "直接位于场景中的物件列表。若要以自定义变量、数组等来参数化，需先将其移入模块。模块内的物件不会直接列出，而是每个模块实例以单一物件显示。",
-        "moveIntoModule": "移入模块",
+        "bindToHandle": "绑定至",
+        "createHandle": "创建新控制杆",
+        "unbindHandle": "解除绑定",
+        "moveIntoModule": "移动至",
         "createModule": "创建新模块",
         "emptyHint": "要创建物件，请使用工具栏并在画布中创建。",
         "lockLocked": "总是锁定。点击以更改",
@@ -677,7 +683,10 @@
         "formulaRequiresModule": "要使用公式，请先将物件移入模块。",
         "invalidPointFormat": "点必须恰好有两个以逗号分隔的坐标。",
         "unsupportedVisualValue": "此值不受可视化编辑器支持。请切换至代码选项卡来编辑此属性。",
-        "latexConversionFailed": "无法将表达式转换为内部格式。请检查语法。"
+        "latexConversionFailed": "无法将表达式转换为内部格式。请检查语法。",
+        "handleBadge": "控制杆 {{n}}",
+        "noModulesHint": "将物件移入模块，以便用公式参数化或创建阵列。",
+        "noHandlesHint": "将物件绑定到控制杆以将其作为群组来移动、旋转和缩放。"
       },
       "moduleEditor": {
         "new": {

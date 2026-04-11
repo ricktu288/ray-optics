@@ -40,13 +40,22 @@
           class="obj-list-item-name-input"
           type="text"
           :value="nameValue"
-          :placeholder="$t('simulator:sidebar.visual.sceneObjects.unnamedObject')"
+          :placeholder="nameInputPlaceholder"
           @input="onNameInput"
           @blur="onBlur"
           @keydown.enter.prevent="commitAndBlur"
           @keydown.stop
         >
-        <div class="obj-list-item-description" v-html="objDescription"></div>
+        <div class="obj-list-item-description-row">
+          <span class="obj-list-item-description" v-html="objDescription"></span>
+          <span v-if="handleBadges.length > 0" class="obj-list-item-badges">
+            <span
+              v-for="badge in handleBadges"
+              :key="badge.key"
+              class="obj-list-item-badge"
+            >{{ badge.label }}</span>
+          </span>
+        </div>
       </div>
       <button
         type="button"
@@ -116,15 +125,68 @@ export default {
 
     watch(obj, updateObjData, { immediate: true })
 
+    const handleBadgeTick = ref(0)
+    const onSceneObjsChanged = () => {
+      updateObjData()
+      handleBadgeTick.value++
+    }
+
     onMounted(() => {
-      document.addEventListener('sceneObjsChanged', updateObjData)
+      document.addEventListener('sceneObjsChanged', onSceneObjsChanged)
     })
 
     onUnmounted(() => {
-      document.removeEventListener('sceneObjsChanged', updateObjData)
+      document.removeEventListener('sceneObjsChanged', onSceneObjsChanged)
+    })
+
+    const handleBadges = computed(() => {
+      handleBadgeTick.value
+      const scene = app.scene
+      const objIndex = props.index
+      if (!scene || !Array.isArray(scene.objs) || typeof objIndex !== 'number' || objIndex < 0) {
+        return []
+      }
+      let handleOrdinal = 0
+      const badges = []
+      for (let i = 0; i < scene.objs.length; i++) {
+        const h = scene.objs[i]
+        if (!h || h.constructor?.type !== 'Handle') continue
+        handleOrdinal++
+        const bindsWhole = Array.isArray(h.objIndices) && h.objIndices.includes(objIndex)
+        const bindsPoint = Array.isArray(h.controlPoints) && h.controlPoints.some(
+          (cp) => cp && cp.targetObjIndex === objIndex
+        )
+        if (!bindsWhole && !bindsPoint) continue
+        const trimmed = typeof h.name === 'string' ? h.name.trim() : ''
+        const label = trimmed
+          ? trimmed
+          : i18next.t('simulator:sidebar.visual.sceneObjects.handleBadge', { n: handleOrdinal })
+        badges.push({ key: `scene-handle-${i}`, label })
+      }
+      return badges
+    })
+
+    const nameInputPlaceholder = computed(() => {
+      handleBadgeTick.value
+      const instance = obj.value
+      if (!instance || instance.constructor?.type !== 'Handle') {
+        return i18next.t('simulator:sidebar.visual.sceneObjects.unnamedObject')
+      }
+      const scene = app.scene
+      const objIndex = props.index
+      if (!scene || !Array.isArray(scene.objs) || typeof objIndex !== 'number' || objIndex < 0) {
+        return i18next.t('simulator:sidebar.visual.sceneObjects.handleBadge', { n: 1 })
+      }
+      let handleOrdinal = 0
+      for (let i = 0; i <= objIndex && i < scene.objs.length; i++) {
+        if (scene.objs[i]?.constructor?.type === 'Handle') handleOrdinal++
+      }
+      const n = handleOrdinal > 0 ? handleOrdinal : 1
+      return i18next.t('simulator:sidebar.visual.sceneObjects.handleBadge', { n })
     })
 
     const objDescription = computed(() => {
+      handleBadgeTick.value
       const instance = obj.value
       const scene = app.scene
       if (!instance || !scene) return ''
@@ -227,6 +289,8 @@ export default {
       expanded,
       obj,
       objData,
+      handleBadges,
+      nameInputPlaceholder,
       objDescription,
       nameValue,
       schema,
@@ -362,11 +426,37 @@ export default {
   outline: none;
 }
 
+.obj-list-item-description-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
 .obj-list-item-description {
+  flex: 1;
+  min-width: 0;
   font-size: 11px;
   color: rgba(255, 255, 255, 0.75);
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.obj-list-item-badges {
+  flex-shrink: 0;
+  display: flex;
+  gap: 4px;
+  padding-right: 2px;
+}
+
+.obj-list-item-badge {
+  font-size: 9px;
+  padding: 1px 4px;
+  border-radius: 4px;
+  background: transparent;
+  border: 1px solid rgba(135, 206, 250, 0.8);
+  color: rgba(135, 206, 250, 0.95);
   white-space: nowrap;
 }
 
