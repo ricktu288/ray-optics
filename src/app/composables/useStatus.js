@@ -129,7 +129,7 @@ export function useStatus() {
     
     status.objects.forEach(obj => {
       if (obj.error) {
-        errors.push(`objs[${obj.index}] ${obj.type}: ${obj.error}`)
+        errors.push(`objs[${obj.index}] ${obj.name || obj.type}: ${obj.error}`)
       }
     })
     
@@ -146,7 +146,7 @@ export function useStatus() {
     
     status.objects.forEach(obj => {
       if (obj.warning) {
-        warnings.push(`objs[${obj.index}] ${obj.type}: ${obj.warning}`)
+        warnings.push(`objs[${obj.index}] ${obj.name || obj.type}: ${obj.warning}`)
       }
     })
     

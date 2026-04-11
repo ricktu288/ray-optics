@@ -1012,7 +1012,7 @@ class Simulator {
 
     // Check if the total brightness of rays where an undefined behavior is encountered is above the threshold
     if (this.totalUndefinedBehavior > Simulator.UNDEFINED_BEHAVIOR_THRESHOLD) {
-      const involvedObjTypes = this.undefinedBehaviorObjs.map(obj => obj.constructor.type);
+      const involvedObjTypes = this.undefinedBehaviorObjs.map(obj => obj.name || obj.constructor.type);
       if (involvedObjTypes.length == 1) {
         this.warning = i18next.t('simulator:generalWarnings.undefinedBehaviorSingle', { involvedObj: involvedObjTypes[0] });
       } else {

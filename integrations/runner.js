@@ -91,10 +91,10 @@ process.stdin.on('end', () => {
           // Object errors and warnings
           scene.objs.forEach((obj, i) => {
             if (obj.getError()) {
-              errors.push(`objs[${i}] ${obj.constructor.type}: ${obj.getError()}`);
+              errors.push(`objs[${i}] ${obj.name || obj.constructor.type}: ${obj.getError()}`);
             }
             if (obj.getWarning()) {
-              warnings.push(`objs[${i}] ${obj.constructor.type}: ${obj.getWarning()}`);
+              warnings.push(`objs[${i}] ${obj.name || obj.constructor.type}: ${obj.getWarning()}`);
             }
           });
 

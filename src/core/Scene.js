@@ -1190,7 +1190,7 @@ class Scene {
       for (var i = 0; i < opticalObjs.length; i++) {
         for (var j = i + 1; j < opticalObjs.length; j++) {
           if (stringifiedObjs[i] == stringifiedObjs[j]) {
-            this.warning = `opticalObjs[${i}]==[${j}] ${opticalObjs[i].constructor.type}: ` + i18next.t('simulator:generalWarnings.identicalObjects');
+            this.warning = `opticalObjs[${i}]==[${j}] ${opticalObjs[i].name || opticalObjs[i].constructor.type}: ` + i18next.t('simulator:generalWarnings.identicalObjects');
             break;
           }
         }

@@ -928,6 +928,7 @@ function updateErrorAndWarning() {
     objects: scene.objs.map((obj, i) => ({
       index: i,
       type: obj.constructor.type,
+      name: obj.name,
       error: obj.getError(),
       warning: obj.getWarning()
     }))

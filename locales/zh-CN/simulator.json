@@ -418,7 +418,8 @@
       "stringExpansionError": "展开字符串“{{str}}”时发生错误，参数为 {{params}}：{{error}}",
       "objectExpansionError": "在数组中展开对象 {{obj}} 时发生错误，参数为 {{params}}：{{error}}",
       "variableDefinitionError": "计算变量定义时发生错误，参数为 {{params}}：{{error}}",
-      "unclosedMathBlock": "数学式块没有结尾：{{str}}"
+      "unclosedMathBlock": "数学式块没有结尾：{{str}}",
+      "inExpandedObjects": "在展开的物件中："
     },
     "Handle": {
       "handle": "控制杆",
@@ -763,6 +764,13 @@
   },
   "footer": {
     "processing": "处理中……按此处以终止。",
+    "copyStatusMessage": {
+      "title": "复制消息",
+      "copied": "已复制"
+    },
+    "jsonFold": {
+      "expand": "展开消息"
+    },
     "betaFeatures": {
       "title": "Beta 功能",
       "description": "您正在使用以下 Beta 功能：",

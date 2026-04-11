@@ -418,7 +418,8 @@
       "stringExpansionError": "Error expanding string \"{{str}}\" with parameters {{params}}: {{error}}",
       "objectExpansionError": "Error expanding object {{obj}} in array with parameters {{params}}: {{error}}",
       "variableDefinitionError": "Error evaluating variable definitions with parameters {{params}}: {{error}}",
-      "unclosedMathBlock": "Unclosed math block: {{str}}"
+      "unclosedMathBlock": "Unclosed math block: {{str}}",
+      "inExpandedObjects": "In expanded objects:"
     },
     "Handle": {
       "handle": "Handle",
@@ -763,6 +764,13 @@
   },
   "footer": {
     "processing": "Processing… Click here to stop.",
+    "copyStatusMessage": {
+      "title": "Copy message",
+      "copied": "Copied"
+    },
+    "jsonFold": {
+      "expand": "Expand message"
+    },
     "betaFeatures": {
       "title": "Beta features",
       "description": "You are using the following beta features:",

@@ -418,7 +418,8 @@
       "stringExpansionError": "展開字串「{{str}}」時發生錯誤，參數為 {{params}}：{{error}}",
       "objectExpansionError": "在陣列中展開物件 {{obj}} 時發生錯誤，參數為 {{params}}：{{error}}",
       "variableDefinitionError": "計算變數定義時發生錯誤，參數為 {{params}}：{{error}}",
-      "unclosedMathBlock": "數學式區塊沒有結尾：{{str}}"
+      "unclosedMathBlock": "數學式區塊沒有結尾：{{str}}",
+      "inExpandedObjects": "在展開的物件中："
     },
     "Handle": {
       "handle": "控制桿",
@@ -763,6 +764,13 @@
   },
   "footer": {
     "processing": "處理中……按此處以終止。",
+    "copyStatusMessage": {
+      "title": "複製訊息",
+      "copied": "已複製"
+    },
+    "jsonFold": {
+      "expand": "展開訊息"
+    },
     "betaFeatures": {
       "title": "Beta 功能",
       "description": "您正在使用以下 Beta 功能：",

@@ -130,7 +130,7 @@ export const useStatusStore = () => {
     
     status.objects.forEach(obj => {
       if (obj.error) {
-        errors.push(`objs[${obj.index}] ${obj.type}: ${obj.error}`)
+        errors.push(`objs[${obj.index}] ${obj.name || obj.type}: ${obj.error}`)
       }
     })
     
@@ -147,7 +147,7 @@ export const useStatusStore = () => {
     
     status.objects.forEach(obj => {
       if (obj.warning) {
-        warnings.push(`objs[${obj.index}] ${obj.type}: ${obj.warning}`)
+        warnings.push(`objs[${obj.index}] ${obj.name || obj.type}: ${obj.warning}`)
       }
     })
     

@@ -448,12 +448,12 @@ class ModuleObj extends BaseSceneObj {
       for (let i in this.objs) {
         let error = this.objs[i].getError();
         if (error) {
-          errors.push(`obj.objs[${i}] ${this.objs[i].constructor.type}: ${error}`);
+          errors.push(`obj.objs[${i}] ${this.objs[i].name || this.objs[i].constructor.type}: ${error}`);
         }
       }
       
       if (errors.length > 0) {
-        return "In expanded objects:\n" + errors.join("\n");
+        return i18next.t('simulator:sceneObjs.ModuleObj.inExpandedObjects') + "\n" + errors.join("\n");
       }
     }
 
@@ -468,12 +468,12 @@ class ModuleObj extends BaseSceneObj {
       for (let i in this.objs) {
         let warning = this.objs[i].getWarning();
         if (warning) {
-          warnings.push(`obj.objs[${i}] ${this.objs[i].constructor.type}: ${warning}`);
+          warnings.push(`obj.objs[${i}] ${this.objs[i].name || this.objs[i].constructor.type}: ${warning}`);
         }
       }
 
       if (warnings.length > 0) {
-        return "In expanded objects:\n" + warnings.join("\n");
+        return i18next.t('simulator:sceneObjs.ModuleObj.inExpandedObjects') + "\n" + warnings.join("\n");
       }
     }
     return null;
