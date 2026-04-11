@@ -75,7 +75,7 @@ export function findMatchingBraceEnd(s, openIdx) {
 /**
  * Non-overlapping `{ ... }` spans that parse as JSON.
  * @param {string} line
- * @returns {{ start: number, end: number, json: string }[]}
+ * @returns {Array<{start: number, end: number, json: string}>}
  */
 export function findValidJsonObjectSpans(line) {
   const spans = []
