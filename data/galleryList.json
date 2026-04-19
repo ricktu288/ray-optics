@@ -337,6 +337,7 @@
     "content": [
       {
         "id": "GRIN-slab",
+        "beta": true,
         "contributors": [
           "Stas Fainer",
           "Yi-Ting Tu"
@@ -362,6 +363,7 @@
       },
       {
         "id": "luneburg-lens",
+        "beta": true,
         "contributors": [
           "Stas Fainer",
           "Yi-Ting Tu"
@@ -369,6 +371,7 @@
       },
       {
         "id": "maxwell-fisheye-lens",
+        "beta": true,
         "contributors": [
           "Stas Fainer",
           "Yi-Ting Tu"

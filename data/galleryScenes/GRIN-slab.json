@@ -91,7 +91,8 @@
         "x": 0,
         "y": 300
       },
-      "stepSize": 0.5
+      "stepSize": 0.5,
+      "plotFns": true
     },
     {
       "type": "Blocker",
@@ -193,5 +194,6 @@
     "x": 588.1069989124172,
     "y": 483.9899180908078
   },
-  "scale": 1
+  "scale": 1,
+  "importedFromBeta": true
 }

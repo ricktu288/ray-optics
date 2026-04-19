@@ -275,6 +275,7 @@
       "absorptionFnInfo": {
         "absorption": "The absorption rate of the glass, in units of 1/[length]."
       },
+      "plotFns": "Plot n and α",
       "stepSize": "Numerical solver step size",
       "stepSizeInfo": "Step size of Euler's method for solving the eikonal ray equation - see 'step' function and documentation inside the 'BaseGrinGlass.js' file, for more information.",
       "intersectTol": "Intersection tolerance",
@@ -572,10 +573,13 @@
       "title": "Ideal curve arrow"
     },
     "glass": {
-      "title": "Glass fill"
+      "title": "Refractive index visualization"
+    },
+    "glassAbsorption": {
+      "title": "Absorption rate visualization"
     },
     "grinGlass": {
-      "title": "Gradient-index glass fill"
+      "title": "GRIN glass default fill"
     },
     "blocker": {
       "title": "Blocker surface"

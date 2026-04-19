@@ -1589,7 +1589,12 @@ class Editor {
         ctxSVG.fillRect(0, 0, imageWidth, imageHeight);
       }
 
-      const exportSimulator = new Simulator(exportingScene, ctxSVG, null, null, null, null, false, cropBox.rayCountLimit || 1e7);
+      const exportSimulator = new Simulator(exportingScene, ctxSVG, null, null, null, null, false, cropBox.rayCountLimit || 1e7, null, null, (width, height) => {
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        return canvas;
+      });
 
       function onSimulationEnd() {
         const blob = new Blob([ctxSVG.getSerializedSvg()], { type: 'image/svg+xml' });
@@ -1652,7 +1657,12 @@ class Editor {
         gl = canvasGl.getContext('webgl', contextAttributes) || canvasGl.getContext('experimental-webgl', contextAttributes);
       }
 
-      const exportSimulator = new Simulator(exportingScene, ctxs[0], ctxs[1], ctxs[2], ctxs[3], document.createElement('canvas').getContext('2d'), false, cropBox.rayCountLimit || 1e7, gl);
+      const exportSimulator = new Simulator(exportingScene, ctxs[0], ctxs[1], ctxs[2], ctxs[3], document.createElement('canvas').getContext('2d'), false, cropBox.rayCountLimit || 1e7, gl, null, (width, height) => {
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        return canvas;
+      });
 
       function onSimulationEnd() {
         const finalCanvas = document.createElement('canvas');

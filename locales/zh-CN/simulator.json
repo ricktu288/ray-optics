@@ -275,6 +275,7 @@
       "absorptionFnInfo": {
         "absorption": "透光物的吸收率，单位为 1/[长度]。"
       },
+      "plotFns": "绘制 n 和 α",
       "stepSize": "数值求解器步长",
       "stepSizeInfo": "用欧拉法求解光线程函方程(eikonal ray equation)的步长 - 更多资讯详见 'BaseGrinGlass.js' 中的 'step' 函数与原始码文件。",
       "intersectTol": "相交容忍度",
@@ -572,10 +573,13 @@
       "title": "理想曲面箭头"
     },
     "glass": {
-      "title": "透光物填充"
+      "title": "折射率视觉化"
+    },
+    "glassAbsorption": {
+      "title": "吸收率视觉化"
     },
     "grinGlass": {
-      "title": "渐变折射率透光物填充"
+      "title": "渐变折射率默认填充"
     },
     "blocker": {
       "title": "遮光物表面"

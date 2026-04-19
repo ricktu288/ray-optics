@@ -51,6 +51,7 @@ class ParamGrinGlass extends ParamCurveObjMixin(BaseGrinGlass) {
     ],
     refIndexFn: '1+e^{-\\frac{x^2+y^2}{50^2}}',
     absorptionFn: '0',
+    plotFns: false,
     stepSize: 1,
     intersectTol: 1e-3,
     partialReflect: true
@@ -132,6 +133,26 @@ class ParamGrinGlass extends ParamCurveObjMixin(BaseGrinGlass) {
       this.drawPath(canvasRenderer);
       this.fillGlass(canvasRenderer, isAboveLight, isHovered);
     }
+  }
+
+  getGrinFillBounds() {
+    if (!this.path || this.path.length === 0) {
+      return null;
+    }
+
+    let xMin = Infinity;
+    let xMax = -Infinity;
+    let yMin = Infinity;
+    let yMax = -Infinity;
+
+    for (const point of this.path) {
+      xMin = Math.min(xMin, point.x);
+      xMax = Math.max(xMax, point.x);
+      yMin = Math.min(yMin, point.y);
+      yMax = Math.max(yMax, point.y);
+    }
+
+    return { xMin, xMax, yMin, yMax };
   }
 
   move(diffX, diffY) {

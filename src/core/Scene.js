@@ -325,6 +325,9 @@ class Scene {
       glass: {
         color: { r: 1, g: 1, b: 1 },
       },
+      glassAbsorption: {
+        color: { r: 1, g: 0.41, b: 0 },
+      },
       grinGlass: {
         color: { r: 1, g: 0, b: 1, a: 0.15 },
       },
