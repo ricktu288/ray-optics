@@ -26,14 +26,14 @@
       "title": "清空"
     },
     "save": {
-      "title": "保存"
+      "title": "保存…"
     },
     "open": {
-      "title": "打开",
+      "title": "打开…",
       "description": "打开文件或背景图片。背景图片将从坐标原点显示。（或拖放文件）"
     },
     "export": {
-      "title": "导出为PNG/SVG"
+      "title": "导出为PNG/SVG…"
     },
     "copyLink": {
       "title": "复制分享连结",
@@ -79,7 +79,7 @@
       "title": "缩放"
     },
     "showAdvancedSettings": {
-      "title": "更多场景设置…"
+      "title": "更多场景设置"
     },
     "theme": {
       "title": "主题"
@@ -134,7 +134,7 @@
   },
   "objBar": {
     "showAdvanced": {
-      "title": "更多选项…"
+      "title": "更多选项"
     },
     "applyToAll": {
       "title": "套用全部"
@@ -270,7 +270,7 @@
         "lambda": "如需模拟色散，请用参数 {{lambda}} 代表真空中波长，单位为纳米。",
         "diff": "仅支持可微函数。",
         "origin": "n(x,y)的原点为绝对座标，不跟随对象移动。在控制点上点两下可显示其绝对座标。",
-        "accuracy": "如需较精确的模拟，请见「更多选项…」"
+        "accuracy": "如需较精确的模拟，请见「更多选项」"
       },
       "absorptionFnInfo": {
         "absorption": "透光物的吸收率，单位为 1/[长度]。"

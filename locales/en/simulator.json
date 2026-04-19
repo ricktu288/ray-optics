@@ -26,14 +26,14 @@
       "title": "Reset"
     },
     "save": {
-      "title": "Save"
+      "title": "Save…"
     },
     "open": {
-      "title": "Open",
+      "title": "Open…",
       "description": "Open an existing file or background image. The background image will be shown from the coordinate origin. (Or drop the file)"
     },
     "export": {
-      "title": "Export as PNG/SVG"
+      "title": "Export as PNG/SVG…"
     },
     "copyLink": {
       "title": "Copy Shareable Link",
@@ -79,7 +79,7 @@
       "title": "Zoom"
     },
     "showAdvancedSettings": {
-      "title": "More scene settings…"
+      "title": "More scene settings"
     },
     "theme": {
       "title": "Theme"
@@ -134,7 +134,7 @@
   },
   "objBar": {
     "showAdvanced": {
-      "title": "More options…"
+      "title": "More options"
     },
     "applyToAll": {
       "title": "Apply to All"
@@ -270,7 +270,7 @@
         "lambda": "To simulate chromatic dispersion, use parameter {{lambda}} for the vacuum wavelength in nanometers.",
         "diff": "Only supports differentiable functions.",
         "origin": "The origin of n(x,y) is in the absolute coordinates and does not move with the object. You may double-click a control-point to inspect its absolute coordinates.",
-        "accuracy": "For a more accurate simulation, see \"More options…\""
+        "accuracy": "For a more accurate simulation, see \"More options\""
       },
       "absorptionFnInfo": {
         "absorption": "The absorption rate of the glass, in units of 1/[length]."

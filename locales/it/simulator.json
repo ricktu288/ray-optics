@@ -25,14 +25,14 @@
       "title": "Resetta"
     },
     "save": {
-      "title": "Salva"
+      "title": "Salva…"
     },
     "open": {
-      "title": "Apri",
+      "title": "Apri…",
       "description": "Apri un file esistente o un'immagine di sfondo. L'immagine di sfondo verrà mostrata dall'origine delle coordinate. (O trascina e rilascia il file)"
     },
     "export": {
-      "title": "Esporta come PNG/SVG"
+      "title": "Esporta come PNG/SVG…"
     },
     "copyLink": {
       "title": "Copia link condivisibile",

@@ -244,7 +244,7 @@
 
     <div class="theme-option-row">
       <FillControl
-        :label="$t('simulator:themeModal.glassAbsorption.title') + '<sup>Beta</sup>'"
+        :label="$t('simulator:themeModal.glassAbsorption.title') + '<sup style=\'color: #0006;\'>Beta</sup>'"
         :fillOptions="glassAbsorptionOptions"
         @update="updateGlassAbsorption"
       />

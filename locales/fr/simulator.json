@@ -25,14 +25,14 @@
       "title": "Recommencer"
     },
     "save": {
-      "title": "Sauvegarder"
+      "title": "Sauvegarder…"
     },
     "open": {
-      "title": "Ouvrir",
+      "title": "Ouvrir…",
       "description": "Ouvrir un fichier existant ou une image de fond. L'image de fond sera montrée depuis l'origine des coordonnées. (Ou déposez l'image dans la fenêtre)"
     },
     "export": {
-      "title": "Exporter comme PNG/SVG"
+      "title": "Exporter comme PNG/SVG…"
     },
     "copyLink": {
       "title": "Copier lien partageable",
@@ -77,7 +77,7 @@
       "title": "Zoom"
     },
     "showAdvancedSettings": {
-      "title": "Plus de paramètres de scène…"
+      "title": "Plus de paramètres de scène"
     },
     "theme": {
       "title": "Thème"
@@ -92,7 +92,7 @@
   },
   "objBar": {
     "showAdvanced": {
-      "title": "Plus d'options…"
+      "title": "Plus d'options"
     },
     "applyToAll": {
       "title": "Appliquer à tous"

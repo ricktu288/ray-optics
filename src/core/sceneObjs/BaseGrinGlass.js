@@ -104,7 +104,7 @@ class BaseGrinGlass extends BaseGlass {
       });
     }
 
-    objBar.createBoolean(i18next.t('simulator:sceneObjs.BaseGrinGlass.plotFns') + '<sup>Beta</sup>', this.plotFns, function (obj, value) {
+    objBar.createBoolean(i18next.t('simulator:sceneObjs.BaseGrinGlass.plotFns') + ' <sup style="color: #fffa;">Beta</sup>', this.plotFns, function (obj, value) {
       obj.plotFns = value;
     });
 

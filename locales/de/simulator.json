@@ -23,14 +23,14 @@
       "title": "Zurücksetzen"
     },
     "save": {
-      "title": "Speichern"
+      "title": "Speichern…"
     },
     "open": {
-      "title": "Öffnen",
+      "title": "Öffnen…",
       "description": "Öffnet eine existierende Datei oder ein Hintergrundbild. Das Hintergundbild wird relativ zum Koordinatenursprung angezeigt. (Oder Datei hierher ziehen.)"
     },
     "export": {
-      "title": "Als PNG/SVG exportieren"
+      "title": "Als PNG/SVG exportieren…"
     },
     "copyLink": {
       "title": "Teilbaren Link kopieren"
@@ -77,7 +77,7 @@
   },
   "objBar": {
     "showAdvanced": {
-      "title": "Weitere Optionen…"
+      "title": "Weitere Optionen"
     },
     "applyToAll": {
       "title": "Alle anwenden"

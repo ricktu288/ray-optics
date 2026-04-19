@@ -21,7 +21,12 @@
     <span>
       <nobr>
         <span class="d-none d-lg-inline">
-          <span id="showAdvanced" v-text="$t('simulator:objBar.showAdvanced.title')" @click="handleShowAdvanced"></span>
+          <span id="showAdvanced" class="obj-bar-more-options" @click="handleShowAdvanced">
+            <span class="obj-bar-more-options-label">{{ $t('simulator:objBar.showAdvanced.title') }}</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-chevron-right obj-bar-more-options-chevron" viewBox="0 0 16 16" aria-hidden="true">
+              <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+            </svg>
+          </span>
           <span id="apply_to_all_box">
             <input type="checkbox" class="btn-check" id="apply_to_all" autocomplete="off" v-model="applyToAll">
             <label id="apply_to_all_label" class="btn btn-outline-secondary" for="apply_to_all" v-tooltip-popover="{ title: $t('simulator:objBar.applyToAll.title') }">
@@ -155,7 +160,7 @@ export default {
       app.unselect()
     },
     handleShowAdvanced(event) {
-      event.target.blur()
+      event.currentTarget.blur()
       app.showAdvanced()
     }
   }
@@ -309,7 +314,28 @@ export default {
 }
 
 #showAdvanced {
-  color: rgba(255, 255, 255, 0.6);
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  padding-right: 0.15rem;
+}
+
+#showAdvanced .obj-bar-more-options-chevron {
+  flex-shrink: 0;
+}
+
+#showAdvanced .obj-bar-more-options-label,
+#showAdvanced .obj-bar-more-options-chevron {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+#showAdvanced .obj-bar-more-options-label {
+  font-style: normal;
+}
+
+#showAdvanced:hover .obj-bar-more-options-label,
+#showAdvanced:hover .obj-bar-more-options-chevron {
+  color: rgba(255, 255, 255, 0.8);
 }
 </style>

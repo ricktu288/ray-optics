@@ -306,6 +306,8 @@
       :layout="layout"
     />
     <li><hr class="dropdown-divider"></li>
+    <ModuleTools :layout="layout" />
+    <li><hr class="dropdown-divider"></li>
     <MoreToolsCollapsible :layout="layout">
       <ToolItem
         id="CustomSurface"
@@ -329,8 +331,6 @@
         :layout="layout"
       />
     </MoreToolsCollapsible>
-    <li><hr class="dropdown-divider"></li>
-    <ModuleTools :layout="layout" />
   </ToolsCategory>
 </template>
 

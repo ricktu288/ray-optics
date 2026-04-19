@@ -26,14 +26,14 @@
       "title": "Resetuj"
     },
     "save": {
-      "title": "Zapisz"
+      "title": "Zapisz…"
     },
     "open": {
-      "title": "Otwórz",
+      "title": "Otwórz…",
       "description": "Otwórz istniejący plik lub obraz tła. Obraz tła zostanie wyświetlony z punktu początkowego współrzędnych. (Lub upuść plik)"
     },
     "export": {
-      "title": "Eksportuj jako PNG/SVG"
+      "title": "Eksportuj jako PNG/SVG…"
     },
     "copyLink": {
       "title": "Kopiuj link do udostępniania",
@@ -79,7 +79,7 @@
       "title": "Zoom"
     },
     "showAdvancedSettings": {
-      "title": "Więcej ustawień sceny…"
+      "title": "Więcej ustawień sceny"
     },
     "theme": {
       "title": "Motyw"
@@ -133,7 +133,7 @@
   },
   "objBar": {
     "showAdvanced": {
-      "title": "Więcej opcji…"
+      "title": "Więcej opcji"
     },
     "applyToAll": {
       "title": "Zastosuj do wszystkich"
@@ -236,7 +236,7 @@
         "lambda": "Aby symulować dyspersję chromatyczną, użyj parametru {{lambda}} dla długości fali w próżni w nanometrach.",
         "diff": "Obsługuje tylko funkcje różniczkowalne.",
         "origin": "Początek n(x,y) znajduje się we współrzędnych bezwzględnych i nie porusza się wraz z obiektem. Możesz kliknąć dwukrotnie punkt kontrolny, aby sprawdzić jego współrzędne bezwzględne.",
-        "accuracy": "Dla dokładniejszej symulacji, zobacz \"Więcej opcji…\""
+        "accuracy": "Dla dokładniejszej symulacji, zobacz \"Więcej opcji\""
       },
       "absorptionFnInfo": {
         "absorption": "Współczynnik absorpcji szkła w jednostkach 1/[długość]."

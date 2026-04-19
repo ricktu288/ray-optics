@@ -20,13 +20,13 @@
       "title": "Reset"
     },
     "save": {
-      "title": "Save"
+      "title": "Save…"
     },
     "open": {
-      "title": "විවෘත කරන්න"
+      "title": "විවෘත කරන්න…"
     },
     "export": {
-      "title": "PNG/SVG ලෙස save කරන්න"
+      "title": "PNG/SVG ලෙස save කරන්න…"
     },
     "copyLink": {
       "title": "Share කිරීමට Link ඒක copy කරන්න"
@@ -72,7 +72,7 @@
   },
   "objBar": {
     "showAdvanced": {
-      "title": "තවත් විකල්පයන්…"
+      "title": "තවත් විකල්පයන්"
     },
     "applyToAll": {
       "title": "සියල්ලටම අයදුම් කරන්න"
