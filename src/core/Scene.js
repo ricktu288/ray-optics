@@ -1139,6 +1139,9 @@ class Scene {
       }
     }
 
+    // Re-expand every module instance so nested modules and templates pick up the new id
+    // (same as other module-definition edits — not only the renamed module’s top-level refs).
+    this.reloadAllModules();
     return true;
   }
 

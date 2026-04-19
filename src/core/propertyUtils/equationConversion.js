@@ -541,6 +541,78 @@ class TexExprParser {
 }
 
 /**
+ * Remove a chain of ParenthesisNode wrappers (used after nested collapse).
+ * @param {*} node math.js expression AST node
+ * @returns {*} math.js expression AST node
+ */
+function stripParenChain(node) {
+  let n = node;
+  while (n.type === 'ParenthesisNode') {
+    n = n.content;
+  }
+  return n;
+}
+
+/**
+ * Collapse AST chains ParenthesisNode(ParenthesisNode(x)) to a single
+ * ParenthesisNode so e.g. ((a+b)) does not become redundant nesting in output.
+ * Does not unwrap a single outer pair around a product like ((a+b)*(c+d)).
+ * @param {*} node math.js expression AST node
+ * @returns {*} math.js expression AST node
+ */
+function collapseRedundantNestedParentheses(node) {
+  if (!node || typeof node.map !== 'function') {
+    return node;
+  }
+  const mapped = node.map((child) => collapseRedundantNestedParentheses(child));
+  if (mapped.type === 'ParenthesisNode') {
+    let inner = mapped.content;
+    while (inner.type === 'ParenthesisNode') {
+      inner = inner.content;
+    }
+    return new math.ParenthesisNode(inner);
+  }
+  return mapped;
+}
+
+/**
+ * Strip gratuitous ParenthesisNode wrappers from function and unary +/- arguments
+ * (e.g. sin(((x))) → sin(x)). Top-level expressions such as ((a+b)*(c+d)) are unchanged.
+ * @param {*} node math.js expression AST node
+ * @returns {*} math.js expression AST node
+ */
+function unwrapParenInCallableArgs(node) {
+  if (!node || typeof node.map !== 'function') {
+    return node;
+  }
+  const mapped = node.map((child) => unwrapParenInCallableArgs(child));
+  if (mapped.type === 'FunctionNode' && mapped.args) {
+    return new math.FunctionNode(mapped.fn, mapped.args.map(stripParenChain));
+  }
+  if (mapped.type === 'OperatorNode' && mapped.args && mapped.args.length === 1) {
+    const fn = mapped.fn;
+    if (fn === 'unaryMinus' || fn === 'unaryPlus') {
+      return new math.OperatorNode(
+        mapped.op,
+        fn,
+        [stripParenChain(mapped.args[0])],
+        mapped.implicit,
+        mapped.isPercentage
+      );
+    }
+  }
+  return mapped;
+}
+
+/**
+ * @param {*} node math.js expression AST node
+ * @returns {*} math.js expression AST node
+ */
+function normalizeParsedEquationAST(node) {
+  return unwrapParenInCallableArgs(collapseRedundantNestedParentheses(node));
+}
+
+/**
  * Convert a LaTeX equation string to a math.js expression string.
  * @param {string} latex - A LaTeX equation string.
  * @returns {string} The equivalent math.js expression string.
@@ -557,7 +629,8 @@ export function latexToMathJS(latex) {
   if (!p.atEnd()) {
     throw new Error('Invalid or unsupported LaTeX in equation');
   }
-  return math.parse(expr).toString();
+  const node = normalizeParsedEquationAST(math.parse(expr));
+  return node.toString();
 }
 
 /**
@@ -673,17 +746,20 @@ export function equationValueForListDisplay(value) {
  * equation value.
  *
  * In template mode the value is wrapped in double backticks.
- * In non-template mode the value is converted to LaTeX.
+ * In non-template mode the value is converted to LaTeX, then validated by
+ * parsing that LaTeX back to math.js so stored values remain editable.
  *
  * @param {string} text - The user-entered math.js expression.
  * @param {boolean} isTemplate - Whether the current context is a template.
  * @returns {string|undefined} The stored value, or undefined for empty input.
- * @throws If non-template conversion to LaTeX fails.
+ * @throws If non-template conversion to LaTeX fails or the LaTeX cannot be read back.
  */
 export function equationDisplayToValue(text, isTemplate) {
   if (text === '') return undefined;
   if (isTemplate) {
     return '``' + text + '``';
   }
-  return mathJSToLatex(text);
+  const latex = mathJSToLatex(text);
+  latexToMathJS(latex);
+  return latex;
 }

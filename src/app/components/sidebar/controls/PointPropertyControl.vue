@@ -183,9 +183,16 @@ export default {
       return v !== undefined && v !== null ? v : props.default?.y
     })
 
-    const unsupported = computed(() =>
-      !isFormulaValueSupported(xRaw.value) || !isFormulaValueSupported(yRaw.value)
-    )
+    const unsupported = computed(() => {
+      const x = xRaw.value
+      const y = yRaw.value
+      const bothMissing =
+        (x === undefined || x === null) && (y === undefined || y === null)
+      if (bothMissing) {
+        return true
+      }
+      return !isFormulaValueSupported(x) || !isFormulaValueSupported(y)
+    })
 
     const displayValue = computed(() =>
       `${valueToFormulaDisplay(xRaw.value)}, ${valueToFormulaDisplay(yRaw.value)}`
