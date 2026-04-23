@@ -22,7 +22,7 @@
     "html-loader": "^5.1.0",
     "html-webpack-plugin": "^5.6.2",
     "i18next": "^23.16.5",
-    "i18next-http-backend": "^2.6.2",
+    "i18next-http-backend": "^3.0.5",
     "jquery": "^3.7.1",
     "json-url": "^3.1.0",
     "mathjs": "^15.2.0",
