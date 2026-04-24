@@ -325,6 +325,9 @@ class Scene {
       glass: {
         color: { r: 1, g: 1, b: 1 },
       },
+      glassAbsorption: {
+        color: { r: 1, g: 0.41, b: 0 },
+      },
       grinGlass: {
         color: { r: 1, g: 0, b: 1, a: 0.15 },
       },
@@ -1136,6 +1139,9 @@ class Scene {
       }
     }
 
+    // Re-expand every module instance so nested modules and templates pick up the new id
+    // (same as other module-definition edits — not only the renamed module’s top-level refs).
+    this.reloadAllModules();
     return true;
   }
 

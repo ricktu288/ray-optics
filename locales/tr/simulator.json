@@ -26,14 +26,14 @@
       "title": "İptal"
     },
     "save": {
-      "title": "Kaydet"
+      "title": "Kaydet…"
     },
     "open": {
-      "title": "Aç",
+      "title": "Aç…",
       "description": "Mevcut bir dosyayı veya arka plan görüntüsünü açın. Arka plan görüntüsü koordinat başlangıç noktasından gösterilecektir. (Veya dosyayı bırakın)"
     },
     "export": {
-      "title": "PNG/SVG olarak dışa aktar"
+      "title": "PNG/SVG olarak dışa aktar…"
     },
     "copyLink": {
       "title": "Paylaşılabilir Bağlantıyı Kopyala",
@@ -79,7 +79,7 @@
       "title": "Yakınlaştır"
     },
     "showAdvancedSettings": {
-      "title": "Daha fazla sahne ayarı…"
+      "title": "Daha fazla sahne ayarı"
     },
     "theme": {
       "title": "Tema"
@@ -133,7 +133,7 @@
   },
   "objBar": {
     "showAdvanced": {
-      "title": "Daha fazla seçenek…"
+      "title": "Daha fazla seçenek"
     },
     "applyToAll": {
       "title": "Tümüne Uygula"

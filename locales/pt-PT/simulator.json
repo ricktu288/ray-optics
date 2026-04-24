@@ -24,14 +24,14 @@
       "title": "Reiniciar"
     },
     "save": {
-      "title": "Gravar"
+      "title": "Gravar…"
     },
     "open": {
-      "title": "Abrir",
+      "title": "Abrir…",
       "description": "Abrir um ficheiro existente ou imagem de fundo. A imagem de fundo será exibida a partir origem das coordenadas. (Ou solte o ficheiro)"
     },
     "export": {
-      "title": "Exportar como PNG/SVG"
+      "title": "Exportar como PNG/SVG…"
     },
     "copyLink": {
       "title": "Copiar Ligação Partilhável",
@@ -77,7 +77,7 @@
       "title": "Zoom"
     },
     "showAdvancedSettings": {
-      "title": "Mais configurações da cena…"
+      "title": "Mais configurações da cena"
     },
     "theme": {
       "title": "Tema"
@@ -113,7 +113,7 @@
   },
   "objBar": {
     "showAdvanced": {
-      "title": "Mais opções…"
+      "title": "Mais opções"
     },
     "applyToAll": {
       "title": "Aplicar em Todos"
@@ -212,7 +212,7 @@
         "lambda": "Para simular dispersão cromática, use o parâmetro {{lambda}} para o comprimento de onda no vácuo em nanômetros.",
         "diff": "Somente suporta funções diferenciáveis.",
         "origin": "A origem de n(x,y) está em coordenadas absolutas e n~~ao move com o objeto. Pode clicar duas vezes num ponto de controlo para inspecionar as suas coordenadas absolutas.",
-        "accuracy": "Para simulação mais precisa, veja \"Mais opções…\""
+        "accuracy": "Para simulação mais precisa, veja \"Mais opções\""
       },
       "stepSize": "Tamanho de passo da solução numérica",
       "stepSizeInfo": "Tamanho de passo do método de Euler para resolver a equação do eikonal de raios - ver função 'step' e documentação dentro do ficheiro 'BaseGrinGlass.js', para mais informações.",

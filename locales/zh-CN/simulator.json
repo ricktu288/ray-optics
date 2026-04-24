@@ -26,10 +26,10 @@
       "title": "清空"
     },
     "save": {
-      "title": "保存"
+      "title": "保存…"
     },
     "open": {
-      "title": "打开",
+      "title": "打开…",
       "description": "打开文件或背景图片。背景图片将从坐标原点显示。（或拖放文件）"
     },
     "importShapes": {
@@ -37,7 +37,7 @@
       "description": "从 SVG 文件导入形状作为光学元件（镜子、透光物等）。"
     },
     "export": {
-      "title": "导出为PNG/SVG"
+      "title": "导出为PNG/SVG…"
     },
     "copyLink": {
       "title": "复制分享连结",
@@ -83,7 +83,7 @@
       "title": "缩放"
     },
     "showAdvancedSettings": {
-      "title": "更多场景设置…"
+      "title": "更多场景设置"
     },
     "theme": {
       "title": "主题"
@@ -138,7 +138,7 @@
   },
   "objBar": {
     "showAdvanced": {
-      "title": "更多选项…"
+      "title": "更多选项"
     },
     "applyToAll": {
       "title": "套用全部"
@@ -274,11 +274,12 @@
         "lambda": "如需模拟色散，请用参数 {{lambda}} 代表真空中波长，单位为纳米。",
         "diff": "仅支持可微函数。",
         "origin": "n(x,y)的原点为绝对座标，不跟随对象移动。在控制点上点两下可显示其绝对座标。",
-        "accuracy": "如需较精确的模拟，请见「更多选项…」"
+        "accuracy": "如需较精确的模拟，请见「更多选项」"
       },
       "absorptionFnInfo": {
         "absorption": "透光物的吸收率，单位为 1/[长度]。"
       },
+      "plotFns": "绘制 n 和 α",
       "stepSize": "数值求解器步长",
       "stepSizeInfo": "用欧拉法求解光线程函方程(eikonal ray equation)的步长 - 更多资讯详见 'BaseGrinGlass.js' 中的 'step' 函数与原始码文件。",
       "intersectTol": "相交容忍度",
@@ -598,10 +599,13 @@
       "title": "理想曲面箭头"
     },
     "glass": {
-      "title": "透光物填充"
+      "title": "折射率视觉化"
+    },
+    "glassAbsorption": {
+      "title": "吸收率视觉化"
     },
     "grinGlass": {
-      "title": "渐变折射率透光物填充"
+      "title": "渐变折射率默认填充"
     },
     "blocker": {
       "title": "遮光物表面"

@@ -205,7 +205,11 @@ export async function runScene(jsonPath, writeOutput = false) {
       ctxAboveLight, 
       ctxGrid, 
       ctxVirtual, 
-      false
+      false,
+      Infinity,
+      null,
+      null,
+      (width, height) => createCanvas(width, height)
     );
 
     // Set cropbox settings
@@ -224,7 +228,7 @@ export async function runScene(jsonPath, writeOutput = false) {
     simulator.rayCountLimit = cropBox.rayCountLimit || 1e7;
   } else {
     // Create simulator without canvases
-    simulator = new rayOptics.Simulator(scene);
+    simulator = new rayOptics.Simulator(scene, null, null, null, null, null, false, Infinity, null, null, (width, height) => createCanvas(width, height));
   }
 
   // Run simulation

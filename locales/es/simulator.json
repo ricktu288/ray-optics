@@ -26,14 +26,14 @@
       "title": "Reiniciar"
     },
     "save": {
-      "title": "Guardar"
+      "title": "Guardar…"
     },
     "open": {
-      "title": "Abrir",
+      "title": "Abrir…",
       "description": "Abrir un archivo existente o una imagen de fondo. La imagen de fondo se mostrará desde el origen de coordenadas. (O arrastre el archivo)"
     },
     "export": {
-      "title": "Exportar como PNG/SVG"
+      "title": "Exportar como PNG/SVG…"
     },
     "copyLink": {
       "title": "Copiar enlace para compartir",
@@ -79,7 +79,7 @@
       "title": "Zoom"
     },
     "showAdvancedSettings": {
-      "title": "Más configuraciones de escena…"
+      "title": "Más configuraciones de escena"
     },
     "theme": {
       "title": "Tema"
@@ -130,7 +130,7 @@
   },
   "objBar": {
     "showAdvanced": {
-      "title": "Más opciones…"
+      "title": "Más opciones"
     },
     "applyToAll": {
       "title": "Aplicar a Todos"

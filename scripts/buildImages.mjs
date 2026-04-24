@@ -86,7 +86,7 @@ const ctxVirtual = canvasVirtual.getContext('2d');
 const ctxFinal = canvasFinal.getContext('2d');
 
 const scene = new rayOptics.Scene();
-const simulator = new rayOptics.Simulator(scene, ctxLight, ctxBelowLight, ctxAboveLight, ctxGrid, ctxVirtual, false);
+const simulator = new rayOptics.Simulator(scene, ctxLight, ctxBelowLight, ctxAboveLight, ctxGrid, ctxVirtual, false, Infinity, null, null, (width, height) => createCanvas(width, height));
 
 function loadScene(sceneJson, callback, backgroundImage) {
   if (sceneJson.backgroundImage) {

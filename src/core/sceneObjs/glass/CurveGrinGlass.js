@@ -45,6 +45,7 @@ class CurveGrinGlass extends CurveObjMixin(BaseGrinGlass) {
     notDone: false,
     refIndexFn: '1.1+0.1\\cdot\\cos\\left(0.1\\cdot y\\right)',
     absorptionFn: '0',
+    plotFns: false,
     origin: { x: 0, y: 0 },
     stepSize: 1,
     intersectTol: 5e-2,
@@ -106,8 +107,26 @@ class CurveGrinGlass extends CurveObjMixin(BaseGrinGlass) {
     ctx.lineWidth = 1;
   }
 
-  // Overrides the mixin to flag that reshaping does not preserve the GRIN
-  // index function (same as the legacy behavior).
+  getGrinFillBounds() {
+    if (!this.bboxes || this.bboxes.length === 0) {
+      return null;
+    }
+
+    let xMin = Infinity;
+    let xMax = -Infinity;
+    let yMin = Infinity;
+    let yMax = -Infinity;
+
+    for (const bbox of this.bboxes) {
+      xMin = Math.min(xMin, bbox.x.min);
+      xMax = Math.max(xMax, bbox.x.max);
+      yMin = Math.min(yMin, bbox.y.min);
+      yMax = Math.max(yMax, bbox.y.max);
+    }
+
+    return { xMin, xMax, yMin, yMax };
+  }
+
   move(diffX, diffY) {
     super.move(diffX, diffY);
     return false;

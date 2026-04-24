@@ -74,9 +74,14 @@
   <span 
     v-if="!shouldShowAdvancedSettings && !shouldShowAdvancedByDefault"
     id="showAdvancedSettings" 
-    v-text="$t('simulator:settings.showAdvancedSettings.title')" 
+    class="show-advanced-settings-toggle d-flex align-items-center gap-1"
     @click="handleShowAdvancedSettings"
-  ></span>
+  >
+    <span class="show-advanced-settings-label">{{ $t('simulator:settings.showAdvancedSettings.title') }}</span>
+    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-chevron-down show-advanced-settings-chevron flex-shrink-0" viewBox="0 0 16 16" aria-hidden="true">
+      <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>
+    </svg>
+  </span>
 
   <Transition name="advanced-settings">
     <div v-if="shouldShowAdvancedSettings || shouldShowAdvancedByDefault" class="advanced-settings-container">
@@ -324,15 +329,23 @@ export default {
 }
 
 #showAdvancedSettings {
-  color: rgba(0, 0, 0, 0.6);
   cursor: pointer;
   font-size: 14px;
-  display: block;
   padding-top: 3px;
 }
 
-#showAdvancedSettings:hover {
-  color: rgba(0, 0, 0, 0.8);
+#showAdvancedSettings .show-advanced-settings-label,
+#showAdvancedSettings .show-advanced-settings-chevron {
+  color: var(--bs-secondary-color, #6c757d);
+}
+
+#showAdvancedSettings .show-advanced-settings-label {
+  font-style: normal;
+}
+
+#showAdvancedSettings:hover .show-advanced-settings-label,
+#showAdvancedSettings:hover .show-advanced-settings-chevron {
+  color: #5c636a;
 }
 
 .advanced-settings-container {

@@ -221,7 +221,7 @@
       "description": "Drag to move the view. (Mouse right button drag has the same function.)"
     },
     "moreTools": {
-      "title": "More Tools…"
+      "title": "More Tools"
     }
   },
   "view": {

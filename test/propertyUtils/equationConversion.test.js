@@ -81,6 +81,23 @@ describe('equationConversion', () => {
     });
   });
 
+  describe('latexToMathJS – redundant parenthesis normalization', () => {
+    it('collapses nested parens around a sum', () => {
+      const tex = String.raw`\left(\left(a+b\right)\right)`;
+      expect(latexToMathJS(tex)).toBe('(a + b)');
+    });
+
+    it('collapses nested parens in a function argument', () => {
+      const tex = String.raw`\sin\left(\left(\left(x\right)\right)\right)`;
+      expect(latexToMathJS(tex)).toBe('sin(x)');
+    });
+
+    it('does not strip the outer pair around a product of parenthesized sums', () => {
+      const tex = String.raw`\left(\left(a+b\right)\cdot\left(c+d\right)\right)`;
+      expect(latexToMathJS(tex)).toBe('((a + b) * (c + d))');
+    });
+  });
+
   describe('mathJSToLatex – math.js spellings for documented functions', () => {
     const cases = [
       ['sin(x)', '\\sin'],

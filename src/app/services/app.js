@@ -88,7 +88,14 @@ function initAppService() {
     document.createElement('canvas').getContext('2d'),
     true,
     Infinity,
-    gl
+    gl,
+    null,
+    (width, height) => {
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      return canvas;
+    }
   );
   app.simulator = simulator;
 
@@ -936,6 +943,16 @@ function getBetaFeaturesInUse() {
   const useCustomCurveSurface = allObjs.some((obj) => obj && obj.constructor === sceneObjs.CustomCurveSurface);
   if (useCustomCurveSurface) {
     betaFeatures.push(i18next.t('main:tools.CustomCurveSurface.title'));
+  }
+
+  const usesPlotFns = allObjs.some((obj) => obj && obj.plotFns)
+  if (usesPlotFns) {
+    betaFeatures.push(i18next.t('simulator:sceneObjs.BaseGrinGlass.plotFns'));
+  }
+
+  const usesThemeGlassAbsorption = scene.theme.glassAbsorption.color.r !== defaultScene.theme.glassAbsorption.color.r || scene.theme.glassAbsorption.color.g !== defaultScene.theme.glassAbsorption.color.g || scene.theme.glassAbsorption.color.b !== defaultScene.theme.glassAbsorption.color.b;
+  if (usesThemeGlassAbsorption) {
+    betaFeatures.push(i18next.t('simulator:themeModal.title') + '-> ' + i18next.t('simulator:themeModal.glassAbsorption.title'));
   }
 
   try {

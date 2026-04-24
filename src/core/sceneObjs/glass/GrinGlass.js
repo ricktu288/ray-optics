@@ -42,6 +42,7 @@ class GrinGlass extends BaseGrinGlass {
     notDone: false,
     refIndexFn: '1.1+0.1\\cdot\\cos\\left(0.1\\cdot y\\right)',
     absorptionFn: '0',
+    plotFns: false,
     origin: { x: 0, y: 0 },
     stepSize: 1,
     intersectTol: 1e-3,
@@ -110,6 +111,26 @@ class GrinGlass extends BaseGrinGlass {
         ctx.fillRect(this.path[i].x - 1.5 * ls, this.path[i].y - 1.5 * ls, 3 * ls, 3 * ls);
       }
     }
+  }
+
+  getGrinFillBounds() {
+    if (!this.path || this.path.length === 0) {
+      return null;
+    }
+
+    let xMin = Infinity;
+    let xMax = -Infinity;
+    let yMin = Infinity;
+    let yMax = -Infinity;
+
+    for (const point of this.path) {
+      xMin = Math.min(xMin, point.x);
+      xMax = Math.max(xMax, point.x);
+      yMin = Math.min(yMin, point.y);
+      yMax = Math.max(yMax, point.y);
+    }
+
+    return { xMin, xMax, yMin, yMax };
   }
 
   move(diffX, diffY) {

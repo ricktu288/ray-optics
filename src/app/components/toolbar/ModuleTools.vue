@@ -28,12 +28,12 @@
       } : undefined"
       @click="onCreateModuleClick"
     >
-      <i>{{ $t('main:tools.modules.createModule') }}<sup>Beta</sup></i>
+      {{ $t('main:tools.modules.createModule') }}<sup style="color: #0006;">Beta</sup>
     </button>
   </li>
   <li :id="'module_start' + (layout === 'mobile' ? '_mobile' : '')">
     <button class="dropdown-item" type="button" :id="'import_modules' + (layout === 'mobile' ? '_mobile' : '')" data-bs-toggle="modal" data-bs-target="#moduleModal">
-      <i>{{ $t('main:tools.modules.import') }}</i>
+      {{ $t('main:tools.modules.import') }}
     </button>
   </li>
   <template v-for="moduleName in moduleNames" :key="moduleName">

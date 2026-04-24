@@ -42,6 +42,7 @@ class CircleGrinGlass extends CircleObjMixin(BaseGrinGlass) {
     p2: null,
     refIndexFn: '1+e^{-\\frac{x^2+y^2}{50^2}}',
     absorptionFn: '0',
+    plotFns: false,
     origin: { x: 0, y: 0 },
     stepSize: 1,
     intersectTol: 1e-3,
@@ -76,6 +77,16 @@ class CircleGrinGlass extends CircleObjMixin(BaseGrinGlass) {
       ctx.fillStyle = 'magenta';
       ctx.fillRect(this.p2.x - 1.5 * ls, this.p2.y - 1.5 * ls, 3 * ls, 3 * ls);
     }
+  }
+
+  getGrinFillBounds() {
+    const radius = geometry.segmentLength(this);
+    return {
+      xMin: this.p1.x - radius,
+      xMax: this.p1.x + radius,
+      yMin: this.p1.y - radius,
+      yMax: this.p1.y + radius
+    };
   }
 
   move(diffX, diffY) {

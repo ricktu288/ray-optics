@@ -244,6 +244,14 @@
 
     <div class="theme-option-row">
       <FillControl
+        :label="$t('simulator:themeModal.glassAbsorption.title') + '<sup style=\'color: #0006;\'>Beta</sup>'"
+        :fillOptions="glassAbsorptionOptions"
+        @update="updateGlassAbsorption"
+      />
+    </div>
+
+    <div class="theme-option-row">
+      <FillControl
         :label="$t('simulator:themeModal.grinGlass.title')"
         :fillOptions="grinGlassOptions"
         @update="updateGrinGlass"
@@ -323,6 +331,14 @@
     </div>
 
     <div class="theme-option-row">
+      <StrokeControl
+        :label="$t('simulator:themeModal.customSurface.title')"
+        :strokeOptions="customSurfaceOptions"
+        @update="updateCustomSurface"
+      />
+    </div>
+
+    <div class="theme-option-row">
       <PointControl
         :label="$t('simulator:themeModal.handlePoint.title')"
         :pointOptions="handlePointOptions"
@@ -337,14 +353,6 @@
         :pointOptions="handleArrowOptions"
         pointType="triangle"
         @update="updateHandleArrow"
-      />
-    </div>
-
-    <div class="theme-option-row">
-      <StrokeControl
-        :label="$t('simulator:themeModal.customSurface.title')"
-        :strokeOptions="customSurfaceOptions"
-        @update="updateCustomSurface"
       />
     </div>
   </div>
@@ -419,6 +427,7 @@ export default {
     const idealCurveCenterOptions = computed(() => themeStore.getThemeObject('idealCurveCenter'))
     const idealCurveArrowOptions = computed(() => themeStore.getThemeObject('idealCurveArrow'))
     const glassOptions = computed(() => themeStore.getThemeObject('glass'))
+    const glassAbsorptionOptions = computed(() => themeStore.getThemeObject('glassAbsorption'))
     const grinGlassOptions = computed(() => themeStore.getThemeObject('grinGlass'))
     const blockerOptions = computed(() => themeStore.getThemeObject('blocker'))
     const diffractionGratingOptions = computed(() => themeStore.getThemeObject('diffractionGrating'))
@@ -462,6 +471,7 @@ export default {
     const updateIdealCurveCenter = (newIdealCurveCenter) => themeStore.setThemeObject('idealCurveCenter', newIdealCurveCenter)
     const updateIdealCurveArrow = (newIdealCurveArrow) => themeStore.setThemeObject('idealCurveArrow', newIdealCurveArrow)
     const updateGlass = (newGlass) => themeStore.setThemeObject('glass', newGlass)
+    const updateGlassAbsorption = (newGlassAbsorption) => themeStore.setThemeObject('glassAbsorption', newGlassAbsorption)
     const updateGrinGlass = (newGrinGlass) => themeStore.setThemeObject('grinGlass', newGrinGlass)
     const updateBlocker = (newBlocker) => themeStore.setThemeObject('blocker', newBlocker)
     const updateDiffractionGrating = (newDiffractionGrating) => themeStore.setThemeObject('diffractionGrating', newDiffractionGrating)
@@ -506,6 +516,7 @@ export default {
       idealCurveCenterOptions,
       idealCurveArrowOptions,
       glassOptions,
+      glassAbsorptionOptions,
       grinGlassOptions,
       blockerOptions,
       diffractionGratingOptions,
@@ -548,6 +559,7 @@ export default {
       updateIdealCurveCenter,
       updateIdealCurveArrow,
       updateGlass,
+      updateGlassAbsorption,
       updateGrinGlass,
       updateBlocker,
       updateDiffractionGrating,

@@ -26,14 +26,14 @@
       "title": "Reiniciar"
     },
     "save": {
-      "title": "Salvar"
+      "title": "Salvar…"
     },
     "open": {
-      "title": "Abrir",
+      "title": "Abrir…",
       "description": "Abrir um arquivo existente ou imagem de fundo. A imagem de fundo será exibida a partir origem das coordenadas. (Ou solte o arquivo)"
     },
     "export": {
-      "title": "Exportar como PNG/SVG"
+      "title": "Exportar como PNG/SVG…"
     },
     "copyLink": {
       "title": "Copiar Link Compartilhável",
@@ -79,7 +79,7 @@
       "title": "Zoom"
     },
     "showAdvancedSettings": {
-      "title": "Mais configurações da cena…"
+      "title": "Mais configurações da cena"
     },
     "theme": {
       "title": "Tema"
@@ -134,7 +134,7 @@
   },
   "objBar": {
     "showAdvanced": {
-      "title": "Mais opções…"
+      "title": "Mais opções"
     },
     "applyToAll": {
       "title": "Aplicar em Todos"
@@ -248,7 +248,7 @@
         "lambda": "Para simular dispersão cromática, use o parâmetro {{lambda}} para o comprimento de onda no vácuo em nanômetros.",
         "diff": "Somente suporta funções diferenciáveis.",
         "origin": "A origem de n(x,y) está em coordenadas absolutas e n~~ao move com o objeto. Você pode clicar duas vezes em um ponto de controle para inspecionar suas coordenadas absolutas.",
-        "accuracy": "Para simulação mais precisa, veja \"Mais opções…\""
+        "accuracy": "Para simulação mais precisa, veja \"Mais opções\""
       },
       "absorptionFnInfo": {
         "absorption": "A taxa de absorção do vidro, em unidades de 1/[comprimento]."

@@ -77,8 +77,9 @@ class Simulator {
    * @param {number} [rayCountLimit=Infinity] - The maximum number of processed rays in the simulation.
    * @param {WebGLRenderingContext|null} [glMain=null] - The default WebGL context for drawing the scene (used only if the colorMode is not 'default').
    * @param {WebGLRenderingContext|null} [glVirtual=null] - Additional WebGL context.
+   * @param {function|null} [tempCanvasFactory=null] - Factory for temporary bitmap canvases. Receives `(width, height)` and returns a canvas-like object.
    */
-  constructor(scene, ctxMain = null, ctxBelowLight = null, ctxAboveLight = null, ctxGrid = null, ctxVirtual = null, enableTimer = false, rayCountLimit = Infinity, glMain = null, glVirtual = null) {
+  constructor(scene, ctxMain = null, ctxBelowLight = null, ctxAboveLight = null, ctxGrid = null, ctxVirtual = null, enableTimer = false, rayCountLimit = Infinity, glMain = null, glVirtual = null, tempCanvasFactory = null) {
     /** @property {Scene} scene - The scene to be simulated. */
     this.scene = scene;
 
@@ -118,6 +119,9 @@ class Simulator {
 
     /** @property {WebGLRenderingContext|null} glVirtual - Additional WebGL context. */
     this.glVirtual = glVirtual;
+
+    /** @property {function|null} tempCanvasFactory - Factory for temporary bitmap canvases. */
+    this.tempCanvasFactory = tempCanvasFactory;
 
     /** @property {Ray[]} pendingRays - The rays to be processed. */
     this.pendingRays = [];
@@ -327,6 +331,39 @@ class Simulator {
     }
     ctx.setLineDash([]);
     ctx.restore();
+  }
+
+  /**
+   * Create a temporary bitmap canvas for intermediate rendering.
+   * Uses the injected factory when available, except for SVG export in browser where a DOM canvas is preferred.
+   * @param {number} width - Canvas width in pixels.
+   * @param {number} height - Canvas height in pixels.
+   * @returns {HTMLCanvasElement|OffscreenCanvas|object|null}
+   */
+  createTempCanvas(width, height) {
+    if (this.isSVG && typeof document !== 'undefined') {
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      return canvas;
+    }
+
+    if (this.tempCanvasFactory) {
+      return this.tempCanvasFactory(width, height);
+    }
+
+    if (typeof OffscreenCanvas !== 'undefined') {
+      return new OffscreenCanvas(width, height);
+    }
+
+    if (typeof document !== 'undefined') {
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      return canvas;
+    }
+
+    return null;
   }
 
   /**

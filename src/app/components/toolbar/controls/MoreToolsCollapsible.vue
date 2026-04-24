@@ -18,12 +18,15 @@
   <li>
     <button 
       v-if="!shouldShowMoreTools"
-      class="dropdown-item" 
+      class="dropdown-item d-flex align-items-center gap-1 more-tools-toggle" 
       type="button"
       id="showMoreTools"
       @click.stop="handleShowMoreTools"
     >
-      <i>{{ $t('main:tools.moreTools.title') }}</i>
+      <span class="more-tools-label">{{ $t('main:tools.moreTools.title') }}</span>
+      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-chevron-down more-tools-chevron flex-shrink-0" viewBox="0 0 16 16" aria-hidden="true">
+        <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>
+      </svg>
     </button>
     <Transition 
       :name="layout === 'desktop' ? 'more-tools' : ''"
@@ -109,6 +112,15 @@ export default {
 </script>
 
 <style scoped>
+.more-tools-toggle .more-tools-label,
+.more-tools-toggle .more-tools-chevron {
+  color: var(--bs-secondary-color, #6c757d);
+}
+
+.more-tools-label {
+  font-style: normal;
+}
+
 .more-tools-container {
   overflow: hidden;
 }

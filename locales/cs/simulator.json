@@ -25,14 +25,14 @@
       "title": "Obnovit"
     },
     "save": {
-      "title": "Uložit"
+      "title": "Uložit…"
     },
     "open": {
-      "title": "Otevřít",
+      "title": "Otevřít…",
       "description": "Otevřete existující soubor nebo obrázek na pozadí. Obrázek se umístí na počáteční souřadnice plochy. (Případně soubor přetáhněte do okna)"
     },
     "export": {
-      "title": "Exportovat jako PNG/SVG"
+      "title": "Exportovat jako PNG/SVG…"
     },
     "copyLink": {
       "title": "Zkopírovat odkaz pro sdílení",

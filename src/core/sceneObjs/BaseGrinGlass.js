@@ -48,6 +48,7 @@ import * as math from 'mathjs';
  * @property {number} intersectTol - The epsilon for the intersection calculations.
  */
 class BaseGrinGlass extends BaseGlass {
+  static MAX_REF_INDEX_MAP_SAMPLES = 50000;
 
   static getPropertySchema(objData, scene) {
     const refIndexFnInfo = '<ul><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.mathjs') + '<br><code>+ - * / ^ sqrt sin cos tan sec csc cot sinh cosh tanh log asin acos atan asinh acosh atanh</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.customFunctions') + '</li><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.lambda', { lambda: '<code>lambda</code>' }) + '</li><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.diff') + '</li></ul>';
@@ -63,6 +64,7 @@ class BaseGrinGlass extends BaseGlass {
       { key: 'absorptionFn', type: 'equation', label: 'α(x,y)',
         variables: ['x', 'y', 'lambda'],
         info: absorptionFnInfo },
+      { key: 'plotFns', type: 'boolean', label: i18next.t('simulator:sceneObjs.BaseGrinGlass.plotFns') },
       { key: 'stepSize', type: 'number', label: i18next.t('simulator:sceneObjs.BaseGrinGlass.stepSize'),
         info: '<p>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.stepSizeInfo') + '</p>' },
       { key: 'intersectTol', type: 'number', label: i18next.t('simulator:sceneObjs.BaseGrinGlass.intersectTol'),
@@ -101,6 +103,10 @@ class BaseGrinGlass extends BaseGlass {
         }
       });
     }
+
+    objBar.createBoolean(i18next.t('simulator:sceneObjs.BaseGrinGlass.plotFns') + ' <sup style="color: #fffa;">Beta</sup>', this.plotFns, function (obj, value) {
+      obj.plotFns = value;
+    });
 
     if (objBar.showAdvanced(!this.arePropertiesDefault(['stepSize']))) {
       objBar.createNumber(i18next.t('simulator:sceneObjs.BaseGrinGlass.stepSize'), 0.1 * this.scene.lengthScale, 1 * this.scene.lengthScale, 0.1 * this.scene.lengthScale, this.stepSize, function (obj, value) {
@@ -142,9 +148,219 @@ class BaseGrinGlass extends BaseGlass {
       ctx.globalAlpha = 1;
       return;
     }
+
+    if (this.plotFns && this.fn_p) {
+      const cache = this.getGrinMapCache(canvasRenderer);
+      if (cache) {
+        ctx.drawImage(cache.canvas, cache.bounds.xMin, cache.bounds.yMin, cache.bounds.width, cache.bounds.height);
+        ctx.globalAlpha = 1;
+        ctx.globalCompositeOperation = 'source-over';
+        return;
+      }
+    }
+
+    this.fillGlassSolid(canvasRenderer);
+  }
+
+  fillGlassSolid(canvasRenderer) {
+    const ctx = canvasRenderer.ctx;
     ctx.fillStyle = canvasRenderer.rgbaToCssColor(this.scene.theme.grinGlass.color);
     ctx.fill('evenodd');
     ctx.globalAlpha = 1;
+  }
+
+  getGrinMapCache(canvasRenderer) {
+    this._grinMapCache = this.buildGrinMapCache(
+      this._grinMapCache,
+      canvasRenderer,
+      {
+        glassColorR: this.scene.theme.glass.color.r,
+        glassColorG: this.scene.theme.glass.color.g,
+        glassColorB: this.scene.theme.glass.color.b,
+        glassAbsorptionColorR: this.scene.theme.glassAbsorption.color.r,
+        glassAbsorptionColorG: this.scene.theme.glassAbsorption.color.g,
+        glassAbsorptionColorB: this.scene.theme.glassAbsorption.color.b,
+        absorptionIsZero: this.absorptionIsZero
+      },
+      (sceneX, sceneY) => {
+        const refIndexAppearance = this.getGrinRefIndexAppearance(this.fn_p({ x: sceneX, y: sceneY, z: Simulator.GREEN_WAVELENGTH }));
+        const absorptionAppearance = this.absorptionIsZero || !this.fn_alpha
+          ? null
+          : this.getGrinAbsorptionAppearance(this.fn_alpha({ x: sceneX, y: sceneY, z: Simulator.GREEN_WAVELENGTH }));
+        return this.combineGrinAppearances(refIndexAppearance, absorptionAppearance);
+      }
+    );
+    return this._grinMapCache;
+  }
+
+  buildGrinMapCache(existingCache, canvasRenderer, cacheData, sampleToAppearance) {
+    const bounds = this.getGrinFillBounds();
+    if (!bounds) {
+      return null;
+    }
+
+    const width = Math.max(bounds.xMax - bounds.xMin, 0);
+    const height = Math.max(bounds.yMax - bounds.yMin, 0);
+    if (!(width > 0) || !(height > 0)) {
+      return null;
+    }
+
+    const minSampleStep = canvasRenderer.lengthScale;
+    const estimatedSampleStep = Math.sqrt((width * height) / BaseGrinGlass.MAX_REF_INDEX_MAP_SAMPLES);
+    const sampleStep = Math.max(minSampleStep, estimatedSampleStep);
+    const widthSamples = Math.max(1, Math.ceil(width / sampleStep));
+    const heightSamples = Math.max(1, Math.ceil(height / sampleStep));
+    const cacheKey = JSON.stringify({
+      obj: this.serialize(),
+      lengthScale: canvasRenderer.lengthScale,
+      sampleStep,
+      widthSamples,
+      heightSamples,
+      ...cacheData
+    });
+
+    if (existingCache?.key === cacheKey) {
+      return existingCache;
+    }
+
+    const cacheCanvas = this.createGrinCacheCanvas(widthSamples, heightSamples);
+    const cacheCtx = cacheCanvas?.getContext?.('2d');
+    if (!cacheCanvas || !cacheCtx) {
+      return null;
+    }
+
+    const imageData = cacheCtx.createImageData(widthSamples, heightSamples);
+    const data = imageData.data;
+
+    for (let sy = 0; sy < heightSamples; sy++) {
+      const sceneY = Math.min(bounds.yMax, bounds.yMin + (sy + 0.5) * sampleStep);
+      for (let sx = 0; sx < widthSamples; sx++) {
+        const sceneX = Math.min(bounds.xMax, bounds.xMin + (sx + 0.5) * sampleStep);
+
+        if (!(this.isInsideGlass({ x: sceneX, y: sceneY }) || this.isOnBoundary({ x: sceneX, y: sceneY }))) {
+          continue;
+        }
+
+        const appearance = sampleToAppearance(sceneX, sceneY);
+        if (appearance === null) {
+          continue;
+        }
+
+        const offset = (sy * widthSamples + sx) * 4;
+        data[offset] = appearance.r;
+        data[offset + 1] = appearance.g;
+        data[offset + 2] = appearance.b;
+        data[offset + 3] = appearance.a;
+      }
+    }
+
+    cacheCtx.putImageData(imageData, 0, 0);
+    return {
+      key: cacheKey,
+      canvas: cacheCanvas,
+      bounds: {
+        xMin: bounds.xMin,
+        yMin: bounds.yMin,
+        width,
+        height
+      }
+    };
+  }
+
+  createGrinCacheCanvas(width, height) {
+    return this.scene.simulator?.createTempCanvas(width, height) || null;
+  }
+
+  getGrinRefIndexAppearance(refIndex) {
+    if (!Number.isFinite(refIndex) || refIndex <= 0) {
+      return null;
+    }
+
+    const alpha = Math.max(0, Math.min(1, Math.abs(Math.log(refIndex) / Math.log(1.5) * 0.2)));
+    if (alpha === 0) {
+      return { r: 0, g: 0, b: 0, a: 0 };
+    }
+
+    if (refIndex < 1) {
+      return {
+        r: 255,
+        g: 0,
+        b: 0,
+        a: Math.round(alpha * this.scene.theme.glass.color.r * 255)
+      };
+    }
+
+    const glassColor = this.scene.theme.glass.color;
+    return {
+      r: Math.round(glassColor.r * 255),
+      g: Math.round(glassColor.g * 255),
+      b: Math.round(glassColor.b * 255),
+      a: Math.round(alpha * 255)
+    };
+  }
+
+  getGrinAbsorptionAppearance(absorptionRate) {
+    if (!Number.isFinite(absorptionRate)) {
+      return null;
+    }
+
+    const strength = Math.max(0, Math.min(1, Math.abs(absorptionRate) * this.scene.lengthScale * 20));
+    if (strength === 0) {
+      return { r: 0, g: 0, b: 0, a: 0 };
+    }
+
+    if (absorptionRate < 0) {
+      return {
+        r: 255,
+        g: 0,
+        b: 0,
+        a: Math.round(strength * this.scene.theme.glass.color.r * 255)
+      };
+    }
+
+    const absorptionColor = this.scene.theme.glassAbsorption.color;
+    return {
+      r: Math.round(absorptionColor.r * 255),
+      g: Math.round(absorptionColor.g * 255),
+      b: Math.round(absorptionColor.b * 255),
+      a: Math.round(strength * 255)
+    };
+  }
+
+  combineGrinAppearances(...appearances) {
+    const validAppearances = appearances.filter(Boolean);
+    if (validAppearances.length === 0) {
+      return null;
+    }
+
+    let accumulatedAlpha = 0;
+    let accumulatedRed = 0;
+    let accumulatedGreen = 0;
+    let accumulatedBlue = 0;
+
+    for (const appearance of validAppearances) {
+      const alpha = Math.max(0, Math.min(1, (appearance.a ?? 0) / 255));
+      accumulatedAlpha += alpha;
+      accumulatedRed += (appearance.r / 255) * alpha;
+      accumulatedGreen += (appearance.g / 255) * alpha;
+      accumulatedBlue += (appearance.b / 255) * alpha;
+    }
+
+    const finalAlpha = Math.max(0, Math.min(1, accumulatedAlpha));
+    if (finalAlpha === 0) {
+      return { r: 0, g: 0, b: 0, a: 0 };
+    }
+
+    return {
+      r: Math.round(Math.max(0, Math.min(1, accumulatedRed / finalAlpha)) * 255),
+      g: Math.round(Math.max(0, Math.min(1, accumulatedGreen / finalAlpha)) * 255),
+      b: Math.round(Math.max(0, Math.min(1, accumulatedBlue / finalAlpha)) * 255),
+      a: Math.round(finalAlpha * 255)
+    };
+  }
+
+  getGrinFillBounds() {
+    return null;
   }
 
   getRefIndexAt(point, ray) {

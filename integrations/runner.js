@@ -110,7 +110,10 @@ process.stdin.on('end', () => {
         function simulateWithoutCanvas() {
           return new Promise((resolve) => {
             // Create simulator without canvas
-            const simulator = new rayOptics.Simulator(scene);
+            const simulator = new rayOptics.Simulator(scene, null, null, null, null, null, false, Infinity, null, null, hasCanvas ? (width, height) => {
+              const { createCanvas } = require('canvas');
+              return createCanvas(width, height);
+            } : null);
             
             simulator.on('simulationComplete', () => {
               // Process all detectors
@@ -190,7 +193,11 @@ process.stdin.on('end', () => {
               ctxAboveLight, 
               ctxGrid, 
               ctxVirtual, 
-              false
+              false,
+              Infinity,
+              null,
+              null,
+              (width, height) => createCanvas(width, height)
             );
             
             simulator.rayCountLimit = cropBox.rayCountLimit || Infinity;
