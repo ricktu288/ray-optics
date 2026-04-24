@@ -923,5 +923,17 @@
       ]
     },
     "firstCommit": "2026-04-08"
+  },
+  {
+    "name": "BoneNI",
+    "githubEmails": [
+      "bounkirdni@gmail.com"
+    ],
+    "contributions": {
+      "translations": [
+        "lo"
+      ]
+    },
+    "firstCommit": "2026-04-21"
   }
 ]
