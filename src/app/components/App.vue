@@ -25,11 +25,13 @@
   <Footer />
   <ModuleModal />
   <SaveModal />
+  <ImportShapesModal />
   <ColorModeModal />
   <ThemeModal />
   <LanguageModal />
 
   <input type="file" id="openfile" style="display:none">
+  <input type="file" id="importShapesFile" accept=".svg,image/svg+xml" style="display:none">
 </template>
 
 <script>
@@ -47,6 +49,7 @@ import SimulatorControls from './SimulatorControls.vue';
 import Footer from './Footer.vue';
 import ModuleModal from './ModuleModal.vue';
 import SaveModal from './SaveModal.vue';
+import ImportShapesModal from './ImportShapesModal.vue';
 import ColorModeModal from './ColorModeModal.vue';
 import ThemeModal from './ThemeModal.vue';
 import LanguageModal from './LanguageModal.vue';
@@ -64,6 +67,7 @@ export default {
     Footer,
     ModuleModal,
     SaveModal,
+    ImportShapesModal,
     ColorModeModal,
     ThemeModal,
     LanguageModal

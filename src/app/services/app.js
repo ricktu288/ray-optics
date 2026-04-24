@@ -29,6 +29,14 @@ import i18next, { t, use } from 'i18next';
 import { jsonEditorService } from '../services/jsonEditor.js';
 import { statusEmitter, STATUS_EVENT_NAMES } from '../composables/useStatus.js';
 import { mapURL, parseLinks } from '../utils/links.js';
+import { parseShapesFile } from '../utils/svgImport.js';
+import {
+  prepareImportedPaths,
+  buildImportedObjectSpecs,
+  boundingBoxFromImportedSpecs,
+  computeImportShapesDefaults as computeImportShapesDefaultsPure,
+  importedHandleOffsetBelowBBox,
+} from '../utils/shapeImport.js';
 
 function initScene() {
   scene = new Scene();
@@ -645,6 +653,31 @@ function initAppService() {
     openFile(this.files[0]);
   };
 
+  // "Import shapes…" follows the same direct-file-picker flow as "Open": the
+  // menu item triggers the hidden <input>, and once the user chooses an SVG
+  // we parse it and hand the result off to the modal via a custom DOM event.
+  // The modal opens itself in response — so the menu click never needs to
+  // worry about modal wiring.
+  app.startImportShapes = function () {
+    document.getElementById('importShapesFile').click();
+  };
+
+  document.getElementById('importShapesFile').onchange = async function () {
+    const file = this.files && this.files[0];
+    this.value = '';
+    if (!file) return;
+    let result;
+    try {
+      const text = await file.text();
+      result = parseShapesFile(text);
+    } catch (e) {
+      result = { paths: [], viewBox: null, error: 'Failed to read file: ' + e.message };
+    }
+    document.dispatchEvent(new CustomEvent('importShapes:open', {
+      detail: { result, fileName: file.name },
+    }));
+  };
+
   app.cloneSelectedObj = function () {
     if (scene.objs[editor.selectedObjIndex].constructor.type == 'Handle') {
       scene.cloneObjsByHandle(editor.selectedObjIndex);
@@ -1239,6 +1272,109 @@ function confirmPositioning(ctrl, shift) {
   }
 }
 
+/**
+ * Bridge for the Import Shapes modal: viewport size / scene origin come from
+ * the live canvas and scene (see {@link module:shapeImport.computeImportShapesDefaults}).
+ */
+function computeImportShapesDefaults(paths) {
+  const dpr = window.devicePixelRatio || 1;
+  const viewportWidth = (canvas && canvas.width ? canvas.width / dpr : scene.width) || 800;
+  const viewportHeight = (canvas && canvas.height ? canvas.height / dpr : scene.height) || 600;
+  return computeImportShapesDefaultsPure(paths, {
+    viewportWidth,
+    viewportHeight,
+    sceneOriginX: scene.origin.x,
+    sceneOriginY: scene.origin.y,
+    sceneScale: scene.scale,
+  });
+}
+
+/**
+ * Import previously parsed shape paths into the current scene. Colors are
+ * used to decide the target object type per stroke / per fill. Open paths
+ * map to Bezier-mirror / Bezier-custom-surface / Drawing objects; closed
+ * paths additionally map to Bezier glass / GRIN-glass (using the shape's
+ * fill color). Imports can be optionally grouped under one Handle for easy
+ * transformation.
+ *
+ * @param {Array} paths - Parsed shape paths (from {@link module:svgImport.parseShapesFile}).
+ * @param {Object} options
+ * @param {number} [options.scale=1] - Uniform scale applied to shape coordinates.
+ * @param {number} [options.offsetX=0] - X offset applied after scaling.
+ * @param {number} [options.offsetY=0] - Y offset applied after scaling.
+ * @param {number} [options.tolerance=0.1] - Scene-unit tolerance used to
+ *   (a) cap arc-to-Bezier deviation and (b) merge consecutive dense cubic
+ *   segments. Applied in scene coordinates (after scaling).
+ * @param {Object<string, {action: 'none'|'CurveMirror'|'CustomCurveSurface'|'Drawing'}>} [options.strokeActions]
+ *   Mapping from stroke-color key (e.g. `'#ff0000'`) to the chosen action.
+ * @param {Object<string, {action: string, refIndex: (number|undefined), cauchyB: (number|undefined)}>} [options.fillActions]
+ *   Mapping from fill-color key to the chosen action and per-color glass parameters.
+ * @param {boolean} [options.groupInHandle=true]
+ * @param {string} [options.sourceFileName=''] - When grouping in a handle, sets
+ *   the handle's display name (e.g. the imported SVG filename).
+ * @returns {{createdCount: number, handleIndex: (number|null)}}
+ */
+function importShapes(paths, options) {
+  if (!Array.isArray(paths) || paths.length === 0) {
+    return { createdCount: 0, handleIndex: null };
+  }
+  const opts = Object.assign({
+    scale: 1,
+    offsetX: 0,
+    offsetY: 0,
+    tolerance: 0.1,
+    strokeActions: {},
+    fillActions: {},
+    groupInHandle: true,
+    sourceFileName: '',
+  }, options || {});
+
+  const simplified = prepareImportedPaths(paths, opts);
+  const bg = (scene && scene.theme && scene.theme.background && scene.theme.background.color) || null;
+  const specs = buildImportedObjectSpecs(simplified, Object.assign({}, opts, { backgroundColor: bg }));
+
+  const createdIndices = [];
+  const importStartIndex = scene.objs.length;
+  for (const spec of specs) {
+    scene.pushObj(new sceneObjs[spec.type](scene, spec.props));
+    createdIndices.push(scene.objs.length - 1);
+  }
+
+  let handleIndex = null;
+  if (opts.groupInHandle && createdIndices.length > 0) {
+    const sceneBBox = boundingBoxFromImportedSpecs(specs);
+    const cx = sceneBBox ? (sceneBBox.minX + sceneBBox.maxX) / 2 : 0;
+    const cy = sceneBBox ? (sceneBBox.minY + sceneBBox.maxY) / 2 : 0;
+    const below = sceneBBox ? sceneBBox.maxY : 0;
+    const handleOffset = importedHandleOffsetBelowBBox(scene);
+    const handleProps = {
+      p1: geometry.point(cx, below + handleOffset),
+      p2: geometry.point(cx, cy),
+      objIndices: createdIndices,
+      controlPoints: [],
+      transformation: 'translation',
+      notDone: false,
+    };
+    const srcName = typeof opts.sourceFileName === 'string' ? opts.sourceFileName.trim() : '';
+    if (srcName) {
+      handleProps.name = srcName;
+    }
+    scene.pushObj(new sceneObjs['Handle'](scene, handleProps));
+    const handleAtEnd = scene.objs.length - 1;
+    // Put the handle before the imported objects in `scene.objs` (list order).
+    // `reorderObj` keeps every handle's `objIndices` in sync with the new indices.
+    scene.reorderObj(handleAtEnd, importStartIndex);
+    handleIndex = importStartIndex;
+  }
+
+  document.getElementById('welcome').style.display = 'none';
+  document.dispatchEvent(new Event('sceneObjsChanged'));
+  simulator.updateSimulation();
+  editor.onActionComplete();
+  hasUnsavedChange = true;
+
+  return { createdCount: createdIndices.length, handleIndex };
+}
 
 export const app = {
   initScene,
@@ -1250,4 +1386,6 @@ export const app = {
   syncUrl,
   setHasUnsavedChange,
   importModulesFromSceneFile,
+  importShapes,
+  computeImportShapesDefaults,
 }

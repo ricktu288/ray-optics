@@ -32,6 +32,10 @@
       "title": "開啟",
       "description": "開啟檔案或背景圖片。背景圖片將從座標原點顯示。（或拖放檔案）"
     },
+    "importShapes": {
+      "title": "匯入形狀…",
+      "description": "從 SVG 檔案匯入形狀作為光學元件（鏡子、透光物等）。"
+    },
     "export": {
       "title": "匯出為PNG/SVG"
     },
@@ -464,6 +468,23 @@
     },
     "fileName": "名稱",
     "rename": "重新命名"
+  },
+  "importShapesModal": {
+    "title": "匯入形狀",
+    "stats": "{{total}} 條路徑 — {{closed}} 條封閉 / {{open}} 條開放",
+    "strokeHeading": "將每個邊框顏色視為：",
+    "fillHeading": "將每個填充顏色視為：",
+    "actions": {
+      "ignore": "忽略"
+    },
+    "scale": "縮放",
+    "offsetPair": "位移",
+    "centerButton": "置中",
+    "centerTooltip": "在畫面內置中",
+    "tolerance": "曲線公差",
+    "toleranceInfo": "以場景單位表示的曲線公差。用於近似橢圓弧及合併太密集的三次貝茲曲線。",
+    "groupInHandle": "將匯入的物件綁定至控制桿",
+    "importButton": "匯入"
   },
   "moduleModal": {
     "title": "匯入模組",

@@ -24,6 +24,7 @@ A web app for creating and simulating 2D geometric optical scenes, with a galler
 - View images that can be observed from some given position
 - Distance, angular, energy flow, and momentum flow measurements
 - Draw irradiance map and export as CSV data
+- Import shapes from SVG files as optical components<sup>Beta</sup>
 - Export as SVG diagram
 - Create modularized combinations of optical elements with custom parameters.
 - Use the simulator as a node module in your own project and integrate with other programming languages.

@@ -17,7 +17,10 @@
 <template>
   <span
     ref="iconEl"
-    class="info-icon info-popover-icon"
+    :class="[
+      'info-popover-icon',
+      lightBackground ? 'info-popover-icon--light' : 'info-popover-icon--dark',
+    ]"
     role="button"
     tabindex="0"
     :aria-label="ariaLabel"
@@ -58,6 +61,8 @@ export default {
     ariaLabel: { type: String, default: 'Info' },
     trigger: { type: String, default: 'click' },
     placement: { type: String, default: 'bottom' },
+    /** Use on light UI (e.g. modals); default matches dark sidebars. */
+    lightBackground: { type: Boolean, default: false },
     html: { type: Boolean, default: true },
     offset: { type: [String, Array], default: undefined },
     popoverImage: { type: String, default: '' }
@@ -129,6 +134,23 @@ export default {
   display: inline-flex;
   align-items: center;
   line-height: 1;
+}
+
+/* Default: readable on dark panels (replaces global `.info-icon` from ObjBar for this component). */
+.info-popover-icon--dark {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.info-popover-icon--dark:hover {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.info-popover-icon--light {
+  color: var(--bs-secondary-color, #6c757d);
+}
+
+.info-popover-icon--light:hover {
+  color: var(--bs-body-color, #212529);
 }
 </style>
 

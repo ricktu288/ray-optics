@@ -32,6 +32,10 @@
       "title": "打开",
       "description": "打开文件或背景图片。背景图片将从坐标原点显示。（或拖放文件）"
     },
+    "importShapes": {
+      "title": "导入形状…",
+      "description": "从 SVG 文件导入形状作为光学元件（镜子、透光物等）。"
+    },
     "export": {
       "title": "导出为PNG/SVG"
     },
@@ -464,6 +468,23 @@
     },
     "fileName": "名称",
     "rename": "重命名"
+  },
+  "importShapesModal": {
+    "title": "导入形状",
+    "stats": "{{total}} 条路径 — {{closed}} 条封闭 / {{open}} 条开放",
+    "strokeHeading": "将每个边框颜色视为：",
+    "fillHeading": "将每个填充颜色视为：",
+    "actions": {
+      "ignore": "忽略"
+    },
+    "scale": "缩放",
+    "offsetPair": "偏移",
+    "centerButton": "居中",
+    "centerTooltip": "在视图内居中",
+    "tolerance": "曲线公差",
+    "toleranceInfo": "以场景单位表示的曲线公差。用于近似椭圆弧及合并过密的三次贝塞尔曲线。",
+    "groupInHandle": "将导入的对象绑定到控制杆",
+    "importButton": "导入"
   },
   "moduleModal": {
     "title": "导入模块",

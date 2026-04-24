@@ -32,6 +32,10 @@
       "title": "Open",
       "description": "Open an existing file or background image. The background image will be shown from the coordinate origin. (Or drop the file)"
     },
+    "importShapes": {
+      "title": "Import shapes…",
+      "description": "Import shapes from an SVG file as optical components (mirrors, glass, etc.)."
+    },
     "export": {
       "title": "Export as PNG/SVG"
     },
@@ -464,6 +468,24 @@
     },
     "fileName": "Name",
     "rename": "Rename"
+  },
+  "importShapesModal": {
+    "title": "Import shapes",
+    "stats_one": "{{total}} path — {{closed}} closed / {{open}} open",
+    "stats_other": "{{total}} paths — {{closed}} closed / {{open}} open",
+    "strokeHeading": "Treat each stroke color as:",
+    "fillHeading": "Treat each fill color as:",
+    "actions": {
+      "ignore": "Ignore"
+    },
+    "scale": "Scale",
+    "offsetPair": "Offset",
+    "centerButton": "Center",
+    "centerTooltip": "Center in viewport",
+    "tolerance": "Curve tolerance",
+    "toleranceInfo": "Curve tolerance in scene units. Used to approximate elliptical arcs and merge consecutive dense cubic Bézier segments.",
+    "groupInHandle": "Bind imported objects to a handle",
+    "importButton": "Import"
   },
   "moduleModal": {
     "title": "Import Modules",

@@ -39,6 +39,17 @@
               } : undefined"
               v-text="$t('simulator:file.open.title')"
             ></button></li>
+            <li><button
+              class="dropdown-item"
+              type="button"
+              id="import_shapes"
+              @click="handleImportShapes"
+              v-tooltip-popover:[tooltipType]="layout === 'desktop' ? {
+                content: $t('simulator:file.importShapes.description'),
+                placement: 'right'
+              } : undefined"
+              v-html="$t('simulator:file.importShapes.title') + '<sup style=\'color: #0006;\'>Beta</sup>'"
+            ></button></li>
             <li><button class="dropdown-item" type="button" id="export_svg" @click="handleExportSvg" v-text="$t('simulator:file.export.title')"></button></li>
             <li><button 
               class="dropdown-item" 
@@ -93,6 +104,7 @@
           <li><hr class="dropdown-divider"></li>
           <li><button id="save_button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#saveModal" v-text="$t('simulator:file.save.title')"></button></li>
           <li><button class="dropdown-item" type="button" id="open_mobile" @click="handleOpen" v-text="$t('simulator:file.open.title')"></button></li>
+          <li><button class="dropdown-item" type="button" id="import_shapes_mobile" @click="handleImportShapes" v-text="$t('simulator:file.importShapes.title')"></button></li>
           <li><button class="dropdown-item" type="button" id="export_svg_mobile" @click="handleExportSvg" v-text="$t('simulator:file.export.title')"></button></li>
           <li><button class="dropdown-item" type="button" id="get_link_mobile" @click="handleGetLink" v-text="$t('simulator:file.copyLink.title')"></button></li>
           <li><hr class="dropdown-divider"></li>
@@ -178,6 +190,10 @@ export default {
     handleOpen(event) {
       event.target.blur();
       app.openFile();
+    },
+    handleImportShapes(event) {
+      event.target.blur();
+      app.startImportShapes();
     },
     handleViewGallery(event) {
       event.target.blur();
