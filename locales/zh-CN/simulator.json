@@ -408,6 +408,11 @@
         "incidentPos": "公式中可用 {{t}} 代表入射点在曲线参数空间中的位置。"
       }
     },
+    "CustomCurveSurface": {
+      "info": {
+        "incidentPos": "公式中可用 {{t}} 代表入射点的位置，其采用贝塞尔复合曲线的固有参数：第 i 段的位置 s 对应到 {{t}} = i + s。"
+      }
+    },
     "ModuleObj": {
       "module": "模块",
       "editModule": "编辑模块",

@@ -895,6 +895,16 @@ function getBetaFeaturesInUse() {
     betaFeatures.push(i18next.t('<code>obj.locked</code>'));
   }
 
+  const useCurveMirror = allObjs.some((obj) => obj && obj.constructor === sceneObjs.CurveMirror);
+  if (useCurveMirror) {
+    betaFeatures.push(i18next.t('main:meta.parentheses', { main: i18next.t('main:tools.categories.mirror'), sub: i18next.t('main:tools.CurveMirror.title') }));
+  }
+
+  const useCustomCurveSurface = allObjs.some((obj) => obj && obj.constructor === sceneObjs.CustomCurveSurface);
+  if (useCustomCurveSurface) {
+    betaFeatures.push(i18next.t('main:tools.CustomCurveSurface.title'));
+  }
+
   try {
     const sidebarStored = localStorage.getItem('rayOpticsShowSidebar');
     const showSidebar = sidebarStored === null ? false : sidebarStored === 'on';

@@ -81,6 +81,11 @@
       "title": "参数曲线",
       "description": "形状由自定义参数式定义的镜子。"
     },
+    "CurveMirror": {
+      "title": "贝塞尔曲线",
+      "description": "形状为三次贝塞尔曲线的镜子。",
+      "instruction": "点击以建立片段。点击起点以完成封闭形状，或连续点击两次最后锚点以完成开放曲线。之后拖曳方块以调整控制点，改变曲线。"
+    },
     "ConcaveDiffractionGrating": {
       "title": "凹面光栅",
       "description": "形状为圆弧的凹面绕射光栅。"
@@ -200,6 +205,10 @@
     "CustomParamSurface": {
       "title": "自定义参数曲线表面",
       "description": "形状由参数式定义的自定义表面。"
+    },
+    "CustomCurveSurface": {
+      "title": "自定义贝塞尔曲线表面",
+      "description": "形状为三次贝塞尔曲线的自定义表面。"
     },
     "modules": {
       "import": "导入模块…",

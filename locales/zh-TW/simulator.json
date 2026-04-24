@@ -408,6 +408,11 @@
         "incidentPos": "公式中可用 {{t}} 代表入射點在曲線參數空間中的位置。"
       }
     },
+    "CustomCurveSurface": {
+      "info": {
+        "incidentPos": "公式中可用 {{t}} 代表入射點的位置，其採用貝茲複合曲線的固有參數：第 i 段的位置 s 對應到 {{t}} = i + s。"
+      }
+    },
     "ModuleObj": {
       "module": "模組",
       "editModule": "編輯模組",

@@ -408,6 +408,11 @@
         "incidentPos": "The position of the incident point in the curve's parameter space can be referred to as {{t}}."
       }
     },
+    "CustomCurveSurface": {
+      "info": {
+        "incidentPos": "The position of the incident point can be referred to as {{t}}, which uses the natural Bézier polycurve parameter: the position s of the ith piece has {{t}} = i + s."
+      }
+    },
     "ModuleObj": {
       "module": "Module",
       "editModule": "Edit module",

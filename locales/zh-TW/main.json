@@ -81,6 +81,11 @@
       "title": "參數曲線",
       "description": "形狀由自訂參數式定義的鏡子。"
     },
+    "CurveMirror": {
+      "title": "貝茲曲線",
+      "description": "形狀為三次貝茲曲線的鏡子。",
+      "instruction": "點擊以建立片段。點擊起點以完成封閉形狀，或連點兩次最後錨點以完成開放曲線。之後拖曳方塊以調整控制點，改變曲線。"
+    },
     "ConcaveDiffractionGrating": {
       "title": "凹面光柵",
       "description": "形狀為圓弧的凹面繞射光柵。"
@@ -200,6 +205,10 @@
     "CustomParamSurface": {
       "title": "自訂參數曲線表面",
       "description": "形狀由參數式定義的自訂表面。"
+    },
+    "CustomCurveSurface": {
+      "title": "自訂貝茲曲線表面",
+      "description": "形狀為三次貝茲曲線的自訂表面。"
     },
     "modules": {
       "import": "匯入模組…",

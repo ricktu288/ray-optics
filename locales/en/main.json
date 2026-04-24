@@ -81,6 +81,11 @@
       "title": "Parametric Curve",
       "description": "A mirror whose shape is defined by custom parametric equations."
     },
+    "CurveMirror": {
+      "title": "Bézier Curves",
+      "description": "A mirror with shape defined by cubic Bézier curves.",
+      "instruction": "Click to create a piece. Click on the starting point to finish as a closed shape, or click the last anchor point twice to finish as an open curve. After that, drag the boxes to manipulate the control points, changing the curve."
+    },
     "ConcaveDiffractionGrating": {
       "title": "Concave Grating",
       "description": "A concave diffraction grating whose shape is part of a circle."
@@ -200,6 +205,10 @@
     "CustomParamSurface": {
       "title": "Custom Parametric Curve",
       "description": "A custom surface with shape defined by parametric equations."
+    },
+    "CustomCurveSurface": {
+      "title": "Custom Bézier Curves",
+      "description": "A custom surface with shape defined by cubic Bézier curves."
     },
     "modules": {
       "import": "Import Modules…",
