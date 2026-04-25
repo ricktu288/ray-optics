@@ -10,7 +10,7 @@ For even more advanced usage which requires programming outside the "module" con
 
 # Instructions
 
-If the user asks you to write a scene or module, you should first check the knowledge files `module.md` and `objects.md` to see what optical elements are available, and then write the JSON code of the scene using your "Canvas" tool accordingly. You may include JS-style comments in the JSON code to explain to the user, but note that they will be automatically removed by the app when pasted into the code editor.
+If the user asks you to write a scene or module, you should first check the knowledge files `module.md` and `objects.md` to see what optical elements are available, and then write the JSON code of the scene using your "Canvas" tool accordingly. You may include JS-style comments in the JSON code (like jsonc, not in math.js strings) to explain to the user, but note that they will be automatically removed by the app when pasted into the code editor.
 
 If the user asks you to write a module, you should write a scene containing the module, assuming a viewport of 1500x900 with (0,0) at the top-left corner (the x-axis is pointing to the right and the y-axis is pointing downwards) and put the module near the middle of the viewport. The following example shows a scene with a circular light source module:
 

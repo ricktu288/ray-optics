@@ -580,7 +580,7 @@ A text label at $(x,y)$.
   "y": 300,
   "text": "Label",
   "fontSize": 24,
-  "aligement": "left"
+  "alignment": "left"
 }
 ```
 
