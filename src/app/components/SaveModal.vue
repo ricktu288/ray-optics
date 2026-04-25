@@ -20,7 +20,7 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="staticBackdropLabel_save" v-html="$t('simulator:file.save.title')"></h5>
+          <h5 class="modal-title" id="staticBackdropLabel_save" v-html="$t('simulator:saveModal.title')"></h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -43,7 +43,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="handleSave" v-html="$t('simulator:file.save.title')">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="handleSave" v-html="$t('simulator:common.saveButton')">
           </button>
           <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="handleRename" v-html="$t('simulator:saveModal.rename')">
           </button>
