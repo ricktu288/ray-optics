@@ -155,6 +155,17 @@ class ParamGrinGlass extends ParamCurveObjMixin(BaseGrinGlass) {
     return { xMin, xMax, yMin, yMax };
   }
 
+  drawGrinRegionPath(ctx) {
+    if (!this.path || this.path.length < 2) {
+      return;
+    }
+    ctx.moveTo(this.path[0].x, this.path[0].y);
+    for (let i = 1; i < this.path.length; i++) {
+      ctx.lineTo(this.path[i].x, this.path[i].y);
+    }
+    ctx.closePath();
+  }
+
   move(diffX, diffY) {
     super.move(diffX, diffY);
     this.initFns();

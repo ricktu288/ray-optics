@@ -89,6 +89,10 @@ class CircleGrinGlass extends CircleObjMixin(BaseGrinGlass) {
     };
   }
 
+  drawGrinRegionPath(ctx) {
+    ctx.arc(this.p1.x, this.p1.y, geometry.segmentLength(this), 0, Math.PI * 2, false);
+  }
+
   move(diffX, diffY) {
     super.move(diffX, diffY);
     return false; // By the current design the origin is not moved. This may need to be changed in the future.

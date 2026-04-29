@@ -231,13 +231,18 @@ class BaseGrinGlass extends BaseGlass {
 
     const imageData = cacheCtx.createImageData(widthSamples, heightSamples);
     const data = imageData.data;
+    const regionMask = this.getGrinRegionMask(cacheCtx, bounds, sampleStep, widthSamples, heightSamples);
 
     for (let sy = 0; sy < heightSamples; sy++) {
       const sceneY = Math.min(bounds.yMax, bounds.yMin + (sy + 0.5) * sampleStep);
       for (let sx = 0; sx < widthSamples; sx++) {
         const sceneX = Math.min(bounds.xMax, bounds.xMin + (sx + 0.5) * sampleStep);
 
-        if (!(this.isInsideGlass({ x: sceneX, y: sceneY }) || this.isOnBoundary({ x: sceneX, y: sceneY }))) {
+        const sampleOffset = sy * widthSamples + sx;
+        const sampleInsideRegion = regionMask
+          ? regionMask[sampleOffset] > 0
+          : (this.isInsideGlass({ x: sceneX, y: sceneY }) || this.isOnBoundary({ x: sceneX, y: sceneY }));
+        if (!sampleInsideRegion) {
           continue;
         }
 
@@ -269,6 +274,47 @@ class BaseGrinGlass extends BaseGlass {
 
   createGrinCacheCanvas(width, height) {
     return this.scene.simulator?.createTempCanvas(width, height) || null;
+  }
+
+  getGrinRegionMask(cacheCtx, bounds, sampleStep, widthSamples, heightSamples) {
+    if (!this.drawGrinRegionPath) {
+      return null;
+    }
+
+    cacheCtx.save();
+    try {
+      cacheCtx.setTransform(1, 0, 0, 1, 0, 0);
+      cacheCtx.clearRect(0, 0, widthSamples, heightSamples);
+      cacheCtx.beginPath();
+
+      cacheCtx.setTransform(
+        1 / sampleStep,
+        0,
+        0,
+        1 / sampleStep,
+        -bounds.xMin / sampleStep,
+        -bounds.yMin / sampleStep
+      );
+      this.drawGrinRegionPath(cacheCtx);
+      cacheCtx.fillStyle = '#fff';
+      cacheCtx.fill('evenodd');
+
+      cacheCtx.setTransform(1, 0, 0, 1, 0, 0);
+      const mask = cacheCtx.getImageData(0, 0, widthSamples, heightSamples).data;
+      const alphaMask = new Uint8Array(widthSamples * heightSamples);
+      for (let i = 0; i < alphaMask.length; i++) {
+        alphaMask[i] = mask[i * 4 + 3];
+      }
+      return alphaMask;
+    } catch (e) {
+      return null;
+    } finally {
+      cacheCtx.restore();
+      cacheCtx.save();
+      cacheCtx.setTransform(1, 0, 0, 1, 0, 0);
+      cacheCtx.clearRect(0, 0, widthSamples, heightSamples);
+      cacheCtx.restore();
+    }
   }
 
   getGrinRefIndexAppearance(refIndex) {

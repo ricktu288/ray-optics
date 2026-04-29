@@ -133,6 +133,18 @@ class GrinGlass extends BaseGrinGlass {
     return { xMin, xMax, yMin, yMax };
   }
 
+  drawGrinRegionPath(ctx) {
+    if (!this.path || this.path.length === 0) {
+      return;
+    }
+    ctx.moveTo(this.path[0].x, this.path[0].y);
+    for (let i = 0; i < this.path.length; i++) {
+      const point = this.path[(i + 1) % this.path.length];
+      ctx.lineTo(point.x, point.y);
+    }
+    ctx.closePath();
+  }
+
   move(diffX, diffY) {
     for (var i = 0; i < this.path.length; i++) {
       this.path[i].x += diffX;

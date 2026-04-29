@@ -127,6 +127,19 @@ class CurveGrinGlass extends CurveObjMixin(BaseGrinGlass) {
     return { xMin, xMax, yMin, yMax };
   }
 
+  drawGrinRegionPath(ctx) {
+    if (!this.curves || this.curves.length === 0) {
+      return;
+    }
+    const first = this.curves[0].points[0];
+    ctx.moveTo(first.x, first.y);
+    for (const curve of this.curves) {
+      const p = curve.points;
+      ctx.bezierCurveTo(p[1].x, p[1].y, p[2].x, p[2].y, p[3].x, p[3].y);
+    }
+    ctx.closePath();
+  }
+
   move(diffX, diffY) {
     super.move(diffX, diffY);
     return false;
