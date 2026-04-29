@@ -61,7 +61,7 @@
     "penroseUnilluminableRoom": {
       "title": "Penrose unilluminable room",
       "description": "The Penrose unilluminable room is constructed from elliptic, circular, and linear mirrors. It has the interesting property that a point source (green) within the room will not shine the entire room, no matter where you put it. You can drag the green point to move the source.",
-      "nomatterwhereyouputt": "No matter where you put the point source, it will not shine the entire room.\nWarning: Due to numerical error, it may still shine after some time."
+      "nomatterwhereyouputt": "No matter where you put the point source, it will not shine the entire room."
     },
     "opticalCavity": {
       "title": "Two-mirror optical cavity",

@@ -60,7 +60,7 @@
     "penroseUnilluminableRoom": {
       "title": "无法照亮的彭罗斯房间",
       "description": "无法照亮的彭罗斯房间由椭圆形、圆形和线性镜子构成。它有一个有趣的特性，即房间内的一个点源（绿色）无论放在哪里，都不会照亮整个房间。您可以拖动绿色点以移动源。",
-      "nomatterwhereyouputt": "无论您将点光源放在哪里，它都不会照亮整个房间。\n警告：由于数值误差，可能会在一段时间后仍然照亮。"
+      "nomatterwhereyouputt": "无论您将点光源放在哪里，它都不会照亮整个房间。"
     },
     "opticalCavity": {
       "title": "双镜共振腔",

@@ -34,6 +34,7 @@
       },
       {
         "id": "EllipticalMirror",
+        "beta": true,
         "contributors": [
           "Yi-Ting Tu"
         ]

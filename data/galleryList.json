@@ -47,6 +47,7 @@
       },
       {
         "id": "penrose-unilluminable-room",
+        "beta": true,
         "contributors": [
           "Vincent Fan",
           "Yi-Ting Tu"
