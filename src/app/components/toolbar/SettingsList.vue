@@ -39,11 +39,12 @@
 
   <NumberControl
     :label="$t('simulator:settings.gridSize.title')"
-    :popover-content="$t('simulator:sceneObjs.common.lengthUnitInfo')"
+    :popover-content="(showGrid || snapToGrid) ? $t('simulator:sceneObjs.common.lengthUnitInfo') : ''"
     v-model="gridSize"
     :min="1"
     :default-value="20"
     :layout="layout"
+    :disabled="!showGrid && !snapToGrid"
   />
 
   <NumberControl
@@ -52,7 +53,8 @@
     :min="1"
     :default-value="40"
     :layout="layout"
-    :popover-content="$t('simulator:sceneObjs.common.lengthUnitInfo')"
+    :popover-content="(mode === 'observer') ? $t('simulator:sceneObjs.common.lengthUnitInfo') : ''"
+    :disabled="mode !== 'observer'"
   />
 
   <NumberControl
@@ -111,6 +113,7 @@
         :max="Infinity"
         :default-value="620"
         :layout="layout"
+        :disabled="!simulateColors"
       />
 
       <NumberControl
@@ -121,6 +124,7 @@
         :max="redWavelength - 1"
         :default-value="420"
         :layout="layout"
+        :disabled="!simulateColors"
       />
 
       <NumberControl
@@ -292,6 +296,7 @@ export default {
 
     return {
       colorMode: scene.colorMode,
+      mode: scene.mode,
       showRayArrows: scene.showRayArrows,
       showGrid: scene.showGrid,
       gridSize: scene.gridSize,

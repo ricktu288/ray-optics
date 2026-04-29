@@ -30,11 +30,13 @@
         <input 
           type="text" 
           class="settings-number" 
+          :class="{ 'settings-control-value--disabled': disabled }"
           v-model="inputValue"
+          :disabled="disabled"
           @keyup.enter="handleEnter"
           @keydown="handleKeydown"
           @blur="handleBlur"
-          @click="$event.target.select()"
+          @click="!disabled && $event.target.select()"
         >
       </div>
     </div>
@@ -53,6 +55,7 @@
  * @vue-prop {Number} [min=null] - The minimum value of the number control.
  * @vue-prop {Number} [max=null] - The maximum value of the number control.
  * @vue-prop {Number} [defaultValue=null] - The default value of the number control.
+ * @vue-prop {Boolean} [disabled=false] - If true, the value is read-only and visually de-emphasized.
  */
 import { computed, toRef, ref, watch } from 'vue'
 import { vTooltipPopover } from '../../../directives/tooltip-popover'
@@ -95,6 +98,10 @@ export default {
     defaultValue: {
       type: Number,
       default: null
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   setup(props, { emit }) {
@@ -159,10 +166,12 @@ export default {
       e.stopPropagation()
     },
     handleEnter(e) {
+      if (this.disabled) return
       this.validateAndEmit(e.target.value)
       e.target.select() // Re-select the text after validation
     },
     handleBlur(e) {
+      if (this.disabled) return
       this.validateAndEmit(e.target.value)
     }
   },
@@ -180,4 +189,5 @@ export default {
   text-align: center;
   margin-right: 4px;
 }
+
 </style>

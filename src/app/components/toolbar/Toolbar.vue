@@ -326,5 +326,26 @@ export default {
   min-height: 30px;
 }
 
+/* Shared disabled look for settings value controls (number fields, Color mode popup, etc.) */
+#more-options-dropdown .settings-control-value--disabled:disabled,
+#mobile-dropdown-options .settings-control-value--disabled:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  color: var(--bs-secondary-color, #6c757d);
+}
 
+#more-options-dropdown button.settings-control-value--disabled:disabled,
+#mobile-dropdown-options button.settings-control-value--disabled:disabled {
+  /* Bootstrap disables pointer events; re-enable so the not-allowed cursor shows */
+  pointer-events: auto;
+  color: var(--bs-secondary-color, #6c757d) !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none;
+}
+
+#more-options-dropdown input.settings-control-value--disabled:disabled,
+#mobile-dropdown-options input.settings-control-value--disabled:disabled {
+  box-shadow: none;
+}
 </style>

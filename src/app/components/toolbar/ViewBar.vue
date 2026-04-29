@@ -109,13 +109,16 @@ export default {
       tooltipType,
       currentMode: scene.mode,
       viewModes: ['rays', 'extended', 'images', 'observer'],
-      themeStore
+      themeStore,
+      simulateColors: scene.simulateColors
     }
   },
   methods: {
     getConfig(mode) {
       const customThemeWarning = !this.themeStore.isDefaultTheme.value ? `<br>${i18next.t('main:view.customThemeNote')}` : ''
-      
+      const simulateNote = (key) =>
+        this.simulateColors ? `<br>${i18next.t(`main:view.${key}.simulateColorsNote`)}` : ''
+
       const configs = {
         rays: {
           title: i18next.t('main:view.rays.title'),
@@ -124,12 +127,12 @@ export default {
         },
         extended: {
           title: i18next.t('main:view.extended.title'),
-          content: `${i18next.t('main:view.extended.description')}<br>${i18next.t('main:view.extended.simulateColorsNote')}${customThemeWarning}`,
+          content: `${i18next.t('main:view.extended.description')}${simulateNote('extended')}${customThemeWarning}`,
           popoverImage: 'extended_rays.svg'
         },
         images: {
           title: i18next.t('main:view.images.title'),
-          content: `${i18next.t('main:view.images.description')}<br>${i18next.t('main:view.images.simulateColorsNote')}${customThemeWarning}`,
+          content: `${i18next.t('main:view.images.description')}${simulateNote('images')}${customThemeWarning}`,
           popoverImage: 'all_images.svg'
         },
         observer: {
@@ -137,7 +140,7 @@ export default {
           content: `${i18next.t('main:meta.parentheses', {
             main: i18next.t('main:view.observer.description'),
             sub: i18next.t('main:view.observer.instruction')
-          })}<br>${i18next.t('main:view.observer.simulateColorsNote')}${customThemeWarning}`,
+          })}${simulateNote('observer')}${customThemeWarning}`,
           popoverImage: 'seen_by_observer.svg'
         }
       }

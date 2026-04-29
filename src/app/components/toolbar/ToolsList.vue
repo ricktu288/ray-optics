@@ -117,6 +117,7 @@
         :verticalOffset="0"
         :layout="layout"
       />
+      <li><hr class="dropdown-divider"></li>
       <ToolItem
         id="ConcaveDiffractionGrating"
         :title="$t('main:tools.ConcaveDiffractionGrating.title')"
@@ -192,6 +193,7 @@
         :verticalOffset="0"
         :layout="layout"
       />
+      <li><hr class="dropdown-divider"></li>
       <ToolItem
         id="CircleGrinGlass"
         :title="$t('main:tools.CircleGrinGlass.title')"

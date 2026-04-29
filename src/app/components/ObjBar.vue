@@ -21,6 +21,11 @@
     <span>
       <nobr>
         <span class="d-none d-lg-inline">
+          <span
+            ref="advancedExpandSpacer"
+            class="obj-bar-advanced-expand-spacer"
+            aria-hidden="true"
+          ></span>
           <span id="showAdvanced" class="obj-bar-more-options" @click="handleShowAdvanced">
             <span class="obj-bar-more-options-label">{{ $t('simulator:objBar.showAdvanced.title') }}</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-chevron-right obj-bar-more-options-chevron" viewBox="0 0 16 16" aria-hidden="true">
@@ -93,7 +98,7 @@
  * @module ObjBar
  * @description The Vue component for the object bar. It is mixed-paradigm code that combines Vue and vanilla JavaScript due to historical reasons.
  */
-import { computed, toRef } from 'vue'
+import { computed, nextTick, toRef } from 'vue'
 import { vTooltipPopover } from '../directives/tooltip-popover'
 import { usePreferencesStore } from '../store/preferences'
 import { useThemeStore } from '../store/theme'
@@ -161,7 +166,33 @@ export default {
     },
     handleShowAdvanced(event) {
       event.currentTarget.blur()
-      app.showAdvanced()
+      const lgUp = typeof window.matchMedia === 'function' && window.matchMedia('(min-width: 992px)').matches
+      const spacer = this.$refs.advancedExpandSpacer
+      const EXPAND_MS = 120
+      const EXPAND_CLASS = 'obj-bar-advanced-expand-spacer--open'
+
+      const runShowAdvanced = () => {
+        app.showAdvanced()
+        if (lgUp && spacer) {
+          nextTick(() => {
+            spacer.style.transition = 'none'
+            spacer.classList.remove(EXPAND_CLASS)
+            void spacer.offsetWidth
+            spacer.style.removeProperty('transition')
+          })
+        }
+      }
+
+      if (lgUp && spacer) {
+        spacer.classList.remove(EXPAND_CLASS)
+        void spacer.offsetWidth
+        requestAnimationFrame(() => {
+          spacer.classList.add(EXPAND_CLASS)
+        })
+        setTimeout(runShowAdvanced, EXPAND_MS)
+      } else {
+        runShowAdvanced()
+      }
     }
   }
 }
@@ -311,6 +342,21 @@ export default {
 
 .obj-bar .form-switch .form-check-input:checked:focus {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23ffffff'/%3e%3c/svg%3e");
+}
+
+/* Dummy width before "More options" while advanced controls load (obj_bar_main is non-Vue). */
+.obj-bar-advanced-expand-spacer {
+  display: inline-block;
+  width: 0;
+  overflow: hidden;
+  vertical-align: middle;
+  /* ease-in: accelerates toward the end so motion does not ease into the dummy width */
+  transition: width 0.28s cubic-bezier(0.55, 0, 1, 1);
+  pointer-events: none;
+}
+
+.obj-bar-advanced-expand-spacer--open {
+  width: 200px;
 }
 
 #showAdvanced {

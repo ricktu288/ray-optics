@@ -28,6 +28,7 @@
     <div class="col-auto d-flex align-items-center">
       <button 
         class="btn shadow-none dropdown-toggle settings-popup-btn" 
+        :class="{ 'settings-control-value--disabled': disabled }"
         type="button" 
         :data-bs-toggle="popupType"
         :data-bs-target="`#${popupTarget}`"
