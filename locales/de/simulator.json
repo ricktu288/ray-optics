@@ -9,7 +9,9 @@
     "cancelButton": "Abbrechen",
     "defaultOption": "Standard",
     "closeButton": "Schließen",
-    "reloadToTakeEffect": "Bitte Seite neu laden, um Änderungen zu sehen."
+    "reloadToTakeEffect": "Bitte Seite neu laden, um Änderungen zu sehen.",
+    "customOption": "Benutzerdefiniert",
+    "resetButton": "Zurücksetzen"
   },
   "file": {
     "title": "Datei",
@@ -38,6 +40,9 @@
     "viewGallery": {
       "title": "Galerie ansehen",
       "description": "Zur Galerie-Seite wechseln und ein Beispiel laden."
+    },
+    "importShapes": {
+      "title": "Formen importieren…"
     }
   },
   "settings": {
@@ -73,6 +78,31 @@
     },
     "showHelpPopups": {
       "title": "Hilfe-Popups anzeigen"
+    },
+    "more": "Mehr",
+    "showRayArrows": {
+      "title": "Strahlpfeile anzeigen"
+    },
+    "lengthScale": {
+      "title": "Längenskala"
+    },
+    "showAdvancedSettings": {
+      "title": "Weitere Szeneneinstellungen"
+    },
+    "theme": {
+      "title": "Thema"
+    },
+    "redWavelength": {
+      "title": "Rote Wellenlänge"
+    },
+    "violetWavelength": {
+      "title": "Violette Wellenlänge"
+    },
+    "maxRayDepth": {
+      "title": "Maximale Strahltiefe"
+    },
+    "showSimulatorControls": {
+      "title": "Simulator-Steuerelemente anzeigen"
     }
   },
   "objBar": {
@@ -102,7 +132,19 @@
       "eqnInfo": {
         "constants": "Unterstützte Konstanten",
         "functions": "Unterstützte Funktionen"
-      }
+      },
+      "lambert": "Lambertisch",
+      "coordOrigin": "Ursprung",
+      "bezierControlPoints": "Bézier-Kontrollpunkte",
+      "lineStyle": "Linienstil",
+      "fillStyle": "Füllstil",
+      "useThemeStyle": "Themenstil verwenden",
+      "styleRed": "Rot",
+      "styleGreen": "Grün",
+      "styleBlue": "Blau",
+      "styleAlpha": "Alpha",
+      "styleWidth": "Breite",
+      "pointN": "Punkt {{i}}"
     },
     "AngleSource": {
       "symmetric": "symmetrisch"
@@ -124,13 +166,15 @@
         "relative": "relativ, wenn Glaskörper überlappen",
         "effective": "Wird dieses Objekt mit (absolutem) Brechungsindex n₁ simuliert, aber innerhalb eines anderen Glaskörpers mit Brechungsindex n₀ platziert, sollten Sie den Brechungsindex auf n₁/n₀ setzen. In komplizierten Fällen, bei denen mehrere Glaskörper überlappen, ergibt sich der effective Brechungsindex der überlappenden Region als Produkt der einzelnen Brechungsindizes."
       },
-      "cauchyCoeff": "Cauchy Koeffizient"
+      "cauchyCoeff": "Cauchy Koeffizient",
+      "partialReflect": "Teilreflexionen simulieren"
     },
     "SphericalLens": {
-      "invalidParameters": "Ungültige Linsenparameter"
-    },
-    "BaseGrinGlass": {
-      "refIndexFnInfo": {}
+      "invalidParameters": "Ungültige Linsenparameter",
+      "defBy": {
+        "radiiOfCurvature": "Krümmungsradien",
+        "focalDistances": "Brennweiten"
+      }
     },
     "CircleGrinGlass": {
       "epsInfo": {
@@ -184,6 +228,37 @@
       "title": "Exportieren",
       "width": "Breite",
       "svgWarning": "Export als SVG-Datei. Farbmischungen und relative Brechungsindizes kleiner 1 sind nicht unterstützt."
+    },
+    "LineObjMixin": {
+      "endpoint1": "1. Endpunkt",
+      "endpoint2": "2. Endpunkt",
+      "sourcePoint": "Quellpunkt",
+      "directionPoint": "Richtungspunkt"
+    },
+    "CircleObjMixin": {
+      "radiusPoint": "Punkt auf Kreis"
+    },
+    "ParamCurveObjMixin": {
+      "pieces": "Stücke",
+      "addPiece": "Stück hinzufügen",
+      "removePiece": "Stück entfernen",
+      "step": "Schritt",
+      "error": {
+        "invalidStepSize": "Ungültige Schrittweite: {{step}}",
+        "invalidRange": "Ungültiger Parameterbereich: tMin ({{tMin}}) >= tMax ({{tMax}})",
+        "pieceError": "Fehler bei Stück {{pieceIndex}}, t={{t}}: {{error}}"
+      }
+    },
+    "ArcMirror": {
+      "pointOnArc": "Punkt auf Bogen"
+    },
+    "ParabolicMirror": {
+      "vertex": "Scheitelpunkt"
+    },
+    "Glass": {
+      "vertices": "Scheitelpunkte",
+      "vertex": "Scheitelpunkt",
+      "arc": "Kreisbogen"
     }
   },
   "saveModal": {
@@ -210,7 +285,6 @@
   "appErrors": {
     "jsError": "JavaScript-Fehler: {{msg}} bei {{url}}"
   },
-  "sidebar": {},
   "statusBox": {
     "mouseCoordinates": "Mauskoordinaten"
   },
@@ -238,5 +312,15 @@
         "title": "Integrationen mit Programmiersprachen"
       }
     }
+  },
+  "importShapesModal": {
+    "importButton": "Importieren",
+    "scale": "Skala",
+    "actions": {
+      "ignore": "Ignorieren"
+    },
+    "title": "Formen importieren",
+    "stats_one": "{{total}} Pfad — {{closed}} geschlossen / {{open}} offen",
+    "stats_other": "{{total}} Pfade — {{closed}} geschlossen / {{open}} offen"
   }
 }
