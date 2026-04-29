@@ -56,7 +56,7 @@
     "penroseUnilluminableRoom": {
       "title": "Sala no iluminable de Penrose",
       "description": "La sala no iluminable de Penrose se construye a partir de espejos elípticos, circulares y lineales. Tiene la propiedad interesante de que una fuente puntual (verde) en la sala no iluminará la sala entera, sin importar dónde lo coloques. Puedes arrastrar el punto verde para mover la fuente.",
-      "nomatterwhereyouputt": "No importe dónde pongas la fuente puntual, no iluminará la sala entera.\nAtención: Debido a errores numéricos, puede que todavía brille después de un tiempo."
+      "nomatterwhereyouputt": "No importe dónde pongas la fuente puntual, no iluminará la sala entera."
     },
     "opticalCavity": {
       "dragtomovetheidealmi": "Arrastra para mover\nel espejo ideal",

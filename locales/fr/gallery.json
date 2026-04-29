@@ -57,7 +57,7 @@
     "penroseUnilluminableRoom": {
       "title": "Pièce non illuminable de Penrose",
       "description": "La pièce non illuminable de Penrose est composée de miroirs elliptiques, circulaires et droits. Elle possède la propriété particulière qu'en un point de source (vert) à l'intérieur de la pièce n'éclairera pas l'entièreté de la pièce, peu importe où vous le placez. Vous pouvez déplacer le point vert pour bouger la source.",
-      "nomatterwhereyouputt": "Peu importe où vous placez le point de source, il n'illuminera pas l'entièreté de la pièce.\nAttention : Due à des erreurs numériques, la pièce peut être encore illuminée après un certain temps."
+      "nomatterwhereyouputt": "Peu importe où vous placez le point de source, il n'illuminera pas l'entièreté de la pièce."
     },
     "opticalCavity": {
       "title": "Cavité optique à deux miroirs",

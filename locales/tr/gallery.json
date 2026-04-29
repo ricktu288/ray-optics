@@ -61,7 +61,7 @@
     "penroseUnilluminableRoom": {
       "title": "Penrose aydınlatılamayan oda",
       "description": "Penrose aydınlatılamayan oda, eliptik, dairesel ve doğrusal aynalardan oluşur. Bu odanın ilginç bir özelliği, oda içindeki bir nokta kaynağının (yeşil) nereye yerleştirilirse yerleştirilsin odanın tamamını aydınlatmamasıdır. Yeşil noktayı sürükleyerek kaynağı hareket ettirebilirsiniz.",
-      "nomatterwhereyouputt": "Nokta kaynağı nereye koyarsanız koyun, tüm odayı aydınlatmayacaktır.\nUyarı: Sayısal hata nedeniyle, bir süre sonra yine de aydınlatma yapabilir."
+      "nomatterwhereyouputt": "Nokta kaynağı nereye koyarsanız koyun, tüm odayı aydınlatmayacaktır."
     },
     "opticalCavity": {
       "title": "İki aynalı optik boşluk",

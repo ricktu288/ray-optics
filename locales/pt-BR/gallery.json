@@ -62,7 +62,7 @@
     "penroseUnilluminableRoom": {
       "title": "Sala iniluminável de Penrose",
       "description": "A sala iniluminável de penrose é construída com espelhos elítpicos, circulares, e lineares. Ela tem a curiosa propriadade de que uma fonte pontual (verde) dentro da sala não vai iluminar a sala inteira, não importa onde ela seja colocada. Você pode arrastar o ponto verde para mover a fonte.",
-      "nomatterwhereyouputt": "Não importa onde se coloque a fonte pontual, ela não irá iluminar a sala inteira.\nAviso: Devido a erros numéricos, ela ainda pode ser iluminada após um tempo."
+      "nomatterwhereyouputt": "Não importa onde se coloque a fonte pontual, ela não irá iluminar a sala inteira."
     },
     "opticalCavity": {
       "title": "Cavidade óptica de dois espelhos",

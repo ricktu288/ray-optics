@@ -18,6 +18,33 @@ import geometry from '../geometry.js';
 import BaseSceneObj from './BaseSceneObj.js';
 import { evaluateLatex } from '../equation.js';
 import i18next from 'i18next';
+import { parseTex } from 'tex-math-parser';
+import * as math from 'mathjs';
+import { Bezier } from 'bezier-js';
+
+/**
+ * Compile d(eq)/dt from LaTeX eq(t), using the same pipeline as {@link BaseGrinGlass#initFns}
+ * (tex-math-parser → mathjs derivative → toTex replacements → evaluateLatex).
+ * @param {string} eqnLatex
+ * @returns {function(Object): number}
+ */
+function compileParametricDerivative(eqnLatex) {
+  const p = parseTex(eqnLatex).toString().replaceAll('\\cdot', '*').replaceAll('\\frac', '/');
+  const p_der = math.derivative(p, 't').toString();
+  const p_der_tex = math.parse(p_der).toTex()
+    .replaceAll('{+', '{')
+    .replaceAll('\\mathrm{t}', 't');
+  return evaluateLatex(p_der_tex);
+}
+
+export function curveTypePropertyInfoHtml() {
+  const betaSup = '<sup class="beta-label-sup">Beta</sup>';
+  const li = (typeKey, withBeta) =>
+    '<li><strong>' + i18next.t(`simulator:sceneObjs.ParamCurveObjMixin.curveTypes.${typeKey}`) + '</strong>' +
+    (withBeta ? betaSup : '') + '<br>' +
+    i18next.t(`simulator:sceneObjs.ParamCurveObjMixin.curveTypeDescriptions.${typeKey}`) + '</li>';
+  return '<ul>' + li('polygonal', true) + li('smoothNormal', false) + li('cubicBezier', true) + '</ul>';
+}
 
 /**
  * The mixin for the scene objects that are defined by a line segment.
@@ -29,6 +56,11 @@ const ParamCurveObjMixin = Base => class extends Base {
 
   static getPropertySchema(objData, scene) {
     const info = '<ul><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.mathjs') + '<br><code>+ - * / ^ sqrt sin cos tan sec csc cot sinh cosh tanh log exp asin acos atan asinh acosh atanh floor round ceil max min abs sign</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.customFunctions') + '</li></ul>';
+    const curveTypeOptions = {
+      polygonal: i18next.t('simulator:sceneObjs.ParamCurveObjMixin.curveTypes.polygonal'),
+      smoothNormal: i18next.t('simulator:sceneObjs.ParamCurveObjMixin.curveTypes.smoothNormal'),
+      cubicBezier: i18next.t('simulator:sceneObjs.ParamCurveObjMixin.curveTypes.cubicBezier'),
+    };
     return [
       { key: 'origin', type: 'point', label: i18next.t('simulator:sceneObjs.common.coordOrigin') },
       { key: 'pieces', type: 'array',
@@ -41,12 +73,22 @@ const ParamCurveObjMixin = Base => class extends Base {
           { key: 'tStep', type: 'number', label: i18next.t('simulator:sceneObjs.ParamCurveObjMixin.step') },
         ],
       },
+      {
+        key: 'curveType',
+        type: 'dropdown',
+        label: i18next.t('simulator:sceneObjs.ParamCurveObjMixin.curveType'),
+        options: curveTypeOptions,
+        info: curveTypePropertyInfoHtml(),
+      },
       ...super.getPropertySchema(objData, scene),
     ];
   }
 
   constructor(scene, jsonObj) {
     super(scene, jsonObj);
+    if (this.curveType !== 'polygonal' && this.curveType !== 'smoothNormal' && this.curveType !== 'cubicBezier') {
+      this.curveType = 'smoothNormal';
+    }
     // Check for unknown keys in pieces
     const knownKeys = ['eqnX', 'eqnY', 'tMin', 'tMax', 'tStep'];
     for (let i = 0; i < this.pieces.length; i++) {
@@ -149,7 +191,10 @@ const ParamCurveObjMixin = Base => class extends Base {
           return null;
         }
       }
-      
+      if (!this._ensureCubicBezierPathReady()) {
+        return null;
+      }
+
       // Check if all points are identical (degenerate curve)
       let allPointsIdentical = true;
       if (this.path.length > 1) {
@@ -165,6 +210,23 @@ const ParamCurveObjMixin = Base => class extends Base {
       
       // For non-degenerate curves, check if mouse is on the curve
       if (!allPointsIdentical && this.path.length > 1) {
+        if (this.curveType === 'cubicBezier' && this.bezierSegments) {
+          for (let i = 0; i < this.bezierSegments.length; i++) {
+            if (this.bezierSegmentBoundaryFlags && this.bezierSegmentBoundaryFlags[i]) {
+              continue;
+            }
+            if (mouse.isOnCurve(this.bezierSegments[i])) {
+              const mousePos = mouse.getPosSnappedToGrid();
+              dragContext.part = 0;
+              dragContext.mousePos0 = mousePos;
+              dragContext.mousePos1 = mousePos;
+              dragContext.requiresObjBarUpdate = true;
+              dragContext.snapContext = {};
+              return dragContext;
+            }
+          }
+          return null;
+        }
         for (let i = 0; i < this.path.length - 1; i++) {
           var seg = geometry.line(this.path[i], this.path[i + 1]);
           if (mouse.isOnSegment(seg)) {
@@ -224,103 +286,99 @@ const ParamCurveObjMixin = Base => class extends Base {
    */
   initPath() {
     var fns = [];
+    var derFns = [];
+    const wantBezier = this.curveType === 'cubicBezier';
     try {
-      // Compile all the equations
       for (let i = 0; i < this.pieces.length; i++) {
         fns.push({
           fnX: evaluateLatex(this.pieces[i].eqnX),
           fnY: evaluateLatex(this.pieces[i].eqnY)
         });
+        if (wantBezier) {
+          derFns.push({
+            fn_dX: compileParametricDerivative(this.pieces[i].eqnX),
+            fn_dY: compileParametricDerivative(this.pieces[i].eqnY)
+          });
+        }
       }
     } catch (e) {
       delete this.path;
+      delete this.bezierSegments;
+      delete this.bezierSegmentBoundaryFlags;
       this.error = e.toString();
       return false;
     }
 
     this.path = [];
-    
-    // Generate points for each piece
+    delete this.bezierSegments;
+    delete this.bezierSegmentBoundaryFlags;
+
+    const pushSample = (pieceIndex, t, fn, der) => {
+      const x = fn.fnX({ t: t });
+      const y = fn.fnY({ t: t });
+      if (!Number.isFinite(x) || !Number.isFinite(y)) {
+        throw new Error(i18next.t('simulator:sceneObjs.ParamCurveObjMixin.error.nonFiniteCoords', { t: t, x: x, y: y }));
+      }
+      const pt = {
+        x: this.origin.x + x,
+        y: this.origin.y + y,
+        pieceIndex: pieceIndex,
+        t: t
+      };
+      if (wantBezier) {
+        const dxdt = der.fn_dX({ t: t });
+        const dydt = der.fn_dY({ t: t });
+        if (!Number.isFinite(dxdt) || !Number.isFinite(dydt)) {
+          throw new Error(i18next.t('simulator:sceneObjs.ParamCurveObjMixin.error.nonFiniteCoords', { t: t, x: `${pt.x} + ${dxdt} dt`, y: `${pt.y} + ${dydt} dt` }));
+        }
+        pt.dxdt = dxdt;
+        pt.dydt = dydt;
+      }
+      this.path.push(pt);
+    };
+
     for (let pieceIndex = 0; pieceIndex < this.pieces.length; pieceIndex++) {
       const piece = this.pieces[pieceIndex];
       const fn = fns[pieceIndex];
-      
+      const der = wantBezier ? derFns[pieceIndex] : null;
+
       const tMin = piece.tMin;
       const tMax = piece.tMax;
       const tStep = piece.tStep;
-      
+
       if (!(tStep > 0)) {
         delete this.path;
         this.error = i18next.t('simulator:sceneObjs.ParamCurveObjMixin.error.invalidStepSize', { step: tStep });
         return false;
       }
-      
+
       if (!(tMin < tMax)) {
         delete this.path;
         this.error = i18next.t('simulator:sceneObjs.ParamCurveObjMixin.error.invalidRange', { tMin: tMin, tMax: tMax });
         return false;
       }
-      
-      // Always sample t=tMin
+
       try {
-        const x = fn.fnX({ t: tMin });
-        const y = fn.fnY({ t: tMin });
-        
-        if (!Number.isFinite(x) || !Number.isFinite(y)) {
-          throw new Error(i18next.t('simulator:sceneObjs.ParamCurveObjMixin.error.nonFiniteCoords', { t: tMin, x: x, y: y }));
-        }
-        
-        this.path.push({
-          x: this.origin.x + x,
-          y: this.origin.y + y,
-          pieceIndex: pieceIndex,
-          t: tMin
-        });
+        pushSample(pieceIndex, tMin, fn, der);
       } catch (e) {
         delete this.path;
         this.error = i18next.t('simulator:sceneObjs.ParamCurveObjMixin.error.pieceError', { pieceIndex: pieceIndex + 1, t: tMin, error: e.toString() });
         return false;
       }
-      
-      // Sample intermediate points
+
       for (let t = tMin + tStep; t < tMax; t += tStep) {
         try {
-          const x = fn.fnX({ t: t });
-          const y = fn.fnY({ t: t });
-          
-          if (!Number.isFinite(x) || !Number.isFinite(y)) {
-            throw new Error(i18next.t('simulator:sceneObjs.ParamCurveObjMixin.error.nonFiniteCoords', { x: x, y: y }));
-          }
-          
-          this.path.push({
-            x: this.origin.x + x,
-            y: this.origin.y + y,
-            pieceIndex: pieceIndex,
-            t: t
-          });
+          pushSample(pieceIndex, t, fn, der);
         } catch (e) {
           delete this.path;
           this.error = i18next.t('simulator:sceneObjs.ParamCurveObjMixin.error.pieceError', { pieceIndex: pieceIndex + 1, t: t, error: e.toString() });
           return false;
         }
       }
-      
-      // Always sample t=tMax (unless it's the same as tMin)
+
       if (tMax > tMin) {
         try {
-          const x = fn.fnX({ t: tMax });
-          const y = fn.fnY({ t: tMax });
-          
-          if (!Number.isFinite(x) || !Number.isFinite(y)) {
-            throw new Error(i18next.t('simulator:sceneObjs.ParamCurveObjMixin.error.nonFiniteCoords', { t: tMax, x: x, y: y }));
-          }
-          
-          this.path.push({
-            x: this.origin.x + x,
-            y: this.origin.y + y,
-            pieceIndex: pieceIndex,
-            t: tMax
-          });
+          pushSample(pieceIndex, tMax, fn, der);
         } catch (e) {
           delete this.path;
           this.error = i18next.t('simulator:sceneObjs.ParamCurveObjMixin.error.pieceError', { pieceIndex: pieceIndex + 1, t: tMax, error: e.toString() });
@@ -328,9 +386,63 @@ const ParamCurveObjMixin = Base => class extends Base {
         }
       }
     }
-    
+
+    if (wantBezier && this.path.length >= 2) {
+      this.bezierSegments = [];
+      this.bezierSegmentBoundaryFlags = [];
+      for (let i = 0; i < this.path.length - 1; i++) {
+        const isBoundarySegment = this.path[i].pieceIndex !== this.path[i + 1].pieceIndex;
+        this.bezierSegments.push(this._pathPairToHermiteBezier(this.path[i], this.path[i + 1]));
+        this.bezierSegmentBoundaryFlags.push(isBoundarySegment);
+      }
+    }
+
     this.error = null;
     return true;
+  }
+
+  /**
+   * Cubic Bezier matching position and (dx/dt, dy/dt) at two consecutive samples; u in [0,1] maps linearly to t in [p1.t, p2.t].
+   * @param {{x: number, y: number, t: number, dxdt: number, dydt: number}} p1
+   * @param {{x: number, y: number, t: number, dxdt: number, dydt: number}} p2
+   * @returns {Bezier}
+   */
+  _pathPairToHermiteBezier(p1, p2) {
+    const dt = p2.t - p1.t;
+    const P0 = { x: p1.x, y: p1.y };
+    const P3 = { x: p2.x, y: p2.y };
+    if (Math.abs(dt) < 1e-20) {
+      return new Bezier([P0, P0, P3, P3]);
+    }
+    const P1 = { x: P0.x + (p1.dxdt * dt) / 3, y: P0.y + (p1.dydt * dt) / 3 };
+    const P2 = { x: P3.x - (p2.dxdt * dt) / 3, y: P3.y - (p2.dydt * dt) / 3 };
+    return new Bezier([P0, P1, P2, P3]);
+  }
+
+  /**
+   * Rebuild path when switching to cubic Bezier if cached samples lack derivatives or Bezier list.
+   * @returns {boolean} Whether the path is usable (or rebuild succeeded).
+   */
+  _ensureCubicBezierPathReady() {
+    if (this.curveType !== 'cubicBezier') {
+      return true;
+    }
+    if (!this.path || this.path.length < 2) {
+      return true;
+    }
+    const needRebuild =
+      this.path[0].dxdt === undefined ||
+      !this.bezierSegments ||
+      this.bezierSegments.length !== this.path.length - 1 ||
+      !this.bezierSegmentBoundaryFlags ||
+      this.bezierSegmentBoundaryFlags.length !== this.bezierSegments.length;
+    if (!needRebuild) {
+      return true;
+    }
+    delete this.path;
+    delete this.bezierSegments;
+    delete this.bezierSegmentBoundaryFlags;
+    return this.initPath();
   }
 
   /**
@@ -341,44 +453,89 @@ const ParamCurveObjMixin = Base => class extends Base {
    */
   drawPath(canvasRenderer, offset = 0) {
     const ctx = canvasRenderer.ctx;
-    
+
     if (!this.path || this.path.length === 0) {
       return;
     }
-    
+
+    if (!this._ensureCubicBezierPathReady()) {
+      return;
+    }
+
+    const useBezier = this.curveType === 'cubicBezier' && this.bezierSegments && this.bezierSegments.length > 0;
+
     if (offset === 0) {
-      // No offset - draw the original path
       ctx.beginPath();
-      ctx.moveTo(this.path[0].x, this.path[0].y);
-      
-      for (let i = 1; i < this.path.length; i++) {
-        ctx.lineTo(this.path[i].x, this.path[i].y);
+      if (useBezier) {
+        let hasSubPath = false;
+        for (let i = 0; i < this.bezierSegments.length; i++) {
+          if (this.bezierSegmentBoundaryFlags && this.bezierSegmentBoundaryFlags[i]) {
+            hasSubPath = false;
+            continue;
+          }
+          const curve = this.bezierSegments[i];
+          if (!hasSubPath) {
+            const p0 = curve.get(0);
+            ctx.moveTo(p0.x, p0.y);
+            hasSubPath = true;
+          }
+          const pts = curve.points;
+          ctx.bezierCurveTo(pts[1].x, pts[1].y, pts[2].x, pts[2].y, pts[3].x, pts[3].y);
+        }
+      } else {
+        ctx.moveTo(this.path[0].x, this.path[0].y);
+        for (let i = 1; i < this.path.length; i++) {
+          ctx.lineTo(this.path[i].x, this.path[i].y);
+        }
       }
     } else {
-      // Draw offset path
+      if (useBezier) {
+        const steps = 20;
+        ctx.beginPath();
+        for (let ci = 0; ci < this.bezierSegments.length; ci++) {
+          if (this.bezierSegmentBoundaryFlags && this.bezierSegmentBoundaryFlags[ci]) {
+            continue;
+          }
+          const curve = this.bezierSegments[ci];
+          let prev = curve.get(0);
+          for (let s = 1; s <= steps; s++) {
+            const curr = curve.get(s / steps);
+            const dx = curr.x - prev.x;
+            const dy = curr.y - prev.y;
+            const length = Math.sqrt(dx * dx + dy * dy);
+            if (length > 1e-10) {
+              const perpX = -dy / length;
+              const perpY = dx / length;
+              const offsetP1x = prev.x + perpX * offset;
+              const offsetP1y = prev.y + perpY * offset;
+              const offsetP2x = curr.x + perpX * offset;
+              const offsetP2y = curr.y + perpY * offset;
+              if (s === 1) {
+                ctx.moveTo(offsetP1x, offsetP1y);
+              }
+              ctx.lineTo(offsetP2x, offsetP2y);
+            }
+            prev = curr;
+          }
+        }
+        return;
+      }
+      const poly = this.path;
       ctx.beginPath();
       let hasPath = false;
-      
-      for (let i = 0; i < this.path.length - 1; i++) {
-        const p1 = this.path[i];
-        const p2 = this.path[i + 1];
-        
-        // Calculate the perpendicular vector (normal to the segment)
+      for (let i = 0; i < poly.length - 1; i++) {
+        const p1 = poly[i];
+        const p2 = poly[i + 1];
         const dx = p2.x - p1.x;
         const dy = p2.y - p1.y;
         const length = Math.sqrt(dx * dx + dy * dy);
-        
         if (length > 1e-10) {
-          // Normalize the perpendicular vector
           const perpX = -dy / length;
           const perpY = dx / length;
-          
-          // Calculate offset points
           const offsetP1x = p1.x + perpX * offset;
           const offsetP1y = p1.y + perpY * offset;
           const offsetP2x = p2.x + perpX * offset;
           const offsetP2y = p2.y + perpY * offset;
-
           if (!hasPath) {
             ctx.moveTo(offsetP1x, offsetP1y);
             hasPath = true;
@@ -499,25 +656,37 @@ const ParamCurveObjMixin = Base => class extends Base {
     if (this.path.length < 2) {
       return false;
     }
-    
-    // Check distance to each segment, similar to checkMouseOver approach
+
+    if (!this._ensureCubicBezierPathReady()) {
+      return false;
+    }
+
+    if (this.curveType === 'cubicBezier' && this.bezierSegments) {
+      const eps = this.intersectTol != null ? this.intersectTol : (this.scene ? 1e-4 * this.scene.lengthScale : 1e-4);
+      const thrSq = eps * eps;
+      for (let i = 0; i < this.bezierSegments.length; i++) {
+        if (this.bezierSegmentBoundaryFlags && this.bezierSegmentBoundaryFlags[i]) {
+          continue;
+        }
+        if (geometry.intersectionIsOnCurve(point, this.bezierSegments[i], thrSq)) {
+          return true;
+        }
+      }
+      return false;
+    }
+
     for (let i = 0; i < this.path.length - 1; i++) {
       const p1 = this.path[i];
       const p2 = this.path[i + 1];
-      
-      // Skip degenerate segments
       const segLengthSq = geometry.distanceSquared(p1, p2);
       if (segLengthSq < 1e-20) continue;
-      
-      // Calculate distance from point to line segment
       const seg = geometry.line(p1, p2);
       const distToSeg = this.distancePointToSegment(point, seg);
-      
       if (distToSeg <= this.intersectTol) {
         return true;
       }
     }
-    
+
     return false;
   }
 
@@ -572,11 +741,39 @@ const ParamCurveObjMixin = Base => class extends Base {
     if (this.path.length < 2) {
       return 0;
     }
-    
-    var cnt = 0;
+
+    if (!this._ensureCubicBezierPathReady()) {
+      return 0;
+    }
+
     const rayY = point.y;
     const rayStartX = point.x;
-    
+
+    if (this.curveType === 'cubicBezier' && this.bezierSegments) {
+      const big = (this.scene ? this.scene.lengthScale : 1) * 1e9;
+      const eps = (this.scene ? 1e-9 * this.scene.lengthScale : 1e-9);
+      const raySeg = geometry.line(
+        geometry.point(rayStartX + eps, rayY),
+        geometry.point(rayStartX + big, rayY)
+      );
+      var cntBz = 0;
+      for (let i = 0; i < this.bezierSegments.length; i++) {
+        if (this.bezierSegmentBoundaryFlags && this.bezierSegmentBoundaryFlags[i]) {
+          continue;
+        }
+        const curve = this.bezierSegments[i];
+        const ts = curve.lineIntersects(raySeg);
+        for (let j = 0; j < ts.length; j++) {
+          const p = curve.get(ts[j]);
+          if (p.x > rayStartX + eps) {
+            cntBz++;
+          }
+        }
+      }
+      return cntBz;
+    }
+
+    var cnt = 0;
     for (let i = 0; i < this.path.length - 1; i++) {
       let p1 = this.path[i];
       let p2 = this.path[i + 1];
@@ -708,6 +905,19 @@ const ParamCurveObjMixin = Base => class extends Base {
         delete obj.path;
       }
     });
+
+    if (objBar.showAdvanced(!this.arePropertiesDefault(['curveType']))) {
+      const curveTypeOptions = {
+        polygonal: i18next.t('simulator:sceneObjs.ParamCurveObjMixin.curveTypes.polygonal'),
+        smoothNormal: i18next.t('simulator:sceneObjs.ParamCurveObjMixin.curveTypes.smoothNormal'),
+        cubicBezier: i18next.t('simulator:sceneObjs.ParamCurveObjMixin.curveTypes.cubicBezier'),
+      };
+      objBar.createDropdown(i18next.t('simulator:sceneObjs.ParamCurveObjMixin.curveType'), this.curveType, curveTypeOptions, function (obj, value) {
+        obj.curveType = value;
+        delete obj.path;
+        delete obj.bezierSegments;
+      }, curveTypePropertyInfoHtml(), true);
+    }
   }
 
   /**
@@ -724,18 +934,36 @@ const ParamCurveObjMixin = Base => class extends Base {
    */
   getRayIntersections(ray) {
     const intersections = [];
-    
-    // Initialize path if needed
+
     if (!this.path) {
       if (!this.initPath()) {
         return intersections;
       }
     }
-    
+
     if (this.path.length < 2) {
       return intersections;
     }
-    
+
+    if (!this._ensureCubicBezierPathReady()) {
+      return intersections;
+    }
+
+    if (this.curveType === 'cubicBezier') {
+      return this.getRayIntersectionsCubicBezier(ray);
+    }
+
+    return this.getRayIntersectionsLinear(ray);
+  }
+
+  /**
+   * Ray intersections using linear segments between sampled points.
+   * @param {Ray} ray
+   * @returns {Array}
+   */
+  getRayIntersectionsLinear(ray) {
+    const intersections = [];
+
     // Check each segment in the path
     for (let i = 0; i < this.path.length - 1; i++) {
       const p1 = this.path[i];
@@ -802,8 +1030,8 @@ const ParamCurveObjMixin = Base => class extends Base {
           var normal_xFinal = normal_x;
           var normal_yFinal = normal_y;
           
-          // Apply smoothing if not at the endpoints and we have adjacent segments
-          if ((i > 0 && frac < 0.5) || (i < this.path.length - 2 && frac >= 0.5)) {
+          // Apply smoothing only for "smooth normal" mode (not polygonal / cubic Bezier)
+          if (this.curveType === 'smoothNormal' && ((i > 0 && frac < 0.5) || (i < this.path.length - 2 && frac >= 0.5))) {
             var segA;
             if (frac < 0.5 && i > 0) {
               segA = geometry.line(this.path[i - 1], this.path[i]);
@@ -863,6 +1091,90 @@ const ParamCurveObjMixin = Base => class extends Base {
       }
     }
     
+    return intersections;
+  }
+
+  /**
+   * Ray–curve intersections when each segment is a cubic Bezier in natural t between consecutive samples.
+   * @param {Ray} ray
+   * @returns {Array}
+   */
+  getRayIntersectionsCubicBezier(ray) {
+    const intersections = [];
+    if (!this.bezierSegments || this.bezierSegments.length === 0) {
+      return intersections;
+    }
+
+    const scale = this.scene ? this.scene.lengthScale : 1;
+    const L = scale * 1e9;
+    const rayDirX = ray.p2.x - ray.p1.x;
+    const rayDirY = ray.p2.y - ray.p1.y;
+    const raySeg = geometry.line(ray.p1, geometry.point(ray.p1.x + rayDirX * L, ray.p1.y + rayDirY * L));
+    const epsDistSq = 1e-10 * scale * scale;
+
+    for (let i = 0; i < this.bezierSegments.length; i++) {
+      if (this.bezierSegmentBoundaryFlags && this.bezierSegmentBoundaryFlags[i]) {
+        continue;
+      }
+      const curve = this.bezierSegments[i];
+      const p0 = this.path[i];
+      const p1 = this.path[i + 1];
+      const dt = p1.t - p0.t;
+      const ts = curve.lineIntersects(raySeg);
+
+      for (let k = 0; k < ts.length; k++) {
+        const u = ts[k];
+        const rp_temp = curve.get(u);
+        if (!geometry.intersectionIsOnRay(rp_temp, ray)) {
+          continue;
+        }
+        if (geometry.distanceSquared(ray.p1, rp_temp) <= epsDistSq) {
+          continue;
+        }
+
+        const incidentPos = p0.t + u * dt;
+
+        const deriv = curve.derivative(u);
+        const tangentX = deriv.x;
+        const tangentY = deriv.y;
+        const tangentLength = Math.hypot(tangentX, tangentY);
+
+        let normal, incidentType;
+
+        if (tangentLength > 1e-10) {
+          const tangentNormX = tangentX / tangentLength;
+          const tangentNormY = tangentY / tangentLength;
+          const rcrosst = (ray.p2.x - ray.p1.x) * tangentNormY - (ray.p2.y - ray.p1.y) * tangentNormX;
+          if (rcrosst > 1e-10) {
+            incidentType = 1;
+          } else if (rcrosst < -1e-10) {
+            incidentType = -1;
+          } else {
+            incidentType = NaN;
+          }
+          const rdots = (ray.p2.x - ray.p1.x) * tangentNormX + (ray.p2.y - ray.p1.y) * tangentNormY;
+          const normal_x = rdots * tangentNormX - (ray.p2.x - ray.p1.x);
+          const normal_y = rdots * tangentNormY - (ray.p2.y - ray.p1.y);
+          const normal_len = Math.hypot(normal_x, normal_y);
+          normal = {
+            x: normal_x / normal_len,
+            y: normal_y / normal_len
+          };
+        } else {
+          incidentType = NaN;
+          normal = { x: NaN, y: NaN };
+        }
+
+        intersections.push({
+          s_point: geometry.point(rp_temp.x, rp_temp.y),
+          normal: normal,
+          incidentType: incidentType,
+          incidentPiece: p0.pieceIndex,
+          incidentPos: incidentPos
+        });
+      }
+    }
+
     return intersections;
   }
 };

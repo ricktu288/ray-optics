@@ -168,6 +168,7 @@
       "random": "随机",
       "lambert": "朗伯",
       "coordOrigin": "原点",
+      "curveStepSize": "步长",
       "bezierControlPoints": "贝塞尔控制点",
       "focalLength": "焦距",
       "lineStyle": "线条样式",
@@ -182,6 +183,7 @@
         "constants": "支持的常数",
         "operators": "支持的运算符",
         "functions": "支持的函数",
+        "curveStepSize": "曲线的取样步长，单位为像素（场景长度单位乘以「长度尺度」设定的值）",
         "module": "如需自定义参数或使用复杂的方程式，请使用工具->其他->创建模块并將此物件移入模块。",
         "mathjs": "仅支持以下 math.js 运算：",
         "customFunctions": "您可以使用从模块编辑器中的「变量」部分定义的自订函数，但其定义最终必须由支援的运算组成。"
@@ -204,6 +206,17 @@
       "pieces": "片段",
       "addPiece": "添加片段",
       "removePiece": "移除片段",
+      "curveType": "曲线类型",
+      "curveTypes": {
+        "polygonal": "折线",
+        "smoothNormal": "平滑法向量",
+        "cubicBezier": "三次贝塞尔"
+      },
+      "curveTypeDescriptions": {
+        "polygonal": "取样点之间以直线段连接。",
+        "smoothNormal": "外形与折线相同，但将各片段之间的法向量内插，类似 Phong 着色法。（默认）",
+        "cubicBezier": "相邻取样点间以三次贝塞尔曲线连接，在端点处符合位置与导数。有些函数在此曲线类型下可能无法正常运作。"
+      },
       "step": "步长",
       "error": {
         "invalidStepSize": "步长无效：{{step}}",

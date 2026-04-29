@@ -51,6 +51,7 @@ class ParamGlass extends ParamCurveObjMixin(BaseGlass) {
         tStep: 0.01
       }
     ],
+    curveType: 'smoothNormal',
     refIndex: 1.5,
     cauchyB: 0.004,
     partialReflect: true

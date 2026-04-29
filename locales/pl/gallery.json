@@ -62,7 +62,7 @@
     "penroseUnilluminableRoom": {
       "title": "Nieoświetlony pokój Penrose'a",
       "description": "Niemożliwy do oświetlenia pokój Penrose'a jest zbudowany z luster eliptycznych, kołowych i liniowych. Ma tą interesującą właściwość, że źródło punktowe (zielone) w pomieszczeniu nie oświetli całego pomieszczenia, bez względu na to, gdzie je umieścisz. Możesz przeciągnąć zielony punkt, aby przesunąć źródło.",
-      "nomatterwhereyouputt": "Bez względu na to, gdzie umieścisz źródło punktowe, nie oświetli ono całego pomieszczenia.\nOstrzeżenie: z powodu błędu numerycznego po pewnym czasie może nadal świecić."
+      "nomatterwhereyouputt": "Bez względu na to, gdzie umieścisz źródło punktowe, nie oświetli ono całego pomieszczenia."
     },
     "opticalCavity": {
       "title": "Wnęka optyczna z dwoma zwierciadłami",

@@ -29,9 +29,11 @@
               "tMax": "`tMax`",
               "tStep": "`tStep`"
             }
-          ]
+          ],
+          "curveType": "cubicBezier"
         }
-      ]
+      ],
+      "importedFromBeta": true
     }
   },
   "objs": [
