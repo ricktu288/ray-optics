@@ -187,8 +187,8 @@
         "customFunctions": "您可以使用從模組編輯器中的「變數」部分定義的自訂函數，但其定義最終必須由支援的運算組成。"
       },
       "pointN": "點 {{i}}",
-      "imageDetectionWarning": "本工具不支援像的偵測。",
-      "nonSimulateColorsWarning": "本工具只在「模擬色彩」模式下運作。"
+      "imageDetectionWarning": "本元件不支援像的偵測。",
+      "nonSimulateColorsWarning": "本元件只在「模擬色彩」模式下運作。"
     },
     "LineObjMixin": {
       "endpoint1": "第一端點",
@@ -689,7 +689,7 @@
       "tabs": {
         "scene": "場景",
         "createModule": "新增模組",
-        "createModuleInfo": "模組可讓您組合現有工具來製作新工具。範例請見工具->其他->匯入模組。"
+        "createModuleInfo": "模組可讓您組合現有元件來製作新元件。範例請見工具->其他->匯入模組。"
       },
       "sceneObjects": {
         "title": "物件",

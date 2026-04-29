@@ -18,6 +18,7 @@
   },
   "tools": {
     "title": "도구",
+    "homePageTitle": "도구",
     "categories": {
       "lightSource": "광원",
       "mirror": "거울",

@@ -18,6 +18,7 @@
   },
   "tools": {
     "title": "Tools",
+    "homePageTitle": "Components",
     "categories": {
       "lightSource": "Light Source",
       "mirror": "Mirror",
@@ -48,7 +49,7 @@
       "description": "Point source with a given emission angle."
     },
     "Mirror": {
-      "title": "Segment",
+      "title": "Flat",
       "description": "Simulate the reflection of light on a mirror."
     },
     "otherMirror": {
@@ -131,24 +132,24 @@
     },
     "CircleGrinGlass": {
       "title": "GRIN Circle",
-      "description": "Glass with a custom refractive index function n(x,y) and a circular boundary."
+      "description": "Material with a custom refractive index function n(x,y) and a circular boundary."
     },
     "GrinGlass": {
       "title": "GRIN Polygon",
-      "description": "Glass with a custom refractive index function n(x,y) and a polygonal boundary.",
+      "description": "Material with a custom refractive index function n(x,y) and a polygonal boundary.",
       "instruction": "Click to create a segment, click on the starting point when finish drawing.",
       "warning": "WARNING: Only simple polygons are supported, otherwise the behavior is unpredictable."
     },
     "ParamGrinGlass": {
       "title": "GRIN Parametric Curve",
-      "description": "Gradient-index glass with boundary defined by custom parametric equations."
+      "description": "Gradient-index material with boundary defined by custom parametric equations."
     },
     "CurveGrinGlass": {
       "title": "GRIN Bézier Curves",
-      "description": "Gradient-index glass bounded by cubic Bézier curves."
+      "description": "Gradient-index material bounded by cubic Bézier curves."
     },
     "otherGrinGlass": {
-      "title": "Gradient-index glass",
+      "title": "Gradient-index material",
       "description": "Material with a custom refractive index function n(x,y)."
     },
     "Blocker": {
@@ -213,7 +214,7 @@
     "modules": {
       "import": "Import Modules…",
       "createModule": "Create Module…",
-      "description": "Make new tools by combining existing tools. See \"Import Modules\" for examples.",
+      "description": "Make new components by combining existing components. See \"Import Modules\" for examples.",
       "remove": "Remove module"
     },
     "moveView": {
@@ -237,7 +238,7 @@
     },
     "images": {
       "title": "All Images",
-      "description": "Show the position of all images. Yellow points indicate real images, orange indicates virtual images, and gray (none in this picture) indicates virtual objects. Note that some images cannot be detected if 'Ray density' is not high enough.",
+      "description": "Show the position of all images and caustics. Yellow points indicate real images, orange indicates virtual images, and gray (none in this picture) indicates virtual objects. Note that some images cannot be detected if 'Ray density' is not high enough.",
       "simulateColorsNote": "When 'Simulate Colors' is on, they are shown in source colors and distinguished by dot sizes instead."
     },
     "observer": {

@@ -187,8 +187,8 @@
         "customFunctions": "您可以使用从模块编辑器中的「变量」部分定义的自订函数，但其定义最终必须由支援的运算组成。"
       },
       "pointN": "点 {{i}}",
-      "imageDetectionWarning": "本工具不支持像的侦测。",
-      "nonSimulateColorsWarning": "本工具只在「模拟色彩」模式下运作。"
+      "imageDetectionWarning": "本元件不支持像的侦测。",
+      "nonSimulateColorsWarning": "本元件只在「模拟色彩」模式下运作。"
     },
     "LineObjMixin": {
       "endpoint1": "第一端点",
@@ -689,7 +689,7 @@
       "tabs": {
         "scene": "场景",
         "createModule": "创建模块",
-        "createModuleInfo": "模块可让您组合现有工具来制作新工具。范例请见工具->其他->导入模块。"
+        "createModuleInfo": "模块可让您组合现有元件来制作新元件。范例请见工具->其他->导入模块。"
       },
       "sceneObjects": {
         "title": "物件",

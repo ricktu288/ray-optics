@@ -18,6 +18,7 @@
   },
   "tools": {
     "title": "Outils",
+    "homePageTitle": "Outils",
     "categories": {
       "lightSource": "Source de lumière",
       "mirror": "Miroirs",

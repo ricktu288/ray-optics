@@ -18,6 +18,7 @@
   },
   "tools": {
     "title": "Herramientas",
+    "homePageTitle": "Herramientas",
     "categories": {
       "lightSource": "Fuente de luz",
       "mirror": "Espejo",

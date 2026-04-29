@@ -1,7 +1,7 @@
 {
   "modulesPage": {
     "description": {
-      "makeNewTools": "The \"Module\" feature allows making new tools by combining, specializing, or reparametrizing objects created by existing tools in this simulator.",
+      "makeNewTools": "The \"Module\" feature allows making new components by combining, specializing, or reparametrizing components created by existing tools in this simulator.",
       "appearAsTools": "Imported modules will appear as tools in the \"Other\" category. Please select and click the blank space according to the order of the control point sequence (see \"Specification\").",
       "embeddedInScene": "Imported modules are embedded in the data of the scene, so will not be automatically updated when the authors of the modules update them."
     },

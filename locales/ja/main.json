@@ -18,6 +18,7 @@
   },
   "tools": {
     "title": "ツール",
+    "homePageTitle": "ツール",
     "categories": {
       "lightSource": "光源",
       "mirror": "鏡",

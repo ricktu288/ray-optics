@@ -187,8 +187,8 @@
         "customFunctions": "You can use custom functions defined in the \"Variables\" section of the module editor, but their definitions must ultimately consist of supported operations."
       },
       "pointN": "Point {{i}}",
-      "imageDetectionWarning": "This tool does not support image detection.",
-      "nonSimulateColorsWarning": "This tool only works when \"Simulate Colors\" is on."
+      "imageDetectionWarning": "This component does not support image detection.",
+      "nonSimulateColorsWarning": "This component only works when \"Simulate Colors\" is on."
     },
     "LineObjMixin": {
       "endpoint1": "1st endpoint",
@@ -606,7 +606,7 @@
       "title": "Absorption rate visualization"
     },
     "grinGlass": {
-      "title": "GRIN glass default fill"
+      "title": "GRIN material default fill"
     },
     "blocker": {
       "title": "Blocker surface"
@@ -690,7 +690,7 @@
       "tabs": {
         "scene": "Scene",
         "createModule": "Create Module",
-        "createModuleInfo": "Modules allow you to make new tools by combining existing tools. See Tools -> Other -> Import Modules for examples."
+        "createModuleInfo": "Modules allow you to make new components by combining existing components. See Tools -> Other -> Import Modules for examples."
       },
       "sceneObjects": {
         "title": "Objects",

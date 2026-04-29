@@ -18,6 +18,7 @@
   },
   "tools": {
     "title": "工具",
+    "homePageTitle": "元件",
     "categories": {
       "lightSource": "光源",
       "mirror": "鏡子",
@@ -213,7 +214,7 @@
     "modules": {
       "import": "匯入模組…",
       "createModule": "建立模組…",
-      "description": "透過組合現有工具來製作新工具。範例請見「匯入模組」。",
+      "description": "透過組合現有元件來製作新元件。範例請見「匯入模組」。",
       "remove": "移除模組"
     },
     "moveView": {
@@ -237,7 +238,7 @@
     },
     "images": {
       "title": "所有像",
-      "description": "點出像的位置。黃點表示實像，橘點表示虛像，灰點(圖中沒有)表示虛物。注意「光線密度」不夠高時有些像無法正常顯示。",
+      "description": "點出像和焦散的位置。黃點表示實像，橘點表示虛像，灰點(圖中沒有)表示虛物。注意「光線密度」不夠高時有些像無法正常顯示。",
       "simulateColorsNote": "若使用「模擬色彩」，則改以光源顏色顯示並以點的大小區分。"
     },
     "observer": {

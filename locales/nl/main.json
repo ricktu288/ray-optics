@@ -8,6 +8,7 @@
   },
   "tools": {
     "title": "Gereedschap",
+    "homePageTitle": "Gereedschap",
     "categories": {
       "lightSource": "Lichtbron",
       "mirror": "spiegels",

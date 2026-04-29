@@ -18,6 +18,7 @@
   },
   "tools": {
     "title": "Strumenti",
+    "homePageTitle": "Strumenti",
     "categories": {
       "lightSource": "Sorgente Luminosa",
       "mirror": "Specchio",

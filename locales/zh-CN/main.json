@@ -18,6 +18,7 @@
   },
   "tools": {
     "title": "工具",
+    "homePageTitle": "元件",
     "categories": {
       "lightSource": "光源",
       "mirror": "镜子",
@@ -213,7 +214,7 @@
     "modules": {
       "import": "导入模块…",
       "createModule": "创建模块…",
-      "description": "通过组合现有工具来制作新工具。范例请见「导入模块」。",
+      "description": "通过组合现有元件来制作新元件。范例请见「导入模块」。",
       "remove": "移除模块"
     },
     "moveView": {
