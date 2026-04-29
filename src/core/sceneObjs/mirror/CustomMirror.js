@@ -22,6 +22,19 @@ import geometry from '../../geometry.js';
 import { evaluateLatex } from '../../equation.js';
 import { equationValueForListDisplay } from '../../propertyUtils/equationConversion.js';
 import escapeHtml from 'escape-html';
+import { Bezier } from 'bezier-js';
+import { parseTex } from 'tex-math-parser';
+import * as math from 'mathjs';
+import { curveTypePropertyInfoHtml } from '../ParamCurveObjMixin.js';
+
+function compileEquationDerivative(eqnLatex) {
+  const p = parseTex(eqnLatex).toString().replaceAll('\\cdot', '*').replaceAll('\\frac', '/');
+  const p_der = math.derivative(p, 'x').toString();
+  const p_der_tex = math.parse(p_der).toTex()
+    .replaceAll('{+', '{')
+    .replaceAll('\\mathrm{x}', 'x');
+  return evaluateLatex(p_der_tex);
+}
 
 /**
  * Mirror with shape defined by a custom equation.
@@ -48,6 +61,8 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
     p1: null,
     p2: null,
     eqn: "0.5\\cdot\\sqrt{1-x^2}",
+    curveStepSize: 0.1000001,
+    curveType: 'smoothNormal',
     filter: false,
     invert: false,
     wavelength: Simulator.GREEN_WAVELENGTH,
@@ -65,6 +80,12 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
   }
 
   static getPropertySchema(objData, scene) {
+    const eqnInfo = '<ul><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.mathjs') + '<br><code>+ - * / ^ sqrt sin cos tan sec csc cot sinh cosh tanh log exp asin acos atan asinh acosh atanh floor round ceil max min abs sign</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.customFunctions') + '</li></ul>';
+    const curveTypeOptions = {
+      polygonal: i18next.t('simulator:sceneObjs.ParamCurveObjMixin.curveTypes.polygonal'),
+      smoothNormal: i18next.t('simulator:sceneObjs.ParamCurveObjMixin.curveTypes.smoothNormal'),
+      cubicBezier: i18next.t('simulator:sceneObjs.ParamCurveObjMixin.curveTypes.cubicBezier'),
+    };
     return [
       ...super.getPropertySchema(objData, scene),
       {
@@ -72,7 +93,20 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
         type: 'equation',
         label: 'f(x)',
         variables: ['x'],
-        info: '<ul><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.mathjs') + '<br><code>+ - * / ^ sqrt sin cos tan sec csc cot sinh cosh tanh log exp asin acos atan asinh acosh atanh floor round ceil max min abs sign</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.customFunctions') + '</li></ul>'
+        info: eqnInfo,
+      },
+      {
+        key: 'curveType',
+        type: 'dropdown',
+        label: i18next.t('simulator:sceneObjs.ParamCurveObjMixin.curveType'),
+        options: curveTypeOptions,
+        info: curveTypePropertyInfoHtml(),
+      },
+      {
+        key: 'curveStepSize',
+        type: 'number',
+        label: i18next.t('simulator:sceneObjs.common.curveStepSize') + ' (px)' + ' <sup class="beta-label-sup">Beta</sup>',
+        info: '<p>' + i18next.t('simulator:sceneObjs.common.eqnInfo.curveStepSize') + '</p>',
       },
     ];
   }
@@ -84,7 +118,28 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
       // Invalidate points when equation changes
       delete obj.tmp_points;
     }, '<ul><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.constants') + '<br><code>pi e</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.operators') + '<br><code>+ - * / ^</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.functions') + '<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log exp arcsin arccos arctan arcsinh arccosh arctanh floor round ceil trunc sgn max min abs</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.module') + '</li></ul>');
-    
+
+    if (objBar.showAdvanced(!this.arePropertiesDefault(['curveType']))) {
+      const curveTypeOptions = {
+        polygonal: i18next.t('simulator:sceneObjs.ParamCurveObjMixin.curveTypes.polygonal'),
+        smoothNormal: i18next.t('simulator:sceneObjs.ParamCurveObjMixin.curveTypes.smoothNormal'),
+        cubicBezier: i18next.t('simulator:sceneObjs.ParamCurveObjMixin.curveTypes.cubicBezier'),
+      };
+      objBar.createDropdown(i18next.t('simulator:sceneObjs.ParamCurveObjMixin.curveType'), this.curveType, curveTypeOptions, function (obj, value) {
+        obj.curveType = value;
+        delete obj.tmp_points;
+        delete obj.bezierSegments;
+      }, curveTypePropertyInfoHtml(), true);
+    }
+
+    if (objBar.showAdvanced(!this.arePropertiesDefault(['curveStepSize']))) {
+      objBar.createNumber(i18next.t('simulator:sceneObjs.common.curveStepSize') + ' (px)' + ' <sup class="beta-label-sup">Beta</sup>', 0.001, 1, 0.001, this.curveStepSize, function (obj, value) {
+        obj.curveStepSize = parseFloat(value);
+        delete obj.tmp_points;
+        delete obj.bezierSegments;
+      }, '<p>' + i18next.t('simulator:sceneObjs.common.eqnInfo.curveStepSize') + '</p>', true);
+    }
+
     super.populateObjBar(objBar);
   }
 
@@ -97,6 +152,8 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
       ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
       return;
     }
+
+    this._invalidateCurveIfLengthScaleChanged();
 
     // Initialize points if needed
     if (!this.tmp_points) {
@@ -114,11 +171,19 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
     ctx.strokeStyle = isHovered ? this.scene.highlightColorCss : canvasRenderer.rgbaToCssColor(this.scene.simulateColors && this.wavelength && this.filter ? colorArray : this.scene.theme.mirror.color);
     ctx.lineWidth = this.scene.theme.mirror.width * ls;
     ctx.beginPath();
-    
-    var pts = this.tmp_points;
-    ctx.moveTo(pts[0].x, pts[0].y);
-    for (var i = 1; i < pts.length; i++) {
-      ctx.lineTo(pts[i].x, pts[i].y);
+    if (this.curveType === 'cubicBezier' && this._ensureBezierPathReady()) {
+      const p0 = this.bezierSegments[0].get(0);
+      ctx.moveTo(p0.x, p0.y);
+      for (const curve of this.bezierSegments) {
+        const pts = curve.points;
+        ctx.bezierCurveTo(pts[1].x, pts[1].y, pts[2].x, pts[2].y, pts[3].x, pts[3].y);
+      }
+    } else {
+      var pts = this.tmp_points;
+      ctx.moveTo(pts[0].x, pts[0].y);
+      for (var i = 1; i < pts.length; i++) {
+        ctx.lineTo(pts[i].x, pts[i].y);
+      }
     }
     
     ctx.stroke();
@@ -134,6 +199,7 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
     super.move(diffX, diffY);
     // Invalidate points after moving
     delete this.tmp_points;
+    delete this.bezierSegments;
     return true;
   }
 
@@ -141,6 +207,7 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
     super.rotate(angle, center);
     // Invalidate points after rotating
     delete this.tmp_points;
+    delete this.bezierSegments;
     return true;
   }
 
@@ -148,6 +215,7 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
     super.scale(scale, center);
     // Invalidate points after scaling
     delete this.tmp_points;
+    delete this.bezierSegments;
     return true;
   }
 
@@ -155,18 +223,21 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
     super.onConstructMouseDown(mouse, ctrl, shift);
     // Invalidate points during construction
     delete this.tmp_points;
+    delete this.bezierSegments;
   }
 
   onConstructMouseMove(mouse, ctrl, shift) {
     super.onConstructMouseMove(mouse, ctrl, shift);
     // Invalidate points during construction
     delete this.tmp_points;
+    delete this.bezierSegments;
   }
 
   onConstructMouseUp(mouse, ctrl, shift) {
     const result = super.onConstructMouseUp(mouse, ctrl, shift);
     // Invalidate points after construction
     delete this.tmp_points;
+    delete this.bezierSegments;
     return result;
   }
 
@@ -183,6 +254,8 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
       return dragContext;
     }
 
+    this._invalidateCurveIfLengthScaleChanged();
+
     // Initialize points if needed
     if (!this.tmp_points) {
       if (!this.initPoints()) {
@@ -190,18 +263,31 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
       }
     }
     
-    var i;
-    var pts = this.tmp_points;
-    for (i = 0; i < pts.length - 1; i++) {
-      var seg = geometry.line(pts[i], pts[i + 1]);
-      if (mouse.isOnSegment(seg)) {
-        // Dragging the entire this
-        const mousePos = mouse.getPosSnappedToGrid();
-        dragContext.part = 0;
-        dragContext.mousePos0 = mousePos; // Mouse position when the user starts dragging
-        dragContext.mousePos1 = mousePos; // Mouse position at the last moment during dragging
-        dragContext.snapContext = {};
-        return dragContext;
+    if (this.curveType === 'cubicBezier' && this._ensureBezierPathReady()) {
+      for (let i = 0; i < this.bezierSegments.length; i++) {
+        if (mouse.isOnCurve(this.bezierSegments[i])) {
+          const mousePos = mouse.getPosSnappedToGrid();
+          dragContext.part = 0;
+          dragContext.mousePos0 = mousePos;
+          dragContext.mousePos1 = mousePos;
+          dragContext.snapContext = {};
+          return dragContext;
+        }
+      }
+    } else {
+      var i;
+      var pts = this.tmp_points;
+      for (i = 0; i < pts.length - 1; i++) {
+        var seg = geometry.line(pts[i], pts[i + 1]);
+        if (mouse.isOnSegment(seg)) {
+          // Dragging the entire this
+          const mousePos = mouse.getPosSnappedToGrid();
+          dragContext.part = 0;
+          dragContext.mousePos0 = mousePos; // Mouse position when the user starts dragging
+          dragContext.mousePos1 = mousePos; // Mouse position at the last moment during dragging
+          dragContext.snapContext = {};
+          return dragContext;
+        }
       }
     }
   }
@@ -210,9 +296,12 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
     super.onDrag(mouse, dragContext, ctrl, shift);
     // Invalidate points after any dragging operation
     delete this.tmp_points;
+    delete this.bezierSegments;
   }
 
   checkRayIntersects(ray) {
+    this._invalidateCurveIfLengthScaleChanged();
+
     // Initialize points if needed
     if (!this.tmp_points) {
       if (!this.initPoints() || !this.checkRayIntersectFilter(ray)) {
@@ -222,6 +311,34 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
       return;
     }
     
+    if (this.curveType === 'cubicBezier' && this._ensureBezierPathReady()) {
+      let incidentPoint = null;
+      let incidentDist = Infinity;
+      const big = this.scene.lengthScale * 1e9;
+      const raySeg = geometry.line(ray.p1, geometry.point(
+        ray.p1.x + (ray.p2.x - ray.p1.x) * big,
+        ray.p1.y + (ray.p2.y - ray.p1.y) * big
+      ));
+      for (let i = 0; i < this.bezierSegments.length; i++) {
+        const curve = this.bezierSegments[i];
+        const us = curve.lineIntersects(raySeg);
+        for (let k = 0; k < us.length; k++) {
+          const rp = curve.get(us[k]);
+          if (!geometry.intersectionIsOnRay(rp, ray)) continue;
+          if (geometry.distance(ray.p1, rp) < Simulator.MIN_RAY_SEGMENT_LENGTH * this.scene.lengthScale) continue;
+          const d = geometry.distance(ray.p1, rp);
+          if (d < incidentDist) {
+            incidentDist = d;
+            incidentPoint = rp;
+            this.tmp_i = i;
+            this.tmp_bezierU = us[k];
+          }
+        }
+      }
+      if (incidentPoint) return incidentPoint;
+      return;
+    }
+
     var i, j;
     var pts = this.tmp_points;
     var dir = geometry.distance(this.p2, ray.p1) > geometry.distance(this.p1, ray.p1);
@@ -244,6 +361,13 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
   }
 
   onRayIncident(ray, rayIndex, incidentPoint) {
+    if (this.curveType === 'cubicBezier') {
+      return this.onRayIncidentBezier(ray, rayIndex, incidentPoint);
+    }
+    return this.onRayIncidentLinear(ray, incidentPoint, this.curveType === 'smoothNormal');
+  }
+
+  onRayIncidentLinear(ray, incidentPoint, smoothNormals) {
     var rx = ray.p1.x - incidentPoint.x;
     var ry = ray.p1.y - incidentPoint.y;
     var i = this.tmp_i;
@@ -261,7 +385,7 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
       frac = (incidentPoint.y - seg.p1.y) / my;
     }
 
-    if ((i == 0 && frac < 0.5) || (i == pts.length - 2 && frac >= 0.5)) {
+    if (!smoothNormals || (i == 0 && frac < 0.5) || (i == pts.length - 2 && frac >= 0.5)) {
       ray.p2 = geometry.point(incidentPoint.x + rx * (my * my - mx * mx) - 2 * ry * mx * my, incidentPoint.y + ry * (mx * mx - my * my) - 2 * rx * mx * my);
     } else {
       // Use a simple trick to smooth out the slopes of outgoing rays so that image detection works.
@@ -296,8 +420,61 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
       ray.p2 = geometry.point(outxFinal, outyFinal);
     }
   }
+
+  onRayIncidentBezier(ray, rayIndex, incidentPoint) {
+    const curve = this.bezierSegments?.[this.tmp_i];
+    if (!curve) return;
+    const deriv = curve.derivative(this.tmp_bezierU);
+    const mx = deriv.x;
+    const my = deriv.y;
+    if (mx * mx + my * my < 1e-20) return;
+    const rx = ray.p1.x - incidentPoint.x;
+    const ry = ray.p1.y - incidentPoint.y;
+    ray.p1 = incidentPoint;
+    ray.p2 = geometry.point(
+      incidentPoint.x + rx * (my * my - mx * mx) - 2 * ry * mx * my,
+      incidentPoint.y + ry * (mx * mx - my * my) - 2 * rx * mx * my
+    );
+  }
   
   /** Utility method */
+
+  _invalidateCurveIfLengthScaleChanged() {
+    if (this.tmp_points && this._curveCacheLengthScale !== this.scene.lengthScale) {
+      delete this.tmp_points;
+      delete this.bezierSegments;
+      delete this._curveCacheLengthScale;
+    }
+  }
+
+  _pathPairToHermiteBezier(p1, p2) {
+    const dt = p2.t - p1.t;
+    if (Math.abs(dt) < 1e-20) {
+      return new Bezier([
+        { x: p1.x, y: p1.y },
+        { x: p1.x, y: p1.y },
+        { x: p2.x, y: p2.y },
+        { x: p2.x, y: p2.y },
+      ]);
+    }
+    return new Bezier([
+      { x: p1.x, y: p1.y },
+      { x: p1.x + (p1.dxdt * dt) / 3, y: p1.y + (p1.dydt * dt) / 3 },
+      { x: p2.x - (p2.dxdt * dt) / 3, y: p2.y - (p2.dydt * dt) / 3 },
+      { x: p2.x, y: p2.y },
+    ]);
+  }
+
+  _ensureBezierPathReady() {
+    if (this.curveType !== 'cubicBezier') return true;
+    if (!this.tmp_points || this.tmp_points.length < 2) return false;
+    if (this.bezierSegments && this.bezierSegments.length === this.tmp_points.length - 1) return true;
+    this.bezierSegments = [];
+    for (let i = 0; i < this.tmp_points.length - 1; i++) {
+      this.bezierSegments.push(this._pathPairToHermiteBezier(this.tmp_points[i], this.tmp_points[i + 1]));
+    }
+    return true;
+  }
 
   /**
    * Initialize the points on the curve based on the equation.
@@ -312,8 +489,13 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
     }
 
     var fn;
+    const wantBezier = this.curveType === 'cubicBezier';
+    var fn_der;
     try {
       fn = evaluateLatex(this.eqn);
+      if (wantBezier) {
+        fn_der = compileEquationDerivative(this.eqn);
+      }
     } catch (e) {
       delete this.tmp_points;
       this.error = e.toString();
@@ -329,11 +511,20 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
     var x0 = p12d / 2;
     var i;
     
+    if (!(this.curveStepSize > 1e-6)) {
+      delete this.tmp_points;
+      this.error = i18next.t('simulator:sceneObjs.ParamCurveObjMixin.error.invalidStepSize', { step: this.curveStepSize });
+      return false;
+    }
+
     this.tmp_points = [];
+    const step = this.curveStepSize * this.scene.lengthScale;
+    const sampleOffset = 0.5 * step;
+    const sampleEndExtension = 0.9 * step;
     var lastError = "";
-    for (i = -0.1000001 * this.scene.lengthScale; i < p12d + 0.09 * this.scene.lengthScale; i += 0.1000001 * this.scene.lengthScale) {
+    for (i = -step; i < p12d + sampleEndExtension; i += step) {
       // avoid using exact integers to avoid problems with detecting intersections
-      var ix = i + 0.05 * this.scene.lengthScale;
+      var ix = i + sampleOffset;
       if (ix < 0) ix = 0;
       if (ix > p12d) ix = p12d;
       var x = ix - x0;
@@ -343,6 +534,12 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
         scaled_y = fn({ x: scaled_x, "pi": Math.PI });
         var y = scaled_y * p12d * 0.5;
         var pt = geometry.point(this.p1.x + dir1[0] * ix + dir2[0] * y, this.p1.y + dir1[1] * ix + dir2[1] * y);
+        if (wantBezier) {
+          const dydt = fn_der({ x: scaled_x, "pi": Math.PI });
+          pt.t = scaled_x;
+          pt.dxdt = dir1[0] * (p12d * 0.5) + dir2[0] * (p12d * 0.5) * dydt;
+          pt.dydt = dir1[1] * (p12d * 0.5) + dir2[1] * (p12d * 0.5) * dydt;
+        }
         this.tmp_points.push(pt);
       } catch (e) {
         lastError = e;
@@ -355,7 +552,9 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
       return false;
     }
     
+    delete this.bezierSegments;
     this.error = null;
+    this._curveCacheLengthScale = this.scene.lengthScale;
     return true;
   }
 };

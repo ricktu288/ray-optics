@@ -950,6 +950,21 @@ function getBetaFeaturesInUse() {
     betaFeatures.push(i18next.t('simulator:sceneObjs.BaseGrinGlass.plotFns'));
   }
 
+  const usesPolygonalCurveType = allObjs.some((obj) => obj && obj.curveType && obj.curveType === 'polygonal');
+  if (usesPolygonalCurveType) {
+    betaFeatures.push(i18next.t('simulator:sceneObjs.ParamCurveObjMixin.curveType') + ' -> ' + i18next.t('simulator:sceneObjs.ParamCurveObjMixin.curveTypes.polygonal'));
+  }
+
+  const usesCubicBezierCurveType = allObjs.some((obj) => obj && obj.curveType && obj.curveType === 'cubicBezier');
+  if (usesCubicBezierCurveType) {
+    betaFeatures.push(i18next.t('simulator:sceneObjs.ParamCurveObjMixin.curveType') + ' -> ' + i18next.t('simulator:sceneObjs.ParamCurveObjMixin.curveTypes.cubicBezier'));
+  }
+
+  const usesCurveStepSize = allObjs.some((obj) => obj && obj.curveStepSize && obj.curveStepSize !== 0.1000001);
+  if (usesCurveStepSize) {
+    betaFeatures.push(i18next.t('simulator:sceneObjs.common.curveStepSize'));
+  }
+
   const usesThemeGlassAbsorption = scene.theme.glassAbsorption.color.r !== defaultScene.theme.glassAbsorption.color.r || scene.theme.glassAbsorption.color.g !== defaultScene.theme.glassAbsorption.color.g || scene.theme.glassAbsorption.color.b !== defaultScene.theme.glassAbsorption.color.b;
   if (usesThemeGlassAbsorption) {
     betaFeatures.push(i18next.t('simulator:themeModal.title') + '-> ' + i18next.t('simulator:themeModal.glassAbsorption.title'));

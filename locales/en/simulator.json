@@ -168,6 +168,7 @@
       "random": "Random",
       "lambert": "Lambertian",
       "coordOrigin": "Origin",
+      "curveStepSize": "Step",
       "bezierControlPoints": "Bézier control points",
       "focalLength": "Focal length",
       "lineStyle": "Line style",
@@ -182,6 +183,7 @@
         "constants": "Supported constants",
         "operators": "Supported operators",
         "functions": "Supported functions",
+        "curveStepSize": "Sampling step size for the curve in pixels (scene length unit multiplied by the \"length scale\" setting)",
         "module": "To have custom parameters or complicated equations, use Tools -> Other -> Create Module and move this object into the module.",
         "mathjs": "Only supports the following math.js operations: ",
         "customFunctions": "You can use custom functions defined in the \"Variables\" section of the module editor, but their definitions must ultimately consist of supported operations."
@@ -204,6 +206,17 @@
       "pieces": "Pieces",
       "addPiece": "Add piece",
       "removePiece": "Remove piece",
+      "curveType": "Curve type",
+      "curveTypes": {
+        "polygonal": "Polygonal",
+        "smoothNormal": "Smooth normal",
+        "cubicBezier": "Cubic Bézier"
+      },
+      "curveTypeDescriptions": {
+        "polygonal": "Straight segments between sample points.",
+        "smoothNormal": "Same shape as polygonal, but normal vectors are interpolated between pieces similar to Phong shading. (Default)",
+        "cubicBezier": "Consecutive samples are connected by a cubic Bézier curve, matching position and derivative at the ends. Some functions may not work properly with this curve type."
+      },
       "step": "Step",
       "error": {
         "invalidStepSize": "Invalid step size: {{step}}",

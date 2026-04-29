@@ -47,6 +47,7 @@ class CustomParamSurface extends ParamCurveObjMixin(BaseCustomSurface) {
         tStep: 0.01
       }
     ],
+    curveType: 'smoothNormal',
     outRays: [
       {
         eqnTheta: "\\theta_0",

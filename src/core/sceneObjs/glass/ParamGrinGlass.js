@@ -49,6 +49,7 @@ class ParamGrinGlass extends ParamCurveObjMixin(BaseGrinGlass) {
         tStep: 0.01
       }
     ],
+    curveType: 'smoothNormal',
     refIndexFn: '1+e^{-\\frac{x^2+y^2}{50^2}}',
     absorptionFn: '0',
     plotFns: false,

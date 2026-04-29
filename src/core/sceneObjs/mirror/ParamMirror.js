@@ -52,6 +52,7 @@ class ParamMirror extends ParamCurveObjMixin(BaseFilter) {
         tStep: 0.01
       }
     ],
+    curveType: 'smoothNormal',
     filter: false,
     invert: false,
     wavelength: Simulator.GREEN_WAVELENGTH,

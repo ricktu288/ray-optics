@@ -98,6 +98,19 @@ export default {
   padding-left: 10px;
 }
 
+/* Beta marker: Bootstrap popover content is sanitized and strips inline `style` from <sup>. */
+.popover-body .beta-label-sup {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.obj-bar .beta-label-sup {
+  color: rgba(255, 255, 255, 0.67);
+}
+
+.property-list-items .beta-label-sup {
+  color: rgba(255, 255, 255, 0.5);
+}
+
 #main-flex-wrapper {
   position: fixed;
   width: 100%;
