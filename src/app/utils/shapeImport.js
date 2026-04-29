@@ -352,7 +352,7 @@ export function buildImportedObjectSpecs(simplifiedPaths, opts) {
   const bg = opts.backgroundColor ?? null;
 
   const specs = [];
-  /** Merged Drawing index by display-color key. */
+  /** Merged Drawing index by display-color key (for paths without a source ID). */
   /** @type {Map<string, number>} */
   const drawingsByColor = new Map();
 
@@ -367,13 +367,15 @@ export function buildImportedObjectSpecs(simplifiedPaths, opts) {
       if (strokeAction === 'CurveMirror' || strokeAction === 'CustomCurveSurface') {
         const pts = buildCurvePoints(path.start, path.segments, !!path.closed);
         if (pts.length >= 2) {
+          const props = {
+            points: pts,
+            isClosed: !!path.closed,
+            notDone: false,
+          };
+          if (path.sourceId) props.name = path.sourceId;
           specs.push({
             type: strokeAction,
-            props: {
-              points: pts,
-              isClosed: !!path.closed,
-              notDone: false,
-            },
+            props,
           });
         }
       } else if (strokeAction === 'Drawing') {
@@ -387,21 +389,36 @@ export function buildImportedObjectSpecs(simplifiedPaths, opts) {
           const stroke = [];
           for (const pt of poly) stroke.push(pt.x, pt.y);
           const displayColor = adjustColorForBackground(path.stroke, bg);
-          const drawingKey = colorToKey(displayColor);
-          if (!drawingsByColor.has(drawingKey)) {
-            drawingsByColor.set(drawingKey, specs.length);
-            specs.push({
-              type: 'Drawing',
-              props: {
-                strokes: [],
-                isDrawing: false,
-                lineStyle: {
-                  color: { r: displayColor.r, g: displayColor.g, b: displayColor.b, a: displayColor.a ?? 1 },
+          const shouldKeepSeparate = !!path.sourceId;
+          let drawingIdx = -1;
+          if (!shouldKeepSeparate) {
+            const drawingKey = colorToKey(displayColor);
+            if (!drawingsByColor.has(drawingKey)) {
+              drawingsByColor.set(drawingKey, specs.length);
+              specs.push({
+                type: 'Drawing',
+                props: {
+                  strokes: [],
+                  isDrawing: false,
+                  lineStyle: {
+                    color: { r: displayColor.r, g: displayColor.g, b: displayColor.b, a: displayColor.a ?? 1 },
+                  },
                 },
+              });
+            }
+            drawingIdx = drawingsByColor.get(drawingKey);
+          } else {
+            const props = {
+              strokes: [],
+              isDrawing: false,
+              lineStyle: {
+                color: { r: displayColor.r, g: displayColor.g, b: displayColor.b, a: displayColor.a ?? 1 },
               },
-            });
+              name: path.sourceId,
+            };
+            specs.push({ type: 'Drawing', props });
+            drawingIdx = specs.length - 1;
           }
-          const drawingIdx = drawingsByColor.get(drawingKey);
           specs[drawingIdx].props.strokes.push(stroke);
         }
       }
@@ -419,6 +436,7 @@ export function buildImportedObjectSpecs(simplifiedPaths, opts) {
             points: pts,
             notDone: false,
           };
+          if (path.sourceId) props.name = path.sourceId;
           if (Number.isFinite(fillCfg.refIndex)) props.refIndex = fillCfg.refIndex;
           if (Number.isFinite(fillCfg.cauchyB)) props.cauchyB = fillCfg.cauchyB;
           specs.push({ type: 'CurveGlass', props });
@@ -426,12 +444,14 @@ export function buildImportedObjectSpecs(simplifiedPaths, opts) {
       } else if (fillAction === 'CurveGrinGlass') {
         const pts = buildCurvePoints(path.start, path.segments, true);
         if (pts.length >= 2) {
+          const props = {
+            points: pts,
+            notDone: false,
+          };
+          if (path.sourceId) props.name = path.sourceId;
           specs.push({
             type: 'CurveGrinGlass',
-            props: {
-              points: pts,
-              notDone: false,
-            },
+            props,
           });
         }
       }

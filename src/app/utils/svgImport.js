@@ -47,6 +47,7 @@
  *     stroke: { r, g, b, a } | null,
  *     fill:   { r, g, b, a } | null,
  *     source: string,
+ *     sourceId: string,
  *   }
  *
  * An `'A'` segment parameterizes its arc as
@@ -540,6 +541,7 @@ function walk(node, parentMatrix, parentStyle, outPaths) {
   const localMatrix = parseTransform(node.getAttribute('transform'));
   const matrix = multiplyMatrix(parentMatrix, localMatrix);
   const style = resolveStyle(node, parentStyle);
+  const sourceId = (node.getAttribute('id') || '').trim();
 
   switch (tag) {
     case 'g':
@@ -557,6 +559,7 @@ function walk(node, parentMatrix, parentStyle, outPaths) {
         segments: [{ type: 'L', end: applyMatrix(matrix, x2, y2) }],
         closed: false,
         source: 'line',
+        sourceId,
       }, style, outPaths);
       break;
     }
@@ -572,6 +575,7 @@ function walk(node, parentMatrix, parentStyle, outPaths) {
           segments: segs,
           closed: tag === 'polygon',
           source: tag,
+          sourceId,
         }, style, outPaths);
       }
       break;
@@ -594,6 +598,7 @@ function walk(node, parentMatrix, parentStyle, outPaths) {
           ],
           closed: true,
           source: 'rect',
+          sourceId,
         }, style, outPaths);
       }
       break;
@@ -604,7 +609,7 @@ function walk(node, parentMatrix, parentStyle, outPaths) {
       const r = parseFloat(node.getAttribute('r')) || 0;
       if (r > 0) {
         const path = ellipsePath(cx, cy, r, r);
-        pushPath(transformPath(path, matrix, 'circle'), style, outPaths);
+        pushPath(transformPath(path, matrix, 'circle', sourceId), style, outPaths);
       }
       break;
     }
@@ -615,7 +620,7 @@ function walk(node, parentMatrix, parentStyle, outPaths) {
       const ry = parseFloat(node.getAttribute('ry')) || 0;
       if (rx > 0 && ry > 0) {
         const path = ellipsePath(cx, cy, rx, ry);
-        pushPath(transformPath(path, matrix, 'ellipse'), style, outPaths);
+        pushPath(transformPath(path, matrix, 'ellipse', sourceId), style, outPaths);
       }
       break;
     }
@@ -624,7 +629,7 @@ function walk(node, parentMatrix, parentStyle, outPaths) {
       if (d) {
         const subPaths = parsePathD(d);
         for (const sp of subPaths) {
-          pushPath(transformPath(sp, matrix, 'path'), style, outPaths);
+          pushPath(transformPath(sp, matrix, 'path', sourceId), style, outPaths);
         }
       }
       break;
@@ -647,10 +652,11 @@ function pushPath(rawPath, style, outPaths) {
     stroke: style.stroke,
     fill: style.fill,
     source: rawPath.source || '',
+    sourceId: rawPath.sourceId || '',
   });
 }
 
-function transformPath(path, matrix, source) {
+function transformPath(path, matrix, source, sourceId = '') {
   const start = applyMatrix(matrix, path.start.x, path.start.y);
   const segments = path.segments.map((s) => {
     if (s.type === 'L') {
@@ -683,7 +689,7 @@ function transformPath(path, matrix, source) {
       end: applyMatrix(matrix, s.end.x, s.end.y),
     };
   });
-  return { start, segments, closed: path.closed, source };
+  return { start, segments, closed: path.closed, source, sourceId };
 }
 
 /* -------------------------------------------------------------------------- */
