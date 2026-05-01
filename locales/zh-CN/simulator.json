@@ -12,7 +12,7 @@
     "customOption": "自定义",
     "closeButton": "关闭",
     "resetButton": "重置",
-    "reloadToTakeEffect": "请重新加载页面才能生效。"
+    "reloadToTakeEffect": "需要重新加载页面以生效。"
   },
   "file": {
     "title": "文件",
@@ -40,8 +40,8 @@
       "title": "导出为PNG/SVG…"
     },
     "copyLink": {
-      "title": "复制分享连结",
-      "description": "复制并前往本场景的专属网址，以便分享连结（可考虑透过短网址工具）。另见设定->自动同步网址。"
+      "title": "复制分享链接",
+      "description": "复制并前往本场景的专属网址，以便分享链接（可以考虑使用短网址工具）。另见设定 -> 自动同步网址。"
     },
     "viewGallery": {
       "title": "浏览作品集",
