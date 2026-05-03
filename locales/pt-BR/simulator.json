@@ -42,6 +42,10 @@
     "viewGallery": {
       "title": "Ver Galeria",
       "description": "Ir para a página web da Galeria para carregar um exemplo."
+    },
+    "importShapes": {
+      "title": "Importar formas…",
+      "description": "Importar formas de um arquivo SVG como componentes ópticos (espelhos, vidro, etc.)."
     }
   },
   "settings": {
@@ -174,17 +178,19 @@
         "functions": "Funções suportadas",
         "module": "Para adicionar parâmetros personalizados ou equações complicadas, use Ferramentas -> Outros -> Criar Módulo e mova este objeto para o módulo.",
         "mathjs": "Somente suporta as operações a seguir do math.js: ",
-        "customFunctions": "Você pode usar funções personalizadas definidas na seção \"Variáveis\" do editor de módulos, mas suas definições devem consistir de operações suportadas."
+        "customFunctions": "Você pode usar funções personalizadas definidas na seção \"Variáveis\" do editor de módulos, mas suas definições devem consistir de operações suportadas.",
+        "curveStepSize": "Tamanho de passo de amostra para a curva em píxeis (comprimento de unidade da cena multiplicado pela configuração \"escala de comprimento\")"
       },
-      "imageDetectionWarning": "Esta ferramenta não suporta detecção de imagem.",
-      "nonSimulateColorsWarning": "Esta ferramenta só funciona quando \"Simular Cores\" está ligado.",
+      "imageDetectionWarning": "Este componente não suporta detecção de imagem.",
+      "nonSimulateColorsWarning": "Este componente só funciona quando \"Simular Cores\" está ligado.",
       "bezierControlPoints": "Pontos de controle Bézier",
       "styleRed": "Vermelho",
       "styleGreen": "Verde",
       "styleBlue": "Azul",
       "styleAlpha": "Alfa",
       "styleWidth": "Largura",
-      "pointN": "Ponto {{i}}"
+      "pointN": "Ponto {{i}}",
+      "curveStepSize": "Passo"
     },
     "ParamCurveObjMixin": {
       "addPiece": "Adicionar segmento",
@@ -195,6 +201,17 @@
         "invalidRange": "Alcance de parâmetros inválido: tMin({{tMin}}) >- tMax ({{tMax}})",
         "nonFiniteCoords": "Coordenadas não-finitas: ({{x}}, {{y}})",
         "pieceError": "Erro em segmento {{pieceIndex}}, t={{t}}: {{error}}"
+      },
+      "curveType": "Tipo de curva",
+      "curveTypes": {
+        "polygonal": "Poligonal",
+        "smoothNormal": "Normais suavizados",
+        "cubicBezier": "Bézier Cúbica"
+      },
+      "curveTypeDescriptions": {
+        "polygonal": "Segmentos retos entre pontos de amostra.",
+        "smoothNormal": "Mesmo formato que poligonal, porém vetores normais são interpolados entre pedaços, similar ao sombreamento de Phong. (Padrão)",
+        "cubicBezier": "Amostras consecutivas são conectadas por uma curva de Bézier cúbica, alinhando posição e derivada nass pontas. Algumas funções podem não funcionar corretamente com este tipo de curva."
       }
     },
     "Beam": {
@@ -261,7 +278,8 @@
         "all": "Esta opção se aplica a todos objetos GRIN na simulação.",
         "impl": "Este simulador atualmente possi duas implementações de propagação de luz entre meios diferentes, para objetos GRIN - numérica e simbólica (ver funções 'multRefIndex' e 'devRefIndex' em 'BaseGrinGlass.js').",
         "implNote": "A implementação numérica é mais rápida mas nem sempre funciona corretamente (dependende do caso específico) em cenários quando é usada com mais de um objeto GRIN, tal que ao menos um deles possua uma função de índice refrativo que não é definida todo o plano, enquanto a implementação simbólica é mais lenta, mas robusta a esse tipo de problema."
-      }
+      },
+      "plotFns": "Desenhar n e α"
     },
     "CircleGrinGlass": {
       "epsInfo": {
@@ -393,7 +411,8 @@
       "objectExpansionError": "Erro expandindo objeto {{obj}} em lista com parâmetros {{params}}: {{error}}",
       "variableDefinitionError": "Erro avaliando definições de variável com parâmetros {{params}}: {{error}}",
       "unclosedMathBlock": "Bloco de matemática não fechado: {{str}}",
-      "editModule": "Editar módulo"
+      "editModule": "Editar módulo",
+      "inExpandedObjects": "Em objetos expandidos:"
     },
     "Handle": {
       "handle": "Ponto de manuseio",
@@ -407,7 +426,10 @@
       },
       "step": "Passo",
       "transformationWarning": "Aplicar \"{{transformation}}\" a \"{{obj}}\" pode ter resultados inesperados.",
-      "convertToModule": "Para módulo…"
+      "convertToModule": "Para módulo…",
+      "handlePoint": "Posição do ponto de manuseio",
+      "rotationScalingCenter": "Centro de rotação/escala",
+      "placeOnCanvasHint": "Clique em espaço vazio para colocar o ponto de manuseio."
     },
     "CropBox": {
       "title": "Exportar",
@@ -443,6 +465,11 @@
     },
     "Protractor": {
       "zeroPoint": "Ponto zero"
+    },
+    "CustomCurveSurface": {
+      "info": {
+        "incidentPos": "A posição do ponto incidente pode ser referida como {{t}}, que usa o parâmetro natural de policurva Bézier: a posição s do i-ésimo pedaço tem {{t}} = i + s."
+      }
     }
   },
   "saveModal": {
@@ -567,10 +594,10 @@
       "title": "Seta dos curvos ideais"
     },
     "glass": {
-      "title": "Preenchimento do vidro"
+      "title": "Visualização de índice refrativo"
     },
     "grinGlass": {
-      "title": "Preenchimento do vidro de gradiente de índice"
+      "title": "Preenchimento padrão de material GRIN"
     },
     "blocker": {
       "title": "Superfície do bloqueador"
@@ -612,6 +639,9 @@
       "title": "Importar",
       "description": "Importar tema de um arquivo JSON.",
       "error": "O arquivo não contém um tema."
+    },
+    "glassAbsorption": {
+      "title": "Visualização de taxa de absorção"
     }
   },
   "languageModal": {
@@ -660,10 +690,27 @@
       "tabs": {
         "scene": "Cena",
         "createModule": "Criar Módulo",
-        "createModuleInfo": "Módulos lhe permitem criar novas ferramentas combinando ferramentas existentes. Veja Ferramentas -> Outros -> Importar Módulos para exemplos."
+        "createModuleInfo": "Módulos lhe permitem criar novos componentes combinando componentes existentes. Veja Ferramentas -> Outros -> Importar Módulos para exemplos."
       },
       "sceneObjects": {
-        "title": "Objetos"
+        "title": "Objetos",
+        "info": "Lista de objetos que estão diretamente na cena. Para parametrizá-los (com variáveis personalizadas, listas, etc.), você precisa de movê-los para dentro de um módulo. Objetos dentro de módulos não estão diretamente listados aqui, e cada ocorrência de um módulo é exibida como um objeto único.",
+        "bindToHandle": "Conectar a",
+        "createHandle": "Criar novo ponto de manuseio",
+        "unbindHandle": "Desconectar",
+        "moveIntoModule": "Mover para",
+        "createModule": "Criar novo módulo",
+        "emptyHint": "Para criar um objeto, por favor use a barra de ferramentas e crie-o no quadro.",
+        "unnamedObject": "Objeto sem nome",
+        "unknownType": "Tipo desconhecido",
+        "collapse": "Esconder propriedades",
+        "showAllProperties": "Exibir todas propriedades",
+        "expand": "Expandir para exibir propriedades",
+        "hideDefaultProperties": "Esconder propriedades padrão",
+        "newItem": "Novo item",
+        "formulaRequiresModule": "Para usar uma fórmula, primeiro você deve mover o objeto para um módulo.",
+        "invalidPointFormat": "Pontos devem ter exatamente duas coordenadas separadas pur uma vírgula.",
+        "unsupportedVisualValue": "Este valor não é suportado pelo editor visual. Por favor troque para a aba Códigopara editar essa propriedade."
       }
     }
   },
@@ -729,5 +776,24 @@
         "contribute": "Contribuições diretas também são bem-vindas (ver [o guia de contribuições](/contributing))."
       }
     }
+  },
+  "importShapesModal": {
+    "title": "Importar formas",
+    "stats_one": "{{total}} caminho — {{closed}} fechado / {{open}} aberto",
+    "stats_many": "{{total}} caminhos — {{closed}} fechados / {{open}} abertos",
+    "stats_other": "{{total}} caminhos — {{closed}} fechados / {{open}} abertos",
+    "strokeHeading": "Tratar cada cor de traço como:",
+    "fillHeading": "Tratar cada cor de preenchimento como:",
+    "actions": {
+      "ignore": "Ignorar"
+    },
+    "scale": "Escala",
+    "offsetPair": "Deslocamento",
+    "centerButton": "Centro",
+    "centerTooltip": "Centralizar na tela",
+    "tolerance": "Tolerância de curva",
+    "toleranceInfo": "Tolerância da curva em unidades da cena. Usado para aproximar arcos elípticos e fundir segmentos densos consecutivos de cúbicas de Bézier.",
+    "groupInHandle": "Conectar objetos importados a um ponto de manuseio",
+    "importButton": "Importar"
   }
 }
