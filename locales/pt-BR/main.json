@@ -49,7 +49,7 @@
       "description": "Fonte pontual com um ângulo de emissão definido."
     },
     "Mirror": {
-      "title": "Segmento",
+      "title": "Plano",
       "description": "Simule a reflexão da luz em um espelho."
     },
     "otherMirror": {
@@ -127,24 +127,24 @@
     },
     "CircleGrinGlass": {
       "title": "Círculo GRIN",
-      "description": "Vidro com uma função personalizada de índice refrativo n(x,y) e um formato circular."
+      "description": "Material com uma função personalizada de índice refrativo n(x,y) e um formato circular."
     },
     "GrinGlass": {
       "title": "Polígono GRIN",
-      "description": "Vidro com uma função personalizada de índice refrativo n(x,y) e um formato poligonal.",
+      "description": "Material com uma função personalizada de índice refrativo n(x,y) e um formato poligonal.",
       "instruction": "Clique para criar um segmento, arraste para criar um arco, e clique no ponto de início quando acabar de desenhar.",
       "warning": "AVISO: Somente polígonos simples são suportados, senão o comportamento pode ser imprevisível."
     },
     "ParamGrinGlass": {
       "title": "Curva Paramétrica GRIN",
-      "description": "Vidro de gradiente de índice com limite definido por equações paramétricas personalizadas."
+      "description": "Material de gradiente de índice com limite definido por equações paramétricas personalizadas."
     },
     "CurveGrinGlass": {
       "title": "Curvas de Bézier GRIN",
-      "description": "Vidro de gradiente de índice delimitado por curvas cúbicas de Bézier."
+      "description": "Material de gradiente de índice delimitado por curvas cúbicas de Bézier."
     },
     "otherGrinGlass": {
-      "title": "Polígono com gradiente de índice",
+      "title": "Material de gradiente de índice",
       "description": "Material com uma função de índice refrativo personalizada n(x,y)."
     },
     "Blocker": {
@@ -206,7 +206,7 @@
       "import": "Importar Módulos…",
       "remove": "Remover módulo",
       "createModule": "Criar Módulo…",
-      "description": "Crie novas ferramentas combinando ferramentas existentes. Veja \"Importar Módulos\" para exemplos."
+      "description": "Crie novos componentes combinando componentes existentes. Veja \"Importar Módulos\" para exemplos."
     },
     "moveView": {
       "title": "Mover Vista",
@@ -214,6 +214,15 @@
     },
     "moreTools": {
       "title": "Mais Ferramentas"
+    },
+    "CurveMirror": {
+      "title": "Curvas de Bézier",
+      "description": "Um espelho definido por curvas cúbicas de Bézier.",
+      "instruction": "Clique para criar um segmento. Clique no ponto de início para finalizar como forma fechada, ou clique no último ponto âncora duas vezes para finalizar como curva aberta. Após isso, arraste as caixas para manipular os pontos de controle, mudando a curva."
+    },
+    "CustomCurveSurface": {
+      "title": "Curvas de Bézier Personalizadas",
+      "description": "Uma superfície personalizada com forma definida por curvas cúbicas de Bézier."
     }
   },
   "view": {
@@ -229,7 +238,7 @@
     },
     "images": {
       "title": "Todas Imagens",
-      "description": "Mostra a posição de todas imagens. Pontos amarelos indicam imagens reais, laranja indica imagens virtuais, e cinza (nenhuma nesta imagem) indica objetos virtuais. Note que algumas imagens não podem ser detectadas se 'Densidade de Raios' não estiver alta o suficiente.",
+      "description": "Mostra a posição de todas imagens e cáusticas. Pontos amarelos indicam imagens reais, laranja indica imagens virtuais, e cinza (nenhuma nesta imagem) indica objetos virtuais. Note que algumas imagens não podem ser detectadas se 'Densidade de Raios' não estiver alta o suficiente.",
       "simulateColorsNote": "Quando 'Simular Cores' está ligado, eles são exibidos nas cores fonte e distinguidos por tamanhos de ponto."
     },
     "observer": {
