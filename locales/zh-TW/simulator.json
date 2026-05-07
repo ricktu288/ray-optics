@@ -172,6 +172,7 @@
         "constants": "支援的常數",
         "operators": "支援的運算子",
         "functions": "支援的函數",
+        "naturalLog": "自然對數",
         "module": "如需自訂參數或使用複雜的方程式，請建立自訂模組。詳見工具->其他->匯入模組。"
       },
       "imageDetectionWarning": "本工具不支援像的偵測。",

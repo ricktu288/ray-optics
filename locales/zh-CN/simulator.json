@@ -172,6 +172,7 @@
         "constants": "支持的常数",
         "operators": "支持的运算符",
         "functions": "支持的函数",
+        "naturalLog": "自然对数",
         "module": "如需自定义参数或使用复杂的方程式，请建立自定义模块。详见工具->其他->导入模块。"
       },
       "imageDetectionWarning": "本工具不支持像的侦测。",

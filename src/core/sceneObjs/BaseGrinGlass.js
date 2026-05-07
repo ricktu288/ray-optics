@@ -61,12 +61,12 @@ class BaseGrinGlass extends BaseGlass {
     objBar.createEquation('n(x,y) = ', this.refIndexFn, function (obj, value) {
       obj.refIndexFn = value;
       obj.initFns();
-    }, '<ul><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.constants') + '<br><code>pi e</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.operators') + '<br><code>+ - * / ^</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.functions') + '<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log arcsin arccos arctan</code></li><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.lambda', {lambda: '<code>lambda</code>'}) + '</li><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.diff') + '</li><li>' + (this.constructor.type === 'ParamGrinGlass' ? '' : i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.origin') + '</li><li>') + i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.accuracy') + '</li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.module') + '</li></ul>');
+    }, '<ul><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.constants') + '<br><code>pi e</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.operators') + '<br><code>+ - * / ^</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.functions') + '<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log</code> (' + i18next.t('simulator:sceneObjs.common.eqnInfo.naturalLog') + ') <code>arcsin arccos arctan</code></li><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.lambda', {lambda: '<code>lambda</code>'}) + '</li><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.diff') + '</li><li>' + (this.constructor.type === 'ParamGrinGlass' ? '' : i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.origin') + '</li><li>') + i18next.t('simulator:sceneObjs.BaseGrinGlass.refIndexFnInfo.accuracy') + '</li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.module') + '</li></ul>');
 
     objBar.createEquation('α(x,y) = ', this.absorptionFn, function (obj, value) {
       obj.absorptionFn = value;
       obj.initFns();
-    }, '<ul><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.absorptionFnInfo.absorption') + '</li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.constants') + '<br><code>pi e</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.operators') + '<br><code>+ - * / ^</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.functions') + '<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log exp arcsin arccos arctan arcsinh arccosh arctanh floor round ceil trunc sgn max min abs</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.module') + '</li></ul>');
+    }, '<ul><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.absorptionFnInfo.absorption') + '</li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.constants') + '<br><code>pi e</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.operators') + '<br><code>+ - * / ^</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.functions') + '<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log</code> (' + i18next.t('simulator:sceneObjs.common.eqnInfo.naturalLog') + ') <code>exp arcsin arccos arctan arcsinh arccosh arctanh floor round ceil trunc sgn max min abs</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.module') + '</li></ul>');
 
     if (this.constructor.type !== 'ParamGrinGlass') {
       objBar.createTuple(i18next.t('simulator:sceneObjs.common.coordOrigin'), '(' + this.origin.x + ',' + this.origin.y + ')', function (obj, value) {
@@ -152,7 +152,7 @@ class BaseGrinGlass extends BaseGlass {
   initFns() {
     this.error = null;
     try {
-      this.p = parseTex(this.refIndexFn.replaceAll("\\lambda", "z")).toString().replaceAll("\\cdot", "*").replaceAll("\\frac", "/");
+      this.p = parseTex(this.refIndexFn.replaceAll("\\lambda", "z").replaceAll('\\log', '\\ln')).toString().replaceAll("\\cdot", "*").replaceAll("\\frac", "/");
       this.p_der_x = math.derivative(this.p, 'x').toString();
       this.p_der_x_tex = math.parse(this.p_der_x).toTex().replaceAll("{+", "{"); // 'evaluateLatex' function can't and can handle expressions of the form '...num^{+exp}...' and '...num^{exp}...', respectively, where num and exp are numbers
       this.p_der_y = math.derivative(this.p, 'y').toString();

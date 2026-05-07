@@ -172,6 +172,7 @@
         "constants": "Supported constants",
         "operators": "Supported operators",
         "functions": "Supported functions",
+        "naturalLog": "natural",
         "module": "To have custom parameters or complicated equations, you can create a custom module. See Tools -> Other -> Import Modules for more information."
       },
       "imageDetectionWarning": "This tool does not support image detection.",
