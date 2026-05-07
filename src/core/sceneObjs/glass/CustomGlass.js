@@ -28,7 +28,7 @@ import * as math from 'mathjs';
 import { curveTypePropertyInfoHtml } from '../ParamCurveObjMixin.js';
 
 function compileEquationDerivative(eqnLatex) {
-  const p = parseTex(eqnLatex).toString().replaceAll('\\cdot', '*').replaceAll('\\frac', '/');
+  const p = parseTex(eqnLatex.replaceAll('\\log', '\\ln')).toString().replaceAll('\\cdot', '*').replaceAll('\\frac', '/');
   const p_der = math.derivative(p, 'x').toString();
   const p_der_tex = math.parse(p_der).toTex()
     .replaceAll('{+', '{')
@@ -112,7 +112,7 @@ class CustomGlass extends LineObjMixin(BaseGlass) {
       obj.eqn1 = value;
       // Invalidate path when equation changes
       delete obj.path;
-    }, '<ul><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.constants') + '<br><code>pi e</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.operators') + '<br><code>+ - * / ^</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.functions') + '<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log exp arcsin arccos arctan arcsinh arccosh arctanh floor round ceil trunc sgn max min abs</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.module') + '</li></ul>');
+    }, '<ul><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.constants') + '<br><code>pi e</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.operators') + '<br><code>+ - * / ^</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.functions') + '<br><code>sqrt sin cos tan sec csc cot sinh cosh tanh log</code> (' + i18next.t('simulator:sceneObjs.common.eqnInfo.naturalLog') + ') <code>exp arcsin arccos arctan arcsinh arccosh arctanh floor round ceil trunc sgn max min abs</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.module') + '</li></ul>');
     objBar.createEquation(' < y < ', this.eqn2, function (obj, value) {
       obj.eqn2 = value;
       // Invalidate path when equation changes

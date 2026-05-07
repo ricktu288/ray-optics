@@ -29,7 +29,7 @@ import { Bezier } from 'bezier-js';
  * @returns {function(Object): number}
  */
 function compileParametricDerivative(eqnLatex) {
-  const p = parseTex(eqnLatex).toString().replaceAll('\\cdot', '*').replaceAll('\\frac', '/');
+  const p = parseTex(eqnLatex.replaceAll('\\log', '\\ln')).toString().replaceAll('\\cdot', '*').replaceAll('\\frac', '/');
   const p_der = math.derivative(p, 't').toString();
   const p_der_tex = math.parse(p_der).toTex()
     .replaceAll('{+', '{')

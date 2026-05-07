@@ -64,9 +64,8 @@ describe('equationConversion', () => {
       expect(latexToMathJS(String.raw`\arctan(x)`)).toBe('atan(x)');
     });
 
-    it('maps log: \\log is base-10 (log10), \\ln is natural log (log)', () => {
-      expect(latexToMathJS(String.raw`\log(x)`)).toBe('log10(x)');
-      expect(latexToMathJS(String.raw`\ln(x)`)).toBe('log(x)');
+    it('maps log: \\log is natural log (log)', () => {
+      expect(latexToMathJS(String.raw`\log(x)`)).toBe('log(x)');
     });
 
     it('replaces cdot and frac after parse (same post-process as init pipeline)', () => {

@@ -183,6 +183,7 @@
         "constants": "Supported constants",
         "operators": "Supported operators",
         "functions": "Supported functions",
+        "naturalLog": "natural",
         "curveStepSize": "Sampling step size for the curve in pixels (scene length unit multiplied by the \"length scale\" setting)",
         "module": "To have custom parameters or complicated equations, use Tools -> Other -> Create Module and move this object into the module.",
         "mathjs": "Only supports the following math.js operations: ",
