@@ -467,8 +467,14 @@ class BaseGrinGlass extends BaseGlass {
    * @returns {string} 
    */
   shiftOrigin(equation) {
-    // Replace standalone x (including `ex`/`xe` implicit multiplication), but avoid names like `exp`/`max`.
-    return equation.replaceAll(/(^|[^a-zA-Z0-9_]|e)x(?=$|[^a-zA-Z0-9_]|e)/g, "$1(x-" + this.origin.x + ")").replaceAll("y", "(y-" + this.origin.y + ")");
+    // Protect `\exp` and `\max` so their `x` is not replaced; restore them after.
+    return equation
+      .replaceAll("\\exp", "\\EXP")
+      .replaceAll("\\max", "\\MAX")
+      .replaceAll("x", "(x-" + this.origin.x + ")")
+      .replaceAll("\\EXP", "\\exp")
+      .replaceAll("\\MAX", "\\max")
+      .replaceAll("y", "(y-" + this.origin.y + ")");
   }
   
   /**
