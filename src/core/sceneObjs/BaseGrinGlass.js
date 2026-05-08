@@ -55,7 +55,8 @@ class BaseGrinGlass extends BaseGlass {
 
     const absorptionFnInfo = '<ul><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.absorptionFnInfo.absorption') + '</li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.mathjs') + '<br><code>+ - * / ^ sqrt sin cos tan sec csc cot sinh cosh tanh log exp asin acos atan asinh acosh atanh floor round ceil fix max min abs sign</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.customFunctions') + '</li></ul>';
 
-    const intersectTolInfo = '<p>' + i18next.t(`simulator:sceneObjs.${objData.type}.epsInfo.units`) + '</p><p>' + i18next.t(`simulator:sceneObjs.${objData.type}.epsInfo.functions`) + '</p>';
+    const sceneObjType = objData?.type ?? this.type;
+    const intersectTolInfo = '<p>' + i18next.t(`simulator:sceneObjs.${sceneObjType}.epsInfo.units`) + '</p><p>' + i18next.t(`simulator:sceneObjs.${sceneObjType}.epsInfo.functions`) + '</p>';
 
     return [
       { key: 'refIndexFn', type: 'equation', label: 'n(x,y)',

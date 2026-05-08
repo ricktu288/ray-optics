@@ -287,7 +287,7 @@
     <ToolItem
       id="Detector"
       :title="$t('main:tools.Detector.title')"
-      :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.Detector.description'), sub: $t('main:tools.Detector.instruction')})"
+      :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.Detector.description'), sub: $t('main:tools.common.lineInstruction')})"
       popoverImage="Detector.svg"
       :verticalOffset="60"
       :layout="layout"
