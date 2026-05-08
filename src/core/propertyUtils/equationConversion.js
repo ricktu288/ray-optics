@@ -92,7 +92,7 @@ const FN1 = {
   round: 'round',
   sign: 'sign',
   sgn: 'sign',
-  trunc: 'trunc',
+  trunc: 'fix',
   abs: 'abs'
 };
 
@@ -480,7 +480,7 @@ class TexExprParser {
     if (cmd === 'mathrm') {
       const raw = this.readBraceGroupRaw().trim();
       if (raw !== 'trunc') this.throwUnexpected();
-      return this.parseFnCall('trunc', 'trunc');
+      return this.parseFnCall('fix', 'trunc');
     }
 
     if (Object.prototype.hasOwnProperty.call(GREEK_SYMBOL, cmd)) {
@@ -678,7 +678,7 @@ export function mathJSToLatex(mathJSStr) {
             return '\\operatorname{floor}\\left(' + args[0].toTex(options) + '\\right)';
           case 'ceil':
             return '\\operatorname{ceil}\\left(' + args[0].toTex(options) + '\\right)';
-          case 'trunc':
+          case 'fix':
             return '\\operatorname{trunc}\\left(' + args[0].toTex(options) + '\\right)';
           case 'round':
             return '\\operatorname{round}\\left(' + args[0].toTex(options) + '\\right)';

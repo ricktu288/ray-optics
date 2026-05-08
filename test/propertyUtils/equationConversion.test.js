@@ -124,7 +124,7 @@ describe('equationConversion', () => {
       ['sign(x)', '\\operatorname{sign}'],
       ['max(x,y)', '\\max'],
       ['min(x,y)', '\\min'],
-      ['trunc(x)', '\\operatorname{trunc}']
+      ['fix(x)', '\\operatorname{trunc}']
     ];
 
     it.each(cases)('%s contains %s', (expr, needle) => {
@@ -173,7 +173,8 @@ describe('equationConversion', () => {
       'acos(x)',
       'atan(x)',
       'abs(x)',
-      'x + y'
+      'x + y',
+      'fix(x)'
     ];
 
     it.each(stable)('%s', (expr) => {
@@ -272,6 +273,10 @@ describe('equationConversion', () => {
     it('round-trips operatorname output from mathJSToLatex', () => {
       expect(latexToMathJS(mathJSToLatex('floor(x)'))).toContain('floor');
       expect(latexToMathJS(mathJSToLatex('sign(x)'))).toContain('sign');
+    });
+
+    it('maps \\operatorname{trunc} from MathQuill to math.js fix', () => {
+      expect(latexToMathJS(String.raw`\operatorname{trunc}\left(x\right)`)).toBe('fix(x)');
     });
 
     it('round-trips exp / max / min from mathJSToLatex', () => {
