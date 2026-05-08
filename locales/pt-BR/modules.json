@@ -1,7 +1,7 @@
 {
   "modulesPage": {
     "description": {
-      "makeNewTools": "O recurso \"Módulo\" permite que se faça novas ferramentas ao combinar, especializar, ou reparametrizar objetos criados por ferramentas existentes neste simulador.",
+      "makeNewTools": "O recurso \"Módulo\" permite que se faça novos componentes ao combinar, especializar, ou reparametrizar componentes criados por ferramentas existentes neste simulador.",
       "appearAsTools": "Módulos importados aparecerão como ferramentas na categoria \"Outros\". Por favor selecione e clique no espaço em branco de acordo com a ordem da sequência de pontos de controle (ver \"Especificação\").",
       "embeddedInScene": "Módulos importados são embutidos nos dados da cena, então não serão automaticamente atualizados quando os autores dos módulos os atualizarem."
     },
