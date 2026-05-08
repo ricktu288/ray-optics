@@ -170,27 +170,33 @@ class BaseGrinGlass extends BaseGlass {
   }
 
   getGrinMapCache(canvasRenderer) {
-    this._grinMapCache = this.buildGrinMapCache(
-      this._grinMapCache,
-      canvasRenderer,
-      {
-        glassColorR: this.scene.theme.glass.color.r,
-        glassColorG: this.scene.theme.glass.color.g,
-        glassColorB: this.scene.theme.glass.color.b,
-        glassAbsorptionColorR: this.scene.theme.glassAbsorption.color.r,
-        glassAbsorptionColorG: this.scene.theme.glassAbsorption.color.g,
-        glassAbsorptionColorB: this.scene.theme.glassAbsorption.color.b,
-        absorptionIsZero: this.absorptionIsZero
-      },
-      (sceneX, sceneY) => {
-        const refIndexAppearance = this.getGrinRefIndexAppearance(this.fn_p({ x: sceneX, y: sceneY, z: Simulator.GREEN_WAVELENGTH }));
-        const absorptionAppearance = this.absorptionIsZero || !this.fn_alpha
-          ? null
-          : this.getGrinAbsorptionAppearance(this.fn_alpha({ x: sceneX, y: sceneY, z: Simulator.GREEN_WAVELENGTH }));
-        return this.combineGrinAppearances(refIndexAppearance, absorptionAppearance);
-      }
-    );
-    return this._grinMapCache;
+    try {
+      this._grinMapCache = this.buildGrinMapCache(
+        this._grinMapCache,
+        canvasRenderer,
+        {
+          glassColorR: this.scene.theme.glass.color.r,
+          glassColorG: this.scene.theme.glass.color.g,
+          glassColorB: this.scene.theme.glass.color.b,
+          glassAbsorptionColorR: this.scene.theme.glassAbsorption.color.r,
+          glassAbsorptionColorG: this.scene.theme.glassAbsorption.color.g,
+          glassAbsorptionColorB: this.scene.theme.glassAbsorption.color.b,
+          absorptionIsZero: this.absorptionIsZero
+        },
+        (sceneX, sceneY) => {
+          const refIndexAppearance = this.getGrinRefIndexAppearance(this.fn_p({ x: sceneX, y: sceneY, z: Simulator.GREEN_WAVELENGTH }));
+          const absorptionAppearance = this.absorptionIsZero || !this.fn_alpha
+            ? null
+            : this.getGrinAbsorptionAppearance(this.fn_alpha({ x: sceneX, y: sceneY, z: Simulator.GREEN_WAVELENGTH }));
+          return this.combineGrinAppearances(refIndexAppearance, absorptionAppearance);
+        }
+      );
+      return this._grinMapCache;
+    } catch (e) {
+      this._grinMapCache = null;
+      this.error = e.toString();
+      return null;
+    }
   }
 
   buildGrinMapCache(existingCache, canvasRenderer, cacheData, sampleToAppearance) {
