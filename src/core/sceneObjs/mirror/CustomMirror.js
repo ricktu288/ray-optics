@@ -20,15 +20,14 @@ import i18next from 'i18next';
 import Simulator from '../../Simulator.js';
 import geometry from '../../geometry.js';
 import { evaluateLatex } from '../../equation.js';
-import { equationValueForListDisplay } from '../../propertyUtils/equationConversion.js';
+import { equationValueForListDisplay, latexToMathJS } from '../../propertyUtils/equationConversion.js';
 import escapeHtml from 'escape-html';
 import { Bezier } from 'bezier-js';
-import { parseTex } from 'tex-math-parser';
 import * as math from 'mathjs';
 import { curveTypePropertyInfoHtml } from '../ParamCurveObjMixin.js';
 
 function compileEquationDerivative(eqnLatex) {
-  const p = parseTex(eqnLatex.replaceAll('\\log', '\\ln')).toString().replaceAll('\\cdot', '*').replaceAll('\\frac', '/');
+  const p = latexToMathJS(eqnLatex);
   const p_der = math.derivative(p, 'x').toString();
   const p_der_tex = math.parse(p_der).toTex()
     .replaceAll('{+', '{')

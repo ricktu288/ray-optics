@@ -436,16 +436,16 @@ class BaseGrinGlass extends BaseGlass {
   initFns() {
     this.error = null;
     try {
-      this.p = parseTex(this.refIndexFn.replaceAll("\\lambda", "z").replaceAll('\\log', '\\ln')).toString().replaceAll("\\cdot", "*").replaceAll("\\frac", "/");
+      this.p = parseTex(this.refIndexFn.replaceAll("\\lambda", "(z)").replaceAll('\\log', '\\ln')).toString().replaceAll("\\cdot", "*").replaceAll("\\frac", "/");
       this.p_der_x = math.derivative(this.p, 'x').toString();
       this.p_der_x_tex = math.parse(this.p_der_x).toTex().replaceAll("{+", "{"); // 'evaluateLatex' function can't and can handle expressions of the form '...num^{+exp}...' and '...num^{exp}...', respectively, where num and exp are numbers
       this.p_der_y = math.derivative(this.p, 'y').toString();
       this.p_der_y_tex = math.parse(this.p_der_y).toTex().replaceAll("{+", "{");
-      this.fn_p = evaluateLatex(this.shiftOrigin(this.refIndexFn.replaceAll("\\lambda", "z")));
+      this.fn_p = evaluateLatex(this.shiftOrigin(this.refIndexFn.replaceAll("\\lambda", "(z)")));
       this.fn_p_der_x = evaluateLatex(this.shiftOrigin(this.p_der_x_tex));
       this.fn_p_der_y = evaluateLatex(this.shiftOrigin(this.p_der_y_tex));
 
-      this.fn_alpha = evaluateLatex(this.shiftOrigin(this.absorptionFn.replaceAll("\\lambda", "z")));
+      this.fn_alpha = evaluateLatex(this.shiftOrigin(this.absorptionFn.replaceAll("\\lambda", "(z)")));
     } catch (e) {
       delete this.fn_p;
       delete this.fn_p_der_x;
@@ -461,7 +461,8 @@ class BaseGrinGlass extends BaseGlass {
    * @returns {string} 
    */
   shiftOrigin(equation) {
-    return equation.replaceAll("x", "(x-" + this.origin.x + ")").replaceAll("y", "(y-" + this.origin.y + ")");
+    // Replace standalone x (including `ex`/`xe` implicit multiplication), but avoid names like `exp`/`max`.
+    return equation.replaceAll(/(^|[^a-zA-Z0-9_]|e)x(?=$|[^a-zA-Z0-9_]|e)/g, "$1(x-" + this.origin.x + ")").replaceAll("y", "(y-" + this.origin.y + ")");
   }
   
   /**
@@ -479,7 +480,7 @@ class BaseGrinGlass extends BaseGlass {
 
       let mul_fn_p_der_y = evaluateLatex(math.derivative(mul_p, 'y').toTex());
 
-      let sum_alpha = '\\left(' + bodyMergingObj.alpha + '\\right) + \\left(' + this.shiftOrigin(this.absorptionFn.replaceAll("\\lambda", "z")) + '\\right)';
+      let sum_alpha = '\\left(' + bodyMergingObj.alpha + '\\right) + \\left(' + this.shiftOrigin(this.absorptionFn.replaceAll("\\lambda", "(z)")) + '\\right)';
 
       let sum_fn_alpha = evaluateLatex(sum_alpha);
 
@@ -530,7 +531,7 @@ class BaseGrinGlass extends BaseGlass {
 
       let dev_fn_p_der_y = evaluateLatex(math.derivative(dev_p, 'y').toTex());
 
-      let diff_alpha = '\\left(' + bodyMergingObj.alpha + '\\right) - \\left(' + this.shiftOrigin(this.absorptionFn.replaceAll("\\lambda", "z")) + '\\right)';
+      let diff_alpha = '\\left(' + bodyMergingObj.alpha + '\\right) - \\left(' + this.shiftOrigin(this.absorptionFn.replaceAll("\\lambda", "(z)")) + '\\right)';
 
       let diff_fn_alpha = evaluateLatex(diff_alpha);
 
@@ -581,7 +582,7 @@ class BaseGrinGlass extends BaseGlass {
           obj_tmp.fn_p = obj.fn_p;
           obj_tmp.fn_p_der_x = obj.fn_p_der_x;
           obj_tmp.fn_p_der_y = obj.fn_p_der_y;
-          obj_tmp.alpha = obj.shiftOrigin(obj.absorptionFn.replaceAll("\\lambda", "z"));
+          obj_tmp.alpha = obj.shiftOrigin(obj.absorptionFn.replaceAll("\\lambda", "(z)"));
           obj_tmp.fn_alpha = obj.fn_alpha;
         } else {
           obj_tmp = obj.multRefIndex(obj_tmp);

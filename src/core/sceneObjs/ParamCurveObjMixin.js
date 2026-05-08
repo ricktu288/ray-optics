@@ -17,19 +17,19 @@
 import geometry from '../geometry.js';
 import BaseSceneObj from './BaseSceneObj.js';
 import { evaluateLatex } from '../equation.js';
+import { latexToMathJS } from '../propertyUtils/equationConversion.js';
 import i18next from 'i18next';
-import { parseTex } from 'tex-math-parser';
 import * as math from 'mathjs';
 import { Bezier } from 'bezier-js';
 
 /**
- * Compile d(eq)/dt from LaTeX eq(t), using the same pipeline as {@link BaseGrinGlass#initFns}
- * (tex-math-parser → mathjs derivative → toTex replacements → evaluateLatex).
+ * Compile d(eq)/dt from LaTeX eq(t).
+ * Uses {@link latexToMathJS} → mathjs derivative → toTex replacements → {@link evaluateLatex}.
  * @param {string} eqnLatex
  * @returns {function(Object): number}
  */
 function compileParametricDerivative(eqnLatex) {
-  const p = parseTex(eqnLatex.replaceAll('\\log', '\\ln')).toString().replaceAll('\\cdot', '*').replaceAll('\\frac', '/');
+  const p = latexToMathJS(eqnLatex);
   const p_der = math.derivative(p, 't').toString();
   const p_der_tex = math.parse(p_der).toTex()
     .replaceAll('{+', '{')

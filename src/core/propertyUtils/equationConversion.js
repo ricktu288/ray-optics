@@ -92,7 +92,8 @@ const FN1 = {
   round: 'round',
   sign: 'sign',
   sgn: 'sign',
-  trunc: 'trunc'
+  trunc: 'trunc',
+  abs: 'abs'
 };
 
 const FN2 = new Set(['max', 'min']);
@@ -677,6 +678,8 @@ export function mathJSToLatex(mathJSStr) {
             return '\\operatorname{floor}\\left(' + args[0].toTex(options) + '\\right)';
           case 'ceil':
             return '\\operatorname{ceil}\\left(' + args[0].toTex(options) + '\\right)';
+          case 'trunc':
+            return '\\operatorname{trunc}\\left(' + args[0].toTex(options) + '\\right)';
           case 'round':
             return '\\operatorname{round}\\left(' + args[0].toTex(options) + '\\right)';
           case 'sign':

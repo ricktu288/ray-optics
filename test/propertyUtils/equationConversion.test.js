@@ -124,7 +124,7 @@ describe('equationConversion', () => {
       ['sign(x)', '\\operatorname{sign}'],
       ['max(x,y)', '\\max'],
       ['min(x,y)', '\\min'],
-      ['trunc(x)', '\\mathrm{trunc}']
+      ['trunc(x)', '\\operatorname{trunc}']
     ];
 
     it.each(cases)('%s contains %s', (expr, needle) => {

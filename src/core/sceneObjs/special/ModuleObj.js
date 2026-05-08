@@ -677,6 +677,9 @@ class ModuleObj extends BaseSceneObj {
             case 'ceil':
               return '\\operatorname{ceil}\\left(' + args[0].toTex(options) + '\\right)';
 
+            case 'trunc':
+              return '\\operatorname{trunc}\\left(' + args[0].toTex(options) + '\\right)';
+
             case 'round':
               return '\\operatorname{round}\\left(' + args[0].toTex(options) + '\\right)';
               
