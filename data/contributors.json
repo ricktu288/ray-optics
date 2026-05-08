@@ -935,5 +935,17 @@
       ]
     },
     "firstCommit": "2026-04-21"
+  },
+  {
+    "name": "lkjlkjlkj2012",
+    "githubEmails": [
+      "lkj1357902468100@126.com"
+    ],
+    "contributions": {
+      "translations": [
+        "zh-CN"
+      ]
+    },
+    "firstCommit": "2026-05-01"
   }
 ]
