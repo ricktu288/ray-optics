@@ -17,14 +17,24 @@
 import evaluatex from 'evaluatex/dist/evaluatex.js';
 
 export function evaluateLatex(latex) {
+  // The mathjs symbolic derivative used by GRIN glasses re-serialises results
+  // with `node.toTex()`. That emits LaTeX that this function must accept again,
+  // most importantly `\ln` (mathjs' rendering of natural log) and the
+  // hyperbolic-inverse forms `\sinh^{-1}` / `\cosh^{-1}` / `\tanh^{-1}`. The
+  // hyperbolic-inverse mappings must run before the plain `\sinh` / `\cosh`
+  // / `\tanh` substitutions so that the longer pattern wins.
   var latex_replaced = latex
     .replaceAll("\\cdot","*")
     .replaceAll("\\pi","(PI)")
+    .replaceAll("\\ln"," log")
     .replaceAll("\\log"," log")
     .replaceAll("\\exp"," exp")
     .replaceAll("\\arcsin"," asin")
     .replaceAll("\\arccos"," acos")
     .replaceAll("\\arctan"," atan")
+    .replaceAll("\\sinh^{-1}"," asinh")
+    .replaceAll("\\cosh^{-1}"," acosh")
+    .replaceAll("\\tanh^{-1}"," atanh")
     .replaceAll("\\sin^{-1}"," asin")
     .replaceAll("\\cos^{-1}"," acos")
     .replaceAll("\\tan^{-1}"," atan")
