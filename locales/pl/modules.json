@@ -1,7 +1,7 @@
 {
   "modulesPage": {
     "description": {
-      "makeNewTools": "Funkcja \"Moduł\" umożliwia tworzenie nowych narzędzi poprzez łączenie, dostosowywanie lub reparametryzację obiektów utworzonych przez istniejące narzędzia w tym symulatorze.",
+      "makeNewTools": "Funkcja \"Moduł\" umożliwia tworzenie nowych komponentów poprzez łączenie, dostosowywanie lub reparametryzację komponentów utworzonych przez istniejące narzędzia w tym symulatorze.",
       "appearAsTools": "Zaimportowane moduły pojawią się jako narzędzia w kategorii \"Inne\". Wybierz i kliknij puste miejsce zgodnie z kolejnością sekwencji punktów kontrolnych (patrz \"Specyfikacja\").",
       "embeddedInScene": "Zaimportowane moduły są osadzone w danych sceny, więc nie będą automatycznie aktualizowane, gdy autorzy modułów dokonają ich aktualizacji."
     },
@@ -13,7 +13,8 @@
       "parameters": "Parametry"
     },
     "customization": {
-      "title": "Dostosowywanie"
+      "title": "Dostosowywanie",
+      "description": "Moduły można tworzyć i dostosowywać bezpośrednio na pasku bocznym aplikacji internetowej (patrz Ustawienia -> Pokaż pasek boczny). Dostosowywanie zaimportowanych modułów będzie dotyczyć tylko bieżącej sceny. Użyj opcji \"Importuj z pliku\" poniżej, aby zaimportować niestandardowe moduły z innej sceny."
     },
     "contribution": {
       "title": "Wkład",
