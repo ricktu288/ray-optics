@@ -156,28 +156,162 @@ describe('equationConversion', () => {
     });
   });
 
+  describe('mathJSToLatex – redundant parenthesis stripping in power and fraction', () => {
+    it('a ^ (b + c): exponent has no redundant \\left( \\right)', () => {
+      const tex = mathJSToLatex('a ^ (b + c)');
+      expect(tex).toContain('^{');
+      expect(tex).not.toMatch(/\^{[^}]*\\left\(/);
+    });
+
+    it('a ^ (b * c): exponent has no redundant parens', () => {
+      const tex = mathJSToLatex('a ^ (b * c)');
+      expect(tex).toContain('^{');
+      expect(tex).not.toMatch(/\^{[^}]*\\left\(/);
+    });
+
+    it('(a + b) / c: numerator has no redundant parens', () => {
+      const tex = mathJSToLatex('(a + b) / c');
+      expect(tex).toContain('\\frac{');
+      expect(tex).not.toMatch(/\\left\(/);
+    });
+
+    it('a / (b + c): denominator has no redundant parens', () => {
+      const tex = mathJSToLatex('a / (b + c)');
+      expect(tex).toContain('\\frac{');
+      expect(tex).not.toMatch(/\\left\(/);
+    });
+
+    it('(a + b) / (c + d): both numerator and denominator have no redundant parens', () => {
+      const tex = mathJSToLatex('(a + b) / (c + d)');
+      expect(tex).toContain('\\frac{');
+      expect(tex).not.toMatch(/\\left\(/);
+    });
+
+    it('(a + b) ^ 2: base parens are preserved', () => {
+      const tex = mathJSToLatex('(a + b) ^ 2');
+      expect(tex).toMatch(/\\left\(/);
+    });
+
+    it('a ^ (b / c): fraction exponent, no redundant parens', () => {
+      const tex = mathJSToLatex('a ^ (b / c)');
+      expect(tex).not.toMatch(/\\left\(/);
+      expect(tex).toContain('^{');
+      expect(tex).toContain('\\frac{');
+    });
+
+    it('round-trip: a ^ (b + c)', () => {
+      const tex = mathJSToLatex('a ^ (b + c)');
+      const back = latexToMathJS(tex);
+      expect(math.parse('a ^ (b + c)').equals(math.parse(back))).toBe(true);
+    });
+
+    it('round-trip: (a + b) / c', () => {
+      const tex = mathJSToLatex('(a + b) / c');
+      const back = latexToMathJS(tex);
+      expect(math.parse('(a + b) / c').equals(math.parse(back))).toBe(true);
+    });
+
+    it('round-trip: a ^ (b / c)', () => {
+      const tex = mathJSToLatex('a ^ (b / c)');
+      const back = latexToMathJS(tex);
+      expect(math.parse('a ^ (b / c)').equals(math.parse(back))).toBe(true);
+    });
+
+    it('round-trip: (a + b) / (c + d)', () => {
+      const tex = mathJSToLatex('(a + b) / (c + d)');
+      const back = latexToMathJS(tex);
+      expect(math.parse('(a + b) / (c + d)').equals(math.parse(back))).toBe(true);
+    });
+
+    it('round-trip: (a + b) ^ 2', () => {
+      const tex = mathJSToLatex('(a + b) ^ 2');
+      const back = latexToMathJS(tex);
+      expect(math.parse('(a + b) ^ 2').equals(math.parse(back))).toBe(true);
+    });
+  });
+
   describe('latexToMathJS ⇄ mathJSToLatex round-trip (LaTeX storage path)', () => {
     // TeX from mathJSToLatex uses \\mathrm, \\operatorname, \\left…\\right, Greek, subscripts — importer must accept that output.
-    const stable = [
-      'sin(x)',
-      'cos(x)',
-      'tan(x)',
-      'sec(x)',
-      'csc(x)',
-      'cot(x)',
-      'sinh(x)',
-      'cosh(x)',
-      'tanh(x)',
-      'sqrt(x)',
-      'asin(x)',
-      'acos(x)',
-      'atan(x)',
-      'abs(x)',
-      'x + y',
-      'fix(x)'
+    // Comparisons use structural math.parse().equals(); unparenthesized chains of / or ^ normalize (e.g. a/b/c → (a/b)/c) so those are covered with explicit parens below.
+    const roundTripCases = [
+      // documented constants
+      ['constant pi', 'pi'],
+      ['constant e', 'e'],
+      // unary trig / hyperbolic (single-arg)
+      ['sin(x)', 'sin(x)'],
+      ['cos(x)', 'cos(x)'],
+      ['tan(x)', 'tan(x)'],
+      ['sec(x)', 'sec(x)'],
+      ['csc(x)', 'csc(x)'],
+      ['cot(x)', 'cot(x)'],
+      ['sinh(x)', 'sinh(x)'],
+      ['cosh(x)', 'cosh(x)'],
+      ['tanh(x)', 'tanh(x)'],
+      ['sqrt(x)', 'sqrt(x)'],
+      ['asin(x)', 'asin(x)'],
+      ['acos(x)', 'acos(x)'],
+      ['atan(x)', 'atan(x)'],
+      ['asinh(x)', 'asinh(x)'],
+      ['acosh(x)', 'acosh(x)'],
+      ['atanh(x)', 'atanh(x)'],
+      ['log(x)', 'log(x)'],
+      ['exp(x)', 'exp(x)'],
+      ['abs(x)', 'abs(x)'],
+      ['floor(x)', 'floor(x)'],
+      ['ceil(x)', 'ceil(x)'],
+      ['round(x)', 'round(x)'],
+      ['sign(x)', 'sign(x)'],
+      ['fix(x)', 'fix(x)'],
+      ['max two args', 'max(a, b)'],
+      ['min two args', 'min(x, y)'],
+      // binary operators
+      ['sum x + y', 'x + y'],
+      ['difference x - y', 'x - y'],
+      ['product', 'a * b * c'],
+      ['left-assoc subtraction chain', 'a - b - c'],
+      ['sum chain', 'a + b + c'],
+      // precedence: * over +/-
+      ['mul binds tighter than add', 'a * b + c'],
+      ['mul binds tighter than sub', 'a + b * c'],
+      ['sub and mul', 'a - b * c'],
+      ['mul and sub', 'a * b - c'],
+      // precedence: ^ over * (and right grouping in exponent)
+      ['pow vs mul (pow first)', 'a ^ b * c'],
+      ['pow vs mul (mul first)', 'a * b ^ c'],
+      ['pow of sum', '(a + b) ^ 2'],
+      // unary minus
+      ['unary minus symbol', '-x'],
+      ['unary minus on sum', '-(a + b)'],
+      // explicit associativity for / and ^ (unparenthesized chains re-print with extra parens)
+      ['division left-assoc explicit', '(a / b) / c'],
+      ['division right-assoc explicit', 'a / (b / c)'],
+      ['power right-assoc explicit', '3 ^ (2 ^ 2)'],
+      ['power left-assoc explicit', '(3 ^ 2) ^ 2'],
+      // parentheses / mixing
+      ['product of sums', '(a + b) * (c + d)'],
+      ['difference of sums', '(a - b) * (c + d)'],
+      ['polynomial', 'x^2 + 2*x + 1'],
+      // nested functions
+      ['sin of cos', 'sin(cos(x))'],
+      ['log of exp', 'log(exp(x))'],
+      ['sqrt of sum of squares', 'sqrt(x^2 + y^2)'],
+      ['scaled trig', '2 * sin(x)'],
+      ['trig sum', 'sin(x) + cos(y)'],
+      ['trig squared', 'sin(x)^2'],
+      ['trig of sum', 'sin(x + y)'],
+      ['quotient of trig', 'sin(x) / cos(x)'],
+      ['abs of trig', 'abs(sin(x))'],
+      ['fix offset', 'fix(x) + 1'],
+      ['nested min/max', 'min(max(a, b), c)'],
+      ['inverse trig mix', 'acos(x) + asin(y)'],
+      // Greek and subscripts (output uses \\theta_{0} etc.)
+      ['theta_0 linear', 'theta_0 + x'],
+      ['lambda and phi', 'lambda + phi'],
+      ['n_0 and theta_1', 'n_0 * theta_1'],
+      ['P subscripts', 'P_10 + P_0']
     ];
 
-    it.each(stable)('%s', (expr) => {
+    it.each(roundTripCases)('%s', (_label, expr) => {
       const tex = mathJSToLatex(expr);
       const back = latexToMathJS(tex);
       expect(math.parse(expr).equals(math.parse(back))).toBe(true);
@@ -257,6 +391,96 @@ describe('equationConversion', () => {
       const v = equationDisplayToValue('2+3', false);
       expect(typeof v).toBe('string');
       expect(v.length).toBeGreaterThan(0);
+    });
+  });
+
+  describe('latexToMathJS – fraction and power parenthesization', () => {
+    it('simple fraction: no parens on atomic numerator and denominator', () => {
+      expect(latexToMathJS(String.raw`\frac{a}{b}`)).toBe('a / b');
+    });
+
+    it('numeric fraction: no parens', () => {
+      expect(latexToMathJS(String.raw`\frac{1}{2}`)).toBe('1 / 2');
+    });
+
+    it('sum in numerator gets parens', () => {
+      expect(latexToMathJS(String.raw`\frac{a+b}{c}`)).toBe('(a + b) / c');
+    });
+
+    it('sum in denominator gets parens', () => {
+      expect(latexToMathJS(String.raw`\frac{a}{b+c}`)).toBe('a / (b + c)');
+    });
+
+    it('sums in both numerator and denominator get parens', () => {
+      expect(latexToMathJS(String.raw`\frac{a+b}{c+d}`)).toBe('(a + b) / (c + d)');
+    });
+
+    it('product in numerator gets parens: \\frac{a\\cdot b}{c}', () => {
+      expect(latexToMathJS(String.raw`\frac{a\cdot b}{c}`)).toBe('(a * b) / c');
+    });
+
+    it('multiply by fraction has no unnecessary parens: a\\cdot\\frac{b}{c}', () => {
+      expect(latexToMathJS(String.raw`a\cdot\frac{b}{c}`)).toBe('a * b / c');
+    });
+
+    it('simple exponent: no parens on atom', () => {
+      expect(latexToMathJS(String.raw`a^{b}`)).toBe('a ^ b');
+    });
+
+    it('numeric exponent: no parens', () => {
+      expect(latexToMathJS(String.raw`a^{2}`)).toBe('a ^ 2');
+    });
+
+    it('fraction as exponent is grouped: a^{\\frac{b}{c}}', () => {
+      expect(latexToMathJS(String.raw`a^{\frac{b}{c}}`)).toBe('a ^ (b / c)');
+    });
+
+    it('sum as exponent is grouped', () => {
+      expect(latexToMathJS(String.raw`a^{b+c}`)).toBe('a ^ (b + c)');
+    });
+
+    it('product as exponent is grouped', () => {
+      expect(latexToMathJS(String.raw`a^{b\cdot c}`)).toBe('a ^ (b * c)');
+    });
+
+    it('fraction with power in numerator', () => {
+      expect(latexToMathJS(String.raw`\frac{a^{2}}{b}`)).toBe('(a ^ 2) / b');
+    });
+
+    it('power of a fraction', () => {
+      expect(latexToMathJS(String.raw`\left(\frac{a}{b}\right)^{2}`)).toBe('(a / b) ^ 2');
+    });
+
+    it('fraction multiplied by fraction', () => {
+      expect(latexToMathJS(String.raw`\frac{a}{b}\cdot\frac{c}{d}`)).toBe('a / b * c / d');
+    });
+
+    it('nested fraction in numerator', () => {
+      expect(latexToMathJS(String.raw`\frac{\frac{a}{b}}{c}`)).toBe('(a / b) / c');
+    });
+
+    it('nested fraction in denominator', () => {
+      expect(latexToMathJS(String.raw`\frac{a}{\frac{b}{c}}`)).toBe('a / (b / c)');
+    });
+
+    it('function call in numerator: no parens', () => {
+      expect(latexToMathJS(String.raw`\frac{\sin(x)}{2}`)).toBe('sin(x) / 2');
+    });
+
+    it('sum plus fraction: a+\\frac{b}{c}', () => {
+      expect(latexToMathJS(String.raw`a+\frac{b}{c}`)).toBe('a + b / c');
+    });
+
+    it('fraction plus fraction', () => {
+      expect(latexToMathJS(String.raw`\frac{a}{b}+\frac{c}{d}`)).toBe('a / b + c / d');
+    });
+
+    it('power with negative exponent', () => {
+      expect(latexToMathJS(String.raw`a^{-b}`)).toBe('a ^ (-b)');
+    });
+
+    it('power with compound fraction exponent: a^{\\frac{b+c}{d}}', () => {
+      expect(latexToMathJS(String.raw`a^{\frac{b+c}{d}}`)).toBe('a ^ ((b + c) / d)');
     });
   });
 

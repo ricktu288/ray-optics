@@ -164,6 +164,23 @@ function splitTexCommaArgs(inner) {
   return parts;
 }
 
+/**
+ * Check whether a math.js expression string produced by the parser is a single
+ * "atom" (identifier, number, function call, or already-parenthesized group)
+ * vs. a compound expression with top-level operators.
+ * Relies on the convention that all binary operators are surrounded by spaces
+ * and unary minus is formatted as "- expr".
+ */
+function isAtomicExpr(s) {
+  let depth = 0;
+  for (let i = 0; i < s.length; i++) {
+    if (s[i] === '(') depth++;
+    else if (s[i] === ')') depth--;
+    else if (depth === 0 && s[i] === ' ') return false;
+  }
+  return true;
+}
+
 class TexExprParser {
   /**
    * @param {string} s
@@ -342,7 +359,11 @@ class TexExprParser {
       } else if (this.i < this.end) {
         exp = this.parseUnary();
       } else this.throwUnexpected();
-      left = `${left} ^ ${exp}`;
+      if (isAtomicExpr(exp)) {
+        left = `${left} ^ ${exp}`;
+      } else {
+        left = `${left} ^ (${exp})`;
+      }
     }
     return left;
   }
@@ -443,7 +464,9 @@ class TexExprParser {
       const b = this.readBraceGroupRaw();
       const ea = new TexExprParser(a, 0, a.length).parseTop();
       const eb = new TexExprParser(b, 0, b.length).parseTop();
-      return `(${ea}) / (${eb})`;
+      const num = isAtomicExpr(ea) ? ea : `(${ea})`;
+      const den = isAtomicExpr(eb) ? eb : `(${eb})`;
+      return `${num} / ${den}`;
     }
 
     if (cmd === 'sqrt') {
@@ -634,6 +657,36 @@ export function latexToMathJS(latex) {
 }
 
 /**
+ * Strip ParenthesisNode wrappers that are redundant in LaTeX output because
+ * the surrounding construct already provides grouping:
+ *  - exponent of ^ (wrapped in ^{…})
+ *  - numerator and denominator of / (wrapped in \frac{…}{…})
+ * @param {*} node math.js expression AST node
+ * @returns {*} math.js expression AST node
+ */
+function stripRedundantParensForLatex(node) {
+  if (!node || typeof node.map !== 'function') return node;
+  const mapped = node.map((child) => stripRedundantParensForLatex(child));
+  if (mapped.type === 'OperatorNode' && mapped.args) {
+    const { op, fn, args } = mapped;
+    if (fn === 'pow' && args.length === 2) {
+      const exp = stripParenChain(args[1]);
+      if (exp !== args[1]) {
+        return new math.OperatorNode(op, fn, [args[0], exp], mapped.implicit, mapped.isPercentage);
+      }
+    }
+    if (fn === 'divide' && args.length === 2) {
+      const num = stripParenChain(args[0]);
+      const den = stripParenChain(args[1]);
+      if (num !== args[0] || den !== args[1]) {
+        return new math.OperatorNode(op, fn, [num, den], mapped.implicit, mapped.isPercentage);
+      }
+    }
+  }
+  return mapped;
+}
+
+/**
  * Convert a math.js expression string to a LaTeX equation string.
  * Uses the same toTex handler as ModuleObj.expandEquation().
  * @param {string} mathJSStr - A math.js expression string.
@@ -641,7 +694,7 @@ export function latexToMathJS(latex) {
  * @throws If the expression cannot be parsed or converted.
  */
 export function mathJSToLatex(mathJSStr) {
-  const expr = math.parse(mathJSStr);
+  const expr = stripRedundantParensForLatex(math.parse(mathJSStr));
   return expr.toTex({
     handler: function (node, options) {
       if (node.type === 'SymbolNode') {
