@@ -140,11 +140,7 @@ export default {
     })
 
     const emitCommit = (text) => {
-      if (text === '') {
-        emit('update:value', undefined)
-      } else {
-        emit('update:value', text)
-      }
+      emit('update:value', text)
     }
 
     const onFocus = () => {
@@ -160,11 +156,15 @@ export default {
     const commitBlur = () => {
       focused = false
       if (props.readOnly) return
-      if (localValue.value !== lastCommittedValue.value) {
-        emitCommit(localValue.value)
+      const draft = localValue.value
+      if (draft.trim() === '') {
+        localValue.value = committedDisplayString.value
+      } else if (draft !== lastCommittedValue.value) {
+        emitCommit(draft)
       }
       nextTick(() => {
         lastCommittedValue.value = committedDisplayString.value
+        autoResize()
       })
     }
 
@@ -172,9 +172,19 @@ export default {
     const commitEnter = () => {
       if (props.readOnly) return
       focused = false
-      emitCommit(localValue.value)
+      const draft = localValue.value
+      if (draft.trim() === '') {
+        localValue.value = committedDisplayString.value
+        nextTick(() => {
+          lastCommittedValue.value = committedDisplayString.value
+          autoResize()
+        })
+        return
+      }
+      emitCommit(draft)
       nextTick(() => {
         lastCommittedValue.value = committedDisplayString.value
+        autoResize()
         if (localValue.value !== committedDisplayString.value) {
           return
         }

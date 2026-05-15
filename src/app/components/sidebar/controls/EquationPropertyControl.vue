@@ -98,8 +98,7 @@ export default {
     const onCommit = (text) => {
       error.value = ''
 
-      if (text === '') {
-        emit('update:value', undefined)
+      if (text.trim() === '') {
         return
       }
 

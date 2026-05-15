@@ -201,6 +201,10 @@ export default {
     const onCommit = (text) => {
       error.value = ''
 
+      if (text.trim() === '') {
+        return
+      }
+
       const parts = splitTopLevelCommas(text)
       if (parts.length !== 2) {
         error.value = i18next.t('simulator:sidebar.visual.sceneObjects.invalidPointFormat')

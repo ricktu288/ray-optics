@@ -237,25 +237,54 @@ export default {
     const commitBlur = () => {
       focused = false
       disposeModuleInstancesTooltip()
-      if (localValue.value !== lastCommittedValue.value) {
-        emit('update:modelValue', localValue.value)
+      const previousModelValue = props.modelValue
+      const draft = localValue.value
+      if (draft !== lastCommittedValue.value) {
+        emit('update:modelValue', draft)
       }
       nextTick(() => {
-        lastCommittedValue.value = props.modelValue
+        const synced = props.modelValue
+        const parentUnchanged = synced === previousModelValue
+        const rejectedNonEmptyEdit =
+          parentUnchanged && draft !== synced && draft.trim() !== ''
+        if (rejectedNonEmptyEdit) {
+          lastCommittedValue.value = synced
+          autoResize()
+          return
+        }
+        localValue.value = synced
+        lastCommittedValue.value = synced
+        autoResize()
       })
     }
 
     /**
      * Enter: parent may reject the edit. Only reshow the instance tooltip when the model syncs
-     * (accepted) and the field is still focused.
+     * (accepted) and the field is still focused. If the draft is cleared (empty only), revert
+     * display to model; otherwise keep rejected non-empty text so warnings stay visible beside it.
      */
     const commitEnter = () => {
       focused = false
       disposeModuleInstancesTooltip()
-      emit('update:modelValue', localValue.value)
+      const previousModelValue = props.modelValue
+      const draft = localValue.value
+      emit('update:modelValue', draft)
       nextTick(() => {
-        lastCommittedValue.value = props.modelValue
-        if (localValue.value !== props.modelValue) {
+        const synced = props.modelValue
+        const parentUnchanged = synced === previousModelValue
+        const rejectedNonEmptyEdit =
+          parentUnchanged && draft !== synced && draft.trim() !== ''
+
+        if (rejectedNonEmptyEdit) {
+          lastCommittedValue.value = synced
+          autoResize()
+        } else {
+          localValue.value = synced
+          lastCommittedValue.value = synced
+          autoResize()
+        }
+
+        if (parentUnchanged && draft !== synced) {
           return
         }
         const el = textareaRef.value
@@ -263,8 +292,8 @@ export default {
           return
         }
         if (
-          isLiteralNumericFieldValue(localValue.value) ||
-          isLiteralBooleanFieldValue(localValue.value)
+          isLiteralNumericFieldValue(synced) ||
+          isLiteralBooleanFieldValue(synced)
         ) {
           return
         }
