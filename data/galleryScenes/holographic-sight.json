@@ -1,0 +1,582 @@
+{
+  "version": 5,
+  "objs": [
+    {
+      "type": "ArcMirror",
+      "p1": {
+        "x": 405,
+        "y": 399.25
+      },
+      "p2": {
+        "x": 413.125,
+        "y": 405.125
+      },
+      "p3": {
+        "x": 410.25,
+        "y": 400.75
+      }
+    },
+    {
+      "type": "ArcMirror",
+      "p1": {
+        "x": 378.8493121920505,
+        "y": 286.74072159228257
+      },
+      "p2": {
+        "x": 403.1456542725008,
+        "y": 286.7568928549829
+      },
+      "p3": {
+        "x": 390.9976880002999,
+        "y": 286.44115567820427
+      }
+    },
+    {
+      "type": "CustomSurface",
+      "p1": {
+        "x": 381.5,
+        "y": 410.75
+      },
+      "p2": {
+        "x": 364.25,
+        "y": 372.5
+      },
+      "outRays": [
+        {
+          "eqnTheta": "4.63-\\theta_0",
+          "eqnP": " P_{0}"
+        }
+      ]
+    },
+    {
+      "type": "CustomSurface",
+      "p1": {
+        "x": 425.75,
+        "y": 313.25
+      },
+      "p2": {
+        "x": 425.75,
+        "y": 342.75
+      },
+      "outRays": [
+        {
+          "eqnTheta": "\\theta_0",
+          "eqnP": "\\left(\\lambda-540\\right)\\cdot-0.00059512195"
+        },
+        {
+          "eqnTheta": "2\\pi",
+          "eqnP": "\\frac{\\left(\\lambda-458\\right)}{200}"
+        }
+      ]
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 300,
+        "y": 420
+      },
+      "p2": {
+        "x": 300,
+        "y": 370
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 450,
+        "y": 420
+      },
+      "p2": {
+        "x": 300,
+        "y": 420
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 450,
+        "y": 370
+      },
+      "p2": {
+        "x": 450,
+        "y": 420
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 349,
+        "y": 279.75
+      },
+      "p2": {
+        "x": 425.875,
+        "y": 279.625
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 300,
+        "y": 370
+      },
+      "p2": {
+        "x": 360,
+        "y": 370
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 420,
+        "y": 370
+      },
+      "p2": {
+        "x": 450,
+        "y": 370
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 350,
+        "y": 290
+      },
+      "p2": {
+        "x": 350,
+        "y": 280
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 350,
+        "y": 290
+      },
+      "p2": {
+        "x": 380,
+        "y": 290
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 403.125,
+        "y": 290.25
+      },
+      "p2": {
+        "x": 426,
+        "y": 290
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 425,
+        "y": 290
+      },
+      "p2": {
+        "x": 425,
+        "y": 280
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 420,
+        "y": 390
+      },
+      "p2": {
+        "x": 420,
+        "y": 370
+      }
+    },
+    {
+      "type": "AngleSource",
+      "p1": {
+        "x": 440,
+        "y": 401
+      },
+      "p2": {
+        "x": 302.5,
+        "y": 401.25
+      },
+      "brightness": 10,
+      "emisAngle": 0.8
+    },
+    {
+      "type": "AngleSource",
+      "p1": {
+        "x": -62,
+        "y": 325
+      },
+      "p2": {
+        "x": 568,
+        "y": 326
+      },
+      "brightness": 1,
+      "wavelength": 458,
+      "emisAngle": 12
+    },
+    {
+      "type": "Glass",
+      "path": [
+        {
+          "x": 350,
+          "y": 290,
+          "arc": false
+        },
+        {
+          "x": 360,
+          "y": 290,
+          "arc": false
+        },
+        {
+          "x": 360,
+          "y": 370,
+          "arc": false
+        },
+        {
+          "x": 350,
+          "y": 370,
+          "arc": false
+        }
+      ],
+      "partialReflect": false
+    },
+    {
+      "type": "Glass",
+      "path": [
+        {
+          "x": 429,
+          "y": 290,
+          "arc": false
+        },
+        {
+          "x": 419,
+          "y": 290,
+          "arc": false
+        },
+        {
+          "x": 419,
+          "y": 370,
+          "arc": false
+        },
+        {
+          "x": 429,
+          "y": 370,
+          "arc": false
+        }
+      ],
+      "partialReflect": false
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 403.625,
+        "y": 286.5
+      },
+      "p2": {
+        "x": 404.5,
+        "y": 290.625
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 378.5,
+        "y": 290.625
+      },
+      "p2": {
+        "x": 379.5,
+        "y": 286.625
+      }
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 364.25,
+        "y": 373.25
+      },
+      "p2": {
+        "x": 380.75,
+        "y": 409.75
+      },
+      "lineStyle": {
+        "color": {
+          "r": 0.132,
+          "g": 1,
+          "b": 0,
+          "a": 1
+        },
+        "width": 2.4,
+        "dash": [
+          2
+        ]
+      }
+    },
+    {
+      "type": "TextLabel",
+      "x": -64.5,
+      "y": 306.5,
+      "text": "{{target}}",
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 379.25,
+      "y": 250,
+      "text": "{{collimatingmirror}}",
+      "fontSize": 12,
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 470,
+      "y": 417.75,
+      "text": "{{laser}}",
+      "fontSize": 12
+    },
+    {
+      "type": "TextLabel",
+      "x": 316.25,
+      "y": 453.5,
+      "text": "{{holographicgrating}}",
+      "fontSize": 12,
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 469.5,
+      "y": 373.5,
+      "text": "{{holographicopticalel}}",
+      "fontSize": 12
+    },
+    {
+      "type": "TextLabel",
+      "x": 509.5,
+      "y": 178.75,
+      "text": "{{lightnotusedpassesth}}",
+      "fontSize": 12,
+      "alignment": "right"
+    },
+    {
+      "type": "TextLabel",
+      "x": 708.5,
+      "y": 280,
+      "text": "{{eye2}}",
+      "alignment": "right"
+    },
+    {
+      "type": "TextLabel",
+      "x": 716,
+      "y": 277,
+      "text": "{{switchtoobservermode}}",
+      "fontSize": 12
+    },
+    {
+      "type": "TextLabel",
+      "x": 408.25,
+      "y": 455.5,
+      "text": "{{divergingmirror}}",
+      "fontSize": 12
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 422.75,
+        "y": 439.25
+      },
+      "p2": {
+        "x": 410.75,
+        "y": 405.75
+      },
+      "arrow": true,
+      "lineStyle": {
+        "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "width": 0.4,
+        "dash": []
+      }
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 465.75,
+        "y": 410.75
+      },
+      "p2": {
+        "x": 446.25,
+        "y": 403.75
+      },
+      "arrow": true,
+      "lineStyle": {
+        "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "width": 0.4,
+        "dash": []
+      }
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 320,
+        "y": 438.25
+      },
+      "p2": {
+        "x": 369,
+        "y": 395.5
+      },
+      "arrow": true,
+      "lineStyle": {
+        "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "width": 0.4,
+        "dash": []
+      }
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 464,
+        "y": 362.5
+      },
+      "p2": {
+        "x": 428.5,
+        "y": 343
+      },
+      "arrow": true,
+      "lineStyle": {
+        "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "width": 0.9,
+        "dash": []
+      }
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 381.25,
+        "y": 252.5
+      },
+      "p2": {
+        "x": 388.5,
+        "y": 282.75
+      },
+      "arrow": true,
+      "lineStyle": {
+        "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "width": 0.9,
+        "dash": []
+      }
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 446,
+        "y": 184.5
+      },
+      "p2": {
+        "x": 494.5,
+        "y": 200
+      },
+      "arrow": true
+    },
+    {
+      "type": "TextLabel",
+      "x": 392,
+      "y": 90,
+      "text": "{{holographicsight}}",
+      "fontSize": 40,
+      "alignment": "center"
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": -191,
+        "y": 4
+      },
+      "p4": {
+        "x": 972,
+        "y": 522
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 233,
+        "y": 106
+      },
+      "p4": {
+        "x": 643,
+        "y": 516
+      }
+    }
+  ],
+  "width": 1300,
+  "height": 800,
+  "rayModeDensity": 9.920467031729475,
+  "imageModeDensity": 19.88568249156474,
+  "gridSize": 10,
+  "observer": {
+    "c": {
+      "x": 690.5203218069576,
+      "y": 326.457396244209
+    },
+    "r": 35
+  },
+  "origin": {
+    "x": 270.8847696870053,
+    "y": 178.74978710374955
+  },
+  "scale": 0.8964396087128423,
+  "simulateColors": true,
+  "colorMode": "linear",
+  "theme": {
+    "colorObservedRay": {
+      "dash": []
+    },
+    "observer": {
+      "color": {
+        "r": 0.733,
+        "g": 0.733,
+        "b": 0.733
+      }
+    },
+    "blocker": {
+      "color": {
+        "r": 0.361,
+        "g": 0.361,
+        "b": 0.361
+      },
+      "width": 2.2
+    },
+    "customSurface": {
+      "color": {
+        "a": 0.294
+      },
+      "width": 0.4
+    }
+  },
+  "importedFromBeta": true
+}

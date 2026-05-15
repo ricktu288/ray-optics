@@ -521,6 +521,20 @@
       "annulareclipse": "Annular eclipse",
       "earth": "Earth",
       "totaleclipse": "Total eclipse"
+    },
+    "holographicSight": {
+      "title": "Holographic Sight",
+      "description": "The design showcases how a holographic sight like the EOTech functions and includes the components that make it work.",
+      "target": "Target",
+      "collimatingmirror": "Collimating Mirror",
+      "laser": "Laser",
+      "holographicgrating": "Holographic Grating",
+      "holographicopticalel": "Holographic Optical Element \n(invisible to the human eye)",
+      "lightnotusedpassesth": "Light not used passes through",
+      "eye2": "Eye",
+      "switchtoobservermode": "(Switch to Observer Mode to see)",
+      "divergingmirror": "Diverging Mirror",
+      "holographicsight": "Holographic Sight"
     }
   }
 }

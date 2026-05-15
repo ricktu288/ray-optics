@@ -10,11 +10,11 @@ For direct contributions, see the following guidelines.
 
 You can submit your work to the Gallery. The scene should satisfy the following requirements:
 - The "Simulate Colors" option should only be used when necessary (e.g. to represent the actual wavelength-dependent optics or to distinguish different sources by colors).
-- The "Correct Brightness" option and glasses with relative refractive indices below 1 are not currently supported by the gallery.
+- The "Correct Brightness" option and glasses with relative refractive indices below 1 are not currently supported by the thumbnail/preview image.
 - All natural language texts in the scene should be either in English or in Chinese when submitting by email.
 - Avoid programmatically-generated large arrays of objects if possible (try using the "Module" feature instead).
 - Avoid using rays in non-optical ways (e.g. purely geometrical measurements, backward ray tracing) if possible.
-- To keep the style consistent, please use the default theme and font.
+- To keep the style consistent, please use the default theme and font unless beneficial for the purpose of the simulation.
 
 **Method 1: By e-mail**
 

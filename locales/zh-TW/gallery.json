@@ -520,6 +520,21 @@
       "annulareclipse": "日環食",
       "earth": "地球",
       "totaleclipse": "日全食"
+    },
+    "holographicSight": {
+      "title": "全像照準器",
+      "description": "此設計展示類似 EOTech 的全像照準器如何運作，並包含使其運作的各個元件。",
+      "target": "標靶",
+      "collimatingmirror": "準直鏡",
+      "laser": "雷射",
+      "holographicgrating": "全像光柵",
+      "holographicopticalel": "全像光學元件\n（肉眼不可見）",
+      "lightnotusedpassesth": "未被使用的光會穿透",
+      "eye2": "眼睛",
+      "switchtoobservermode": "（切換至觀察者模式以查看）",
+      "divergingmirror": "發散鏡",
+      "holographicsight": "全像照準器"
     }
   }
 }
+

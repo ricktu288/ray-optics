@@ -479,6 +479,13 @@
         "contributors": [
           "Yi-Ting Tu"
         ]
+      },
+      {
+        "id": "holographic-sight",
+        "beta": true,
+        "contributors": [
+          "Zain Kalim"
+        ]
       }
     ]
   }

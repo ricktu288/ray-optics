@@ -947,5 +947,12 @@
       ]
     },
     "firstCommit": "2026-05-01"
+  },
+  {
+    "name": "Zain Kalim",
+    "contributions": {
+      "gallery": true
+    },
+    "firstCommit": "2026-05-15"
   }
 ]
