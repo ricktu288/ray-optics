@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: app/utils/svgImport.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: app/utils/svgImport.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*
+ * Copyright 2026 The Ray Optics Simulation authors and contributors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * @module svgImport
+ * @description Utilities to parse a vector-graphics (SVG) file into native cubic
+ * Bezier / line / elliptical-arc segments so they can be imported into the
+ * ray optics scene as Bezier-based mirror/custom-surface/glass/GRIN-glass
+ * objects, or as a free-form Drawing (polyline).
+ *
+ * The parser walks the SVG DOM, applies the accumulated `transform` stack at
+ * every node, and converts every supported shape (`&lt;line>`, `&lt;polyline>`,
+ * `&lt;polygon>`, `&lt;rect>`, `&lt;circle>`, `&lt;ellipse>`, `&lt;path>`) to a list of
+ * path segments. Quadratic Beziers are raised to cubic exactly. Elliptical
+ * arcs (from SVG `A` commands, `&lt;circle>`, `&lt;ellipse>`) are kept exact as
+ * `'A'` segments and only flattened to cubics later, at import time, using
+ * the user-selected tolerance — so the same SVG can be re-imported at
+ * different tolerances without losing precision.
+ *
+ * Presentation attributes (`stroke`, `fill`, `stroke-opacity`, `fill-opacity`,
+ * and `style="..."`) are resolved along the tree so each returned path knows
+ * which color to use for its stroke and its fill.
+ *
+ * Each returned path has the shape
+ *   {
+ *     start: { x, y },
+ *     segments: [
+ *       { type: 'L', end }                          // straight line
+ *       { type: 'C', c1, c2, end }                  // cubic Bezier
+ *       { type: 'A', center, mat, theta0, theta1,   // elliptical arc
+ *                    end }
+ *     ],
+ *     closed: boolean,
+ *     stroke: { r, g, b, a } | null,
+ *     fill:   { r, g, b, a } | null,
+ *     source: string,
+ *     sourceId: string,
+ *   }
+ *
+ * An `'A'` segment parameterizes its arc as
+ *     P(θ) = center + [a b; c d] · (cos θ, sin θ)ᵀ, for θ ∈ [theta0, theta1]
+ * where `mat = { a, b, c, d }`. This encoding is closed under affine
+ * transforms: applying a 2×2 linear map `M` to the arc yields another arc
+ * with matrix `M · mat` and center `M · center` — so arcs survive the
+ * SVG transform stack and the user's scale/offset without any loss.
+ *
+ * Alpha is preserved for reference but the caller is expected to group paths
+ * by the RGB portion only, per the user-facing requirement.
+ */
+
+/** Maximum recursion depth for subdividing an arc piece to meet tolerance. */
+const ARC_MAX_SUBDIV = 12;
+
+/** Preview-only tolerance, relative to an arc's characteristic radius. */
+const ARC_PREVIEW_REL_TOL = 1e-3;
+
+/* -------------------------------------------------------------------------- */
+/* Entry points                                                               */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Parse an SVG string.
+ * @param {string} svgString
+ * @returns {{paths: Array&lt;ParsedPath>, viewBox: ({x:number,y:number,width:number,height:number}|null), error: (string|null)}}
+ */
+export function parseSvg(svgString) {
+  const result = { paths: [], viewBox: null, error: null };
+
+  let doc;
+  try {
+    doc = new DOMParser().parseFromString(svgString, 'image/svg+xml');
+  } catch (e) {
+    result.error = 'Unable to parse SVG: ' + e.message;
+    return result;
+  }
+
+  const parserError = doc.querySelector('parsererror');
+  if (parserError) {
+    result.error = 'Malformed SVG: ' + (parserError.textContent || '').trim();
+    return result;
+  }
+
+  const svg = doc.documentElement;
+  if (!svg || svg.nodeName.toLowerCase() !== 'svg') {
+    result.error = 'Root element is not &lt;svg>.';
+    return result;
+  }
+
+  const viewBoxAttr = svg.getAttribute('viewBox');
+  if (viewBoxAttr) {
+    const parts = viewBoxAttr.trim().split(/[\s,]+/).map(parseFloat);
+    if (parts.length === 4 &amp;&amp; parts.every(Number.isFinite)) {
+      result.viewBox = { x: parts[0], y: parts[1], width: parts[2], height: parts[3] };
+    }
+  }
+  if (!result.viewBox) {
+    const w = parseFloat(svg.getAttribute('width'));
+    const h = parseFloat(svg.getAttribute('height'));
+    if (Number.isFinite(w) &amp;&amp; Number.isFinite(h)) {
+      result.viewBox = { x: 0, y: 0, width: w, height: h };
+    }
+  }
+
+  // SVG default presentation attributes: black fill, no stroke. We mirror that
+  // so that closed shapes without an explicit style are treated as filled.
+  const rootStyle = { stroke: null, fill: { r: 0, g: 0, b: 0, a: 1 } };
+  walk(svg, identityMatrix(), rootStyle, result.paths);
+
+  // Drop degenerate entries.
+  result.paths = result.paths.filter((p) => p.segments.length >= 1);
+
+  return result;
+}
+
+/**
+ * Same as {@link parseSvg}; named for callers that treat the input as a generic
+ * "vector shapes" file (currently always SVG).
+ * @param {string} svgString
+ * @returns {{paths: Array&lt;ParsedPath>, viewBox: ({x:number,y:number,width:number,height:number}|null), error: (string|null)}}
+ */
+export function parseShapesFile(svgString) {
+  return parseSvg(svgString);
+}
+
+/**
+ * Compute a bounding box for a preview. Straight and cubic segments use
+ * their control hulls (which always contain the true curve); arc segments
+ * are sampled at a fixed number of equal-angle steps, which overestimates
+ * only by a negligible amount.
+ * @param {Array&lt;ParsedPath>} paths
+ * @returns {({minX:number,minY:number,maxX:number,maxY:number}|null)}
+ */
+export function computePathsBBox(paths) {
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  let any = false;
+  const push = (pt) => {
+    if (!pt || !Number.isFinite(pt.x) || !Number.isFinite(pt.y)) return;
+    if (pt.x &lt; minX) minX = pt.x;
+    if (pt.y &lt; minY) minY = pt.y;
+    if (pt.x > maxX) maxX = pt.x;
+    if (pt.y > maxY) maxY = pt.y;
+    any = true;
+  };
+  for (const p of paths) {
+    push(p.start);
+    for (const s of p.segments) {
+      if (s.type === 'A') {
+        // Sample the arc + include the 4 axis-aligned extrema in case they
+        // fall inside [theta0, theta1].
+        const samples = 17;
+        for (let i = 0; i &lt;= samples; i++) {
+          const t = s.theta0 + (s.theta1 - s.theta0) * (i / samples);
+          push(evalArc(s, t));
+        }
+        push(s.end);
+      } else {
+        if (s.c1) push(s.c1);
+        if (s.c2) push(s.c2);
+        push(s.end);
+      }
+    }
+  }
+  return any ? { minX, minY, maxX, maxY } : null;
+}
+
+/**
+ * Produce an SVG `d` string describing a parsed path, useful for rendering
+ * a preview with `&lt;path d="...">`. Arc segments are flattened to cubics at
+ * a fine preview tolerance (relative to the arc's characteristic radius).
+ * @param {ParsedPath} path
+ */
+export function pathToSvgPathD(path) {
+  if (!path || !path.start) return '';
+  let d = `M ${fmt(path.start.x)} ${fmt(path.start.y)}`;
+  for (const s of path.segments) {
+    if (s.type === 'L') {
+      d += ` L ${fmt(s.end.x)} ${fmt(s.end.y)}`;
+    } else if (s.type === 'C') {
+      d += ` C ${fmt(s.c1.x)} ${fmt(s.c1.y)} ${fmt(s.c2.x)} ${fmt(s.c2.y)} ${fmt(s.end.x)} ${fmt(s.end.y)}`;
+    } else if (s.type === 'A') {
+      const tol = Math.max(1e-9, arcCharRadius(s) * ARC_PREVIEW_REL_TOL);
+      const pieces = [];
+      flattenArcToCubics(s, tol, pieces);
+      for (const c of pieces) {
+        d += ` C ${fmt(c.c1.x)} ${fmt(c.c1.y)} ${fmt(c.c2.x)} ${fmt(c.c2.y)} ${fmt(c.end.x)} ${fmt(c.end.y)}`;
+      }
+    }
+  }
+  if (path.closed) d += ' Z';
+  return d;
+}
+
+/**
+ * Replace every `'A'` (elliptical arc) segment in each path with a sequence
+ * of cubic Bezier `'C'` segments, using adaptive subdivision. The maximum
+ * deviation of any output cubic from the true arc stays below `tolerance`
+ * (in whatever coordinate space the paths live in at the time of the call).
+ *
+ * Call this after applying the scene transform and before
+ * {@link simplifyPaths}, so that `tolerance` refers to on-screen units.
+ *
+ * @param {Array&lt;ParsedPath>} paths
+ * @param {number} tolerance
+ * @returns {Array&lt;ParsedPath>}
+ */
+export function flattenArcSegments(paths, tolerance) {
+  if (!tolerance || tolerance &lt;= 0) tolerance = Infinity;
+  return paths.map((p) => {
+    const out = [];
+    for (const s of p.segments) {
+      if (s.type === 'A') {
+        flattenArcToCubics(s, tolerance, out);
+      } else {
+        out.push(s);
+      }
+    }
+    return { ...p, segments: out };
+  });
+}
+
+/**
+ * Flatten a parsed path to a polyline by sampling each curved segment at a
+ * resolution that keeps the deviation below `tolerance` scene units.
+ * Used for the Drawing target which only stores polyline strokes.
+ * @param {ParsedPath} path
+ * @param {number} tolerance - maximum deviation in scene coordinates.
+ * @returns {Array&lt;{x:number, y:number}>}
+ */
+export function flattenPathToPolyline(path, tolerance = 0.1) {
+  const out = [];
+  if (!path || !path.start) return out;
+  out.push({ x: path.start.x, y: path.start.y });
+  let cur = { x: path.start.x, y: path.start.y };
+  for (const s of path.segments) {
+    if (s.type === 'L') {
+      out.push({ x: s.end.x, y: s.end.y });
+    } else if (s.type === 'C') {
+      const samples = adaptiveCubicSamples(cur, s.c1, s.c2, s.end, tolerance);
+      for (let i = 1; i &lt; samples.length; i++) out.push(samples[i]);
+    } else if (s.type === 'A') {
+      const samples = adaptiveArcSamples(s, tolerance);
+      for (let i = 1; i &lt; samples.length; i++) out.push(samples[i]);
+    }
+    cur = { x: s.end.x, y: s.end.y };
+  }
+  return out;
+}
+
+/**
+ * Simplify consecutive cubic Bezier segments in a path by merging adjacent
+ * cubics whose union can be represented as a single cubic within `tolerance`.
+ * This is the "subsampling" strategy for overly dense cubic paths.
+ * @param {Array&lt;ParsedPath>} paths
+ * @param {number} tolerance
+ * @returns {Array&lt;ParsedPath>}
+ */
+export function simplifyPaths(paths, tolerance) {
+  if (!tolerance || tolerance &lt;= 0) return paths;
+  return paths.map((p) => ({ ...p, segments: simplifyPathSegments(p.start, p.segments, tolerance) }));
+}
+
+function simplifyPathSegments(start, segments, tolerance) {
+  if (segments.length &lt; 2) return segments.slice();
+  // Work through the chain, greedily merging runs of cubics. Non-cubic
+  // segments (L, A) are passed through unchanged — arcs in particular
+  // should have been flattened by flattenArcSegments() earlier.
+  const out = [];
+  let anchor = { x: start.x, y: start.y };
+  let i = 0;
+  while (i &lt; segments.length) {
+    const seg = segments[i];
+    if (seg.type !== 'C') {
+      out.push(seg);
+      anchor = { x: seg.end.x, y: seg.end.y };
+      i++;
+      continue;
+    }
+    let j = i + 1;
+    let merged = seg;
+    let mergedAnchor = anchor;
+    while (j &lt; segments.length &amp;&amp; segments[j].type === 'C') {
+      const candidate = mergeTwoCubics(mergedAnchor, merged, segments[j]);
+      if (!candidate) break;
+      if (!cubicApproxError(mergedAnchor, candidate, [merged, segments[j]], tolerance)) break;
+      merged = candidate;
+      j++;
+    }
+    out.push(merged);
+    anchor = { x: merged.end.x, y: merged.end.y };
+    i = j;
+  }
+  return out;
+}
+
+/**
+ * Build a single cubic Bezier from two consecutive cubics by keeping the
+ * start tangent of the first and the end tangent of the second.
+ * Returns null if the tangents are degenerate.
+ */
+function mergeTwoCubics(start, a, b) {
+  // First segment:  start -> a.c1 -> a.c2 -> a.end
+  // Second segment: a.end -> b.c1 -> b.c2 -> b.end
+  // We fit a single cubic start -> ? -> ? -> b.end that matches the outgoing
+  // tangent at `start` and the incoming tangent at `b.end`, with lengths
+  // chosen from the polyline distance so the merged curve roughly keeps its
+  // length.
+  const t1 = { x: a.c1.x - start.x, y: a.c1.y - start.y };
+  const t2 = { x: b.end.x - b.c2.x, y: b.end.y - b.c2.y };
+  if ((t1.x === 0 &amp;&amp; t1.y === 0) || (t2.x === 0 &amp;&amp; t2.y === 0)) return null;
+  const lenT1 = Math.hypot(t1.x, t1.y);
+  const lenT2 = Math.hypot(t2.x, t2.y);
+  const approxLen =
+    Math.hypot(a.end.x - start.x, a.end.y - start.y) +
+    Math.hypot(b.end.x - a.end.x, b.end.y - a.end.y);
+  const desiredLen = approxLen / 3;
+  const c1 = { x: start.x + (t1.x / lenT1) * desiredLen, y: start.y + (t1.y / lenT1) * desiredLen };
+  const c2 = { x: b.end.x - (t2.x / lenT2) * desiredLen, y: b.end.y - (t2.y / lenT2) * desiredLen };
+  return { type: 'C', c1, c2, end: { x: b.end.x, y: b.end.y } };
+}
+
+/** Check whether a single cubic approximates a sequence of cubics within tol. */
+function cubicApproxError(start, merged, originals, tolerance) {
+  // Sample both at the same parameter positions and compare. We use 11 sample
+  // points per original segment as a practical budget.
+  const samplesPerSeg = 11;
+  let total = 0;
+  const mergedLen = originals.length;
+  for (let k = 0; k &lt; mergedLen; k++) {
+    const anchorA = k === 0 ? start : pointOnChain(start, originals, k);
+    const seg = originals[k];
+    for (let i = 1; i &lt;= samplesPerSeg; i++) {
+      const tLocal = i / samplesPerSeg;
+      const origPt = evalCubic(anchorA, seg.c1, seg.c2, seg.end, tLocal);
+      const tGlobal = (k + tLocal) / mergedLen;
+      const mPt = evalCubic(start, merged.c1, merged.c2, merged.end, tGlobal);
+      const dx = origPt.x - mPt.x;
+      const dy = origPt.y - mPt.y;
+      const dist = Math.hypot(dx, dy);
+      if (dist > tolerance) return false;
+      total += dist;
+    }
+  }
+  return total / (samplesPerSeg * mergedLen) &lt;= tolerance;
+}
+
+function pointOnChain(start, originals, k) {
+  if (k === 0) return start;
+  return originals[k - 1].end;
+}
+
+function evalCubic(p0, p1, p2, p3, t) {
+  const mt = 1 - t;
+  return {
+    x: mt * mt * mt * p0.x + 3 * mt * mt * t * p1.x + 3 * mt * t * t * p2.x + t * t * t * p3.x,
+    y: mt * mt * mt * p0.y + 3 * mt * mt * t * p1.y + 3 * mt * t * t * p2.y + t * t * t * p3.y,
+  };
+}
+
+function adaptiveCubicSamples(p0, p1, p2, p3, tolerance, depth = 0) {
+  // Recursive midpoint subdivision: keep subdividing while the flatness is
+  // above `tolerance` or we run out of depth.
+  const flat = flatness(p0, p1, p2, p3);
+  if (flat &lt;= tolerance || depth > 10) return [p0, p3];
+  const q0 = mid(p0, p1);
+  const q1 = mid(p1, p2);
+  const q2 = mid(p2, p3);
+  const r0 = mid(q0, q1);
+  const r1 = mid(q1, q2);
+  const s0 = mid(r0, r1);
+  const left = adaptiveCubicSamples(p0, q0, r0, s0, tolerance, depth + 1);
+  const right = adaptiveCubicSamples(s0, r1, q2, p3, tolerance, depth + 1);
+  return left.concat(right.slice(1));
+}
+
+function mid(a, b) { return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }; }
+
+function flatness(p0, p1, p2, p3) {
+  // Maximum distance from p1, p2 to the chord p0-p3.
+  return Math.max(distPointToSegment(p1, p0, p3), distPointToSegment(p2, p0, p3));
+}
+
+function distPointToSegment(p, a, b) {
+  const abx = b.x - a.x, aby = b.y - a.y;
+  const apx = p.x - a.x, apy = p.y - a.y;
+  const len2 = abx * abx + aby * aby;
+  if (len2 === 0) return Math.hypot(apx, apy);
+  const t = Math.max(0, Math.min(1, (apx * abx + apy * aby) / len2));
+  const px = a.x + t * abx, py = a.y + t * aby;
+  return Math.hypot(p.x - px, p.y - py);
+}
+
+function fmt(n) { return Math.abs(n) &lt; 1e-9 ? 0 : +n.toFixed(4); }
+
+/* -------------------------------------------------------------------------- */
+/* Elliptical-arc segment helpers                                             */
+/* -------------------------------------------------------------------------- */
+
+/** Evaluate an 'A' segment at parameter θ. */
+function evalArc(seg, theta) {
+  const cos = Math.cos(theta), sin = Math.sin(theta);
+  return {
+    x: seg.center.x + seg.mat.a * cos + seg.mat.b * sin,
+    y: seg.center.y + seg.mat.c * cos + seg.mat.d * sin,
+  };
+}
+
+/** Evaluate the derivative of an 'A' segment at parameter θ. */
+function evalArcDeriv(seg, theta) {
+  const cos = Math.cos(theta), sin = Math.sin(theta);
+  return {
+    x: -seg.mat.a * sin + seg.mat.b * cos,
+    y: -seg.mat.c * sin + seg.mat.d * cos,
+  };
+}
+
+/** Characteristic radius used to pick preview tolerance per arc. */
+function arcCharRadius(seg) {
+  const { a, b, c, d } = seg.mat;
+  return Math.max(Math.hypot(a, c), Math.hypot(b, d));
+}
+
+/**
+ * Exact Maisonobe (2003) cubic approximation of an elliptical arc from θ0
+ * to θ1, using the stored parameterization in `seg`. The returned cubic
+ * matches the arc exactly at both endpoints in both position and tangent.
+ */
+function arcSubrangeToCubic(seg, theta0, theta1) {
+  const dTheta = theta1 - theta0;
+  const th = Math.tan(dTheta / 2);
+  const alpha = Math.sin(dTheta) * (Math.sqrt(4 + 3 * th * th) - 1) / 3;
+  const p0 = evalArc(seg, theta0);
+  const p3 = evalArc(seg, theta1);
+  const t0 = evalArcDeriv(seg, theta0);
+  const t3 = evalArcDeriv(seg, theta1);
+  return {
+    type: 'C',
+    c1: { x: p0.x + alpha * t0.x, y: p0.y + alpha * t0.y },
+    c2: { x: p3.x - alpha * t3.x, y: p3.y - alpha * t3.y },
+    end: p3,
+  };
+}
+
+/**
+ * Flatten one 'A' segment into a sequence of cubic segments whose maximum
+ * deviation from the true arc is ≤ `tolerance`. Each initial piece spans at
+ * most 90° (so the Maisonobe formula starts well-conditioned); beyond that,
+ * it is halved recursively whenever the mid-parameter error exceeds the
+ * tolerance.
+ */
+function flattenArcToCubics(seg, tolerance, out) {
+  const span = seg.theta1 - seg.theta0;
+  if (Math.abs(span) &lt; 1e-12) return;
+  const pieces = Math.max(1, Math.ceil(Math.abs(span) / (Math.PI / 2)));
+  const step = span / pieces;
+  for (let i = 0; i &lt; pieces; i++) {
+    const a = seg.theta0 + i * step;
+    const b = a + step;
+    subdivideArcPiece(seg, a, b, tolerance, out, 0);
+  }
+  // Snap the final endpoint exactly so repeated affine transforms plus
+  // subdivision cannot introduce cumulative drift across segments.
+  if (out.length > 0) {
+    out[out.length - 1] = {
+      ...out[out.length - 1],
+      end: { x: seg.end.x, y: seg.end.y },
+    };
+  }
+}
+
+function subdivideArcPiece(seg, theta0, theta1, tolerance, out, depth) {
+  const cubic = arcSubrangeToCubic(seg, theta0, theta1);
+  const startPt = evalArc(seg, theta0);
+  const thetaMid = (theta0 + theta1) / 2;
+  const truePt = evalArc(seg, thetaMid);
+  const approxPt = evalCubic(startPt, cubic.c1, cubic.c2, cubic.end, 0.5);
+  const err = Math.hypot(truePt.x - approxPt.x, truePt.y - approxPt.y);
+  if (err &lt;= tolerance || depth >= ARC_MAX_SUBDIV) {
+    out.push(cubic);
+    return;
+  }
+  subdivideArcPiece(seg, theta0, thetaMid, tolerance, out, depth + 1);
+  subdivideArcPiece(seg, thetaMid, theta1, tolerance, out, depth + 1);
+}
+
+/** Adaptive polyline sampler for an arc segment. */
+function adaptiveArcSamples(seg, tolerance) {
+  const out = [evalArc(seg, seg.theta0)];
+  const span = seg.theta1 - seg.theta0;
+  if (Math.abs(span) &lt; 1e-12) return out;
+  const pieces = Math.max(1, Math.ceil(Math.abs(span) / (Math.PI / 2)));
+  const step = span / pieces;
+  for (let i = 0; i &lt; pieces; i++) {
+    const a = seg.theta0 + i * step;
+    const b = a + step;
+    sampleArcRange(seg, a, b, tolerance, out, 0);
+  }
+  out[out.length - 1] = { x: seg.end.x, y: seg.end.y };
+  return out;
+}
+
+function sampleArcRange(seg, theta0, theta1, tolerance, out, depth) {
+  const pStart = evalArc(seg, theta0);
+  const pEnd = evalArc(seg, theta1);
+  const pMid = evalArc(seg, (theta0 + theta1) / 2);
+  const chordMid = { x: (pStart.x + pEnd.x) / 2, y: (pStart.y + pEnd.y) / 2 };
+  const err = Math.hypot(pMid.x - chordMid.x, pMid.y - chordMid.y);
+  if (err &lt;= tolerance || depth >= ARC_MAX_SUBDIV) {
+    out.push({ x: pEnd.x, y: pEnd.y });
+    return;
+  }
+  const thetaMid = (theta0 + theta1) / 2;
+  sampleArcRange(seg, theta0, thetaMid, tolerance, out, depth + 1);
+  sampleArcRange(seg, thetaMid, theta1, tolerance, out, depth + 1);
+}
+
+/* -------------------------------------------------------------------------- */
+/* SVG tree walk                                                              */
+/* -------------------------------------------------------------------------- */
+
+function walk(node, parentMatrix, parentStyle, outPaths) {
+  if (!node || node.nodeType !== 1) return;
+  const tag = node.nodeName.toLowerCase();
+  if (tag === 'defs' || tag === 'clippath' || tag === 'mask' || tag === 'style' ||
+      tag === 'title' || tag === 'desc' || tag === 'metadata') {
+    return;
+  }
+
+  const localMatrix = parseTransform(node.getAttribute('transform'));
+  const matrix = multiplyMatrix(parentMatrix, localMatrix);
+  const style = resolveStyle(node, parentStyle);
+  const sourceId = (node.getAttribute('id') || '').trim();
+
+  switch (tag) {
+    case 'g':
+    case 'svg':
+    case 'a':
+    case 'symbol':
+      break;
+    case 'line': {
+      const x1 = parseFloat(node.getAttribute('x1')) || 0;
+      const y1 = parseFloat(node.getAttribute('y1')) || 0;
+      const x2 = parseFloat(node.getAttribute('x2')) || 0;
+      const y2 = parseFloat(node.getAttribute('y2')) || 0;
+      pushPath({
+        start: applyMatrix(matrix, x1, y1),
+        segments: [{ type: 'L', end: applyMatrix(matrix, x2, y2) }],
+        closed: false,
+        source: 'line',
+        sourceId,
+      }, style, outPaths);
+      break;
+    }
+    case 'polyline':
+    case 'polygon': {
+      const raw = parsePointList(node.getAttribute('points') || '');
+      if (raw.length >= 2) {
+        const pts = raw.map(([x, y]) => applyMatrix(matrix, x, y));
+        const segs = [];
+        for (let i = 1; i &lt; pts.length; i++) segs.push({ type: 'L', end: pts[i] });
+        pushPath({
+          start: pts[0],
+          segments: segs,
+          closed: tag === 'polygon',
+          source: tag,
+          sourceId,
+        }, style, outPaths);
+      }
+      break;
+    }
+    case 'rect': {
+      const x = parseFloat(node.getAttribute('x')) || 0;
+      const y = parseFloat(node.getAttribute('y')) || 0;
+      const w = parseFloat(node.getAttribute('width')) || 0;
+      const h = parseFloat(node.getAttribute('height')) || 0;
+      if (w > 0 &amp;&amp; h > 0) {
+        const corners = [
+          [x, y], [x + w, y], [x + w, y + h], [x, y + h],
+        ].map(([cx, cy]) => applyMatrix(matrix, cx, cy));
+        pushPath({
+          start: corners[0],
+          segments: [
+            { type: 'L', end: corners[1] },
+            { type: 'L', end: corners[2] },
+            { type: 'L', end: corners[3] },
+          ],
+          closed: true,
+          source: 'rect',
+          sourceId,
+        }, style, outPaths);
+      }
+      break;
+    }
+    case 'circle': {
+      const cx = parseFloat(node.getAttribute('cx')) || 0;
+      const cy = parseFloat(node.getAttribute('cy')) || 0;
+      const r = parseFloat(node.getAttribute('r')) || 0;
+      if (r > 0) {
+        const path = ellipsePath(cx, cy, r, r);
+        pushPath(transformPath(path, matrix, 'circle', sourceId), style, outPaths);
+      }
+      break;
+    }
+    case 'ellipse': {
+      const cx = parseFloat(node.getAttribute('cx')) || 0;
+      const cy = parseFloat(node.getAttribute('cy')) || 0;
+      const rx = parseFloat(node.getAttribute('rx')) || 0;
+      const ry = parseFloat(node.getAttribute('ry')) || 0;
+      if (rx > 0 &amp;&amp; ry > 0) {
+        const path = ellipsePath(cx, cy, rx, ry);
+        pushPath(transformPath(path, matrix, 'ellipse', sourceId), style, outPaths);
+      }
+      break;
+    }
+    case 'path': {
+      const d = node.getAttribute('d');
+      if (d) {
+        const subPaths = parsePathD(d);
+        for (const sp of subPaths) {
+          pushPath(transformPath(sp, matrix, 'path', sourceId), style, outPaths);
+        }
+      }
+      break;
+    }
+    default:
+      break;
+  }
+
+  for (let i = 0; i &lt; node.childNodes.length; i++) {
+    walk(node.childNodes[i], matrix, style, outPaths);
+  }
+}
+
+function pushPath(rawPath, style, outPaths) {
+  if (!rawPath || !rawPath.segments || rawPath.segments.length === 0) return;
+  outPaths.push({
+    start: rawPath.start,
+    segments: rawPath.segments,
+    closed: !!rawPath.closed,
+    stroke: style.stroke,
+    fill: style.fill,
+    source: rawPath.source || '',
+    sourceId: rawPath.sourceId || '',
+  });
+}
+
+function transformPath(path, matrix, source, sourceId = '') {
+  const start = applyMatrix(matrix, path.start.x, path.start.y);
+  const segments = path.segments.map((s) => {
+    if (s.type === 'L') {
+      return { type: 'L', end: applyMatrix(matrix, s.end.x, s.end.y) };
+    }
+    if (s.type === 'A') {
+      // Apply the linear part of `matrix` to `mat`, and the full affine to
+      // `center`. Affine maps send ellipses to ellipses, so the arc's
+      // representation stays exact.
+      const m0 = matrix[0], m1 = matrix[1], m2 = matrix[2], m3 = matrix[3];
+      const { a, b, c, d } = s.mat;
+      return {
+        type: 'A',
+        center: applyMatrix(matrix, s.center.x, s.center.y),
+        mat: {
+          a: m0 * a + m2 * c,
+          b: m0 * b + m2 * d,
+          c: m1 * a + m3 * c,
+          d: m1 * b + m3 * d,
+        },
+        theta0: s.theta0,
+        theta1: s.theta1,
+        end: applyMatrix(matrix, s.end.x, s.end.y),
+      };
+    }
+    return {
+      type: 'C',
+      c1: applyMatrix(matrix, s.c1.x, s.c1.y),
+      c2: applyMatrix(matrix, s.c2.x, s.c2.y),
+      end: applyMatrix(matrix, s.end.x, s.end.y),
+    };
+  });
+  return { start, segments, closed: path.closed, source, sourceId };
+}
+
+/* -------------------------------------------------------------------------- */
+/* Style resolution                                                           */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Resolve inherited presentation style for a node. Only `stroke`, `fill`,
+ * `stroke-opacity` and `fill-opacity` are considered; unsupported style
+ * attributes are ignored.
+ */
+function resolveStyle(node, parentStyle) {
+  const style = { stroke: parentStyle.stroke, fill: parentStyle.fill };
+
+  const get = (name) => {
+    // Inline `style="..."` takes precedence over presentation attributes.
+    const inline = readInlineStyle(node, name);
+    if (inline !== null) return inline;
+    const attr = node.getAttribute &amp;&amp; node.getAttribute(name);
+    return attr !== null &amp;&amp; attr !== '' ? attr : null;
+  };
+
+  const strokeAttr = get('stroke');
+  const fillAttr = get('fill');
+  const strokeOpacity = get('stroke-opacity');
+  const fillOpacity = get('fill-opacity');
+  const opacity = get('opacity');
+
+  if (strokeAttr !== null) {
+    style.stroke = parseColor(strokeAttr, style.stroke);
+  }
+  if (fillAttr !== null) {
+    style.fill = parseColor(fillAttr, style.fill);
+  }
+
+  const applyAlphaMult = (color, mult) => {
+    if (!color || !Number.isFinite(mult)) return color;
+    return { r: color.r, g: color.g, b: color.b, a: color.a * mult };
+  };
+
+  if (strokeOpacity !== null &amp;&amp; Number.isFinite(parseFloat(strokeOpacity))) {
+    style.stroke = applyAlphaMult(style.stroke, clamp01(parseFloat(strokeOpacity)));
+  }
+  if (fillOpacity !== null &amp;&amp; Number.isFinite(parseFloat(fillOpacity))) {
+    style.fill = applyAlphaMult(style.fill, clamp01(parseFloat(fillOpacity)));
+  }
+  if (opacity !== null &amp;&amp; Number.isFinite(parseFloat(opacity))) {
+    const m = clamp01(parseFloat(opacity));
+    style.stroke = applyAlphaMult(style.stroke, m);
+    style.fill = applyAlphaMult(style.fill, m);
+  }
+  return style;
+}
+
+function readInlineStyle(node, name) {
+  if (!node.getAttribute) return null;
+  const styleStr = node.getAttribute('style');
+  if (!styleStr) return null;
+  const decls = styleStr.split(';');
+  for (const decl of decls) {
+    const idx = decl.indexOf(':');
+    if (idx &lt; 0) continue;
+    const key = decl.slice(0, idx).trim();
+    if (key === name) return decl.slice(idx + 1).trim();
+  }
+  return null;
+}
+
+function clamp01(v) { return v &lt; 0 ? 0 : (v > 1 ? 1 : v); }
+
+/**
+ * Parse a CSS color string. Supports `none`, named colors, `#rgb`, `#rrggbb`,
+ * `#rrggbbaa`, `rgb()`, `rgba()`. Returns `null` for `none`, and `fallback`
+ * when the value is unrecognized (e.g. `url(#gradient)`).
+ */
+function parseColor(str, fallback) {
+  if (str === null || str === undefined) return fallback;
+  const s = String(str).trim().toLowerCase();
+  if (!s || s === 'none' || s === 'transparent') return null;
+  if (s === 'currentcolor') return fallback;
+  if (s.startsWith('url(')) return fallback;
+
+  if (s.startsWith('#')) {
+    const hex = s.slice(1);
+    if (/^[0-9a-f]{3}$/.test(hex)) {
+      const r = parseInt(hex[0] + hex[0], 16) / 255;
+      const g = parseInt(hex[1] + hex[1], 16) / 255;
+      const b = parseInt(hex[2] + hex[2], 16) / 255;
+      return { r, g, b, a: 1 };
+    }
+    if (/^[0-9a-f]{4}$/.test(hex)) {
+      const r = parseInt(hex[0] + hex[0], 16) / 255;
+      const g = parseInt(hex[1] + hex[1], 16) / 255;
+      const b = parseInt(hex[2] + hex[2], 16) / 255;
+      const a = parseInt(hex[3] + hex[3], 16) / 255;
+      return { r, g, b, a };
+    }
+    if (/^[0-9a-f]{6}$/.test(hex)) {
+      const r = parseInt(hex.slice(0, 2), 16) / 255;
+      const g = parseInt(hex.slice(2, 4), 16) / 255;
+      const b = parseInt(hex.slice(4, 6), 16) / 255;
+      return { r, g, b, a: 1 };
+    }
+    if (/^[0-9a-f]{8}$/.test(hex)) {
+      const r = parseInt(hex.slice(0, 2), 16) / 255;
+      const g = parseInt(hex.slice(2, 4), 16) / 255;
+      const b = parseInt(hex.slice(4, 6), 16) / 255;
+      const a = parseInt(hex.slice(6, 8), 16) / 255;
+      return { r, g, b, a };
+    }
+  }
+
+  const rgbMatch = /^rgba?\s*\(([^)]+)\)$/.exec(s);
+  if (rgbMatch) {
+    const parts = rgbMatch[1].split(/[\s,/]+/).filter(Boolean);
+    if (parts.length >= 3) {
+      const toFrac = (p) => {
+        if (p.endsWith('%')) return clamp01(parseFloat(p) / 100);
+        const n = parseFloat(p);
+        if (!Number.isFinite(n)) return 0;
+        return clamp01(n / 255);
+      };
+      const r = toFrac(parts[0]);
+      const g = toFrac(parts[1]);
+      const b = toFrac(parts[2]);
+      let a = 1;
+      if (parts.length >= 4) {
+        const p = parts[3];
+        if (p.endsWith('%')) a = clamp01(parseFloat(p) / 100);
+        else a = clamp01(parseFloat(p));
+      }
+      return { r, g, b, a };
+    }
+  }
+
+  const named = CSS_COLORS[s];
+  if (named) return { r: named[0] / 255, g: named[1] / 255, b: named[2] / 255, a: 1 };
+
+  return fallback;
+}
+
+/** A minimal subset of named CSS colors commonly seen in vector-graphics exports. */
+const CSS_COLORS = {
+  black:    [0, 0, 0],
+  white:    [255, 255, 255],
+  red:      [255, 0, 0],
+  lime:     [0, 255, 0],
+  green:    [0, 128, 0],
+  blue:     [0, 0, 255],
+  yellow:   [255, 255, 0],
+  cyan:     [0, 255, 255],
+  aqua:     [0, 255, 255],
+  magenta:  [255, 0, 255],
+  fuchsia:  [255, 0, 255],
+  gray:     [128, 128, 128],
+  grey:     [128, 128, 128],
+  silver:   [192, 192, 192],
+  maroon:   [128, 0, 0],
+  olive:    [128, 128, 0],
+  purple:   [128, 0, 128],
+  teal:     [0, 128, 128],
+  navy:     [0, 0, 128],
+  orange:   [255, 165, 0],
+  pink:     [255, 192, 203],
+  brown:    [165, 42, 42],
+  gold:     [255, 215, 0],
+  darkgray: [169, 169, 169],
+  darkgrey: [169, 169, 169],
+  lightgray:[211, 211, 211],
+  lightgrey:[211, 211, 211],
+};
+
+/* -------------------------------------------------------------------------- */
+/* Matrix helpers                                                             */
+/* -------------------------------------------------------------------------- */
+
+function identityMatrix() { return [1, 0, 0, 1, 0, 0]; }
+
+function multiplyMatrix(m1, m2) {
+  const [a1, b1, c1, d1, e1, f1] = m1;
+  const [a2, b2, c2, d2, e2, f2] = m2;
+  return [
+    a1 * a2 + c1 * b2,
+    b1 * a2 + d1 * b2,
+    a1 * c2 + c1 * d2,
+    b1 * c2 + d1 * d2,
+    a1 * e2 + c1 * f2 + e1,
+    b1 * e2 + d1 * f2 + f1,
+  ];
+}
+
+function applyMatrix(m, x, y) {
+  return { x: m[0] * x + m[2] * y + m[4], y: m[1] * x + m[3] * y + m[5] };
+}
+
+function parseTransform(attr) {
+  if (!attr) return identityMatrix();
+  let matrix = identityMatrix();
+  const re = /(matrix|translate|scale|rotate|skewX|skewY)\s*\(\s*([^)]*)\)/g;
+  let m;
+  while ((m = re.exec(attr)) !== null) {
+    const name = m[1];
+    const args = m[2].split(/[\s,]+/).map(parseFloat).filter((n) => !Number.isNaN(n));
+    let local;
+    switch (name) {
+      case 'matrix':
+        if (args.length === 6) local = args;
+        break;
+      case 'translate':
+        local = [1, 0, 0, 1, args[0] || 0, args[1] || 0];
+        break;
+      case 'scale': {
+        const sx = args[0] ?? 1;
+        const sy = args[1] ?? sx;
+        local = [sx, 0, 0, sy, 0, 0];
+        break;
+      }
+      case 'rotate': {
+        const angle = (args[0] || 0) * Math.PI / 180;
+        const cx = args[1] || 0;
+        const cy = args[2] || 0;
+        const cos = Math.cos(angle);
+        const sin = Math.sin(angle);
+        if (cx === 0 &amp;&amp; cy === 0) {
+          local = [cos, sin, -sin, cos, 0, 0];
+        } else {
+          local = multiplyMatrix(
+            multiplyMatrix([1, 0, 0, 1, cx, cy], [cos, sin, -sin, cos, 0, 0]),
+            [1, 0, 0, 1, -cx, -cy]
+          );
+        }
+        break;
+      }
+      case 'skewX':
+        local = [1, 0, Math.tan((args[0] || 0) * Math.PI / 180), 1, 0, 0];
+        break;
+      case 'skewY':
+        local = [1, Math.tan((args[0] || 0) * Math.PI / 180), 0, 1, 0, 0];
+        break;
+    }
+    if (local) matrix = multiplyMatrix(matrix, local);
+  }
+  return matrix;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Basic helpers                                                              */
+/* -------------------------------------------------------------------------- */
+
+function parsePointList(str) {
+  const nums = str.trim().split(/[\s,]+/).map(parseFloat).filter((n) => !Number.isNaN(n));
+  const out = [];
+  for (let i = 0; i + 1 &lt; nums.length; i += 2) out.push([nums[i], nums[i + 1]]);
+  return out;
+}
+
+/**
+ * Produce a path (in local coordinates) describing a full ellipse as a
+ * single closed 'A' (arc) segment. The caller is responsible for any outer
+ * transform. Flattening to cubics happens later, at import time, honoring
+ * the user-selected tolerance.
+ *
+ * The start parameter θ = 0 corresponds to +x on the ellipse, i.e. point
+ * (cx + rx, cy). The arc sweeps a full 2π (counter-clockwise in SVG
+ * coordinates, where +y points down).
+ */
+function ellipsePath(cx, cy, rx, ry) {
+  const start = { x: cx + rx, y: cy };
+  const arcSeg = {
+    type: 'A',
+    center: { x: cx, y: cy },
+    mat: { a: rx, b: 0, c: 0, d: ry },
+    theta0: 0,
+    theta1: 2 * Math.PI,
+    end: { x: cx + rx, y: cy },
+  };
+  return { start, segments: [arcSeg], closed: true };
+}
+
+/* -------------------------------------------------------------------------- */
+/* SVG path `d` parsing                                                       */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Parse the `d` attribute and produce one or more sub-paths with cubic
+ * Beziers / lines. The returned structure is independent of any transform;
+ * the caller composites the transform afterwards.
+ */
+function parsePathD(d) {
+  const commands = tokenizePath(d);
+  /** @type {Array&lt;{start:{x,y}, segments:Array, closed:boolean}>} */
+  const subPaths = [];
+  let current = null;
+  let pen = { x: 0, y: 0 };
+  let startOfSubpath = { x: 0, y: 0 };
+  let lastCubicCtrl = null;
+  let lastQuadCtrl = null;
+  let lastCmd = null;
+
+  const openSubPath = (pt) => {
+    current = { start: { x: pt.x, y: pt.y }, segments: [], closed: false };
+    subPaths.push(current);
+  };
+
+  const pushSeg = (seg) => {
+    if (!current) openSubPath(pen);
+    current.segments.push(seg);
+  };
+
+  for (const { cmd, args } of commands) {
+    const rel = cmd === cmd.toLowerCase();
+    const c = cmd.toUpperCase();
+
+    switch (c) {
+      case 'M': {
+        for (let i = 0; i &lt; args.length; i += 2) {
+          let x = args[i];
+          let y = args[i + 1];
+          if (rel &amp;&amp; (i > 0 || subPaths.length > 0)) {
+            x += pen.x;
+            y += pen.y;
+          }
+          if (i === 0) {
+            openSubPath({ x, y });
+            startOfSubpath = { x, y };
+          } else {
+            pushSeg({ type: 'L', end: { x, y } });
+          }
+          pen = { x, y };
+        }
+        lastCubicCtrl = null;
+        lastQuadCtrl = null;
+        break;
+      }
+      case 'L': {
+        for (let i = 0; i + 1 &lt; args.length; i += 2) {
+          let x = args[i];
+          let y = args[i + 1];
+          if (rel) { x += pen.x; y += pen.y; }
+          pushSeg({ type: 'L', end: { x, y } });
+          pen = { x, y };
+        }
+        lastCubicCtrl = null;
+        lastQuadCtrl = null;
+        break;
+      }
+      case 'H': {
+        for (let i = 0; i &lt; args.length; i++) {
+          let x = args[i];
+          if (rel) x += pen.x;
+          pushSeg({ type: 'L', end: { x, y: pen.y } });
+          pen = { x, y: pen.y };
+        }
+        lastCubicCtrl = null;
+        lastQuadCtrl = null;
+        break;
+      }
+      case 'V': {
+        for (let i = 0; i &lt; args.length; i++) {
+          let y = args[i];
+          if (rel) y += pen.y;
+          pushSeg({ type: 'L', end: { x: pen.x, y } });
+          pen = { x: pen.x, y };
+        }
+        lastCubicCtrl = null;
+        lastQuadCtrl = null;
+        break;
+      }
+      case 'C': {
+        for (let i = 0; i + 5 &lt; args.length; i += 6) {
+          let c1x = args[i],     c1y = args[i + 1];
+          let c2x = args[i + 2], c2y = args[i + 3];
+          let ex  = args[i + 4], ey  = args[i + 5];
+          if (rel) {
+            c1x += pen.x; c1y += pen.y;
+            c2x += pen.x; c2y += pen.y;
+            ex  += pen.x; ey  += pen.y;
+          }
+          pushSeg({ type: 'C', c1: { x: c1x, y: c1y }, c2: { x: c2x, y: c2y }, end: { x: ex, y: ey } });
+          pen = { x: ex, y: ey };
+          lastCubicCtrl = { x: c2x, y: c2y };
+        }
+        lastQuadCtrl = null;
+        break;
+      }
+      case 'S': {
+        for (let i = 0; i + 3 &lt; args.length; i += 4) {
+          let c2x = args[i],     c2y = args[i + 1];
+          let ex  = args[i + 2], ey  = args[i + 3];
+          if (rel) {
+            c2x += pen.x; c2y += pen.y;
+            ex  += pen.x; ey  += pen.y;
+          }
+          const reflected = (lastCmd === 'C' || lastCmd === 'S') &amp;&amp; lastCubicCtrl
+            ? { x: 2 * pen.x - lastCubicCtrl.x, y: 2 * pen.y - lastCubicCtrl.y }
+            : { x: pen.x, y: pen.y };
+          pushSeg({ type: 'C', c1: reflected, c2: { x: c2x, y: c2y }, end: { x: ex, y: ey } });
+          pen = { x: ex, y: ey };
+          lastCubicCtrl = { x: c2x, y: c2y };
+        }
+        lastQuadCtrl = null;
+        break;
+      }
+      case 'Q': {
+        for (let i = 0; i + 3 &lt; args.length; i += 4) {
+          let cx1 = args[i],     cy1 = args[i + 1];
+          let ex  = args[i + 2], ey  = args[i + 3];
+          if (rel) {
+            cx1 += pen.x; cy1 += pen.y;
+            ex  += pen.x; ey  += pen.y;
+          }
+          pushSeg(quadToCubic(pen, { x: cx1, y: cy1 }, { x: ex, y: ey }));
+          pen = { x: ex, y: ey };
+          lastQuadCtrl = { x: cx1, y: cy1 };
+        }
+        lastCubicCtrl = null;
+        break;
+      }
+      case 'T': {
+        for (let i = 0; i + 1 &lt; args.length; i += 2) {
+          let ex = args[i], ey = args[i + 1];
+          if (rel) { ex += pen.x; ey += pen.y; }
+          const reflected = (lastCmd === 'Q' || lastCmd === 'T') &amp;&amp; lastQuadCtrl
+            ? { x: 2 * pen.x - lastQuadCtrl.x, y: 2 * pen.y - lastQuadCtrl.y }
+            : { x: pen.x, y: pen.y };
+          pushSeg(quadToCubic(pen, reflected, { x: ex, y: ey }));
+          pen = { x: ex, y: ey };
+          lastQuadCtrl = reflected;
+        }
+        lastCubicCtrl = null;
+        break;
+      }
+      case 'A': {
+        for (let i = 0; i + 6 &lt; args.length; i += 7) {
+          const rx = args[i];
+          const ry = args[i + 1];
+          const xAxisRotation = args[i + 2];
+          const largeArc = args[i + 3] !== 0;
+          const sweep = args[i + 4] !== 0;
+          let ex = args[i + 5], ey = args[i + 6];
+          if (rel) { ex += pen.x; ey += pen.y; }
+          const arcSegs = arcToArcSegment(pen.x, pen.y, rx, ry, xAxisRotation, largeArc, sweep, ex, ey);
+          for (const seg of arcSegs) pushSeg(seg);
+          pen = { x: ex, y: ey };
+        }
+        lastCubicCtrl = null;
+        lastQuadCtrl = null;
+        break;
+      }
+      case 'Z': {
+        if (current) {
+          current.closed = true;
+          // The CurveObjMixin closes the loop implicitly; we do NOT append a
+          // wrapping segment here (doing so would duplicate the starting
+          // anchor and produce a degenerate 0-length Bezier curve).
+          current = null;
+        }
+        pen = { x: startOfSubpath.x, y: startOfSubpath.y };
+        lastCubicCtrl = null;
+        lastQuadCtrl = null;
+        break;
+      }
+      default:
+        break;
+    }
+    lastCmd = c;
+  }
+
+  return subPaths;
+}
+
+function tokenizePath(d) {
+  const out = [];
+  const cmdRe = /[MmLlHhVvCcSsQqTtAaZz]/g;
+  const numRe = /[-+]?(?:\d+\.\d*|\.\d+|\d+)(?:[eE][-+]?\d+)?/g;
+  let match;
+  const positions = [];
+  while ((match = cmdRe.exec(d)) !== null) positions.push({ cmd: match[0], start: match.index + 1 });
+  for (let i = 0; i &lt; positions.length; i++) {
+    const { cmd, start } = positions[i];
+    const end = i + 1 &lt; positions.length ? positions[i + 1].start - 1 : d.length;
+    const segment = d.slice(start, end);
+    const args = [];
+    let nm;
+    numRe.lastIndex = 0;
+    while ((nm = numRe.exec(segment)) !== null) {
+      const n = parseFloat(nm[0]);
+      if (!Number.isNaN(n)) args.push(n);
+    }
+    out.push({ cmd, args });
+  }
+  return out;
+}
+
+function quadToCubic(p0, q, p2) {
+  // Exact quadratic-to-cubic elevation.
+  return {
+    type: 'C',
+    c1: { x: p0.x + (2 / 3) * (q.x - p0.x), y: p0.y + (2 / 3) * (q.y - p0.y) },
+    c2: { x: p2.x + (2 / 3) * (q.x - p2.x), y: p2.y + (2 / 3) * (q.y - p2.y) },
+    end: { x: p2.x, y: p2.y },
+  };
+}
+
+/**
+ * Convert an SVG elliptical arc command to a single 'A' segment with an
+ * exact parametric description. No cubic flattening happens here — that is
+ * deferred to {@link flattenArcSegments} at import time so the tolerance
+ * drives the subdivision.
+ *
+ * Returns an array (always length 1 for a non-degenerate arc) so callers
+ * can treat it uniformly with the other segment producers.
+ */
+function arcToArcSegment(x1, y1, rx, ry, angleDeg, largeArc, sweep, x2, y2) {
+  if (!Number.isFinite(rx) || !Number.isFinite(ry) || rx === 0 || ry === 0) {
+    return [{ type: 'L', end: { x: x2, y: y2 } }];
+  }
+  rx = Math.abs(rx);
+  ry = Math.abs(ry);
+
+  const phi = angleDeg * Math.PI / 180;
+  const cosPhi = Math.cos(phi);
+  const sinPhi = Math.sin(phi);
+
+  const dx2 = (x1 - x2) / 2;
+  const dy2 = (y1 - y2) / 2;
+  const x1p =  cosPhi * dx2 + sinPhi * dy2;
+  const y1p = -sinPhi * dx2 + cosPhi * dy2;
+
+  let rxs = rx * rx;
+  let rys = ry * ry;
+  const x1ps = x1p * x1p;
+  const y1ps = y1p * y1p;
+  const radiantCheck = x1ps / rxs + y1ps / rys;
+  if (radiantCheck > 1) {
+    const scale = Math.sqrt(radiantCheck);
+    rx *= scale;
+    ry *= scale;
+    rxs = rx * rx;
+    rys = ry * ry;
+  }
+
+  const sign = largeArc === sweep ? -1 : 1;
+  const num = rxs * rys - rxs * y1ps - rys * x1ps;
+  const den = rxs * y1ps + rys * x1ps;
+  const coef = sign * Math.sqrt(Math.max(num / den, 0));
+  const cxp =  coef * (rx * y1p) / ry;
+  const cyp = -coef * (ry * x1p) / rx;
+
+  const cx = cosPhi * cxp - sinPhi * cyp + (x1 + x2) / 2;
+  const cy = sinPhi * cxp + cosPhi * cyp + (y1 + y2) / 2;
+
+  const angle = (ux, uy, vx, vy) => {
+    const dot = ux * vx + uy * vy;
+    const len = Math.sqrt((ux * ux + uy * uy) * (vx * vx + vy * vy));
+    let a = Math.acos(Math.max(-1, Math.min(1, dot / len)));
+    if (ux * vy - uy * vx &lt; 0) a = -a;
+    return a;
+  };
+
+  const theta1 = angle(1, 0, (x1p - cxp) / rx, (y1p - cyp) / ry);
+  let delta = angle((x1p - cxp) / rx, (y1p - cyp) / ry, (-x1p - cxp) / rx, (-y1p - cyp) / ry);
+  if (!sweep &amp;&amp; delta > 0) delta -= 2 * Math.PI;
+  else if (sweep &amp;&amp; delta &lt; 0) delta += 2 * Math.PI;
+
+  // Pre-rotated ellipse parameterization: point on unit circle (cos θ, sin θ)
+  // is scaled by (rx, ry), then rotated by φ and offset by (cx, cy). That
+  // decomposes into our [a b; c d] form with:
+  //   a =  rx·cosφ   b = -ry·sinφ
+  //   c =  rx·sinφ   d =  ry·cosφ
+  return [{
+    type: 'A',
+    center: { x: cx, y: cy },
+    mat: {
+      a:  rx * cosPhi,
+      b: -ry * sinPhi,
+      c:  rx * sinPhi,
+      d:  ry * cosPhi,
+    },
+    theta0: theta1,
+    theta1: theta1 + delta,
+    end: { x: x2, y: y2 },
+  }];
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-CanvasContainer.html">CanvasContainer</a></li><li><a href="module-ColorModeModal.html">ColorModeModal</a></li><li><a href="module-ColorPicker.html">ColorPicker</a></li><li><a href="module-DashPicker.html">DashPicker</a></li><li><a href="module-FileBar.html">FileBar</a></li><li><a href="module-FillControl.html">FillControl</a></li><li><a href="module-FontPicker.html">FontPicker</a></li><li><a href="module-Footer.html">Footer</a></li><li><a href="module-ImportShapesModal.html">ImportShapesModal</a></li><li><a href="module-LanguageModal.html">LanguageModal</a></li><li><a href="module-LayoutAidsBar.html">LayoutAidsBar</a></li><li><a href="module-ModuleModal.html">ModuleModal</a></li><li><a href="module-ModuleTools.html">ModuleTools</a></li><li><a href="module-MoreToolsCollapsible.html">MoreToolsCollapsible</a></li><li><a href="module-NumberControl.html">NumberControl</a></li><li><a href="module-ObjBar.html">ObjBar</a></li><li><a href="module-PointControl.html">PointControl</a></li><li><a href="module-PopupSelectControl.html">PopupSelectControl</a></li><li><a href="module-RayDensityBar.html">RayDensityBar</a></li><li><a href="module-SaveModal.html">SaveModal</a></li><li><a href="module-SettingsBar.html">SettingsBar</a></li><li><a href="module-SettingsList.html">SettingsList</a></li><li><a href="module-SettingsWarning.html">SettingsWarning</a></li><li><a href="module-Sidebar.html">Sidebar</a></li><li><a href="module-SimulatorControls.html">SimulatorControls</a></li><li><a href="module-SizePicker.html">SizePicker</a></li><li><a href="module-StatusArea.html">StatusArea</a></li><li><a href="module-StrokeControl.html">StrokeControl</a></li><li><a href="module-TextControl.html">TextControl</a></li><li><a href="module-TextInput.html">TextInput</a></li><li><a href="module-ThemeModal.html">ThemeModal</a></li><li><a href="module-ThemeOptionsList.html">ThemeOptionsList</a></li><li><a href="module-ToggleControl.html">ToggleControl</a></li><li><a href="module-ToolItem.html">ToolItem</a></li><li><a href="module-Toolbar.html">Toolbar</a></li><li><a href="module-ToolsBar.html">ToolsBar</a></li><li><a href="module-ToolsCategory.html">ToolsCategory</a></li><li><a href="module-ToolsList.html">ToolsList</a></li><li><a href="module-ViewBar.html">ViewBar</a></li><li><a href="module-VirtualKeyboard.html">VirtualKeyboard</a></li><li><a href="module-WelcomeMessage.html">WelcomeMessage</a></li><li><a href="module-ZoomControl.html">ZoomControl</a></li><li><a href="module-app_.html">app</a></li><li><a href="module-shapeImport.html">shapeImport</a></li><li><a href="module-svgImport.html">svgImport</a></li></ul><h3>Namespaces</h3><ul><li><a href="geometry.html">geometry</a></li><li><a href="sceneObjs.html">sceneObjs</a></li></ul><h3>Classes</h3><ul><li><a href="BaseFilter.html">BaseFilter</a></li><li><a href="BaseGlass.html">BaseGlass</a></li><li><a href="BaseGrinGlass.html">BaseGrinGlass</a></li><li><a href="BaseSceneObj.html">BaseSceneObj</a></li><li><a href="CanvasRenderer.html">CanvasRenderer</a></li><li><a href="Editor.html">Editor</a></li><li><a href="FloatColorRenderer.html">FloatColorRenderer</a></li><li><a href="JsonEditorService.html">JsonEditorService</a></li><li><a href="Mouse.html">Mouse</a></li><li><a href="ObjBar.html">ObjBar</a></li><li><a href="Scene.html">Scene</a></li><li><a href="Simulator.html">Simulator</a></li><li><a href="TexExprParser.html">TexExprParser</a></li><li><a href="sceneObjs.AngleSource.html">AngleSource</a></li><li><a href="sceneObjs.Aperture.html">Aperture</a></li><li><a href="sceneObjs.ArcMirror.html">ArcMirror</a></li><li><a href="sceneObjs.BaseCustomSurface.html">BaseCustomSurface</a></li><li><a href="sceneObjs.Beam.html">Beam</a></li><li><a href="sceneObjs.BeamSplitter.html">BeamSplitter</a></li><li><a href="sceneObjs.Blocker.html">Blocker</a></li><li><a href="sceneObjs.CircleBlocker.html">CircleBlocker</a></li><li><a href="sceneObjs.CircleGlass.html">CircleGlass</a></li><li><a href="sceneObjs.CircleGrinGlass.html">CircleGrinGlass</a></li><li><a href="sceneObjs.ConcaveDiffractionGrating.html">ConcaveDiffractionGrating</a></li><li><a href="sceneObjs.CropBox.html">CropBox</a></li><li><a href="sceneObjs.CurveGlass.html">CurveGlass</a></li><li><a href="sceneObjs.CurveGrinGlass.html">CurveGrinGlass</a></li><li><a href="sceneObjs.CurveMirror.html">CurveMirror</a></li><li><a href="sceneObjs.CustomArcSurface.html">CustomArcSurface</a></li><li><a href="sceneObjs.CustomCurveSurface.html">CustomCurveSurface</a></li><li><a href="sceneObjs.CustomGlass.html">CustomGlass</a></li><li><a href="sceneObjs.CustomMirror.html">CustomMirror</a></li><li><a href="sceneObjs.CustomParamSurface.html">CustomParamSurface</a></li><li><a href="sceneObjs.CustomSurface.html">CustomSurface</a></li><li><a href="sceneObjs.Detector.html">Detector</a></li><li><a href="sceneObjs.DiffractionGrating.html">DiffractionGrating</a></li><li><a href="sceneObjs.Drawing.html">Drawing</a></li><li><a href="sceneObjs.Glass.html">Glass</a></li><li><a href="sceneObjs.GrinGlass.html">GrinGlass</a></li><li><a href="sceneObjs.Handle.html">Handle</a></li><li><a href="sceneObjs.IdealLens.html">IdealLens</a></li><li><a href="sceneObjs.IdealMirror.html">IdealMirror</a></li><li><a href="sceneObjs.LineArrow.html">LineArrow</a></li><li><a href="sceneObjs.Mirror.html">Mirror</a></li><li><a href="sceneObjs.ModuleObj.html">ModuleObj</a></li><li><a href="sceneObjs.ParabolicMirror.html">ParabolicMirror</a></li><li><a href="sceneObjs.ParamGlass.html">ParamGlass</a></li><li><a href="sceneObjs.ParamGrinGlass.html">ParamGrinGlass</a></li><li><a href="sceneObjs.ParamMirror.html">ParamMirror</a></li><li><a href="sceneObjs.PlaneGlass.html">PlaneGlass</a></li><li><a href="sceneObjs.PointSource.html">PointSource</a></li><li><a href="sceneObjs.Protractor.html">Protractor</a></li><li><a href="sceneObjs.Ruler.html">Ruler</a></li><li><a href="sceneObjs.SingleRay.html">SingleRay</a></li><li><a href="sceneObjs.SphericalLens.html">SphericalLens</a></li><li><a href="sceneObjs.TextLabel.html">TextLabel</a></li></ul><h3>Events</h3><ul><li><a href="Editor.html#event:handleCreationHint">handleCreationHint</a></li><li><a href="Editor.html#event:mouseCoordinateChange">mouseCoordinateChange</a></li><li><a href="Editor.html#event:newAction">newAction</a></li><li><a href="Editor.html#event:newUndoPoint">newUndoPoint</a></li><li><a href="Editor.html#event:objectBodyClick">objectBodyClick</a></li><li><a href="Editor.html#event:positioningEnd">positioningEnd</a></li><li><a href="Editor.html#event:positioningStart">positioningStart</a></li><li><a href="Editor.html#event:redo">redo</a></li><li><a href="Editor.html#event:requestPositioningComfirm">requestPositioningComfirm</a></li><li><a href="Editor.html#event:scaleChange">scaleChange</a></li><li><a href="Editor.html#event:sceneLoaded">sceneLoaded</a></li><li><a href="Editor.html#event:selectionChange">selectionChange</a></li><li><a href="Editor.html#event:undo">undo</a></li><li><a href="ObjBar.html#event:edit">edit</a></li><li><a href="ObjBar.html#event:editEnd">editEnd</a></li><li><a href="ObjBar.html#event:requestUpdate">requestUpdate</a></li><li><a href="ObjBar.html#event:showAdvancedEnabled">showAdvancedEnabled</a></li><li><a href="Simulator.html#event:lightLayerSyncChange">lightLayerSyncChange</a></li><li><a href="Simulator.html#event:simulationComplete">simulationComplete</a></li><li><a href="Simulator.html#event:simulationPause">simulationPause</a></li><li><a href="Simulator.html#event:simulationStart">simulationStart</a></li><li><a href="Simulator.html#event:simulationStop">simulationStop</a></li><li><a href="Simulator.html#event:update">update</a></li><li><a href="global.html#event:deviceChange">deviceChange</a></li><li><a href="global.html#event:requestUpdateErrorAndWarning">requestUpdateErrorAndWarning</a></li><li><a href="global.html#event:webglContextLost">webglContextLost</a></li></ul><h3>Global</h3><ul><li><a href="global.html#CircleObjMixin">CircleObjMixin</a></li><li><a href="global.html#CurveObjMixin">CurveObjMixin</a></li><li><a href="global.html#DATA_VERSION">DATA_VERSION</a></li><li><a href="global.html#FN1">FN1</a></li><li><a href="global.html#FORMULA_MODULE_TOOLTIP_MAX_LINES">FORMULA_MODULE_TOOLTIP_MAX_LINES</a></li><li><a href="global.html#FOR_IF_DEFAULTS">FOR_IF_DEFAULTS</a></li><li><a href="global.html#GREEK_SYMBOL">GREEK_SYMBOL</a></li><li><a href="global.html#JSON_INNER_COLLAPSE_THRESHOLD">JSON_INNER_COLLAPSE_THRESHOLD</a></li><li><a href="global.html#LITERAL_NUMERIC_TOKEN">LITERAL_NUMERIC_TOKEN</a></li><li><a href="global.html#LineObjMixin">LineObjMixin</a></li><li><a href="global.html#MODULE_EDITOR_LIST">MODULE_EDITOR_LIST</a></li><li><a href="global.html#PAREN_HIGHLIGHT_MATCH_CLASS">PAREN_HIGHLIGHT_MATCH_CLASS</a></li><li><a href="global.html#ParamCurveObjMixin">ParamCurveObjMixin</a></li><li><a href="global.html#_ensureCubicBezierPathReady">_ensureCubicBezierPathReady</a></li><li><a href="global.html#_pathPairToHermiteBezier">_pathPairToHermiteBezier</a></li><li><a href="global.html#applyTextareaAutoResize">applyTextareaAutoResize</a></li><li><a href="global.html#buildModuleInstanceTooltipHtml">buildModuleInstanceTooltipHtml</a></li><li><a href="global.html#buildParenHighlightHtml">buildParenHighlightHtml</a></li><li><a href="global.html#checkRayIntersectsShape">checkRayIntersectsShape</a></li><li><a href="global.html#collapseRedundantNestedParentheses">collapseRedundantNestedParentheses</a></li><li><a href="global.html#collectPointPaths">collectPointPaths</a></li><li><a href="global.html#compileParametricDerivative">compileParametricDerivative</a></li><li><a href="global.html#controlPointIndexAfterReorder">controlPointIndexAfterReorder</a></li><li><a href="global.html#countIntersections">countIntersections</a></li><li><a href="global.html#deepEqual">deepEqual</a></li><li><a href="global.html#distancePointToSegment">distancePointToSegment</a></li><li><a href="global.html#draftsToCommittedValue">draftsToCommittedValue</a></li><li><a href="global.html#drawConstruction">drawConstruction</a></li><li><a href="global.html#drawControlHandles">drawControlHandles</a></li><li><a href="global.html#drawPath">drawPath</a></li><li><a href="global.html#equationDisplayToValue">equationDisplayToValue</a></li><li><a href="global.html#equationValueForListDisplay">equationValueForListDisplay</a></li><li><a href="global.html#equationValueToDisplay">equationValueToDisplay</a></li><li><a href="global.html#extractNonDefaults">extractNonDefaults</a></li><li><a href="global.html#findMatchingBraceEnd">findMatchingBraceEnd</a></li><li><a href="global.html#findMatchingParenPair">findMatchingParenPair</a></li><li><a href="global.html#findValidJsonObjectSpans">findValidJsonObjectSpans</a></li><li><a href="global.html#formatKeyPath">formatKeyPath</a></li><li><a href="global.html#formatStatusLineHtml">formatStatusLineHtml</a></li><li><a href="global.html#formatTooltipNumber">formatTooltipNumber</a></li><li><a href="global.html#formulaDisplayToValue">formulaDisplayToValue</a></li><li><a href="global.html#getAllByKeyPath">getAllByKeyPath</a></li><li><a href="global.html#getNextModuleIdentifierName">getNextModuleIdentifierName</a></li><li><a href="global.html#getRayIntersections">getRayIntersections</a></li><li><a href="global.html#getRayIntersectionsCubicBezier">getRayIntersectionsCubicBezier</a></li><li><a href="global.html#getRayIntersectionsLinear">getRayIntersectionsLinear</a></li><li><a href="global.html#initPath">initPath</a></li><li><a href="global.html#isAtomicExpr">isAtomicExpr</a></li><li><a href="global.html#isClosed">isClosed</a></li><li><a href="global.html#isFormula">isFormula</a></li><li><a href="global.html#isFormulaValueSupported">isFormulaValueSupported</a></li><li><a href="global.html#isInside">isInside</a></li><li><a href="global.html#isLiteralBooleanFieldValue">isLiteralBooleanFieldValue</a></li><li><a href="global.html#isLiteralNumericFieldValue">isLiteralNumericFieldValue</a></li><li><a href="global.html#isNonBasicProperty">isNonBasicProperty</a></li><li><a href="global.html#isNonDefault">isNonDefault</a></li><li><a href="global.html#isOnBoundary">isOnBoundary</a></li><li><a href="global.html#isOutside">isOutside</a></li><li><a href="global.html#isPointHardcoded">isPointHardcoded</a></li><li><a href="global.html#isPositivelyOriented">isPositivelyOriented</a></li><li><a href="global.html#isSourceIndexArray">isSourceIndexArray</a></li><li><a href="global.html#isTextareaAutoResizeMeasurable">isTextareaAutoResizeMeasurable</a></li><li><a href="global.html#latexToMathJS">latexToMathJS</a></li><li><a href="global.html#mathJSToLatex">mathJSToLatex</a></li><li><a href="global.html#mergeWithDefaults">mergeWithDefaults</a></li><li><a href="global.html#newlinesToBr">newlinesToBr</a></li><li><a href="global.html#nextDuplicateIdentifier">nextDuplicateIdentifier</a></li><li><a href="global.html#normalizeParsedEquationAST">normalizeParsedEquationAST</a></li><li><a href="global.html#observeTextareasResizeWhenVisible">observeTextareasResizeWhenVisible</a></li><li><a href="global.html#populateObjBarShape">populateObjBarShape</a></li><li><a href="global.html#promptNewModuleName">promptNewModuleName</a></li><li><a href="global.html#promptNewModuleNameForHandle">promptNewModuleNameForHandle</a></li><li><a href="global.html#sanitizePastedJson">sanitizePastedJson</a></li><li><a href="global.html#setByKeyPath">setByKeyPath</a></li><li><a href="global.html#setViewportSize">setViewportSize</a></li><li><a href="global.html#splitTexCommaArgs">splitTexCommaArgs</a></li><li><a href="global.html#splitTopLevelCommas">splitTopLevelCommas</a></li><li><a href="global.html#stripJsonComments">stripJsonComments</a></li><li><a href="global.html#stripMarkdownCodeFence">stripMarkdownCodeFence</a></li><li><a href="global.html#stripParenChain">stripParenChain</a></li><li><a href="global.html#stripRedundantParensForLatex">stripRedundantParensForLatex</a></li><li><a href="global.html#suggestNewModuleName">suggestNewModuleName</a></li><li><a href="global.html#templatePointLockState">templatePointLockState</a></li><li><a href="global.html#toJSON">toJSON</a></li><li><a href="global.html#tooltipAllTupleRowsConstant">tooltipAllTupleRowsConstant</a></li><li><a href="global.html#tooltipMantissaDecimalPlaces">tooltipMantissaDecimalPlaces</a></li><li><a href="global.html#tooltipPointTupleEqual">tooltipPointTupleEqual</a></li><li><a href="global.html#tooltipValueEqualForCollapse">tooltipValueEqualForCollapse</a></li><li><a href="global.html#tracePath">tracePath</a></li><li><a href="global.html#unwrapParenInCallableArgs">unwrapParenInCallableArgs</a></li><li><a href="global.html#useParenHighlightLayer">useParenHighlightLayer</a></li><li><a href="global.html#usePreferencesStore">usePreferencesStore</a></li><li><a href="global.html#useSceneStore">useSceneStore</a></li><li><a href="global.html#useStatus">useStatus</a></li><li><a href="global.html#useStatusStore">useStatusStore</a></li><li><a href="global.html#useThemeStore">useThemeStore</a></li><li><a href="global.html#vTooltipPopover">vTooltipPopover</a></li><li><a href="global.html#validateNestedKeys">validateNestedKeys</a></li><li><a href="global.html#valueToFormulaDisplay">valueToFormulaDisplay</a></li><li><a href="global.html#versionUpdate">versionUpdate</a></li><li><a href="global.html#viewportCenterSceneCoords">viewportCenterSceneCoords</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

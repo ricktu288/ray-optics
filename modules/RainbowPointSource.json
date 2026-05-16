@@ -1,0 +1,106 @@
+{
+  "version": 5,
+  "modules": {
+    "RainbowPointSource": {
+      "numPoints": 1,
+      "params": [
+        "N=3:1:720:473",
+        "brightness=0.001:0.001:10:8.466",
+        "angle=10:1:360:26",
+        "lambdaMin=380:1:500:420",
+        "lambdaMax=500:1:700:674"
+      ],
+      "vars": [
+        "dtheta=angle*pi/180/(N-1)"
+      ],
+      "objs": [
+        {
+          "for": "i=0:1:N-1",
+          "type": "SingleRay",
+          "p1": {
+            "x": "`x_1`",
+            "y": "`y_1`"
+          },
+          "p2": {
+            "x": "`x_1+cos(-angle*pi/360+i*dtheta)`",
+            "y": "`y_1+sin(-angle*pi/360+i*dtheta)`"
+          },
+          "brightness": "`brightness/N`",
+          "wavelength": "`lambdaMin+(lambdaMax-lambdaMin)*i/(N-1)`"
+        }
+      ],
+      "maxLoopLength": 2000
+    }
+  },
+  "objs": [
+    {
+      "type": "ModuleObj",
+      "module": "RainbowPointSource",
+      "points": [
+        {
+          "x": 750.25,
+          "y": 450
+        }
+      ],
+      "params": {
+        "N": 473,
+        "brightness": 8.466,
+        "angle": 26,
+        "lambdaMin": 420,
+        "lambdaMax": 674
+      }
+    },
+    {
+      "type": "IdealLens",
+      "p1": {
+        "x": 816,
+        "y": 421.75
+      },
+      "p2": {
+        "x": 800.25,
+        "y": 478.75
+      },
+      "focalLength": 18
+    },
+    {
+      "type": "IdealLens",
+      "p1": {
+        "x": 867.5,
+        "y": 413.5
+      },
+      "p2": {
+        "x": 873.25,
+        "y": 483.25
+      },
+      "focalLength": 18
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 727.9636213786378,
+        "y": 349.7554780898792
+      },
+      "p4": {
+        "x": 927.9636213786378,
+        "y": 549.7554780898793
+      }
+    }
+  ],
+  "width": 1300,
+  "height": 800,
+  "rayModeDensity": 0.9436499474367985,
+  "observer": {
+    "c": {
+      "x": 817.396308237384,
+      "y": 433.3136345228894
+    },
+    "r": 20
+  },
+  "origin": {
+    "x": -737.1860796078521,
+    "y": -442.80345280547203
+  },
+  "scale": 1.7702219680607592,
+  "simulateColors": true,
+  "name": "RainbowPointSource"
+}

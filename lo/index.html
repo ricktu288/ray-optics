@@ -1,0 +1,501 @@
+<!--
+  Copyright 2024 The Ray Optics Simulation authors and contributors
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!DOCTYPE html>
+<html lang="lo">
+
+<head>
+  <!--
+    Copyright 2024 The Ray Optics Simulation authors and contributors
+  
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+  
+        http://www.apache.org/licenses/LICENSE-2.0
+  
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  -->
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ການຈຳລອງແສງເລຂາ - PhyDemo</title>
+  <meta property="og:title" content="ການຈຳລອງແສງເລຂາ - PhyDemo">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://phydemo.app/ray-optics/lo/">
+  <meta property="og:image" content="https://phydemo.app/ray-optics/img/image.png">
+  <meta property="og:description" content="ການຈຳລອງແສງເລຂາ">
+  <meta property="og:locale" content="lo">
+  <link rel="canonical" href="https://phydemo.app/ray-optics/lo/">
+  <link rel="alternate" hreflang="en" href="https://phydemo.app/ray-optics/">
+  <link rel="alternate" hreflang="de" href="https://phydemo.app/ray-optics/de/">
+  <link rel="alternate" hreflang="es" href="https://phydemo.app/ray-optics/es/">
+  <link rel="alternate" hreflang="fr" href="https://phydemo.app/ray-optics/fr/">
+  <link rel="alternate" hreflang="ja" href="https://phydemo.app/ray-optics/jp/">
+  <link rel="alternate" hreflang="km" href="https://phydemo.app/ray-optics/km/">
+  <link rel="alternate" hreflang="ko" href="https://phydemo.app/ray-optics/ko/">
+  <link rel="alternate" hreflang="lo" href="https://phydemo.app/ray-optics/lo/">
+  <link rel="alternate" hreflang="nl" href="https://phydemo.app/ray-optics/nl/">
+  <link rel="alternate" hreflang="pl" href="https://phydemo.app/ray-optics/pl/">
+  <link rel="alternate" hreflang="pt-BR" href="https://phydemo.app/ray-optics/pt-BR/">
+  <link rel="alternate" hreflang="pt-PT" href="https://phydemo.app/ray-optics/pt-PT/">
+  <link rel="alternate" hreflang="ru" href="https://phydemo.app/ray-optics/ru/">
+  <link rel="alternate" hreflang="si" href="https://phydemo.app/ray-optics/si/">
+  <link rel="alternate" hreflang="ta" href="https://phydemo.app/ray-optics/ta/">
+  <link rel="alternate" hreflang="tr" href="https://phydemo.app/ray-optics/tr/">
+  <link rel="alternate" hreflang="zh-CN" href="https://phydemo.app/ray-optics/cn/">
+  <link rel="alternate" hreflang="zh-TW" href="https://phydemo.app/ray-optics/tw/">
+  <link rel="stylesheet" href="../thirdparty/bootstrap/bootstrap.min.css">
+  <link rel="icon" href="../img/icon.png" type="image/png">
+  <style>
+    .brand {
+      font-size: 12pt;
+      color: #888;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-left: 5px;
+      margin-right: 5px;
+      padding: 0px;
+      height: 40px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+    }
+  
+    .brand:hover {
+      text-decoration: none;
+    }
+  
+    .github-button-container {
+      color: #888;
+      margin-top: 7px;
+      margin-bottom: 0px;
+      margin-left: 0px;
+      margin-right: 0px;
+      padding: 0px;
+      height: 40px;
+      width: 92px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      float: right;
+    }
+  
+    .github-button-container a {
+      color: transparent;
+    }
+  
+    .navul {
+      font-size: 11pt;
+    }
+  
+    .navul a {
+      color: #555;
+      float: left;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-left: 5px;
+      margin-right: 5px;
+      padding: 2px;
+      height: 40px;
+      line-height: 40px;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+    }
+  
+    .clearfix {
+      clear: both;
+    }
+  
+    .navul a:hover {
+      border-bottom: 3px solid #CCC;
+      text-decoration: none;
+    }
+  
+    .navul a.active {
+      color: #000;
+      border-bottom: 3px solid gray;
+    }
+  
+    body {
+      padding-top: 72px;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    }
+  </style>
+  <script defer src="../thirdparty/jquery.min.js"></script>
+  <script defer src="../thirdparty/bootstrap/bootstrap.min.js"></script>
+  <script async defer src="https://buttons.github.io/buttons.js"></script>  <style>
+    .preview-image {
+      width: 100%;
+    }
+
+    .thumbnail.right-caption>img {
+      float: left;
+      margin-right: 9px;
+    }
+
+    .thumbnail {
+      margin-bottom: 5px;
+    }
+
+    .tool-title {
+      font-size: 16pt;
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+
+    .mode-title {
+      font-size: 16pt;
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+  </style>
+</head>
+
+<body>
+  <!--
+    Copyright 2024 The Ray Optics Simulation authors and contributors
+  
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+  
+        http://www.apache.org/licenses/LICENSE-2.0
+  
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  -->
+  
+  <div class="navbar navbar-fixed-top container" style="background-color:white;max-height:90px;overflow:hidden">
+  
+    <a href="../lo/" class="navbar-left brand">
+      <img src="../img/icon.png" alt="" style="width:18pt; height:18pt"> ການຈຳລອງແສງເລຂາ
+    </a>
+    <div class="navbar-right">
+  
+      <span class="navul">
+        <a href="../lo/" class="active">ໜ້າຫຼັກ</a>
+        <a href="../lo/gallery/" class="">ຄັງຮູບພາບ</a>
+        <a href="../lo/about" class="">ກ່ຽວກັບ</a>
+      </span>
+      <span class="github-button-container">
+        <a class="github-button" href="https://github.com/ricktu288/ray-optics" data-show-count="true"
+          aria-label="Star ricktu288/ray-optics on GitHub">Star</a>
+      </span>
+    </div>
+  
+  </div>  <div class="container">
+    <div align="center">
+      <h1><b><span>ການຈຳລອງແສງເລຂາ</span></b></h1>
+      <p>
+        ສ້າງ ແລະ ຈຳລອງພາບແສງເລຂາຄະນິດ 2 ມິຕິ ແບບໂຕ້ຕອບໄດ້.<br>ຟຣີທັງໝົດ ແລະ ໃຊ້ງານເທິງເວັບ. ຊອດໂຄ້ດສາມາດ <a href="https://github.com/ricktu288/ray-optics">ເບິ່ງໄດ້ທີ່ GitHub</a>.
+      </p>
+      <p>
+        <a href="../simulator/?lo" target="_blank" class="btn btn-success btn-lg">ເປີດຕົວຈຳລອງ</a>
+      </p>
+    </div>
+    <br>
+    <div id="screenshots" class="carousel slide" data-ride="carousel" style="aspect-ratio: 940/440; max-width: 1140px">
+      <ol class="carousel-indicators">
+        <li data-target="#screenshots" data-slide-to="0" class="active"></li>
+        <li data-target="#screenshots" data-slide-to="1"></li>
+        <li data-target="#screenshots" data-slide-to="2"></li>
+        <li data-target="#screenshots" data-slide-to="3"></li>
+        <li data-target="#screenshots" data-slide-to="4"></li>
+      </ol>
+
+      <div class="carousel-inner" role="listbox">
+        <div class="item active">
+          <a href="../simulator/?lo#spherical-lens-and-mirror" target="_blank"><img src="../img/spherical-lens-and-mirror.jpg"
+              alt="ເລນກົມ ແລະ ແວ່ນແຍງ" class="preview-image"></a>
+        </div>
+        <div class="item">
+          <a href="../simulator/?lo#../lo/gallery/compound-microscope" target="_blank">
+            <picture>
+              <source srcset="../lo/gallery/compound-microscope.avif" type="image/avif">
+              <img src="../lo/gallery/compound-microscope.jpg" alt="ກ້ອງຈຸລະທັດແບບປະກອບ" class="preview-image">
+            </picture>
+          </a>
+        </div>
+        <div class="item">
+          <a href="../simulator/?lo#../lo/gallery/apparent-depth" target="_blank">
+            <picture>
+              <source srcset="../lo/gallery/apparent-depth.avif" type="image/avif">
+              <img src="../lo/gallery/apparent-depth.jpg" alt="ຄວາມເລິກປາກົດ" class="preview-image">
+            </picture>
+          </a>
+        </div>
+        <div class="item">
+          <a href="../simulator/?lo#../lo/gallery/chromatic-dispersion" target="_blank">
+            <picture>
+              <source srcset="../lo/gallery/chromatic-dispersion.avif" type="image/avif">
+              <img src="../lo/gallery/chromatic-dispersion.jpg" alt="ການກະຈາຍແສງສີ" class="preview-image">
+            </picture>
+          </a>
+        </div>
+        <div class="item">
+          <a href="../simulator/?lo#images-formed-by-two-mirrors" target="_blank"><img src="../img/images-formed-by-two-mirrors.svg"
+              alt="ພາບຈາກແວ່ນແຍງສອງແຜ່ນ" class="preview-image"></a>
+        </div>
+      </div>
+
+      <a class="left carousel-control" href="#screenshots" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="right carousel-control" href="#screenshots" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+
+    <div class="row" style="font-size: 10pt">
+      <div class="col-sm-6">
+        <div class="col-sm-12">
+          <h2>ເຄື່ອງມື</h2>
+          <div class="row thumbnail right-caption">
+            <img src="../img/SingleRay.svg" alt="ລັງສີດ່ຽວ" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">ລັງສີດ່ຽວ</p>
+              <span>ລັງສີແສງດ່ຽວທີ່ກຳນົດໂດຍສອງຈຸດ.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/Beam.svg" alt="ລຳແສງ" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">ລຳແສງ</p>
+              <span>ລຳແສງຂະໜານ ຫຼື ກະຈາຍອອກຈາກທ່ອນຊື່ໜຶ່ງ, ໂດຍຄວາມໜາແໜ້ນສາມາດປັບໄດ້ດ້ວຍແຖບເລື່ອນ &#39;ຄວາມໜາແໜ້ນລັງສີ&#39;.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/PointSource.svg" alt="ແຫຼ່ງກຳເນີດແບບຈຸດ" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">ແຫຼ່ງກຳເນີດແບບຈຸດ</p>
+              <span>ລັງສີກະຈາຍອອກຈາກຈຸດດຽວ, ຈຳນວນສາມາດປັບໄດ້ດ້ວຍແຖບເລື່ອນ &#39;ຄວາມໜາແໜ້ນລັງສີ&#39;.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/Mirror.svg" alt="ແວ່ນ" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">ແວ່ນ</p>
+              <span>ຈຳລອງການສະທ້ອນຂອງແສງເທິງແວ່ນ.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/ArcMirror.svg" alt="ແວ່ນ (ໂຄ້ງ)" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">ແວ່ນ (ໂຄ້ງ)</p>
+              <span>ແວ່ນທີ່ມີຮູບຊົງໂຄ້ງ. ສາມາດເປັນຮູບວົງມົນ, ພາຣາໂບນ, ຫຼື ກຳນົດດ້ວຍສົມຜົນ y = f(x).</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/IdealMirror.svg" alt="ແວ່ນໂຄ້ງອຸດົມຄະຕິ" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">ແວ່ນໂຄ້ງອຸດົມຄະຕິ</p>
+              <span>ແວ່ນ &#39;ໂຄ້ງ&#39; ອຸດົມຄະຕິທີ່ເປັນໄປຕາມສົມຜົນຂອງແວ່ນຢ່າງແນ່ນອນ (1/p + 1/q = 1/f). ສາມາດຕັ້ງຄ່າໄລຍະສຸມໄດ້ໂດຍກົງ.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/BeamSplitter.svg" alt="ຕົວແຍກລຳແສງ" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">ຕົວແຍກລຳແສງ</p>
+              <span>ແວ່ນທີ່ຍອມໃຫ້ແສງຕົກກະທົບຜ່ານໄດ້ຕາມເປີເຊັນທີ່ກຳນົດ.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/PlaneGlass.svg" alt="ແກ້ວ" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">ແກ້ວ</p>
+              <span>ຈຳລອງການຫັກເຫ ແລະ ການສະທ້ອນຂອງແສງເທິງພື້ນຜິວ.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/Glass.svg" alt="ແກ້ວ (ຮູບຊົງອື່ນໆ)" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">ແກ້ວ (ຮູບຊົງອື່ນໆ)</p>
+              <span>ແກ້ວທີ່ມີຮູບຊົງໃດໆທີ່ສ້າງຈາກທ່ອນຊື່ ແລະ ສ່ວນໂຄ້ງວົງມົນ, ຫຼື ຮູບຊົງທີ່ກຳນົດດ້ວຍອະສົມຜົນກຳນົດເອງ f(x) &lt; y &lt; g(x).</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/CircleGrinGlass.svg" alt="ແກ້ວອັດຕາແສງຫັກເຫປ່ຽນແປງ" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">ແກ້ວອັດຕາແສງຫັກເຫປ່ຽນແປງ</p>
+              <span>ວັດສະດຸທີ່ມີຕຳລາອັດຕາແສງຫັກເຫກຳນົດເອງ n(x,y).</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/IdealLens.svg" alt="ເລນອຸດົມຄະຕິ" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">ເລນອຸດົມຄະຕິ</p>
+              <span>ເລນອຸດົມຄະຕິທີ່ເປັນໄປຕາມສົມຜົນເລນບາງຢ່າງແນ່ນອນ (1/p + 1/q = 1/f). ສາມາດຕັ້ງຄ່າໄລຍະສຸມໄດ້ໂດຍກົງ.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/Blocker.svg" alt="ຕົວບັງແສງ" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">ຕົວບັງແສງ</p>
+              <span>ຕົວບັງແສງຮູບທ່ອນຊື່ ເຊິ່ງດູດຊັບລັງສີທີ່ມາຕົກກະທົບ.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/DiffractionGrating.svg" alt="ເກຣດຕິງລ້ຽວເບນ" class="img-rounded" style="width:100px;height:100px;">
+            <div class="caption">
+              <p class="tool-title">ເກຣດຕິງລ້ຽວເບນ</p>
+              <span>ເກຣດຕິງລ້ຽວເບນທີ່ແຍກແສງອອກເປັນມຸມຕ່າງໆ ຂຶ້ນກັບຄວາມຍາວຄື້ນ.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/Ruler.svg" alt="ບັນທັດ" style="width:100px;height:100px;" class="img-rounded">
+            <div class="caption" class="img-rounded">
+              <p class="tool-title">ບັນທັດ</p>
+              <span>ບັນທັດຈາກຈຸດເລີ່ມຕົ້ນ (ສູນ) ຫາ ອີກຈຸດໜຶ່ງ.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/Protractor.svg" alt="ບັນທັດແທກມຸມ" style="width:100px;height:100px;" class="img-rounded">
+            <div class="caption" class="img-rounded">
+              <p class="tool-title">ບັນທັດແທກມຸມ</p>
+              <span>ບັນທັດແທກມຸມທີ່ກຳນົດຈາກຈຸດສູນກາງ ແລະ ອີກຈຸດໜຶ່ງສຳລັບທິດທາງສູນ. ຫົວໜ່ວຍວັດແທກເປັນອົງສາ.</span>
+            </div>
+          </div>
+          <div class="row thumbnail right-caption">
+            <img src="../img/Detector.svg" alt="ຕົວວັດແທກ" style="width:100px;height:100px;" class="img-rounded">
+            <div class="caption" class="img-rounded">
+              <p class="tool-title">ຕົວວັດແທກ</p>
+              <span>ເຄື່ອງມືສຳລັບວັດແທກອັດຕາການໄຫຼຂອງພະລັງງານ (P), ອັດຕາການໄຫຼຂອງໂມເມັນຕຳຕັ້ງສາກ (F⊥), ແລະ ອັດຕາການໄຫຼຂອງໂມເມັນຕຳຂະໜານ (F∥) ຜ່ານທ່ອນຊື່ໜຶ່ງ. ຫົວໜ່ວຍແມ່ນຕາມກຳນົດເອງ.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="col-sm-12">
+          <h2>ມຸມມອງ</h2>
+          <div class="row thumbnail">
+            <div class="caption">
+              <p class="mode-title">ລັງສີ</p>
+              <span>ສະແດງລັງສີ. ເມື່ອ &#39;ຄວາມໜາແໜ້ນລັງສີ&#39; ສູງ, ພວກມັນຈະເບິ່ງຄືວ່າເຊື່ອມຕໍ່ກັນ.</span>
+            </div>
+            <div align="center">
+              <div style="aspect-ratio: 519/163; max-width: 510px">
+                <img src="../img/high_density.png" alt="ລັງສີ" style="width:100%" class="img-rounded">
+              </div>
+              <div style="aspect-ratio: 519/163; max-width: 510px">
+                <img src="../img/low_density.svg" alt="ລັງສີ" class="img-rounded" style="margin-top:5px; width:100%">
+              </div>
+            </div>
+          </div>
+          <div class="row thumbnail">
+            <div class="caption">
+              <p class="mode-title">ລັງສີຕໍ່ຍາວ</p>
+              <span>ສະແດງທັງລັງສີ ແລະ ເສັ້ນຕໍ່ຍາວຂອງມັນ. ສີສົ້ມສະແດງເຖິງເສັ້ນຕໍ່ໄປທາງຫຼັງ, ແລະ ສີເທົາສະແດງເຖິງເສັ້ນຕໍ່ໄປທາງໜ້າ.</span>
+            </div>
+            <div align="center">
+              <div style="aspect-ratio: 445/216; max-width: 510px">
+                <img src="../img/extended_rays.svg" alt="ລັງສີຕໍ່ຍາວ" class="img-rounded" style="width:100%">
+              </div>
+            </div>
+          </div>
+          <div class="row thumbnail">
+            <div class="caption">
+              <p class="mode-title">ພາບທັງໝົດ</p>
+              <span>ສະແດງຕຳແໜ່ງຂອງພາບທັງໝົດ. ຈຸດສີເຫຼືອງສະແດງເຖິງພາບຈິງ, ສີສົ້ມສະແດງເຖິງພາບລວງ, ແລະ ສີເທົາ (ບໍ່ມີໃນຮູບນີ້) ສະແດງເຖິງວັດຖຸລວງ. ໝາຍເຫດວ່າບາງພາບອາດບໍ່ສາມາດກວດຈັບໄດ້ຖ້າ &#39;ຄວາມໜາແໜ້ນລັງສີ&#39; ບໍ່ສູງພໍ.</span>
+            </div>
+            <div align="center">
+              <div style="aspect-ratio: 445/216; max-width: 510px">
+                <img src="../img/all_images.svg" alt="ພາບທັງໝົດ" class="img-rounded" style="width:100%">
+              </div>
+            </div>
+          </div>
+          <div class="row thumbnail">
+            <div class="caption">
+              <p class="mode-title">ມຸມມອງຜູ້ສັງເກດ</p>
+              <span>ຈຳລອງລັງສີ ແລະ ພາບທີ່ເຫັນຈາກຕຳແໜ່ງໃດໜຶ່ງ. ວົງມົນສີຟ້າແມ່ນຜູ້ສັງເກດ. ລັງສີໃດໆທີ່ຕັດຜ່ານມັນຖືວ່າ &#39;ຖືກສັງເກດເຫັນ&#39;. ຜູ້ສັງເກດບໍ່ຮູ້ວ່າແທ້ຈິງແລ້ວລັງສີເລີ່ມຕົ້ນຈາກໃສ, ແຕ່ອາດຄິດວ່າພວກມັນເລີ່ມຕົ້ນທີ່ຈຸດໃດໜຶ່ງຖ້າມັນຕັດກັນຢູ່ທີ່ນັ້ນ. ລັງສີຈະສະແດງເປັນສີຟ້າ, ແລະ ຈຸດຕ່າງໆເປັນສີເຫຼືອງ (ຈິງ) ຫຼື ສີສົ້ມ (ລວງ).</span>
+            </div>
+            <div align="center">
+              <div style="aspect-ratio: 445/216; max-width: 510px">
+                <img src="../img/seen_by_observer.svg" alt="ມຸມມອງຜູ້ສັງເກດ" class="img-rounded" style="width:100%">
+              </div>
+            </div>
+          </div>
+          <div class="row thumbnail">
+            <div class="caption">
+              <p class="mode-title">ຈຳລອງສີ</p>
+              <span>ຈຳລອງສີ (ຄວາມຍາວຄື້ນ) ຂອງແຫຼ່ງກຳເນີດແສງ, ການປະສົມສີ, ການຕອງສີຂອງຕົວບັງແສງ ແລະ ແວ່ນ, ແລະ ການກະຈາຍແສງຂອງແກ້ວ.</span>
+            </div>
+            <div align="center">
+              <div style="aspect-ratio: 445/216; max-width: 510px">
+                <img src="../img/simulate_colors.png" alt="ຈຳລອງສີ" class="img-rounded" style="width:100%">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      Copyright 2024 The Ray Optics Simulation authors and contributors
+    
+      Licensed under the Apache License, Version 2.0 (the "License");
+      you may not use this file except in compliance with the License.
+      You may obtain a copy of the License at
+    
+          http://www.apache.org/licenses/LICENSE-2.0
+    
+      Unless required by applicable law or agreed to in writing, software
+      distributed under the License is distributed on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+      See the License for the specific language governing permissions and
+      limitations under the License.
+    -->
+    
+    <div style="float: right; padding-bottom: 1em;">
+      <div class="dropup">
+        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+          <span id="language">ພາສາ: ລາວ</span>
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a href="../">English<span style="color:gray"></span></a></li>
+          <li><a href="../de/">Deutsch<span style="color:gray"></span></a></li>
+          <li><a href="../es/">Español<span style="color:gray"></span></a></li>
+          <li><a href="../fr/">Français<span style="color:gray"></span></a></li>
+          <li><a href="../jp/">日本語<span style="color:gray"></span></a></li>
+          <li><a href="../km/">ភាសាខ្មែរ<span style="color:gray"></span></a></li>
+          <li><a href="../ko/">한국어<span style="color:gray"></span></a></li>
+          <li><a href="../lo/">ລາວ<span style="color:gray"></span></a></li>
+          <li><a href="../nl/">Nederlands<span style="color:gray"></span></a></li>
+          <li><a href="../pl/">polski<span style="color:gray"></span></a></li>
+          <li><a href="../pt-BR/">Português (Brasil)<span style="color:gray"></span></a></li>
+          <li><a href="../pt-PT/">Português (Portugal)<span style="color:gray"></span></a></li>
+          <li><a href="../ru/">Русский<span style="color:gray"></span></a></li>
+          <li><a href="../si/">සිංහල<span style="color:gray"></span></a></li>
+          <li><a href="../ta/">தமிழ்<span style="color:gray"></span></a></li>
+          <li><a href="../tr/">Türkçe<span style="color:gray"></span></a></li>
+          <li><a href="../cn/">简体中文<span style="color:gray"></span></a></li>
+          <li><a href="../tw/">正體中文<span style="color:gray"></span></a></li>
+        </ul>
+      </div>
+    </div>  </div>
+</body>

@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: core/sceneObjs/CurveObjMixin.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: core/sceneObjs/CurveObjMixin.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*
+ * Copyright 2025 The Ray Optics Simulation authors and contributors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import geometry from '../geometry.js';
+import Simulator from '../Simulator.js';
+import BaseSceneObj from './BaseSceneObj.js';
+import i18next from 'i18next';
+import { Bezier } from 'bezier-js';
+
+/**
+ * The mixin for the scene objects whose boundary is defined by a sequence of
+ * cubic Bezier curves, either forming a closed loop or an open polyline.
+ *
+ * Subclasses that extend this mixin may override:
+ * - `static allowOpen` (default `false`): whether construction allows the user
+ *   to finish with an open (non-closed) curve by double-clicking the last
+ *   committed point. When `false`, the only way to finish is to click on the
+ *   first anchor point (closed shape), matching the legacy {@link CurveGlass}
+ *   behavior.
+ *
+ * @template {typeof BaseSceneObj} T
+ * @param {T} Base
+ * @returns {T}
+ */
+const CurveObjMixin = Base => class extends Base {
+
+  static allowOpen = false;
+
+  static getPropertySchema(objData, scene) {
+    return [
+      { key: 'points', type: 'array', label: i18next.t('simulator:sceneObjs.common.bezierControlPoints'),
+        itemSchema: [
+          { key: 'a1', type: 'point', label: 'a' },
+          { key: 'c1', type: 'point', label: 'c1' },
+          { key: 'c2', type: 'point', label: 'c2' },
+        ],
+      },
+      ...super.getPropertySchema(objData, scene),
+    ];
+  }
+
+  /**
+   * @param {Scene} scene - The scene the object belongs to.
+   * @param {Object|null} jsonObj - The JSON object to be deserialized, if any.
+   */
+  constructor(scene, jsonObj) {
+    super(scene, jsonObj);
+
+    // Initialize curves and bboxes
+    this.curves = [];
+    this.bboxes = [];
+
+    // Default `isClosed` to true (for backward compatibility with the legacy
+    // CurveGlass/CurveGrinGlass, which did not store this flag).
+    if (this.isClosed === undefined) {
+      this.isClosed = (jsonObj &amp;&amp; jsonObj.isClosed !== undefined) ? jsonObj.isClosed : true;
+    }
+
+    // Rebuild the Bezier curves from the serialized `points` array.
+    if (jsonObj &amp;&amp; jsonObj.points &amp;&amp; jsonObj.points.length > 0) {
+      const pts = jsonObj.points;
+      const numCurves = this.isClosed ? pts.length : Math.max(0, pts.length - 1);
+      for (let i = 0; i &lt; numCurves; i++) {
+        const next = this.isClosed ? pts[(i + 1) % pts.length] : pts[i + 1];
+        this.newCurve([pts[i].a1, pts[i].c1, pts[i].c2, next.a1], -1);
+      }
+    }
+  }
+
+  serialize() {
+    let jsonObj = super.serialize();
+
+    if (this.curves &amp;&amp; this.curves.length > 0) {
+      const pts = this.curves.map(curve => {
+        const points = JSON.parse(JSON.stringify(curve)).points.slice(0, 3).map(p => geometry.point(p.x, p.y));
+        return { a1: points[0], c1: points[1], c2: points[2] };
+      });
+      if (!this.isClosed) {
+        // For an open curve append the final anchor (second endpoint of the
+        // last curve). It has no outgoing c1/c2 since no further curve follows.
+        const lastCurve = this.curves[this.curves.length - 1];
+        const lastEndpoint = JSON.parse(JSON.stringify(lastCurve)).points[3];
+        pts.push({ a1: geometry.point(lastEndpoint.x, lastEndpoint.y) });
+      }
+      jsonObj.points = pts;
+    } else {
+      jsonObj.points = [];
+    }
+    delete jsonObj.curves;
+    delete jsonObj.bboxes;
+    if (jsonObj.path) delete jsonObj.path;
+
+    return jsonObj;
+  }
+
+  move(diffX, diffY) {
+    for (let i = 0; i &lt; this.curves.length; i++) {
+      for (let j = 0; j &lt; this.curves[i].points.length; j++) {
+        this.curves[i].points[j].x += diffX;
+        this.curves[i].points[j].y += diffY;
+      }
+      this.newCurve(this.curves[i].points, i);
+    }
+
+    return true;
+  }
+
+  rotate(angle, center) {
+    const rotationCenter = center || this.getDefaultCenter();
+    const pointsInCurve = 4;
+    const cosA = Math.cos(angle);
+    const sinA = Math.sin(angle);
+
+    for (let i = 0; i &lt; this.curves.length; i++) {
+      for (let j = 0; j &lt; pointsInCurve; j++) {
+        const dx = this.curves[i].points[j].x - rotationCenter.x;
+        const dy = this.curves[i].points[j].y - rotationCenter.y;
+        this.curves[i].points[j].x = rotationCenter.x + dx * cosA - dy * sinA;
+        this.curves[i].points[j].y = rotationCenter.y + dx * sinA + dy * cosA;
+      }
+      this.newCurve(this.curves[i].points, i);
+    }
+
+    return true;
+  }
+
+  scale(scale, center) {
+    const scalingCenter = center || this.getDefaultCenter();
+    const pointsInCurve = 4;
+
+    for (let i = 0; i &lt; this.curves.length; i++) {
+      for (let j = 0; j &lt; pointsInCurve; j++) {
+        const dx = this.curves[i].points[j].x - scalingCenter.x;
+        const dy = this.curves[i].points[j].y - scalingCenter.y;
+        this.curves[i].points[j].x = scalingCenter.x + dx * scale;
+        this.curves[i].points[j].y = scalingCenter.y + dy * scale;
+      }
+      this.newCurve(this.curves[i].points, i);
+    }
+
+    return true;
+  }
+
+  getDefaultCenter() {
+    // Use the average of the anchor points (endpoints of each curve).
+    const anchors = [];
+    for (let i = 0; i &lt; this.curves.length; i++) {
+      anchors.push(this.curves[i].points[0]);
+    }
+    if (!this.isClosed &amp;&amp; this.curves.length > 0) {
+      // Include the trailing endpoint in the open case.
+      anchors.push(this.curves[this.curves.length - 1].points[3]);
+    }
+    if (anchors.length === 0) {
+      return geometry.point(0, 0);
+    }
+    return geometry.point(
+      Math.round(anchors.reduce((s, p) => s + p.x, 0) / anchors.length),
+      Math.round(anchors.reduce((s, p) => s + p.y, 0) / anchors.length)
+    );
+  }
+
+  onConstructMouseDown(mouse, ctrl, shift) {
+    const mousePos = mouse.getPosSnappedToGrid();
+
+    if (!this.notDone) {
+      this.notDone = true;
+      this.curves = [];
+      this.bboxes = [];
+      this.path = [{ x: mousePos.x, y: mousePos.y }];
+    }
+
+    if (this.path.length > 0) {
+      // Close the shape when clicking on the first anchor point.
+      if (this.path.length > 3 &amp;&amp; mouse.snapsOnPoint(this.path[0])) {
+        this.path.length--; // Remove the trailing preview point
+        this.notDone = false;
+        this.isClosed = true;
+        this.generatePolyBezier();
+
+        return { isDone: true };
+      }
+      // Finish as an open curve when double-clicking the last committed point.
+      if (this.constructor.allowOpen &amp;&amp; this.path.length > 2 &amp;&amp; mouse.snapsOnPoint(this.path[this.path.length - 2])) {
+        this.path.length--; // Remove the trailing preview point
+        this.notDone = false;
+        this.isClosed = false;
+        this.generatePolyBezier();
+
+        return { isDone: true };
+      }
+      this.path.push({ x: mousePos.x, y: mousePos.y });
+    }
+  }
+
+  onConstructMouseMove(mouse, ctrl, shift) {
+    if (!this.notDone) return { isDone: true };
+    const mousePos = mouse.getPosSnappedToGrid();
+    this.path[this.path.length - 1] = { x: mousePos.x, y: mousePos.y };
+  }
+
+  onConstructMouseUp(mouse, ctrl, shift) {
+    if (!this.notDone) return { isDone: true };
+  }
+
+  onConstructUndo() {
+    if (this.path.length &lt;= 2) {
+      return { isCancelled: true };
+    } else {
+      if (this.curves) {
+        this.curves.pop();
+        this.path.pop();
+      } else {
+        this.path.pop();
+      }
+    }
+  }
+
+  checkMouseOver(mouse) {
+    var dragContext = {};
+
+    const mousePos = mouse.getPosSnappedToGrid();
+    dragContext.mousePos0 = mousePos;
+    dragContext.mousePos1 = mousePos;
+    dragContext.snapContext = {};
+
+    // Anchor points (starts of each curve).
+    for (let c = 0; c &lt; this.curves.length; c++) {
+      if (mouse.isOnPoint(this.curves[c].points[0])) {
+        dragContext.part = 1;
+        dragContext.targetPoint = this.curves[c].points[0];
+        dragContext.index = c;
+        return dragContext;
+      }
+      // Control points of each curve.
+      for (let i = 1; i &lt; this.curves[c].points.length - 1; i++) {
+        if (mouse.isOnPoint(this.curves[c].points[i])) {
+          dragContext.part = i + 1;
+          dragContext.targetPoint = this.curves[c].points[i];
+          dragContext.index = c;
+          return dragContext;
+        }
+      }
+    }
+    // For the open case, the trailing endpoint of the last curve has no
+    // associated "next curve", so check it explicitly.
+    if (!this.isClosed &amp;&amp; this.curves.length > 0) {
+      const last = this.curves[this.curves.length - 1];
+      if (mouse.isOnPoint(last.points[3])) {
+        dragContext.part = 1;
+        dragContext.targetPoint = last.points[3];
+        // Use index equal to curves.length to denote "trailing endpoint".
+        dragContext.index = this.curves.length;
+        return dragContext;
+      }
+    }
+    // On the curve itself. Done outside of the previous loop to avoid
+    // conflicts with the anchor-point detection.
+    for (let c = 0; c &lt; this.curves.length; c++) {
+      if (mouse.isOnCurve(this.curves[c])) {
+        dragContext.part = 0;
+        return dragContext;
+      }
+    }
+  }
+
+  onDrag(mouse, dragContext, ctrl, shift) {
+    var mousePos;
+    var mod = 0;
+
+    if (shift) mod++;
+    if (ctrl) mod += 2;
+
+    if (dragContext.part === 1) {
+      const isTrailingEndpoint = (dragContext.index === this.curves.length);
+      const curIdx = isTrailingEndpoint ? -1 : dragContext.index;
+      const prevIdx = isTrailingEndpoint
+        ? this.curves.length - 1
+        : (this.isClosed ? (dragContext.index - 1 + this.curves.length) % this.curves.length : dragContext.index - 1);
+      const hasCur = curIdx >= 0;
+      const hasPrev = prevIdx >= 0;
+
+      switch (mod) {
+        default:
+          mousePos = mouse.getPosSnappedToGrid();
+          dragContext.snapContext = {};
+          break;
+
+        case 1:
+          mousePos = mouse.getPosSnappedToDirection(dragContext.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], dragContext.snapContext);
+          break;
+
+        case 2: {
+          mousePos = mouse.getPosSnappedToGrid();
+          dragContext.snapContext = {};
+
+          // Drag the adjacent control points along with the anchor point.
+          const anchor = hasCur ? this.curves[curIdx].points[0] : this.curves[prevIdx].points[3];
+          const diffX = mousePos.x - anchor.x;
+          const diffY = mousePos.y - anchor.y;
+
+          if (hasCur) {
+            this.curves[curIdx].points[1].x += diffX;
+            this.curves[curIdx].points[1].y += diffY;
+          }
+          if (hasPrev) {
+            this.curves[prevIdx].points[2].x += diffX;
+            this.curves[prevIdx].points[2].y += diffY;
+          }
+
+          if (hasCur) this.newCurve(this.curves[curIdx].points, curIdx);
+          if (hasPrev) this.newCurve(this.curves[prevIdx].points, prevIdx);
+
+          break;
+        }
+      }
+
+      // Move the shared anchor point on both adjacent curves.
+      if (hasCur) {
+        this.curves[curIdx].points[0].x = mousePos.x;
+        this.curves[curIdx].points[0].y = mousePos.y;
+        this.newCurve(this.curves[curIdx].points, curIdx);
+      }
+      if (hasPrev) {
+        this.curves[prevIdx].points[3].x = mousePos.x;
+        this.curves[prevIdx].points[3].y = mousePos.y;
+        this.newCurve(this.curves[prevIdx].points, prevIdx);
+      }
+    }
+
+    else if (dragContext.part === 2 || dragContext.part === 3) {
+      if (shift) {
+        mousePos = mouse.getPosSnappedToDirection(dragContext.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], dragContext.snapContext);
+      } else {
+        mousePos = mouse.getPosSnappedToGrid();
+        dragContext.snapContext = {};
+      }
+      this.curves[dragContext.index].points[dragContext.part - 1].x = mousePos.x;
+      this.curves[dragContext.index].points[dragContext.part - 1].y = mousePos.y;
+      this.newCurve(this.curves[dragContext.index].points, dragContext.index);
+    }
+
+    else if (dragContext.part === 0) {
+      if (shift) {
+        mousePos = mouse.getPosSnappedToDirection(dragContext.mousePos0, [{ x: 1, y: 0 }, { x: 0, y: 1 }], dragContext.snapContext);
+      } else {
+        mousePos = mouse.getPosSnappedToGrid();
+        dragContext.snapContext = {};
+      }
+      this.move(mousePos.x - dragContext.mousePos1.x, mousePos.y - dragContext.mousePos1.y);
+      dragContext.mousePos1 = mousePos;
+    }
+  }
+
+  /**
+   * Counts intersections between the line segment (or ray) from `p3` to `p4`
+   * and the boundary curves. When `p4` is omitted, this is used as a
+   * crossing-number test (for closed shapes) and returns the number of
+   * intersections from `p3` with a pseudo-ray going outside the bounding box.
+   * When `p4` is provided, it also records per-curve intersections and the
+   * nearest one in `this.curIntersections`.
+   */
+  countIntersections(p3, p4) {
+    var cnt = 0;
+
+    if (typeof p4 === "undefined") {
+      let minX = Infinity;
+      for (let i = 0; i &lt; this.bboxes.length; i++) {
+        if (this.bboxes[i].x.min &lt; minX) {
+          minX = this.bboxes[i].x.min;
+        }
+      }
+      const offset = (this.scene &amp;&amp; typeof this.scene.rng === 'function') ? this.scene.rng() : 1.23456789;
+      const outsidePoint = { x: minX - offset - 100, y: p3.y + offset };
+
+      for (let i = 0; i &lt; this.curves.length; i++) {
+        cnt += this.curves[i].lineIntersects(geometry.line(geometry.point(p3.x, p3.y), outsidePoint)).length;
+      }
+    } else {
+      this.curIntersections = {
+        curves: [],
+        shortest: { val: Infinity, i: -1, j: -1 }
+      };
+
+      let mod_len = 0;
+      for (let i = 0; i &lt; this.bboxes.length; i++) {
+        mod_len += Math.abs(this.bboxes[i].x.max) > Math.abs(this.bboxes[i].y.max) ? Math.abs(this.bboxes[i].x.max) : Math.abs(this.bboxes[i].y.max);
+      }
+
+      for (let i = 0; i &lt; this.curves.length; i++) {
+        this.curIntersections.curves.push(
+          this.curves[i].lineIntersects(geometry.line(p3, geometry.point(p4.x + ((p4.x - p3.x) * mod_len), p4.y + ((p4.y - p3.y) * mod_len))))
+        );
+
+        for (let j = 0; j &lt; this.curIntersections.curves[i].length; j++) {
+          if (geometry.distanceSquared(p3, this.curves[i].get(this.curIntersections.curves[i][j])) &lt; Simulator.MIN_RAY_SEGMENT_LENGTH_SQUARED * this.scene.lengthScale * this.scene.lengthScale) {
+            this.curIntersections.curves[i].splice(j, 1);
+          }
+        }
+
+        cnt += this.curIntersections.curves[i].length;
+
+        for (let j = 0; j &lt; this.curIntersections.curves[i].length; j++) {
+          let tmp = geometry.distanceSquared(p3, this.curves[i].get(this.curIntersections.curves[i][j]));
+          if (tmp &lt; this.curIntersections.shortest.val) {
+            this.curIntersections.shortest = { val: tmp, i: i, j: j };
+          }
+        }
+      }
+    }
+    return cnt;
+  }
+
+  /* Rendering helpers */
+
+  drawPoint(p1, canvasRenderer) {
+    const ctx = canvasRenderer.ctx;
+    const ls = canvasRenderer.lengthScale;
+    ctx.fillRect(p1.x - 1.5 * ls, p1.y - 1.5 * ls, 3 * ls, 3 * ls);
+  }
+
+  drawLine(p1, p2, canvasRenderer, strokeStyle) {
+    const ctx = canvasRenderer.ctx;
+    ctx.strokeStyle = strokeStyle || 'rgb(128,128,128)';
+    ctx.beginPath();
+    ctx.moveTo(p1.x, p1.y);
+    ctx.lineTo(p2.x, p2.y);
+    ctx.stroke();
+    ctx.closePath();
+
+    ctx.fillStyle = 'rgb(255,0,0)';
+    [p1, p2].forEach((cur) => this.drawPoint(cur, canvasRenderer));
+  }
+
+  drawCurve(curve, canvasRenderer) {
+    const ctx = canvasRenderer.ctx;
+    const p = curve.points;
+    ctx.bezierCurveTo(p[1].x, p[1].y, p[2].x, p[2].y, p[3].x, p[3].y);
+  }
+
+  /**
+   * Draw the (polygonal) construction preview of the curve path while the
+   * user is still adding anchor points.
+   * @param {CanvasRenderer} canvasRenderer
+   */
+  drawConstruction(canvasRenderer) {
+    const ctx = canvasRenderer.ctx;
+    const ls = canvasRenderer.lengthScale;
+    if (!this.path) return;
+    if (this.path.length === 2 &amp;&amp; this.path[0].x === this.path[1].x &amp;&amp; this.path[0].y === this.path[1].y) {
+      ctx.fillStyle = 'rgb(255,0,0)';
+      ctx.fillRect(this.path[0].x - 1.5 * ls, this.path[0].y - 1.5 * ls, 3 * ls, 3 * ls);
+      return;
+    }
+    ctx.beginPath();
+    ctx.moveTo(this.path[0].x, this.path[0].y);
+
+    for (let i = 0; i &lt; this.path.length - 1; i++) {
+      ctx.lineTo(this.path[i + 1].x, this.path[i + 1].y);
+      ctx.fillStyle = 'rgb(255,0,0)';
+      this.drawPoint(this.path[i], canvasRenderer);
+    }
+    ctx.globalAlpha = 1;
+    ctx.strokeStyle = 'rgb(128,128,128)';
+    ctx.lineWidth = 1 * ls;
+    ctx.setLineDash([5 * ls, 5 * ls]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  /**
+   * Build a sub-path on the current canvas context that traces all Bezier
+   * curves from the first anchor to the last anchor. The caller is expected to
+   * have already called `ctx.beginPath()`. When the shape is closed, callers
+   * may additionally call `ctx.closePath()` before filling.
+   * @param {CanvasRenderer} canvasRenderer
+   */
+  tracePath(canvasRenderer) {
+    const ctx = canvasRenderer.ctx;
+    if (this.curves.length === 0) return;
+    const first = this.curves[0].points[0];
+    ctx.moveTo(first.x, first.y);
+    for (let i = 0; i &lt; this.curves.length; i++) {
+      this.drawCurve(this.curves[i], canvasRenderer);
+    }
+  }
+
+  /**
+   * Draw the anchor and control points with tangent guide lines.
+   * @param {CanvasRenderer} canvasRenderer
+   */
+  drawControlHandles(canvasRenderer) {
+    const ctx = canvasRenderer.ctx;
+    if (this.curves.length === 0) return;
+    ctx.beginPath();
+    ctx.moveTo(this.curves[0].points[0].x, this.curves[0].points[0].y);
+    for (let i = 0; i &lt; this.curves.length; i++) {
+      const p = this.curves[i].points;
+      ctx.strokeStyle = 'rgb(255,0,0)';
+      this.drawLine(p[0], p[1], canvasRenderer, ctx.strokeStyle);
+      this.drawLine(p[2], p[3], canvasRenderer, ctx.strokeStyle);
+      p.forEach((cur) => this.drawPoint(cur, canvasRenderer));
+    }
+  }
+
+  /* Curve construction helpers */
+
+  // Generate default control points from path.
+  generateDefaultControlPoints(pts) {
+    const cpVec1 = geometry.normalizeVec(geometry.point(pts[2].x - pts[0].x, pts[2].y - pts[0].y));
+    const cpVec2 = geometry.normalizeVec(geometry.point(pts[3].x - pts[1].x, pts[3].y - pts[1].y));
+
+    return [
+      geometry.point(pts[1].x + Math.floor(cpVec1.x * 50 + 0.5), pts[1].y + Math.floor(cpVec1.y * 50 + 0.5)),
+      geometry.point(pts[2].x - Math.floor(cpVec2.x * 50 + 0.5), pts[2].y - Math.floor(cpVec2.y * 50 + 0.5))
+    ];
+  }
+
+  // Generate the set of Bezier curves from the polyline path.
+  generatePolyBezier() {
+    const isClosed = this.isClosed !== false;
+    const n = this.path.length;
+    const numCurves = isClosed ? n : Math.max(0, n - 1);
+    for (let i = 0; i &lt; numCurves; i++) {
+      // Get neighbors (used to estimate tangent directions at the anchors).
+      // For the open case, mirror the endpoint back onto itself to avoid
+      // reaching beyond the path.
+      let prev, a, b, next;
+      if (isClosed) {
+        prev = this.path[(i - 1 + n) % n];
+        a = this.path[i];
+        b = this.path[(i + 1) % n];
+        next = this.path[(i + 2) % n];
+      } else {
+        a = this.path[i];
+        b = this.path[i + 1];
+        prev = this.path[i - 1] || a;
+        next = this.path[i + 2] || b;
+      }
+      const ctrl = this.generateDefaultControlPoints([prev, a, b, next]);
+      this.newCurve([
+        { x: a.x, y: a.y },
+        { x: ctrl[0].x, y: ctrl[0].y },
+        { x: ctrl[1].x, y: ctrl[1].y },
+        { x: b.x, y: b.y }
+      ]);
+    }
+  }
+
+  // Create or replace a Bezier curve, keeping the cached bounding box in sync.
+  newCurve(pts, i) {
+    if (typeof i === "undefined" || i === -1) {
+      this.curves.push(new Bezier(pts));
+      this.bboxes.push(this.curves[this.curves.length - 1].bbox());
+      return this.curves[this.curves.length - 1];
+    } else {
+      this.curves[i] = new Bezier(pts);
+      this.bboxes[i] = this.curves[i].bbox();
+      return this.curves[i];
+    }
+  }
+};
+
+export default CurveObjMixin;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-CanvasContainer.html">CanvasContainer</a></li><li><a href="module-ColorModeModal.html">ColorModeModal</a></li><li><a href="module-ColorPicker.html">ColorPicker</a></li><li><a href="module-DashPicker.html">DashPicker</a></li><li><a href="module-FileBar.html">FileBar</a></li><li><a href="module-FillControl.html">FillControl</a></li><li><a href="module-FontPicker.html">FontPicker</a></li><li><a href="module-Footer.html">Footer</a></li><li><a href="module-ImportShapesModal.html">ImportShapesModal</a></li><li><a href="module-LanguageModal.html">LanguageModal</a></li><li><a href="module-LayoutAidsBar.html">LayoutAidsBar</a></li><li><a href="module-ModuleModal.html">ModuleModal</a></li><li><a href="module-ModuleTools.html">ModuleTools</a></li><li><a href="module-MoreToolsCollapsible.html">MoreToolsCollapsible</a></li><li><a href="module-NumberControl.html">NumberControl</a></li><li><a href="module-ObjBar.html">ObjBar</a></li><li><a href="module-PointControl.html">PointControl</a></li><li><a href="module-PopupSelectControl.html">PopupSelectControl</a></li><li><a href="module-RayDensityBar.html">RayDensityBar</a></li><li><a href="module-SaveModal.html">SaveModal</a></li><li><a href="module-SettingsBar.html">SettingsBar</a></li><li><a href="module-SettingsList.html">SettingsList</a></li><li><a href="module-SettingsWarning.html">SettingsWarning</a></li><li><a href="module-Sidebar.html">Sidebar</a></li><li><a href="module-SimulatorControls.html">SimulatorControls</a></li><li><a href="module-SizePicker.html">SizePicker</a></li><li><a href="module-StatusArea.html">StatusArea</a></li><li><a href="module-StrokeControl.html">StrokeControl</a></li><li><a href="module-TextControl.html">TextControl</a></li><li><a href="module-TextInput.html">TextInput</a></li><li><a href="module-ThemeModal.html">ThemeModal</a></li><li><a href="module-ThemeOptionsList.html">ThemeOptionsList</a></li><li><a href="module-ToggleControl.html">ToggleControl</a></li><li><a href="module-ToolItem.html">ToolItem</a></li><li><a href="module-Toolbar.html">Toolbar</a></li><li><a href="module-ToolsBar.html">ToolsBar</a></li><li><a href="module-ToolsCategory.html">ToolsCategory</a></li><li><a href="module-ToolsList.html">ToolsList</a></li><li><a href="module-ViewBar.html">ViewBar</a></li><li><a href="module-VirtualKeyboard.html">VirtualKeyboard</a></li><li><a href="module-WelcomeMessage.html">WelcomeMessage</a></li><li><a href="module-ZoomControl.html">ZoomControl</a></li><li><a href="module-app_.html">app</a></li><li><a href="module-shapeImport.html">shapeImport</a></li><li><a href="module-svgImport.html">svgImport</a></li></ul><h3>Namespaces</h3><ul><li><a href="geometry.html">geometry</a></li><li><a href="sceneObjs.html">sceneObjs</a></li></ul><h3>Classes</h3><ul><li><a href="BaseFilter.html">BaseFilter</a></li><li><a href="BaseGlass.html">BaseGlass</a></li><li><a href="BaseGrinGlass.html">BaseGrinGlass</a></li><li><a href="BaseSceneObj.html">BaseSceneObj</a></li><li><a href="CanvasRenderer.html">CanvasRenderer</a></li><li><a href="Editor.html">Editor</a></li><li><a href="FloatColorRenderer.html">FloatColorRenderer</a></li><li><a href="JsonEditorService.html">JsonEditorService</a></li><li><a href="Mouse.html">Mouse</a></li><li><a href="ObjBar.html">ObjBar</a></li><li><a href="Scene.html">Scene</a></li><li><a href="Simulator.html">Simulator</a></li><li><a href="TexExprParser.html">TexExprParser</a></li><li><a href="sceneObjs.AngleSource.html">AngleSource</a></li><li><a href="sceneObjs.Aperture.html">Aperture</a></li><li><a href="sceneObjs.ArcMirror.html">ArcMirror</a></li><li><a href="sceneObjs.BaseCustomSurface.html">BaseCustomSurface</a></li><li><a href="sceneObjs.Beam.html">Beam</a></li><li><a href="sceneObjs.BeamSplitter.html">BeamSplitter</a></li><li><a href="sceneObjs.Blocker.html">Blocker</a></li><li><a href="sceneObjs.CircleBlocker.html">CircleBlocker</a></li><li><a href="sceneObjs.CircleGlass.html">CircleGlass</a></li><li><a href="sceneObjs.CircleGrinGlass.html">CircleGrinGlass</a></li><li><a href="sceneObjs.ConcaveDiffractionGrating.html">ConcaveDiffractionGrating</a></li><li><a href="sceneObjs.CropBox.html">CropBox</a></li><li><a href="sceneObjs.CurveGlass.html">CurveGlass</a></li><li><a href="sceneObjs.CurveGrinGlass.html">CurveGrinGlass</a></li><li><a href="sceneObjs.CurveMirror.html">CurveMirror</a></li><li><a href="sceneObjs.CustomArcSurface.html">CustomArcSurface</a></li><li><a href="sceneObjs.CustomCurveSurface.html">CustomCurveSurface</a></li><li><a href="sceneObjs.CustomGlass.html">CustomGlass</a></li><li><a href="sceneObjs.CustomMirror.html">CustomMirror</a></li><li><a href="sceneObjs.CustomParamSurface.html">CustomParamSurface</a></li><li><a href="sceneObjs.CustomSurface.html">CustomSurface</a></li><li><a href="sceneObjs.Detector.html">Detector</a></li><li><a href="sceneObjs.DiffractionGrating.html">DiffractionGrating</a></li><li><a href="sceneObjs.Drawing.html">Drawing</a></li><li><a href="sceneObjs.Glass.html">Glass</a></li><li><a href="sceneObjs.GrinGlass.html">GrinGlass</a></li><li><a href="sceneObjs.Handle.html">Handle</a></li><li><a href="sceneObjs.IdealLens.html">IdealLens</a></li><li><a href="sceneObjs.IdealMirror.html">IdealMirror</a></li><li><a href="sceneObjs.LineArrow.html">LineArrow</a></li><li><a href="sceneObjs.Mirror.html">Mirror</a></li><li><a href="sceneObjs.ModuleObj.html">ModuleObj</a></li><li><a href="sceneObjs.ParabolicMirror.html">ParabolicMirror</a></li><li><a href="sceneObjs.ParamGlass.html">ParamGlass</a></li><li><a href="sceneObjs.ParamGrinGlass.html">ParamGrinGlass</a></li><li><a href="sceneObjs.ParamMirror.html">ParamMirror</a></li><li><a href="sceneObjs.PlaneGlass.html">PlaneGlass</a></li><li><a href="sceneObjs.PointSource.html">PointSource</a></li><li><a href="sceneObjs.Protractor.html">Protractor</a></li><li><a href="sceneObjs.Ruler.html">Ruler</a></li><li><a href="sceneObjs.SingleRay.html">SingleRay</a></li><li><a href="sceneObjs.SphericalLens.html">SphericalLens</a></li><li><a href="sceneObjs.TextLabel.html">TextLabel</a></li></ul><h3>Events</h3><ul><li><a href="Editor.html#event:handleCreationHint">handleCreationHint</a></li><li><a href="Editor.html#event:mouseCoordinateChange">mouseCoordinateChange</a></li><li><a href="Editor.html#event:newAction">newAction</a></li><li><a href="Editor.html#event:newUndoPoint">newUndoPoint</a></li><li><a href="Editor.html#event:objectBodyClick">objectBodyClick</a></li><li><a href="Editor.html#event:positioningEnd">positioningEnd</a></li><li><a href="Editor.html#event:positioningStart">positioningStart</a></li><li><a href="Editor.html#event:redo">redo</a></li><li><a href="Editor.html#event:requestPositioningComfirm">requestPositioningComfirm</a></li><li><a href="Editor.html#event:scaleChange">scaleChange</a></li><li><a href="Editor.html#event:sceneLoaded">sceneLoaded</a></li><li><a href="Editor.html#event:selectionChange">selectionChange</a></li><li><a href="Editor.html#event:undo">undo</a></li><li><a href="ObjBar.html#event:edit">edit</a></li><li><a href="ObjBar.html#event:editEnd">editEnd</a></li><li><a href="ObjBar.html#event:requestUpdate">requestUpdate</a></li><li><a href="ObjBar.html#event:showAdvancedEnabled">showAdvancedEnabled</a></li><li><a href="Simulator.html#event:lightLayerSyncChange">lightLayerSyncChange</a></li><li><a href="Simulator.html#event:simulationComplete">simulationComplete</a></li><li><a href="Simulator.html#event:simulationPause">simulationPause</a></li><li><a href="Simulator.html#event:simulationStart">simulationStart</a></li><li><a href="Simulator.html#event:simulationStop">simulationStop</a></li><li><a href="Simulator.html#event:update">update</a></li><li><a href="global.html#event:deviceChange">deviceChange</a></li><li><a href="global.html#event:requestUpdateErrorAndWarning">requestUpdateErrorAndWarning</a></li><li><a href="global.html#event:webglContextLost">webglContextLost</a></li></ul><h3>Global</h3><ul><li><a href="global.html#CircleObjMixin">CircleObjMixin</a></li><li><a href="global.html#CurveObjMixin">CurveObjMixin</a></li><li><a href="global.html#DATA_VERSION">DATA_VERSION</a></li><li><a href="global.html#FN1">FN1</a></li><li><a href="global.html#FORMULA_MODULE_TOOLTIP_MAX_LINES">FORMULA_MODULE_TOOLTIP_MAX_LINES</a></li><li><a href="global.html#FOR_IF_DEFAULTS">FOR_IF_DEFAULTS</a></li><li><a href="global.html#GREEK_SYMBOL">GREEK_SYMBOL</a></li><li><a href="global.html#JSON_INNER_COLLAPSE_THRESHOLD">JSON_INNER_COLLAPSE_THRESHOLD</a></li><li><a href="global.html#LITERAL_NUMERIC_TOKEN">LITERAL_NUMERIC_TOKEN</a></li><li><a href="global.html#LineObjMixin">LineObjMixin</a></li><li><a href="global.html#MODULE_EDITOR_LIST">MODULE_EDITOR_LIST</a></li><li><a href="global.html#PAREN_HIGHLIGHT_MATCH_CLASS">PAREN_HIGHLIGHT_MATCH_CLASS</a></li><li><a href="global.html#ParamCurveObjMixin">ParamCurveObjMixin</a></li><li><a href="global.html#_ensureCubicBezierPathReady">_ensureCubicBezierPathReady</a></li><li><a href="global.html#_pathPairToHermiteBezier">_pathPairToHermiteBezier</a></li><li><a href="global.html#applyTextareaAutoResize">applyTextareaAutoResize</a></li><li><a href="global.html#buildModuleInstanceTooltipHtml">buildModuleInstanceTooltipHtml</a></li><li><a href="global.html#buildParenHighlightHtml">buildParenHighlightHtml</a></li><li><a href="global.html#checkRayIntersectsShape">checkRayIntersectsShape</a></li><li><a href="global.html#collapseRedundantNestedParentheses">collapseRedundantNestedParentheses</a></li><li><a href="global.html#collectPointPaths">collectPointPaths</a></li><li><a href="global.html#compileParametricDerivative">compileParametricDerivative</a></li><li><a href="global.html#controlPointIndexAfterReorder">controlPointIndexAfterReorder</a></li><li><a href="global.html#countIntersections">countIntersections</a></li><li><a href="global.html#deepEqual">deepEqual</a></li><li><a href="global.html#distancePointToSegment">distancePointToSegment</a></li><li><a href="global.html#draftsToCommittedValue">draftsToCommittedValue</a></li><li><a href="global.html#drawConstruction">drawConstruction</a></li><li><a href="global.html#drawControlHandles">drawControlHandles</a></li><li><a href="global.html#drawPath">drawPath</a></li><li><a href="global.html#equationDisplayToValue">equationDisplayToValue</a></li><li><a href="global.html#equationValueForListDisplay">equationValueForListDisplay</a></li><li><a href="global.html#equationValueToDisplay">equationValueToDisplay</a></li><li><a href="global.html#extractNonDefaults">extractNonDefaults</a></li><li><a href="global.html#findMatchingBraceEnd">findMatchingBraceEnd</a></li><li><a href="global.html#findMatchingParenPair">findMatchingParenPair</a></li><li><a href="global.html#findValidJsonObjectSpans">findValidJsonObjectSpans</a></li><li><a href="global.html#formatKeyPath">formatKeyPath</a></li><li><a href="global.html#formatStatusLineHtml">formatStatusLineHtml</a></li><li><a href="global.html#formatTooltipNumber">formatTooltipNumber</a></li><li><a href="global.html#formulaDisplayToValue">formulaDisplayToValue</a></li><li><a href="global.html#getAllByKeyPath">getAllByKeyPath</a></li><li><a href="global.html#getNextModuleIdentifierName">getNextModuleIdentifierName</a></li><li><a href="global.html#getRayIntersections">getRayIntersections</a></li><li><a href="global.html#getRayIntersectionsCubicBezier">getRayIntersectionsCubicBezier</a></li><li><a href="global.html#getRayIntersectionsLinear">getRayIntersectionsLinear</a></li><li><a href="global.html#initPath">initPath</a></li><li><a href="global.html#isAtomicExpr">isAtomicExpr</a></li><li><a href="global.html#isClosed">isClosed</a></li><li><a href="global.html#isFormula">isFormula</a></li><li><a href="global.html#isFormulaValueSupported">isFormulaValueSupported</a></li><li><a href="global.html#isInside">isInside</a></li><li><a href="global.html#isLiteralBooleanFieldValue">isLiteralBooleanFieldValue</a></li><li><a href="global.html#isLiteralNumericFieldValue">isLiteralNumericFieldValue</a></li><li><a href="global.html#isNonBasicProperty">isNonBasicProperty</a></li><li><a href="global.html#isNonDefault">isNonDefault</a></li><li><a href="global.html#isOnBoundary">isOnBoundary</a></li><li><a href="global.html#isOutside">isOutside</a></li><li><a href="global.html#isPointHardcoded">isPointHardcoded</a></li><li><a href="global.html#isPositivelyOriented">isPositivelyOriented</a></li><li><a href="global.html#isSourceIndexArray">isSourceIndexArray</a></li><li><a href="global.html#isTextareaAutoResizeMeasurable">isTextareaAutoResizeMeasurable</a></li><li><a href="global.html#latexToMathJS">latexToMathJS</a></li><li><a href="global.html#mathJSToLatex">mathJSToLatex</a></li><li><a href="global.html#mergeWithDefaults">mergeWithDefaults</a></li><li><a href="global.html#newlinesToBr">newlinesToBr</a></li><li><a href="global.html#nextDuplicateIdentifier">nextDuplicateIdentifier</a></li><li><a href="global.html#normalizeParsedEquationAST">normalizeParsedEquationAST</a></li><li><a href="global.html#observeTextareasResizeWhenVisible">observeTextareasResizeWhenVisible</a></li><li><a href="global.html#populateObjBarShape">populateObjBarShape</a></li><li><a href="global.html#promptNewModuleName">promptNewModuleName</a></li><li><a href="global.html#promptNewModuleNameForHandle">promptNewModuleNameForHandle</a></li><li><a href="global.html#sanitizePastedJson">sanitizePastedJson</a></li><li><a href="global.html#setByKeyPath">setByKeyPath</a></li><li><a href="global.html#setViewportSize">setViewportSize</a></li><li><a href="global.html#splitTexCommaArgs">splitTexCommaArgs</a></li><li><a href="global.html#splitTopLevelCommas">splitTopLevelCommas</a></li><li><a href="global.html#stripJsonComments">stripJsonComments</a></li><li><a href="global.html#stripMarkdownCodeFence">stripMarkdownCodeFence</a></li><li><a href="global.html#stripParenChain">stripParenChain</a></li><li><a href="global.html#stripRedundantParensForLatex">stripRedundantParensForLatex</a></li><li><a href="global.html#suggestNewModuleName">suggestNewModuleName</a></li><li><a href="global.html#templatePointLockState">templatePointLockState</a></li><li><a href="global.html#toJSON">toJSON</a></li><li><a href="global.html#tooltipAllTupleRowsConstant">tooltipAllTupleRowsConstant</a></li><li><a href="global.html#tooltipMantissaDecimalPlaces">tooltipMantissaDecimalPlaces</a></li><li><a href="global.html#tooltipPointTupleEqual">tooltipPointTupleEqual</a></li><li><a href="global.html#tooltipValueEqualForCollapse">tooltipValueEqualForCollapse</a></li><li><a href="global.html#tracePath">tracePath</a></li><li><a href="global.html#unwrapParenInCallableArgs">unwrapParenInCallableArgs</a></li><li><a href="global.html#useParenHighlightLayer">useParenHighlightLayer</a></li><li><a href="global.html#usePreferencesStore">usePreferencesStore</a></li><li><a href="global.html#useSceneStore">useSceneStore</a></li><li><a href="global.html#useStatus">useStatus</a></li><li><a href="global.html#useStatusStore">useStatusStore</a></li><li><a href="global.html#useThemeStore">useThemeStore</a></li><li><a href="global.html#vTooltipPopover">vTooltipPopover</a></li><li><a href="global.html#validateNestedKeys">validateNestedKeys</a></li><li><a href="global.html#valueToFormulaDisplay">valueToFormulaDisplay</a></li><li><a href="global.html#versionUpdate">versionUpdate</a></li><li><a href="global.html#viewportCenterSceneCoords">viewportCenterSceneCoords</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

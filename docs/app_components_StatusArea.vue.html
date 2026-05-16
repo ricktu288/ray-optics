@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: app/components/StatusArea.vue</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: app/components/StatusArea.vue</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>&lt;!--
+  Copyright 2025 The Ray Optics Simulation authors and contributors
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+&lt;template>
+  &lt;div class="footer-left" id="footer-left" :style="notificationStyle">
+    &lt;div class="status-inline">
+      &lt;span
+        v-show="alphaFeatures.length > 0"
+        class="alpha-icon"
+        v-tooltip-popover:popover="{
+          title: 'Alpha features',
+          content: alphaPopoverContent,
+          trigger: 'click',
+          placement: 'top',
+          html: true
+        }"
+        @click.stop
+      >
+        Alpha
+      &lt;/span>
+      &lt;span
+        v-show="betaFeatures.length > 0"
+        class="beta-icon"
+        v-tooltip-popover:popover="{
+          title: $t('simulator:footer.betaFeatures.title'),
+          content: betaPopoverContent,
+          trigger: 'click',
+          placement: 'top',
+          html: true
+        }"
+        @click.stop
+      >
+        Beta
+      &lt;/span>
+      &lt;div id="forceStop" v-show="simulatorStatus?.isSimulatorRunning" @click="handleForceStop" :style="forceStopStyle">
+        &lt;div class="spinner-border text-secondary" role="status">&lt;/div>
+        &lt;span v-html="$t('simulator:footer.processing')">&lt;/span>
+      &lt;/div>
+    &lt;/div>
+    &lt;div id="status" v-show="showStatus" :style="statusStyle">
+      &lt;div v-html="formattedMousePosition">&lt;/div>
+      &lt;div v-html="formattedSimulatorStatus.join('&lt;br>')">&lt;/div>
+    &lt;/div>
+    &lt;div id="warning" class="status-alert" v-show="warnings.length > 0" @click="onJsonToggleClick">&lt;svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="status-alert__lead-icon bi bi-exclamation-triangle-fill" viewBox="0 0 16 20">
+        &lt;path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+      &lt;/svg>&lt;span class="status-alert__message">
+        &lt;span class="status-alert__text" v-html="formattedWarningsHtml">&lt;/span>&lt;button
+          type="button"
+          class="status-alert__copy"
+          v-tooltip-popover="{ title: $t('simulator:footer.copyStatusMessage.title') }"
+          :aria-label="warningsCopied ? $t('simulator:footer.copyStatusMessage.copied') : $t('simulator:footer.copyStatusMessage.title')"
+          @click="copyWarnings"
+        >
+          &lt;svg v-show="!warningsCopied" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="status-alert__copy-icon bi bi-copy" viewBox="0 0 16 16">
+            &lt;path fill-rule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z"/>
+          &lt;/svg>
+          &lt;svg v-show="warningsCopied" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="status-alert__copy-icon status-alert__copy-icon--success bi bi-check-lg" viewBox="0 0 16 16" aria-hidden="true">
+            &lt;path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+          &lt;/svg>
+        &lt;/button>
+      &lt;/span>
+    &lt;/div>
+    &lt;div id="error" class="status-alert" v-show="errors.length > 0" @click="onJsonToggleClick">&lt;svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="status-alert__lead-icon bi bi-exclamation-circle-fill" viewBox="0 0 16 20">
+        &lt;path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4m.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2"/>
+      &lt;/svg>&lt;span class="status-alert__message">
+        &lt;span class="status-alert__text" v-html="formattedErrorsHtml">&lt;/span>&lt;button
+          type="button"
+          class="status-alert__copy"
+          v-tooltip-popover="{ title: $t('simulator:footer.copyStatusMessage.title') }"
+          :aria-label="errorsCopied ? $t('simulator:footer.copyStatusMessage.copied') : $t('simulator:footer.copyStatusMessage.title')"
+          @click="copyErrors"
+        >
+          &lt;svg v-show="!errorsCopied" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="status-alert__copy-icon bi bi-copy" viewBox="0 0 16 16">
+            &lt;path fill-rule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z"/>
+          &lt;/svg>
+          &lt;svg v-show="errorsCopied" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="status-alert__copy-icon status-alert__copy-icon--success bi bi-check-lg" viewBox="0 0 16 16" aria-hidden="true">
+            &lt;path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+          &lt;/svg>
+        &lt;/button>
+      &lt;/span>
+    &lt;/div>
+    &lt;VirtualKeyboard />
+  &lt;/div>
+&lt;/template>
+
+&lt;script>
+/**
+ * @module StatusArea
+ * @description The Vue component for the status area (including mouse coordinates, simulator status, warnings and errors) at the lower left corner.
+ */
+import { usePreferencesStore } from '../store/preferences'
+import { useThemeStore } from '../store/theme'
+import { useStatus } from '../composables/useStatus'
+import { computed, onBeforeUnmount, ref, toRef, watch } from 'vue'
+import i18next from 'i18next'
+import { app } from '../services/app'
+import VirtualKeyboard from './VirtualKeyboard.vue'
+import { vTooltipPopover } from '../directives/tooltip-popover'
+import { parseLinks } from '../utils/links.js'
+import { formatStatusLineHtml } from '../utils/compactJsonInStatusMessage.js'
+
+export default {
+  name: 'StatusArea',
+  components: {
+    VirtualKeyboard
+  },
+  directives: {
+    'tooltip-popover': vTooltipPopover
+  },
+  setup() {
+    const preferences = usePreferencesStore()
+    const themeStore = useThemeStore()
+    const status = useStatus()
+    const showSidebar = toRef(preferences, 'showSidebar')
+    const sidebarWidth = toRef(preferences, 'sidebarWidth')
+    
+    const notificationStyle = computed(() => ({
+      left: showSidebar.value ? `${sidebarWidth.value}px` : '0px'
+    }))
+
+    // Computed styles that adapt to theme - status overlay uses scene background color
+    const statusStyle = computed(() => {
+      const isLight = themeStore.backgroundIsLight.value
+      const bgColor = themeStore.getThemeObject('background')?.color || { r: 1, g: 1, b: 1 }
+      
+      // Use actual scene background color with transparency
+      const backgroundColor = `rgba(${Math.round(bgColor.r * 255)}, ${Math.round(bgColor.g * 255)}, ${Math.round(bgColor.b * 255)}, 0.8)`
+      
+      return {
+        color: isLight ? '#333333' : 'gray',
+        backgroundColor: backgroundColor
+      }
+    })
+
+    const forceStopStyle = computed(() => {
+      const isLight = themeStore.backgroundIsLight.value
+      // Force stop button should be visible in both themes
+      return {
+        color: isLight ? '#666666' : 'gray'
+      }
+    })
+
+    const handleForceStop = () => {
+      app.simulator.stopSimulation()
+    }
+
+    const betaPopoverContent = computed(() => {
+      if (!status.activeBetaFeatures.value?.length) {
+        return ''
+      }
+
+      const listItems = status.activeBetaFeatures.value
+        .map((feature) => `&lt;li>${feature}&lt;/li>`)
+        .join('')
+
+      const description = i18next.t('simulator:footer.betaFeatures.description')
+      const details = i18next.t('simulator:footer.betaFeatures.details')
+      return parseLinks(`${description}&lt;ul>${listItems}&lt;/ul>${details}`)
+    })
+
+    const alphaPopoverContent = computed(() => {
+      if (!status.activeAlphaFeatures.value?.length) {
+        return ''
+      }
+
+      const listItems = status.activeAlphaFeatures.value
+        .map((feature) => `&lt;li>${feature}&lt;/li>`)
+        .join('')
+
+      return `You are using the following alpha features:&lt;ul>${listItems}&lt;/ul>Alpha features are still in development and may be incomplete or buggy.`
+    })
+
+    const expandedJsonWarnings = ref({})
+    const expandedJsonErrors = ref({})
+
+    watch(
+      () => (status.activeWarnings.value ?? []).join('\u0000'),
+      () => {
+        expandedJsonWarnings.value = {}
+      }
+    )
+    watch(
+      () => (status.activeErrors.value ?? []).join('\u0000'),
+      () => {
+        expandedJsonErrors.value = {}
+      }
+    )
+
+    const formattedWarningsHtml = computed(() => {
+      const labels = {
+        expand: i18next.t('simulator:footer.jsonFold.expand')
+      }
+      return status.activeWarnings.value
+        .map((line, lineIdx) =>
+          formatStatusLineHtml(String(line), {
+            expanded: expandedJsonWarnings.value,
+            keyPrefix: 'w',
+            lineIdx,
+            labels
+          })
+        )
+        .join('&lt;br>')
+    })
+
+    const formattedErrorsHtml = computed(() => {
+      const labels = {
+        expand: i18next.t('simulator:footer.jsonFold.expand')
+      }
+      return status.activeErrors.value
+        .map((line, lineIdx) =>
+          formatStatusLineHtml(String(line), {
+            expanded: expandedJsonErrors.value,
+            keyPrefix: 'e',
+            lineIdx,
+            labels
+          })
+        )
+        .join('&lt;br>')
+    })
+
+    const onJsonToggleClick = (e) => {
+      const btn = e.target.closest?.('.status-alert__json-toggle')
+      if (!btn) return
+      const key = btn.getAttribute('data-json-key')
+      if (!key) return
+      e.preventDefault()
+      e.stopPropagation()
+      btn.blur()
+      if (key.startsWith('w-')) {
+        expandedJsonWarnings.value = { ...expandedJsonWarnings.value, [key]: true }
+      } else if (key.startsWith('e-')) {
+        expandedJsonErrors.value = { ...expandedJsonErrors.value, [key]: true }
+      }
+    }
+
+    const warningsCopied = ref(false)
+    const errorsCopied = ref(false)
+    let warningsCopiedTimer = null
+    let errorsCopiedTimer = null
+
+    const COPIED_FEEDBACK_MS = 2000
+
+    const copyWarnings = async () => {
+      const text = status.activeWarnings.value.map((line) => String(line)).join('\n')
+      try {
+        await navigator.clipboard.writeText(text)
+        warningsCopied.value = true
+        if (warningsCopiedTimer !== null) clearTimeout(warningsCopiedTimer)
+        warningsCopiedTimer = setTimeout(() => {
+          warningsCopied.value = false
+          warningsCopiedTimer = null
+        }, COPIED_FEEDBACK_MS)
+      } catch {
+        /* clipboard unavailable */
+      }
+    }
+
+    const copyErrors = async () => {
+      const text = status.activeErrors.value.map((line) => String(line)).join('\n')
+      try {
+        await navigator.clipboard.writeText(text)
+        errorsCopied.value = true
+        if (errorsCopiedTimer !== null) clearTimeout(errorsCopiedTimer)
+        errorsCopiedTimer = setTimeout(() => {
+          errorsCopied.value = false
+          errorsCopiedTimer = null
+        }, COPIED_FEEDBACK_MS)
+      } catch {
+        /* clipboard unavailable */
+      }
+    }
+
+    onBeforeUnmount(() => {
+      if (warningsCopiedTimer !== null) clearTimeout(warningsCopiedTimer)
+      if (errorsCopiedTimer !== null) clearTimeout(errorsCopiedTimer)
+    })
+
+    return {
+      showStatus: preferences.showStatus,
+      notificationStyle,
+      statusStyle,
+      forceStopStyle,
+      // From status composable
+      formattedMousePosition: status.formattedMousePosition,
+      formattedSimulatorStatus: status.formattedSimulatorStatus,
+      errors: status.activeErrors,
+      warnings: status.activeWarnings,
+      betaFeatures: status.activeBetaFeatures,
+      alphaFeatures: status.activeAlphaFeatures,
+      simulatorStatus: status.simulatorStatus,
+      betaPopoverContent,
+      alphaPopoverContent,
+      formattedWarningsHtml,
+      formattedErrorsHtml,
+      // Methods
+      handleForceStop,
+      copyWarnings,
+      copyErrors,
+      warningsCopied,
+      errorsCopied,
+      onJsonToggleClick
+    }
+  }
+}
+&lt;/script>
+
+&lt;style scoped>
+.footer-left {
+  position: absolute;
+  bottom: 0;
+  z-index: -2;
+  padding-right: 80px;
+  pointer-events: none;
+}
+
+#forceStop {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  pointer-events: auto;
+}
+
+.status-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  pointer-events: auto;
+}
+
+.alpha-icon,
+.beta-icon {
+  border: 1px solid currentColor;
+  border-radius: 9px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 18px;
+  padding: 0 6px;
+  margin: 3px;
+  box-sizing: border-box;
+  font-size: 0.7em;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.alpha-icon {
+  color: #9b59b6d0;
+}
+
+.beta-icon {
+  color: #f28d28d0;
+}
+
+#forceStop .spinner-border {
+  width: 1rem;
+  height: 1rem;
+}
+
+#status {
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  border-top-right-radius: 0.5em;
+  width: fit-content;
+  pointer-events: auto;
+}
+
+.status-alert {
+  /* Inline flow (like the original): icon + text share one line box so size/align match monospace. */
+  display: inline-block;
+  width: fit-content;
+  max-width: 100%;
+  font-family: monospace;
+  padding-right: 0.35em;
+  padding-left: 0.35em;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  border-top-right-radius: 0.5em;
+  pointer-events: auto;
+}
+
+.status-alert__lead-icon {
+  display: inline-block;
+  vertical-align: middle;
+  height: 1em;
+  width: 0.8em;
+  margin-right: 0.35em;
+  box-sizing: content-box;
+}
+
+.status-alert__message {
+  display: inline;
+}
+
+.status-alert__text {
+  padding-right: 0.15em;
+}
+
+.status-alert__copy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.15em;
+  margin-bottom: 3px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  line-height: inherit;
+  vertical-align: middle;
+}
+
+.status-alert__copy:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 1px;
+}
+
+.status-alert__copy .status-alert__copy-icon {
+  display: block;
+  width: 14px;
+  height: 14px;
+  opacity: 0.88;
+}
+
+.status-alert__copy:hover .status-alert__copy-icon:not(.status-alert__copy-icon--success) {
+  opacity: 1;
+}
+
+.status-alert__copy .status-alert__copy-icon--success {
+  opacity: 1;
+  color: #198754;
+}
+
+#warning {
+  color: black;
+  background-color:rgb(255,255,0,0.8);
+}
+
+#warning .status-alert__copy {
+  color: rgba(0, 0, 0, 0.92);
+}
+
+#error {
+  color: white;
+  background-color:rgba(255,0,0,0.7);
+}
+
+#error .status-alert__copy {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+#error .status-alert__copy-icon--success {
+  color: #20c997;
+}
+
+/* Injected via v-html (JSON fold); :deep so scoped attrs apply */
+:deep(.status-alert__json-toggle) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 2px;
+  padding: 2px 5px;
+  box-sizing: border-box;
+  min-width: 1.35em;
+  min-height: 1.25em;
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  vertical-align: middle;
+  line-height: 0;
+}
+
+#warning :deep(.status-alert__json-toggle) {
+  border-color: rgba(0, 0, 0, 0.38);
+  background: rgba(0, 0, 0, 0.06);
+}
+
+#error :deep(.status-alert__json-toggle) {
+  border-color: rgba(255, 255, 255, 0.45);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+:deep(.status-alert__json-toggle:focus-visible) {
+  outline: 2px solid currentColor;
+  outline-offset: 1px;
+}
+
+:deep(.status-alert__json-toggle-icon) {
+  display: block;
+  opacity: 0.9;
+}
+
+:deep(.status-alert__json-expanded) {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+&lt;/style>
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-CanvasContainer.html">CanvasContainer</a></li><li><a href="module-ColorModeModal.html">ColorModeModal</a></li><li><a href="module-ColorPicker.html">ColorPicker</a></li><li><a href="module-DashPicker.html">DashPicker</a></li><li><a href="module-FileBar.html">FileBar</a></li><li><a href="module-FillControl.html">FillControl</a></li><li><a href="module-FontPicker.html">FontPicker</a></li><li><a href="module-Footer.html">Footer</a></li><li><a href="module-ImportShapesModal.html">ImportShapesModal</a></li><li><a href="module-LanguageModal.html">LanguageModal</a></li><li><a href="module-LayoutAidsBar.html">LayoutAidsBar</a></li><li><a href="module-ModuleModal.html">ModuleModal</a></li><li><a href="module-ModuleTools.html">ModuleTools</a></li><li><a href="module-MoreToolsCollapsible.html">MoreToolsCollapsible</a></li><li><a href="module-NumberControl.html">NumberControl</a></li><li><a href="module-ObjBar.html">ObjBar</a></li><li><a href="module-PointControl.html">PointControl</a></li><li><a href="module-PopupSelectControl.html">PopupSelectControl</a></li><li><a href="module-RayDensityBar.html">RayDensityBar</a></li><li><a href="module-SaveModal.html">SaveModal</a></li><li><a href="module-SettingsBar.html">SettingsBar</a></li><li><a href="module-SettingsList.html">SettingsList</a></li><li><a href="module-SettingsWarning.html">SettingsWarning</a></li><li><a href="module-Sidebar.html">Sidebar</a></li><li><a href="module-SimulatorControls.html">SimulatorControls</a></li><li><a href="module-SizePicker.html">SizePicker</a></li><li><a href="module-StatusArea.html">StatusArea</a></li><li><a href="module-StrokeControl.html">StrokeControl</a></li><li><a href="module-TextControl.html">TextControl</a></li><li><a href="module-TextInput.html">TextInput</a></li><li><a href="module-ThemeModal.html">ThemeModal</a></li><li><a href="module-ThemeOptionsList.html">ThemeOptionsList</a></li><li><a href="module-ToggleControl.html">ToggleControl</a></li><li><a href="module-ToolItem.html">ToolItem</a></li><li><a href="module-Toolbar.html">Toolbar</a></li><li><a href="module-ToolsBar.html">ToolsBar</a></li><li><a href="module-ToolsCategory.html">ToolsCategory</a></li><li><a href="module-ToolsList.html">ToolsList</a></li><li><a href="module-ViewBar.html">ViewBar</a></li><li><a href="module-VirtualKeyboard.html">VirtualKeyboard</a></li><li><a href="module-WelcomeMessage.html">WelcomeMessage</a></li><li><a href="module-ZoomControl.html">ZoomControl</a></li><li><a href="module-app_.html">app</a></li><li><a href="module-shapeImport.html">shapeImport</a></li><li><a href="module-svgImport.html">svgImport</a></li></ul><h3>Namespaces</h3><ul><li><a href="geometry.html">geometry</a></li><li><a href="sceneObjs.html">sceneObjs</a></li></ul><h3>Classes</h3><ul><li><a href="BaseFilter.html">BaseFilter</a></li><li><a href="BaseGlass.html">BaseGlass</a></li><li><a href="BaseGrinGlass.html">BaseGrinGlass</a></li><li><a href="BaseSceneObj.html">BaseSceneObj</a></li><li><a href="CanvasRenderer.html">CanvasRenderer</a></li><li><a href="Editor.html">Editor</a></li><li><a href="FloatColorRenderer.html">FloatColorRenderer</a></li><li><a href="JsonEditorService.html">JsonEditorService</a></li><li><a href="Mouse.html">Mouse</a></li><li><a href="ObjBar.html">ObjBar</a></li><li><a href="Scene.html">Scene</a></li><li><a href="Simulator.html">Simulator</a></li><li><a href="TexExprParser.html">TexExprParser</a></li><li><a href="sceneObjs.AngleSource.html">AngleSource</a></li><li><a href="sceneObjs.Aperture.html">Aperture</a></li><li><a href="sceneObjs.ArcMirror.html">ArcMirror</a></li><li><a href="sceneObjs.BaseCustomSurface.html">BaseCustomSurface</a></li><li><a href="sceneObjs.Beam.html">Beam</a></li><li><a href="sceneObjs.BeamSplitter.html">BeamSplitter</a></li><li><a href="sceneObjs.Blocker.html">Blocker</a></li><li><a href="sceneObjs.CircleBlocker.html">CircleBlocker</a></li><li><a href="sceneObjs.CircleGlass.html">CircleGlass</a></li><li><a href="sceneObjs.CircleGrinGlass.html">CircleGrinGlass</a></li><li><a href="sceneObjs.ConcaveDiffractionGrating.html">ConcaveDiffractionGrating</a></li><li><a href="sceneObjs.CropBox.html">CropBox</a></li><li><a href="sceneObjs.CurveGlass.html">CurveGlass</a></li><li><a href="sceneObjs.CurveGrinGlass.html">CurveGrinGlass</a></li><li><a href="sceneObjs.CurveMirror.html">CurveMirror</a></li><li><a href="sceneObjs.CustomArcSurface.html">CustomArcSurface</a></li><li><a href="sceneObjs.CustomCurveSurface.html">CustomCurveSurface</a></li><li><a href="sceneObjs.CustomGlass.html">CustomGlass</a></li><li><a href="sceneObjs.CustomMirror.html">CustomMirror</a></li><li><a href="sceneObjs.CustomParamSurface.html">CustomParamSurface</a></li><li><a href="sceneObjs.CustomSurface.html">CustomSurface</a></li><li><a href="sceneObjs.Detector.html">Detector</a></li><li><a href="sceneObjs.DiffractionGrating.html">DiffractionGrating</a></li><li><a href="sceneObjs.Drawing.html">Drawing</a></li><li><a href="sceneObjs.Glass.html">Glass</a></li><li><a href="sceneObjs.GrinGlass.html">GrinGlass</a></li><li><a href="sceneObjs.Handle.html">Handle</a></li><li><a href="sceneObjs.IdealLens.html">IdealLens</a></li><li><a href="sceneObjs.IdealMirror.html">IdealMirror</a></li><li><a href="sceneObjs.LineArrow.html">LineArrow</a></li><li><a href="sceneObjs.Mirror.html">Mirror</a></li><li><a href="sceneObjs.ModuleObj.html">ModuleObj</a></li><li><a href="sceneObjs.ParabolicMirror.html">ParabolicMirror</a></li><li><a href="sceneObjs.ParamGlass.html">ParamGlass</a></li><li><a href="sceneObjs.ParamGrinGlass.html">ParamGrinGlass</a></li><li><a href="sceneObjs.ParamMirror.html">ParamMirror</a></li><li><a href="sceneObjs.PlaneGlass.html">PlaneGlass</a></li><li><a href="sceneObjs.PointSource.html">PointSource</a></li><li><a href="sceneObjs.Protractor.html">Protractor</a></li><li><a href="sceneObjs.Ruler.html">Ruler</a></li><li><a href="sceneObjs.SingleRay.html">SingleRay</a></li><li><a href="sceneObjs.SphericalLens.html">SphericalLens</a></li><li><a href="sceneObjs.TextLabel.html">TextLabel</a></li></ul><h3>Events</h3><ul><li><a href="Editor.html#event:handleCreationHint">handleCreationHint</a></li><li><a href="Editor.html#event:mouseCoordinateChange">mouseCoordinateChange</a></li><li><a href="Editor.html#event:newAction">newAction</a></li><li><a href="Editor.html#event:newUndoPoint">newUndoPoint</a></li><li><a href="Editor.html#event:objectBodyClick">objectBodyClick</a></li><li><a href="Editor.html#event:positioningEnd">positioningEnd</a></li><li><a href="Editor.html#event:positioningStart">positioningStart</a></li><li><a href="Editor.html#event:redo">redo</a></li><li><a href="Editor.html#event:requestPositioningComfirm">requestPositioningComfirm</a></li><li><a href="Editor.html#event:scaleChange">scaleChange</a></li><li><a href="Editor.html#event:sceneLoaded">sceneLoaded</a></li><li><a href="Editor.html#event:selectionChange">selectionChange</a></li><li><a href="Editor.html#event:undo">undo</a></li><li><a href="ObjBar.html#event:edit">edit</a></li><li><a href="ObjBar.html#event:editEnd">editEnd</a></li><li><a href="ObjBar.html#event:requestUpdate">requestUpdate</a></li><li><a href="ObjBar.html#event:showAdvancedEnabled">showAdvancedEnabled</a></li><li><a href="Simulator.html#event:lightLayerSyncChange">lightLayerSyncChange</a></li><li><a href="Simulator.html#event:simulationComplete">simulationComplete</a></li><li><a href="Simulator.html#event:simulationPause">simulationPause</a></li><li><a href="Simulator.html#event:simulationStart">simulationStart</a></li><li><a href="Simulator.html#event:simulationStop">simulationStop</a></li><li><a href="Simulator.html#event:update">update</a></li><li><a href="global.html#event:deviceChange">deviceChange</a></li><li><a href="global.html#event:requestUpdateErrorAndWarning">requestUpdateErrorAndWarning</a></li><li><a href="global.html#event:webglContextLost">webglContextLost</a></li></ul><h3>Global</h3><ul><li><a href="global.html#CircleObjMixin">CircleObjMixin</a></li><li><a href="global.html#CurveObjMixin">CurveObjMixin</a></li><li><a href="global.html#DATA_VERSION">DATA_VERSION</a></li><li><a href="global.html#FN1">FN1</a></li><li><a href="global.html#FORMULA_MODULE_TOOLTIP_MAX_LINES">FORMULA_MODULE_TOOLTIP_MAX_LINES</a></li><li><a href="global.html#FOR_IF_DEFAULTS">FOR_IF_DEFAULTS</a></li><li><a href="global.html#GREEK_SYMBOL">GREEK_SYMBOL</a></li><li><a href="global.html#JSON_INNER_COLLAPSE_THRESHOLD">JSON_INNER_COLLAPSE_THRESHOLD</a></li><li><a href="global.html#LITERAL_NUMERIC_TOKEN">LITERAL_NUMERIC_TOKEN</a></li><li><a href="global.html#LineObjMixin">LineObjMixin</a></li><li><a href="global.html#MODULE_EDITOR_LIST">MODULE_EDITOR_LIST</a></li><li><a href="global.html#PAREN_HIGHLIGHT_MATCH_CLASS">PAREN_HIGHLIGHT_MATCH_CLASS</a></li><li><a href="global.html#ParamCurveObjMixin">ParamCurveObjMixin</a></li><li><a href="global.html#_ensureCubicBezierPathReady">_ensureCubicBezierPathReady</a></li><li><a href="global.html#_pathPairToHermiteBezier">_pathPairToHermiteBezier</a></li><li><a href="global.html#applyTextareaAutoResize">applyTextareaAutoResize</a></li><li><a href="global.html#buildModuleInstanceTooltipHtml">buildModuleInstanceTooltipHtml</a></li><li><a href="global.html#buildParenHighlightHtml">buildParenHighlightHtml</a></li><li><a href="global.html#checkRayIntersectsShape">checkRayIntersectsShape</a></li><li><a href="global.html#collapseRedundantNestedParentheses">collapseRedundantNestedParentheses</a></li><li><a href="global.html#collectPointPaths">collectPointPaths</a></li><li><a href="global.html#compileParametricDerivative">compileParametricDerivative</a></li><li><a href="global.html#controlPointIndexAfterReorder">controlPointIndexAfterReorder</a></li><li><a href="global.html#countIntersections">countIntersections</a></li><li><a href="global.html#deepEqual">deepEqual</a></li><li><a href="global.html#distancePointToSegment">distancePointToSegment</a></li><li><a href="global.html#draftsToCommittedValue">draftsToCommittedValue</a></li><li><a href="global.html#drawConstruction">drawConstruction</a></li><li><a href="global.html#drawControlHandles">drawControlHandles</a></li><li><a href="global.html#drawPath">drawPath</a></li><li><a href="global.html#equationDisplayToValue">equationDisplayToValue</a></li><li><a href="global.html#equationValueForListDisplay">equationValueForListDisplay</a></li><li><a href="global.html#equationValueToDisplay">equationValueToDisplay</a></li><li><a href="global.html#extractNonDefaults">extractNonDefaults</a></li><li><a href="global.html#findMatchingBraceEnd">findMatchingBraceEnd</a></li><li><a href="global.html#findMatchingParenPair">findMatchingParenPair</a></li><li><a href="global.html#findValidJsonObjectSpans">findValidJsonObjectSpans</a></li><li><a href="global.html#formatKeyPath">formatKeyPath</a></li><li><a href="global.html#formatStatusLineHtml">formatStatusLineHtml</a></li><li><a href="global.html#formatTooltipNumber">formatTooltipNumber</a></li><li><a href="global.html#formulaDisplayToValue">formulaDisplayToValue</a></li><li><a href="global.html#getAllByKeyPath">getAllByKeyPath</a></li><li><a href="global.html#getNextModuleIdentifierName">getNextModuleIdentifierName</a></li><li><a href="global.html#getRayIntersections">getRayIntersections</a></li><li><a href="global.html#getRayIntersectionsCubicBezier">getRayIntersectionsCubicBezier</a></li><li><a href="global.html#getRayIntersectionsLinear">getRayIntersectionsLinear</a></li><li><a href="global.html#initPath">initPath</a></li><li><a href="global.html#isAtomicExpr">isAtomicExpr</a></li><li><a href="global.html#isClosed">isClosed</a></li><li><a href="global.html#isFormula">isFormula</a></li><li><a href="global.html#isFormulaValueSupported">isFormulaValueSupported</a></li><li><a href="global.html#isInside">isInside</a></li><li><a href="global.html#isLiteralBooleanFieldValue">isLiteralBooleanFieldValue</a></li><li><a href="global.html#isLiteralNumericFieldValue">isLiteralNumericFieldValue</a></li><li><a href="global.html#isNonBasicProperty">isNonBasicProperty</a></li><li><a href="global.html#isNonDefault">isNonDefault</a></li><li><a href="global.html#isOnBoundary">isOnBoundary</a></li><li><a href="global.html#isOutside">isOutside</a></li><li><a href="global.html#isPointHardcoded">isPointHardcoded</a></li><li><a href="global.html#isPositivelyOriented">isPositivelyOriented</a></li><li><a href="global.html#isSourceIndexArray">isSourceIndexArray</a></li><li><a href="global.html#isTextareaAutoResizeMeasurable">isTextareaAutoResizeMeasurable</a></li><li><a href="global.html#latexToMathJS">latexToMathJS</a></li><li><a href="global.html#mathJSToLatex">mathJSToLatex</a></li><li><a href="global.html#mergeWithDefaults">mergeWithDefaults</a></li><li><a href="global.html#newlinesToBr">newlinesToBr</a></li><li><a href="global.html#nextDuplicateIdentifier">nextDuplicateIdentifier</a></li><li><a href="global.html#normalizeParsedEquationAST">normalizeParsedEquationAST</a></li><li><a href="global.html#observeTextareasResizeWhenVisible">observeTextareasResizeWhenVisible</a></li><li><a href="global.html#populateObjBarShape">populateObjBarShape</a></li><li><a href="global.html#promptNewModuleName">promptNewModuleName</a></li><li><a href="global.html#promptNewModuleNameForHandle">promptNewModuleNameForHandle</a></li><li><a href="global.html#sanitizePastedJson">sanitizePastedJson</a></li><li><a href="global.html#setByKeyPath">setByKeyPath</a></li><li><a href="global.html#setViewportSize">setViewportSize</a></li><li><a href="global.html#splitTexCommaArgs">splitTexCommaArgs</a></li><li><a href="global.html#splitTopLevelCommas">splitTopLevelCommas</a></li><li><a href="global.html#stripJsonComments">stripJsonComments</a></li><li><a href="global.html#stripMarkdownCodeFence">stripMarkdownCodeFence</a></li><li><a href="global.html#stripParenChain">stripParenChain</a></li><li><a href="global.html#stripRedundantParensForLatex">stripRedundantParensForLatex</a></li><li><a href="global.html#suggestNewModuleName">suggestNewModuleName</a></li><li><a href="global.html#templatePointLockState">templatePointLockState</a></li><li><a href="global.html#toJSON">toJSON</a></li><li><a href="global.html#tooltipAllTupleRowsConstant">tooltipAllTupleRowsConstant</a></li><li><a href="global.html#tooltipMantissaDecimalPlaces">tooltipMantissaDecimalPlaces</a></li><li><a href="global.html#tooltipPointTupleEqual">tooltipPointTupleEqual</a></li><li><a href="global.html#tooltipValueEqualForCollapse">tooltipValueEqualForCollapse</a></li><li><a href="global.html#tracePath">tracePath</a></li><li><a href="global.html#unwrapParenInCallableArgs">unwrapParenInCallableArgs</a></li><li><a href="global.html#useParenHighlightLayer">useParenHighlightLayer</a></li><li><a href="global.html#usePreferencesStore">usePreferencesStore</a></li><li><a href="global.html#useSceneStore">useSceneStore</a></li><li><a href="global.html#useStatus">useStatus</a></li><li><a href="global.html#useStatusStore">useStatusStore</a></li><li><a href="global.html#useThemeStore">useThemeStore</a></li><li><a href="global.html#vTooltipPopover">vTooltipPopover</a></li><li><a href="global.html#validateNestedKeys">validateNestedKeys</a></li><li><a href="global.html#valueToFormulaDisplay">valueToFormulaDisplay</a></li><li><a href="global.html#versionUpdate">versionUpdate</a></li><li><a href="global.html#viewportCenterSceneCoords">viewportCenterSceneCoords</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

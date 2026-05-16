@@ -1,0 +1,77 @@
+{
+  "galleryPage": {
+    "title": "Ray Optics Galerisi",
+    "description": "Bu, optik konusunda etkileşimli demolar olarak kullanılabilen [web uygulaması](/simulator) kullanılarak yapılan simülasyonların bir koleksiyonudur. Yeni öğeler ekleyerek katkıda bulunabilirsiniz. Daha fazla bilgi için [katkı kılavuzuna](/contributing/gallery) bakın. Bir hatayı bildirmek için lütfen [GitHub'da bir sorun açın](/github/issues) veya [ray-optics@phydemo.app](/email) adresine e-posta gönderin.",
+    "categories": {
+      "title": "Kategoriler",
+      "reflection": "Yansıma",
+      "refraction": "Kırılma",
+      "lens": "Mercek",
+      "combinationOfLenses": "Merceklerin Kombinasyonu",
+      "grinOptics": "Gradyan-indeks optiği",
+      "miscellaneous": "Çeşitli"
+    },
+    "contributors_one": "Katkıda bulunan: {{contributors}}",
+    "contributors_other": "Katkıda bulunanlar: {{contributors}}",
+    "openInSimulator": "Simülatörde aç"
+  },
+  "galleryData": {
+    "common": {
+      "warningthesequenceof": "Uyarı: Işığın görünme süresi, ışığın gerçek hızını temsil etmez - sadece son görüntü anlamlıdır."
+    },
+    "imagesFormedByTwoMirrors": {
+      "title": "İki Aynadan Görüntüler",
+      "description": "Bu simülasyon, iki ayna tarafından oluşturulan görüntüleri göstermektedir. Yeşil “L” nesnedir. İki ayna arasındaki açı \\(\\frac{360^\\circ}{n}\\) ise, \\(n-1\\) sanal görüntü (turuncu L'ler) oluşacaktır. Aynanın uç noktasını sürükleyerek aralarındaki açıyı değiştirebilirsiniz."
+    },
+    "parabolicMirror": {
+      "title": "Parabolik Ayna",
+      "description": "Bu simülasyon, parabolik aynanın odaklama özelliğini göstermektedir."
+    },
+    "hyperbolicMirror": {
+      "title": "Hiperbolik ayna",
+      "description": "Bu, hiperbolik aynanın yansıma özelliğinin bir göstergesidir: Bir odaktan hiperbolik aynaya doğru hareket eden ışık ışınları, diğer odaktan uzaklaşarak yansır.\n\nHiperbolin iki odak noktası sapmasız (aberasyonusuz) noktalardır (bkz. [Aplanatik noktalar](/gallery/aplanatic-points)).",
+      "theorangeraysareimag": "Turuncu ışınlar, yansıyan sarı ışınlardan uzayan hayali ışınlardır.\nBu hayali ışınlar diğer odak noktasında birleşir.",
+      "pointlightsourceaton": "Odak noktalarından birinde noktasal ışık kaynağı"
+    },
+    "retroreflectors": {
+      "title": "Geri yansıtıcılar (reflektörler)",
+      "description": "Bu, iki tür retroreflektörün simülasyonudur:\n\n1. Köşe retroreflektörü.\n2. Kedi gözü retroreflektörü.",
+      "dragtorotatethebeam": "Sürükleyerek\nışını döndürün",
+      "catseyeretroreflecto": "Kedi gözü retroreflektör",
+      "cornerretroreflector": "Köşe retroreflektör"
+    },
+    "periscope": {
+      "title": "Periskop",
+      "description": "Bu, iki düz ayna ve bazı ışık engelleyicilerden yapılmış bir periskop simülasyonudur.",
+      "observerseyenottosca": "Gözlemcinin gözü (ölçekli değildir)"
+    },
+    "newtonianTelescope": {
+      "title": "Newtoniyen Teleskop",
+      "description": "Bu, Plössl okülerli bir Newtoniyen teleskop modelidir."
+    },
+    "classicalCassegrainTelescopes": {
+      "title": "Klasik Cassegrain teleskoplar",
+      "description": "Bu simülasyon, iki tür klasik Cassegrain teleskopu göstermektedir.",
+      "concaveparabolicmirr": "içbükey parabolik ayna",
+      "convexhyperbolicmirr": "dışbükey hiperbolik ayna",
+      "convexparabolicmirro": "dışbükey parabolik ayna",
+      "classicalcassegrain": "klasik Cassegrain",
+      "collimator": "kolimatör"
+    },
+    "penroseUnilluminableRoom": {
+      "title": "Penrose aydınlatılamayan oda",
+      "description": "Penrose aydınlatılamayan oda, eliptik, dairesel ve doğrusal aynalardan oluşur. Bu odanın ilginç bir özelliği, oda içindeki bir nokta kaynağının (yeşil) nereye yerleştirilirse yerleştirilsin odanın tamamını aydınlatmamasıdır. Yeşil noktayı sürükleyerek kaynağı hareket ettirebilirsiniz.",
+      "nomatterwhereyouputt": "Nokta kaynağı nereye koyarsanız koyun, tüm odayı aydınlatmayacaktır."
+    },
+    "opticalCavity": {
+      "title": "İki aynalı optik boşluk",
+      "description": "Bu, iki aynalı bir optik boşluk içindeki ışınların simülasyonudur. Boşluğun uzunluğu \\(d\\) ve aynalarının eğrilik yarıçapları sırasıyla \\(R_1\\) ve \\(R_2\\) (içbükey ayna için \\(R>0\\) kuralı geçerlidir) olduğunda, o zaman optik boşluk kararlıdır (yani, aynalardan birinden diğer aynaya doğru yayılan her ışın için, yeterince yüksek aynalarda sapmayan bir yörünge garanti edilir), ancak ve ancak \\(0\\leq (1-\\frac {d}{R_1})(1-\\frac {d}{R_2})\\leq 1\\) ise. Bu simülasyonda, aynaların ideal kavisli aynalar olduğunu varsayıyoruz, yani \\(f=\\frac{R}{2}\\), bu da önceki kararlılık koşulunu \\(0\\leq (1-\\frac {d}{2f_1})(1-\\frac {d}{2f_2})\\leq 1\\) olarak gösterir. [Burada](/gallery/resonator) paraksiyel yaklaşımsal olarak ilk kararlılık koşulunun geçerli olduğu, küresel aynalarla yapılan benzer bir simülasyon bulunmaktadır.",
+      "clickholdleftmouseto": "Işını hareket ettirmek için\nfarenin sol tuşunu basılı tutun",
+      "dragtomovetheidealmi": "Sürükleyerek hareket ettirin\nideal ayna",
+      "d400intheresonatorsb": "Aşağıdaki rezonatörlerde d = 400",
+      "confocalresonator": "Eş odaklı (Konfokal) rezonatör",
+      "concentricresonator": "Eşmerkezli rezonatör",
+      "concaveconvexresonat": "İçbükey-dışbükey rezonatör"
+    }
+  }
+}

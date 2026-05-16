@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: app/components/sidebar/SidebarItemList.vue</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: app/components/sidebar/SidebarItemList.vue</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>&lt;!--
+  Copyright 2026 The Ray Optics Simulation authors and contributors
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+&lt;template>
+  &lt;div class="sidebar-item-list" role="list" ref="listRoot" @dragover.prevent="onDragOverList" @drop.prevent="onDropList">
+    &lt;div class="sidebar-item-list-rows">
+      &lt;div
+        v-for="(item, index) in items"
+        :key="itemKeyValue(item, index)"
+      class="sidebar-item-list-row"
+        :class="rowClasses(index)"
+        :style="rowStyle(index)"
+        :data-index="index"
+        role="listitem"
+        @dragover.prevent
+        @dragenter.prevent="onDragEnter(index)"
+        @drop="onDrop(index)"
+      @mouseenter="onRowHover(item, index)"
+      @mouseleave="onRowLeave"
+      @click="onRowClick(item, index)"
+      >
+        &lt;div class="sidebar-item-list-left">
+        &lt;label
+          v-if="showCheckbox"
+          class="sidebar-item-checkbox"
+          :class="{ 'is-checked': isSelected(item, index) }"
+          @click.stop
+        >
+            &lt;input
+              type="checkbox"
+              class="sidebar-item-checkbox-input"
+              :checked="isSelected(item, index)"
+              @change="onToggleSelect($event, item, index)"
+            >
+            &lt;span class="sidebar-item-checkbox-mark" aria-hidden="true">&lt;/span>
+          &lt;/label>
+          &lt;button
+            type="button"
+            class="sidebar-item-drag sidebar-item-control"
+            draggable="true"
+            aria-label="Drag to reorder"
+            @dragstart="onDragStart($event, index)"
+            @dragend="onDragEnd"
+            @pointerdown="onPointerDragStart($event, index)"
+          @click.stop
+          >
+            &lt;svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" fill="currentColor" viewBox="0 0 16 16">
+              &lt;path d="M4 3.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 5a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 5a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm8-10a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 5a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+            &lt;/svg>
+          &lt;/button>
+        &lt;/div>
+
+        &lt;div class="sidebar-item-list-content">
+          &lt;slot name="content" :item="item" :index="index" />
+        &lt;/div>
+
+        &lt;div class="sidebar-item-list-actions">
+          &lt;button
+            type="button"
+            class="sidebar-item-action sidebar-item-control"
+            aria-label="Duplicate item"
+            @click="$emit('duplicate', item, index)"
+          @click.stop
+          >
+            &lt;svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" fill="currentColor" viewBox="0 0 9.766 9.766">
+              &lt;g transform="matrix(.01973 0 0 .01973 .0020532 .061476)">
+                &lt;path d="m314.25 85.4h-227c-21.3 0-38.6 17.3-38.6 38.6v325.7c0 21.3 17.3 38.6 38.6 38.6h227c21.3 0 38.6-17.3 38.6-38.6v-325.7c-0.1-21.3-17.4-38.6-38.6-38.6zm11.5 364.2c0 6.4-5.2 11.6-11.6 11.6h-227c-6.4 0-11.6-5.2-11.6-11.6v-325.6c0-6.4 5.2-11.6 11.6-11.6h227c6.4 0 11.6 5.2 11.6 11.6z"/>
+                &lt;path d="m401.05 0h-227c-21.3 0-38.6 17.3-38.6 38.6 0 7.5 6 13.5 13.5 13.5s13.5-6 13.5-13.5c0-6.4 5.2-11.6 11.6-11.6h227c6.4 0 11.6 5.2 11.6 11.6v325.7c0 6.4-5.2 11.6-11.6 11.6-7.5 0-13.5 6-13.5 13.5s6 13.5 13.5 13.5c21.3 0 38.6-17.3 38.6-38.6v-325.7c0-21.3-17.3-38.6-38.6-38.6z"/>
+              &lt;/g>
+            &lt;/svg>
+          &lt;/button>
+          &lt;button
+            type="button"
+            class="sidebar-item-action sidebar-item-control"
+            aria-label="Delete item"
+            @click="$emit('remove', item, index)"
+          @click.stop
+          >
+            &lt;svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+              &lt;path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+            &lt;/svg>
+          &lt;/button>
+        &lt;/div>
+      &lt;/div>
+    &lt;/div>
+
+    &lt;button v-if="showAddButton" type="button" class="sidebar-item-list-add" @click="$emit('create')">
+      &lt;svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+        &lt;path d="M8 4a.5.5 0 0 1 .5.5V7.5H11.5a.5.5 0 0 1 0 1H8.5V11.5a.5.5 0 0 1-1 0V8.5H4.5a.5.5 0 0 1 0-1H7.5V4.5A.5.5 0 0 1 8 4z"/>
+      &lt;/svg>
+      &lt;span>{{ addLabel }}&lt;/span>
+    &lt;/button>
+  &lt;/div>
+&lt;/template>
+
+&lt;script>
+export default {
+  name: 'SidebarItemList',
+  props: {
+    items: {
+      type: Array,
+      default: () => []
+    },
+    selectedIds: {
+      type: Array,
+      default: () => []
+    },
+    itemKey: {
+      type: String,
+      default: 'id'
+    },
+    activeId: {
+      type: [String, Number, null],
+      default: null
+    },
+    showAddButton: {
+      type: Boolean,
+      default: true
+    },
+    addLabel: {
+      type: String,
+      default: ''
+    },
+    /** When false, row selection checkbox is omitted (e.g. nested array items with no selection wiring). */
+    showCheckbox: {
+      type: Boolean,
+      default: true
+    }
+  },
+  emits: ['update:selectedIds', 'remove', 'duplicate', 'reorder', 'create', 'selection-change', 'hover', 'select'],
+  data() {
+    return {
+      dragIndex: null,
+      hoverIndex: null,
+      rowShiftPx: 12,
+      didDrop: false,
+      pointerDragActive: false,
+      pointerId: null
+    }
+  },
+  beforeUnmount() {
+    this.detachPointerListeners()
+  },
+  methods: {
+    itemKeyValue(item, index) {
+      if (item &amp;&amp; Object.prototype.hasOwnProperty.call(item, this.itemKey)) {
+        return item[this.itemKey]
+      }
+      return index
+    },
+    isSelected(item, index) {
+      const key = this.itemKeyValue(item, index)
+      return this.selectedIds.includes(key)
+    },
+    isActive(item, index) {
+      const key = this.itemKeyValue(item, index)
+      return this.activeId !== null &amp;&amp; this.activeId === key
+    },
+    onToggleSelect(event, item, index) {
+      const key = this.itemKeyValue(item, index)
+      const next = new Set(this.selectedIds)
+      if (event.target.checked) {
+        next.add(key)
+      } else {
+        next.delete(key)
+      }
+      const nextArray = Array.from(next)
+      this.$emit('update:selectedIds', nextArray)
+      this.$emit('selection-change', {
+        item,
+        index,
+        selected: event.target.checked,
+        selectedIds: nextArray
+      })
+    },
+    onDragStart(event, index) {
+      if (event?.dataTransfer) {
+        event.dataTransfer.effectAllowed = 'move'
+        event.dataTransfer.setData('text/plain', `${index}`)
+      }
+      this.dragIndex = index
+      this.didDrop = false
+    },
+    onDragEnd() {
+      if (this.dragIndex !== null &amp;&amp; this.hoverIndex !== null &amp;&amp; !this.didDrop) {
+        this.emitReorder(this.hoverIndex)
+      }
+      this.resetDragState()
+    },
+    onDragOverList(event) {
+      if (this.dragIndex === null) {
+        return
+      }
+      const index = this.indexFromEventTarget(event.target)
+      if (index !== null) {
+        this.hoverIndex = index
+        return
+      }
+      const listBounds = this.getListBounds()
+      if (!listBounds) {
+        return
+      }
+      if (event.clientY &lt;= listBounds.top) {
+        this.hoverIndex = 0
+      } else if (event.clientY >= listBounds.bottom) {
+        this.hoverIndex = Math.max(this.items.length - 1, 0)
+      }
+    },
+    onDropList() {
+      if (this.dragIndex === null || this.hoverIndex === null) {
+        this.resetDragState()
+        return
+      }
+      this.emitReorder(this.hoverIndex)
+      this.didDrop = true
+      this.resetDragState()
+    },
+    onDragEnter(index) {
+      if (this.dragIndex === null) {
+        return
+      }
+      this.hoverIndex = index
+    },
+    onDrop(targetIndex) {
+      if (this.dragIndex === null || this.dragIndex === targetIndex) {
+        return
+      }
+      this.emitReorder(targetIndex)
+      this.didDrop = true
+      this.resetDragState()
+    },
+    onRowHover(item, index) {
+      this.$emit('hover', { item, index })
+    },
+    onRowLeave() {
+      this.$emit('hover', { item: null, index: -1 })
+    },
+    onRowClick(item, index) {
+      this.$emit('select', { item, index })
+    },
+    onPointerDragStart(event, index) {
+      if (event.pointerType === 'mouse') {
+        return
+      }
+      event.preventDefault()
+      this.pointerDragActive = true
+      this.pointerId = event.pointerId
+      this.dragIndex = index
+      this.hoverIndex = index
+      this.didDrop = false
+      this.attachPointerListeners()
+    },
+    onPointerMove(event) {
+      if (!this.pointerDragActive || (this.pointerId !== null &amp;&amp; event.pointerId !== this.pointerId)) {
+        return
+      }
+      const index = this.indexFromPoint(event.clientX, event.clientY)
+      if (index !== null) {
+        this.hoverIndex = index
+        return
+      }
+      const listBounds = this.getListBounds()
+      if (!listBounds) {
+        return
+      }
+      if (event.clientY &lt;= listBounds.top) {
+        this.hoverIndex = 0
+      } else if (event.clientY >= listBounds.bottom) {
+        this.hoverIndex = Math.max(this.items.length - 1, 0)
+      }
+    },
+    onPointerUp(event) {
+      if (!this.pointerDragActive || (this.pointerId !== null &amp;&amp; event.pointerId !== this.pointerId)) {
+        return
+      }
+      if (this.dragIndex !== null &amp;&amp; this.hoverIndex !== null &amp;&amp; this.dragIndex !== this.hoverIndex) {
+        this.emitReorder(this.hoverIndex)
+      }
+      this.detachPointerListeners()
+      this.resetDragState()
+    },
+    onPointerCancel(event) {
+      if (this.pointerId !== null &amp;&amp; event.pointerId !== this.pointerId) {
+        return
+      }
+      this.detachPointerListeners()
+      this.resetDragState()
+    },
+    emitReorder(targetIndex) {
+      if (this.dragIndex === null || this.dragIndex === targetIndex) {
+        return
+      }
+      this.$emit('reorder', {
+        fromIndex: this.dragIndex,
+        toIndex: targetIndex,
+        item: this.items[this.dragIndex]
+      })
+    },
+    resetDragState() {
+      this.dragIndex = null
+      this.hoverIndex = null
+      this.didDrop = false
+      this.pointerDragActive = false
+      this.pointerId = null
+    },
+    indexFromEventTarget(target) {
+      const row = target?.closest ? target.closest('.sidebar-item-list-row') : null
+      if (!row || !row.dataset) {
+        return null
+      }
+      const index = Number(row.dataset.index)
+      return Number.isNaN(index) ? null : index
+    },
+    indexFromPoint(clientX, clientY) {
+      if (typeof document === 'undefined') {
+        return null
+      }
+      const el = document.elementFromPoint(clientX, clientY)
+      if (!el) {
+        return null
+      }
+      return this.indexFromEventTarget(el)
+    },
+    getListBounds() {
+      const listRoot = this.$refs.listRoot
+      if (!listRoot || typeof listRoot.getBoundingClientRect !== 'function') {
+        return null
+      }
+      return listRoot.getBoundingClientRect()
+    },
+    attachPointerListeners() {
+      window.addEventListener('pointermove', this.onPointerMove)
+      window.addEventListener('pointerup', this.onPointerUp)
+      window.addEventListener('pointercancel', this.onPointerCancel)
+    },
+    detachPointerListeners() {
+      window.removeEventListener('pointermove', this.onPointerMove)
+      window.removeEventListener('pointerup', this.onPointerUp)
+      window.removeEventListener('pointercancel', this.onPointerCancel)
+    },
+    rowClasses(index) {
+      const isDropTarget = this.hoverIndex === index &amp;&amp; this.dragIndex !== null
+      return {
+        'is-dragging': this.dragIndex === index,
+        'is-drop-target': isDropTarget,
+        'is-drop-before': isDropTarget &amp;&amp; this.dragIndex > index,
+        'is-drop-after': isDropTarget &amp;&amp; this.dragIndex &lt; index,
+        'is-selected': this.isActive(this.items[index], index)
+      }
+    },
+    rowStyle(index) {
+      if (this.dragIndex === null || this.hoverIndex === null || this.dragIndex === this.hoverIndex) {
+        return null
+      }
+      const isBetweenDown = this.dragIndex &lt; this.hoverIndex
+        &amp;&amp; index > this.dragIndex
+        &amp;&amp; index &lt;= this.hoverIndex
+      const isBetweenUp = this.dragIndex > this.hoverIndex
+        &amp;&amp; index >= this.hoverIndex
+        &amp;&amp; index &lt; this.dragIndex
+      if (isBetweenDown) {
+        return { transform: `translateY(-${this.rowShiftPx}px)` }
+      }
+      if (isBetweenUp) {
+        return { transform: `translateY(${this.rowShiftPx}px)` }
+      }
+      return null
+    }
+  }
+}
+&lt;/script>
+
+&lt;style scoped>
+.sidebar-item-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar-item-list-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+}
+
+.sidebar-item-list-row {
+  display: flex;
+  align-items: stretch;
+  padding: 2px 5px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  position: relative;
+}
+
+.sidebar-item-list-row.is-dragging {
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+  transform: scale(1.01);
+  z-index: 2;
+}
+
+.sidebar-item-list-row.is-drop-target {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-item-list-row.is-selected {
+  background: rgba(86, 219, 240, 0.15);
+}
+
+.sidebar-item-list-row.is-drop-before::before,
+.sidebar-item-list-row.is-drop-after::after {
+  content: '';
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  height: 2px;
+  background: rgba(120, 198, 255, 0.9);
+  border-radius: 999px;
+  box-shadow: 0 0 6px rgba(120, 198, 255, 0.7);
+}
+
+.sidebar-item-list-row.is-drop-before::before {
+  top: -3px;
+}
+
+.sidebar-item-list-row.is-drop-after::after {
+  bottom: -3px;
+}
+
+.sidebar-item-list-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.sidebar-item-checkbox {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  margin-top: 3px;
+}
+
+.sidebar-item-checkbox-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sidebar-item-checkbox-mark {
+  width: 14px;
+  height: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  position: relative;
+  box-sizing: border-box;
+  transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.sidebar-item-checkbox-mark::after {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 1px;
+  width: 4px;
+  height: 7px;
+  border: solid rgba(255, 255, 255, 0.9);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  opacity: 0;
+}
+
+.sidebar-item-checkbox.is-checked {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.sidebar-item-checkbox.is-checked .sidebar-item-checkbox-mark {
+  background: rgba(86, 219, 240, 0.35);
+  border-color: rgba(86, 219, 240, 0.75);
+  box-shadow: 0 0 0 1px rgba(86, 219, 240, 0.25);
+}
+
+.sidebar-item-checkbox.is-checked .sidebar-item-checkbox-mark::after {
+  opacity: 1;
+}
+
+.sidebar-item-drag {
+  border: none;
+  padding: 1px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.75);
+  cursor: grab;
+  opacity: 0;
+  pointer-events: none;
+  touch-action: none;
+}
+
+.sidebar-item-list-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+}
+
+.sidebar-item-list-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.sidebar-item-action {
+  border: none;
+  background: transparent;
+  padding: 1px;
+  color: inherit;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sidebar-item-list-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px dashed rgba(255, 255, 255, 0.35);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.75);
+  padding: 6px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.sidebar-item-list-row:hover > .sidebar-item-list-left > .sidebar-item-control,
+.sidebar-item-list-row:hover > .sidebar-item-list-left > .sidebar-item-checkbox,
+.sidebar-item-list-row:hover > .sidebar-item-list-actions > .sidebar-item-action {
+  opacity: 1;
+  pointer-events: auto;
+}
+&lt;/style>
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-CanvasContainer.html">CanvasContainer</a></li><li><a href="module-ColorModeModal.html">ColorModeModal</a></li><li><a href="module-ColorPicker.html">ColorPicker</a></li><li><a href="module-DashPicker.html">DashPicker</a></li><li><a href="module-FileBar.html">FileBar</a></li><li><a href="module-FillControl.html">FillControl</a></li><li><a href="module-FontPicker.html">FontPicker</a></li><li><a href="module-Footer.html">Footer</a></li><li><a href="module-ImportShapesModal.html">ImportShapesModal</a></li><li><a href="module-LanguageModal.html">LanguageModal</a></li><li><a href="module-LayoutAidsBar.html">LayoutAidsBar</a></li><li><a href="module-ModuleModal.html">ModuleModal</a></li><li><a href="module-ModuleTools.html">ModuleTools</a></li><li><a href="module-MoreToolsCollapsible.html">MoreToolsCollapsible</a></li><li><a href="module-NumberControl.html">NumberControl</a></li><li><a href="module-ObjBar.html">ObjBar</a></li><li><a href="module-PointControl.html">PointControl</a></li><li><a href="module-PopupSelectControl.html">PopupSelectControl</a></li><li><a href="module-RayDensityBar.html">RayDensityBar</a></li><li><a href="module-SaveModal.html">SaveModal</a></li><li><a href="module-SettingsBar.html">SettingsBar</a></li><li><a href="module-SettingsList.html">SettingsList</a></li><li><a href="module-SettingsWarning.html">SettingsWarning</a></li><li><a href="module-Sidebar.html">Sidebar</a></li><li><a href="module-SimulatorControls.html">SimulatorControls</a></li><li><a href="module-SizePicker.html">SizePicker</a></li><li><a href="module-StatusArea.html">StatusArea</a></li><li><a href="module-StrokeControl.html">StrokeControl</a></li><li><a href="module-TextControl.html">TextControl</a></li><li><a href="module-TextInput.html">TextInput</a></li><li><a href="module-ThemeModal.html">ThemeModal</a></li><li><a href="module-ThemeOptionsList.html">ThemeOptionsList</a></li><li><a href="module-ToggleControl.html">ToggleControl</a></li><li><a href="module-ToolItem.html">ToolItem</a></li><li><a href="module-Toolbar.html">Toolbar</a></li><li><a href="module-ToolsBar.html">ToolsBar</a></li><li><a href="module-ToolsCategory.html">ToolsCategory</a></li><li><a href="module-ToolsList.html">ToolsList</a></li><li><a href="module-ViewBar.html">ViewBar</a></li><li><a href="module-VirtualKeyboard.html">VirtualKeyboard</a></li><li><a href="module-WelcomeMessage.html">WelcomeMessage</a></li><li><a href="module-ZoomControl.html">ZoomControl</a></li><li><a href="module-app_.html">app</a></li><li><a href="module-shapeImport.html">shapeImport</a></li><li><a href="module-svgImport.html">svgImport</a></li></ul><h3>Namespaces</h3><ul><li><a href="geometry.html">geometry</a></li><li><a href="sceneObjs.html">sceneObjs</a></li></ul><h3>Classes</h3><ul><li><a href="BaseFilter.html">BaseFilter</a></li><li><a href="BaseGlass.html">BaseGlass</a></li><li><a href="BaseGrinGlass.html">BaseGrinGlass</a></li><li><a href="BaseSceneObj.html">BaseSceneObj</a></li><li><a href="CanvasRenderer.html">CanvasRenderer</a></li><li><a href="Editor.html">Editor</a></li><li><a href="FloatColorRenderer.html">FloatColorRenderer</a></li><li><a href="JsonEditorService.html">JsonEditorService</a></li><li><a href="Mouse.html">Mouse</a></li><li><a href="ObjBar.html">ObjBar</a></li><li><a href="Scene.html">Scene</a></li><li><a href="Simulator.html">Simulator</a></li><li><a href="TexExprParser.html">TexExprParser</a></li><li><a href="sceneObjs.AngleSource.html">AngleSource</a></li><li><a href="sceneObjs.Aperture.html">Aperture</a></li><li><a href="sceneObjs.ArcMirror.html">ArcMirror</a></li><li><a href="sceneObjs.BaseCustomSurface.html">BaseCustomSurface</a></li><li><a href="sceneObjs.Beam.html">Beam</a></li><li><a href="sceneObjs.BeamSplitter.html">BeamSplitter</a></li><li><a href="sceneObjs.Blocker.html">Blocker</a></li><li><a href="sceneObjs.CircleBlocker.html">CircleBlocker</a></li><li><a href="sceneObjs.CircleGlass.html">CircleGlass</a></li><li><a href="sceneObjs.CircleGrinGlass.html">CircleGrinGlass</a></li><li><a href="sceneObjs.ConcaveDiffractionGrating.html">ConcaveDiffractionGrating</a></li><li><a href="sceneObjs.CropBox.html">CropBox</a></li><li><a href="sceneObjs.CurveGlass.html">CurveGlass</a></li><li><a href="sceneObjs.CurveGrinGlass.html">CurveGrinGlass</a></li><li><a href="sceneObjs.CurveMirror.html">CurveMirror</a></li><li><a href="sceneObjs.CustomArcSurface.html">CustomArcSurface</a></li><li><a href="sceneObjs.CustomCurveSurface.html">CustomCurveSurface</a></li><li><a href="sceneObjs.CustomGlass.html">CustomGlass</a></li><li><a href="sceneObjs.CustomMirror.html">CustomMirror</a></li><li><a href="sceneObjs.CustomParamSurface.html">CustomParamSurface</a></li><li><a href="sceneObjs.CustomSurface.html">CustomSurface</a></li><li><a href="sceneObjs.Detector.html">Detector</a></li><li><a href="sceneObjs.DiffractionGrating.html">DiffractionGrating</a></li><li><a href="sceneObjs.Drawing.html">Drawing</a></li><li><a href="sceneObjs.Glass.html">Glass</a></li><li><a href="sceneObjs.GrinGlass.html">GrinGlass</a></li><li><a href="sceneObjs.Handle.html">Handle</a></li><li><a href="sceneObjs.IdealLens.html">IdealLens</a></li><li><a href="sceneObjs.IdealMirror.html">IdealMirror</a></li><li><a href="sceneObjs.LineArrow.html">LineArrow</a></li><li><a href="sceneObjs.Mirror.html">Mirror</a></li><li><a href="sceneObjs.ModuleObj.html">ModuleObj</a></li><li><a href="sceneObjs.ParabolicMirror.html">ParabolicMirror</a></li><li><a href="sceneObjs.ParamGlass.html">ParamGlass</a></li><li><a href="sceneObjs.ParamGrinGlass.html">ParamGrinGlass</a></li><li><a href="sceneObjs.ParamMirror.html">ParamMirror</a></li><li><a href="sceneObjs.PlaneGlass.html">PlaneGlass</a></li><li><a href="sceneObjs.PointSource.html">PointSource</a></li><li><a href="sceneObjs.Protractor.html">Protractor</a></li><li><a href="sceneObjs.Ruler.html">Ruler</a></li><li><a href="sceneObjs.SingleRay.html">SingleRay</a></li><li><a href="sceneObjs.SphericalLens.html">SphericalLens</a></li><li><a href="sceneObjs.TextLabel.html">TextLabel</a></li></ul><h3>Events</h3><ul><li><a href="Editor.html#event:handleCreationHint">handleCreationHint</a></li><li><a href="Editor.html#event:mouseCoordinateChange">mouseCoordinateChange</a></li><li><a href="Editor.html#event:newAction">newAction</a></li><li><a href="Editor.html#event:newUndoPoint">newUndoPoint</a></li><li><a href="Editor.html#event:objectBodyClick">objectBodyClick</a></li><li><a href="Editor.html#event:positioningEnd">positioningEnd</a></li><li><a href="Editor.html#event:positioningStart">positioningStart</a></li><li><a href="Editor.html#event:redo">redo</a></li><li><a href="Editor.html#event:requestPositioningComfirm">requestPositioningComfirm</a></li><li><a href="Editor.html#event:scaleChange">scaleChange</a></li><li><a href="Editor.html#event:sceneLoaded">sceneLoaded</a></li><li><a href="Editor.html#event:selectionChange">selectionChange</a></li><li><a href="Editor.html#event:undo">undo</a></li><li><a href="ObjBar.html#event:edit">edit</a></li><li><a href="ObjBar.html#event:editEnd">editEnd</a></li><li><a href="ObjBar.html#event:requestUpdate">requestUpdate</a></li><li><a href="ObjBar.html#event:showAdvancedEnabled">showAdvancedEnabled</a></li><li><a href="Simulator.html#event:lightLayerSyncChange">lightLayerSyncChange</a></li><li><a href="Simulator.html#event:simulationComplete">simulationComplete</a></li><li><a href="Simulator.html#event:simulationPause">simulationPause</a></li><li><a href="Simulator.html#event:simulationStart">simulationStart</a></li><li><a href="Simulator.html#event:simulationStop">simulationStop</a></li><li><a href="Simulator.html#event:update">update</a></li><li><a href="global.html#event:deviceChange">deviceChange</a></li><li><a href="global.html#event:requestUpdateErrorAndWarning">requestUpdateErrorAndWarning</a></li><li><a href="global.html#event:webglContextLost">webglContextLost</a></li></ul><h3>Global</h3><ul><li><a href="global.html#CircleObjMixin">CircleObjMixin</a></li><li><a href="global.html#CurveObjMixin">CurveObjMixin</a></li><li><a href="global.html#DATA_VERSION">DATA_VERSION</a></li><li><a href="global.html#FN1">FN1</a></li><li><a href="global.html#FORMULA_MODULE_TOOLTIP_MAX_LINES">FORMULA_MODULE_TOOLTIP_MAX_LINES</a></li><li><a href="global.html#FOR_IF_DEFAULTS">FOR_IF_DEFAULTS</a></li><li><a href="global.html#GREEK_SYMBOL">GREEK_SYMBOL</a></li><li><a href="global.html#JSON_INNER_COLLAPSE_THRESHOLD">JSON_INNER_COLLAPSE_THRESHOLD</a></li><li><a href="global.html#LITERAL_NUMERIC_TOKEN">LITERAL_NUMERIC_TOKEN</a></li><li><a href="global.html#LineObjMixin">LineObjMixin</a></li><li><a href="global.html#MODULE_EDITOR_LIST">MODULE_EDITOR_LIST</a></li><li><a href="global.html#PAREN_HIGHLIGHT_MATCH_CLASS">PAREN_HIGHLIGHT_MATCH_CLASS</a></li><li><a href="global.html#ParamCurveObjMixin">ParamCurveObjMixin</a></li><li><a href="global.html#_ensureCubicBezierPathReady">_ensureCubicBezierPathReady</a></li><li><a href="global.html#_pathPairToHermiteBezier">_pathPairToHermiteBezier</a></li><li><a href="global.html#applyTextareaAutoResize">applyTextareaAutoResize</a></li><li><a href="global.html#buildModuleInstanceTooltipHtml">buildModuleInstanceTooltipHtml</a></li><li><a href="global.html#buildParenHighlightHtml">buildParenHighlightHtml</a></li><li><a href="global.html#checkRayIntersectsShape">checkRayIntersectsShape</a></li><li><a href="global.html#collapseRedundantNestedParentheses">collapseRedundantNestedParentheses</a></li><li><a href="global.html#collectPointPaths">collectPointPaths</a></li><li><a href="global.html#compileParametricDerivative">compileParametricDerivative</a></li><li><a href="global.html#controlPointIndexAfterReorder">controlPointIndexAfterReorder</a></li><li><a href="global.html#countIntersections">countIntersections</a></li><li><a href="global.html#deepEqual">deepEqual</a></li><li><a href="global.html#distancePointToSegment">distancePointToSegment</a></li><li><a href="global.html#draftsToCommittedValue">draftsToCommittedValue</a></li><li><a href="global.html#drawConstruction">drawConstruction</a></li><li><a href="global.html#drawControlHandles">drawControlHandles</a></li><li><a href="global.html#drawPath">drawPath</a></li><li><a href="global.html#equationDisplayToValue">equationDisplayToValue</a></li><li><a href="global.html#equationValueForListDisplay">equationValueForListDisplay</a></li><li><a href="global.html#equationValueToDisplay">equationValueToDisplay</a></li><li><a href="global.html#extractNonDefaults">extractNonDefaults</a></li><li><a href="global.html#findMatchingBraceEnd">findMatchingBraceEnd</a></li><li><a href="global.html#findMatchingParenPair">findMatchingParenPair</a></li><li><a href="global.html#findValidJsonObjectSpans">findValidJsonObjectSpans</a></li><li><a href="global.html#formatKeyPath">formatKeyPath</a></li><li><a href="global.html#formatStatusLineHtml">formatStatusLineHtml</a></li><li><a href="global.html#formatTooltipNumber">formatTooltipNumber</a></li><li><a href="global.html#formulaDisplayToValue">formulaDisplayToValue</a></li><li><a href="global.html#getAllByKeyPath">getAllByKeyPath</a></li><li><a href="global.html#getNextModuleIdentifierName">getNextModuleIdentifierName</a></li><li><a href="global.html#getRayIntersections">getRayIntersections</a></li><li><a href="global.html#getRayIntersectionsCubicBezier">getRayIntersectionsCubicBezier</a></li><li><a href="global.html#getRayIntersectionsLinear">getRayIntersectionsLinear</a></li><li><a href="global.html#initPath">initPath</a></li><li><a href="global.html#isAtomicExpr">isAtomicExpr</a></li><li><a href="global.html#isClosed">isClosed</a></li><li><a href="global.html#isFormula">isFormula</a></li><li><a href="global.html#isFormulaValueSupported">isFormulaValueSupported</a></li><li><a href="global.html#isInside">isInside</a></li><li><a href="global.html#isLiteralBooleanFieldValue">isLiteralBooleanFieldValue</a></li><li><a href="global.html#isLiteralNumericFieldValue">isLiteralNumericFieldValue</a></li><li><a href="global.html#isNonBasicProperty">isNonBasicProperty</a></li><li><a href="global.html#isNonDefault">isNonDefault</a></li><li><a href="global.html#isOnBoundary">isOnBoundary</a></li><li><a href="global.html#isOutside">isOutside</a></li><li><a href="global.html#isPointHardcoded">isPointHardcoded</a></li><li><a href="global.html#isPositivelyOriented">isPositivelyOriented</a></li><li><a href="global.html#isSourceIndexArray">isSourceIndexArray</a></li><li><a href="global.html#isTextareaAutoResizeMeasurable">isTextareaAutoResizeMeasurable</a></li><li><a href="global.html#latexToMathJS">latexToMathJS</a></li><li><a href="global.html#mathJSToLatex">mathJSToLatex</a></li><li><a href="global.html#mergeWithDefaults">mergeWithDefaults</a></li><li><a href="global.html#newlinesToBr">newlinesToBr</a></li><li><a href="global.html#nextDuplicateIdentifier">nextDuplicateIdentifier</a></li><li><a href="global.html#normalizeParsedEquationAST">normalizeParsedEquationAST</a></li><li><a href="global.html#observeTextareasResizeWhenVisible">observeTextareasResizeWhenVisible</a></li><li><a href="global.html#populateObjBarShape">populateObjBarShape</a></li><li><a href="global.html#promptNewModuleName">promptNewModuleName</a></li><li><a href="global.html#promptNewModuleNameForHandle">promptNewModuleNameForHandle</a></li><li><a href="global.html#sanitizePastedJson">sanitizePastedJson</a></li><li><a href="global.html#setByKeyPath">setByKeyPath</a></li><li><a href="global.html#setViewportSize">setViewportSize</a></li><li><a href="global.html#splitTexCommaArgs">splitTexCommaArgs</a></li><li><a href="global.html#splitTopLevelCommas">splitTopLevelCommas</a></li><li><a href="global.html#stripJsonComments">stripJsonComments</a></li><li><a href="global.html#stripMarkdownCodeFence">stripMarkdownCodeFence</a></li><li><a href="global.html#stripParenChain">stripParenChain</a></li><li><a href="global.html#stripRedundantParensForLatex">stripRedundantParensForLatex</a></li><li><a href="global.html#suggestNewModuleName">suggestNewModuleName</a></li><li><a href="global.html#templatePointLockState">templatePointLockState</a></li><li><a href="global.html#toJSON">toJSON</a></li><li><a href="global.html#tooltipAllTupleRowsConstant">tooltipAllTupleRowsConstant</a></li><li><a href="global.html#tooltipMantissaDecimalPlaces">tooltipMantissaDecimalPlaces</a></li><li><a href="global.html#tooltipPointTupleEqual">tooltipPointTupleEqual</a></li><li><a href="global.html#tooltipValueEqualForCollapse">tooltipValueEqualForCollapse</a></li><li><a href="global.html#tracePath">tracePath</a></li><li><a href="global.html#unwrapParenInCallableArgs">unwrapParenInCallableArgs</a></li><li><a href="global.html#useParenHighlightLayer">useParenHighlightLayer</a></li><li><a href="global.html#usePreferencesStore">usePreferencesStore</a></li><li><a href="global.html#useSceneStore">useSceneStore</a></li><li><a href="global.html#useStatus">useStatus</a></li><li><a href="global.html#useStatusStore">useStatusStore</a></li><li><a href="global.html#useThemeStore">useThemeStore</a></li><li><a href="global.html#vTooltipPopover">vTooltipPopover</a></li><li><a href="global.html#validateNestedKeys">validateNestedKeys</a></li><li><a href="global.html#valueToFormulaDisplay">valueToFormulaDisplay</a></li><li><a href="global.html#versionUpdate">versionUpdate</a></li><li><a href="global.html#viewportCenterSceneCoords">viewportCenterSceneCoords</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
