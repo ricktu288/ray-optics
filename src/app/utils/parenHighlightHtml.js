@@ -57,7 +57,7 @@ function matchParenBackward(text, start, closeCh, openCh) {
 /**
  * @param {string} text
  * @param {number} caret
- * @returns {[number, number] | null} indices of matching pair [open, close] inclusive
+ * @returns {Array.<number>|null} Two indices [open, close] inclusive, or null if none.
  */
 export function findMatchingParenPair(text, caret) {
   if (!text || caret < 0) {
@@ -85,7 +85,7 @@ export function findMatchingParenPair(text, caret) {
 /**
  * Safe HTML for a pre-wrapped highlight layer under a textarea (escape + optional match spans).
  * @param {string|null|undefined} text
- * @param {[number, number]|null} pair
+ * @param {Array.<number>|null} pair - Two bracket indices [open, close].
  * @param {string} [matchClass]
  */
 export function buildParenHighlightHtml(

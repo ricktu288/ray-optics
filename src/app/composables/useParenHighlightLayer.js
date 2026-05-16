@@ -23,9 +23,9 @@ import {
 /**
  * Matching-parenthesis overlay for a textarea (pair with a highlight layer + shared CSS).
  *
- * @param {() => HTMLTextAreaElement | null | undefined} getTextareaRef
- * @param {() => string} getText
- * @param {() => boolean} isFieldActive — e.g. the field is focused
+ * @param {function(): *} getTextareaRef - Returns the textarea element or null/undefined.
+ * @param {function(): string} getText
+ * @param {function(): boolean} isFieldActive - True when the field is focused.
  */
 export function useParenHighlightLayer(getTextareaRef, getText, isFieldActive) {
   const parenMatchPair = ref(null)
