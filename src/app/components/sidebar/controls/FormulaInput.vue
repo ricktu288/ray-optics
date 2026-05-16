@@ -16,18 +16,28 @@
 
 <template>
   <div class="formula-input-host" @mouseleave="onModuleInstancesMouseLeave">
-    <textarea
-      ref="textareaRef"
-      class="formula-input"
-      :value="localValue"
-      rows="1"
-      spellcheck="false"
-      @keydown.stop
-      @keydown.enter.prevent="commitEnter"
-      @focus="onFocus"
-      @blur="onBlur"
-      @input="onInput"
-    ></textarea>
+    <div class="formula-input-stack">
+      <textarea
+        ref="textareaRef"
+        class="formula-input"
+        :value="localValue"
+        rows="1"
+        spellcheck="false"
+        @keydown.stop
+        @keydown.enter.prevent="commitEnter"
+        @focus="onFocus"
+        @blur="onBlur"
+        @input="onInput"
+        @click="updateParenHighlight"
+        @keyup="updateParenHighlight"
+        @select="updateParenHighlight"
+      ></textarea>
+      <div
+        class="formula-input-highlight-layer"
+        aria-hidden="true"
+        v-html="highlightLayerHtml"
+      ></div>
+    </div>
   </div>
 </template>
 
@@ -47,6 +57,7 @@ import {
   applyTextareaAutoResize,
   observeTextareasResizeWhenVisible
 } from '../../../utils/textareaAutoResize.js'
+import { useParenHighlightLayer } from '../../../composables/useParenHighlightLayer.js'
 
 export default {
   name: 'FormulaInput',
@@ -76,6 +87,16 @@ export default {
     /** Last value aligned with parent `modelValue` / last emit; blur skips emit if unchanged (avoids double-emit after Enter). */
     const lastCommittedValue = ref(props.modelValue)
     let focused = false
+
+    const {
+      highlightLayerHtml,
+      updateParenHighlight,
+      clearParenHighlight
+    } = useParenHighlightLayer(
+      () => textareaRef.value,
+      () => localValue.value,
+      () => focused
+    )
 
     const sceneStore = useSceneStore()
     const preferences = usePreferencesStore()
@@ -222,6 +243,7 @@ export default {
     const onFocus = () => {
       focused = true
       showModuleInstancesTooltip(textareaRef.value)
+      nextTick(updateParenHighlight)
     }
 
     const onBlur = () => {
@@ -232,10 +254,12 @@ export default {
       localValue.value = e.target.value
       autoResize()
       disposeModuleInstancesTooltip()
+      nextTick(updateParenHighlight)
     }
 
     const commitBlur = () => {
       focused = false
+      clearParenHighlight()
       disposeModuleInstancesTooltip()
       const previousModelValue = props.modelValue
       const draft = localValue.value
@@ -265,6 +289,7 @@ export default {
      */
     const commitEnter = () => {
       focused = false
+      clearParenHighlight()
       disposeModuleInstancesTooltip()
       const previousModelValue = props.modelValue
       const draft = localValue.value
@@ -299,18 +324,21 @@ export default {
         }
         focused = true
         showModuleInstancesTooltip(el)
+        updateParenHighlight()
       })
     }
 
     return {
       textareaRef,
       localValue,
+      highlightLayerHtml,
       onFocus,
       onBlur,
       onInput,
       commit: commitBlur,
       commitEnter,
-      onModuleInstancesMouseLeave
+      onModuleInstancesMouseLeave,
+      updateParenHighlight
     }
   }
 }
@@ -323,19 +351,62 @@ export default {
   display: block;
 }
 
+.formula-input-stack {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-width: 0;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.formula-input-stack:focus-within {
+  border-color: rgba(120, 198, 255, 0.6);
+}
+
+.formula-input-highlight-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  box-sizing: border-box;
+  font-size: 12px;
+  font-family: monospace;
+  line-height: 1.4;
+  padding: 3px 6px;
+  white-space: pre-wrap;
+  overflow: hidden;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  color: transparent;
+  pointer-events: none;
+}
+
+.formula-input-highlight-layer :deep(.paren-highlight-match) {
+  background: rgba(120, 198, 255, 0.35);
+  border-radius: 2px;
+}
+
 .formula-input {
+  position: relative;
+  z-index: 1;
+  display: block;
   width: 100%;
   box-sizing: border-box;
   font-size: 12px;
   font-family: monospace;
   line-height: 1.4;
   padding: 3px 6px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  border: none;
   border-radius: 4px;
   color: #fff;
   resize: none;
   overflow: hidden;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
   field-sizing: content;
 }
 
@@ -345,7 +416,6 @@ export default {
 
 .formula-input:focus {
   outline: none;
-  border-color: rgba(120, 198, 255, 0.6);
 }
 </style>
 

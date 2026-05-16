@@ -32,7 +32,7 @@
     </div>
     <span class="module-var-equals" aria-hidden="true">=</span>
     <div class="module-var-tooltip-host" @mouseleave="onModuleInstancesMouseLeave">
-      <div class="module-var-expr-wrap">
+      <div class="module-var-expr-stack">
         <textarea
           ref="exprRef"
           class="module-var-expr"
@@ -44,7 +44,15 @@
           @input="onExprInput"
           @focus="onExprFocus"
           @blur="onExprBlur"
+          @click="updateExprParenHighlight"
+          @keyup="updateExprParenHighlight"
+          @select="updateExprParenHighlight"
         ></textarea>
+        <div
+          class="module-var-expr-highlight-layer"
+          aria-hidden="true"
+          v-html="exprParenHighlightHtml"
+        ></div>
       </div>
     </div>
   </div>
@@ -66,6 +74,7 @@ import {
   applyTextareaAutoResize,
   observeTextareasResizeWhenVisible
 } from '../../utils/textareaAutoResize.js'
+import { useParenHighlightLayer } from '../../composables/useParenHighlightLayer.js'
 
 export default {
   name: 'ModuleVariableListItem',
@@ -78,6 +87,18 @@ export default {
   setup(props, { emit }) {
     const nameRef = ref(null)
     const exprRef = ref(null)
+    const exprFocused = ref(false)
+
+    const {
+      highlightLayerHtml: exprParenHighlightHtml,
+      updateParenHighlight: updateExprParenHighlight,
+      clearParenHighlight: clearExprParenHighlight
+    } = useParenHighlightLayer(
+      () => exprRef.value,
+      () => props.expression,
+      () => exprFocused.value
+    )
+
     const preferences = usePreferencesStore()
     const sidebarWidth = toRef(preferences, 'sidebarWidth')
     const sceneStore = useSceneStore()
@@ -174,6 +195,7 @@ export default {
         if (ae !== exprRef.value) {
           return
         }
+        updateExprParenHighlight()
         if (
           isLiteralNumericFieldValue(props.expression) ||
           isLiteralBooleanFieldValue(props.expression)
@@ -213,8 +235,10 @@ export default {
     }
 
     const onExprFocus = (e) => {
+      exprFocused.value = true
       autoResize()
       nextTick(() => {
+        updateExprParenHighlight()
         const el = e?.target
         if (el) {
           showModuleInstancesTooltip(el)
@@ -224,6 +248,8 @@ export default {
 
     const onExprBlur = () => {
       disposeModuleInstancesTooltip()
+      exprFocused.value = false
+      clearExprParenHighlight()
       nextTick(autoResize)
     }
 
@@ -235,7 +261,10 @@ export default {
     const onExprInput = (e) => {
       emit('update:expression', e.target.value)
       disposeModuleInstancesTooltip()
-      nextTick(autoResize)
+      nextTick(() => {
+        autoResize()
+        updateExprParenHighlight()
+      })
     }
 
     watch(
@@ -287,6 +316,7 @@ export default {
     return {
       nameRef,
       exprRef,
+      exprParenHighlightHtml,
       onNameInput,
       onExprInput,
       autoResize,
@@ -296,7 +326,8 @@ export default {
       onNameBlur,
       onExprFocus,
       onExprBlur,
-      onModuleInstancesMouseLeave
+      onModuleInstancesMouseLeave,
+      updateExprParenHighlight
     }
   }
 }
@@ -324,9 +355,42 @@ export default {
   min-width: 0;
 }
 
-.module-var-expr-wrap {
+.module-var-expr-stack {
+  position: relative;
+  display: block;
   width: 100%;
   min-width: 0;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.module-var-expr-stack:focus-within {
+  border-color: rgba(120, 198, 255, 0.6);
+}
+
+.module-var-expr-highlight-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  box-sizing: border-box;
+  margin: 0;
+  font-size: 12px;
+  font-family: monospace;
+  line-height: 1.4;
+  padding: 3px 6px;
+  white-space: pre-wrap;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  color: transparent;
+  pointer-events: none;
+}
+
+.module-var-expr-highlight-layer :deep(.paren-highlight-match) {
+  background: rgba(120, 198, 255, 0.35);
+  border-radius: 2px;
 }
 
 .module-var-equals {
@@ -339,8 +403,7 @@ export default {
   padding: 3px 0;
 }
 
-.module-var-name,
-.module-var-expr {
+.module-var-name {
   display: block;
   width: 100%;
   margin: 0;
@@ -351,7 +414,7 @@ export default {
   padding: 3px 6px;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
+  border-radius: 3px;
   color: #fff;
   resize: none;
   overflow: hidden;
@@ -360,14 +423,36 @@ export default {
   word-break: break-word;
 }
 
-.module-var-name {
-  border-radius: 3px;
+.module-var-expr {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  margin: 0;
+  box-sizing: border-box;
+  font-size: 12px;
+  font-family: monospace;
+  line-height: 1.4;
+  padding: 3px 6px;
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  resize: none;
+  overflow: hidden;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  field-sizing: content;
 }
 
-.module-var-name:focus,
-.module-var-expr:focus {
+.module-var-name:focus {
   outline: none;
   border-color: rgba(120, 198, 255, 0.6);
+}
+
+.module-var-expr:focus {
+  outline: none;
 }
 </style>
 
