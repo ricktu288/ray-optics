@@ -9,7 +9,7 @@
     "cancelButton": "Anuluj",
     "defaultOption": "Domyślnie",
     "legacyOption": "Stara wersja",
-    "customOption": "Niestandardowy",
+    "customOption": "Opcja niestandardowa",
     "closeButton": "Zamknij",
     "resetButton": "Resetuj",
     "reloadToTakeEffect": "Przeładuj stronę, aby uzyskać efekt."
@@ -113,7 +113,7 @@
       "description": "Jeśli włączone, adres URL będzie aktualizowany automatycznie wraz z bieżącą sceną, więc nie trzeba ręcznie zapisywać sceny. Aby ustawić tytuł, użyj Plik -> Zapisz -> Zmień nazwę."
     },
     "showSidebar": {
-      "title": "Pokaż edytor JSON",
+      "title": "Pokaż pasek boczny",
       "description": "Pokaż pasek boczny zawierający listę obiektów, edytor modułów, edytor kodu JSON i asystenta AI."
     },
     "showStatusBox": {
@@ -182,8 +182,8 @@
         "mathjs": "Obsługuje tylko następujące operacje math.js: ",
         "customFunctions": "Można używać funkcji niestandardowych zdefiniowanych w sekcji \"Zmienne\" edytora modułów, ale ich definicje muszą ostatecznie składać się z obsługiwanych operacji."
       },
-      "imageDetectionWarning": "To narzędzie nie obsługuje wykrywania obrazów.",
-      "nonSimulateColorsWarning": "To narzędzie działa tylko wtedy, gdy \"Symuluj kolory\" jest włączone.",
+      "imageDetectionWarning": "Ten komponent nie obsługuje wykrywania obrazu.",
+      "nonSimulateColorsWarning": "Ten komponent działa tylko wtedy, gdy \"Symuluj kolory\" jest włączone.",
       "curveStepSize": "Krok",
       "bezierControlPoints": "Punkty kontrolne krzywej Béziera",
       "styleRed": "Czerwony",
@@ -487,7 +487,12 @@
   "moduleModal": {
     "title": "Importuj moduły",
     "makeCustomModules": "Twórz własne moduły",
-    "conflict": "W bieżącej scenie istnieje już inny moduł o tej samej nazwie. Możesz wprowadzić nową nazwę lub pozostawić ją bez zmian, aby nadpisać istniejący moduł."
+    "conflict": "W bieżącej scenie istnieje już inny moduł o tej samej nazwie. Możesz wprowadzić nową nazwę lub pozostawić ją bez zmian, aby nadpisać istniejący moduł.",
+    "importFromFile": {
+      "title": "Importuj z pliku",
+      "description": "Importuj wszystkie moduły zawarte w pliku JSON sceny.",
+      "error": "Plik nie zawiera prawidłowych modułów."
+    }
   },
   "colorModeModal": {
     "linear": {
@@ -591,10 +596,10 @@
       "title": "Strzałka krzywej idealnej"
     },
     "glass": {
-      "title": "Wypełnienie szkła"
+      "title": "Wizualizacja współczynnika załamania"
     },
     "grinGlass": {
-      "title": "Wypełnienie szkła GRIN"
+      "title": "Domyślne wypełnienie materiału gradientowego (GRIN)"
     },
     "blocker": {
       "title": "Powierzchnia blokująca"
@@ -636,6 +641,9 @@
       "title": "Importuj",
       "description": "Importuj motyw z pliku JSON sceny.",
       "error": "Plik nie zawiera motywu."
+    },
+    "glassAbsorption": {
+      "title": "Wizualizacja szybkości absorpcji"
     }
   },
   "languageModal": {
@@ -674,6 +682,101 @@
       "description": "[Ray Optics Coder](/ai-tools/chatgpt) w ChatGPT pomoże Ci pisać moduły Ray Optics. Generuje on kod JSON dla sceny zawierającej moduł na podstawie Twojego opisu, a następnie możesz skopiować ten kod do edytora JSON (the \"Code\" tab above). Możesz go również użyć do edycji istniejących modułów lub modularyzacji scen.",
       "limitation": "Kod wygenerowany przez chatbota może nie działać bezpośrednio. W przypadku wystąpienia błędu, skopiowanie i wklejenie komunikatu o błędzie do chatbota może pomóc.",
       "otherServices": "Pliki z instrukcjami i wiedzą dla chatbota są dostępne [tutaj](/ai-tools/instructions). Jeśli wolisz inną usługę LLM, możesz udostępnić te pliki, aby nauczyć go pisania modułów Ray Optics."
+    },
+    "tabs": {
+      "ai": "AI",
+      "code": "Kod",
+      "visual": "Wizualny"
+    },
+    "visual": {
+      "tabs": {
+        "scene": "Scena",
+        "createModule": "Utwórz moduł",
+        "createModuleInfo": "Moduły umożliwiają tworzenie nowych komponentów poprzez łączenie istniejących. Przykłady w Narzędzia -> Inne -> Importuj moduły."
+      },
+      "sceneObjects": {
+        "title": "Obiekty",
+        "info": "Lista obiektów znajdujących się bezpośrednio w scenie. Aby je sparametryzować (za pomocą zmiennych niestandardowych, tablic itp.), należy przenieść je do modułu. Obiekty wewnątrz modułów nie są tutaj bezpośrednio wymienione, a każda instancja modułu jest wyświetlana jako pojedynczy obiekt.",
+        "bindToHandle": "Powiąż z",
+        "createHandle": "Utwórz nowy uchwyt",
+        "unbindHandle": "Odwiąż",
+        "createModule": "Utwórz nowy moduł",
+        "emptyHint": "Aby utworzyć obiekt, skorzystaj z paska narzędzi i twórz go w obszarze roboczym.",
+        "lockLocked": "Zablokowane (zawsze). Kliknij, aby zmienić",
+        "lockUnlocked": "Odblokowane (zawsze). Kliknij, aby zmienić",
+        "unnamedObject": "Obiekt bez nazwy",
+        "unknownType": "Nieznany typ",
+        "collapse": "Ukryj właściwości",
+        "showAllProperties": "Pokaż wszystkie właściwości",
+        "expand": "Rozwiń, aby wyświetlić właściwości",
+        "hideDefaultProperties": "Ukryj domyślne właściwości",
+        "newItem": "Nowa pozycja",
+        "formulaRequiresModule": "Aby użyć formuły, należy najpierw przenieść obiekt do modułu.",
+        "invalidPointFormat": "Punkt musi mieć dokładnie dwie współrzędne, oddzielone przecinkiem.",
+        "unsupportedVisualValue": "Ta wartość nie jest obsługiwana przez edytor wizualny. Aby edytować tę właściwość, przejdź do zakładki Kod.",
+        "latexConversionFailed": "Nie udało się przekonwertować wyrażenia na format wewnętrzny. Sprawdź składnię.",
+        "handleBadge": "Uchwyt {{n}}",
+        "noModulesHint": "Przenieś obiekty do modułu, aby je sparametryzować lub utworzyć tablice.",
+        "noHandlesHint": "Przypisz obiekty do uchwytu, aby przesuwać/obracać/skalować je jako grupę.",
+        "moveIntoModule": "Przenieś do",
+        "lockDefault": "Śledź blokadę sceny. Kliknij, aby zmienić"
+      },
+      "moduleEditor": {
+        "new": {
+          "promptNewName": "Nazwa nowego modułu: (zwykle w PascalCase)",
+          "errorEmptyName": "Nazwa modułu nie może być pusta.",
+          "errorComma": "Nazwa modułu nie może zawierać przecinków.",
+          "errorNameExists": "Moduł o nazwie \"{{name}}\" już istnieje."
+        },
+        "noInstances": "W scenie nie ma obecnie żadnych instancji tego modułu. Aby utworzyć instancję, użyj Narzędzia -> Inne -> {{name}} i kliknij obszar roboczy w żądanych miejscach odpowiadających sekwencji punktów kontrolnych.",
+        "emptyModuleExamplesHint": "Przykłady modułów można znaleźć w menu Narzędzia -> Inne -> Importuj moduły",
+        "controlPoints": {
+          "title": "Punkty kontrolne",
+          "newItem": "Nowy punkt kontrolny",
+          "info": "Punkty modułu, które można przeciągać w obszarze roboczym. Współrzędne (`x_1`, `y_1` itp.) można wykorzystać we wszystkich poniższych formułach."
+        },
+        "parameters": {
+          "title": "Parametry",
+          "newItem": "Nowy parametr",
+          "min": "min.",
+          "max": "maks.",
+          "step": "krok",
+          "default": "domyślnie",
+          "info": "Parametry modułu wyświetlane są jako suwaki na pasku obiektów. Nazwy (`a`, `foo` itd.) można używać we wszystkich poniższych formułach."
+        },
+        "variables": {
+          "title": "Zmienne",
+          "newItem": "Nowa zmienna",
+          "info": "Wartości nazwane (np. `b` = `a+1`) lub funkcje (np. `f(x)` = `x^2+b`). Definicje mają postać formuł [math.js](/mathjs/syntax) i są obliczane po kolei."
+        },
+        "objects": {
+          "info": "Obiekty w tym module. Ich właściwości można ustawić na [formuły math.js](/mathjs/syntax) z nazwami zdefiniowanymi powyżej. Na przykład, aby ustawić punkt jako średnią dwóch punktów kontrolnych utworzonych powyżej, można ustawić jego współrzędne na `(x_1+x_2)/2, (y_1+y_2)/2`. Aby utworzyć tablicę obiektów, rozwiń właściwość i kliknij \"Utwórz tablicę i warunek\".",
+          "moveInHint": "Aby dodać obiekt do tego modułu, najpierw utwórz obiekt korzystając z paska narzędzi lub wybierz istniejący obiekt w obszarze roboczym.",
+          "moveIntoModule": "Przenieś \"{{name}}\" do tego modułu",
+          "moveOut": "Przenieś z",
+          "templateLockInfo": "Aby obiekty w module były ruchome, najpierw utwórz powyżej kilka punktów kontrolnych, a następnie kliknij ▸, aby rozwinąć obiekt i zastąpić współrzędne numeryczne punktami kontrolnymi, takimi jak `x_1,y_1` lub formułami, takimi jak `(x_1+x_2)/2, (y_1+y_2)/2`.",
+          "arrayAndConditional": {
+            "info": "Utwórz wiele kopii tego obiektu i/lub umieść ten obiekt tylko wtedy, gdy spełniony jest określony warunek. Na przykład, aby skopiować ten obiekt 5 razy w poziomie z odstępem 10 jednostek między każdym z nich, możesz utworzyć zmienną pętli `i` o wartościach od 1 do 5 i ustawić współrzędne punktów na `x_1+i*10, y_1` itd. Aby wyświetlić obiekt tylko wtedy, gdy zmienna `a` jest większa od 0, możesz ustawić pole \"z warunkiem\" na `a > 0`.",
+            "create": "Utwórz tablicę i instrukcję warunkową",
+            "remove": "Usuń tablicę i instrukcję warunkową",
+            "arrayBadge": "Tablica",
+            "conditionalBadge": "Instrukcja warunkowa",
+            "repeatFor": "Powtórz dla",
+            "withCondition": "z warunkiem",
+            "forFrom": "z",
+            "forTo": "do",
+            "forStep": "krok",
+            "newLoopVariable": "Nowa zmienna pętli"
+          }
+        },
+        "settings": {
+          "title": "Ustawienia",
+          "maxLoopLength": "Maksymalna długość pętli",
+          "renameButton": "Zmień nazwę",
+          "removeButton": "Usuń Moduł",
+          "confirmRemove": "Usunąć moduł \"{{name}}\"?"
+        }
+      }
     }
   },
   "statusBox": {
@@ -718,7 +821,8 @@
         "description": "Kliknij dwukrotnie lub prawym przyciskiem myszy punkt kontrolny (np. punkt końcowy) obiektu, edytuj współrzędne (x,y), a następnie naciśnij klawisz Enter."
       },
       "arrayFormula": {
-        "title": "Tablice i obiekty ze wzorów"
+        "title": "Tablice i obiekty ze wzorów",
+        "description": "Aby zdefiniować tablice obiektów (np. siatkę luster o regulowanych odstępach) lub obiekty na podstawie formuł (np. przyzmat trapezowy o regulowanych kątach), wybierz opcję Narzędzia -> Inne -> Utwórz moduł."
       },
       "keyboardShortcuts": {
         "title": "Skróty klawiaturowe",
@@ -737,6 +841,13 @@
         "description": "Zalecany sposób to przejście do [Discussions](/github/discussions) lub [Issues](/github/issues) na GitHub. Jeśli nie korzystasz z GitHub, możesz również wysłać do nas wiadomość e-mail na adres [ray-optics@phydemo.app](/email).",
         "contribute": "Bezpośrednie wsparcie jest również mile widziane (patrz [przewodnik dotyczący wsparcia](/contributing))."
       }
+    },
+    "copyStatusMessage": {
+      "title": "Kopiuj wiadomość",
+      "copied": "Skopiowano"
+    },
+    "jsonFold": {
+      "expand": "Rozwiń wiadomość"
     }
   },
   "importShapesModal": {
@@ -749,6 +860,13 @@
     "actions": {
       "ignore": "Ignoruj"
     },
-    "scale": "Skala"
+    "scale": "Skala",
+    "importButton": "Importuj",
+    "centerTooltip": "Wyśrodkuj w oknie podglądu",
+    "centerButton": "Wyśrodkuj",
+    "tolerance": "Tolerancja krzywizny",
+    "toleranceInfo": "Tolerancja krzywizny w jednostkach sceny. Służy do aproksymacji łuków eliptycznych oraz łączenia sąsiednich gęstych segmentów krzywych Béziera trzeciego stopnia.",
+    "groupInHandle": "Powiąż importowane obiekty z uchwytem",
+    "offsetPair": "Offset"
   }
 }
