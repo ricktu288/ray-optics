@@ -212,6 +212,15 @@
     },
     "moreTools": {
       "title": "Więcej narzędzi"
+    },
+    "CurveMirror": {
+      "title": "Krzywe Béziera",
+      "description": "Zwierciadło o kształcie wyznaczonym przez sześcienne krzywe Béziera.",
+      "instruction": "Kliknij, aby utworzyć element. Kliknij punkt początkowy, aby utworzyć zamkniętą figurę, lub kliknij dwukrotnie ostatni punkt kontrolny, aby utworzyć otwartą krzywą. Następnie przeciągnij ramki, aby przesuwać punkty kontrolne i zmieniać kształt krzywej."
+    },
+    "CustomCurveSurface": {
+      "title": "Niestandardowe krzywe Béziera",
+      "description": "Niestandardowa powierzchnia o kształcie zdefiniowanym przez sześcienne krzywe Béziera."
     }
   },
   "view": {

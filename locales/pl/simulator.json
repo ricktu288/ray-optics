@@ -42,6 +42,10 @@
     "viewGallery": {
       "title": "Zobacz Galerię",
       "description": "Przejdź do strony Galerii, aby załadować przykład."
+    },
+    "importShapes": {
+      "title": "Importuj kształty…",
+      "description": "Importuj kształty z pliku SVG jako elementy optyczne (zwierciadła, soczewki itp.)."
     }
   },
   "settings": {
@@ -109,7 +113,8 @@
       "description": "Jeśli włączone, adres URL będzie aktualizowany automatycznie wraz z bieżącą sceną, więc nie trzeba ręcznie zapisywać sceny. Aby ustawić tytuł, użyj Plik -> Zapisz -> Zmień nazwę."
     },
     "showSidebar": {
-      "title": "Pokaż edytor JSON"
+      "title": "Pokaż edytor JSON",
+      "description": "Pokaż pasek boczny zawierający listę obiektów, edytor modułów, edytor kodu JSON i asystenta AI."
     },
     "showStatusBox": {
       "title": "Pokaż pole stanu",
@@ -170,10 +175,23 @@
       "eqnInfo": {
         "constants": "Obsługiwane stałe",
         "operators": "Obsługiwane operatory",
-        "functions": "Obsługiwane funkcje"
+        "functions": "Obsługiwane funkcje",
+        "naturalLog": "naturalny",
+        "curveStepSize": "Wielkość kroku próbkowania dla krzywej w pikselach (jednostka długości sceny pomnożona przez ustawienie \"skali długości\")",
+        "module": "Aby uzyskać niestandardowe parametry lub skomplikowane równania, należy użyć opcji Narzędzia -> Inne -> Utwórz moduł i przenieść ten obiekt do modułu.",
+        "mathjs": "Obsługuje tylko następujące operacje math.js: ",
+        "customFunctions": "Można używać funkcji niestandardowych zdefiniowanych w sekcji \"Zmienne\" edytora modułów, ale ich definicje muszą ostatecznie składać się z obsługiwanych operacji."
       },
       "imageDetectionWarning": "To narzędzie nie obsługuje wykrywania obrazów.",
-      "nonSimulateColorsWarning": "To narzędzie działa tylko wtedy, gdy \"Symuluj kolory\" jest włączone."
+      "nonSimulateColorsWarning": "To narzędzie działa tylko wtedy, gdy \"Symuluj kolory\" jest włączone.",
+      "curveStepSize": "Krok",
+      "bezierControlPoints": "Punkty kontrolne krzywej Béziera",
+      "styleRed": "Czerwony",
+      "styleGreen": "Zielony",
+      "styleBlue": "Niebieski",
+      "styleAlpha": "Alfa",
+      "styleWidth": "Szerokość",
+      "pointN": "Punkt {{i}}"
     },
     "ParamCurveObjMixin": {
       "addPiece": "Dodaj element",
@@ -184,6 +202,18 @@
         "invalidRange": "Nieprawidłowy zakres parametru: tMin ({{tMin}}) >= tMax ({{tMax}})",
         "nonFiniteCoords": "Współrzędne nieskończone: ({{x}}, {{y}})",
         "pieceError": "Błąd w elemencie {{pieceIndex}}, t={{t}}: {{error}}"
+      },
+      "pieces": "Elementy",
+      "curveType": "Typ krzywej",
+      "curveTypes": {
+        "polygonal": "Łamana",
+        "smoothNormal": "Gładka normalna",
+        "cubicBezier": "Béziera sześcienna"
+      },
+      "curveTypeDescriptions": {
+        "polygonal": "Proste odcinki między punktami próbkowania.",
+        "smoothNormal": "Taki sam kształt jak łamana, ale wektory normalne są interpolowane między elementami podobnie jak cieniowanie Phonga. (Domyślnie)",
+        "cubicBezier": "Kolejne próbki są połączone krzywą Béziera trzeciego stopnia, która zachowuje pozycję i pochodną na końcach. Niektóre funkcje mogą nie działać poprawnie z tym typem krzywej."
       }
     },
     "Beam": {
@@ -207,7 +237,8 @@
       "refIndex": "Współczynnik załamania",
       "refIndexInfo": {
         "relative": "względny, jeśli znajduje się w innym szkle",
-        "effective": "Jeśli ten obiekt ma być symulowany z bezwzględnym współczynnikiem załamania światła n₁, ale jest umieszczony wewnątrz innego szkła o współczynniku załamania światła n₀, to należy tutaj ustawić współczynnik załamania światła na n₁/n₀. W bardziej skomplikowanych przypadkach, w których kilka szkieł nakłada się na siebie, efektywny współczynnik załamania światła w obszarze nakładania się jest równy iloczynowi współczynników załamania światła poszczególnych szkieł."
+        "effective": "Jeśli ten obiekt ma być symulowany z bezwzględnym współczynnikiem załamania światła n₁, ale jest umieszczony wewnątrz innego szkła o współczynniku załamania światła n₀, to należy tutaj ustawić współczynnik załamania światła na n₁/n₀. W bardziej skomplikowanych przypadkach, w których kilka szkieł nakłada się na siebie, efektywny współczynnik załamania światła w obszarze nakładania się jest równy iloczynowi współczynników załamania światła poszczególnych szkieł.",
+        "dualMeaning": "Gdy \"Symuluj kolory\" jest włączone, służy ona zamiast tego jako współczynnik Cauchy’ego A."
       },
       "cauchyCoeff": "Współczynnik Cauchy'ego",
       "partialReflect": "Symuluj odbicia częściowe"
@@ -249,7 +280,8 @@
         "all": "Ten przełącznik dotyczy wszystkich obiektów GRIN w symulacji.",
         "impl": "Ten symulator ma obecnie dwie implementacje propagacji światła między różnymi ośrodkami dla obiektów GRIN - numeryczną i symboliczną (patrz funkcje 'multRefIndex' i 'devRefIndex' w 'BaseGrinGlass.js').",
         "implNote": "Implementacja numeryczna jest szybsza, ale nie zawsze działa poprawnie (w zależności od konkretnego przypadku) w scenariuszach, gdy jest używana z więcej niż jednym obiektem GRIN, takim, że przynajmniej jeden z nich ma funkcję współczynnika załamania światła, która nie jest zdefiniowana w całej płaszczyźnie, podczas gdy implementacja symboliczna jest wolniejsza, ale odporna na takie problemy."
-      }
+      },
+      "plotFns": "Wykres n i α"
     },
     "CircleGrinGlass": {
       "epsInfo": {
@@ -283,10 +315,13 @@
       "customBrightness": "Niestandardowa jasność",
       "customBrightnessInfo": "Gdy jest włączona, jasność promieni dyfrakcyjnych jest dostosowywana przez tablicę liczb odpowiadającą m = 0, 1, -1, 2, -2, …. Liczba ta ma być znormalizowana do jasności promienia padającego. Wartości nieznajdujące się w tablicy są ustawiane na 0. Na przykład „1, 0,5, 0,5” oznacza, że promień m=0 ma taką samą jasność jak promień padający, promienie m=1 i m=-1 mają połowę jasności, a wszystkie pozostałe promienie są ignorowane.",
       "slitRatio": "Szerokość szczeliny / odstęp linii",
-      "mirrored": "Odbiciowa"
+      "mirrored": "Odbiciowa",
+      "brightnesses": "Jasności",
+      "brightness": "Jasność"
     },
     "Ruler": {
-      "scaleInterval": "Odstęp skali"
+      "scaleInterval": "Odstęp skali",
+      "zeroPoint": "Punkt zerowy"
     },
     "Detector": {
       "info": {
@@ -327,7 +362,9 @@
         "right": "Prawa"
       },
       "smallCaps": "Małe litery",
-      "angle": "Kąt"
+      "angle": "Kąt",
+      "text": "Tekst",
+      "moduleInfo": "W module tekst może zawierać formuły math.js ujęte w odwrotne apostrofy, które zostaną obliczone w kontekście modułu. Na przykład wyrażenie „są \\`a+1\\` elementy” zamienia się na „są 3 elementy”, gdy `a` wynosi 2."
     },
     "LineArrow": {
       "arrow": "Strzałka do przodu",
@@ -343,25 +380,27 @@
         "previousFormulas": "Formuła może odwoływać się do wyników poprzednich formuł. Jeśli formuła daje nieprawidłową wartość, promień wychodzący jest ignorowany, a jego jasność jest traktowana jako 0.",
         "otherParams": "Inne parametry promieni padających, które można wykorzystać, to {{lambda}} (długość fali w nm) i {{p}} (0 dla polaryzacji s, 1 dla polaryzacji p). Pozostają one takie same dla promieni wychodzących.",
         "coating": "Obiekt ten może działać jako powłoka szklanych obiektów, nakładając się na ich powierzchnie. W tym przypadku samo załamanie również musi być obsługiwane przez formuły tego obiektu. Współczynniki załamania materiału przylegającego do tej samej i przeciwnej strony co padający promień mogą być określane odpowiednio jako {{n_0}} i {{n_1}}. Jeśli ten obiekt znajduje się wewnątrz szklanego obiektu, wartości są względem niego.",
-        "twoSides": "Jeśli chcesz, aby dwie strony tej powierzchni miały różne formuły, możesz nałożyć na siebie dwie jednostronne powierzchnie o przeciwnych orientacjach."
+        "twoSides": "Jeśli chcesz, aby dwie strony tej powierzchni miały różne formuły, możesz nałożyć na siebie dwie jednostronne powierzchnie o przeciwnych orientacjach.",
+        "module": "Aby uzyskać niestandardowe parametry, skomplikowane wzory lub dużą liczbę promieni wychodzących, użyj Narzędzia -> Inne -> Utwórz moduł i przenieś ten obiekt do modułu."
       },
       "twoSided": "Dwustronny",
       "addOutgoingRay": "Dodaj promień wychodzący",
-      "removeOutgoingRay": "Usuń promień wychodzący"
+      "removeOutgoingRay": "Usuń promień wychodzący",
+      "outgoingRays": "Promienie wychodzące"
     },
     "CustomSurface": {
       "info": {
-        "incidentPos": "Położenie punktu padania można określić jako {{t}}, które interpoluje liniowo od -1 do 1 pomiędzy dwoma punktami końcowymi odcinka."
+        "incidentPos": "Położenie punktu incydentnego można określić jako {{t}}, które interpoluje liniowo od -1 do 1 pomiędzy dwoma punktami końcowymi odcinka."
       }
     },
     "CustomArcSurface": {
       "info": {
-        "incidentPos": "Położenie punktu padania można określić jako {{t}}, które interpoluje jednostajnie (w odniesieniu do kąta) od -1 do 1 między dwoma punktami końcowymi łuku."
+        "incidentPos": "Położenie punktu incydentnego można określić jako {{t}}, które interpoluje jednostajnie (w odniesieniu do kąta) od -1 do 1 między dwoma punktami końcowymi łuku."
       }
     },
     "CustomParamSurface": {
       "info": {
-        "incidentPos": "Położenie punktu padania w przestrzeni parametrów krzywej można określić jako {{t}}."
+        "incidentPos": "Położenie punktu incydentnego w przestrzeni parametrów krzywej można określić jako {{t}}."
       }
     },
     "ModuleObj": {
@@ -373,7 +412,9 @@
       "stringExpansionError": "Błąd rozszerzania ciągu \"{{str}}\" z parametrami {{params}}: {{error}}",
       "objectExpansionError": "Błąd rozszerzania obiektu {{obj}} w tablicy z parametrami {{params}}: {{error}}",
       "variableDefinitionError": "Błąd oceny definicji zmiennych z parametrami {{params}}: {{error}}",
-      "unclosedMathBlock": "Niezamknięty blok matematyczny: {{str}}"
+      "unclosedMathBlock": "Niezamknięty blok matematyczny: {{str}}",
+      "editModule": "Edytuj moduł",
+      "inExpandedObjects": "W obiektach rozszerzonych:"
     },
     "Handle": {
       "handle": "Uchwyt",
@@ -386,7 +427,11 @@
         "scaling": "Skalowanie"
       },
       "step": "Krok",
-      "transformationWarning": "Zastosowanie \"{{transformation}}\" do \"{{obj}}\" może dać nieoczekiwane rezultaty."
+      "transformationWarning": "Zastosowanie \"{{transformation}}\" do \"{{obj}}\" może dać nieoczekiwane rezultaty.",
+      "handlePoint": "Pozycja uchwytu",
+      "rotationScalingCenter": "Środek obrotu/skalowania",
+      "placeOnCanvasHint": "Kliknij puste miejsce na obszarze roboczym, aby umieścić uchwyt.",
+      "convertToModule": "Do modułu…"
     },
     "CropBox": {
       "title": "Eksportuj",
@@ -396,7 +441,37 @@
       "rayCountLimit": "Limit liczby promieni",
       "transparent": "Przezroczyste tło",
       "svgWarning": "Eksport do SVG: Mieszanki kolorów, korekcja jasności i względne współczynniki załamania światła poniżej 1 nie są obsługiwane.",
-      "rayCountWarning": "Obecna liczba promieni w scenie jest większa niż limit liczby promieni. Konieczne może być zwiększenie limitu liczby promieni w opcjach Pola przycinania."
+      "rayCountWarning": "Obecna liczba promieni w scenie jest większa niż limit liczby promieni. Konieczne może być zwiększenie limitu liczby promieni w opcjach Pola przycinania.",
+      "label": "Pole przycięcia"
+    },
+    "LineObjMixin": {
+      "endpoint1": "Pierwszy punkt końcowy",
+      "endpoint2": "Drugi punkt końcowy",
+      "sourcePoint": "Punkt źródłowy",
+      "directionPoint": "Punkt kierunkowy"
+    },
+    "CircleObjMixin": {
+      "center": "Centrum",
+      "radiusPoint": "Punkt na okręgu"
+    },
+    "ArcMirror": {
+      "pointOnArc": "Punkt na łuku"
+    },
+    "ParabolicMirror": {
+      "vertex": "Wierzchołek"
+    },
+    "Glass": {
+      "vertices": "Wierzchołki",
+      "vertex": "Wierzchołek",
+      "arc": "Łuk kołowy"
+    },
+    "Protractor": {
+      "zeroPoint": "Punkt zerowy"
+    },
+    "CustomCurveSurface": {
+      "info": {
+        "incidentPos": "Położenie punktu incydentnego można określić jako {{t}}, przy czym wykorzystuje się naturalny parametr wielokrzywej Béziera: dla położenia s i-tego fragmentu mamy {{t}} = i + s."
+      }
     }
   },
   "saveModal": {
@@ -663,5 +738,17 @@
         "contribute": "Bezpośrednie wsparcie jest również mile widziane (patrz [przewodnik dotyczący wsparcia](/contributing))."
       }
     }
+  },
+  "importShapesModal": {
+    "title": "Importuj kształty",
+    "stats_one": "{{total}} ścieżka — {{closed}} zamknięta / {{open}} otwarta",
+    "stats_few": "{{total}} ścieżki — {{closed}} zamknięte / {{open}} otwarte",
+    "stats_many": "{{total}} ścieżek — {{closed}} zamkniętych / {{open}} otwartych",
+    "strokeHeading": "Traktuj każdy kolor pociągnięcia jako:",
+    "fillHeading": "Traktuj każdy kolor wypełnienia jako:",
+    "actions": {
+      "ignore": "Ignoruj"
+    },
+    "scale": "Skala"
   }
 }
