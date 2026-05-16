@@ -284,7 +284,7 @@
     },
     "opticsOfHumanEye": {
       "title": "Optyka ludzkiego oka",
-      "description": "Jest to symulacja działania oka. Można zmieniać wielkość źrenicy i ogniskową soczewki."
+      "description": "Jest to symulacja działania oka. Można zmieniać wielkość źrenicy i ogniskową soczewki.\n\nAby zapoznać się z bardziej szczegółową symulacją, zajrzyj do [Schematic Eye](/gallery/schematic-eye)."
     },
     "zoomLens": {
       "title": "Obiektyw zmiennoogniskowy",
@@ -518,6 +518,24 @@
       "annulareclipse": "Zaćmienie obrączkowe",
       "earth": "Ziemia",
       "totaleclipse": "Zaćmienie całkowite"
+    },
+    "schematicEye": {
+      "description": "Uproszczony model oka ludzkiego, zwany również Okiem schematycznym.\n\nZbudowano na podstawie danych z książki _Optics of the Human Eye_ autorstwa Davida A. Atchisona i George'a Smitha (http://dx.doi.org/10.1201/9781003128601)",
+      "title": "Schematyczne oko"
+    },
+    "holographicSight": {
+      "title": "Celownik holograficzny",
+      "description": "Projekt prezentuje sposób działania celownika holograficznego EOTech i przedstawia podzespoły, które umożliwiają jego działanie.",
+      "target": "Cel",
+      "collimatingmirror": "Zwierciadło kolimacyjne",
+      "laser": "Laser",
+      "holographicgrating": "Siatka holograficzna",
+      "holographicopticalel": "Holograficzny element optyczny­\n(niewidoczny dla ludzkiego oka)",
+      "eye2": "Oko",
+      "switchtoobservermode": "(Przełącz na tryb obserwatora, aby zobaczyć)",
+      "divergingmirror": "Zwierciadło rozpraszające",
+      "holographicsight": "Celownik holograficzny",
+      "lightnotusedpassesth": "Światło nieużywane przechodzi"
     }
   }
 }
