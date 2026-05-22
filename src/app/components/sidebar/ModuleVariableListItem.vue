@@ -23,7 +23,7 @@
         :value="name"
         rows="1"
         spellcheck="false"
-        @keydown.stop
+        @keydown="onNameKeydown"
         @keydown.enter.prevent="onEnterCommit"
         @input="onNameInput"
         @focus="onNameFocus"
@@ -81,9 +81,10 @@ export default {
   props: {
     moduleName: { type: String, default: '' },
     name: { type: String, default: '' },
-    expression: { type: String, default: '' }
+    expression: { type: String, default: '' },
+    focusName: { type: Boolean, default: false }
   },
-  emits: ['update:name', 'update:expression', 'commit'],
+  emits: ['update:name', 'update:expression', 'commit', 'focus-name-done'],
   setup(props, { emit }) {
     const nameRef = ref(null)
     const exprRef = ref(null)
@@ -218,6 +219,30 @@ export default {
       reshowTooltipIfFocused()
     }
 
+    const focusNameInput = () => {
+      const el = nameRef.value
+      if (!el) {
+        return
+      }
+      el.focus()
+      el.select()
+      emit('focus-name-done')
+    }
+
+    watch(
+      () => props.focusName,
+      (shouldFocus) => {
+        if (!shouldFocus) {
+          return
+        }
+        nextTick(() => {
+          focusNameInput()
+          autoResize()
+        })
+      },
+      { immediate: true, flush: 'post' }
+    )
+
     const autoResize = () => {
       for (const el of [nameRef.value, exprRef.value]) {
         applyTextareaAutoResize(el)
@@ -232,6 +257,20 @@ export default {
 
     const onNameBlur = () => {
       nextTick(autoResize)
+    }
+
+    const onNameKeydown = (e) => {
+      e.stopPropagation()
+      if (e.key !== '=') {
+        return
+      }
+      e.preventDefault()
+      const el = exprRef.value
+      if (!el) {
+        return
+      }
+      el.focus()
+      el.select()
     }
 
     const onExprFocus = (e) => {
@@ -324,6 +363,7 @@ export default {
       onEnterCommit,
       onNameFocus,
       onNameBlur,
+      onNameKeydown,
       onExprFocus,
       onExprBlur,
       onModuleInstancesMouseLeave,

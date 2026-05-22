@@ -22,34 +22,48 @@
       :info="info"
       :key-paths="[keyPath]"
     />
-    <textarea
-      ref="textareaRef"
-      class="text-property-control-input"
-      :value="localValue"
-      :readonly="readOnly"
-      rows="1"
-      spellcheck="false"
-      @keydown.stop="onKeydown"
-      @focus="onFocus"
-      @blur="onBlur"
-      @input="onInput"
-    ></textarea>
+    <div class="text-property-control-input-wrap">
+      <div class="text-property-control-stack">
+        <textarea
+          ref="textareaRef"
+          class="text-property-control-input"
+          :value="localValue"
+          :readonly="readOnly"
+          rows="1"
+          spellcheck="false"
+          @keydown.stop="onKeydown"
+          @focus="onFocus"
+          @blur="onBlur"
+          @input="onInput"
+        ></textarea>
+        <div
+          class="text-property-control-highlight-layer"
+          aria-hidden="true"
+          v-html="highlightLayerHtml"
+        ></div>
+      </div>
+      <PropertyControlError :message="error" />
+    </div>
   </div>
 </template>
 
 <script>
 import { computed, ref, watch, onMounted, onBeforeUnmount, nextTick, toRef } from 'vue'
+import i18next from 'i18next'
 import { getByKeyPath } from '../../../../core/propertyUtils/keyPath.js'
 import { usePreferencesStore } from '../../../store/preferences'
 import {
   applyTextareaAutoResize,
   observeTextareasResizeWhenVisible
 } from '../../../utils/textareaAutoResize.js'
+import { textHasBacktickBlocks } from '../../../utils/backtickHighlightHtml.js'
+import { useBacktickHighlightLayer } from '../../../composables/useBacktickHighlightLayer.js'
 import PropertyControlLabel from './PropertyControlLabel.vue'
+import PropertyControlError from './PropertyControlError.vue'
 
 export default {
   name: 'TextPropertyControl',
-  components: { PropertyControlLabel },
+  components: { PropertyControlLabel, PropertyControlError },
   props: {
     label: {
       type: String,
@@ -90,7 +104,10 @@ export default {
     const localValue = ref('')
     /** Last value aligned with parent data / last emit; blur skips emit if unchanged. */
     const lastCommittedValue = ref('')
+    const error = ref('')
     let focused = false
+
+    const { highlightLayerHtml } = useBacktickHighlightLayer(() => localValue.value)
 
     const preferences = usePreferencesStore()
     const sidebarWidth = toRef(preferences, 'sidebarWidth')
@@ -139,8 +156,20 @@ export default {
       visibilityResizeObserver = null
     })
 
-    const emitCommit = (text) => {
+    const tryCommit = (text) => {
+      error.value = ''
+
+      if (text.trim() === '') {
+        return true
+      }
+
+      if (!props.isTemplate && textHasBacktickBlocks(text)) {
+        error.value = i18next.t('simulator:sidebar.visual.sceneObjects.formulaRequiresModule')
+        return false
+      }
+
       emit('update:value', text)
+      return true
     }
 
     const onFocus = () => {
@@ -150,6 +179,7 @@ export default {
 
     const onInput = (e) => {
       localValue.value = e.target.value
+      error.value = ''
       autoResize()
     }
 
@@ -160,7 +190,7 @@ export default {
       if (draft.trim() === '') {
         localValue.value = committedDisplayString.value
       } else if (draft !== lastCommittedValue.value) {
-        emitCommit(draft)
+        tryCommit(draft)
       }
       nextTick(() => {
         lastCommittedValue.value = committedDisplayString.value
@@ -181,11 +211,11 @@ export default {
         })
         return
       }
-      emitCommit(draft)
+      const accepted = tryCommit(draft)
       nextTick(() => {
         lastCommittedValue.value = committedDisplayString.value
         autoResize()
-        if (localValue.value !== committedDisplayString.value) {
+        if (!accepted || localValue.value !== committedDisplayString.value) {
           return
         }
         const el = textareaRef.value
@@ -205,6 +235,8 @@ export default {
     return {
       textareaRef,
       localValue,
+      error,
+      highlightLayerHtml,
       onFocus,
       onInput,
       onBlur: commitBlur,
@@ -230,18 +262,67 @@ export default {
   text-overflow: ellipsis;
 }
 
-.text-property-control-input {
+.text-property-control-input-wrap {
   flex: 1 1 0;
   min-width: 0;
-  font-size: 11px;
-  line-height: 1.4;
-  padding: 3px 6px;
+}
+
+.text-property-control-stack {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-width: 0;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.text-property-control-stack:focus-within {
+  border-color: rgba(120, 198, 255, 0.6);
+}
+
+.text-property-control-highlight-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  box-sizing: border-box;
+  font-size: 12px;
+  font-family: monospace;
+  line-height: 1.4;
+  padding: 3px 6px;
+  white-space: pre-wrap;
+  overflow: hidden;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  color: transparent;
+  pointer-events: none;
+}
+
+.text-property-control-highlight-layer :deep(.backtick-highlight-match) {
+  background: rgba(120, 198, 255, 0.35);
+  border-radius: 2px;
+}
+
+.text-property-control-input {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 12px;
+  font-family: monospace;
+  line-height: 1.4;
+  padding: 3px 6px;
+  background: transparent;
+  border: none;
   border-radius: 4px;
   color: #fff;
   resize: none;
   overflow: hidden;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
   field-sizing: content;
 }
 
@@ -251,7 +332,6 @@ export default {
 
 .text-property-control-input:focus {
   outline: none;
-  border-color: rgba(120, 198, 255, 0.6);
 }
 
 .text-property-control-input[readonly] {

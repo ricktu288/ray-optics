@@ -87,6 +87,8 @@
               :max="item.max"
               :step="item.step"
               :default-val="item.defaultVal"
+              :focus-name="item.id === paramFocusNameId"
+              @focus-name-done="paramFocusNameId = null"
               @update:name="(v) => onParamNameUpdate(index, v)"
               @update:min="(v) => onParamMinUpdate(index, v)"
               @update:max="(v) => onParamMaxUpdate(index, v)"
@@ -125,6 +127,8 @@
               :module-name="moduleName"
               :name="item.name"
               :expression="item.expression"
+              :focus-name="item.id === variableFocusNameId"
+              @focus-name-done="variableFocusNameId = null"
               @update:name="(v) => onVarNameUpdate(index, v)"
               @update:expression="(v) => onVarExprUpdate(index, v)"
               @commit="commitVariableDefs"
@@ -427,7 +431,7 @@ function serializeVarDef(name, expression) {
     return e
   }
   if (!e) {
-    return n
+    return `${n} =`
   }
   return `${n} = ${e}`
 }
@@ -481,10 +485,14 @@ export default {
     })
     const paramItems = ref([])
     const paramActiveId = ref(null)
+    /** Row id whose name field should receive focus after create (cleared by child emit). */
+    const paramFocusNameId = ref(null)
     /** True only after an explicit param row click; cleared on row mouse-leave so hover never re-highlights the slider. */
     const paramSliderHighlightActive = ref(false)
     const variableItems = ref([])
     const variableActiveId = ref(null)
+    /** Row id whose name field should receive focus after create (cleared by child emit). */
+    const variableFocusNameId = ref(null)
     const maxLoopLengthInput = ref(String(DEFAULT_MODULE_MAX_LOOP_LENGTH))
     const maxLoopLengthCommittedSnapshot = ref(maxLoopLengthInput.value)
 
@@ -1135,6 +1143,7 @@ export default {
       if (last) {
         clearOtherModuleSidebarLists(MODULE_EDITOR_LIST.PARAMS)
         paramActiveId.value = last.id
+        paramFocusNameId.value = last.id
         paramSliderHighlightActive.value = true
         applyModuleParamHighlight(last.name)
       }
@@ -1196,6 +1205,7 @@ export default {
       if (last) {
         clearOtherModuleSidebarLists(MODULE_EDITOR_LIST.VARIABLES)
         variableActiveId.value = last.id
+        variableFocusNameId.value = last.id
       }
     }
 
@@ -1583,8 +1593,10 @@ export default {
       handleControlPointSelect,
       paramItems,
       paramActiveId,
+      paramFocusNameId,
       variableItems,
       variableActiveId,
+      variableFocusNameId,
       commitParamDefs,
       onParamNameUpdate,
       onParamMinUpdate,

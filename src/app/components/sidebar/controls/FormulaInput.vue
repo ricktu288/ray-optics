@@ -309,7 +309,7 @@ export default {
           autoResize()
         }
 
-        if (parentUnchanged && draft !== synced) {
+        if (rejectedNonEmptyEdit) {
           return
         }
         const el = textareaRef.value

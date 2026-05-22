@@ -23,6 +23,7 @@
     @mouseleave="onItemMouseLeave"
   >
     <input
+      ref="nameRef"
       class="module-param-input module-param-input--name"
       :value="name"
       :style="{ width: Math.max(name.length, 1) + 'ch' }"
@@ -85,7 +86,7 @@
 </template>
 
 <script>
-import { ref, computed, nextTick, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, watch, nextTick, onMounted, onBeforeUnmount } from 'vue'
 import * as bootstrap from 'bootstrap'
 import { useSceneStore } from '../../store/scene'
 import { app } from '../../services/app'
@@ -99,10 +100,12 @@ export default {
     min: { type: String, default: '0' },
     step: { type: String, default: '1' },
     max: { type: String, default: '0' },
-    defaultVal: { type: String, default: '0' }
+    defaultVal: { type: String, default: '0' },
+    focusName: { type: Boolean, default: false }
   },
-  emits: ['update:name', 'update:min', 'update:step', 'update:max', 'update:defaultVal', 'commit'],
+  emits: ['update:name', 'update:min', 'update:step', 'update:max', 'update:defaultVal', 'commit', 'focus-name-done'],
   setup(props, { emit }) {
+    const nameRef = ref(null)
     const tooltipHostRef = ref(null)
     const sceneStore = useSceneStore()
     const editorSelectedObjIndex = ref(-1)
@@ -217,6 +220,27 @@ export default {
       })
     }
 
+    const focusNameInput = () => {
+      const el = nameRef.value
+      if (!el) {
+        return
+      }
+      el.focus()
+      el.select()
+      emit('focus-name-done')
+    }
+
+    watch(
+      () => props.focusName,
+      (shouldFocus) => {
+        if (!shouldFocus) {
+          return
+        }
+        nextTick(focusNameInput)
+      },
+      { immediate: true, flush: 'post' }
+    )
+
     const syncEditorSelection = () => {
       editorSelectedObjIndex.value = app.editor?.selectedObjIndex ?? -1
     }
@@ -246,6 +270,7 @@ export default {
     })
 
     return {
+      nameRef,
       tooltipHostRef,
       onRowFocusOut,
       onEnterCommit,

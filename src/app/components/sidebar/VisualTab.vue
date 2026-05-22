@@ -199,6 +199,27 @@ export default {
       document.dispatchEvent(new CustomEvent('clearVisualEditorSelection'))
     }
 
+    // Firefox may scroll a visible overflow panel on arrow keys even when focus is on the
+    // canvas/body (Chromium does not). Block that default unless focus is inside the panel.
+    const onVisualSubtabArrowScrollKey = (event) => {
+      if (event.keyCode < 37 || event.keyCode > 40) {
+        return
+      }
+      const panel =
+        activeTabId.value === 'scene'
+          ? scenePanelEl.value
+          : activeModuleName.value != null
+            ? modulePanelEl.value
+            : null
+      if (!panel?.offsetParent) {
+        return
+      }
+      const active = document.activeElement
+      if (!active || !panel.contains(active)) {
+        event.preventDefault()
+      }
+    }
+
     // If the selected module disappears, fall back to Scene.
     watch(moduleNames, (names) => {
       if (activeTabId.value === 'scene') return
@@ -212,12 +233,14 @@ export default {
       document.addEventListener('selectVisualModuleTab', handleSelectModuleTab)
       document.addEventListener('selectVisualSceneTab', handleSelectSceneTab)
       document.addEventListener('applyVisualNewModule', handleApplyVisualNewModule)
+      document.addEventListener('keydown', onVisualSubtabArrowScrollKey, true)
     })
 
     onUnmounted(() => {
       document.removeEventListener('selectVisualModuleTab', handleSelectModuleTab)
       document.removeEventListener('selectVisualSceneTab', handleSelectSceneTab)
       document.removeEventListener('applyVisualNewModule', handleApplyVisualNewModule)
+      document.removeEventListener('keydown', onVisualSubtabArrowScrollKey, true)
     })
 
     return {
