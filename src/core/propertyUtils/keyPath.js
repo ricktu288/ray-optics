@@ -135,7 +135,7 @@ export function getAllByKeyPath(obj, path) {
  *   Empty string is not valid for set (would replace root).
  * @param {*} value - The value to set.
  * @param {Object} [defaults] - Optional defaults. When an intermediate is null/undefined, materializes from defaults first.
- * When the value being set matches the default (from `defaults` or the built-in for/if defaults), the property is deleted instead of set.
+ * When the value being set matches the default (from `defaults` or the built-in for/if defaults), the property is deleted instead of set — except for sub-properties inside array elements, which are always kept (arrays are compared as a whole during serialization). The reserved keys `for` and `if` are still deleted when default even inside array elements.
  */
 export function setByKeyPath(obj, path, value, defaults) {
   if (path === '') {
@@ -144,6 +144,7 @@ export function setByKeyPath(obj, path, value, defaults) {
   const segments = path.split('.');
   let current = obj;
   let partialPath = '';
+  let insideArrayElement = false;
   for (let i = 0; i < segments.length - 1; i++) {
     const seg = segments[i];
     const num = Number(seg);
@@ -151,6 +152,9 @@ export function setByKeyPath(obj, path, value, defaults) {
     const nextKey = segments[i + 1];
     const nextNum = Number(nextKey);
     const isNextArray = !Number.isNaN(nextNum);
+    if (Array.isArray(current)) {
+      insideArrayElement = true;
+    }
     if (current[key] == null) {
       if (defaults != null) {
         const nextPartial = partialPath ? `${partialPath}.${seg}` : seg;
@@ -182,7 +186,15 @@ export function setByKeyPath(obj, path, value, defaults) {
     }
   }
 
-  if (isDefault && current != null && typeof current === 'object' && !Array.isArray(current)) {
+  const isForIfKey = getForIfDefault(lastSeg) !== undefined;
+
+  if (
+    isDefault &&
+    (!insideArrayElement || isForIfKey) &&
+    current != null &&
+    typeof current === 'object' &&
+    !Array.isArray(current)
+  ) {
     delete current[lastKey];
   } else {
     current[lastKey] = value;

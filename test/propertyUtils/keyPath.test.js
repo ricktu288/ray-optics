@@ -169,6 +169,30 @@ describe('keyPath', () => {
       setByKeyPath(o, 'branch.if', true);
       expect(o.branch).toEqual({});
     });
+
+    it('keeps array element sub-property when value equals default', () => {
+      const o = { path: [{ x: 5, y: 1 }] };
+      const defaults = { path: [{ x: 0, y: 0 }] };
+      setByKeyPath(o, 'path.0.y', 0, defaults);
+      expect(o.path[0]).toEqual({ x: 5, y: 0 });
+      setByKeyPath(o, 'path.1.x', 0, defaults);
+      expect(o.path[1]).toEqual({ x: 0 });
+    });
+
+    it('still deletes nested object sub-property when value equals default', () => {
+      const o = { params: { r1: 2, r2: 3 } };
+      const defaults = { params: { r1: 1, r2: 3 } };
+      setByKeyPath(o, 'params.r1', 1, defaults);
+      expect(o.params).toEqual({ r2: 3 });
+    });
+
+    it('deletes for/if inside array elements when value equals default', () => {
+      const o = { objs: [{ type: 'Mirror', if: false, for: ['i', 1, 2] }] };
+      setByKeyPath(o, 'objs.0.if', true);
+      expect(o.objs[0]).toEqual({ type: 'Mirror', for: ['i', 1, 2] });
+      setByKeyPath(o, 'objs.0.for', []);
+      expect(o.objs[0]).toEqual({ type: 'Mirror' });
+    });
   });
 
   describe('formatKeyPath', () => {
