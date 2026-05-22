@@ -522,6 +522,16 @@
       "earth": "Earth",
       "totaleclipse": "Total eclipse"
     },
+    "reflexSight": {
+      "title": "Reflex Sight",
+      "description": "Reflex sights use an LED that shines onto a curved glass panel which reflects as a collimated beam, appearing as a fixed reticle to the user. Useful for fast target acquisition and aiming.",
+      "led": "LED",
+      "aperture": "Aperture",
+      "curvedglasswithredfi": "Curved Glass With Red Filter",
+      "eyeswitchtoobserverm": "Eye (Switch to observer mode to see)",
+      "reflexsight": "Reflex Sight",
+      "collimatedbeamreticl": "Collimated Beam (Reticle)"
+    },
     "holographicSight": {
       "title": "Holographic Sight",
       "description": "The design showcases how a holographic sight like the EOTech functions and includes the components that make it work.",

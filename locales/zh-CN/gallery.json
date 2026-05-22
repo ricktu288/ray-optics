@@ -521,6 +521,16 @@
       "earth": "地球",
       "totaleclipse": "日全食"
     },
+    "reflexSight": {
+      "title": "反射式瞄准镜",
+      "description": "反射式瞄准镜使用 LED 将光照射到弯曲的玻璃面板上，玻璃面板将光反射成准直光束，对使用者而言呈现为固定的标线。适合用于快速锁定目标与瞄准。",
+      "led": "LED",
+      "aperture": "光圈",
+      "curvedglasswithredfi": "带红色滤光片的曲面玻璃",
+      "eyeswitchtoobserverm": "眼睛（切换至观察者模式以查看）",
+      "reflexsight": "反射式瞄准镜",
+      "collimatedbeamreticl": "准直光束（标线）"
+    },
     "holographicSight": {
       "title": "全息瞄准镜",
       "description": "本设计展示了类似 EOTech 的全息瞄准镜如何工作，并包含使其工作的各个元件。",

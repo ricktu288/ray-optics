@@ -481,6 +481,13 @@
         ]
       },
       {
+        "id": "reflex-sight",
+        "beta": true,
+        "contributors": [
+          "Zain Kalim"
+        ]
+      },
+      {
         "id": "holographic-sight",
         "beta": true,
         "contributors": [
