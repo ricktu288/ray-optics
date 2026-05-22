@@ -127,24 +127,24 @@
     },
     "CircleGrinGlass": {
       "title": "Koło GRIN",
-      "description": "Szkło z konfigurowaną funkcją współczynnika załamania n(x,y) i kołową krawędzią."
+      "description": "Materiał z konfigurowaną funkcją współczynnika załamania n(x,y) i kołową krawędzią."
     },
     "GrinGlass": {
       "title": "Wielokąt GRIN",
-      "description": "Szkło z konfigurowaną funkcją współczynnika załamania n(x,y) i wielokątną krawędzią.",
+      "description": "Materiał z konfigurowaną funkcją współczynnika załamania n(x,y) i wielokątną krawędzią.",
       "instruction": "Kliknij, aby utworzyć odcinek, kliknij punkt początkowy po zakończeniu rysowania.",
       "warning": "OSTRZEŻENIE: Obsługiwane są tylko proste wielokąty, w przeciwnym razie zachowanie jest nieprzewidywalne."
     },
     "ParamGrinGlass": {
       "title": "Krzywa parametryczna GRIN",
-      "description": "Szkło gradientowe z krawędzią zdefiniowaną przez niestandardowe równania parametryczne."
+      "description": "Materiał gradientowy z krawędzią zdefiniowaną przez niestandardowe równania parametryczne."
     },
     "CurveGrinGlass": {
       "title": "Krzywe Béziera GRIN",
-      "description": "Szkło gradientowe ograniczone krzywymi sześciennymi Béziera."
+      "description": "Materiał gradientowy ograniczony krzywymi sześciennymi Béziera."
     },
     "otherGrinGlass": {
-      "title": "Szkło gradientowe",
+      "title": "Materiał gradientowy",
       "description": "Materiał z określoną funkcją współczynnika załamania n(x,y)."
     },
     "Blocker": {
@@ -204,7 +204,9 @@
     },
     "modules": {
       "import": "Importuj moduły…",
-      "remove": "Usuń moduł"
+      "remove": "Usuń moduł",
+      "createModule": "Utwórz moduł…",
+      "description": "Twórz nowe elementy, łącząc istniejące. Przykłady znajdziesz w sekcji „Importowanie modułów”."
     },
     "moveView": {
       "title": "Przesuń widok",
@@ -236,7 +238,7 @@
     },
     "images": {
       "title": "Wszystkie obrazy",
-      "description": "Pokaż położenie wszystkich obrazów. Żółte punkty oznaczają obrazy rzeczywiste, pomarańczowe obrazy pozorne, a szare (brak na tym zdjęciu) obiekty wirtualne. Zwróć uwagę, że niektórych obrazów nie można wykryć, jeśli 'Gęstość promieni' nie jest wystarczająco wysoka.",
+      "description": "Pokaż położenie wszystkich obrazów i kaustyk. Żółte punkty oznaczają obrazy rzeczywiste, pomarańczowe obrazy pozorne, a szare (brak na tym zdjęciu) obiekty wirtualne. Zwróć uwagę, że niektórych obrazów nie można wykryć, jeśli 'Gęstość promieni' nie jest wystarczająco wysoka.",
       "simulateColorsNote": "Gdy opcja „Symuluj kolory” jest włączona, są one wyświetlane w kolorach źródłowych i zamiast tego rozróżniane na podstawie wielkości kropek."
     },
     "observer": {
