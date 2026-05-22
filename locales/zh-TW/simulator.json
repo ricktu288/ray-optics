@@ -224,6 +224,9 @@
         "invalidRange": "參數範圍無效：tMin ({{tMin}}) >= tMax ({{tMax}})",
         "nonFiniteCoords": "座標非有限值：({{x}}, {{y}})",
         "pieceError": "片段 {{pieceIndex}} 在 t={{t}} 時出錯：{{error}}"
+      },
+      "warning": {
+        "piecesNotJoined": "片段 {{endPiece}} 的終點與片段 {{startPiece}} 的起點未重合。"
       }
     },
     "Beam": {

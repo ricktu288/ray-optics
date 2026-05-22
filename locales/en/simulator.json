@@ -224,6 +224,9 @@
         "invalidRange": "Invalid parameter range: tMin ({{tMin}}) >= tMax ({{tMax}})",
         "nonFiniteCoords": "Non-finite coordinates: ({{x}}, {{y}})",
         "pieceError": "Error at piece {{pieceIndex}}, t={{t}}: {{error}}"
+      },
+      "warning": {
+        "piecesNotJoined": "The end of piece {{endPiece}} does not meet the start of piece {{startPiece}}."
       }
     },
     "Beam": {

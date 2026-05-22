@@ -272,6 +272,12 @@ class ParamGlass extends ParamCurveObjMixin(BaseGlass) {
  * Sets this.warning if validation fails.
  */
   validateCurve() {
+    const unjoined = this.findUnjoinedPieces();
+    if (unjoined) {
+      this._setPiecesNotJoinedWarning(unjoined);
+      return;
+    }
+
     if (!this.isClosed()) {
       this.warning = i18next.t('simulator:sceneObjs.ParamGlass.warning.notClosed');
       return;

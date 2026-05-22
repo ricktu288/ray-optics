@@ -19,7 +19,7 @@
         {
           "eqnX": "25\\cdot\\cos\\left(t\\right)-25",
           "eqnY": "25\\cdot\\sin\\left(t\\right)",
-          "tMin": 3.141593,
+          "tMin": 3.141592653589,
           "tMax": 6.28318530718,
           "tStep": 0.01
         }

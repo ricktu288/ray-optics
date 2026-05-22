@@ -22,6 +22,9 @@ import i18next from 'i18next';
 import * as math from 'mathjs';
 import { Bezier } from 'bezier-js';
 
+/** Position tolerance for parametric curve endpoint checks (closed loop and piece junctions). */
+const PARAM_CURVE_POINT_TOLERANCE = 1e-10;
+
 /**
  * Compile d(eq)/dt from LaTeX eq(t).
  * Uses {@link latexToMathJS} → mathjs derivative → toTex replacements → {@link evaluateLatex}.
@@ -398,7 +401,33 @@ const ParamCurveObjMixin = Base => class extends Base {
     }
 
     this.error = null;
+    this._applyPiecesJoinedWarning();
     return true;
+  }
+
+  /**
+   * Set or clear the pieces-not-joined warning after a successful path build.
+   * Glass types run additional checks in validateCurve(); this only manages the junction warning.
+   */
+  _applyPiecesJoinedWarning() {
+    const unjoined = this.findUnjoinedPieces();
+    if (unjoined) {
+      this._setPiecesNotJoinedWarning(unjoined);
+      return;
+    }
+    this._clearPiecesNotJoinedWarningIfSet();
+  }
+
+  _setPiecesNotJoinedWarning(unjoined) {
+    this.warning = i18next.t('simulator:sceneObjs.ParamCurveObjMixin.warning.piecesNotJoined', unjoined);
+    this._piecesNotJoinedWarning = true;
+  }
+
+  _clearPiecesNotJoinedWarningIfSet() {
+    if (this._piecesNotJoinedWarning) {
+      this.warning = null;
+      this._piecesNotJoinedWarning = false;
+    }
   }
 
   /**
@@ -566,12 +595,53 @@ const ParamCurveObjMixin = Base => class extends Base {
     const firstPoint = this.path[0];
     const lastPoint = this.path[this.path.length - 1];
     
-    // Check if first and last points are within floating point error
-    const tolerance = 1e-10;
     const dx = Math.abs(firstPoint.x - lastPoint.x);
     const dy = Math.abs(firstPoint.y - lastPoint.y);
     
-    return dx < tolerance && dy < tolerance;
+    return dx < PARAM_CURVE_POINT_TOLERANCE && dy < PARAM_CURVE_POINT_TOLERANCE;
+  }
+
+  /**
+   * Find the first pair of consecutive pieces whose endpoints do not meet.
+   * Lazy-generates the path if needed.
+   * @returns {{ endPiece: number, startPiece: number } | null} 1-based piece numbers, or null if all joined
+   */
+  findUnjoinedPieces() {
+    if (!this.path) {
+      if (!this.initPath()) {
+        return null;
+      }
+    }
+
+    if (this.pieces.length < 2) {
+      return null;
+    }
+
+    for (let i = 0; i < this.path.length - 1; i++) {
+      if (this.path[i].pieceIndex !== this.path[i + 1].pieceIndex) {
+        const p1 = this.path[i];
+        const p2 = this.path[i + 1];
+        const dx = Math.abs(p1.x - p2.x);
+        const dy = Math.abs(p1.y - p2.y);
+        if (dx >= PARAM_CURVE_POINT_TOLERANCE || dy >= PARAM_CURVE_POINT_TOLERANCE) {
+          return {
+            endPiece: p1.pieceIndex + 1,
+            startPiece: p2.pieceIndex + 1,
+          };
+        }
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Check whether the end of each piece meets the start of the next (within floating point error).
+   * Lazy-generates the path if needed.
+   * @returns {boolean} True if all piece junctions coincide, false otherwise
+   */
+  arePiecesJoined() {
+    return this.findUnjoinedPieces() === null;
   }
 
   /**
