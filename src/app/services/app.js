@@ -932,7 +932,7 @@ function getBetaFeaturesInUse() {
 
   const usesLock = allObjs.some((obj) => obj && obj.locked !== 'default')
   if (usesLock) {
-    betaFeatures.push(i18next.t('<code>obj.locked</code>'));
+    betaFeatures.push(i18next.t('<code>sceneObj.locked</code>'));
   }
 
   const useCurveMirror = allObjs.some((obj) => obj && obj.constructor === sceneObjs.CurveMirror);
@@ -968,6 +968,11 @@ function getBetaFeaturesInUse() {
   const usesThemeGlassAbsorption = scene.theme.glassAbsorption.color.r !== defaultScene.theme.glassAbsorption.color.r || scene.theme.glassAbsorption.color.g !== defaultScene.theme.glassAbsorption.color.g || scene.theme.glassAbsorption.color.b !== defaultScene.theme.glassAbsorption.color.b;
   if (usesThemeGlassAbsorption) {
     betaFeatures.push(i18next.t('simulator:themeModal.title') + '-> ' + i18next.t('simulator:themeModal.glassAbsorption.title'));
+  }
+
+  const usesBackwardLoop = allObjs.some((obj) => obj && obj.constructor === sceneObjs.ModuleObj && obj._usesBackwardLoop);
+  if (usesBackwardLoop) {
+    betaFeatures.push('<code>moduleObj._usesBackwardLoop</code>');
   }
 
   try {
