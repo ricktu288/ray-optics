@@ -195,6 +195,9 @@
     "holographicSight": {
       "laser": "ឡាស៊ែរ",
       "eye2": "ភ្នែក"
+    },
+    "reflexSight": {
+      "led": "LED"
     }
   }
 }
