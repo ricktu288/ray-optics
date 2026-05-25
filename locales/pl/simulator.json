@@ -214,6 +214,9 @@
         "polygonal": "Proste odcinki między punktami próbkowania.",
         "smoothNormal": "Taki sam kształt jak łamana, ale wektory normalne są interpolowane między elementami podobnie jak cieniowanie Phonga. (Domyślnie)",
         "cubicBezier": "Kolejne próbki są połączone krzywą Béziera trzeciego stopnia, która zachowuje pozycję i pochodną na końcach. Niektóre funkcje mogą nie działać poprawnie z tym typem krzywej."
+      },
+      "warning": {
+        "piecesNotJoined": "Koniec elementu {{endPiece}} nie styka się z początkiem elementu {{startPiece}}."
       }
     },
     "Beam": {
