@@ -31,7 +31,7 @@
     "sass-loader": "^16.0.2",
     "seedrandom": "^3.0.5",
     "style-loader": "^4.0.0",
-    "tex-math-parser": "^2.0.4",
+    "tex-math-parser": "^2.0.5",
     "vue": "^3.0.0",
     "webpack": "^5.105.0",
     "webpack-cli": "^5.1.4",
