@@ -26,6 +26,18 @@
       max-width: 80%;
     }
 
+    .gallery-item-heading {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+
+    .gallery-item-heading h1 {
+      display: inline;
+      margin: 0;
+    }
+
     .beta-badge {
       flex-shrink: 0;
       display: inline-block;
@@ -56,7 +68,9 @@
   {{> navbar}}
   <div class="container">
     <div align="center">
-      <h1><b><span>{{t titleKey}}</span>{{#if beta}}<span class="beta-badge">Beta</span>{{/if}}</b></h1>
+      <div class="gallery-item-heading">
+        <h1><b><span>{{t titleKey}}</span></b></h1>{{#if beta}}<span class="beta-badge" data-nosnippet>Beta</span>{{/if}}
+      </div>
       <p>
         {{t "gallery:galleryPage.contributors" count=contributorCount contributors=contributors}}
       </p>
