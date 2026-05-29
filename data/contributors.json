@@ -954,5 +954,17 @@
       "gallery": true
     },
     "firstCommit": "2026-05-15"
+  },
+  {
+    "name": "Nguyễn Tiến Hưng",
+    "githubEmails": [
+      "hungham080908@gmail.com"
+    ],
+    "contributions": {
+      "translations": [
+        "vi"
+      ]
+    },
+    "firstCommit": "2026-05-28"
   }
 ]

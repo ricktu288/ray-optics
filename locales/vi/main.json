@@ -140,5 +140,11 @@
       "instruction": "Nhấp chuột để tạo các đỉnh đa giác, nhấp chuột vào điểm đầu để kết thúc.",
       "warning": "LƯU Ý: Các đa giác quá phức tạp có thể vượt khả năng tính toán của thiết bị."
     }
+  },
+  "meta": {
+    "languageName": "Tiếng Việt",
+    "parentheses": "{{main}} ({{sub}})",
+    "colon": "{{name}}: {{value}}",
+    "list": "{{first}}, {{others}}"
   }
 }
