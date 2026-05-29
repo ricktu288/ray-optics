@@ -179,7 +179,8 @@
         "module": "Para adicionar parâmetros personalizados ou equações complicadas, use Ferramentas -> Outros -> Criar Módulo e mova este objeto para o módulo.",
         "mathjs": "Somente suporta as operações a seguir do math.js: ",
         "customFunctions": "Você pode usar funções personalizadas definidas na seção \"Variáveis\" do editor de módulos, mas suas definições devem consistir de operações suportadas.",
-        "curveStepSize": "Tamanho de passo de amostra para a curva em píxeis (comprimento de unidade da cena multiplicado pela configuração \"escala de comprimento\")"
+        "curveStepSize": "Tamanho de passo de amostra para a curva em píxeis (comprimento de unidade da cena multiplicado pela configuração \"escala de comprimento\")",
+        "naturalLog": "natural"
       },
       "imageDetectionWarning": "Este componente não suporta detecção de imagem.",
       "nonSimulateColorsWarning": "Este componente só funciona quando \"Simular Cores\" está ligado.",
@@ -711,6 +712,17 @@
         "formulaRequiresModule": "Para usar uma fórmula, primeiro você deve mover o objeto para um módulo.",
         "invalidPointFormat": "Pontos devem ter exatamente duas coordenadas separadas pur uma vírgula.",
         "unsupportedVisualValue": "Este valor não é suportado pelo editor visual. Por favor troque para a aba Códigopara editar essa propriedade."
+      },
+      "moduleEditor": {
+        "variables": {
+          "newItem": "Nova variável",
+          "info": "Valores nomeados (ex.: `b` = `a+1`) ou funções nomeadas (ex.: `f(x)` = x^2+b`). As definições são [fórmulas math.js](/mathjs/syntax), e são avaliadas em ordem."
+        },
+        "objects": {
+          "moveInHint": "Para adicionar um objeto a esse módulo, primeiro crie o objeto usando a barra de ferramentas ou selecione um objeto existente na tela.",
+          "moveIntoModule": "Mover \"{{name}}\" para este módulo",
+          "templateLockInfo": "Para tornar objetos no módulo móveis, primeiro crie pontos de controle acima, e clique ▸ para expandir o objeto e substitua coordenadas numéricas com pontos de controle como `x_1,y_1`, ou fórmulas como `(x_1+x_2)/2, (y_1+y_2/2)`."
+        }
       }
     }
   },

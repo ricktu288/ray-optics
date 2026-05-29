@@ -536,6 +536,16 @@
       "divergingmirror": "Zwierciadło rozpraszające",
       "holographicsight": "Celownik holograficzny",
       "lightnotusedpassesth": "Światło nieużywane przechodzi"
+    },
+    "reflexSight": {
+      "collimatedbeamreticl": "Wiązka skolimowana (krzyż celowniczy)",
+      "title": "Celownik kolimatorowy",
+      "description": "Celowniki kolimatorowe wykorzystują diodę LED, która świeci na zakrzywioną szklaną szybkę; ta odbija światło w postaci wiązki skolimowanej, co użytkownik widzi jako nieruchomą siatkę celowniczą. Są one przydatne do szybkiego namierzania celu i celowania.",
+      "led": "LED",
+      "aperture": "Apertura",
+      "curvedglasswithredfi": "Szkło zakrzywione z czerwonym filtrem",
+      "eyeswitchtoobserverm": "Oko (Przełącz na tryb obserwatora, aby zobaczyć)",
+      "reflexsight": "Celownik kolimatorowy"
     }
   }
 }
