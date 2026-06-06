@@ -39,5 +39,11 @@
     "Beam": {
       "title": "ಕಿರಣಪುಂಜ"
     }
+  },
+  "meta": {
+    "languageName": "ಕನ್ನಡ",
+    "parentheses": "{{main}} ({{sub}})",
+    "colon": "{{name}}: {{value}}",
+    "list": "{{first}}, {{others}}"
   }
 }
