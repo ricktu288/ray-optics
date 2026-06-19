@@ -463,6 +463,13 @@
         ]
       },
       {
+        "id": "types-of-spectrometer-dispersive-elements",
+        "beta": true,
+        "contributors": [
+          "bird0cosmic"
+        ]
+      },
+      {
         "id": "reflecting-monochromator",
         "contributors": [
           "James Garrard"

@@ -499,6 +499,14 @@
       "pointsourcetomeasure": "用来测量半径的点光源",
       "t15readingglasses": "+1.5度阅读眼镜"
     },
+    "typesOfSpectrometerDispersiveElements": {
+      "title": "光谱仪色散元件的类型",
+      "description": "本图展示了光谱仪中使用的各类色散元件，从经典的棱镜到棱栅（带光栅的棱镜）和衍射光栅。",
+      "grismgratedprism": "棱栅（带光栅的棱镜）",
+      "diffractiongratingre": "衍射光栅（反射式）",
+      "diffractiongratingtr": "衍射光栅（透射式）",
+      "prism": "棱镜"
+    },
     "reflectingMonochromator": {
       "title": "反射式单色仪",
       "description": "这是一个反射式单色仪的模拟，其透过反射式衍射光栅与聚焦处的出射口，从多波长混合的光之中取得窄频宽的光。",

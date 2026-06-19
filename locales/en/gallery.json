@@ -500,6 +500,14 @@
       "pointsourcetomeasure": "point source to measure radius",
       "t15readingglasses": "+1.5 reading glasses"
     },
+    "typesOfSpectrometerDispersiveElements": {
+      "title": "Types of spectrometer dispersive elements",
+      "description": "This diagram shows the types of dispersive elements used in spectrometers, ranging from the classic prisms to grisms (grated prisms) and diffraction gratings.",
+      "grismgratedprism": "Grism (grated prism)",
+      "diffractiongratingre": "diffraction grating (reflection)",
+      "diffractiongratingtr": "diffraction grating (transmission)",
+      "prism": "prism"
+    },
     "reflectingMonochromator": {
       "title": "Reflecting Monochromator",
       "description": "This is a simulation of a reflecting monochromator, which uses a reflective diffraction grating and a slit at the focus to get narrow band wavelengths from composite light.",

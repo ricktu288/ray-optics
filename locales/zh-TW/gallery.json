@@ -499,6 +499,14 @@
       "pointsourcetomeasure": "用來測量半徑的點光源",
       "t15readingglasses": "+1.5度閱讀眼鏡"
     },
+    "typesOfSpectrometerDispersiveElements": {
+      "title": "光譜儀色散元件的類型",
+      "description": "本圖展示了光譜儀中使用的各類色散元件，從經典的稜鏡到稜柵（帶光柵的稜鏡）和繞射光柵。",
+      "grismgratedprism": "稜柵（帶光柵的稜鏡）",
+      "diffractiongratingre": "繞射光柵（反射式）",
+      "diffractiongratingtr": "繞射光柵（透射式）",
+      "prism": "稜鏡"
+    },
     "reflectingMonochromator": {
       "title": "反射式單色儀",
       "description": "這是一個反射式單色儀的模擬，其透過反射式繞射光柵與聚焦處的出射口，從多波長混合的光之中取得窄頻寬的光。",
@@ -547,4 +555,3 @@
     }
   }
 }
-
