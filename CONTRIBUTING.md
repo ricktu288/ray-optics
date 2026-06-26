@@ -54,7 +54,7 @@ Contributed modules will be shown in the list in Tools -> Others -> Import Modul
 
 ## More contributions
 
-Such as creating a new tool, adding a new parameter to a tool, adding a new mode of viewing light, etc. For significant changes such as a new framework or a new toolbar design, please open a new discussion first.
+Such as creating a new tool, adding a new parameter to a tool, adding a new mode of viewing light, etc. For significant changes such as a new framework or a new toolbar design, please open a new discussion first. Also see the [roadmap](https://github.com/ricktu288/ray-optics/blob/master/ROADMAP.md) for the planned features to avoid duplicate work or conflicts.
 
 See the [installation instructions](https://github.com/ricktu288/ray-optics/blob/master/README.md#installation) for how to set up the project locally.
 

@@ -52,7 +52,7 @@ Contributions are welcome. For the following types of contributions, no (or litt
 - New translations
 - New modules (as in Tools -> Other -> Import Modules)
 
-See [CONTRIBUTING.md](https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md) for the tutorial.
+See [CONTRIBUTING.md](https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md) for the tutorial. Also see the [roadmap](https://github.com/ricktu288/ray-optics/blob/master/ROADMAP.md) for the planned features to avoid duplicate work or conflicts.
 
 For translations, note that this project uses Weblate. Please visit https://hosted.weblate.org/engage/ray-optics-simulation/ to translate.
 
