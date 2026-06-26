@@ -362,6 +362,7 @@
         "sNewColorModes": "When \"Correct Brightness\" is on, the dimensionless factor s always equals 1.",
         "truncation": "If some rays are truncated in the infinite series of internal reflection, the total truncation is shown as error estimates."
       },
+      "twoSided": "Two-sided",
       "irradMap": "Irradiance Map",
       "binSize": "Bin Size",
       "exportData": "Export data"

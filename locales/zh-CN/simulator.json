@@ -362,6 +362,7 @@
         "sNewColorModes": "使用「修正亮度」时，无量纲因子 s 恒等于 1。",
         "truncation": "如果某些光线在内反射的无穷级数中被截断，则总截断量将显示为误差估计。"
       },
+      "twoSided": "双面",
       "irradMap": "辐照度图",
       "binSize": "组距",
       "exportData": "导出数据"

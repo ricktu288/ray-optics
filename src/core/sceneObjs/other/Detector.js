@@ -28,6 +28,7 @@ import geometry from '../../geometry.js';
  * @memberof sceneObjs
  * @property {Point} p1 - The first endpoint of the line segment.
  * @property {Point} p2 - The second endpoint of the line segment.
+ * @property {boolean} twoSided - Whether to detect rays crossing in both directions.
  * @property {boolean} irradMap - Whether to display the irradiance map.
  * @property {number} binSize - The size of the bin for the irradiance map.
  * @property {number} power - The measured power through the detector.
@@ -41,6 +42,7 @@ class Detector extends LineObjMixin(BaseSceneObj) {
   static serializableDefaults = {
     p1: null,
     p2: null,
+    twoSided: true,
     irradMap: false,
     binSize: 1
   };
@@ -62,6 +64,7 @@ class Detector extends LineObjMixin(BaseSceneObj) {
   static getPropertySchema(objData, scene) {
     return [
       ...super.getPropertySchema(objData, scene),
+      { key: 'twoSided', type: 'boolean', label: i18next.t('simulator:sceneObjs.Detector.twoSided') },
       { key: 'irradMap', type: 'boolean', label: i18next.t('simulator:sceneObjs.Detector.irradMap') },
       { key: 'binSize', type: 'number', label: i18next.t('simulator:sceneObjs.Detector.binSize') },
     ];
@@ -75,6 +78,10 @@ class Detector extends LineObjMixin(BaseSceneObj) {
     }
     objBar.setTitle(i18next.t('main:tools.Detector.title'));
     objBar.createInfoBox('<ul><li>' + i18next.t('simulator:sceneObjs.Detector.info.P') + '</li><li>' + i18next.t('simulator:sceneObjs.Detector.info.Fperp') + '</li><li>' + i18next.t('simulator:sceneObjs.Detector.info.Fpar') + '</li><li>' + i18next.t('simulator:sceneObjs.Detector.info.irradiance') + '</li><li>' + i18next.t('simulator:sceneObjs.Detector.info.length') + '</li><li>' + i18next.t('simulator:sceneObjs.Detector.info.B') + '</li><li>' + sInfo + '</li><li>' + i18next.t('simulator:sceneObjs.Detector.info.truncation') + '</li></ul>');
+
+    objBar.createBoolean(i18next.t('simulator:sceneObjs.Detector.twoSided'), this.twoSided, function (obj, value) {
+      obj.twoSided = value;
+    });
 
     objBar.createBoolean(i18next.t('simulator:sceneObjs.Detector.irradMap'), this.irradMap, function (obj, value) {
       obj.irradMap = value;
@@ -127,6 +134,27 @@ class Detector extends LineObjMixin(BaseSceneObj) {
       ctx.moveTo(this.p1.x, this.p1.y);
       ctx.lineTo(this.p2.x, this.p2.y);
       ctx.stroke();
+
+      if (!this.twoSided) {
+        const dx = this.p2.x - this.p1.x;
+        const dy = this.p2.y - this.p1.y;
+        const len = Math.sqrt(dx * dx + dy * dy);
+
+        if (len > 0) {
+          const perpX = -dy / len;
+          const perpY = dx / len;
+          const shiftDistance = this.scene.theme.detector.width * ls;
+          const dotLength = Math.max(this.scene.theme.detector.width * ls, 1);
+          const dotGap = Math.max(this.scene.theme.detector.width * 2 * ls, 2);
+
+          ctx.setLineDash([dotLength, dotGap]);
+          ctx.beginPath();
+          ctx.moveTo(this.p1.x - perpX * shiftDistance, this.p1.y - perpY * shiftDistance);
+          ctx.lineTo(this.p2.x - perpX * shiftDistance, this.p2.y - perpY * shiftDistance);
+          ctx.stroke();
+        }
+      }
+
       ctx.setLineDash([]);
 
       ctx.globalCompositeOperation = 'source-over';
@@ -206,6 +234,10 @@ class Detector extends LineObjMixin(BaseSceneObj) {
   }
 
   checkRayIntersects(ray) {
+    if (!this.twoSided && this.getIncidentType(ray) != 1) {
+      return null;
+    }
+
     return this.checkRayIntersectsShape(ray);
   }
 
@@ -226,6 +258,17 @@ class Detector extends LineObjMixin(BaseSceneObj) {
       var binIndex = Math.floor(Math.sqrt((incidentPoint.x - this.p1.x) * (incidentPoint.x - this.p1.x) + (incidentPoint.y - this.p1.y) * (incidentPoint.y - this.p1.y)) / binSize);
       this.binData[binIndex] += Math.sign(rcrosss) * (ray.brightness_s + ray.brightness_p);
     }
+  }
+
+  getIncidentType(ray) {
+    var rcrosss = (ray.p2.x - ray.p1.x) * (this.p2.y - this.p1.y) - (ray.p2.y - ray.p1.y) * (this.p2.x - this.p1.x);
+    if (rcrosss > 0) {
+      return 1;
+    }
+    if (rcrosss < 0) {
+      return -1;
+    }
+    return NaN;
   }
 };
 

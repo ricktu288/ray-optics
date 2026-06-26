@@ -362,6 +362,7 @@
         "sNewColorModes": "使用「修正亮度」時，無因次因子 s 恆等於 1。",
         "truncation": "如果某些光線在內反射的無窮級數中被截斷，則總截斷量將顯示為誤差估計。"
       },
+      "twoSided": "雙面",
       "irradMap": "輻照度圖",
       "binSize": "組距",
       "exportData": "匯出數據"

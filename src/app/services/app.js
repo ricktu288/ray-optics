@@ -950,6 +950,11 @@ function getBetaFeaturesInUse() {
     betaFeatures.push(i18next.t('simulator:sceneObjs.BaseGrinGlass.plotFns'));
   }
 
+  const usesOneSidedDetector = allObjs.some((obj) => obj && obj.constructor === sceneObjs.Detector && obj.twoSided === false);
+  if (usesOneSidedDetector) {
+    betaFeatures.push(i18next.t('main:tools.Detector.title') + ' -> ' + i18next.t('simulator:sceneObjs.Detector.twoSided') + ' = false');
+  }
+
   const usesPolygonalCurveType = allObjs.some((obj) => obj && obj.curveType && obj.curveType === 'polygonal');
   if (usesPolygonalCurveType) {
     betaFeatures.push(i18next.t('simulator:sceneObjs.ParamCurveObjMixin.curveType') + ' -> ' + i18next.t('simulator:sceneObjs.ParamCurveObjMixin.curveTypes.polygonal'));
