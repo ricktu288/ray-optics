@@ -546,6 +546,14 @@
       "curvedglasswithredfi": "Szkło zakrzywione z czerwonym filtrem",
       "eyeswitchtoobserverm": "Oko (Przełącz na tryb obserwatora, aby zobaczyć)",
       "reflexsight": "Celownik kolimatorowy"
+    },
+    "typesOfSpectrometerDispersiveElements": {
+      "title": "Rodzaje elementów dyspersyjnych spektrometru",
+      "description": "Na schemacie przedstawiono rodzaje elementów dyspersyjnych stosowanych w spektrometrach, od klasycznych pryzmatów, przez grizmy (pryzmaty kratowe), po siatki dyfrakcyjne.",
+      "grismgratedprism": "Grizm (pryzmat kratowy)",
+      "diffractiongratingre": "siatka dyfrakcyjna (odbiciowa)",
+      "diffractiongratingtr": "siatka dyfrakcyjna (transmisyjna)",
+      "prism": "pryzmat"
     }
   }
 }
