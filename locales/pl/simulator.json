@@ -340,7 +340,8 @@
       },
       "irradMap": "Mapa irradiancji",
       "binSize": "Rozmiar pojemnika",
-      "exportData": "Eksportuj dane"
+      "exportData": "Eksportuj dane",
+      "twoSided": "Dwustronny"
     },
     "TextLabel": {
       "textHere": "Tekst tutaj",

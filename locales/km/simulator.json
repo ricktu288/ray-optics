@@ -231,6 +231,9 @@
       "epsInfo": {
         "units": "ខ្នាត - [length]។"
       }
+    },
+    "Detector": {
+      "twoSided": "ពីរខាង"
     }
   },
   "saveModal": {
