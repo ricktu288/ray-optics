@@ -330,6 +330,13 @@
         "contributors": [
           "Leon Seidel"
         ]
+      },
+      {
+        "id": "Transmission Light Microscope",
+        "beta": true,
+        "contributors": [
+          "Ze-Yang Li"
+        ]
       }
     ]
   },

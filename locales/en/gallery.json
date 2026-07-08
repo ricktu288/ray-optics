@@ -365,6 +365,20 @@
       "sample": "sample",
       "sampleisnowilluminat": "sample is now \nilluminated homogeneously"
     },
+    "Transmission Light Microscope": {
+      "title": "ICS-objective-koehler-transmission",
+      "description": "This interactive scene demonstrates the optical layout of a modern infinity-corrected transmission light microscope, which includes the principal illumination and imaging paths, featuring magnification of the sample, Köhler illumination, adjustable diaphragms, infinity-corrected objective and corresponding tube lenses forming the intermediate image. It also illustrates the two fundamental sets of conjugate planes in microscope optics: the field-conjugate planes (field diaphragm → specimen → intermediate image) and the aperture-conjugate planes (light source → condenser aperture → objective back focal plane), which can be distinguished in this scene by the number of image points. By moving positions or adjusting diaphragms, users can visualize how each component affects the illumination and the image forming. It should be noted that,to focus on the underlying optical principles, all components in this simulation are modeled as ideal aberration-free lenses. The detailed optical design and aberration correction of real microscope components are intentionally omitted.",
+      "condenserlens": "Condenser Lens",
+      "aperture1": "Aperture",
+      "tubelens": "Tube Lens",
+      "collectorlens1": "Collector Lens",
+      "fielddiaphragm": "Field Diaphragm",
+      "transmittedlightsour": "Transmitted Light Source",
+      "fieldlens1": "Field Lens",
+      "specimen": "Specimen",
+      "backfocalplane": "Back Focal Plane",
+      "virtualimageplane": "Virtual Image Plane"
+    },
     "grinSlab": {
       "title": "GRIN slab",
       "description": "This is a simulation of a rectangular dielectric material with a refractive index \\(n(\\rho) = n_0 \\sqrt{1-(\\alpha \\rho)^2}\\), where \\(n_0=2\\) is the refractive index on its central axis and \\(\\rho \\) is the radial distance from its central axis, such that \\(\\alpha=\\frac{\\sqrt{3}}{2R} \\) where \\(R=100 \\) is its radius. The top dielectric in this simulation is made of thin dielectric rectangles of constant refractive index, according to \\(n(\\rho)\\), while the bottom dielectric is a gradient-index material with the refractive index \\(n(\\rho)\\).",
