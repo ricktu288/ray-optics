@@ -709,7 +709,8 @@
         "formulaRequiresModule": "Para usar uma fórmula, primeiro deve mover o objeto para um módulo.",
         "invalidPointFormat": "Pontos devem ter exatamente duas coordenadas separadas pur uma vírgula.",
         "unsupportedVisualValue": "Este valor não é suportado pelo editor visual. Por favor troque para a guia Códigopara editar esta propriedade.",
-        "emptyHint": "Para criar um objeto, use a barra de ferramentas e crie-a na tela."
+        "emptyHint": "Para criar um objeto, use a barra de ferramentas e crie-a na tela.",
+        "latexConversionFailed": "Não foi possível converter a expressão para o formato interno. Verifique a sintaxe."
       },
       "moduleEditor": {
         "variables": {
@@ -724,6 +725,9 @@
         "settings": {
           "title": "Configurações",
           "renameButton": "Renomear"
+        },
+        "parameters": {
+          "default": "predefinição"
         }
       }
     }
