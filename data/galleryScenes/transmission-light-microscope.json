@@ -1,5 +1,6 @@
 {
   "version": 5,
+  "importedFromBeta": true,
   "objs": [
     {
       "type": "Handle",
@@ -398,59 +399,65 @@
     },
     {
       "type": "TextLabel",
-      "x": 831.5,
+      "x": 862.5,
       "y": 369.5,
       "text": "{{objective}}",
-      "fontSize": 16
+      "fontSize": 16,
+      "alignment": "center"
     },
     {
       "type": "TextLabel",
-      "x": 662,
+      "x": 684,
       "y": 304,
       "text": "{{condenserlens}}",
       "fontSize": 16
     },
     {
       "type": "TextLabel",
-      "x": 574,
+      "x": 608,
       "y": 304,
       "text": "{{aperture1}}",
-      "fontSize": 16
+      "fontSize": 16,
+      "alignment": "center"
     },
     {
       "type": "TextLabel",
-      "x": 1413,
+      "x": 1414,
       "y": 298,
       "text": "{{eyepiece}}",
       "fontSize": 16
     },
     {
       "type": "TextLabel",
-      "x": 1086.5,
+      "x": 1121.5,
       "y": 298,
       "text": "{{tubelens}}",
-      "fontSize": 16
+      "fontSize": 16,
+      "alignment": "center"
     },
     {
       "type": "TextLabel",
-      "x": 106,
+      "x": 162,
       "y": 302,
       "text": "{{collectorlens1}}",
-      "fontSize": 16
+      "fontSize": 16,
+      "alignment": "center"
     },
     {
       "type": "TextLabel",
-      "x": 260,
+      "x": 312,
       "y": 302.5,
       "text": "{{fielddiaphragm}}",
-      "fontSize": 16
+      "fontSize": 16,
+      "alignment": "center"
     },
     {
       "type": "TextLabel",
-      "x": -70,
+      "x": 39,
       "y": 388,
       "text": "{{transmittedlightsour}}",
-      "fontSize": 16
+      "fontSize": 16,
+      "alignment": "center"
     },
     {
       "type": "AngleSource",
@@ -518,24 +525,27 @@
     },
     {
       "type": "TextLabel",
-      "x": 429,
+      "x": 459,
       "y": 304,
       "text": "{{fieldlens1}}",
-      "fontSize": 16
+      "fontSize": 16,
+      "alignment": "center"
     },
     {
       "type": "TextLabel",
-      "x": 776,
+      "x": 810,
       "y": 419,
       "text": "{{specimen}}",
-      "fontSize": 16
+      "fontSize": 16,
+      "alignment": "center"
     },
     {
       "type": "TextLabel",
-      "x": 837.5,
+      "x": 900.5,
       "y": 573,
       "text": "{{backfocalplane}}",
-      "fontSize": 16
+      "fontSize": 16,
+      "alignment": "center"
     },
     {
       "type": "LineArrow",
@@ -593,11 +603,11 @@
     {
       "type": "CropBox",
       "p1": {
-        "x": 410.3830206651547,
+        "x": -101,
         "y": 92.15336835760691
       },
       "p4": {
-        "x": 1499.436557460397,
+        "x": 1556,
         "y": 766.2922982108447
       }
     },
@@ -613,8 +623,8 @@
       }
     }
   ],
-  "width": 1400,
-  "height": 1000,
+  "width": 1300,
+  "height": 800,
   "rayModeDensity": 6.694591757083984,
   "imageModeDensity": 2.432209248300569,
   "observer": {
@@ -625,9 +635,8 @@
     "r": 10
   },
   "origin": {
-    "x": 85.75314227717105,
-    "y": 144.55730974885967
+    "x": 177.7631978203132,
+    "y": 111.92446084459081
   },
-  "scale": 0.7752889488535256,
-  "importedFromBeta": true
+  "scale": 0.6202311590828204
 }
