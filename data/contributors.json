@@ -985,5 +985,14 @@
       "gallery": true
     },
     "firstCommit": "2026-07-08"
+  },
+  {
+    "name": "Ricardo Avelino",
+    "contributions": {
+      "translations": [
+        "pt-PT"
+      ]
+    },
+    "firstCommit": "2026-07-09"
   }
 ]
