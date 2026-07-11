@@ -975,5 +975,15 @@
       ]
     },
     "firstCommit": "2026-06-05"
+  },
+  {
+    "name": "Ze-Yang Li",
+    "githubEmails": [
+      "169341842+LoomZenithYonder@users.noreply.github.com"
+    ],
+    "contributions": {
+      "gallery": true
+    },
+    "firstCommit": "2026-07-08"
   }
 ]

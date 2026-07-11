@@ -364,6 +364,20 @@
       "sample": "样本",
       "sampleisnowilluminat": "样本被\n均匀地照明"
     },
+    "transmissionLightMicroscope": {
+      "title": "透射光显微镜",
+      "description": "本交互式场景展示了一台采用无限远校正的现代透射光显微镜的光学布局，包括主要的照明与成像光路，并呈现样本的放大、[科勒照明](/gallery/koehler-illumination)、可调光阑、无限远校正物镜，以及形成中间像的相应镜筒透镜。场景还说明了显微镜光学中的两组基本共轭平面：视场共轭平面（视场光阑 → 样本 → 中间像）与孔径共轭平面（光源 → 聚光镜孔径光阑 → 物镜后焦平面）；在这个场景中，可以通过像点的数量区分。用户可以移动元件或调节光阑，观察各元件如何影响照明与成像。请注意，为了着重呈现其基本光学原理，本模拟中的所有元件均为无像差的理想透镜，并刻意省略了真实显微镜元件的详细光学设计与像差校正。",
+      "condenserlens": "聚光镜",
+      "aperture1": "光阑",
+      "tubelens": "镜筒透镜",
+      "collectorlens1": "集光透镜",
+      "fielddiaphragm": "视场光阑",
+      "transmittedlightsour": "透射光源",
+      "fieldlens1": "场镜",
+      "specimen": "样本",
+      "backfocalplane": "后焦平面",
+      "virtualimageplane": "虚像平面"
+    },
     "grinSlab": {
       "title": "渐变折射率平板",
       "description": "模拟折射率 \\(n(\\rho) = n_0 \\sqrt{1-(\\alpha \\rho)^2}\\)的介电材料，其中 \\(n_0\\) 是其中央轴的折射率，\\(\\rho \\) 是从其中央轴的径向距离，使得 \\(\\alpha=\\frac{\\sqrt{3}}{2R} \\)，其中 \\(R=100 \\) 是其半径。上方的介电材料为一系列的薄矩形，每个矩形具有恒定的折射率（根据前述 \\(n(\\rho)\\) 的式子）。下方的介电材料是折射率为\\(n(\\rho)\\)的渐变折射率材料。",
