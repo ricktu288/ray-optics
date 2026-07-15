@@ -72,7 +72,7 @@
     },
     "BeamSplitter": {
       "title": "Diviseur de rayons",
-      "description": "Un miroir qui transmet un pourcentage de la lumière entrant."
+      "description": "Un miroir qui transmet un pourcentage de la lumière entrante."
     },
     "CustomMirror": {
       "title": "Equation personnalisée"
@@ -157,6 +157,9 @@
     "moveView": {
       "title": "Bouger la vue",
       "description": "Glisser pour bouger la vue. (Le clic droit à la même fonction.)"
+    },
+    "ParamMirror": {
+      "title": "Courbe Paramétrique"
     }
   },
   "view": {
