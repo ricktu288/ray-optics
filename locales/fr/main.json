@@ -75,7 +75,8 @@
       "description": "Un miroir qui transmet un pourcentage de la lumière entrante."
     },
     "CustomMirror": {
-      "title": "Equation personnalisée"
+      "title": "Equation personnalisée",
+      "description": "Un miroir dont la forme est définie par l'équation personnalisée y = f(x), où (x,y) est contenu dans les coordonnées transformées dont les points de contrôles sont (-1,0) et (1,0)."
     },
     "ConcaveDiffractionGrating": {
       "title": "Réseau de diffraction concave"
@@ -159,7 +160,12 @@
       "description": "Glisser pour bouger la vue. (Le clic droit à la même fonction.)"
     },
     "ParamMirror": {
-      "title": "Courbe Paramétrique"
+      "title": "Courbe Paramétrique",
+      "description": "Un miroir dont la forme est définie par des équations paramétriques personnalisées."
+    },
+    "CurveMirror": {
+      "title": "Courbes de Bézier",
+      "description": "Un miroir dont la forme est définie par des courbes de Bézier cubiques."
     }
   },
   "view": {
