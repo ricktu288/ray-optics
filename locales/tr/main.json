@@ -1,0 +1,133 @@
+{
+  "project": {
+    "name": "Ray Optik Simülasyonu",
+    "shortName": "Ray Optics",
+    "description": "2D geometrik optik sahneler oluşturmak ve simüle etmek için ücretsiz, açık kaynaklı bir web uygulaması."
+  },
+  "pages": {
+    "simulator": "Simülatör",
+    "home": "Anasafya",
+    "gallery": "Galeri",
+    "modules": "Moedüller",
+    "about": "Hakkında",
+    "github": "GitHub"
+  },
+  "homePage": {
+    "description": "2B geometrik optik sahneleri etkileşimli olarak oluşturun ve simüle edin.\nTamamen ücretsiz ve web tabanlıdır. Kaynak kodu [GitHub'da mevcuttur](/github).",
+    "launchSimulator": "Simülatörü Başlat"
+  },
+  "tools": {
+    "title": "Araçlar",
+    "homePageTitle": "Araçlar",
+    "categories": {
+      "lightSource": "Işık Kaynağı",
+      "mirror": "Ayna",
+      "glass": "Cam",
+      "blocker": "Engelleyici",
+      "other": "Diğer"
+    },
+    "common": {
+      "clickInstruction": "Oluşturmak için tıklayın.",
+      "lineInstruction": "Oluşturmak için sürükleyin veya tıklayın.",
+      "circleInstruction": "Oluşturmak için sürükleyin veya tıklayın, önce merkezi, sonra çevresini."
+    },
+    "SingleRay": {
+      "title": "Tek ışın",
+      "description": "İki nokta ile tanımlanan tek bir ışık ışını.",
+      "instruction": "Sürükleyin veya tıklayın, önce kaynağı, ardından yönü oluşturun."
+    },
+    "Beam": {
+      "title": "Işın",
+      "description": "Bir çizgi segmentinden paralel veya farklı yönlere yayılan ışın demeti çıkar ve yoğunluğu ‘Işın yoğunluğu’ sürgüsü ile kontrol edilir."
+    },
+    "PointSource": {
+      "title": "Nokta kaynağı",
+      "description": "Işınlar tek bir noktadan çıkar ve sayısı ‘Işın yoğunluğu’ sürgüsü ile kontrol edilir."
+    },
+    "AngleSource": {
+      "instruction": "Sürükleyin veya tıklayın, önce kaynağı, ardından yönü oluşturun.",
+      "description": "Belirli bir emisyon açısına sahip nokta kaynağı."
+    },
+    "Mirror": {
+      "title": "Bölüm(segment)",
+      "description": "Aynada ışığın yansımasını simüle edin."
+    },
+    "otherMirror": {
+      "title": "Kavisli",
+      "description": "Eğri şekilli bir ayna. Dairesel, parabolik veya y = f(x) özel denklemiyle tanımlanabilir."
+    },
+    "ArcMirror": {
+      "title": "Dairesel Yay",
+      "description": "Üç nokta ile tanımlanan bir dairenin parçası olan bir ayna.",
+      "instruction": "Oluşturmak için iki uç noktayı sürükleyin veya tıklayın, ardından eğriliği tanımlamak için yay üzerinde üçüncü bir noktayı tıklayın."
+    },
+    "ParabolicMirror": {
+      "title": "Parabolik",
+      "description": "Üç nokta ile tanımlanan parabol şeklinde bir ayna.",
+      "instruction": "Oluşturmak için iki uç noktayı sürükleyin veya tıklayın, ardından köşeyi tıklayın."
+    },
+    "IdealMirror": {
+      "title": "İdeal kavisli ayna",
+      "description": "Ayna denklemini (1/p + 1/q = 1/f) tam olarak karşılayan idealize edilmiş ‘eğri’ ayna. Odak uzaklığı doğrudan ayarlanabilir."
+    },
+    "BeamSplitter": {
+      "title": "Işın Bölücü",
+      "description": "Gelen ışığın bir yüzdesini ileten ayna."
+    },
+    "CustomMirror": {
+      "title": "Özel Denklem",
+      "description": "Şekli y = f(x) özel fonksiyonuyla belirlenen bir ayna. Burada(x,y) koordinatları, iki kontrol noktasının (−1,0) ve (1,0) olduğu dönüştürülmüş koordinat sistemindeki koordinatları ifade eder."
+    },
+    "ParamMirror": {
+      "title": "Parametrik Eğri",
+      "description": "Özel parametrik denklemlerle şekli tanımlanan bir ayna."
+    },
+    "ConcaveDiffractionGrating": {
+      "title": "İçbükey Izgara"
+    },
+    "PlaneGlass": {
+      "title": "Yarım düzlem",
+      "description": "Bir yüzeyde ışığın kırılmasını ve yansımasını simüle edin.",
+      "instruction": "Oluşturmak için yüzey üzerinde iki noktayı sürükleyin veya tıklayın."
+    },
+    "otherGlass": {
+      "title": "Diğer şekiller",
+      "description": "Çizgi parçaları ve daire yaylarından oluşan herhangi bir şekle sahip camlar veya f(x) < y < g(x) şeklinde tanımlanan özel bir eşitsizlikle belirlenen şekiller."
+    },
+    "CircleGlass": {
+      "title": "Daire",
+      "description": "Merkezi ve yüzeyindeki bir nokta ile tanımlanan daire şeklindeki cam."
+    },
+    "Glass": {
+      "title": "Çokgen / Dairesel Yaylar",
+      "description": "Çizgi parçaları ve daire yaylarından oluşan her türlü şekle sahip cam.",
+      "instruction": "Bir kesit oluşturmak için tıklayın, bir yay çizmek için sürükleyin, çizimi bitirdiğinizde başlangıç noktasına tıklayın."
+    },
+    "IdealLens": {
+      "description": "İnce mercek denklemini (1/p + 1/q = 1/f) tam olarak karşılayan ideal bir mercek. Odak uzaklığı doğrudan ayarlanabilir."
+    },
+    "SphericalLens": {
+      "title": "Küresel Lens",
+      "description": "Şekli çeşitli parametreler kullanılarak tanımlanabilen küresel bir mercek."
+    },
+    "CustomGlass": {
+      "title": "Özel Denklem",
+      "description": "(x, y) koordinatlarının, iki kontrol noktası (-1,0) ve (1,0) olan dönüştürülmüş koordinat sisteminde yer aldığı, f(x) < y < g(x) şeklinde tanımlanan özel bir eşitsizlikle şekli belirlenen cam."
+    },
+    "ParamGlass": {
+      "title": "Parametrik Eğri",
+      "description": "Özel parametrik denklemlerle şekli tanımlanan cam."
+    },
+    "CurveGlass": {
+      "title": "Bézier Eğrileri",
+      "description": "Kübik Bézier eğrileriyle sınırlandırılmış cam.",
+      "instruction": "Bir şekil oluşturmak için tıklayın, çizimi bitirdiğinizde başlangıç noktasına tıklayın. Ardından, kutuları sürükleyerek kontrol noktalarını ayarlayın ve eğriyi değiştirin."
+    }
+  },
+  "meta": {
+    "languageName": "Türkçe",
+    "parentheses": "{{main}} ({{sub}})",
+    "colon": "{{name}}: {{value}}",
+    "list": "{{first}}, {{others}}"
+  }
+}

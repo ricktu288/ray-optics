@@ -1,0 +1,130 @@
+{
+  "modulesPage": {
+    "description": {
+      "makeNewTools": "O recurso \"Módulo\" permite que se faça novos componentes ao combinar, especializar, ou reparametrizar componentes criados por ferramentas existentes neste simulador.",
+      "appearAsTools": "Módulos importados aparecerão como ferramentas na categoria \"Outros\". Por favor selecione e clique no espaço em branco de acordo com a ordem da sequência de pontos de controle (ver \"Especificação\").",
+      "embeddedInScene": "Módulos importados são embutidos nos dados da cena, então não serão automaticamente atualizados quando os autores dos módulos os atualizarem."
+    },
+    "import": "Importar",
+    "imported": "Importado",
+    "specification": {
+      "title": "Especificação",
+      "controlPointSequence": "Sequência de pontos de controle",
+      "parameters": "Parâmetros"
+    },
+    "customization": {
+      "title": "Personalização",
+      "description": "Módulos podem ser feitos ou personalizados diretamente na barra lateral do app web (ver Configurações -> Mostrar painel lateral). Personalização de módulos importados afetará apenas a cena atual. Use \"Importar de arquivo\" abaixo para importar módulos personalizados de outra cena"
+    },
+    "contribution": {
+      "title": "Contribuição",
+      "description": "Contribuições à lista acima são bem-vindas. Para contribuir o seu módulo, veja [Contribuindo módulos](/contributing/modules)."
+    }
+  },
+  "moduleData": {
+    "FresnelLens": {
+      "title": "Lente Fresnel",
+      "description": "Uma lente Fresnel feita a partir de um semicírculo de vidro. Versão modularizada [deste exemplo da Galeria](/gallery/fresnel-lens).",
+      "point1": "O primeiro ponto delimitador da lente",
+      "point2": "O segundo ponto delimitador da lente",
+      "Nslice": "O número de fatias",
+      "refIndex": "O índice refrativo da lente"
+    },
+    "ContSpectrum": {
+      "title": "Fonte de luz de espectro contínuo",
+      "description": "Uma fonte de luz com um espectro contínuo uniforme discretizada com determinado passo constante. Funciona somente quando \"Simular Cores\" está ligado.",
+      "point1": "A origem dos raios",
+      "point2": "Determina a direção dos raios",
+      "min": "O comprimento de onda mínimo",
+      "step": "O passo do comprimento de onda",
+      "max": "O comprimento de onda máximo",
+      "brightness": "O brilho total"
+    },
+    "RainbowPointSource": {
+      "title": "Fonte Pontual Arco-Íris",
+      "description": "Fonte pontual de luz <360 graus - porém emite um espectro de cores. Necessita de \"Simular Cores\" habilitado.",
+      "point1": "A fonte",
+      "N": "O número de raios",
+      "brightness": "O brilho total",
+      "angle": "O ângulo de emissão",
+      "lambdaMin": "O comprimento de onda mínimo",
+      "lambdaMax": "O comprimento de onda máximo"
+    },
+    "CoatedLens": {
+      "title": "Lente Esférica Revestida",
+      "description": "Uma lente esférica com revestimento de camada única em ambos os lados. O módulo `ArcCoating` inserido neste módulo representa uma única camada de filme fino, que, quando se sobrepõe com uma superfície de vidro, se torna seu revestimento.",
+      "point1": "O centro da lente",
+      "h": "A altura da lente",
+      "d": "A espessura da lente",
+      "R1": "O raio de curvatura da superfície frontal",
+      "R2": "O raio de curvatura da superfície traseira",
+      "A": "O coeficiente de Cauchy \\(A\\) do vidro",
+      "B": "O coeficiente de Cauchy \\(B\\) do vidro em micrômetros quadrados",
+      "dc": "A espessura da camada de revestimento em nanômetros",
+      "Ac": "O coeficiente de cauchy \\(A\\) do material do revestimento",
+      "Bc": "O coeficiente de Cauchy \\(B\\) do material do revestimento em micrômetros quadrados"
+    },
+    "CircleSource": {
+      "title": "Fonte de luz circular",
+      "description": "Um círculo com fontes pontuais de 180 graus uniformes colocadas ao redor de sua circunferência.",
+      "point1": "O centro do círculo",
+      "r": "O raio do círculo",
+      "N": "O número de fontes pontuais",
+      "brightness": "O brilho total"
+    },
+    "EllipticalMirror": {
+      "title": "Espelho Elíptico",
+      "description": "Um espelho elíptico definido pelos dois focos e o comprimento do semieixo maior.",
+      "point1": "O primeiro foco",
+      "point2": "O segundo foco",
+      "a": "O comprimento do semieixo maior",
+      "tMin": "O mínimo ângulo da curva",
+      "tMax": "O máximo ângulo da curva",
+      "tStep": "O ângulo de passo da curva"
+    },
+    "Chaff": {
+      "title": "Chaff",
+      "description": "Chaff em um formato retangular consistindo de pedaços aleatórios de espelhos. Versão modularizada [deste exemplo da Galeria](/gallery/chaff-countermeasure).",
+      "point1": "O canto superior esquerdo do chaff",
+      "point2": "O canto inferior direito do chaff",
+      "N": "O número de espelhos no chaff",
+      "L": "O comprimento dos espelhos"
+    },
+    "BeamExpander": {
+      "title": "Expansor de Raio",
+      "description": "A combinação de duas lentes ideais com a soma de seus comprimentos focais igual a sua distância de saparação. Elas expandem ou reduzem o diâmetro de um raio de luz colimada. Versão modularizada [deste exemplo da Galeria](/gallery/beam-expanders).",
+      "point1": "O centro da primeira lente",
+      "point2": "O segundo ponto da segunda lente",
+      "point3": "Determina o ponto focal comum das lentes"
+    },
+    "RayRelay": {
+      "title": "Repassador de Raios",
+      "description": "Uma série de lentes idênticas com comprimento focal \\(f\\) e distância \\(d\\) entre as lentes. Uma trajetória de raios não divergente é garantida se e somente se \\(d\\leq 4f\\). Versão modularizada [deste exemplo da Galeria](/gallery/ray-relaying).",
+      "point1": "O primeiro ponto delimitador da primeira lente",
+      "point2": "O segundo ponto delimitador da primeira lente (deve ter o mesmo \\(x\\) que o primeiro ponto)",
+      "f": "O comprimento focal das lentes",
+      "d": "A distância entre as lentes",
+      "N": "O número de lentes"
+    },
+    "OpticalFiber": {
+      "title": "Fibra Óptica",
+      "description": "Fibra óptica em formato de linha com determinadas espessuras de centro e revestimento e índices refrativos.",
+      "point1": "O primeiro ponto delimitador da fibra óptica",
+      "point2": "O segundo ponto delimitador da fibra óptica",
+      "X": "A espessura do centro",
+      "Y": "A espessura do revestimento",
+      "n1": "O índice refrativo do centro",
+      "n2": "O índice refrativo do revestimento"
+    },
+    "CubeBeamSplitter": {
+      "title": "Divisor de Feixe em Cubo",
+      "description": "O cubo divisor de feixe é um elemento comumente utilizado na óptica. Este é um módulo de divisor de feixe de cubo que pode ser ajsutado em tamanho e ângulo.",
+      "point1": "O centro do cubo (quadrado)",
+      "size": "O tamanho do cubo",
+      "angle": "O ânuglo de rotação do cubo em graus",
+      "refIndex": "O índice refrativo do cubo (ou coeficiente de Cauchy \\(A\\) quando \"Simular Cores\" está ligado)",
+      "cauchyB": "O coeficiente de Cauchy \\(B\\) do cubo em micrômetros quadrados",
+      "splitRatio": "A razão de transmissão do divisor de feixe diagonal"
+    }
+  }
+}

@@ -1,0 +1,304 @@
+{
+  "name": "Celownik kolimatorowy",
+  "version": 5,
+  "objs": [
+    {
+      "type": "ArcMirror",
+      "p1": {
+        "x": 829.6361981002032,
+        "y": 141.03425424950018
+      },
+      "p2": {
+        "x": 794.8493705496717,
+        "y": 329.98167187929903
+      },
+      "p3": {
+        "x": 807,
+        "y": 230.75
+      },
+      "filter": true,
+      "wavelength": 620,
+      "bandwidth": 0
+    },
+    {
+      "type": "AngleSource",
+      "p1": {
+        "x": 1148.5,
+        "y": 365
+      },
+      "p2": {
+        "x": 1026,
+        "y": 321
+      },
+      "brightness": 2,
+      "wavelength": 620,
+      "emisAngle": 72
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 795,
+        "y": 328.5
+      },
+      "p2": {
+        "x": 759.5,
+        "y": 328
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 757.5,
+        "y": 401.5
+      },
+      "p2": {
+        "x": 758.5,
+        "y": 326
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 1158.5,
+        "y": 393.5
+      },
+      "p2": {
+        "x": 757.5,
+        "y": 398.5
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 1160.5,
+        "y": 329.5
+      },
+      "p2": {
+        "x": 1158.5,
+        "y": 393.5
+      }
+    },
+    {
+      "type": "Aperture",
+      "p1": {
+        "x": 1144.5,
+        "y": 352.5
+      },
+      "p2": {
+        "x": 1135.75,
+        "y": 371
+      },
+      "p3": {
+        "x": 1140.1891341723335,
+        "y": 361.614402035638
+      },
+      "p4": {
+        "x": 1140.0608658276667,
+        "y": 361.885597964362
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 1044,
+        "y": 332.5
+      },
+      "p2": {
+        "x": 796,
+        "y": 329.5
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 1137,
+        "y": 371
+      },
+      "p2": {
+        "x": 1043.375,
+        "y": 332.5
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 1142.5,
+        "y": 330.625
+      },
+      "p2": {
+        "x": 1141.375,
+        "y": 355
+      }
+    },
+    {
+      "type": "Blocker",
+      "p1": {
+        "x": 1140.625,
+        "y": 330.375
+      },
+      "p2": {
+        "x": 1161.5,
+        "y": 331.125
+      }
+    },
+    {
+      "type": "AngleSource",
+      "p1": {
+        "x": -396,
+        "y": 233.75
+      },
+      "p2": {
+        "x": 3152,
+        "y": 235
+      },
+      "brightness": 2,
+      "wavelength": 502,
+      "emisAngle": 11
+    },
+    {
+      "type": "TextLabel",
+      "x": 1190,
+      "y": 386,
+      "text": "LED"
+    },
+    {
+      "type": "TextLabel",
+      "x": 1078,
+      "y": 444.5,
+      "text": "Apertura",
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 839,
+      "y": 88,
+      "text": "Szkło zakrzywione z czerwonym filtrem",
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": -408,
+      "y": 211,
+      "text": "Cel"
+    },
+    {
+      "type": "TextLabel",
+      "x": 1803,
+      "y": 170,
+      "text": "Oko (Przełącz na tryb obserwatora, aby zobaczyć)"
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 1084,
+        "y": 414
+      },
+      "p2": {
+        "x": 1134,
+        "y": 371
+      },
+      "arrow": true
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 1183,
+        "y": 372
+      },
+      "p2": {
+        "x": 1152,
+        "y": 366
+      },
+      "arrow": true
+    },
+    {
+      "type": "TextLabel",
+      "x": 918,
+      "y": -102,
+      "text": "Celownik kolimatorowy",
+      "fontSize": 80,
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 1330,
+      "y": 178,
+      "text": "Wiązka skolimowana (krzyż celowniczy)"
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 1363.5,
+        "y": 184.5
+      },
+      "p2": {
+        "x": 1362.5,
+        "y": 218
+      },
+      "arrow": true
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 628,
+        "y": -59
+      },
+      "p4": {
+        "x": 1256,
+        "y": 569
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": -519,
+        "y": -271
+      },
+      "p4": {
+        "x": 2366,
+        "y": 674
+      }
+    }
+  ],
+  "width": 4327.5,
+  "height": 2387.5,
+  "rayModeDensity": 20.085536923187668,
+  "imageModeDensity": 5.2608888743928865,
+  "gridSize": 100,
+  "observer": {
+    "c": {
+      "x": 1822.9210327727997,
+      "y": 234.57027210727404
+    },
+    "r": 40
+  },
+  "origin": {
+    "x": 1240.25,
+    "y": 992.25
+  },
+  "scale": 1,
+  "simulateColors": true,
+  "colorMode": "linear",
+  "theme": {
+    "colorObservedRay": {
+      "dash": []
+    },
+    "mirror": {
+      "color": {
+        "r": 0.747,
+        "g": 0.778,
+        "b": 0.872
+      },
+      "width": 6.1
+    },
+    "blocker": {
+      "color": {
+        "r": 0.228,
+        "g": 0.228,
+        "b": 0.228
+      },
+      "width": 5.2
+    }
+  },
+  "importedFromBeta": true
+}

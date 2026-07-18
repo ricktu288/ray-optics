@@ -1,0 +1,14 @@
+{
+  "modulesPage": {
+    "description": {
+      "makeNewTools": "“Module” funksiyasi ushbu simulyatorda mavjud vositalar yordamida yaratilgan obyektlarni birlashtirish, ixtisoslashtirish yoki qayta parametrlar orqali sozlash yo‘li bilan yangi vositalar yaratish imkonini beradi.",
+      "appearAsTools": "Import qilingan modullar “Boshqa” kategoriyasida asboblar sifatida ko‘rinadi. Iltimos, boshqaruv nuqtalari ketma-ketligi tartibiga muvofiq (“Spetsifikatsiya” da) asbobni tanlab, bo‘sh joyga bosing.",
+      "embeddedInScene": "Import qilingan modullar sahna ma’lumotlari tarkibiga joylashtiriladi, shu sababli modul mualliflari ularni yangilaganda avtomatik ravishda yangilanmaydi."
+    },
+    "import": "Import",
+    "imported": "Import qilingan",
+    "specification": {
+      "title": "Xususiyatlar"
+    }
+  }
+}

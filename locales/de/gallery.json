@@ -1,0 +1,39 @@
+{
+  "galleryPage": {
+    "title": "Gallerie (Beispiele)",
+    "description": "Dies ist eine Sammlung an Simulationen, erstellt mit [the web app](/simulator), welche als interaktive Demos für Optomechanik genutzt werden können. Sie sind dazu eingeladen zu neuen Demos beizutragen. Siehe [the contribution guide](/contributing/gallery) für mehr Informationen. Um Fehler zu melden, öffnen Sie einen [open an issue on GitHub](/github/issues) oder sende Sie eine Mail [ray-optics@phydemo.app](/email).",
+    "categories": {
+      "title": "Kategorien",
+      "reflection": "Reflektion",
+      "refraction": "Brechung",
+      "lens": "Linse",
+      "combinationOfLenses": "Kombination von Linsen",
+      "miscellaneous": "Verschiedenes"
+    },
+    "openInSimulator": "Im Simulator öffnen"
+  },
+  "galleryData": {
+    "common": {
+      "warningthesequenceof": "Warnung: Die Geschwindigkeit, in der Licht ankommt, entspricht nicht der tatsächlichen Lichtgeschwindigkeit - nur das Endbild ist aussagekräftig."
+    },
+    "imagesFormedByTwoMirrors": {
+      "title": "Bilder von zwei Spiegeln"
+    },
+    "parabolicMirror": {
+      "title": "Parabolspiegel"
+    },
+    "hyperbolicMirror": {
+      "title": "Hyperbolischer Spiegel",
+      "pointlightsourceaton": "Punktlichtquelle an einem Fokuspunkt"
+    },
+    "apparentDepth": {
+      "observer": "Beobachter"
+    },
+    "aplanaticPoints": {
+      "yaxis": "Y-Achse"
+    },
+    "virtualImageFormation": {
+      "object2": "Objekt"
+    }
+  }
+}

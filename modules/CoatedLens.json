@@ -1,0 +1,211 @@
+{
+  "version": 5,
+  "modules": {
+    "ArcCoating": {
+      "numPoints": 3,
+      "params": [
+        "d=0:1:500:110",
+        "A=1.1:0.01:3:1.22",
+        "B=0.001:0.001:0.02:0.004"
+      ],
+      "vars": [
+        "cauchy(lambda)=A+B/((lambda*0.001)^2)",
+        "snell(n_0,n_1,theta_0)=asin(n_0/n_1*sin(theta_0))",
+        "fresnel(n_0,n_1,theta_0,theta_1,p)=p*(n_0*cos(theta_1)-n_1*cos(theta_0))/(n_0*cos(theta_1)+n_1*cos(theta_0))+(1-p)*(n_0*cos(theta_0)-n_1*cos(theta_1))/(n_0*cos(theta_0)+n_1*cos(theta_1))",
+        "phase(theta,lambda)=2*pi/lambda*cauchy(lambda)*d*cos(theta)",
+        "combine(r_0c,r_c1,beta)=(r_0c^2+r_c1^2+2*r_0c*r_c1*cos(2*beta))/(1+r_0c^2*r_c1^2+2*r_0c*r_c1*cos(2*beta))",
+        "refl(n_0,n_f,n_1,theta_0,theta_f,theta_1,p,lambda)=combine(fresnel(n_0,n_f,theta_0,theta_f,p),fresnel(n_f,n_1,theta_f,theta_1,p),phase(theta_f,lambda))"
+      ],
+      "objs": [
+        {
+          "type": "CustomArcSurface",
+          "p1": {
+            "x": "`x_1`",
+            "y": "`y_1`"
+          },
+          "p2": {
+            "x": "`x_2`",
+            "y": "`y_2`"
+          },
+          "p3": {
+            "x": "`x_3`",
+            "y": "`y_3`"
+          },
+          "outRays": [
+            {
+              "eqnTheta": "``snell(n_0,n_1,theta_0)``",
+              "eqnP": "``P_0*(1-refl(n_0,cauchy(lambda),n_1,theta_0,snell(n_0,cauchy(lambda),theta_0),theta_1,p,lambda))``"
+            },
+            {
+              "eqnTheta": "``pi-theta_0``",
+              "eqnP": "``P_0-P_1``"
+            }
+          ],
+          "twoSided": true
+        }
+      ]
+    },
+    "CoatedLens": {
+      "numPoints": 1,
+      "params": [
+        "h=5:1:100:90",
+        "d=5:1:50:60",
+        "R_1=-500:1:500:250",
+        "R_2=-500:1:500:-250",
+        "A=1.1:0.01:3:1.5",
+        "B=0.001:0.001:0.02:0.004",
+        "d_c=0:1:500:110",
+        "A_c=1.1:0.01:3:1.22",
+        "B_c=0.001:0.001:0.02:0.004"
+      ],
+      "vars": [
+        "curveShift1 = R_1 - sqrt(R_1^2 - h^2) * sign(R_1)",
+        "curveShift2 = R_2 - sqrt(R_2^2 - h^2) * sign(R_2)",
+        "x_left = x_1 - d/2",
+        "x_right = x_1 + d/2",
+        "y_top = y_1 - h",
+        "y_bottom = y_1 + h"
+      ],
+      "objs": [
+        {
+          "type": "Glass",
+          "path": [
+            {
+              "x": "`x_left + curveShift1`",
+              "y": "`y_top`",
+              "arc": false
+            },
+            {
+              "x": "`x_right + curveShift2`",
+              "y": "`y_top`",
+              "arc": false
+            },
+            {
+              "x": "`x_right`",
+              "y": "`y_1`",
+              "arc": true
+            },
+            {
+              "x": "`x_right + curveShift2`",
+              "y": "`y_bottom`",
+              "arc": false
+            },
+            {
+              "x": "`x_left + curveShift1`",
+              "y": "`y_bottom`",
+              "arc": false
+            },
+            {
+              "x": "`x_left`",
+              "y": "`y_1`",
+              "arc": true
+            }
+          ],
+          "refIndex": "`A`",
+          "cauchyB": "`B`"
+        },
+        {
+          "type": "ModuleObj",
+          "module": "ArcCoating",
+          "points": [
+            {
+              "x": "`x_left + curveShift1`",
+              "y": "`y_top`"
+            },
+            {
+              "x": "`x_left + curveShift1`",
+              "y": "`y_bottom`"
+            },
+            {
+              "x": "`x_left`",
+              "y": "`y_1`"
+            }
+          ],
+          "params": {
+            "d": "`d_c`",
+            "A": "`A_c`",
+            "B": "`B_c`"
+          }
+        },
+        {
+          "type": "ModuleObj",
+          "module": "ArcCoating",
+          "points": [
+            {
+              "x": "`x_right + curveShift2`",
+              "y": "`y_top`"
+            },
+            {
+              "x": "`x_right + curveShift2`",
+              "y": "`y_bottom`"
+            },
+            {
+              "x": "`x_right`",
+              "y": "`y_1`"
+            }
+          ],
+          "params": {
+            "d": "`d_c`",
+            "A": "`A_c`",
+            "B": "`B_c`"
+          }
+        }
+      ]
+    }
+  },
+  "objs": [
+    {
+      "type": "ModuleObj",
+      "module": "CoatedLens",
+      "points": [
+        {
+          "x": 620,
+          "y": 500
+        }
+      ],
+      "params": {
+        "h": 90,
+        "d": 60,
+        "R_1": 250,
+        "R_2": -250,
+        "A": 1.5,
+        "B": 0.004,
+        "d_c": 110,
+        "A_c": 1.22,
+        "B_c": 0.004
+      }
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 500,
+        "y": 440
+      },
+      "p2": {
+        "x": 500,
+        "y": 560
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 540,
+        "y": 380
+      },
+      "p4": {
+        "x": 780,
+        "y": 620
+      }
+    }
+  ],
+  "width": 1300,
+  "height": 800,
+  "snapToGrid": true,
+  "origin": {
+    "x": 123.06666666666669,
+    "y": -65
+  },
+  "scale": 0.8666666666666667,
+  "simulateColors": true,
+  "name": "CoatedLens"
+}

@@ -1,0 +1,130 @@
+{
+  "modulesPage": {
+    "description": {
+      "makeNewTools": "The \"Module\" feature allows making new components by combining, specializing, or reparametrizing components created by existing tools in this simulator.",
+      "appearAsTools": "Imported modules will appear as tools in the \"Other\" category. Please select and click the blank space according to the order of the control point sequence (see \"Specification\").",
+      "embeddedInScene": "Imported modules are embedded in the data of the scene, so will not be automatically updated when the authors of the modules update them."
+    },
+    "import": "Import",
+    "imported": "Imported",
+    "specification": {
+      "title": "Specification",
+      "controlPointSequence": "Control point sequence",
+      "parameters": "Parameters"
+    },
+    "customization": {
+      "title": "Customization",
+      "description": "Modules can be made or customized directly in the sidebar of the web app (see Settings -> Show sidebar). Customization of imported modules will only affect the current scene. Use \"Import from file\" below to import custom modules from another scene."
+    },
+    "contribution": {
+      "title": "Contribution",
+      "description": "Contributing to the list above is welcome. To contribute your module, see [Contributing modules](/contributing/modules)."
+    }
+  },
+  "moduleData": {
+    "FresnelLens": {
+      "title": "Fresnel Lens",
+      "description": "A Fresnel lens made from a half circle piece of glass. Modularized version of [this Gallery example](/gallery/fresnel-lens).",
+      "point1": "The first endpoint of the lens",
+      "point2": "The second endpoint of the lens",
+      "Nslice": "The number of slices",
+      "refIndex": "The refractive index of the lens"
+    },
+    "ContSpectrum": {
+      "title": "Continuous spectrum light source",
+      "description": "A light source with a uniform continuous spectrum discretized with a given constant step. Only works when \"Simulate Colors\" is on.",
+      "point1": "The origin of the rays",
+      "point2": "Determines the direction of the rays",
+      "min": "The minimum wavelength",
+      "step": "The step of the wavelength",
+      "max": "The maximum wavelength",
+      "brightness": "The total brightness"
+    },
+    "RainbowPointSource": {
+      "title": "Rainbow Point Source",
+      "description": "Point light source <360 degrees - but emits a spectrum of colors. Must run with \"Simulate Colors\" on.",
+      "point1": "The source",
+      "N": "The number of rays",
+      "brightness": "The total brightness",
+      "angle": "The emission angle",
+      "lambdaMin": "The minimum wavelength",
+      "lambdaMax": "The maximum wavelength"
+    },
+    "CoatedLens": {
+      "title": "Coated Spherical Lens",
+      "description": "A spherical lens with single-layer coatings on both sides. The `ArcCoating` module embedded in this module represents a single thin-film layer, which when overlapping with a glass' surface becomes its coating.",
+      "point1": "The center of the lens",
+      "h": "The height of the lens",
+      "d": "The thickness of the lens",
+      "R1": "The radius of curvature of the front surface",
+      "R2": "The radius of curvature of the back surface",
+      "A": "The Cauchy coefficient \\(A\\) of the glass",
+      "B": "The Cauchy coefficient \\(B\\) of the glass in square micrometers",
+      "dc": "The thickness of the coating layer in nanometers",
+      "Ac": "The Cauchy coefficient \\(A\\) of the coating material",
+      "Bc": "The Cauchy coefficient \\(B\\) of the coating material in square micrometers"
+    },
+    "CircleSource": {
+      "title": "Circular light source",
+      "description": "A circle with uniform 180-degree point sources places along its circumference.",
+      "point1": "The center of the circle",
+      "r": "The radius of the circle",
+      "N": "The number of point sources",
+      "brightness": "The total brightness"
+    },
+    "EllipticalMirror": {
+      "title": "Elliptical Mirror",
+      "description": "An elliptical mirror defined by the two foci and the length of the semi-major axis.",
+      "point1": "The first focus",
+      "point2": "The second focus",
+      "a": "The length of the semi-major axis",
+      "tMin": "The minimum angle of the curve",
+      "tMax": "The maximum angle of the curve",
+      "tStep": "The step angle of the curve"
+    },
+    "Chaff": {
+      "title": "Chaff",
+      "description": "A chaff of a rectangular shape consisting of random pieces of mirrors. Modularized version of [this Gallery example](/gallery/chaff-countermeasure).",
+      "point1": "The top-left corner of the chaff",
+      "point2": "The bottom-right corner of the chaff",
+      "N": "The number of mirrors in the chaff",
+      "L": "The length of the mirrors"
+    },
+    "BeamExpander": {
+      "title": "Beam Expander",
+      "description": "The combination of two ideal lenses with the sum of their focal lengths equals their separation distance. They expand or reduce the diameter of a beam of collimated light. Modularized version of [this Gallery example](/gallery/beam-expanders).",
+      "point1": "The center of the first lens",
+      "point2": "The second point of the second lens",
+      "point3": "Determines the common focal point of the lenses"
+    },
+    "RayRelay": {
+      "title": "Ray Relay",
+      "description": "A series of ideal identical lenses with focal length \\(f\\) and distance \\(d\\) between the lenses. A non-divergent ray trajectory is guaranteed if and only if \\(d\\leq 4f\\). Modularized version of [this Gallery example](/gallery/ray-relaying).",
+      "point1": "The first endpoint of the first lens",
+      "point2": "The second endpoint of the first lens (should have the same \\(x\\) as the first point)",
+      "f": "The focal length of the lenses",
+      "d": "The distance between the lenses",
+      "N": "The number of lenses"
+    },
+    "OpticalFiber": {
+      "title": "Optical Fiber",
+      "description": "Line-shaped optical fiber with given core and cladding thickness and refractive indices.",
+      "point1": "The first endpoint of the optical fiber",
+      "point2": "The second endpoint of the optical fiber",
+      "X": "The thickness of the core",
+      "Y": "The thickness of the cladding",
+      "n1": "The refractive index of the core",
+      "n2": "The refractive index of the cladding"
+    },
+    "CubeBeamSplitter": {
+      "title": "Cube Beam Splitter",
+      "description": "Cube beam splitter is a commonly used optical component. This is a cube beam splitter module that can be adjusted in size and angle.",
+      "point1": "The center of the cube (square)",
+      "size": "The size of the cube",
+      "angle": "The rotation angle of the cube in degrees",
+      "refIndex": "The refractive index of the cube (or Cauchy coefficient \\(A\\) when \"Simulate Colors\" is on)",
+      "cauchyB": "The Cauchy coefficient \\(B\\) of the cube in square micrometers",
+      "splitRatio": "The transmission ratio of the diagonal beam splitter"
+    }
+  }
+}

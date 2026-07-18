@@ -1,0 +1,88 @@
+{
+  "version": 5,
+  "name": "ContSpectrum",
+  "modules": {
+    "ContSpectrum": {
+      "numPoints": 2,
+      "params": [
+        "min=380:1:700:380",
+        "step=1:1:100:10",
+        "max=380:1:700:700",
+        "brightness=0.01:0.01:100:50"
+      ],
+      "objs": [
+        {
+          "for": "lambda=min:step:max",
+          "type": "SingleRay",
+          "p1": {
+            "x": "`x_1`",
+            "y": "`y_1`"
+          },
+          "p2": {
+            "x": "`x_2`",
+            "y": "`y_2`"
+          },
+          "wavelength": "`lambda`",
+          "brightness": "`brightness/((max-min)/step)`"
+        }
+      ]
+    }
+  },
+  "objs": [
+    {
+      "type": "ModuleObj",
+      "module": "ContSpectrum",
+      "points": [
+        {
+          "x": 820,
+          "y": 400
+        },
+        {
+          "x": 920,
+          "y": 440
+        }
+      ],
+      "params": {
+        "step": 1,
+        "min": 380,
+        "max": 700,
+        "brightness": 500
+      }
+    },
+    {
+      "type": "DiffractionGrating",
+      "p1": {
+        "x": 1060,
+        "y": 460
+      },
+      "p2": {
+        "x": 980,
+        "y": 500
+      },
+      "lineDensity": 1461,
+      "mirrored": true
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 790,
+        "y": 250
+      },
+      "p4": {
+        "x": 1030,
+        "y": 490
+      },
+      "width": 300
+    }
+  ],
+  "width": 1300,
+  "height": 800,
+  "snapToGrid": true,
+  "gridSize": 10,
+  "origin": {
+    "x": -605.4750000000001,
+    "y": -173.92555555555566
+  },
+  "scale": 1.5166666666666668,
+  "simulateColors": true
+}
