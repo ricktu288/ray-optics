@@ -118,7 +118,7 @@
     },
     "showStatusBox": {
       "title": "显示状态方块",
-      "description": "显示状态方块，其中包含滑鼠座标，效能信息，以及被截断的亮度（光线在内反射的无穷级数中被截断的总亮度）。"
+      "description": "显示状态方块，其中包含滑鼠坐标，效能信息，以及被截断的亮度（光线在内反射的无穷级数中被截断的总亮度）。"
     },
     "showSimulatorControls": {
       "title": "显示模拟器控制列",
@@ -806,7 +806,7 @@
     "brightnessScale": "亮度尺度",
     "timeElapsed": "花费时间",
     "forceStopped": "已强制终止。",
-    "mouseCoordinates": "滑鼠座标"
+    "mouseCoordinates": "滑鼠坐标"
   },
   "simulatorControls": {
     "refreshScene": {

@@ -994,5 +994,14 @@
       ]
     },
     "firstCommit": "2026-07-09"
+  },
+  {
+    "name": "Spif",
+    "contributions": {
+      "translations": [
+        "fr"
+      ]
+    },
+    "firstCommit": "2026-07-16"
   }
 ]
