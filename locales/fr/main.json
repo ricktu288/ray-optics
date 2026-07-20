@@ -165,7 +165,11 @@
     },
     "CurveMirror": {
       "title": "Courbes de Bézier",
-      "description": "Un miroir dont la forme est définie par des courbes de Bézier cubiques."
+      "description": "Un miroir dont la forme est définie par des courbes de Bézier cubiques.",
+      "instruction": "Cliquer pour créer un élément. Cliquer sur le point de départ pour terminer et fermer la forme, or cliquer deux fois sur le dernier point d'ancrage pour terminer en forme ouverte. Après cela, déplacer les boîtes pour manipuler les points de contrôle, et changer la forme de la courbe."
+    },
+    "ParamGlass": {
+      "title": "Courbe Paramétrique"
     }
   },
   "view": {
