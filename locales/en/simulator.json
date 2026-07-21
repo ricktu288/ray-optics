@@ -108,6 +108,9 @@
       "title": "Language",
       "lowFraction": "This language is only {{fraction}} translated. You can help complete it [on Weblate](/weblate)."
     },
+    "simulationEngine": {
+      "title": "Simulation Engine"
+    },
     "autoSyncUrl": {
       "title": "Auto sync URL",
       "description": "When enabled, the URL will be updated automatically with the current scene, so you don't need to keep saving the scene manually. To set the title, use File -> Save -> Rename."
@@ -672,6 +675,21 @@
     "title": "Language",
     "translatedFraction": "translated",
     "helpTranslate": "Help us translate this app"
+  },
+  "simulationEngineModal": {
+    "default": {
+      "title": "Default",
+      "description": "Use the current simulation engine."
+    },
+    "webgpu": {
+      "title": "WebGPU",
+      "description": "Use the experimental primitive-based WebGPU engine. This early test currently displays a triangle instead of simulated light.",
+      "unavailable": "WebGPU could not be initialized: {{message}}"
+    },
+    "primitiveCpu": {
+      "title": "Primitive-based CPU",
+      "description": "Use the experimental primitive-based CPU engine. This early test currently displays a triangle instead of simulated light."
+    }
   },
   "generalWarnings": {
     "shareLinkTooLong": "The URL is too long that it may not work on some platforms. You may need to use \"Save\" and share the file instead.",

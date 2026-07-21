@@ -88,6 +88,7 @@ class JsonEditorService {
         app.canvasBelowLight.style.opacity = 0.5;
         app.canvasLight.style.opacity = 0.5;
         app.canvasLightWebGL.style.opacity = 0.5;
+        app.canvasLightWebGPU.style.opacity = 0.5;
         app.canvasGrid.style.opacity = 0.5;
       }
       app.setHasUnsavedChange(true)

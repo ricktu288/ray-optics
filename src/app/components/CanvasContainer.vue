@@ -17,8 +17,9 @@
 <template>
   <canvas id="canvasGrid"></canvas>
   <canvas id="canvasBelowLight"></canvas>
-  <canvas id="canvasLight" v-show="colorMode === 'default'"></canvas>
-  <canvas id="canvasLightWebGL" v-show="colorMode !== 'default'"></canvas>
+  <canvas id="canvasLight" v-show="showCanvasLight"></canvas>
+  <canvas id="canvasLightWebGL" v-show="showCanvasLightWebGL"></canvas>
+  <canvas id="canvasLightWebGPU" v-show="showCanvasLightWebGPU"></canvas>
   <canvas id="canvasAboveLight"></canvas>
 
   <!-- Coordinates entering popup -->
@@ -49,8 +50,9 @@
  * @module CanvasContainer
  * @description The Vue component for the container for the canvas layers and the coordinates entering popup. Rendering is done by the {@link Simulator} class (see there for the meaning of each canvas layer). Mouse events are only captured by the top-layered `canvasAboveLight` canvas, and is handled by the {@link Editor} class.
  */
-import { ref, onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useSceneStore } from '../store/scene'
+import { usePreferencesStore } from '../store/preferences'
 import { vTooltipPopover } from '../directives/tooltip-popover'
 
 export default {
@@ -60,6 +62,15 @@ export default {
   },
   setup() {
     const sceneStore = useSceneStore()
+    const preferences = usePreferencesStore()
+    const showCanvasLight = computed(() =>
+      preferences.simulationEngine.value !== 'webgpu' && sceneStore.colorMode.value === 'default'
+    )
+    const showCanvasLightWebGL = computed(() =>
+      preferences.simulationEngine.value !== 'webgpu' && sceneStore.colorMode.value !== 'default'
+    )
+    const showCanvasLightWebGPU = computed(() => preferences.simulationEngine.value === 'webgpu')
+
     function resizeCanvas(canvas) {
       canvas.width = window.innerWidth * (window.devicePixelRatio || 1);
       canvas.height = window.innerHeight * (window.devicePixelRatio || 1);
@@ -70,6 +81,7 @@ export default {
       resizeCanvas(document.getElementById('canvasBelowLight'));
       resizeCanvas(document.getElementById('canvasLight'));
       resizeCanvas(document.getElementById('canvasLightWebGL'));
+      resizeCanvas(document.getElementById('canvasLightWebGPU'));
       resizeCanvas(document.getElementById('canvasAboveLight'));
       sceneStore.setViewportSize(window.innerWidth, window.innerHeight, window.devicePixelRatio || 1);
     }
@@ -80,7 +92,9 @@ export default {
     });
 
     return {
-      colorMode: sceneStore.colorMode,
+      showCanvasLight,
+      showCanvasLightWebGL,
+      showCanvasLightWebGPU,
     };
   },
 };
@@ -114,7 +128,8 @@ export default {
   z-index: -5;
 }
 
-#canvasLightWebGL {
+#canvasLightWebGL,
+#canvasLightWebGPU {
   background-color: transparent;
   position: absolute;
   width: 100%;

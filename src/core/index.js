@@ -32,6 +32,9 @@
 
 import Scene from './Scene.js';
 import Simulator from './Simulator.js';
+import PrimitiveBasedSimulator from './PrimitiveBasedSimulator.js';
+import CpuSimulationEngine from './simulationEngines/CpuSimulationEngine.js';
+import WebGpuSimulationEngine from './simulationEngines/WebGpuSimulationEngine.js';
 import Editor from './Editor.js';
 import * as sceneObjs from './sceneObjs.js';
 import geometry from './geometry.js';
@@ -60,6 +63,9 @@ if (typeof process !== 'undefined' && process.versions && process.versions.node)
 export {
   Scene,
   Simulator,
+  PrimitiveBasedSimulator,
+  CpuSimulationEngine,
+  WebGpuSimulationEngine,
   Editor,
   sceneObjs,
   geometry

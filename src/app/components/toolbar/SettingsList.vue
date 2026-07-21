@@ -155,6 +155,14 @@
   >
     <span v-html="warningText"></span>
   </SettingsWarning>
+
+  <PopupSelectControl
+    :label="$t('simulator:settings.simulationEngine.title')"
+    :value="simulationEngine"
+    :display-fn="value => $t(`simulator:simulationEngineModal.${value}.title`)"
+    popup-target="simulationEngineModal"
+    :layout="layout"
+  />
               
   <ToggleControl
     :label="$t('simulator:settings.autoSyncUrl.title')"
@@ -314,6 +322,7 @@ export default {
       showStatus: preferences.showStatus,
       showSimulatorControls: preferences.showSimulatorControls,
       help: preferences.help,
+      simulationEngine: preferences.simulationEngine,
       lang,
       localeData,
       showLanguageWarning,
