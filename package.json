@@ -52,7 +52,8 @@
     "simple-git": "^3.36.0"
   },
   "scripts": {
-    "test": "npm run test:propertyUtils && npm run test:sceneObjs && npm run test:scenes",
+    "test": "npm run test:formula && npm run test:propertyUtils && npm run test:sceneObjs && npm run test:scenes",
+    "test:formula": "jest test/formula",
     "test:propertyUtils": "jest test/propertyUtils",
     "test:sceneObjs": "jest test/sceneObjs",
     "test:scenes": "npm run build-node && jest test/scenes",

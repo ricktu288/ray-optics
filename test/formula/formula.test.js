@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 The Ray Optics Simulation authors and contributors
+ * Copyright 2026 The Ray Optics Simulation authors and contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,20 @@
  * limitations under the License.
  */
 
-module.exports = {
-  moduleDirectories: ['node_modules', 'src'],
-  setupFilesAfterEnv: ['<rootDir>/test/sceneObjs/helpers/setupTests.js'],
-  testMatch: [
-    "**/test/formula/**/*.test.js",
-    "**/test/propertyUtils/**/*.test.js",
-    "**/test/sceneObjs/**/*.test.js",
-    "**/test/scenes/**/*.test.js"
-  ]
-};
+const path = require('node:path');
+
+const caseFiles = [
+  'test-parser.js',
+  'test-parameter-extraction.js',
+  'test-derivative.js',
+  'test-dag-evaluator.js',
+  'test-range-estimator.js',
+  'test-random-range-estimator.js',
+  'test-random-derivative.js',
+];
+
+describe('formula utilities', () => {
+  test.each(caseFiles)('%s', (caseFile) => {
+    require(path.join(__dirname, 'cases', caseFile));
+  });
+});

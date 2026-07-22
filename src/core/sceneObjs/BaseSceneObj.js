@@ -48,6 +48,196 @@ import i18next from 'i18next';
  */
 
 /**
+ * @typedef {Object} LineSegmentCurveParams
+ * @property {Point} start - The start endpoint.
+ * @property {Point} end - The end endpoint.
+ */
+
+/**
+ * @typedef {Object} CircularArcCurveParams
+ * @property {Point} start - The start endpoint.
+ * @property {Point} end - The end endpoint.
+ * @property {number} bulge - The tangent of one quarter of the signed sweep angle from `start` to `end`. A positive sweep is counter-clockwise. A zero bulge degenerates to a line segment; absolute values below, equal to, and above 1 describe minor arcs, semicircles, and major arcs respectively.
+ */
+
+/**
+ * @typedef {Object} CubicBezierCurveParams
+ * @property {Point} start - The start endpoint.
+ * @property {Point} control1 - The first control point.
+ * @property {Point} control2 - The second control point.
+ * @property {Point} end - The end endpoint.
+ */
+
+/**
+ * @typedef {Object} CircleCurveParams
+ * @property {Point} center - The center of the circle.
+ * @property {number} radius - The nonzero signed radius. Its absolute value defines the geometry; a positive value gives the circle an outward front normal and a negative value gives it an inward front normal.
+ */
+
+/**
+ * @typedef {Object} LineSegmentPrimitiveCurve
+ * @property {'lineSegment'} kind
+ * @property {LineSegmentCurveParams} params
+ */
+
+/**
+ * @typedef {Object} CircularArcPrimitiveCurve
+ * @property {'circularArc'} kind
+ * @property {CircularArcCurveParams} params
+ */
+
+/**
+ * @typedef {Object} CubicBezierPrimitiveCurve
+ * @property {'cubicBezier'} kind
+ * @property {CubicBezierCurveParams} params
+ */
+
+/**
+ * A complete oriented circle. The sign of its radius determines whether its
+ * front normal points away from or toward its center.
+ * @typedef {Object} CirclePrimitiveCurve
+ * @property {'circle'} kind
+ * @property {CircleCurveParams} params
+ */
+
+/**
+ * A curve which will be extracted as an individual intersection primitive and
+ * inserted into the BVH. Open curves are directed from `start` to `end`; this
+ * direction may be significant for surfaces. Curve order and direction are
+ * ignored for region boundaries.
+ *
+ * The engine-independent curve parameters are converted during preprocessing
+ * into whatever intersection representation an engine requires.
+ *
+ * Reversing a line segment means swapping `start` and `end`. Reversing a
+ * circular arc means swapping its endpoints and negating `bulge`. Reversing a
+ * cubic Bezier means swapping its endpoints and also swapping `control1` and
+ * `control2`. Reversing a circle means negating its radius.
+ * @typedef {LineSegmentPrimitiveCurve|CircularArcPrimitiveCurve|CubicBezierPrimitiveCurve|CirclePrimitiveCurve} PrimitiveCurve
+ */
+
+/**
+ * Controls whether a surface participates in intersection testing for a ray.
+ * When `invert` is false, the surface is intersectable for wavelengths in the
+ * inclusive interval `wavelength ± bandwidth`. When `invert` is true, the
+ * surface is intersectable for wavelengths outside that interval. If the
+ * filter rejects a ray, the surface produces no hit and does not participate
+ * in surface merging or ray-depth accounting.
+ * @typedef {Object} WavelengthFilter
+ * @property {number} wavelength - The center wavelength in nm.
+ * @property {number} bandwidth - The half-width of the wavelength interval in nm.
+ * @property {boolean} invert - Whether wavelengths outside, rather than inside, the interval are accepted.
+ */
+
+/**
+ * Defines the optical behavior shared by a set of surface primitives. Object
+ * identity identifies a surface type during preprocessing; `name` is only for
+ * diagnostics. The DAG uses the format implemented by the formula utilities
+ * in `src/core/formula`.
+ *
+ * Before evaluating the DAG, the engine converts the hit into a local
+ * orthonormal frame. The adjusted, incident-side normal is mapped to `(0, 1)`,
+ * and the local x-axis is obtained by rotating that normal clockwise by 90
+ * degrees. The normal is adjusted for the side from which the ray arrived, so
+ * the incoming unit direction satisfies `d_0y < 0`; a ray exactly tangent to
+ * the surface is not considered a hit. For f32 range analysis, `-d_0y` can
+ * therefore use the closed range from the smallest positive f32 through 1.
+ *
+ * The following formula symbols are reserved inputs:
+ *
+ * - `d_0x`, `d_0y`: components of the incoming unit direction in the local
+ *   surface frame.
+ * - `P_0s`, `P_0p`: incoming s- and p-polarized powers.
+ * - `lambda`: incoming wavelength in nm.
+ * - `x`, `y`: world-space coordinates of the hit.
+ * - `t`: the curve parameter at the hit.
+ * - `n_0`, `n_1`: effective refractive indices on the incident and opposite
+ *   sides of the surface respectively.
+ *
+ * For every one-based output index `j` from 1 through `outRayCount`, the DAG
+ * must contain the four labeled outputs `d_jx`, `d_jy`, `P_js`, and `P_jp`.
+ * `d_jx` and `d_jy` are the outgoing unit direction in the same local frame;
+ * `P_js` and `P_jp` are its s- and p-polarized powers. A slot whose two powers
+ * are both zero is ignored. The output count and layout never vary at runtime.
+ * Outgoing rays inherit the incoming wavelength and non-optical bookkeeping.
+ *
+ * Existing angle-based Custom Surface formulas can be translated with
+ * `theta_0 = atan2(-d_0x, -d_0y)`, then with
+ * `d_jx = -sin(theta_j)` and `d_jy = -cos(theta_j)`. Polarization is evaluated
+ * directly through `P_0s` and `P_0p`; there is no polarization-selector input.
+ * If the two polarizations leave in different directions, they occupy separate
+ * output slots and the unused power component of each slot is zero.
+ *
+ * WGSL range specialization uses the actual packed f32 parameter values of all
+ * primitives sharing this type, rather than a largest declared parameter
+ * range. Changing instance parameters requires recompilation only when the
+ * range-dependent WGSL safety decisions change; otherwise the engine only
+ * updates its parameter buffer.
+ *
+ * @typedef {Object} SurfaceType
+ * @property {string} name - A human-readable diagnostic name, not a registry ID.
+ * @property {string[]} paramNames - The formula symbols and keys accepted in a surface primitive's `params` object. Their order defines the packed parameter layout and is therefore significant, particularly for WebGPU buffers. Names must not collide with reserved surface-DAG symbols.
+ * @property {Object} dag - The formula DAG containing the required labeled outputs.
+ * @property {number} outRayCount - The constant positive number of outgoing-ray slots.
+ */
+
+/**
+ * A ray source. It has no geometry field: its ray distribution is defined
+ * entirely by `sourceType` and `params`. A source never contains a
+ * {@link PrimitiveCurve} and is not inserted into the BVH.
+ * @typedef {Object} LightSourcePrimitive
+ * @property {'source'} kind
+ * @property {Object} sourceType - The opaque light-source type definition.
+ * @property {Object} params - Instance parameters consumed by `sourceType`.
+ */
+
+/**
+ * An optical surface represented by one oriented curve. For a one-sided
+ * surface, an intersection from behind the curve's front normal is ignored
+ * completely: it is not a surface hit and does not participate in surface
+ * merging or ray-depth accounting. Sidedness is interaction policy rather
+ * than curve geometry and is therefore stored at the primitive's top level.
+ * @typedef {Object} SurfacePrimitive
+ * @property {'surface'} kind
+ * @property {PrimitiveCurve} curve - The surface geometry.
+ * @property {boolean} twoSided - Whether rays approaching from either side can interact. If false, only rays approaching against the curve's front normal can interact.
+ * @property {WavelengthFilter} [filter] - An optional pre-intersection wavelength filter. Omit this property when filtering is disabled.
+ * @property {SurfaceType} surfaceType - The shared surface behavior definition.
+ * @property {Object<string, number>} params - Numeric instance parameters matching `surfaceType.paramNames`.
+ */
+
+/**
+ * A bulk optical region. The curves must collectively form a valid closed
+ * boundary. Inside/outside is determined by ray casting, so neither the order
+ * nor the direction of the curves has meaning. Each curve belongs only to
+ * this region, even when its geometry coincides with another primitive's
+ * curve.
+ * @typedef {Object} RegionPrimitive
+ * @property {'region'} kind
+ * @property {PrimitiveCurve[]} curves - The region boundary curves.
+ * @property {Object} bulkType - The opaque bulk type definition.
+ * @property {Object} params - Instance parameters consumed by `bulkType`.
+ */
+
+/**
+ * A detector represented by one oriented curve. Its type defines how ray
+ * incidents are accumulated and exposed as detector results. For a one-sided
+ * detector, an intersection from behind the curve's front normal is ignored
+ * and produces no detector reading.
+ * @typedef {Object} DetectorPrimitive
+ * @property {'detector'} kind
+ * @property {PrimitiveCurve} curve - The detector geometry.
+ * @property {boolean} twoSided - Whether rays approaching from either side can be detected. If false, only rays approaching against the curve's front normal are detected.
+ * @property {Object} detectorType - The opaque detector type definition.
+ * @property {Object} params - Instance parameters consumed by `detectorType`.
+ */
+
+/**
+ * A primitive returned by {@link BaseSceneObj#getPrimitives}.
+ * @typedef {LightSourcePrimitive|SurfacePrimitive|RegionPrimitive|DetectorPrimitive} Primitive
+ */
+
+/**
  * Base class for objects (optical elements, decorations, etc.) in the scene.
  * @class
  */
@@ -315,6 +505,32 @@ class BaseSceneObj {
    */
   onDrag(mouse, dragContext, ctrl, shift) {
     // Do nothing by default
+  }
+
+  /**
+   * Return the optical primitives represented by this scene object for the
+   * primitive-based simulator. The returned array is flat and its order and
+   * original scene-object/module grouping have no simulation meaning.
+   *
+   * Every curve occurrence is distinct: coincident curves are not
+   * deduplicated. Preprocessing extracts all curves from surfaces, regions,
+   * and detectors, associates each extracted curve with its owning primitive,
+   * and builds the BVH. Light sources contain no curve and generate rays only
+   * from their type and parameters.
+   *
+   * Region-producing scene objects are responsible for returning curves which
+   * collectively form a valid closed boundary. The primitive format and
+   * preprocessing do not validate closure.
+   *
+   * The source, surface, bulk, and detector type definitions are intentionally
+   * opaque at this interface. Their internal formula representation is defined
+   * by the formula compiler rather than by scene objects.
+   *
+   * Non-optical scene objects return an empty array.
+   * @returns {Primitive[]} The optical primitives represented by this object.
+   */
+  getPrimitives() {
+    return [];
   }
 
   /**
