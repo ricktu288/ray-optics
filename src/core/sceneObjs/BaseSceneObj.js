@@ -151,8 +151,18 @@ import i18next from 'i18next';
  * - `lambda`: incoming wavelength in nm.
  * - `x`, `y`: world-space coordinates of the hit.
  * - `t`: the curve parameter at the hit.
+ * - `sigma`: the geometric side of the hit. It is 1 when the ray approaches
+ *   against the oriented curve's front normal and -1 when it approaches from
+ *   behind that normal. Its range is the discrete union `{-1, 1}` for a
+ *   two-sided primitive and the singleton `{1}` for a one-sided primitive.
  * - `n_0`, `n_1`: effective refractive indices on the incident and opposite
  *   sides of the surface respectively.
+ *
+ * `sigma` is a derived hit input, not an instance parameter and therefore not
+ * an entry in `paramNames` or the scene parameter buffer. An engine only needs
+ * to materialize it when a DAG references it. Detector types use the same
+ * reserved hit-input symbols and `sigma` convention, although their outputs
+ * describe accumulated detector data rather than outgoing rays.
  *
  * For every one-based output index `j` from 1 through `outRayCount`, the DAG
  * must contain the four labeled outputs `d_jx`, `d_jy`, `P_js`, and `P_jp`.
@@ -182,13 +192,48 @@ import i18next from 'i18next';
  */
 
 /**
+ * Defines how one invocation emits one ray for a set of source primitives.
+ * Object identity identifies a source type during preprocessing; `name` is
+ * only for diagnostics. The DAG uses the format implemented by the formula
+ * utilities in `src/core/formula`.
+ *
+ * The reserved DAG inputs are `i`, the zero-based invocation index, and `N`,
+ * the source primitive's total `rayCount`. Both are integer-valued formula
+ * scalars and satisfy `0 <= i < N`. An engine only needs to materialize either
+ * input when the DAG references it.
+ *
+ * The DAG must contain the seven labeled outputs `x`, `y`, `d_x`, `d_y`,
+ * `P_s`, `P_p`, and `lambda`. `x` and `y` are the emitted ray's world-space
+ * starting position; `d_x` and `d_y` are its unit world-space direction;
+ * `P_s` and `P_p` are its s- and p-polarized powers; and `lambda` is its
+ * wavelength in nm. An invocation whose two powers are both zero is ignored.
+ * A source invocation has no incoming ray and emits only one ray, so these
+ * output labels do not use ray-index subscripts.
+ *
+ * Sampling density, brightness limits, color mode, and source-specific
+ * rounding are resolved by the scene object when it creates the primitive.
+ * They affect `rayCount` and may produce derived entries in `params`, but raw
+ * requested or effective ray density is not a reserved DAG input. The source
+ * format also has no `gap`, `isNew`, or random-number output.
+ *
+ * @typedef {Object} SourceType
+ * @property {string} name - A human-readable diagnostic name, not a registry ID.
+ * @property {string[]} paramNames - The formula symbols and keys accepted in a source primitive's `params` object. Their order defines the packed parameter layout and is therefore significant, particularly for WebGPU buffers. Names must not collide with the reserved inputs `i` and `N`.
+ * @property {Object} dag - The formula DAG containing the seven required labeled ray outputs.
+ */
+
+/**
  * A ray source. It has no geometry field: its ray distribution is defined
  * entirely by `sourceType` and `params`. A source never contains a
- * {@link PrimitiveCurve} and is not inserted into the BVH.
+ * {@link PrimitiveCurve} and is not inserted into the BVH. The scene object
+ * calculates `rayCount` and any derived sampling parameters each time
+ * `getPrimitives()` is called, so changing global sampling settings does not
+ * require a separate sizing DAG.
  * @typedef {Object} LightSourcePrimitive
  * @property {'source'} kind
- * @property {Object} sourceType - The opaque light-source type definition.
- * @property {Object} params - Instance parameters consumed by `sourceType`.
+ * @property {SourceType} sourceType - The shared per-invocation ray definition.
+ * @property {Object<string, number>} params - Numeric instance and derived sampling parameters matching `sourceType.paramNames`.
+ * @property {number} rayCount - The nonnegative integer number of source-formula invocations.
  */
 
 /**
@@ -207,29 +252,88 @@ import i18next from 'i18next';
  */
 
 /**
+ * Defines the relative refractive-index field shared by a set of region
+ * primitives. Object identity identifies a bulk type during preprocessing;
+ * `name` is only for diagnostics. The DAG uses the format implemented by the
+ * formula utilities in `src/core/formula` and must contain the labeled scalar
+ * output `n`.
+ *
+ * The reserved DAG inputs are `x` and `y`, the world-space position at which
+ * the field is evaluated, and `lambda`, the ray wavelength in nm. Direction,
+ * polarization, and power are not inputs because bulk media are isotropic.
+ * Coordinate origins or other instance-specific transformations are expressed
+ * through `params`.
+ *
+ * The formula compiler symbolically derives `n_x` and `n_y`, the partial
+ * derivatives of `n` with respect to world-space `x` and `y`. They are part of
+ * the compiled evaluator used for GRIN propagation, not independently authored
+ * DAG outputs. A wavelength-dependent field with no spatial dependence is
+ * still homogeneous and has zero spatial derivatives.
+ *
+ * @typedef {Object} BulkType
+ * @property {string} name - A human-readable diagnostic name, not a registry ID.
+ * @property {string[]} paramNames - The formula symbols and keys accepted in a region primitive's `params` object. Their order defines the packed parameter layout and is therefore significant, particularly for WebGPU buffers. Names must not collide with the reserved bulk-DAG symbols.
+ * @property {Object} dag - The formula DAG containing the required labeled output `n`.
+ */
+
+/**
  * A bulk optical region. The curves must collectively form a valid closed
  * boundary. Inside/outside is determined by ray casting, so neither the order
  * nor the direction of the curves has meaning. Each curve belongs only to
  * this region, even when its geometry coincides with another primitive's
  * curve.
+ *
+ * Region-boundary refraction and reflection are built into the engine rather
+ * than represented by a formula-defined surface type. When `partialReflect`
+ * is true, a transmissible incident ray produces Fresnel-reflected and
+ * transmitted rays. When false, it produces only the transmitted ray. Total
+ * internal reflection still produces a reflected ray in either case. More
+ * advanced boundary behavior, such as coatings, is represented by overlapping
+ * surface primitives instead of additional engine-internal boundary modes.
+ *
  * @typedef {Object} RegionPrimitive
  * @property {'region'} kind
  * @property {PrimitiveCurve[]} curves - The region boundary curves.
- * @property {Object} bulkType - The opaque bulk type definition.
- * @property {Object} params - Instance parameters consumed by `bulkType`.
+ * @property {BulkType} bulkType - The shared refractive-index field definition.
+ * @property {Object<string, number>} params - Numeric instance parameters matching `bulkType.paramNames`.
+ * @property {number} stepSize - The nonnegative interior propagation step size in scene units. Zero denotes a spatially homogeneous region; a positive value enables GRIN propagation.
+ * @property {boolean} partialReflect - Whether transmissible boundary interactions generate the Fresnel-reflected ray in addition to the transmitted ray.
+ */
+
+/**
+ * A mutable holder for the completed result of one logical detector output.
+ * Object identity defines the output: detector primitives which reference the
+ * same holder accumulate into the same result array, while different holders
+ * remain separate even when they belong to the same scene object. This lets a
+ * scene object expose several detector outputs without assigning IDs, and lets
+ * wrappers such as ModuleObj forward child primitives unchanged.
+ *
+ * The holder is preprocessing-only metadata and is never sent to a simulation
+ * engine or worker. PrimitiveBasedSimulator assigns it a numeric result ID,
+ * retains the reverse binding, and updates `values` only after readback from a
+ * successfully completed current run. Cancelled, failed, and superseded runs
+ * leave it unchanged.
+ *
+ * @typedef {Object} DetectorResult
+ * @property {ArrayLike<number>|null} values - The most recently completed logical result values, or null before a result is available. The simulator may replace this value or update a compatible preallocated typed array.
  */
 
 /**
  * A detector represented by one oriented curve. Its type defines how ray
  * incidents are accumulated and exposed as detector results. For a one-sided
  * detector, an intersection from behind the curve's front normal is ignored
- * and produces no detector reading.
+ * and produces no detector reading. Detector formulas use the reserved
+ * hit-input symbols documented by {@link SurfaceType}, including `sigma` for
+ * distinguishing the two geometric sides; they define detector outputs rather
+ * than outgoing-ray slots.
  * @typedef {Object} DetectorPrimitive
  * @property {'detector'} kind
  * @property {PrimitiveCurve} curve - The detector geometry.
  * @property {boolean} twoSided - Whether rays approaching from either side can be detected. If false, only rays approaching against the curve's front normal are detected.
  * @property {Object} detectorType - The opaque detector type definition.
  * @property {Object} params - Instance parameters consumed by `detectorType`.
+ * @property {number} resultSize - The positive integer length of the logical result array. Primitives sharing a `result` holder must specify the same size.
+ * @property {DetectorResult} result - The result holder. Its object identity associates this primitive with other detector surfaces and with the scene-object state used by `draw()` and result collection.
  */
 
 /**
