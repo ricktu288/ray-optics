@@ -689,6 +689,10 @@
     "primitiveCpu": {
       "title": "Primitive-based CPU",
       "description": "Use the experimental primitive-based CPU engine. This early test currently displays a triangle instead of simulated light."
+    },
+    "debug": {
+      "title": "Debug mode",
+      "description": "Show the primitive BVH bounding boxes above the light layer. The BVH is still built when debug mode is off."
     }
   },
   "generalWarnings": {

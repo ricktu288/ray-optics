@@ -32,6 +32,7 @@
 
 import CustomMirror from '../../../src/core/sceneObjs/mirror/CustomMirror.js';
 import Scene from '../../../src/core/Scene.js';
+import { buildBvh } from '../../../src/core/primitive/bvh.js';
 import { MockUser } from '../helpers/test-utils.js';
 
 describe('CustomMirror', () => {
@@ -103,4 +104,43 @@ describe('CustomMirror', () => {
       eqn: "x^2"
     });
   });
-}); 
+
+  it('uses line primitives when a cubic Bézier derivative is non-finite', () => {
+    obj.p1 = { x: 0, y: 0 };
+    obj.p2 = { x: 1, y: 0 };
+    obj.curveType = 'cubicBezier';
+
+    const primitives = obj.getPrimitives();
+
+    expect(primitives.length).toBeGreaterThan(2);
+    expect(primitives[0].curve.kind).toBe('lineSegment');
+    expect(primitives.at(-1).curve.kind).toBe('lineSegment');
+    expect(primitives.some(primitive => primitive.curve.kind === 'cubicBezier')).toBe(true);
+    expect(() => buildBvh(
+      primitives.map(primitive => ({ curve: primitive.curve }))
+    )).not.toThrow();
+  });
+
+  it('caches primitives until object or relevant scene settings change', () => {
+    obj.p1 = { x: 0, y: 0 };
+    obj.p2 = { x: 100, y: 0 };
+    obj.filter = true;
+
+    const initialPrimitives = obj.getPrimitives();
+    expect(obj.getPrimitives()).toBe(initialPrimitives);
+
+    scene.simulateColors = true;
+    const colorPrimitives = obj.getPrimitives();
+    expect(colorPrimitives).not.toBe(initialPrimitives);
+    expect(colorPrimitives[0].filter).toBeDefined();
+    expect(obj.getPrimitives()).toBe(colorPrimitives);
+
+    obj.move(10, 20);
+    const movedPrimitives = obj.getPrimitives();
+    expect(movedPrimitives).not.toBe(colorPrimitives);
+    expect(movedPrimitives[0].curve.params.start.x)
+      .toBeCloseTo(colorPrimitives[0].curve.params.start.x + 10);
+    expect(movedPrimitives[0].curve.params.start.y)
+      .toBeCloseTo(colorPrimitives[0].curve.params.start.y + 20);
+  });
+});

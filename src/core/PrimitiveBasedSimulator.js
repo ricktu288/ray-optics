@@ -16,6 +16,8 @@
 
 import CanvasRenderer from './CanvasRenderer.js';
 import i18next from 'i18next';
+import { DEFAULT_BVH_OPTIONS } from './primitive/bvh.js';
+import { preprocessPrimitives } from './primitive/preprocess.js';
 
 const UV_WAVELENGTH = 380;
 const VIOLET_WAVELENGTH = 420;
@@ -42,6 +44,7 @@ class PrimitiveBasedSimulator {
    * @param {boolean} [options.enableTimer=false]
    * @param {number} [options.rayCountLimit=Infinity]
    * @param {function|null} [options.tempCanvasFactory=null]
+   * @param {boolean} [options.debug=false]
    */
   constructor({
     scene,
@@ -53,6 +56,7 @@ class PrimitiveBasedSimulator {
     enableTimer = false,
     rayCountLimit = Infinity,
     tempCanvasFactory = null,
+    debug = false,
   }) {
     this.scene = scene;
     this.engine = engine;
@@ -63,6 +67,7 @@ class PrimitiveBasedSimulator {
     this.enableTimer = enableTimer;
     this.rayCountLimit = rayCountLimit;
     this.tempCanvasFactory = tempCanvasFactory;
+    this.debug = debug;
 
     this.scene.simulator = this;
     this.dpr = 1;
@@ -83,6 +88,11 @@ class PrimitiveBasedSimulator {
     this.activeRun = null;
     this.runGeneration = 0;
     this.isRunning = false;
+    this.primitives = [];
+    const initialPreprocessing = preprocessPrimitives([]);
+    this.processedScene = initialPreprocessing.processedScene;
+    this.detectorResultBindings = initialPreprocessing.detectorResultBindings;
+    this.primitiveBvh = this.processedScene.bvh;
   }
 
   on(eventName, callback) {
@@ -104,6 +114,9 @@ class PrimitiveBasedSimulator {
       this.emit('lightLayerSyncChange', { isSynced: false });
     }
     skipLight = skipLight || (this.manualLightRedraw && !forceRedraw);
+    if (!skipLight) {
+      this.collectAndPreprocessPrimitives();
+    }
     this.drawSceneLayers(skipGrid);
 
     if (skipLight) {
@@ -141,9 +154,7 @@ class PrimitiveBasedSimulator {
     this.activeRun?.cancel?.();
     this.activeRun?.dispose?.();
 
-    // Primitive extraction and preprocessing will replace this empty,
-    // structured-cloneable description in a later implementation step.
-    const preparedScene = await this.engine.prepare({});
+    const preparedScene = await this.engine.prepare(this.processedScene);
     if (generation !== this.runGeneration) return;
 
     const viewport = {
@@ -238,9 +249,70 @@ class PrimitiveBasedSimulator {
         const isHighlighted = this.scene.editor?.isObjHighlighted(index) || false;
         obj.draw(this.canvasRendererAboveLight, true, isHighlighted);
       }
+      if (this.debug) {
+        this.drawBvhBounds(this.canvasRendererAboveLight);
+      }
       this.drawExternalHighlightPoints(this.canvasRendererAboveLight);
       this.drawObserver();
     }
+  }
+
+  collectAndPreprocessPrimitives() {
+    const collectionStartTime = this.debug
+      ? (typeof performance !== 'undefined' && typeof performance.now === 'function'
+        ? performance.now()
+        : Date.now())
+      : null;
+    const primitives = [];
+    for (const obj of this.scene.opticalObjs) {
+      const objPrimitives = obj.getPrimitives();
+      if (Array.isArray(objPrimitives)) {
+        primitives.push(...objPrimitives);
+      }
+    }
+    if (this.debug) {
+      const collectionEndTime =
+        typeof performance !== 'undefined' && typeof performance.now === 'function'
+          ? performance.now()
+          : Date.now();
+      console.log(
+        `[Primitive preprocessing] collect primitives: ${(collectionEndTime - collectionStartTime).toFixed(3)} ms`
+      );
+    }
+
+    const {
+      processedScene,
+      detectorResultBindings
+    } = preprocessPrimitives(primitives, {
+      bvhOptions: {
+        maxGroupExtent: DEFAULT_BVH_OPTIONS.maxGroupExtent * this.scene.lengthScale
+      },
+      debug: this.debug
+    });
+    this.primitives = primitives;
+    this.processedScene = processedScene;
+    this.detectorResultBindings = detectorResultBindings;
+    this.primitiveBvh = processedScene.bvh;
+  }
+
+  drawBvhBounds(canvasRenderer) {
+    const nodes = this.primitiveBvh?.nodes;
+    if (!nodes?.length) return;
+
+    const ctx = canvasRenderer.ctx;
+    ctx.save();
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.strokeStyle = 'rgba(255, 64, 64, 0.5)';
+    ctx.setLineDash([]);
+
+    for (const node of nodes) {
+      ctx.lineWidth =
+        Math.max(0.5, 2.5 / (node.depth + 1)) * canvasRenderer.lengthScale;
+      const { minX, minY, maxX, maxY } = node.bounds;
+      ctx.strokeRect(minX, minY, maxX - minX, maxY - minY);
+    }
+
+    ctx.restore();
   }
 
   drawGrid() {

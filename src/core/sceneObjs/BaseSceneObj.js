@@ -130,10 +130,13 @@ import i18next from 'i18next';
  */
 
 /**
- * Defines the optical behavior shared by a set of surface primitives. Object
- * identity identifies a surface type during preprocessing; `name` is only for
- * diagnostics. The DAG uses the format implemented by the formula utilities
- * in `src/core/formula`.
+ * Defines the optical behavior shared by a set of surface primitives. Type
+ * definitions must be treated as immutable. Preprocessing uses object identity
+ * as a fast path, then structurally deduplicates equivalent plain-data
+ * definitions from separately expanded objects. `name` is diagnostic rather
+ * than a registry ID, but it remains part of that structural definition so
+ * differently named types are kept distinct. The DAG uses the format
+ * implemented by the formula utilities in `src/core/formula`.
  *
  * Before evaluating the DAG, the engine converts the hit into a local
  * orthonormal frame. The adjusted, incident-side normal is mapped to `(0, 1)`,
@@ -193,9 +196,10 @@ import i18next from 'i18next';
 
 /**
  * Defines how one invocation emits one ray for a set of source primitives.
- * Object identity identifies a source type during preprocessing; `name` is
- * only for diagnostics. The DAG uses the format implemented by the formula
- * utilities in `src/core/formula`.
+ * Like surface types, source type definitions are immutable plain data and are
+ * structurally deduplicated during preprocessing, with object identity as a
+ * fast path. The DAG uses the format implemented by the formula utilities in
+ * `src/core/formula`.
  *
  * The reserved DAG inputs are `i`, the zero-based invocation index, and `N`,
  * the source primitive's total `rayCount`. Both are integer-valued formula
@@ -253,10 +257,11 @@ import i18next from 'i18next';
 
 /**
  * Defines the relative refractive-index field shared by a set of region
- * primitives. Object identity identifies a bulk type during preprocessing;
- * `name` is only for diagnostics. The DAG uses the format implemented by the
- * formula utilities in `src/core/formula` and must contain the labeled scalar
- * output `n`.
+ * primitives. Like surface types, bulk type definitions are immutable plain
+ * data and are structurally deduplicated during preprocessing, with object
+ * identity as a fast path. The DAG uses the format implemented by the formula
+ * utilities in `src/core/formula` and must contain the labeled scalar output
+ * `n`.
  *
  * The reserved DAG inputs are `x` and `y`, the world-space position at which
  * the field is evaluated, and `lambda`, the ray wavelength in nm. Direction,
@@ -330,8 +335,8 @@ import i18next from 'i18next';
  * @property {'detector'} kind
  * @property {PrimitiveCurve} curve - The detector geometry.
  * @property {boolean} twoSided - Whether rays approaching from either side can be detected. If false, only rays approaching against the curve's front normal are detected.
- * @property {Object} detectorType - The opaque detector type definition.
- * @property {Object} params - Instance parameters consumed by `detectorType`.
+ * @property {{paramNames: string[]}} detectorType - The detector type definition. Its ordered `paramNames` controls parameter packing; the remaining internal formula format is documented separately.
+ * @property {Object<string, number>} params - Numeric instance parameters matching `detectorType.paramNames`.
  * @property {number} resultSize - The positive integer length of the logical result array. Primitives sharing a `result` holder must specify the same size.
  * @property {DetectorResult} result - The result holder. Its object identity associates this primitive with other detector surfaces and with the scene-object state used by `draw()` and result collection.
  */

@@ -140,6 +140,7 @@ function createSimulator(engine) {
     enableTimer: true,
     rayCountLimit: Infinity,
     tempCanvasFactory: createTempCanvas,
+    debug: Boolean(app.simulationEngineDebug),
   });
 }
 
@@ -237,6 +238,14 @@ function setSimulationEngine(value) {
   if (editor) editor.simulator = simulator;
   bindSimulatorEventListeners(simulator);
   simulator.updateSimulation(false, false);
+}
+
+function setSimulationEngineDebug(value) {
+  app.simulationEngineDebug = Boolean(value);
+  if (!(simulator instanceof PrimitiveBasedSimulator)) return;
+
+  simulator.debug = app.simulationEngineDebug;
+  simulator.updateSimulation(true, true);
 }
 
 function initAppService() {
@@ -1553,6 +1562,7 @@ export const app = {
   initScene,
   initAppService,
   setSimulationEngine,
+  setSimulationEngineDebug,
   resetDropdownButtons,
   hideWelcome,
   rename,

@@ -298,6 +298,86 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
     delete this.bezierSegments;
   }
 
+  getPrimitives() {
+    const primitiveCacheKey = JSON.stringify({
+      obj: this.serialize(),
+      lengthScale: this.scene.lengthScale,
+      simulateColors: this.scene.simulateColors
+    });
+    if (this._primitiveCache?.key === primitiveCacheKey) {
+      return this._primitiveCache.primitives;
+    }
+
+    this._invalidateCurveIfLengthScaleChanged();
+
+    if (!this.tmp_points && !this.initPoints()) {
+      return [];
+    }
+
+    if (this.curveType === 'cubicBezier') {
+      if (!this._ensureBezierPathReady()) {
+        return [];
+      }
+
+      const primitives = [];
+      for (const curve of this.bezierSegments) {
+        if (curve.points.length !== 4) continue;
+        const [start, control1, control2, end] = curve.points;
+        if (!isFinitePoint(start) || !isFinitePoint(end)) continue;
+
+        if (isFinitePoint(control1) && isFinitePoint(control2)) {
+          primitives.push(this.createMirrorPrimitive({
+            kind: 'cubicBezier',
+            params: {
+              start: { x: start.x, y: start.y },
+              control1: { x: control1.x, y: control1.y },
+              control2: { x: control2.x, y: control2.y },
+              end: { x: end.x, y: end.y }
+            }
+          }));
+        } else if (start.x !== end.x || start.y !== end.y) {
+          primitives.push(this.createMirrorPrimitive({
+            kind: 'lineSegment',
+            params: {
+              start: { x: start.x, y: start.y },
+              end: { x: end.x, y: end.y }
+            }
+          }));
+        }
+      }
+      this._primitiveCache = {
+        key: primitiveCacheKey,
+        primitives
+      };
+      return primitives;
+    }
+
+    const primitives = [];
+    for (let i = 0; i < this.tmp_points.length - 1; i++) {
+      const start = this.tmp_points[i];
+      const end = this.tmp_points[i + 1];
+      if (
+        !isFinitePoint(start) ||
+        !isFinitePoint(end) ||
+        (start.x === end.x && start.y === end.y)
+      ) {
+        continue;
+      }
+      primitives.push(this.createMirrorPrimitive({
+        kind: 'lineSegment',
+        params: {
+          start: { x: start.x, y: start.y },
+          end: { x: end.x, y: end.y }
+        }
+      }));
+    }
+    this._primitiveCache = {
+      key: primitiveCacheKey,
+      primitives
+    };
+    return primitives;
+  }
+
   checkRayIntersects(ray) {
     this._invalidateCurveIfLengthScaleChanged();
 
@@ -557,5 +637,9 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
     return true;
   }
 };
+
+function isFinitePoint(point) {
+  return Number.isFinite(point?.x) && Number.isFinite(point?.y);
+}
 
 export default CustomMirror;

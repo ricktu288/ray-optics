@@ -29,6 +29,12 @@
             <label class="form-check-label" :for="'simulationEngine_' + engine" v-html="$t(`simulator:simulationEngineModal.${engine}.title`)"></label>
             <div class="form-text" v-html="$t(`simulator:simulationEngineModal.${engine}.description`)"></div>
           </div>
+          <hr>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="simulationEngineDebug" v-model="simulationEngineDebug" :disabled="simulationEngine === 'default'">
+            <label class="form-check-label" for="simulationEngineDebug" v-html="$t('simulator:simulationEngineModal.debug.title')"></label>
+            <div class="form-text" v-html="$t('simulator:simulationEngineModal.debug.description')"></div>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" v-html="$t('simulator:common.closeButton')"></button>
@@ -74,6 +80,7 @@ export default {
 
     return {
       simulationEngine: preferences.simulationEngine,
+      simulationEngineDebug: preferences.simulationEngineDebug,
       SIMULATION_ENGINES,
       isModalOpen,
       closeModal
