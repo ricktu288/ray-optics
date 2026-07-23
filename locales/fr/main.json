@@ -79,7 +79,8 @@
       "description": "Un miroir dont la forme est définie par l'équation personnalisée y = f(x), où (x,y) est contenu dans les coordonnées transformées dont les points de contrôles sont (-1,0) et (1,0)."
     },
     "ConcaveDiffractionGrating": {
-      "title": "Réseau de diffraction concave"
+      "title": "Réseau de diffraction concave",
+      "description": "Un réseau de diffraction concave dont la forme est une partie de cercle."
     },
     "PlaneGlass": {
       "title": "Demi-plan",
@@ -108,7 +109,8 @@
       "description": "Une lentille sphérique, dont la forme peut être définie en utilisant plusieurs paramètres."
     },
     "CustomGlass": {
-      "title": "Equation personnalisée"
+      "title": "Equation personnalisée",
+      "description": "Verre dont la forme est définie par une inégalité personnalisée du type: f(x) < y < g(x), où (x,y) est inclus dans les coordonnés transformés où les deux points de contrôles sont (-1,0) et (1,0)."
     },
     "GrinGlass": {
       "instruction": "Cliquez pour créer un segment, cliquez sur le point de départ quand vous avez fini de dessiner.",
@@ -165,7 +167,15 @@
     },
     "CurveMirror": {
       "title": "Courbes de Bézier",
-      "description": "Un miroir dont la forme est définie par des courbes de Bézier cubiques."
+      "description": "Un miroir dont la forme est définie par des courbes de Bézier cubiques.",
+      "instruction": "Cliquer pour créer un élément. Cliquer sur le point de départ pour terminer et fermer la forme, or cliquer deux fois sur le dernier point d'ancrage pour terminer en forme ouverte. Après cela, déplacer les boîtes pour manipuler les points de contrôle, et changer la forme de la courbe."
+    },
+    "ParamGlass": {
+      "title": "Courbe Paramétrique",
+      "description": "Verre dont la forme est définie par des équations paramétriques personnalisées."
+    },
+    "CurveGlass": {
+      "title": "Courbes de Bézier"
     }
   },
   "view": {
