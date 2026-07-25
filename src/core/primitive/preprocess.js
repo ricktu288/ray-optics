@@ -141,18 +141,18 @@ import { buildBvh } from './bvh.js';
  * @param {Primitive[]} primitives - Primitives collected in scene order.
  * @param {Object} [options]
  * @param {Object} [options.bvhOptions] - Options forwarded to {@link buildBvh}.
- * @param {boolean} [options.debug=false] - Whether to log stage timings.
+ * @param {boolean} [options.logDebugInfo=false] - Whether to log preprocessing debug information.
  * @returns {{processedScene: ProcessedScene, detectorResultBindings: DetectorResultBinding[]}}
  */
 export function preprocessPrimitives(primitives, {
   bvhOptions = {},
-  debug = false
+  logDebugInfo = false
 } = {}) {
   if (!Array.isArray(primitives)) {
     throw new TypeError('primitives must be an array.');
   }
 
-  const timing = debug ? createTimingLogger() : null;
+  const timing = logDebugInfo ? createTimingLogger() : null;
   const registries = {
     sources: new TypeRegistry(),
     surfaces: new TypeRegistry(),

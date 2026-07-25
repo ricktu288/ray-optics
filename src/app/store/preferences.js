@@ -28,7 +28,7 @@ const PREFERENCES_DEFAULTS = {
   showSimulatorControls: false,
   help: true,
   simulationEngine: 'default',
-  simulationEngineDebug: false,
+  simulationEngineConfigs: {},
 }
 
 // Callbacks for preference changes
@@ -55,8 +55,8 @@ const PREFERENCES_CALLBACKS = {
   simulationEngine: (value) => {
     app.setSimulationEngine?.(value)
   },
-  simulationEngineDebug: (value) => {
-    app.setSimulationEngineDebug?.(value)
+  simulationEngineConfigs: (value) => {
+    app.setSimulationEngineConfigs?.(value)
   }
 }
 

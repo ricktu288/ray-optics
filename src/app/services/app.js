@@ -46,6 +46,7 @@ import {
   computeImportShapesDefaults as computeImportShapesDefaultsPure,
   importedHandleOffsetBelowBBox,
 } from '../utils/shapeImport.js';
+import { resolveSimulationEngineConfig } from '../../core/simulationEngines/config.js';
 
 function initScene() {
   scene = new Scene();
@@ -102,6 +103,16 @@ function createBrowserWebGpuOutput(canvas) {
   };
 }
 
+function getBvhOptions(engineConfig) {
+  return {
+    lineIntersectionCost: engineConfig.bvh.lineIntersectionCost,
+    arcIntersectionCost: engineConfig.bvh.arcIntersectionCost,
+    cubicBezierIntersectionCost: engineConfig.bvh.cubicBezierIntersectionCost,
+    consecutiveLocalityFactor: engineConfig.bvh.consecutiveLocalityFactor,
+    maxGroupExtent: engineConfig.bvh.maxGroupExtent,
+  };
+}
+
 function createSimulator(engine) {
   if (engine === 'default') {
     return new Simulator(scene,
@@ -129,6 +140,10 @@ function createSimulator(engine) {
       glMain: gl,
       ctxVirtual: document.createElement('canvas').getContext('2d'),
     });
+  const engineConfig = resolveSimulationEngineConfig(
+    engine,
+    app.simulationEngineConfigs
+  );
 
   return new PrimitiveBasedSimulator({
     scene,
@@ -140,7 +155,9 @@ function createSimulator(engine) {
     enableTimer: true,
     rayCountLimit: Infinity,
     tempCanvasFactory: createTempCanvas,
-    debug: Boolean(app.simulationEngineDebug),
+    logDebugInfo: Boolean(engineConfig.logDebugInfo),
+    drawBvh: Boolean(engineConfig.bvh.drawBounds),
+    bvhOptions: getBvhOptions(engineConfig),
   });
 }
 
@@ -240,12 +257,19 @@ function setSimulationEngine(value) {
   simulator.updateSimulation(false, false);
 }
 
-function setSimulationEngineDebug(value) {
-  app.simulationEngineDebug = Boolean(value);
+function setSimulationEngineConfigs(value) {
+  app.simulationEngineConfigs =
+    value && typeof value === 'object' ? value : {};
   if (!(simulator instanceof PrimitiveBasedSimulator)) return;
 
-  simulator.debug = app.simulationEngineDebug;
-  simulator.updateSimulation(true, true);
+  const engineConfig = resolveSimulationEngineConfig(
+    simulator.engine.kind,
+    app.simulationEngineConfigs
+  );
+  simulator.logDebugInfo = Boolean(engineConfig.logDebugInfo);
+  simulator.drawBvh = Boolean(engineConfig.bvh.drawBounds);
+  simulator.bvhOptions = getBvhOptions(engineConfig);
+  simulator.updateSimulation(false, true);
 }
 
 function initAppService() {
@@ -290,6 +314,15 @@ function initAppService() {
     simulationEngine = normalizeSimulationEngine(storedEngine === null ? 'default' : JSON.parse(storedEngine));
   } catch (_) {
     simulationEngine = 'default';
+  }
+  try {
+    const storedConfigs = localStorage.getItem('rayOpticsSimulationEngineConfigs');
+    app.simulationEngineConfigs = storedConfigs === null ? {} : JSON.parse(storedConfigs);
+    if (!app.simulationEngineConfigs || typeof app.simulationEngineConfigs !== 'object') {
+      app.simulationEngineConfigs = {};
+    }
+  } catch (_) {
+    app.simulationEngineConfigs = {};
   }
   simulator = createSimulator(simulationEngine);
   app.simulator = simulator;
@@ -1562,7 +1595,7 @@ export const app = {
   initScene,
   initAppService,
   setSimulationEngine,
-  setSimulationEngineDebug,
+  setSimulationEngineConfigs,
   resetDropdownButtons,
   hideWelcome,
   rename,

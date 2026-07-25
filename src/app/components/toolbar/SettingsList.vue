@@ -142,6 +142,14 @@
   <hr class="dropdown-divider">
 
   <PopupSelectControl
+    :label="$t('simulator:settings.simulationEngine.title')"
+    :value="simulationEngine"
+    :display-fn="value => $t(`simulator:simulationEngineModal.${value}.title`)"
+    popup-target="simulationEngineModal"
+    :layout="layout"
+  />
+
+  <PopupSelectControl
     :label="$t('simulator:settings.language.title')"
     :value="lang"
     :display-fn="value => localeData[value]?.name || value"
@@ -155,14 +163,6 @@
   >
     <span v-html="warningText"></span>
   </SettingsWarning>
-
-  <PopupSelectControl
-    :label="$t('simulator:settings.simulationEngine.title')"
-    :value="simulationEngine"
-    :display-fn="value => $t(`simulator:simulationEngineModal.${value}.title`)"
-    popup-target="simulationEngineModal"
-    :layout="layout"
-  />
               
   <ToggleControl
     :label="$t('simulator:settings.autoSyncUrl.title')"

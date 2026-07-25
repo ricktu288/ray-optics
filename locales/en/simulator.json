@@ -690,9 +690,52 @@
       "title": "Primitive-based CPU",
       "description": "Use the experimental primitive-based CPU engine. This early test currently displays a triangle instead of simulated light."
     },
-    "debug": {
-      "title": "Debug mode",
-      "description": "Show the primitive BVH bounding boxes above the light layer. The BVH is still built when debug mode is off."
+    "configuration": {
+      "title": "Advanced engine settings",
+      "description": "Global tuning settings for the selected engine. These settings are not stored in scene files.",
+      "backToDefaults": "Back to defaults",
+      "logDebugInfo": {
+        "title": "Log debug information",
+        "description": "Write diagnostic and performance information from the selected engine to the browser console."
+      },
+      "sections": {
+        "bvh": {
+          "title": "Bounding volume hierarchy (BVH)",
+          "description": "Before tracing rays, the simulator builds a BVH by grouping nearby shapes into boxes, allowing each ray to skip shapes it cannot reach."
+        },
+        "webgpu": {
+          "title": "WebGPU"
+        }
+      },
+      "fields": {
+        "lineIntersectionCost": {
+          "title": "Line segment cost",
+          "description": "Estimated work needed to test whether a ray intersects a line segment. The BVH builder compares this with a bounding-box test, whose cost is 1; larger values favor splitting line segments into smaller groups."
+        },
+        "arcIntersectionCost": {
+          "title": "Circular arc and circle cost",
+          "description": "Estimated work needed to test whether a ray intersects a circular arc or circle. The BVH builder compares this with a bounding-box test, whose cost is 1; larger values favor splitting arcs and circles into smaller groups."
+        },
+        "cubicBezierIntersectionCost": {
+          "title": "Cubic Bézier cost",
+          "description": "Estimated work needed to test whether a ray intersects a cubic Bézier curve. The BVH builder compares this with a bounding-box test, whose cost is 1; larger values favor splitting cubic Bézier curves into smaller groups."
+        },
+        "drawBounds": {
+          "title": "Draw BVH bounds (for debugging)"
+        },
+        "consecutiveLocalityFactor": {
+          "title": "Consecutive locality factor",
+          "description": "This controls how far apart consecutive curves may be while remaining in the same group. Larger values create fewer groups and build faster, but may slow ray tracing when consecutive curves are not spatially related. Repeated microstructures with related curves slightly separated may benefit from a larger value."
+        },
+        "maxGroupExtent": {
+          "title": "Maximum consecutive-group extent",
+          "description": "This limits the width or height of one consecutive group, in multiples of the scene length scale. Smaller values split long runs into more groups, increasing build time but allowing those groups to be arranged spatially. This can improve ray tracing for crossing or interleaved curves; when consecutive curves already follow spatial order, larger values usually build faster without reducing efficiency."
+        },
+        "workgroupSize": {
+          "title": "Workgroup size",
+          "description": "Number of WebGPU invocations in each workgroup."
+        }
+      }
     }
   },
   "generalWarnings": {

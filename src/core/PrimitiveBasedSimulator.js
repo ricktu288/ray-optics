@@ -44,7 +44,9 @@ class PrimitiveBasedSimulator {
    * @param {boolean} [options.enableTimer=false]
    * @param {number} [options.rayCountLimit=Infinity]
    * @param {function|null} [options.tempCanvasFactory=null]
-   * @param {boolean} [options.debug=false]
+   * @param {boolean} [options.logDebugInfo=false]
+   * @param {boolean} [options.drawBvh=false]
+   * @param {Object} [options.bvhOptions]
    */
   constructor({
     scene,
@@ -56,7 +58,9 @@ class PrimitiveBasedSimulator {
     enableTimer = false,
     rayCountLimit = Infinity,
     tempCanvasFactory = null,
-    debug = false,
+    logDebugInfo = false,
+    drawBvh = false,
+    bvhOptions = {},
   }) {
     this.scene = scene;
     this.engine = engine;
@@ -67,7 +71,9 @@ class PrimitiveBasedSimulator {
     this.enableTimer = enableTimer;
     this.rayCountLimit = rayCountLimit;
     this.tempCanvasFactory = tempCanvasFactory;
-    this.debug = debug;
+    this.logDebugInfo = logDebugInfo;
+    this.drawBvh = drawBvh;
+    this.bvhOptions = bvhOptions;
 
     this.scene.simulator = this;
     this.dpr = 1;
@@ -249,7 +255,7 @@ class PrimitiveBasedSimulator {
         const isHighlighted = this.scene.editor?.isObjHighlighted(index) || false;
         obj.draw(this.canvasRendererAboveLight, true, isHighlighted);
       }
-      if (this.debug) {
+      if (this.drawBvh) {
         this.drawBvhBounds(this.canvasRendererAboveLight);
       }
       this.drawExternalHighlightPoints(this.canvasRendererAboveLight);
@@ -258,7 +264,7 @@ class PrimitiveBasedSimulator {
   }
 
   collectAndPreprocessPrimitives() {
-    const collectionStartTime = this.debug
+    const collectionStartTime = this.logDebugInfo
       ? (typeof performance !== 'undefined' && typeof performance.now === 'function'
         ? performance.now()
         : Date.now())
@@ -270,7 +276,7 @@ class PrimitiveBasedSimulator {
         primitives.push(...objPrimitives);
       }
     }
-    if (this.debug) {
+    if (this.logDebugInfo) {
       const collectionEndTime =
         typeof performance !== 'undefined' && typeof performance.now === 'function'
           ? performance.now()
@@ -285,9 +291,12 @@ class PrimitiveBasedSimulator {
       detectorResultBindings
     } = preprocessPrimitives(primitives, {
       bvhOptions: {
-        maxGroupExtent: DEFAULT_BVH_OPTIONS.maxGroupExtent * this.scene.lengthScale
+        ...this.bvhOptions,
+        maxGroupExtent:
+          (this.bvhOptions.maxGroupExtent ?? DEFAULT_BVH_OPTIONS.maxGroupExtent) *
+          this.scene.lengthScale
       },
-      debug: this.debug
+      logDebugInfo: this.logDebugInfo
     });
     this.primitives = primitives;
     this.processedScene = processedScene;

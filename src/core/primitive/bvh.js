@@ -18,9 +18,12 @@ const TWO_PI = Math.PI * 2;
 const ROOT_EPSILON = 1e-12;
 const SCENE_EPSILON_RATIO = 1e-9;
 const MORTON_COORDINATE_MAX = 0x7fff;
+const BOUNDING_BOX_INTERSECTION_COST = 1;
 
 export const DEFAULT_BVH_OPTIONS = Object.freeze({
-  maxLeafSize: 4,
+  lineIntersectionCost: 1,
+  arcIntersectionCost: 2,
+  cubicBezierIntersectionCost: 5,
   maxGroupExtent: 100,
   consecutiveLocalityFactor: 2
 });
@@ -49,29 +52,34 @@ export function getCurveBounds(curve) {
  * Build a BVH for primitive-curve entries.
  *
  * Spatially consecutive entries are first grouped without regard to their
- * originating scene object. Each group is built directly from index order,
- * while the group roots are arranged by Morton order. A group ends when two
- * adjacent curve bounds are no longer local or when its bounds exceed the
- * configured maximum extent.
+ * originating scene object. The groups are arranged by Morton order without
+ * changing the order inside each group, then flattened into one sequence. That
+ * entire sequence is split using a surface-area heuristic whose primitive-test
+ * costs depend on curve kind. A group ends when two adjacent curve bounds are
+ * no longer local or when its bounds exceed the configured maximum extent.
  *
  * @param {Array<{curve: PrimitiveCurve}>} curveEntries - Entries containing primitive curves.
  * @param {Object} [options]
- * @param {number} [options.maxLeafSize=4] - Maximum number of curves in a leaf.
+ * @param {number} [options.lineIntersectionCost=1] - Line-segment intersection cost relative to one bounding-box test.
+ * @param {number} [options.arcIntersectionCost=2] - Circular-arc and circle intersection cost relative to one bounding-box test.
+ * @param {number} [options.cubicBezierIntersectionCost=5] - Cubic-Bézier intersection cost relative to one bounding-box test.
  * @param {number} [options.maxGroupExtent=100] - Maximum group width or height in scene coordinates.
  * @param {number} [options.consecutiveLocalityFactor=2] - Maximum adjacent AABB gap, relative to the larger curve extent.
  * @returns {{root: number, nodes: Array<Object>, entries: Array<Object>}} The BVH.
  */
 export function buildBvh(curveEntries, {
-  maxLeafSize = DEFAULT_BVH_OPTIONS.maxLeafSize,
+  lineIntersectionCost = DEFAULT_BVH_OPTIONS.lineIntersectionCost,
+  arcIntersectionCost = DEFAULT_BVH_OPTIONS.arcIntersectionCost,
+  cubicBezierIntersectionCost = DEFAULT_BVH_OPTIONS.cubicBezierIntersectionCost,
   maxGroupExtent = DEFAULT_BVH_OPTIONS.maxGroupExtent,
   consecutiveLocalityFactor = DEFAULT_BVH_OPTIONS.consecutiveLocalityFactor
 } = {}) {
   if (!Array.isArray(curveEntries)) {
     throw new TypeError('curveEntries must be an array.');
   }
-  if (!Number.isInteger(maxLeafSize) || maxLeafSize < 1) {
-    throw new RangeError('maxLeafSize must be a positive integer.');
-  }
+  validatePositiveCost(lineIntersectionCost, 'lineIntersectionCost');
+  validatePositiveCost(arcIntersectionCost, 'arcIntersectionCost');
+  validatePositiveCost(cubicBezierIntersectionCost, 'cubicBezierIntersectionCost');
   if (!Number.isFinite(maxGroupExtent) || maxGroupExtent <= 0) {
     throw new RangeError('maxGroupExtent must be positive and finite.');
   }
@@ -79,13 +87,17 @@ export function buildBvh(curveEntries, {
     throw new RangeError('consecutiveLocalityFactor must be nonnegative and finite.');
   }
 
-  const items = curveEntries.map(entry => {
+  let items = curveEntries.map(entry => {
     const bounds = getCurveBounds(entry.curve);
     return {
       ...entry,
       bounds,
-      centroidX: (bounds.minX + bounds.maxX) * 0.5,
-      centroidY: (bounds.minY + bounds.maxY) * 0.5
+      intersectionCost: getCurveIntersectionCost(
+        entry.curve.kind,
+        lineIntersectionCost,
+        arcIntersectionCost,
+        cubicBezierIntersectionCost
+      )
     };
   });
   const nodes = [];
@@ -103,7 +115,7 @@ export function buildBvh(curveEntries, {
     const nodeIndex = nodes.length;
     const start = orderedEntries.length;
     for (let index = startIndex; index < endIndex; index++) {
-      const { centroidX, centroidY, ...entry } = items[index];
+      const { intersectionCost, ...entry } = items[index];
       orderedEntries.push(entry);
     }
     nodes.push({
@@ -130,28 +142,82 @@ export function buildBvh(curveEntries, {
     return nodeIndex;
   };
 
-  const buildBalancedRootRange = (roots, startIndex, endIndex) => {
+  const buildCostAwareRange = (startIndex, endIndex) => {
     if (endIndex - startIndex === 1) {
-      return roots[startIndex];
+      return addLeaf(startIndex, endIndex);
     }
-    const midpoint = startIndex + Math.floor((endIndex - startIndex) * 0.5);
-    const left = buildBalancedRootRange(roots, startIndex, midpoint);
-    const right = buildBalancedRootRange(roots, midpoint, endIndex);
-    return addParent(left, right);
-  };
 
-  const buildIndexGroup = (startIndex, endIndex) => {
-    const leafRoots = [];
-    for (let index = startIndex; index < endIndex; index += maxLeafSize) {
-      leafRoots.push(addLeaf(index, Math.min(index + maxLeafSize, endIndex)));
+    const rangeBounds = getItemRangeBounds(items, startIndex, endIndex);
+    // In two dimensions, width + height is the surface-area term (the factor
+    // of two in a rectangle's perimeter cancels from all child/parent ratios).
+    const rangeMeasure = getBoundsMeasure(rangeBounds);
+    let leafCost = 0;
+    for (let index = startIndex; index < endIndex; index++) {
+      leafCost += items[index].intersectionCost;
     }
-    return buildBalancedRootRange(leafRoots, 0, leafRoots.length);
+
+    const suffixBounds = new Array(endIndex - startIndex);
+    const suffixCosts = new Float64Array(endIndex - startIndex);
+    let suffixBoundsValue = items[endIndex - 1].bounds;
+    let suffixCost = items[endIndex - 1].intersectionCost;
+    for (let index = endIndex - 1; index > startIndex; index--) {
+      const offset = index - startIndex;
+      suffixBounds[offset] = suffixBoundsValue;
+      suffixCosts[offset] = suffixCost;
+      suffixBoundsValue = combineBounds(items[index - 1].bounds, suffixBoundsValue);
+      suffixCost += items[index - 1].intersectionCost;
+    }
+
+    let leftBounds = items[startIndex].bounds;
+    let leftCost = items[startIndex].intersectionCost;
+    let bestSplitIndex = -1;
+    let bestWeightedChildCost = Infinity;
+    const midpoint = (startIndex + endIndex) * 0.5;
+    for (let splitIndex = startIndex + 1; splitIndex < endIndex; splitIndex++) {
+      const offset = splitIndex - startIndex;
+      // The parent measure is constant for every candidate, so minimizing this
+      // weighted sum is equivalent to minimizing the normalized SAH cost and
+      // avoids two divisions for every possible split.
+      const weightedChildCost =
+        getBoundsMeasure(leftBounds) * leftCost +
+        getBoundsMeasure(suffixBounds[offset]) * suffixCosts[offset];
+      const comparisonTolerance = bestSplitIndex === -1
+        ? 0
+        : Number.EPSILON *
+          Math.max(1, weightedChildCost, bestWeightedChildCost) *
+          16;
+      const isBetterSplit =
+        bestSplitIndex === -1 ||
+        weightedChildCost < bestWeightedChildCost - comparisonTolerance ||
+        (
+          Math.abs(weightedChildCost - bestWeightedChildCost) <=
+            comparisonTolerance &&
+          Math.abs(splitIndex - midpoint) < Math.abs(bestSplitIndex - midpoint)
+        );
+      if (isBetterSplit) {
+        bestSplitIndex = splitIndex;
+        bestWeightedChildCost = weightedChildCost;
+      }
+      leftBounds = combineBounds(leftBounds, items[splitIndex].bounds);
+      leftCost += items[splitIndex].intersectionCost;
+    }
+
+    const weightedSplitCost =
+      2 * BOUNDING_BOX_INTERSECTION_COST * rangeMeasure +
+      bestWeightedChildCost;
+    const weightedLeafCost = rangeMeasure * leafCost;
+    if (weightedSplitCost >= weightedLeafCost) {
+      return addLeaf(startIndex, endIndex);
+    }
+    const left = buildCostAwareRange(startIndex, bestSplitIndex);
+    const right = buildCostAwareRange(bestSplitIndex, endIndex);
+    return addParent(left, right);
   };
 
   const sceneBounds = getItemRangeBounds(items, 0, items.length);
   const sceneExtent = getBoundsExtent(sceneBounds) || 1;
   const sceneEpsilon = sceneExtent * SCENE_EPSILON_RATIO;
-  const groupRoots = [];
+  const groups = [];
   let groupStart = 0;
   let groupBounds = items[0].bounds;
 
@@ -166,16 +232,35 @@ export function buildBvh(curveEntries, {
       ) ||
       getBoundsExtent(candidateBounds) > maxGroupExtent
     ) {
-      groupRoots.push(buildIndexGroup(groupStart, index));
+      groups.push(createCurveGroup(
+        groupStart,
+        index,
+        groupBounds,
+        groups.length
+      ));
       groupStart = index;
       groupBounds = items[index].bounds;
     } else {
       groupBounds = candidateBounds;
     }
   }
-  groupRoots.push(buildIndexGroup(groupStart, items.length));
+  groups.push(createCurveGroup(
+    groupStart,
+    items.length,
+    groupBounds,
+    groups.length
+  ));
 
-  const root = buildMortonRootHierarchy(groupRoots, nodes, addParent);
+  sortByMortonCode(groups);
+  const spatiallyOrderedItems = [];
+  for (const group of groups) {
+    for (let index = group.start; index < group.end; index++) {
+      spatiallyOrderedItems.push(items[index]);
+    }
+  }
+  items = spatiallyOrderedItems;
+
+  const root = buildCostAwareRange(0, items.length);
   assignNodeDepths(root, nodes);
 
   return {
@@ -185,34 +270,21 @@ export function buildBvh(curveEntries, {
   };
 }
 
-function buildMortonRootHierarchy(roots, nodes, addParent) {
-  if (roots.length === 1) {
-    return roots[0];
-  }
+function createCurveGroup(start, end, bounds, order) {
+  return {
+    start,
+    end,
+    order,
+    centroidX: (bounds.minX + bounds.maxX) * 0.5,
+    centroidY: (bounds.minY + bounds.maxY) * 0.5,
+    mortonCode: 0
+  };
+}
 
-  const items = roots.map((root, order) => {
-    const bounds = nodes[root].bounds;
-    return {
-      root,
-      order,
-      centroidX: (bounds.minX + bounds.maxX) * 0.5,
-      centroidY: (bounds.minY + bounds.maxY) * 0.5,
-      mortonCode: 0
-    };
-  });
+function sortByMortonCode(items) {
+  if (items.length <= 1) return;
   assignMortonCodes(items);
   items.sort((a, b) => a.mortonCode - b.mortonCode || a.order - b.order);
-
-  const buildRange = (startIndex, endIndex) => {
-    if (endIndex - startIndex === 1) {
-      return items[startIndex].root;
-    }
-    const midpoint = findMortonBoundary(items, startIndex, endIndex);
-    const left = buildRange(startIndex, midpoint);
-    const right = buildRange(midpoint, endIndex);
-    return addParent(left, right);
-  };
-  return buildRange(0, items.length);
 }
 
 function assignMortonCodes(items) {
@@ -251,31 +323,6 @@ function expandMortonBits(value) {
   return expanded;
 }
 
-function findMortonBoundary(items, startIndex, endIndex) {
-  const firstCode = items[startIndex].mortonCode;
-  const lastCode = items[endIndex - 1].mortonCode;
-  if (firstCode === lastCode) {
-    return startIndex + Math.floor((endIndex - startIndex) * 0.5);
-  }
-
-  const commonPrefixLength = Math.clz32(firstCode ^ lastCode);
-  let splitIndex = startIndex;
-  let step = endIndex - startIndex;
-  do {
-    step = Math.floor((step + 1) * 0.5);
-    const candidateIndex = splitIndex + step;
-    if (candidateIndex < endIndex - 1) {
-      const candidatePrefixLength = Math.clz32(
-        firstCode ^ items[candidateIndex].mortonCode
-      );
-      if (candidatePrefixLength > commonPrefixLength) {
-        splitIndex = candidateIndex;
-      }
-    }
-  } while (step > 1);
-  return splitIndex + 1;
-}
-
 function boundsAreLocallyConsecutive(
   previousBounds,
   nextBounds,
@@ -302,6 +349,35 @@ function getBoundsExtent(bounds) {
     bounds.maxX - bounds.minX,
     bounds.maxY - bounds.minY
   );
+}
+
+function getBoundsMeasure(bounds) {
+  return bounds.maxX - bounds.minX + bounds.maxY - bounds.minY;
+}
+
+function validatePositiveCost(value, name) {
+  if (!Number.isFinite(value) || value <= 0) {
+    throw new RangeError(`${name} must be positive and finite.`);
+  }
+}
+
+function getCurveIntersectionCost(
+  kind,
+  lineIntersectionCost,
+  arcIntersectionCost,
+  cubicBezierIntersectionCost
+) {
+  switch (kind) {
+    case 'lineSegment':
+      return lineIntersectionCost;
+    case 'circularArc':
+    case 'circle':
+      return arcIntersectionCost;
+    case 'cubicBezier':
+      return cubicBezierIntersectionCost;
+    default:
+      throw new TypeError(`Unsupported primitive curve kind: ${JSON.stringify(kind)}`);
+  }
 }
 
 function getItemRangeBounds(items, startIndex, endIndex) {
