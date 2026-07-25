@@ -708,17 +708,17 @@
         }
       },
       "fields": {
-        "lineIntersectionCost": {
-          "title": "Line segment cost",
-          "description": "Estimated work needed to test whether a ray intersects a line segment. The BVH builder compares this with a bounding-box test, whose cost is 1; larger values favor splitting line segments into smaller groups."
+        "lineLeafSize": {
+          "title": "Line segments per leaf",
+          "description": "Target maximum number of line segments in a BVH leaf when it contains only line segments. Larger values build faster and use fewer boxes, but may require each ray to test more segments."
         },
-        "arcIntersectionCost": {
-          "title": "Circular arc and circle cost",
-          "description": "Estimated work needed to test whether a ray intersects a circular arc or circle. The BVH builder compares this with a bounding-box test, whose cost is 1; larger values favor splitting arcs and circles into smaller groups."
+        "arcLeafSize": {
+          "title": "Circular arcs and circles per leaf",
+          "description": "Target maximum number of circular arcs or circles in a BVH leaf when it contains only arcs and circles. Larger values build faster and use fewer boxes, but may require each ray to test more shapes."
         },
-        "cubicBezierIntersectionCost": {
-          "title": "Cubic Bézier cost",
-          "description": "Estimated work needed to test whether a ray intersects a cubic Bézier curve. The BVH builder compares this with a bounding-box test, whose cost is 1; larger values favor splitting cubic Bézier curves into smaller groups."
+        "cubicBezierLeafSize": {
+          "title": "Cubic Bézier curves per leaf",
+          "description": "Target maximum number of cubic Bézier curves in a BVH leaf when it contains only cubic Bézier curves. Larger values build faster and use fewer boxes, but may require each ray to test more curves."
         },
         "drawBounds": {
           "title": "Draw BVH bounds (for debugging)"

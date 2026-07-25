@@ -105,9 +105,9 @@ function createBrowserWebGpuOutput(canvas) {
 
 function getBvhOptions(engineConfig) {
   return {
-    lineIntersectionCost: engineConfig.bvh.lineIntersectionCost,
-    arcIntersectionCost: engineConfig.bvh.arcIntersectionCost,
-    cubicBezierIntersectionCost: engineConfig.bvh.cubicBezierIntersectionCost,
+    lineLeafSize: engineConfig.bvh.lineLeafSize,
+    arcLeafSize: engineConfig.bvh.arcLeafSize,
+    cubicBezierLeafSize: engineConfig.bvh.cubicBezierLeafSize,
     consecutiveLocalityFactor: engineConfig.bvh.consecutiveLocalityFactor,
     maxGroupExtent: engineConfig.bvh.maxGroupExtent,
   };

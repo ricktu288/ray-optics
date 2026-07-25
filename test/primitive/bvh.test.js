@@ -59,17 +59,17 @@ function getLeafEntryIds(tree) {
 }
 
 describe('primitive BVH', () => {
-  it('exposes the adaptive-builder defaults', () => {
+  it('exposes the builder defaults', () => {
     expect(DEFAULT_BVH_OPTIONS).toEqual({
-      lineIntersectionCost: 1,
-      arcIntersectionCost: 2,
-      cubicBezierIntersectionCost: 5,
+      lineLeafSize: 4,
+      arcLeafSize: 2,
+      cubicBezierLeafSize: 1,
       maxGroupExtent: 100,
       consecutiveLocalityFactor: 2
     });
   });
 
-  it('groups spatially local, non-touching curves across object boundaries', () => {
+  it('packs line segments up to the configured leaf size', () => {
     const tree = buildBvh([
       lineEntry('front', 0, 0, 8, 0, 'cell-front'),
       lineEntry('back', 0, 4, 8, 4, 'cell-back'),
@@ -78,10 +78,9 @@ describe('primitive BVH', () => {
       maxGroupExtent: 2000
     });
 
-    expect(getLeafEntryIds(tree)).toEqual(expect.arrayContaining([
-      ['back', 'front'],
-      ['distant']
-    ]));
+    expect(getLeafEntryIds(tree)).toEqual([
+      ['back', 'distant', 'front']
+    ]);
   });
 
   it('uses bounds locality for curves without endpoints', () => {
@@ -134,7 +133,7 @@ describe('primitive BVH', () => {
     expect(oneGroup.entries.map(entry => entry.id)).toEqual([0, 1, 2, 3]);
   });
 
-  it('can keep overlapping curves in one leaf across consecutive-group boundaries', () => {
+  it('can pack curves into one leaf across consecutive-group boundaries', () => {
     const tree = buildBvh([
       lineEntry('first', 0, 0, 200, 0),
       lineEntry('second', 0, 0, 200, 0)
@@ -145,7 +144,7 @@ describe('primitive BVH', () => {
     expect(getLeafEntryIds(tree)).toEqual([['first', 'second']]);
   });
 
-  it('uses curve intersection costs to choose leaf sizes', () => {
+  it('uses the configured size for each curve kind', () => {
     const lineEntries = [];
     const cubicEntries = [];
     for (let index = 0; index < 4; index++) {
@@ -155,21 +154,43 @@ describe('primitive BVH', () => {
 
     const lineTree = buildBvh(lineEntries);
     const cubicTree = buildBvh(cubicEntries);
-    const cheapCubicTree = buildBvh(cubicEntries, {
-      cubicBezierIntersectionCost: 1
+    const largerCubicLeaves = buildBvh(cubicEntries, {
+      cubicBezierLeafSize: 4
     });
 
     expect(getLeafEntryIds(lineTree)).toEqual([[0, 1, 2, 3]]);
     expect(getLeafEntryIds(cubicTree)).toEqual([[0], [1], [2], [3]]);
-    expect(getLeafEntryIds(cheapCubicTree)).toEqual([[0, 1, 2, 3]]);
+    expect(getLeafEntryIds(largerCubicLeaves)).toEqual([[0, 1, 2, 3]]);
+  });
+
+  it('combines per-kind capacities for mixed leaves', () => {
+    const tree = buildBvh([
+      lineEntry(0, 0, 0, 10, 0),
+      lineEntry(1, 10, 0, 20, 0),
+      {
+        id: 2,
+        curve: {
+          kind: 'circle',
+          params: {
+            center: { x: 25, y: 0 },
+            radius: 5
+          }
+        }
+      },
+      lineEntry(3, 30, 0, 40, 0)
+    ]);
+
+    expect(getLeafEntryIds(tree)).toEqual([
+      [0, 1, 2],
+      [3]
+    ]);
   });
 
   it('assigns depth from the final Morton root', () => {
-    const tree = buildBvh([
-      lineEntry(0, 0, 0, 1, 0),
-      lineEntry(1, 100, 0, 101, 0),
-      lineEntry(2, 200, 0, 201, 0)
-    ]);
+    const tree = buildBvh(Array.from(
+      { length: 9 },
+      (_, index) => lineEntry(index, index * 100, 0, index * 100 + 1, 0)
+    ));
 
     expect(tree.nodes[tree.root].depth).toBe(0);
     for (const node of tree.nodes) {

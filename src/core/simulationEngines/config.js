@@ -17,9 +17,9 @@
 import { DEFAULT_BVH_OPTIONS } from '../primitive/bvh.js';
 
 const COMMON_BVH_CONFIG = Object.freeze({
-  lineIntersectionCost: DEFAULT_BVH_OPTIONS.lineIntersectionCost,
-  arcIntersectionCost: DEFAULT_BVH_OPTIONS.arcIntersectionCost,
-  cubicBezierIntersectionCost: DEFAULT_BVH_OPTIONS.cubicBezierIntersectionCost,
+  lineLeafSize: DEFAULT_BVH_OPTIONS.lineLeafSize,
+  arcLeafSize: DEFAULT_BVH_OPTIONS.arcLeafSize,
+  cubicBezierLeafSize: DEFAULT_BVH_OPTIONS.cubicBezierLeafSize,
   consecutiveLocalityFactor: DEFAULT_BVH_OPTIONS.consecutiveLocalityFactor,
   maxGroupExtent: DEFAULT_BVH_OPTIONS.maxGroupExtent,
   drawBounds: false,
