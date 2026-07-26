@@ -16,8 +16,16 @@
 
 import {
   createPreprocessingSummary,
-  preprocessPrimitives
+  preprocessPrimitives as preprocessPrimitivesWithNumericEpsilon
 } from '../../src/core/primitive/preprocess.js';
+import { FLOAT32_EPSILON } from '../../src/core/primitive/numeric.js';
+
+function preprocessPrimitives(primitives, options = {}) {
+  return preprocessPrimitivesWithNumericEpsilon(primitives, {
+    numericEpsilon: FLOAT32_EPSILON,
+    ...options
+  });
+}
 
 function line(startX, startY, endX, endY) {
   return {
@@ -100,6 +108,7 @@ describe('primitive preprocessing', () => {
 
     const { processedScene } = preprocessPrimitives(primitives);
 
+    expect(processedScene.numericEpsilon).toBe(FLOAT32_EPSILON);
     expect(processedScene.types.surfaces).toHaveLength(2);
     expect(processedScene.surfaces[0].surfaceTypeId)
       .toBe(processedScene.surfaces[1].surfaceTypeId);
@@ -212,7 +221,14 @@ describe('primitive preprocessing', () => {
         ['region', 0],
         ['detector', 0]
       ]);
-    expect(processedScene.curves[0].curve).toBe(primitives[0].curve);
+    expect(processedScene.curves[0].geometry).toMatchObject({
+      kind: 'lineSegment',
+      originX: 0,
+      originY: 0,
+      tangentX: 1,
+      tangentY: 0,
+      invLength: 1
+    });
     expect(processedScene.curves[0].filter).toBe(primitives[0].filter);
     expect(processedScene.curves[3].twoSided).toBe(false);
     expect(Array.from(processedScene.bvh.curveIds).sort((a, b) => a - b))

@@ -98,7 +98,9 @@ class PrimitiveBasedSimulator {
     this.runGeneration = 0;
     this.isRunning = false;
     this.primitives = [];
-    const initialPreprocessing = preprocessPrimitives([]);
+    const initialPreprocessing = preprocessPrimitives([], {
+      numericEpsilon: this.engine.numericEpsilon
+    });
     this.processedScene = initialPreprocessing.processedScene;
     this.detectorResultBindings = initialPreprocessing.detectorResultBindings;
     this.primitiveBvh = this.processedScene.bvh;
@@ -293,6 +295,8 @@ class PrimitiveBasedSimulator {
       detectorResultBindings,
       timings
     } = preprocessPrimitives(primitives, {
+      lengthScale: this.scene.lengthScale,
+      numericEpsilon: this.engine.numericEpsilon,
       bvhOptions: {
         ...this.bvhOptions,
         maxGroupExtent:

@@ -15,6 +15,8 @@
  */
 
 import { buildBvh } from './bvh.js';
+import { prepareCurve } from './curveGeometry.js';
+import { validateNumericEpsilon } from './numeric.js';
 
 /**
  * A canonical, engine-independent type definition.
@@ -77,7 +79,7 @@ import { buildBvh } from './bvh.js';
  * sidedness or wavelength filters.
  *
  * @typedef {Object} ProcessedCurve
- * @property {PrimitiveCurve} curve - The engine-independent curve geometry.
+ * @property {PreparedCurveGeometry} geometry - Prepared engine-independent curve geometry.
  * @property {'surface'|'region'|'detector'} ownerKind - Owner table kind.
  * @property {number} ownerId - Index into the matching owner table.
  * @property {boolean} [twoSided] - Whether both oriented sides participate.
@@ -114,6 +116,7 @@ import { buildBvh } from './bvh.js';
  * not contain the mutable detector result holders owned by scene objects.
  *
  * @typedef {Object} ProcessedScene
+ * @property {number} numericEpsilon - Relative arithmetic epsilon selected by the engine for geometry preparation and intersection.
  * @property {string} typeSignature - Structural signature of all four type tables.
  * @property {{sources: ProcessedType[], surfaces: ProcessedType[], bulks: ProcessedType[], detectors: ProcessedType[]}} types
  * @property {ProcessedSource[]} sources
@@ -141,16 +144,21 @@ import { buildBvh } from './bvh.js';
  * @param {Primitive[]} primitives - Primitives collected in scene order.
  * @param {Object} [options]
  * @param {Object} [options.bvhOptions] - Options forwarded to {@link buildBvh}.
+ * @param {number} [options.lengthScale=1] - Natural scene length used by engine-selected curve tolerances.
+ * @param {number} options.numericEpsilon - Relative arithmetic epsilon selected by the engine.
  * @param {boolean} [options.logDebugInfo=false] - Whether to measure preprocessing stages for debug output.
  * @returns {{processedScene: ProcessedScene, detectorResultBindings: DetectorResultBinding[], timings: Object|null}}
  */
 export function preprocessPrimitives(primitives, {
   bvhOptions = {},
+  lengthScale = 1,
+  numericEpsilon,
   logDebugInfo = false
 } = {}) {
   if (!Array.isArray(primitives)) {
     throw new TypeError('primitives must be an array.');
   }
+  validateNumericEpsilon(numericEpsilon);
 
   const timing = logDebugInfo ? createTimingRecorder() : null;
   const registries = {
@@ -164,8 +172,29 @@ export function preprocessPrimitives(primitives, {
   const regions = [];
   const detectors = [];
   const curves = [];
+  const curveBounds = [];
   const detectorResults = new Map();
   const detectorResultBindings = [];
+  const appendProcessedCurve = (
+    curve,
+    ownerKind,
+    ownerId,
+    twoSided,
+    filter
+  ) => {
+    const prepared = prepareCurve(curve, {
+      lengthScale,
+      numericEpsilon
+    });
+    curves.push(createProcessedCurve(
+      prepared.geometry,
+      ownerKind,
+      ownerId,
+      twoSided,
+      filter
+    ));
+    curveBounds.push(prepared.bounds);
+  };
 
   for (let primitiveIndex = 0; primitiveIndex < primitives.length; primitiveIndex++) {
     const primitive = primitives[primitiveIndex];
@@ -192,13 +221,13 @@ export function preprocessPrimitives(primitives, {
           typeRecord,
           params: primitive.params
         });
-        curves.push(createProcessedCurve(
+        appendProcessedCurve(
           primitive.curve,
           'surface',
           ownerId,
           primitive.twoSided,
           primitive.filter
-        ));
+        );
         break;
       }
 
@@ -214,13 +243,13 @@ export function preprocessPrimitives(primitives, {
           partialReflect: primitive.partialReflect
         });
         for (let curveIndex = 0; curveIndex < primitive.curves.length; curveIndex++) {
-          curves.push(createProcessedCurve(
+          appendProcessedCurve(
             primitive.curves[curveIndex],
             'region',
             ownerId,
             undefined,
             undefined
-          ));
+          );
         }
         break;
       }
@@ -255,13 +284,13 @@ export function preprocessPrimitives(primitives, {
           params: primitive.params,
           ...resultRange
         });
-        curves.push(createProcessedCurve(
+        appendProcessedCurve(
           primitive.curve,
           'detector',
           ownerId,
           primitive.twoSided,
           undefined
-        ));
+        );
         break;
       }
 
@@ -299,7 +328,8 @@ export function preprocessPrimitives(primitives, {
 
   const builtBvh = buildBvh(
     curves.map((curveRecord, curveId) => ({
-      curve: curveRecord.curve,
+      geometry: curveRecord.geometry,
+      bounds: curveBounds[curveId],
       curveId
     })),
     bvhOptions
@@ -320,6 +350,7 @@ export function preprocessPrimitives(primitives, {
 
   const result = {
     processedScene: {
+      numericEpsilon,
       typeSignature: hashCanonicalString(typeSignatureSource),
       types: finalizedTypes,
       sources: processedSources,
@@ -464,9 +495,9 @@ function summarizeTypeCategory(types, instances, typeIdKey, previousTypes) {
   };
 }
 
-function createProcessedCurve(curve, ownerKind, ownerId, twoSided, filter) {
+function createProcessedCurve(geometry, ownerKind, ownerId, twoSided, filter) {
   const processedCurve = {
-    curve,
+    geometry,
     ownerKind,
     ownerId
   };

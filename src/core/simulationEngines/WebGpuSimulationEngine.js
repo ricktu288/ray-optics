@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { validateNumericEpsilon } from '../primitive/numeric.js';
+
 const TRIANGLE_SHADER = `
   @vertex
   fn vertexMain(@builtin(vertex_index) vertexIndex: u32) -> @builtin(position) vec4f {
@@ -80,8 +82,9 @@ class WebGpuSimulationRun {
  * and supplies texture views for both browser canvases and Node textures.
  */
 class WebGpuSimulationEngine {
-  constructor({ device, output, ownsDevice = false }) {
+  constructor({ device, output, numericEpsilon, ownsDevice = false }) {
     this.kind = 'webgpu';
+    this.numericEpsilon = validateNumericEpsilon(numericEpsilon);
     this.deviceSource = device;
     this.devicePromise = null;
     this.output = output;

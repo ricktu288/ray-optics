@@ -27,6 +27,7 @@ import {
   PrimitiveBasedSimulator,
   CpuSimulationEngine,
   WebGpuSimulationEngine,
+  FLOAT32_EPSILON,
   Editor,
   geometry,
   sceneObjs,
@@ -133,9 +134,11 @@ function createSimulator(engine) {
     ? new WebGpuSimulationEngine({
       device: requestWebGpuDevice,
       output: createBrowserWebGpuOutput(canvasLightWebGPU),
+      numericEpsilon: FLOAT32_EPSILON,
       ownsDevice: true,
     })
     : new CpuSimulationEngine({
+      numericEpsilon: FLOAT32_EPSILON,
       ctxMain: canvasLight.getContext('2d'),
       glMain: gl,
       ctxVirtual: document.createElement('canvas').getContext('2d'),

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-const TWO_PI = Math.PI * 2;
-const ROOT_EPSILON = 1e-12;
+import { prepareCurve } from './curveGeometry.js';
+
 const SCENE_EPSILON_RATIO = 1e-9;
 const MORTON_COORDINATE_MAX = 0x7fff;
 const LEAF_WEIGHT_EPSILON = 1e-12;
@@ -31,21 +31,12 @@ export const DEFAULT_BVH_OPTIONS = Object.freeze({
 /**
  * Calculate the axis-aligned bounding box of a primitive curve.
  * @param {PrimitiveCurve} curve - The primitive curve.
+ * @param {Object} options
+ * @param {number} options.numericEpsilon - Relative arithmetic epsilon selected by the engine.
  * @returns {{minX: number, minY: number, maxX: number, maxY: number}} The curve bounds.
  */
-export function getCurveBounds(curve) {
-  switch (curve.kind) {
-    case 'lineSegment':
-      return boundsFromPoints([curve.params.start, curve.params.end]);
-    case 'circularArc':
-      return getCircularArcBounds(curve.params);
-    case 'cubicBezier':
-      return getCubicBezierBounds(curve.params);
-    case 'circle':
-      return getCircleBounds(curve.params);
-    default:
-      throw new TypeError(`Unsupported primitive curve kind: ${JSON.stringify(curve.kind)}`);
-  }
+export function getCurveBounds(curve, { numericEpsilon }) {
+  return prepareCurve(curve, { numericEpsilon }).bounds;
 }
 
 /**
@@ -59,13 +50,17 @@ export function getCurveBounds(curve) {
  * when two adjacent curve bounds are no longer local or when its bounds exceed
  * the configured maximum extent.
  *
- * @param {Array<{curve: PrimitiveCurve}>} curveEntries - Entries containing primitive curves.
+ * Prepared entries provide `geometry` and `bounds`, avoiding duplicate curve
+ * preparation. Raw `curve` entries remain accepted by this standalone builder.
+ *
+ * @param {Array<{geometry?: Object, bounds?: Object, curve?: PrimitiveCurve}>} curveEntries
  * @param {Object} [options]
  * @param {number} [options.lineLeafSize=4] - Target number of line segments in a homogeneous leaf.
  * @param {number} [options.arcLeafSize=2] - Target number of circular arcs or circles in a homogeneous leaf.
  * @param {number} [options.cubicBezierLeafSize=1] - Target number of cubic Bézier curves in a homogeneous leaf.
  * @param {number} [options.maxGroupExtent=100] - Maximum group width or height in scene coordinates.
  * @param {number} [options.consecutiveLocalityFactor=2] - Maximum adjacent AABB gap, relative to the larger curve extent.
+ * @param {number} [options.numericEpsilon] - Relative arithmetic epsilon required when an entry contains an unprepared `curve`.
  * @returns {{root: number, nodes: Array<Object>, entries: Array<Object>}} The BVH.
  */
 export function buildBvh(curveEntries, {
@@ -73,7 +68,8 @@ export function buildBvh(curveEntries, {
   arcLeafSize = DEFAULT_BVH_OPTIONS.arcLeafSize,
   cubicBezierLeafSize = DEFAULT_BVH_OPTIONS.cubicBezierLeafSize,
   maxGroupExtent = DEFAULT_BVH_OPTIONS.maxGroupExtent,
-  consecutiveLocalityFactor = DEFAULT_BVH_OPTIONS.consecutiveLocalityFactor
+  consecutiveLocalityFactor = DEFAULT_BVH_OPTIONS.consecutiveLocalityFactor,
+  numericEpsilon
 } = {}) {
   if (!Array.isArray(curveEntries)) {
     throw new TypeError('curveEntries must be an array.');
@@ -89,12 +85,15 @@ export function buildBvh(curveEntries, {
   }
 
   let items = curveEntries.map(entry => {
-    const bounds = getCurveBounds(entry.curve);
+    const prepared = entry.geometry && entry.bounds
+      ? { geometry: entry.geometry, bounds: entry.bounds }
+      : prepareCurve(entry.curve, { numericEpsilon });
     return {
       ...entry,
-      bounds,
+      geometry: prepared.geometry,
+      bounds: prepared.bounds,
       leafWeight: getCurveLeafWeight(
-        entry.curve.kind,
+        prepared.geometry.kind,
         lineLeafSize,
         arcLeafSize,
         cubicBezierLeafSize
@@ -367,126 +366,4 @@ function assignNodeDepths(root, nodes) {
       );
     }
   }
-}
-
-function getCircularArcBounds({ start, end, bulge }) {
-  if (bulge === 0) {
-    return boundsFromPoints([start, end]);
-  }
-
-  const dx = end.x - start.x;
-  const dy = end.y - start.y;
-  const chordLength = Math.hypot(dx, dy);
-
-  const midpointX = (start.x + end.x) * 0.5;
-  const midpointY = (start.y + end.y) * 0.5;
-  const centerOffset = chordLength * (1 - bulge * bulge) / (4 * bulge);
-  const center = {
-    x: midpointX - dy / chordLength * centerOffset,
-    y: midpointY + dx / chordLength * centerOffset
-  };
-  const radius = chordLength * (1 + bulge * bulge) / (4 * Math.abs(bulge));
-  const startAngle = Math.atan2(start.y - center.y, start.x - center.x);
-  const sweep = 4 * Math.atan(bulge);
-  const points = [start, end];
-
-  for (const angle of [0, Math.PI * 0.5, Math.PI, Math.PI * 1.5]) {
-    if (angleIsOnSweep(angle, startAngle, sweep)) {
-      points.push({
-        x: center.x + radius * Math.cos(angle),
-        y: center.y + radius * Math.sin(angle)
-      });
-    }
-  }
-  return boundsFromPoints(points);
-}
-
-function getCubicBezierBounds({ start, control1, control2, end }) {
-  const points = [start, control1, control2, end];
-
-  const candidates = [0, 1];
-  candidates.push(...getCubicDerivativeRoots(start.x, control1.x, control2.x, end.x));
-  candidates.push(...getCubicDerivativeRoots(start.y, control1.y, control2.y, end.y));
-
-  return boundsFromPoints(candidates.map(t => evaluateCubicBezier(points, t)));
-}
-
-function getCircleBounds({ center, radius }) {
-  const absoluteRadius = Math.abs(radius);
-  return {
-    minX: center.x - absoluteRadius,
-    minY: center.y - absoluteRadius,
-    maxX: center.x + absoluteRadius,
-    maxY: center.y + absoluteRadius
-  };
-}
-
-function getCubicDerivativeRoots(p0, p1, p2, p3) {
-  const a = 3 * (-p0 + 3 * p1 - 3 * p2 + p3);
-  const b = 6 * (p0 - 2 * p1 + p2);
-  const c = 3 * (p1 - p0);
-
-  if (Math.abs(a) <= ROOT_EPSILON) {
-    if (Math.abs(b) <= ROOT_EPSILON) {
-      return [];
-    }
-    return keepInteriorRoots([-c / b]);
-  }
-
-  const discriminant = b * b - 4 * a * c;
-  if (discriminant < 0) {
-    return [];
-  }
-  if (discriminant === 0) {
-    return keepInteriorRoots([-b / (2 * a)]);
-  }
-
-  const sqrtDiscriminant = Math.sqrt(discriminant);
-  return keepInteriorRoots([
-    (-b - sqrtDiscriminant) / (2 * a),
-    (-b + sqrtDiscriminant) / (2 * a)
-  ]);
-}
-
-function keepInteriorRoots(roots) {
-  return roots.filter(root => root > 0 && root < 1 && Number.isFinite(root));
-}
-
-function evaluateCubicBezier([p0, p1, p2, p3], t) {
-  const oneMinusT = 1 - t;
-  const weight0 = oneMinusT * oneMinusT * oneMinusT;
-  const weight1 = 3 * oneMinusT * oneMinusT * t;
-  const weight2 = 3 * oneMinusT * t * t;
-  const weight3 = t * t * t;
-  return {
-    x: weight0 * p0.x + weight1 * p1.x + weight2 * p2.x + weight3 * p3.x,
-    y: weight0 * p0.y + weight1 * p1.y + weight2 * p2.y + weight3 * p3.y
-  };
-}
-
-function angleIsOnSweep(angle, startAngle, sweep) {
-  if (sweep >= 0) {
-    return normalizeAngle(angle - startAngle) <= sweep + ROOT_EPSILON;
-  }
-  return normalizeAngle(startAngle - angle) <= -sweep + ROOT_EPSILON;
-}
-
-function normalizeAngle(angle) {
-  return ((angle % TWO_PI) + TWO_PI) % TWO_PI;
-}
-
-function boundsFromPoints(points) {
-  const bounds = {
-    minX: Infinity,
-    minY: Infinity,
-    maxX: -Infinity,
-    maxY: -Infinity
-  };
-  for (const point of points) {
-    bounds.minX = Math.min(bounds.minX, point.x);
-    bounds.minY = Math.min(bounds.minY, point.y);
-    bounds.maxX = Math.max(bounds.maxX, point.x);
-    bounds.maxY = Math.max(bounds.maxY, point.y);
-  }
-  return bounds;
 }

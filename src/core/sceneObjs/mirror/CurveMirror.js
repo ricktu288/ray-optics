@@ -95,6 +95,47 @@ class CurveMirror extends CurveObjMixin(BaseFilter) {
     ctx.lineWidth = 1;
   }
 
+  getPrimitives() {
+    if (this.notDone || !this.curves || this.curves.length === 0) {
+      return [];
+    }
+
+    const primitives = [];
+    for (const curve of this.curves) {
+      if (!curve.points || curve.points.length !== 4) continue;
+      const [start, control1, control2, end] = curve.points;
+      if (
+        !isFinitePoint(start) ||
+        !isFinitePoint(control1) ||
+        !isFinitePoint(control2) ||
+        !isFinitePoint(end)
+      ) {
+        continue;
+      }
+      if (
+        start.x === control1.x &&
+        start.y === control1.y &&
+        start.x === control2.x &&
+        start.y === control2.y &&
+        start.x === end.x &&
+        start.y === end.y
+      ) {
+        continue;
+      }
+
+      primitives.push(this.createMirrorPrimitive({
+        kind: 'cubicBezier',
+        params: {
+          start: { x: start.x, y: start.y },
+          control1: { x: control1.x, y: control1.y },
+          control2: { x: control2.x, y: control2.y },
+          end: { x: end.x, y: end.y }
+        }
+      }));
+    }
+    return primitives;
+  }
+
   checkRayIntersects(ray) {
     if (this.notDone) return;
     if (!this.checkRayIntersectFilter(ray)) return;
@@ -144,5 +185,9 @@ class CurveMirror extends CurveObjMixin(BaseFilter) {
     ray.p2 = geometry.point(incidentPoint.x + rx, incidentPoint.y + ry);
   }
 };
+
+function isFinitePoint(point) {
+  return Number.isFinite(point?.x) && Number.isFinite(point?.y);
+}
 
 export default CurveMirror;

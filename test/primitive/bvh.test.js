@@ -15,9 +15,17 @@
  */
 
 import {
-  buildBvh,
+  buildBvh as buildBvhWithNumericEpsilon,
   DEFAULT_BVH_OPTIONS
 } from '../../src/core/primitive/bvh.js';
+import { FLOAT32_EPSILON } from '../../src/core/primitive/numeric.js';
+
+function buildBvh(curveEntries, options = {}) {
+  return buildBvhWithNumericEpsilon(curveEntries, {
+    numericEpsilon: FLOAT32_EPSILON,
+    ...options
+  });
+}
 
 function lineEntry(id, x1, y1, x2, y2, objectId = id) {
   return {
