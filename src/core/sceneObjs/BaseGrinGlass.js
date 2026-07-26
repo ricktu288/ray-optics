@@ -21,6 +21,12 @@ import i18next from 'i18next';
 import { evaluateLatex } from '../equation.js';
 import { parseTex } from 'tex-math-parser'
 import * as math from 'mathjs';
+import { equationValueToDisplay } from '../propertyUtils/equationConversion.js';
+import { parseFormula } from '../formula/formula-parser.js';
+import { extractNonIntegerLikeNumbers } from '../formula/parameter-extraction.js';
+import { appendPartialDerivatives } from '../formula/derivative.js';
+import { substituteDagParameters } from '../formula/substitution.js';
+import { combineDags } from '../formula/dag-combination.js';
 
 /**
  * @typedef {Object} BodyMergingObj
@@ -136,6 +142,154 @@ class BaseGrinGlass extends BaseGlass {
 
   getZIndex() {
     return 0;
+  }
+
+  /**
+   * Create a GRIN region primitive with the supplied boundary.
+   *
+   * The primitive formula path is independent of the legacy functions built by
+   * `initFns()`. It accepts both the current LaTeX storage format and the
+   * double-backtick math.js format supported by the equation property editor.
+   *
+   * @param {PrimitiveCurve[]} curves - The closed region boundary.
+   * @returns {RegionPrimitive|null} The region primitive, or null if the
+   * refractive-index formula cannot be compiled.
+   */
+  createGrinPrimitive(curves) {
+    const bulkData = this.getPrimitiveBulkData();
+    if (!bulkData) {
+      return null;
+    }
+
+    const params = {};
+    if (bulkData.hasOriginShift) {
+      params.x_0 = this.origin.x;
+      params.y_0 = this.origin.y;
+    }
+    Object.assign(params, bulkData.formulaParams);
+
+    return {
+      kind: 'region',
+      curves,
+      bulkType: bulkData.bulkType,
+      params,
+      stepSize: this.stepSize,
+      partialReflect: this.partialReflect
+    };
+  }
+
+  /**
+   * Compile and cache the formula data shared by this object's GRIN primitive.
+   *
+   * A nonzero coordinate origin is represented by the instance parameters
+   * `x_0` and `y_0`. At the exact origin `(0, 0)`, no shift is inserted and no
+   * origin parameters are added.
+   *
+   * @returns {{
+   *   bulkType: BulkType,
+   *   formulaParams: Object<string, number>,
+   *   hasOriginShift: boolean
+   * }|null} Compiled bulk data, or null if compilation fails.
+   */
+  getPrimitiveBulkData() {
+    const hasOriginShift = this.origin.x !== 0 || this.origin.y !== 0;
+    const cacheKey = JSON.stringify([
+      this.refIndexFn,
+      this.absorptionFn,
+      hasOriginShift
+    ]);
+    if (this._primitiveBulkDataCache?.key === cacheKey) {
+      if (this._primitiveBulkDataCache.error) {
+        this.error = this._primitiveBulkDataCache.error;
+        return null;
+      }
+      this.error = null;
+      return this._primitiveBulkDataCache.value;
+    }
+
+    try {
+      const convertedRefIndex = equationValueToDisplay(this.refIndexFn);
+      if (!convertedRefIndex.supported || convertedRefIndex.display.trim() === '') {
+        throw new Error('Unsupported refractive-index formula.');
+      }
+      const convertedAbsorption = equationValueToDisplay(this.absorptionFn);
+      if (!convertedAbsorption.supported || convertedAbsorption.display.trim() === '') {
+        throw new Error('Unsupported absorption formula.');
+      }
+
+      let refIndexDag = parseFormula(
+        convertedRefIndex.display,
+        ['x', 'y', 'lambda'],
+        { outputLabel: 'n' }
+      );
+      let absorptionDag = parseFormula(
+        convertedAbsorption.display,
+        ['x', 'y', 'lambda'],
+        { outputLabel: 'alpha' }
+      );
+
+      const originParamNames = [];
+      if (hasOriginShift) {
+        const substitutions = {
+          x: parseFormula('x - x_0', ['x', 'x_0']),
+          y: parseFormula('y - y_0', ['y', 'y_0'])
+        };
+        refIndexDag = substituteDagParameters(refIndexDag, substitutions);
+        absorptionDag = substituteDagParameters(absorptionDag, substitutions);
+        originParamNames.push('x_0', 'y_0');
+      }
+
+      const extractedRefIndex = extractNonIntegerLikeNumbers(
+        refIndexDag,
+        { prefix: '_n' }
+      );
+      const extractedAbsorption = extractNonIntegerLikeNumbers(
+        absorptionDag,
+        { prefix: '_alpha' }
+      );
+      const differentiated = appendPartialDerivatives(extractedRefIndex.dag, {
+        sourceLabel: 'n',
+        partials: [
+          { parameter: 'x', label: 'n_x' },
+          { parameter: 'y', label: 'n_y' }
+        ]
+      });
+      if (differentiated.errors.length > 0) {
+        throw new Error(
+          differentiated.errors.map(error => error.message).join('; ')
+        );
+      }
+
+      const value = {
+        bulkType: {
+          name: 'GRIN medium',
+          paramNames: [
+            ...originParamNames,
+            ...extractedRefIndex.extracted.map(param => param.name),
+            ...extractedAbsorption.extracted.map(param => param.name)
+          ],
+          dag: combineDags([
+            differentiated.dag,
+            extractedAbsorption.dag
+          ])
+        },
+        formulaParams: Object.fromEntries(
+          [
+            ...extractedRefIndex.extracted,
+            ...extractedAbsorption.extracted
+          ].map(param => [param.name, param.value])
+        ),
+        hasOriginShift
+      };
+      this._primitiveBulkDataCache = { key: cacheKey, value };
+      this.error = null;
+      return value;
+    } catch (error) {
+      const message = error.toString();
+      this._primitiveBulkDataCache = { key: cacheKey, error: message };
+      this.error = message;
+      return null;
+    }
   }
 
   fillGlass(canvasRenderer, isAboveLight, isHovered) {

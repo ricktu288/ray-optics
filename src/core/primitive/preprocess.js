@@ -141,8 +141,8 @@ import { buildBvh } from './bvh.js';
  * @param {Primitive[]} primitives - Primitives collected in scene order.
  * @param {Object} [options]
  * @param {Object} [options.bvhOptions] - Options forwarded to {@link buildBvh}.
- * @param {boolean} [options.logDebugInfo=false] - Whether to log preprocessing debug information.
- * @returns {{processedScene: ProcessedScene, detectorResultBindings: DetectorResultBinding[]}}
+ * @param {boolean} [options.logDebugInfo=false] - Whether to measure preprocessing stages for debug output.
+ * @returns {{processedScene: ProcessedScene, detectorResultBindings: DetectorResultBinding[], timings: Object|null}}
  */
 export function preprocessPrimitives(primitives, {
   bvhOptions = {},
@@ -152,7 +152,7 @@ export function preprocessPrimitives(primitives, {
     throw new TypeError('primitives must be an array.');
   }
 
-  const timing = logDebugInfo ? createTimingLogger() : null;
+  const timing = logDebugInfo ? createTimingRecorder() : null;
   const registries = {
     sources: new TypeRegistry(),
     surfaces: new TypeRegistry(),
@@ -271,7 +271,7 @@ export function preprocessPrimitives(primitives, {
       );
     }
   }
-  timing?.logStage('normalize primitives');
+  timing?.recordStage('normalizePrimitives');
 
   const finalizedTypes = {
     sources: registries.sources.finalize(),
@@ -295,7 +295,7 @@ export function preprocessPrimitives(primitives, {
     detectorTypeId: typeRecord.id,
     ...detector
   }));
-  timing?.logStage('finalize type tables');
+  timing?.recordStage('finalizeTypeTables');
 
   const builtBvh = buildBvh(
     curves.map((curveRecord, curveId) => ({
@@ -309,7 +309,7 @@ export function preprocessPrimitives(primitives, {
     nodes: builtBvh.nodes,
     curveIds: Uint32Array.from(builtBvh.entries.map(entry => entry.curveId))
   };
-  timing?.logStage('build BVH');
+  timing?.recordStage('buildBvh');
 
   const typeSignatureSource = stableSerialize([
     registries.sources.signaturePart,
@@ -331,9 +331,70 @@ export function preprocessPrimitives(primitives, {
     },
     detectorResultBindings
   };
-  timing?.logStage('assemble processed scene');
-  timing?.logTotal();
+  timing?.recordStage('assembleProcessedScene');
+  result.timings = timing?.finish() ?? null;
   return result;
+}
+
+/**
+ * Build the compact diagnostic summary logged after primitive preprocessing.
+ *
+ * @param {ProcessedScene} processedScene - The newly processed scene.
+ * @param {ProcessedScene|null} [previousProcessedScene=null] - The preceding processed scene.
+ * @returns {Object} BVH statistics and registered-type usage.
+ */
+export function createPreprocessingSummary(
+  processedScene,
+  previousProcessedScene = null
+) {
+  const nodes = processedScene.bvh.nodes;
+  const leafCount = nodes.reduce(
+    (count, node) => count + (node.count > 0 ? 1 : 0),
+    0
+  );
+  const maxDepth = nodes.reduce(
+    (depth, node) => Math.max(depth, node.depth),
+    0
+  );
+
+  return {
+    bvh: {
+      curveCount: processedScene.curves.length,
+      nodeCount: nodes.length,
+      branchCount: nodes.length - leafCount,
+      leafCount,
+      maxDepth
+    },
+    types: {
+      changed: previousProcessedScene
+        ? processedScene.typeSignature !== previousProcessedScene.typeSignature
+        : null,
+      sources: summarizeTypeCategory(
+        processedScene.types.sources,
+        processedScene.sources,
+        'sourceTypeId',
+        previousProcessedScene?.types.sources
+      ),
+      surfaces: summarizeTypeCategory(
+        processedScene.types.surfaces,
+        processedScene.surfaces,
+        'surfaceTypeId',
+        previousProcessedScene?.types.surfaces
+      ),
+      bulks: summarizeTypeCategory(
+        processedScene.types.bulks,
+        processedScene.regions,
+        'bulkTypeId',
+        previousProcessedScene?.types.bulks
+      ),
+      detectors: summarizeTypeCategory(
+        processedScene.types.detectors,
+        processedScene.detectors,
+        'detectorTypeId',
+        previousProcessedScene?.types.detectors
+      )
+    }
+  };
 }
 
 class TypeRegistry {
@@ -383,6 +444,24 @@ class TypeRegistry {
       definition: record.definition
     }));
   }
+}
+
+function summarizeTypeCategory(types, instances, typeIdKey, previousTypes) {
+  const objectCounts = new Array(types.length).fill(0);
+  for (const instance of instances) {
+    objectCounts[instance[typeIdKey]]++;
+  }
+
+  return {
+    changed: previousTypes
+      ? stableSerialize(types) !== stableSerialize(previousTypes)
+      : null,
+    registered: types.map((type, id) => ({
+      id,
+      name: type.definition.name,
+      objectCount: objectCounts[id]
+    }))
+  };
 }
 
 function createProcessedCurve(curve, ownerKind, ownerId, twoSided, filter) {
@@ -468,29 +547,28 @@ function deepFreeze(value) {
   return value;
 }
 
-function createTimingLogger() {
+function createTimingRecorder() {
   const now = typeof performance !== 'undefined' && typeof performance.now === 'function'
     ? () => performance.now()
     : () => Date.now();
-  const startTime = now();
-  let stageStartTime = startTime;
-  let measuredTime = 0;
+  let stageStartTime = now();
+  const stages = {};
 
   return {
-    logStage(stageName) {
+    recordStage(stageName) {
       const endTime = now();
-      const stageTime = endTime - stageStartTime;
-      measuredTime += stageTime;
-      console.log(
-        `[Primitive preprocessing] ${stageName}: ${stageTime.toFixed(3)} ms`
-      );
-      stageStartTime = now();
+      stages[stageName] = endTime - stageStartTime;
+      stageStartTime = endTime;
     },
 
-    logTotal() {
-      console.log(
-        `[Primitive preprocessing] total: ${measuredTime.toFixed(3)} ms`
-      );
+    finish() {
+      return {
+        ...stages,
+        total: Object.values(stages).reduce(
+          (sum, duration) => sum + duration,
+          0
+        )
+      };
     }
   };
 }

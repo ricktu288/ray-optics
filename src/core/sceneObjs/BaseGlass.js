@@ -17,6 +17,22 @@
 import BaseSceneObj from './BaseSceneObj.js';
 import i18next from 'i18next';
 import geometry from '../geometry.js';
+import { parseFormula } from '../formula/formula-parser.js';
+
+const CONSTANT_REFRACTIVE_INDEX_BULK_TYPE = {
+  name: 'Constant refractive index',
+  paramNames: ['n_0'],
+  dag: parseFormula('alpha = 0; n = n_0', ['n_0'])
+};
+
+const CAUCHY_DISPERSION_BULK_TYPE = {
+  name: 'Cauchy dispersion',
+  paramNames: ['A', 'B'],
+  dag: parseFormula(
+    'alpha = 0; n = A + B / (lambda * lambda * 0.000001)',
+    ['lambda', 'A', 'B']
+  )
+};
 
 /**
  * The base class for glasses.
@@ -63,6 +79,27 @@ class BaseGlass extends BaseSceneObj {
   }
 
   /* Utility methods */
+
+  /**
+   * Create a homogeneous glass region primitive with the supplied boundary.
+   * @param {PrimitiveCurve[]} curves - The closed region boundary.
+   * @returns {RegionPrimitive} The region primitive.
+   */
+  createGlassPrimitive(curves) {
+    const useCauchyDispersion = this.scene.simulateColors;
+    return {
+      kind: 'region',
+      curves,
+      bulkType: useCauchyDispersion
+        ? CAUCHY_DISPERSION_BULK_TYPE
+        : CONSTANT_REFRACTIVE_INDEX_BULK_TYPE,
+      params: useCauchyDispersion
+        ? { A: this.refIndex, B: this.cauchyB }
+        : { n_0: this.refIndex },
+      stepSize: 0,
+      partialReflect: this.partialReflect
+    };
+  }
 
   /**
    * Fill the glass with the color that represents the refractive index. To be called in `draw` of a subclass when the path has been set up with `canvasRenderer.ctx.beginPath()`, etc.

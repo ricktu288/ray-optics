@@ -260,14 +260,20 @@ import i18next from 'i18next';
  * primitives. Like surface types, bulk type definitions are immutable plain
  * data and are structurally deduplicated during preprocessing, with object
  * identity as a fast path. The DAG uses the format implemented by the formula
- * utilities in `src/core/formula` and must contain the labeled scalar output
- * `n`.
+ * utilities in `src/core/formula` and must contain the labeled scalar outputs
+ * `n` and `alpha`.
  *
  * The reserved DAG inputs are `x` and `y`, the world-space position at which
  * the field is evaluated, and `lambda`, the ray wavelength in nm. Direction,
  * polarization, and power are not inputs because bulk media are isotropic.
  * Coordinate origins or other instance-specific transformations are expressed
  * through `params`.
+ *
+ * `alpha` is the local power-absorption coefficient in inverse scene-length
+ * units. Propagation through a distance `L` in a locally constant medium
+ * multiplies both polarized powers by `exp(-alpha * L)`. Thus zero represents
+ * no bulk absorption, positive values absorb light, and negative values
+ * represent gain.
  *
  * The formula compiler symbolically derives `n_x` and `n_y`, the partial
  * derivatives of `n` with respect to world-space `x` and `y`. They are part of
@@ -278,7 +284,7 @@ import i18next from 'i18next';
  * @typedef {Object} BulkType
  * @property {string} name - A human-readable diagnostic name, not a registry ID.
  * @property {string[]} paramNames - The formula symbols and keys accepted in a region primitive's `params` object. Their order defines the packed parameter layout and is therefore significant, particularly for WebGPU buffers. Names must not collide with the reserved bulk-DAG symbols.
- * @property {Object} dag - The formula DAG containing the required labeled output `n`.
+ * @property {Object} dag - The formula DAG containing the required labeled outputs `n` and `alpha`.
  */
 
 /**
@@ -324,6 +330,36 @@ import i18next from 'i18next';
  */
 
 /**
+ * Defines how one detector hit contributes to a logical result array.
+ * Detector types use the same immutable, structurally deduplicated plain-data
+ * convention as surface types. Their DAG accepts the reserved hit inputs
+ * documented by {@link SurfaceType}, including `t` and `sigma`, together with
+ * the instance parameters named by `paramNames`.
+ *
+ * `writeCount` is the fixed positive number of result writes produced by one
+ * hit. For every one-based write index `j` from 1 through `writeCount`, the DAG
+ * must contain the two labeled scalar outputs `k_j` and `v_j`. The engine
+ * accumulates each pair as:
+ *
+ * ```
+ * result[k_j] += v_j
+ * ```
+ *
+ * `k_j` must evaluate to an integer index within the detector primitive's
+ * logical `resultSize`. `v_j` is a real-valued contribution. This contract
+ * does not prescribe an engine's storage representation or accumulation
+ * method; a CPU engine may accumulate floating-point values directly, while
+ * another engine may use a different internal representation and convert it
+ * during readback.
+ *
+ * @typedef {Object} DetectorType
+ * @property {string} name - A human-readable diagnostic name, not a registry ID.
+ * @property {string[]} paramNames - The formula symbols and keys accepted in a detector primitive's `params` object. Their order defines the packed parameter layout and is therefore significant.
+ * @property {Object} dag - The formula DAG containing the required `k_j` and `v_j` labeled outputs.
+ * @property {number} writeCount - The constant positive number of result writes produced by each hit.
+ */
+
+/**
  * A detector represented by one oriented curve. Its type defines how ray
  * incidents are accumulated and exposed as detector results. For a one-sided
  * detector, an intersection from behind the curve's front normal is ignored
@@ -335,7 +371,7 @@ import i18next from 'i18next';
  * @property {'detector'} kind
  * @property {PrimitiveCurve} curve - The detector geometry.
  * @property {boolean} twoSided - Whether rays approaching from either side can be detected. If false, only rays approaching against the curve's front normal are detected.
- * @property {{paramNames: string[]}} detectorType - The detector type definition. Its ordered `paramNames` controls parameter packing; the remaining internal formula format is documented separately.
+ * @property {DetectorType} detectorType - The shared detector behavior definition.
  * @property {Object<string, number>} params - Numeric instance parameters matching `detectorType.paramNames`.
  * @property {number} resultSize - The positive integer length of the logical result array. Primitives sharing a `result` holder must specify the same size.
  * @property {DetectorResult} result - The result holder. Its object identity associates this primitive with other detector surfaces and with the scene-object state used by `draw()` and result collection.

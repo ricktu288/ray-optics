@@ -16,6 +16,7 @@
 
 import BeamSplitter from '../../../src/core/sceneObjs/mirror/BeamSplitter';
 import Scene from '../../../src/core/Scene';
+import { createDagClosureEvaluator } from '../../../src/core/formula/dag-evaluator';
 import { testLineObj } from '../helpers/lineObjTests';
 import { MockUser } from '../helpers/test-utils';
 
@@ -83,4 +84,46 @@ describe('BeamSplitter', () => {
       invert: true
     });
   });
-}); 
+
+  it('creates a filtered two-output surface primitive', () => {
+    scene.simulateColors = true;
+    obj.p1 = { x: 0, y: 0 };
+    obj.p2 = { x: 10, y: 0 };
+    obj.transRatio = 0.3;
+    obj.filter = true;
+    obj.wavelength = 500;
+    obj.bandwidth = 20;
+    obj.invert = true;
+
+    const primitive = obj.getPrimitives()[0];
+    const evaluate = createDagClosureEvaluator(primitive.surfaceType.dag);
+    const rays = evaluate({
+      ...primitive.params,
+      d_0x: 0.6,
+      d_0y: -0.8,
+      P_0s: 0.4,
+      P_0p: 0.6
+    });
+
+    expect(primitive.curve).toEqual({
+      kind: 'lineSegment',
+      params: {
+        start: { x: 0, y: 0 },
+        end: { x: 10, y: 0 }
+      }
+    });
+    expect(primitive.twoSided).toBe(true);
+    expect(primitive.filter).toEqual({
+      wavelength: 500,
+      bandwidth: 20,
+      invert: true
+    });
+    expect(primitive.surfaceType.outRayCount).toBe(2);
+    expect([rays.d_1x, rays.d_1y]).toEqual([0.6, 0.8]);
+    expect(rays.P_1s).toBeCloseTo(0.28);
+    expect(rays.P_1p).toBeCloseTo(0.42);
+    expect([rays.d_2x, rays.d_2y]).toEqual([0.6, -0.8]);
+    expect(rays.P_2s).toBeCloseTo(0.12);
+    expect(rays.P_2p).toBeCloseTo(0.18);
+  });
+});

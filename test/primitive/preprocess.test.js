@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-import { preprocessPrimitives } from '../../src/core/primitive/preprocess.js';
+import {
+  createPreprocessingSummary,
+  preprocessPrimitives
+} from '../../src/core/primitive/preprocess.js';
 
 function line(startX, startY, endX, endY) {
   return {
@@ -36,6 +39,28 @@ function dag(label = 'output') {
       raw: '1',
       label
     }]
+  };
+}
+
+function detectorDag() {
+  return {
+    root: 1,
+    nodes: [
+      {
+        id: 0,
+        kind: 'number',
+        value: 0,
+        raw: '0',
+        label: 'k_1'
+      },
+      {
+        id: 1,
+        kind: 'number',
+        value: 1,
+        raw: '1',
+        label: 'v_1'
+      }
+    ]
   };
 }
 
@@ -123,7 +148,7 @@ describe('primitive preprocessing', () => {
     const detectorType = {
       name: 'Detector',
       paramNames: ['scale'],
-      dag: dag('amount'),
+      dag: detectorDag(),
       writeCount: 1
     };
     const result = { values: null };
@@ -199,7 +224,7 @@ describe('primitive preprocessing', () => {
     const detectorType = {
       name: 'Detector',
       paramNames: [],
-      dag: dag('amount'),
+      dag: detectorDag(),
       writeCount: 1
     };
     const sharedResult = { values: null };
@@ -260,7 +285,8 @@ describe('primitive preprocessing', () => {
     const detectorType = {
       name: 'Detector',
       paramNames: [],
-      dag: dag('amount')
+      dag: detectorDag(),
+      writeCount: 1
     };
     const result = { values: null };
     const detector = resultSize => ({
@@ -274,5 +300,58 @@ describe('primitive preprocessing', () => {
     });
     expect(() => preprocessPrimitives([detector(2), detector(3)]))
       .toThrow(/same result holder/);
+  });
+
+  it('summarizes BVH structure, registered type usage, and type changes', () => {
+    const surfaceType = {
+      name: 'Surface',
+      paramNames: [],
+      dag: dag('P_1s'),
+      outRayCount: 1
+    };
+    const previousScene = preprocessPrimitives([
+      surface(surfaceType, line(0, 0, 1, 0))
+    ]).processedScene;
+    const processedScene = preprocessPrimitives([
+      surface(surfaceType, line(0, 0, 1, 0)),
+      surface(surfaceType, line(2, 0, 3, 0))
+    ]).processedScene;
+    const summary = createPreprocessingSummary(
+      processedScene,
+      previousScene
+    );
+
+    expect(summary.bvh).toEqual({
+      curveCount: 2,
+      nodeCount: 1,
+      branchCount: 0,
+      leafCount: 1,
+      maxDepth: 0
+    });
+    expect(summary.types.changed).toBe(false);
+    expect(summary.types.surfaces).toEqual({
+      changed: false,
+      registered: [{
+        id: 0,
+        name: 'Surface',
+        objectCount: 2
+      }]
+    });
+    expect(summary.types.sources.registered).toEqual([]);
+    expect(summary.types.bulks.registered).toEqual([]);
+    expect(summary.types.detectors.registered).toEqual([]);
+
+    const changedScene = preprocessPrimitives([
+      surface({
+        ...surfaceType,
+        outRayCount: 2
+      }, line(0, 0, 1, 0))
+    ]).processedScene;
+    const changedSummary = createPreprocessingSummary(
+      changedScene,
+      processedScene
+    );
+    expect(changedSummary.types.changed).toBe(true);
+    expect(changedSummary.types.surfaces.changed).toBe(true);
   });
 });

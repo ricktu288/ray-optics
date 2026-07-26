@@ -18,6 +18,7 @@ const path = require('node:path');
 
 const caseFiles = [
   'test-parser.js',
+  'test-substitution.js',
   'test-parameter-extraction.js',
   'test-derivative.js',
   'test-dag-evaluator.js',

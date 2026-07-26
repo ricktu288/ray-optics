@@ -17,7 +17,10 @@
 import CanvasRenderer from './CanvasRenderer.js';
 import i18next from 'i18next';
 import { DEFAULT_BVH_OPTIONS } from './primitive/bvh.js';
-import { preprocessPrimitives } from './primitive/preprocess.js';
+import {
+  createPreprocessingSummary,
+  preprocessPrimitives
+} from './primitive/preprocess.js';
 
 const UV_WAVELENGTH = 380;
 const VIOLET_WAVELENGTH = 420;
@@ -264,6 +267,7 @@ class PrimitiveBasedSimulator {
   }
 
   collectAndPreprocessPrimitives() {
+    const previousProcessedScene = this.processedScene;
     const collectionStartTime = this.logDebugInfo
       ? (typeof performance !== 'undefined' && typeof performance.now === 'function'
         ? performance.now()
@@ -276,19 +280,18 @@ class PrimitiveBasedSimulator {
         primitives.push(...objPrimitives);
       }
     }
-    if (this.logDebugInfo) {
-      const collectionEndTime =
+    const collectionTime = this.logDebugInfo
+      ? (
         typeof performance !== 'undefined' && typeof performance.now === 'function'
           ? performance.now()
-          : Date.now();
-      console.log(
-        `[Primitive preprocessing] collect primitives: ${(collectionEndTime - collectionStartTime).toFixed(3)} ms`
-      );
-    }
+          : Date.now()
+      ) - collectionStartTime
+      : null;
 
     const {
       processedScene,
-      detectorResultBindings
+      detectorResultBindings,
+      timings
     } = preprocessPrimitives(primitives, {
       bvhOptions: {
         ...this.bvhOptions,
@@ -298,6 +301,42 @@ class PrimitiveBasedSimulator {
       },
       logDebugInfo: this.logDebugInfo
     });
+    if (this.logDebugInfo) {
+      const summary = createPreprocessingSummary(
+        processedScene,
+        previousProcessedScene
+      );
+      console.log(
+        '[Primitive preprocessing] summary:\n' +
+        '  Timing (ms): collect %s, normalize %s, finalize types %s, build BVH %s, assemble %s, total %s\n' +
+        '  BVH: %d curves, %d nodes (%d branches, %d leaves), maximum depth %d\n' +
+        '  Registered types changed: %s\n' +
+        '  Source types (%s): %s\n' +
+        '  Surface types (%s): %s\n' +
+        '  Bulk types (%s): %s\n' +
+        '  Detector types (%s): %s',
+        formatMilliseconds(collectionTime),
+        formatMilliseconds(timings.normalizePrimitives),
+        formatMilliseconds(timings.finalizeTypeTables),
+        formatMilliseconds(timings.buildBvh),
+        formatMilliseconds(timings.assembleProcessedScene),
+        formatMilliseconds(collectionTime + timings.total),
+        summary.bvh.curveCount,
+        summary.bvh.nodeCount,
+        summary.bvh.branchCount,
+        summary.bvh.leafCount,
+        summary.bvh.maxDepth,
+        formatChangeStatus(summary.types.changed),
+        formatChangeStatus(summary.types.sources.changed),
+        formatRegisteredTypes(summary.types.sources),
+        formatChangeStatus(summary.types.surfaces.changed),
+        formatRegisteredTypes(summary.types.surfaces),
+        formatChangeStatus(summary.types.bulks.changed),
+        formatRegisteredTypes(summary.types.bulks),
+        formatChangeStatus(summary.types.detectors.changed),
+        formatRegisteredTypes(summary.types.detectors)
+      );
+    }
     this.primitives = primitives;
     this.processedScene = processedScene;
     this.detectorResultBindings = detectorResultBindings;
@@ -535,6 +574,26 @@ class PrimitiveBasedSimulator {
   getThemeImageSize(imageType) {
     return this.scene.theme[imageType]?.size || this.scene.theme.realImage.size || 5;
   }
+}
+
+function formatChangeStatus(changed) {
+  if (changed === null) return 'not compared';
+  return changed ? 'yes' : 'no';
+}
+
+function formatMilliseconds(duration) {
+  return duration.toFixed(3);
+}
+
+function formatRegisteredTypes(categorySummary) {
+  if (categorySummary.registered.length === 0) {
+    return 'none';
+  }
+  return categorySummary.registered
+    .map(({ id, name, objectCount }) =>
+      `${id}: ${name} (${objectCount} object${objectCount === 1 ? '' : 's'})`
+    )
+    .join(', ');
 }
 
 export default PrimitiveBasedSimulator;

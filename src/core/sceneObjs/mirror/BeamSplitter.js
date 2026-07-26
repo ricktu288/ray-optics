@@ -19,6 +19,26 @@ import LineObjMixin from '../LineObjMixin.js';
 import i18next from 'i18next';
 import Simulator from '../../Simulator.js';
 import geometry from '../../geometry.js';
+import { parseFormula } from '../../formula/formula-parser.js';
+
+const BEAM_SPLITTER_SURFACE_TYPE = {
+  name: 'Beam splitter',
+  paramNames: ['T'],
+  dag: parseFormula(
+    `
+      d_1x = d_0x;
+      d_1y = -d_0y;
+      P_1s = (1 - T) * P_0s;
+      P_1p = (1 - T) * P_0p;
+      d_2x = d_0x;
+      d_2y = d_0y;
+      P_2s = T * P_0s;
+      P_2p = T * P_0p;
+    `,
+    ['d_0x', 'd_0y', 'P_0s', 'P_0p', 'T']
+  ),
+  outRayCount: 2
+};
 
 /**
  * Beam splitter.
@@ -95,6 +115,31 @@ class BeamSplitter extends LineObjMixin(BaseFilter) {
       ctx.stroke();
     }
     ctx.setLineDash([]);
+  }
+
+  getPrimitives() {
+    if (!this.p1 || !this.p2 || (this.p1.x === this.p2.x && this.p1.y === this.p2.y)) {
+      return [];
+    }
+
+    const primitive = {
+      kind: 'surface',
+      curve: {
+        kind: 'lineSegment',
+        params: {
+          start: { x: this.p1.x, y: this.p1.y },
+          end: { x: this.p2.x, y: this.p2.y }
+        }
+      },
+      twoSided: true,
+      surfaceType: BEAM_SPLITTER_SURFACE_TYPE,
+      params: { T: this.transRatio }
+    };
+    const filter = this.getPrimitiveWavelengthFilter();
+    if (filter) {
+      primitive.filter = filter;
+    }
+    return [primitive];
   }
 
   checkRayIntersects(ray) {

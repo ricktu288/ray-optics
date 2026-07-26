@@ -18,7 +18,26 @@ import BaseSceneObj from '../BaseSceneObj.js';
 import LineObjMixin from '../LineObjMixin.js';
 import Simulator from '../../Simulator.js';
 import geometry from '../../geometry.js';
+import { parseFormula } from '../../formula/formula-parser.js';
 import i18next from 'i18next';
+
+const ANGLE_SOURCE_TYPE = {
+  name: 'Angle source',
+  paramNames: ['x_0', 'y_0', 'theta_0', 'delta_theta', 'P', 'lambda_0'],
+  dag: parseFormula(
+    `
+      theta = theta_0 + i * delta_theta;
+      x = x_0;
+      y = y_0;
+      d_x = cos(theta);
+      d_y = sin(theta);
+      P_s = P;
+      P_p = P;
+      lambda = lambda_0;
+    `,
+    ['i', 'x_0', 'y_0', 'theta_0', 'delta_theta', 'P', 'lambda_0']
+  )
+};
 
 /**
  * Finite angle point source
@@ -108,6 +127,53 @@ class AngleSource extends LineObjMixin(BaseSceneObj) {
 
   getDefaultCenter() {
     return this.p1;
+  }
+
+  getPrimitives() {
+    if (!this.p1 || !this.p2 || (this.p1.x === this.p2.x && this.p1.y === this.p2.y)) {
+      return [];
+    }
+
+    let rayDensity = this.scene.rayDensity;
+    let expectBrightness;
+    do {
+      expectBrightness = this.brightness / rayDensity;
+      if (this.scene.colorMode !== 'default' && expectBrightness > 1) {
+        rayDensity += 1 / 500;
+      }
+    } while (this.scene.colorMode !== 'default' && expectBrightness > 1);
+
+    const angleStep = Math.PI * 2 / parseInt(rayDensity * 500);
+    if (!(angleStep > 0) || !Number.isFinite(angleStep)) {
+      return [];
+    }
+
+    const emissionAngle = Math.PI / 180 * this.emisAngle;
+    const angleStart = this.symmetric ? -emissionAngle / 2 : 0;
+    const angleEnd = this.symmetric
+      ? emissionAngle / 2 - 1e-5
+      : emissionAngle - 1e-5;
+    const rayCount = Math.max(0, Math.ceil((angleEnd - angleStart) / angleStep));
+    const referenceAngle = Math.atan2(
+      this.p2.y - this.p1.y,
+      this.p2.x - this.p1.x
+    );
+
+    return [{
+      kind: 'source',
+      sourceType: ANGLE_SOURCE_TYPE,
+      params: {
+        x_0: this.p1.x,
+        y_0: this.p1.y,
+        theta_0: referenceAngle + angleStart,
+        delta_theta: angleStep,
+        P: Math.min(expectBrightness, 1) * 0.5,
+        lambda_0: this.scene.simulateColors
+          ? this.wavelength
+          : Simulator.GREEN_WAVELENGTH
+      },
+      rayCount
+    }];
   }
 
   onSimulationStart() {

@@ -16,6 +16,7 @@
 
 import Glass from '../../../src/core/sceneObjs/glass/Glass';
 import Scene from '../../../src/core/Scene';
+import { createDagClosureEvaluator } from '../../../src/core/formula/dag-evaluator';
 import { MockUser } from '../helpers/test-utils';
 
 describe('Glass', () => {
@@ -132,6 +133,41 @@ describe('Glass', () => {
         { x: -100, y: 0, arc: true }
       ]
     });
+  });
+
+  it('creates line and arc region primitives with the selected bulk type', () => {
+    obj.path = [
+      { x: 0, y: -10, arc: false },
+      { x: 10, y: 0, arc: true },
+      { x: 0, y: 10, arc: false },
+      { x: -10, y: 0, arc: true }
+    ];
+    obj.partialReflect = false;
+
+    const constantPrimitive = obj.getPrimitives()[0];
+    const evaluateConstant = createDagClosureEvaluator(constantPrimitive.bulkType.dag);
+    expect(constantPrimitive.curves.map(curve => curve.kind)).toEqual([
+      'circularArc',
+      'circularArc'
+    ]);
+    expect(evaluateConstant(constantPrimitive.params)).toMatchObject({
+      n: 1.5,
+      alpha: 0
+    });
+    expect(constantPrimitive.partialReflect).toBe(false);
+    expect(constantPrimitive.stepSize).toBe(0);
+
+    scene.simulateColors = true;
+    obj.refIndex = 1.4;
+    obj.cauchyB = 0.006;
+    const cauchyPrimitive = obj.getPrimitives()[0];
+    const evaluateCauchy = createDagClosureEvaluator(cauchyPrimitive.bulkType.dag);
+    const cauchyValues = evaluateCauchy({
+      ...cauchyPrimitive.params,
+      lambda: 500
+    });
+    expect(cauchyValues.n).toBeCloseTo(1.424);
+    expect(cauchyValues.alpha).toBe(0);
   });
 
   it('hovers over square points and edges', () => {
@@ -473,4 +509,4 @@ describe('Glass', () => {
     });
   });
 
-}); 
+});
