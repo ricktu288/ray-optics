@@ -109,6 +109,12 @@ import i18next from 'i18next';
  * The engine-independent curve parameters are converted during preprocessing
  * into whatever intersection representation an engine requires.
  *
+ * Intersection testing assigns every open curve a native parameter `u` from
+ * 0 at `start` to 1 at `end`. A line segment uses its affine parameter, a
+ * circular arc uses its center-free rational-quadratic parameter, and a cubic
+ * Bezier uses its usual Bezier parameter. A circle has no endpoints or useful
+ * native parameter and returns the neutral placeholder `u = 0.5`.
+ *
  * Reversing a line segment means swapping `start` and `end`. Reversing a
  * circular arc means swapping its endpoints and negating `bulge`. Reversing a
  * cubic Bezier means swapping its endpoints and also swapping `control1` and
@@ -153,7 +159,10 @@ import i18next from 'i18next';
  * - `P_0s`, `P_0p`: incoming s- and p-polarized powers.
  * - `lambda`: incoming wavelength in nm.
  * - `x`, `y`: world-space coordinates of the hit.
- * - `t`: the curve parameter at the hit.
+ * - `u`: the native curve parameter at the hit. It is in `[0, 1]` for line
+ *   segments, circular arcs, and cubic Bezier curves. A circle supplies the
+ *   neutral placeholder `0.5`; code must use the curve kind, rather than this
+ *   placeholder, when deciding whether a hit is at an endpoint.
  * - `sigma`: the geometric side of the hit. It is 1 when the ray approaches
  *   against the oriented curve's front normal and -1 when it approaches from
  *   behind that normal. Its range is the discrete union `{-1, 1}` for a
@@ -161,11 +170,11 @@ import i18next from 'i18next';
  * - `n_0`, `n_1`: effective refractive indices on the incident and opposite
  *   sides of the surface respectively.
  *
- * `sigma` is a derived hit input, not an instance parameter and therefore not
- * an entry in `paramNames` or the scene parameter buffer. An engine only needs
- * to materialize it when a DAG references it. Detector types use the same
- * reserved hit-input symbols and `sigma` convention, although their outputs
- * describe accumulated detector data rather than outgoing rays.
+ * `u` and `sigma` are derived hit inputs, not instance parameters, and
+ * therefore are not entries in `paramNames` or the scene parameter buffer.
+ * Detector types use the same reserved hit-input symbols and `sigma`
+ * convention, although their outputs describe accumulated detector data
+ * rather than outgoing rays.
  *
  * For every one-based output index `j` from 1 through `outRayCount`, the DAG
  * must contain the four labeled outputs `d_jx`, `d_jy`, `P_js`, and `P_jp`.
@@ -333,7 +342,7 @@ import i18next from 'i18next';
  * Defines how one detector hit contributes to a logical result array.
  * Detector types use the same immutable, structurally deduplicated plain-data
  * convention as surface types. Their DAG accepts the reserved hit inputs
- * documented by {@link SurfaceType}, including `t` and `sigma`, together with
+ * documented by {@link SurfaceType}, including `u` and `sigma`, together with
  * the instance parameters named by `paramNames`.
  *
  * `writeCount` is the fixed positive number of result writes produced by one
@@ -364,7 +373,8 @@ import i18next from 'i18next';
  * incidents are accumulated and exposed as detector results. For a one-sided
  * detector, an intersection from behind the curve's front normal is ignored
  * and produces no detector reading. Detector formulas use the reserved
- * hit-input symbols documented by {@link SurfaceType}, including `sigma` for
+ * hit-input symbols documented by {@link SurfaceType}, including `u` and
+ * `sigma` for
  * distinguishing the two geometric sides; they define detector outputs rather
  * than outgoing-ray slots.
  * @typedef {Object} DetectorPrimitive

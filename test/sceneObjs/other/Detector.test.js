@@ -75,7 +75,7 @@ describe('Detector', () => {
       P_0s: 0.25,
       P_0p: 0.5,
       sigma: 1,
-      t: 0.25
+      u: 0.25
     });
 
     expect(secondPrimitive).not.toBe(firstPrimitive);

@@ -50,10 +50,10 @@ const IRRADIANCE_MAP_DETECTOR_TYPE = {
       v_2 = -d_0y * P;
       k_3 = 2;
       v_3 = -d_0x * P;
-      k_4 = 3 + floor(t * L / h);
+      k_4 = 3 + floor(u * L / h);
       v_4 = sigma * P;
     `,
-    ['d_0x', 'd_0y', 'P_0s', 'P_0p', 'sigma', 't', 'L', 'h']
+    ['d_0x', 'd_0y', 'P_0s', 'P_0p', 'sigma', 'u', 'L', 'h']
   ),
   writeCount: 4
 };
