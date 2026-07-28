@@ -20,7 +20,7 @@ import { preprocessPrimitives } from '../../src/core/primitive/preprocess';
 import { FLOAT32_EPSILON } from '../../src/core/primitive/numeric';
 
 describe('CpuSimulationEngine temporary intersection visualization', () => {
-  it('draws and logs every candidate hit of the first source ray', async () => {
+  it('draws and logs only the selected interaction candidate', async () => {
     const sourceType = {
       name: 'Test source',
       paramNames: [],
@@ -79,25 +79,37 @@ describe('CpuSimulationEngine temporary intersection visualization', () => {
     const log = jest.spyOn(console, 'log').mockImplementation(() => {});
     const preparedScene = await engine.prepare(processedScene);
 
-    engine.drawFirstRayIntersections({ preparedScene });
+    const candidate = engine.drawFirstRayIntersections({ preparedScene });
 
     expect(renderer.drawRay).toHaveBeenCalledTimes(1);
-    expect(renderer.drawSegment).toHaveBeenCalledTimes(1);
+    expect(renderer.drawSegment).toHaveBeenCalledTimes(2);
     expect(renderer.drawPoint).toHaveBeenCalledTimes(1);
+    expect(candidate).toMatchObject({
+      distance: 5,
+      primaryCurveId: 0,
+      primaryKind: 'surface',
+      primaryOwnerId: 0,
+      u: 0.5,
+      sigma: 1,
+      undefinedBehavior: false,
+      discardRay: false
+    });
     expect(log).toHaveBeenCalledWith(
-      expect.stringContaining('u=%s, sigma=%s%s'),
+      expect.stringContaining('u=%s, sigma=%s, regions=%s%s'),
       0,
       'lineSegment',
+      'surface',
       0,
       5,
       0.5,
       1,
-      ' [nearest]'
+      'none',
+      ''
     );
     log.mockRestore();
   });
 
-  it('marks only distance- and normal-compatible co-hits as merged', async () => {
+  it('reports conflicting primary surfaces and discards inconsistent normals', async () => {
     const sourceType = {
       name: 'Test source',
       paramNames: [],
@@ -179,20 +191,26 @@ describe('CpuSimulationEngine temporary intersection visualization', () => {
     };
     engine.beginRenderer = jest.fn(() => renderer);
     const log = jest.spyOn(console, 'log').mockImplementation(() => {});
+    const warn = jest.spyOn(console, 'warn').mockImplementation(() => {});
     const preparedScene = await engine.prepare(processedScene);
 
-    engine.drawFirstRayIntersections({ preparedScene });
+    const candidate = engine.drawFirstRayIntersections({ preparedScene });
 
-    expect(renderer.drawPoint).toHaveBeenCalledTimes(3);
-    expect(renderer.drawPoint.mock.calls[0][1]).toEqual([1, 0.15, 0.1, 1]);
-    expect(renderer.drawPoint.mock.calls[1][1]).toEqual([0.15, 0.75, 1, 1]);
-    expect(renderer.drawPoint.mock.calls[2][1]).toEqual([0.65, 0.65, 0.65, 0.65]);
-    expect(log.mock.calls.map(call => call.at(-1))).toEqual([
-      ' [nearest]',
-      ' [merged]',
-      ''
-    ]);
+    expect(renderer.drawPoint).toHaveBeenCalledTimes(1);
+    expect(renderer.drawSegment).toHaveBeenCalledTimes(2);
+    expect(candidate).toMatchObject({
+      primaryCurveId: 0,
+      primaryKind: 'surface',
+      primaryOwnerId: 0,
+      discardRay: true
+    });
+    expect(candidate.undefinedBehavior).toBe(true);
+    expect(warn).toHaveBeenCalledWith(
+      '[Primitive CPU candidate] undefined behavior%s',
+      ' [discard ray]'
+    );
     log.mockRestore();
+    warn.mockRestore();
   });
 
   it('uses the larger of the derived and configured forward distances', async () => {
@@ -252,10 +270,102 @@ describe('CpuSimulationEngine temporary intersection visualization', () => {
     const log = jest.spyOn(console, 'log').mockImplementation(() => {});
     const preparedScene = await engine.prepare(processedScene);
 
-    engine.drawFirstRayIntersections({ preparedScene });
+    const candidate = engine.drawFirstRayIntersections({ preparedScene });
 
     expect(renderer.drawPoint).toHaveBeenCalledTimes(1);
-    expect(log.mock.calls[0][4]).toBe(1);
+    expect(candidate.distance).toBe(1);
+    expect(candidate.primaryCurveId).toBe(1);
     log.mockRestore();
+  });
+
+  it('records same-orientation region crossings once and cancels opposite ones', async () => {
+    const sourceType = {
+      name: 'Test source',
+      paramNames: [],
+      dag: parseFormula(
+        'x = 0; y = 0; d_x = 1; d_y = 0; P_s = 1; P_p = 0; lambda = 540;',
+        ['i', 'N']
+      )
+    };
+    const bulkType = {
+      name: 'Test bulk',
+      paramNames: [],
+      dag: parseFormula('n = 1.5; alpha = 0;', ['x', 'y', 'lambda'])
+    };
+    const upwardLine = {
+      kind: 'lineSegment',
+      params: {
+        start: { x: 5, y: -2 },
+        end: { x: 5, y: 2 }
+      }
+    };
+    const downwardLine = {
+      kind: 'lineSegment',
+      params: {
+        start: { x: 5, y: 2 },
+        end: { x: 5, y: -2 }
+      }
+    };
+    const makeRegion = curves => ({
+      kind: 'region',
+      curves,
+      bulkType,
+      params: {},
+      stepSize: 0,
+      partialReflect: true
+    });
+    const { processedScene } = preprocessPrimitives([
+      {
+        kind: 'source',
+        sourceType,
+        params: {},
+        rayCount: 1
+      },
+      makeRegion([upwardLine, upwardLine]),
+      makeRegion([upwardLine, downwardLine])
+    ], {
+      numericEpsilon: FLOAT32_EPSILON
+    });
+    const engine = new CpuSimulationEngine({
+      numericEpsilon: FLOAT32_EPSILON
+    });
+    const ctx = {
+      save: jest.fn(),
+      restore: jest.fn(),
+      beginPath: jest.fn(),
+      moveTo: jest.fn(),
+      lineTo: jest.fn(),
+      closePath: jest.fn(),
+      fill: jest.fn()
+    };
+    const renderer = {
+      ctx,
+      rgbaToCssColor: jest.fn(() => 'rgba(38, 166, 255, 0.18)'),
+      drawRay: jest.fn(),
+      drawSegment: jest.fn(),
+      drawPoint: jest.fn(),
+      flush: jest.fn()
+    };
+    engine.beginRenderer = jest.fn(() => renderer);
+    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
+    const warn = jest.spyOn(console, 'warn').mockImplementation(() => {});
+    const preparedScene = await engine.prepare(processedScene);
+
+    const candidate = engine.drawFirstRayIntersections({ preparedScene });
+
+    expect(Array.from(candidate.positiveRegionCrossings)).toEqual([1, 1]);
+    expect(Array.from(candidate.negativeRegionCrossings)).toEqual([0, 1]);
+    expect(Array.from(candidate.regionCrossingMask)).toEqual([1, 0]);
+    expect(candidate.primaryKind).toBeNull();
+    expect(candidate.primaryCurveId).toBeNull();
+    expect(candidate.u).toBeNull();
+    expect(candidate.sigma).toBeNull();
+    expect(candidate.undefinedBehavior).toBe(true);
+    expect(candidate.discardRay).toBe(false);
+    expect(renderer.drawPoint).toHaveBeenCalledTimes(1);
+    expect(renderer.drawSegment).toHaveBeenCalledTimes(1);
+    expect(ctx.fill).toHaveBeenCalledWith('evenodd');
+    log.mockRestore();
+    warn.mockRestore();
   });
 });

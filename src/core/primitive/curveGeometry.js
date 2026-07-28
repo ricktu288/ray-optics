@@ -35,6 +35,22 @@ const ROOT_ERROR_OPERATION_COUNT = 32;
  */
 
 /**
+ * @typedef {Object} PreparedSmoothLineSegmentGeometry
+ * @property {'smoothLineSegment'} kind
+ * @property {number} originX - World-space start endpoint x coordinate.
+ * @property {number} originY - World-space start endpoint y coordinate.
+ * @property {number} tangentX - Unit geometric tangent x component from start to end.
+ * @property {number} tangentY - Unit geometric tangent y component from start to end.
+ * @property {number} invLength - Inverse segment length.
+ * @property {number} startNormalX - Unit optical front-normal x component at the start endpoint.
+ * @property {number} startNormalY - Unit optical front-normal y component at the start endpoint.
+ * @property {number} endNormalX - Unit optical front-normal x component at the end endpoint.
+ * @property {number} endNormalY - Unit optical front-normal y component at the end endpoint.
+ * @property {number} positionTolerance - Derived world-space positional tolerance.
+ * @property {number} endpointTolerance - Minimum world-space endpoint tolerance.
+ */
+
+/**
  * @typedef {Object} PreparedCircularArcGeometry
  * @property {'circularArc'} kind
  * @property {number} originX - World-space chord midpoint x coordinate.
@@ -76,7 +92,7 @@ const ROOT_ERROR_OPERATION_COUNT = 32;
  */
 
 /**
- * @typedef {PreparedLineSegmentGeometry|PreparedCircularArcGeometry|PreparedCubicBezierGeometry|PreparedCircleGeometry} PreparedCurveGeometry
+ * @typedef {PreparedLineSegmentGeometry|PreparedSmoothLineSegmentGeometry|PreparedCircularArcGeometry|PreparedCubicBezierGeometry|PreparedCircleGeometry} PreparedCurveGeometry
  */
 
 /**
@@ -107,7 +123,8 @@ export function prepareCurve(curve, {
   let exactBounds;
 
   switch (curve.kind) {
-    case 'lineSegment': {
+    case 'lineSegment':
+    case 'smoothLineSegment': {
       const { start, end } = curve.params;
       const dx = end.x - start.x;
       const dy = end.y - start.y;
@@ -116,13 +133,29 @@ export function prepareCurve(curve, {
         throw new RangeError('A line segment must have distinct endpoints.');
       }
       geometry = {
-        kind: 'lineSegment',
+        kind: curve.kind,
         originX: start.x,
         originY: start.y,
         tangentX: dx / length,
         tangentY: dy / length,
         invLength: 1 / length
       };
+      if (curve.kind === 'smoothLineSegment') {
+        const startNormal = normalizePrimitiveNormal(
+          curve.params.startNormal,
+          'startNormal'
+        );
+        const endNormal = normalizePrimitiveNormal(
+          curve.params.endNormal,
+          'endNormal'
+        );
+        Object.assign(geometry, {
+          startNormalX: startNormal.x,
+          startNormalY: startNormal.y,
+          endNormalX: endNormal.x,
+          endNormalY: endNormal.y
+        });
+      }
       exactBounds = boundsFromCoordinates(
         Math.min(start.x, end.x),
         Math.min(start.y, end.y),
@@ -248,7 +281,8 @@ export function prepareCurve(curve, {
  */
 export function evaluatePreparedCurve(geometry, u, out = {}) {
   switch (geometry.kind) {
-    case 'lineSegment': {
+    case 'lineSegment':
+    case 'smoothLineSegment': {
       const length = 1 / geometry.invLength;
       out.x = geometry.originX + geometry.tangentX * length * u;
       out.y = geometry.originY + geometry.tangentY * length * u;
@@ -280,6 +314,19 @@ export function evaluatePreparedCurve(geometry, u, out = {}) {
     default:
       throw new TypeError(`${geometry.kind} has no open-curve parameter.`);
   }
+}
+
+function normalizePrimitiveNormal(normal, name) {
+  const length = Math.hypot(normal?.x, normal?.y);
+  if (!(length > 0) || !Number.isFinite(length)) {
+    throw new RangeError(
+      `A smooth line segment's ${name} must be a finite nonzero vector.`
+    );
+  }
+  return {
+    x: normal.x / length,
+    y: normal.y / length
+  };
 }
 
 /**

@@ -26,6 +26,8 @@ import { Bezier } from 'bezier-js';
 import * as math from 'mathjs';
 import { curveTypePropertyInfoHtml } from '../ParamCurveObjMixin.js';
 
+const SMOOTH_NORMAL_LENGTH_RATIO_LIMIT = 10;
+
 function compileEquationDerivative(eqnLatex) {
   const p = latexToMathJS(eqnLatex);
   const p_der = math.derivative(p, 'x').toString();
@@ -353,23 +355,48 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
     }
 
     const primitives = [];
+    const segmentInfos = this.tmp_points.slice(0, -1).map(
+      (start, index) => createSegmentInfo(
+        start,
+        this.tmp_points[index + 1]
+      )
+    );
     for (let i = 0; i < this.tmp_points.length - 1; i++) {
       const start = this.tmp_points[i];
       const end = this.tmp_points[i + 1];
+      const segmentInfo = segmentInfos[i];
+      if (!segmentInfo) continue;
+
+      let curve;
       if (
-        !isFinitePoint(start) ||
-        !isFinitePoint(end) ||
-        (start.x === end.x && start.y === end.y)
+        this.curveType === 'smoothNormal' &&
+        !isLargeSamplingSkip(segmentInfos, i)
       ) {
-        continue;
+        curve = {
+          kind: 'smoothLineSegment',
+          params: {
+            start: { x: start.x, y: start.y },
+            end: { x: end.x, y: end.y },
+            startNormal: getCornerNormal(
+              segmentInfo,
+              segmentInfos[i - 1]
+            ),
+            endNormal: getCornerNormal(
+              segmentInfo,
+              segmentInfos[i + 1]
+            )
+          }
+        };
+      } else {
+        curve = {
+          kind: 'lineSegment',
+          params: {
+            start: { x: start.x, y: start.y },
+            end: { x: end.x, y: end.y }
+          }
+        };
       }
-      primitives.push(this.createMirrorPrimitive({
-        kind: 'lineSegment',
-        params: {
-          start: { x: start.x, y: start.y },
-          end: { x: end.x, y: end.y }
-        }
-      }));
+      primitives.push(this.createMirrorPrimitive(curve));
     }
     this._primitiveCache = {
       key: primitiveCacheKey,
@@ -640,6 +667,59 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
 
 function isFinitePoint(point) {
   return Number.isFinite(point?.x) && Number.isFinite(point?.y);
+}
+
+function createSegmentInfo(start, end) {
+  if (!isFinitePoint(start) || !isFinitePoint(end)) return null;
+  const tangentX = end.x - start.x;
+  const tangentY = end.y - start.y;
+  const length = Math.hypot(tangentX, tangentY);
+  if (!(length > 0)) return null;
+  return {
+    length,
+    normal: {
+      x: -tangentY / length,
+      y: tangentX / length
+    }
+  };
+}
+
+function getCornerNormal(segment, adjacentSegment) {
+  if (!lengthsAreComparable(segment, adjacentSegment)) {
+    return { ...segment.normal };
+  }
+  const x = segment.normal.x + adjacentSegment.normal.x;
+  const y = segment.normal.y + adjacentSegment.normal.y;
+  const length = Math.hypot(x, y);
+  if (!(length > 0)) {
+    return { ...segment.normal };
+  }
+  return {
+    x: x / length,
+    y: y / length
+  };
+}
+
+function lengthsAreComparable(first, second) {
+  if (!first || !second) return false;
+  return first.length / second.length < SMOOTH_NORMAL_LENGTH_RATIO_LIMIT &&
+    second.length / first.length < SMOOTH_NORMAL_LENGTH_RATIO_LIMIT;
+}
+
+function isLargeSamplingSkip(segments, index) {
+  const segment = segments[index];
+  const previous = segments[index - 1];
+  const next = segments[index + 1];
+  return Boolean(
+    (
+      previous &&
+      segment.length / previous.length >= SMOOTH_NORMAL_LENGTH_RATIO_LIMIT
+    ) ||
+    (
+      next &&
+      segment.length / next.length >= SMOOTH_NORMAL_LENGTH_RATIO_LIMIT
+    )
+  );
 }
 
 export default CustomMirror;

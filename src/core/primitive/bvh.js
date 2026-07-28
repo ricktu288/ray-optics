@@ -62,7 +62,7 @@ export function getCurveBounds(curve, { numericEpsilon }) {
  *
  * @param {BvhCurveEntry[]} curveEntries
  * @param {Object} [options]
- * @param {number} [options.lineLeafSize=4] - Target number of line segments in a homogeneous leaf.
+ * @param {number} [options.lineLeafSize=4] - Target number of ordinary or smooth line segments in a homogeneous leaf.
  * @param {number} [options.arcLeafSize=2] - Target number of circular arcs or circles in a homogeneous leaf.
  * @param {number} [options.cubicBezierLeafSize=1] - Target number of cubic Bézier curves in a homogeneous leaf.
  * @param {number} [options.maxGroupExtent=100] - Maximum group width or height in scene coordinates.
@@ -332,6 +332,7 @@ function getCurveLeafWeight(
 ) {
   switch (kind) {
     case 'lineSegment':
+    case 'smoothLineSegment':
       return 1 / lineLeafSize;
     case 'circularArc':
     case 'circle':

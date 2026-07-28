@@ -38,8 +38,9 @@ const RAY_CAST_DIRECTIONS = Object.freeze([
 
 /**
  * Geometry-owned data for one isolated curve hit. `normalX` and `normalY`
- * form the adjusted incident-side normal, while `sigma` records its relation
- * to the oriented front normal.
+ * form the adjusted incident-side optical normal. `sigma` records which side
+ * of the geometrically oriented curve the ray approaches from; for a smooth
+ * line segment this is deliberately independent of its interpolated normal.
  *
  * @typedef {Object} CurveIntersection
  * @property {number} s - Distance along the normalized incoming ray.
@@ -107,6 +108,7 @@ export function intersectCurveAll(
 
   switch (geometry.kind) {
     case 'lineSegment':
+    case 'smoothLineSegment':
       intersectLineSegment(
         geometry,
         ray,
@@ -325,14 +327,22 @@ function intersectLineSegment(
     return;
   }
   u = clampUnitParameter(u);
+  const frontNormal = getPreparedFrontNormal(geometry, u, tolerances);
+  if (!frontNormal) {
+    result.ambiguous = true;
+    return;
+  }
   addOrientedCandidate(
     result,
     ray,
     s,
     u,
+    frontNormal.x,
+    frontNormal.y,
+    tolerances,
+    0,
     -geometry.tangentY,
-    geometry.tangentX,
-    tolerances
+    geometry.tangentX
   );
 }
 
@@ -579,7 +589,13 @@ function addEndpointCap(geometry, ray, u, result, tolerances) {
     frontNormal.x,
     frontNormal.y,
     tolerances,
-    endpointTolerance
+    endpointTolerance,
+    geometry.kind === 'smoothLineSegment'
+      ? -geometry.tangentY
+      : frontNormal.x,
+    geometry.kind === 'smoothLineSegment'
+      ? geometry.tangentX
+      : frontNormal.y
   );
 }
 
@@ -590,6 +606,15 @@ function getPreparedFrontNormal(geometry, u, tolerances) {
         x: -geometry.tangentY,
         y: geometry.tangentX
       };
+
+    case 'smoothLineSegment': {
+      const oneMinusU = 1 - u;
+      return normalizeVector(
+        oneMinusU * geometry.startNormalX + u * geometry.endNormalX,
+        oneMinusU * geometry.startNormalY + u * geometry.endNormalY,
+        tolerances.tangent
+      );
+    }
 
     case 'circularArc': {
       const localPoint = evaluateArcLocal(geometry.bulge, u);
@@ -690,7 +715,9 @@ function addOrientedCandidate(
   frontNormalX,
   frontNormalY,
   tolerances,
-  mergeTolerance = 0
+  mergeTolerance = 0,
+  geometricFrontNormalX = frontNormalX,
+  geometricFrontNormalY = frontNormalY
 ) {
   const frontNormal = normalizeVector(
     frontNormalX,
@@ -701,15 +728,28 @@ function addOrientedCandidate(
     result.ambiguous = true;
     return;
   }
-  const incidence =
+  const geometricFrontNormal = normalizeVector(
+    geometricFrontNormalX,
+    geometricFrontNormalY,
+    tolerances.tangent
+  );
+  if (!geometricFrontNormal) {
+    result.ambiguous = true;
+    return;
+  }
+  const geometricIncidence =
+    ray.directionX * geometricFrontNormal.x +
+    ray.directionY * geometricFrontNormal.y;
+  const opticalIncidence =
     ray.directionX * frontNormal.x + ray.directionY * frontNormal.y;
-  const tangent = Math.abs(incidence) <= tolerances.tangent;
-  const sigma = incidence < 0 ? 1 : -1;
+  const tangent = Math.abs(geometricIncidence) <= tolerances.tangent;
+  const sigma = geometricIncidence < 0 ? 1 : -1;
+  const opticalSigma = opticalIncidence < 0 ? 1 : -1;
   result.hits.push({
     s,
     u,
-    normalX: sigma * frontNormal.x,
-    normalY: sigma * frontNormal.y,
+    normalX: opticalSigma * frontNormal.x,
+    normalY: opticalSigma * frontNormal.y,
     sigma,
     tangent,
     mergeTolerance

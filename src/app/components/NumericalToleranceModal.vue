@@ -40,6 +40,11 @@
             class="form-text mt-0"
             v-text="$t('simulator:numericalToleranceModal.description')"
           ></p>
+          <div
+            class="alert alert-warning py-2"
+            role="alert"
+            v-text="$t('simulator:numericalToleranceModal.thresholdWarning')"
+          ></div>
 
           <div
             v-for="field in TOLERANCE_FIELDS"

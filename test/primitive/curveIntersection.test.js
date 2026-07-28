@@ -204,6 +204,37 @@ describe('prepared curve intersections', () => {
     expect(hit.sigma).toBe(1);
   });
 
+  it('interpolates the optical normal of a smooth line segment', () => {
+    const geometry = prepare('smoothLineSegment', {
+      start: { x: 0, y: 0 },
+      end: { x: 2, y: 0 },
+      startNormal: { x: 0, y: 1 },
+      endNormal: { x: 1, y: 0 }
+    });
+    const hit = intersectCurve(geometry, ray(1, 2, 0, -1));
+
+    expect(hit.s).toBeCloseTo(2);
+    expect(hit.u).toBeCloseTo(0.5);
+    expect(hit.normalX).toBeCloseTo(Math.SQRT1_2);
+    expect(hit.normalY).toBeCloseTo(Math.SQRT1_2);
+    expect(hit.sigma).toBe(1);
+  });
+
+  it('uses geometric orientation for a smooth line crossing side', () => {
+    const geometry = prepare('smoothLineSegment', {
+      start: { x: 0, y: 0 },
+      end: { x: 10, y: 0 },
+      startNormal: { x: 1, y: 0.1 },
+      endNormal: { x: 1, y: 0.1 }
+    });
+    const hit = intersectCurve(geometry, ray(6, -0.1, -1, 0.1));
+
+    expect(hit.u).toBeCloseTo(0.5);
+    expect(hit.sigma).toBe(-1);
+    expect(hit.normalX).toBeGreaterThan(0);
+    expect(hit.normalY).toBeGreaterThan(0);
+  });
+
   it('uses endpoint caps to close a sub-f32 gap between connected pieces', () => {
     const first = prepare('lineSegment', {
       start: { x: 0, y: 0 },

@@ -31,6 +31,13 @@ function line(start, end) {
   return { kind: 'lineSegment', params: { start, end } };
 }
 
+function smoothLine(start, end, startNormal, endNormal) {
+  return {
+    kind: 'smoothLineSegment',
+    params: { start, end, startNormal, endNormal }
+  };
+}
+
 function arc(start, end, bulge) {
   return { kind: 'circularArc', params: { start, end, bulge } };
 }
@@ -69,6 +76,34 @@ describe('prepared primitive curve geometry', () => {
     expect(bounds.minY).toBeLessThan(3);
     expect(bounds.maxX).toBeGreaterThan(5);
     expect(bounds.maxY).toBeGreaterThan(7);
+  });
+
+  it('prepares a smooth line with normalized endpoint normals', () => {
+    const { geometry, bounds } = prepareCurve(smoothLine(
+      { x: 2, y: 3 },
+      { x: 5, y: 7 },
+      { x: 0, y: 2 },
+      { x: -3, y: 0 }
+    ));
+
+    expect(geometry).toMatchObject({
+      kind: 'smoothLineSegment',
+      originX: 2,
+      originY: 3,
+      tangentX: 0.6,
+      tangentY: 0.8,
+      invLength: 0.2,
+      startNormalX: 0,
+      startNormalY: 1,
+      endNormalX: -1,
+      endNormalY: 0
+    });
+    expect(evaluatePreparedCurve(geometry, 0.25)).toEqual({
+      x: 2.75,
+      y: 4
+    });
+    expectBoundsContain(bounds, { x: 2, y: 3 });
+    expectBoundsContain(bounds, { x: 5, y: 7 });
   });
 
   it('uses a smaller positional tolerance for an f64 engine', () => {

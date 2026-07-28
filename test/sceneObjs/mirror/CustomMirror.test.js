@@ -117,6 +117,44 @@ describe('CustomMirror', () => {
     expect(primitives.some(primitive => primitive.curve.kind === 'cubicBezier')).toBe(true);
   });
 
+  it('uses shared corner normals for smooth line primitives', () => {
+    obj.p1 = { x: 0, y: 0 };
+    obj.p2 = { x: 2, y: 1 };
+    obj.tmp_points = [
+      { x: 0, y: 0 },
+      { x: 1, y: 0 },
+      { x: 2, y: 1 }
+    ];
+    obj._curveCacheLengthScale = scene.lengthScale;
+
+    const primitives = obj.getPrimitives();
+
+    expect(primitives.map(primitive => primitive.curve.kind)).toEqual([
+      'smoothLineSegment',
+      'smoothLineSegment'
+    ]);
+    expect(primitives[0].curve.params.endNormal)
+      .toEqual(primitives[1].curve.params.startNormal);
+    expect(primitives[0].curve.params.startNormal.x).toBeCloseTo(0);
+    expect(primitives[0].curve.params.startNormal.y).toBeCloseTo(1);
+  });
+
+  it('uses an ordinary line segment across a large sampling skip', () => {
+    obj.p1 = { x: 0, y: 0 };
+    obj.p2 = { x: 102, y: 1 };
+    obj.tmp_points = [
+      { x: 0, y: 0 },
+      { x: 1, y: 0 },
+      { x: 101, y: 0 },
+      { x: 102, y: 1 }
+    ];
+    obj._curveCacheLengthScale = scene.lengthScale;
+
+    const primitives = obj.getPrimitives();
+
+    expect(primitives[1].curve.kind).toBe('lineSegment');
+  });
+
   it('caches primitives until object or relevant scene settings change', () => {
     obj.p1 = { x: 0, y: 0 };
     obj.p2 = { x: 100, y: 0 };

@@ -684,6 +684,7 @@
   "numericalToleranceModal": {
     "title": "Numerical tolerances",
     "description": "These values are minimum tolerances stored with the scene. Distance values are relative to the scene length scale, while the surface normal tolerance is an angle in radians. Primitive-based engines may automatically use larger tolerances when required by numerical precision. A value of 0 uses only the automatically derived tolerance.",
+    "thresholdWarning": "Surface spacing close to one of these tolerance thresholds may produce unexpected behavior.",
     "backToDefaults": "Back to defaults",
     "fields": {
       "curveEndpoint": {

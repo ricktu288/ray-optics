@@ -17,16 +17,19 @@
 import CanvasRenderer from '../CanvasRenderer.js';
 import FloatColorRenderer from '../FloatColorRenderer.js';
 import { createDagClosureEvaluator } from '../formula/dag-evaluator.js';
-import { intersectCurveAll } from '../primitive/intersections.js';
+import { evaluatePreparedCurve } from '../primitive/curveGeometry.js';
+import { intersectProcessedCurve } from '../primitive/intersections.js';
 import {
   getRoundingErrorFactor,
   validateNumericEpsilon
 } from '../primitive/numeric.js';
 
 const RAY_COLOR = [1, 0.75, 0.1, 0.8];
-const OTHER_HIT_COLOR = [0.65, 0.65, 0.65, 0.65];
-const MERGED_HIT_COLOR = [0.15, 0.75, 1, 1];
-const NEAREST_HIT_COLOR = [1, 0.15, 0.1, 1];
+const REGION_FILL_COLOR = [0.15, 0.65, 1, 0.18];
+const REGION_OUTLINE_COLOR = [0.15, 0.65, 1, 0.45];
+const SELECTED_CURVE_COLOR = [1, 0.2, 0.75, 1];
+const HIT_COLOR = [1, 0.15, 0.1, 1];
+const NORMAL_COLOR = [0.15, 0.75, 1, 1];
 const MERGING_DISTANCE_ERROR_OPERATION_COUNT = 64;
 const NORMAL_ERROR_OPERATION_COUNT = 64;
 
@@ -75,9 +78,9 @@ class CpuSimulationRun {
 }
 
 /**
- * Temporary CPU simulation engine. A run currently visualizes all curve
- * intersections of the first ray emitted by the first source, then completes
- * immediately.
+ * Temporary CPU simulation engine. A run currently finds and visualizes the
+ * interaction candidate of the first ray emitted by the first source, then
+ * completes immediately.
  */
 class CpuSimulationEngine {
   constructor({
@@ -130,56 +133,32 @@ class CpuSimulationEngine {
       return;
     }
 
-    const candidates = [];
     const description = preparedScene.description;
-    const curves = description.curves;
-    const configuredTolerances = description.numericalTolerances ?? {};
-    const normalTolerance = Math.min(Math.PI, Math.max(
-      configuredTolerances.surfaceNormal ?? 0,
-      getRoundingErrorFactor(NORMAL_ERROR_OPERATION_COUNT, this.numericEpsilon)
-    ));
-    const maximumNormalChordDistanceSquared =
-      4 * Math.sin(normalTolerance * 0.5) ** 2;
-    for (let curveId = 0; curveId < curves.length; curveId++) {
-      const curve = curves[curveId];
-      const minDistance = Math.max(
-        curve.geometry.positionTolerance,
-        configuredTolerances.forwardDistance ?? 0
-      );
-      const intersectionResult = intersectCurveAll(curve.geometry, ray, {
-        numericEpsilon: this.numericEpsilon,
-        minDistance
-      });
-      for (let candidateIndex = 0;
-        candidateIndex < intersectionResult.hits.length;
-        candidateIndex++) {
-        candidates.push({
-          curveId,
-          curveKind: curve.geometry.kind,
-          candidateIndex,
-          hit: intersectionResult.hits[candidateIndex]
-        });
-      }
-    }
+    const candidate = findFirstRayInteractionCandidate(
+      description,
+      ray,
+      this.numericEpsilon
+    );
 
-    let nearestCandidate = null;
-    for (const candidate of candidates) {
-      if (!nearestCandidate || candidate.hit.s < nearestCandidate.hit.s) {
-        nearestCandidate = candidate;
+    if (candidate) {
+      for (let regionId = 0;
+        regionId < candidate.regionCrossingMask.length;
+        regionId++) {
+        if (!candidate.regionCrossingMask[regionId]) continue;
+        drawFilledPrimitiveRegion(
+          renderer,
+          getRegionCurves(description, regionId),
+          REGION_FILL_COLOR,
+          REGION_OUTLINE_COLOR
+        );
       }
-    }
-    if (nearestCandidate) {
-      for (const candidate of candidates) {
-        candidate.isMerged = candidate !== nearestCandidate &&
-          candidate.curveId !== nearestCandidate.curveId &&
-          hitsAreMerged(
-            nearestCandidate,
-            candidate,
-            curves,
-            configuredTolerances,
-            this.numericEpsilon,
-            maximumNormalChordDistanceSquared
-          );
+      if (candidate.primaryCurveId !== null) {
+        drawPrimitiveCurve(
+          renderer,
+          description.curves[candidate.primaryCurveId].geometry,
+          SELECTED_CURVE_COLOR,
+          3
+        );
       }
     }
 
@@ -191,42 +170,52 @@ class CpuSimulationEngine {
       }
     }, RAY_COLOR);
 
-    const normalLength = 12 * lengthScale;
-    for (const candidate of candidates) {
-      const { hit } = candidate;
+    if (candidate) {
+      const normalLength = 12 * lengthScale;
       const point = {
-        x: ray.originX + hit.s * ray.directionX,
-        y: ray.originY + hit.s * ray.directionY
+        x: ray.originX + candidate.distance * ray.directionX,
+        y: ray.originY + candidate.distance * ray.directionY
       };
-      const isNearest = candidate === nearestCandidate;
-      const color = isNearest
-        ? NEAREST_HIT_COLOR
-        : candidate.isMerged
-          ? MERGED_HIT_COLOR
-          : OTHER_HIT_COLOR;
       renderer.drawSegment({
         p1: point,
         p2: {
-          x: point.x + hit.normalX * normalLength,
-          y: point.y + hit.normalY * normalLength
+          x: point.x + candidate.normalX * normalLength,
+          y: point.y + candidate.normalY * normalLength
         }
-      }, color, true);
-      renderer.drawPoint(point, color, isNearest ? 8 : 5);
-      console.log(
-        '[Primitive CPU intersection] curve %d (%s), candidate %d: s=%s, u=%s, sigma=%s%s',
-        candidate.curveId,
-        candidate.curveKind,
-        candidate.candidateIndex,
-        hit.s,
-        hit.u,
-        hit.sigma,
-        isNearest ? ' [nearest]' : candidate.isMerged ? ' [merged]' : ''
-      );
-    }
-    if (candidates.length === 0) {
+      }, NORMAL_COLOR, true);
+      renderer.drawPoint(point, HIT_COLOR, 8);
+      if (candidate.primaryCurveId !== null) {
+        console.log(
+          '[Primitive CPU candidate] curve %d (%s), owner=%s:%d, s=%s, u=%s, sigma=%s, regions=%s%s',
+          candidate.primaryCurveId,
+          description.curves[candidate.primaryCurveId].geometry.kind,
+          candidate.primaryKind,
+          candidate.primaryOwnerId,
+          candidate.distance,
+          candidate.u,
+          candidate.sigma,
+          formatRegionIds(candidate.regionCrossingMask),
+          candidate.discardRay ? ' [discard ray]' : ''
+        );
+      } else {
+        console.log(
+          '[Primitive CPU candidate] region boundary, s=%s, regions=%s%s',
+          candidate.distance,
+          formatRegionIds(candidate.regionCrossingMask),
+          candidate.discardRay ? ' [discard ray]' : ''
+        );
+      }
+      if (candidate.undefinedBehavior) {
+        console.warn(
+          '[Primitive CPU candidate] undefined behavior%s',
+          candidate.discardRay ? ' [discard ray]' : ''
+        );
+      }
+    } else {
       console.log('[Primitive CPU intersection] No potential hits.');
     }
     renderer.flush?.();
+    return candidate;
   }
 
   beginRenderer({ origin, scale, lengthScale, colorMode }) {
@@ -282,47 +271,401 @@ class CpuSimulationEngine {
   }
 }
 
-function hitsAreMerged(
-  firstCandidate,
-  secondCandidate,
-  curves,
-  configuredTolerances,
-  numericEpsilon,
-  maximumNormalChordDistanceSquared
+/**
+ * Temporary engine-local interaction candidate used by the first-ray demo.
+ * Positive and negative region crossings are monotonic presence arrays:
+ * repeated crossings of one orientation set the same entry again, while a
+ * region changes parity only when exactly one orientation is present. A
+ * repeated same-orientation hit with `0.1 < u < 0.9` is reported as undefined
+ * behavior because idempotence is expected only near a boundary-piece
+ * endpoint.
+ *
+ * @typedef {Object} InteractionCandidate
+ * @property {number} distance
+ * @property {number} normalX
+ * @property {number} normalY
+ * @property {number|null} u - Native parameter of the selected primary surface or detector, or null for a boundary-only event.
+ * @property {number|null} sigma - Side of the selected primary surface or detector, or null for a boundary-only event.
+ * @property {'surface'|'detector'|null} primaryKind
+ * @property {number|null} primaryOwnerId
+ * @property {number|null} primaryCurveId
+ * @property {Uint8Array} positiveRegionCrossings
+ * @property {Uint8Array} negativeRegionCrossings
+ * @property {Uint8Array} regionCrossingMask
+ * @property {boolean} undefinedBehavior
+ * @property {boolean} discardRay
+ */
+
+function findFirstRayInteractionCandidate(description, ray, numericEpsilon) {
+  const configuredTolerances = description.numericalTolerances ?? {};
+  const normalTolerance = Math.min(Math.PI, Math.max(
+    configuredTolerances.surfaceNormal ?? 0,
+    getRoundingErrorFactor(NORMAL_ERROR_OPERATION_COUNT, numericEpsilon)
+  ));
+  const maximumNormalChordDistanceSquared =
+    4 * Math.sin(normalTolerance * 0.5) ** 2;
+  let candidate = null;
+
+  for (let curveId = 0; curveId < description.curves.length; curveId++) {
+    const curve = description.curves[curveId];
+    const minDistance = Math.max(
+      curve.geometry.positionTolerance,
+      configuredTolerances.forwardDistance ?? 0
+    );
+    const hit = intersectProcessedCurve(
+      curve,
+      ray,
+      ray.wavelength,
+      {
+        numericEpsilon,
+        minDistance
+      }
+    );
+    if (!hit) continue;
+
+    if (!candidate) {
+      candidate = createInteractionCandidate(
+        description.regions.length,
+        curve,
+        hit
+      );
+      addOwnerToCandidate(candidate, description, curveId, curve, hit, ray);
+      continue;
+    }
+
+    const mergingTolerance = getMergingDistanceTolerance(
+      candidate.distancePositionTolerance,
+      curve.geometry,
+      candidate.distance,
+      hit.s,
+      configuredTolerances.surfaceMerging ?? 0,
+      numericEpsilon
+    );
+    if (hit.s < candidate.distance - mergingTolerance) {
+      candidate = createInteractionCandidate(
+        description.regions.length,
+        curve,
+        hit
+      );
+      addOwnerToCandidate(candidate, description, curveId, curve, hit, ray);
+      continue;
+    }
+    if (hit.s > candidate.distance + mergingTolerance) continue;
+
+    if (!normalsAreConsistent(
+      candidate,
+      hit,
+      maximumNormalChordDistanceSquared
+    )) {
+      candidate.discardRay = true;
+      candidate.undefinedBehavior = true;
+      continue;
+    }
+    addOwnerToCandidate(candidate, description, curveId, curve, hit, ray);
+  }
+
+  if (!candidate) return null;
+  for (let regionId = 0;
+    regionId < candidate.regionCrossingMask.length;
+    regionId++) {
+    candidate.regionCrossingMask[regionId] =
+      candidate.positiveRegionCrossings[regionId] !==
+      candidate.negativeRegionCrossings[regionId]
+        ? 1
+        : 0;
+  }
+  return candidate;
+}
+
+function createInteractionCandidate(regionCount, curve, hit) {
+  return {
+    distance: hit.s,
+    distancePositionTolerance: curve.geometry.positionTolerance,
+    normalX: hit.normalX,
+    normalY: hit.normalY,
+    u: null,
+    sigma: null,
+    primaryKind: null,
+    primaryOwnerId: null,
+    primaryCurveId: null,
+    primaryAtEndpoint: false,
+    hasRegionBoundary: false,
+    positiveRegionCrossings: new Uint8Array(regionCount),
+    negativeRegionCrossings: new Uint8Array(regionCount),
+    regionCrossingMask: new Uint8Array(regionCount),
+    undefinedBehavior: false,
+    discardRay: false,
+  };
+}
+
+function addOwnerToCandidate(
+  candidate,
+  description,
+  curveId,
+  curve,
+  hit,
+  ray
 ) {
-  const firstGeometry = curves[firstCandidate.curveId].geometry;
-  const secondGeometry = curves[secondCandidate.curveId].geometry;
+  if (curve.ownerKind === 'region') {
+    candidate.hasRegionBoundary = true;
+    const crossings = hit.sigma > 0
+      ? candidate.positiveRegionCrossings
+      : candidate.negativeRegionCrossings;
+    if (
+      crossings[curve.ownerId] &&
+      hit.u > 0.1 &&
+      hit.u < 0.9
+    ) {
+      candidate.undefinedBehavior = true;
+    }
+    crossings[curve.ownerId] = 1;
+    if (candidate.primaryKind) {
+      checkPrimaryRegionCompatibility(candidate, description);
+    }
+    return;
+  }
+
+  const atEndpoint = isHitAtEndpoint(curve.geometry, hit, ray);
+  if (!candidate.primaryKind) {
+    setPrimaryCandidate(
+      candidate,
+      curveId,
+      curve,
+      hit,
+      atEndpoint
+    );
+    if (candidate.hasRegionBoundary) {
+      checkPrimaryRegionCompatibility(candidate, description);
+    }
+    return;
+  }
+
+  if (!candidate.primaryAtEndpoint && !atEndpoint) {
+    candidate.undefinedBehavior = true;
+  }
+
+  const shouldReplacePrimary =
+    candidate.primaryKind === 'detector' &&
+      curve.ownerKind === 'surface' ||
+    candidate.primaryKind === curve.ownerKind &&
+      curveId < candidate.primaryCurveId;
+  if (shouldReplacePrimary) {
+    setPrimaryCandidate(
+      candidate,
+      curveId,
+      curve,
+      hit,
+      atEndpoint
+    );
+  }
+  if (candidate.hasRegionBoundary) {
+    checkPrimaryRegionCompatibility(candidate, description);
+  }
+}
+
+function setPrimaryCandidate(candidate, curveId, curve, hit, atEndpoint) {
+  candidate.primaryKind = curve.ownerKind;
+  candidate.primaryOwnerId = curve.ownerId;
+  candidate.primaryCurveId = curveId;
+  candidate.primaryAtEndpoint = atEndpoint;
+  candidate.normalX = hit.normalX;
+  candidate.normalY = hit.normalY;
+  candidate.u = hit.u;
+  candidate.sigma = hit.sigma;
+}
+
+function checkPrimaryRegionCompatibility(candidate, description) {
+  if (candidate.primaryKind === 'detector') {
+    candidate.undefinedBehavior = true;
+    return;
+  }
+  const surface = description.surfaces[candidate.primaryOwnerId];
+  const surfaceType =
+    description.types.surfaces[surface.surfaceTypeId].definition;
+  if (!surfaceType.mergesWithGlass) {
+    candidate.undefinedBehavior = true;
+  }
+}
+
+function getMergingDistanceTolerance(
+  firstPositionTolerance,
+  secondGeometry,
+  firstDistance,
+  secondDistance,
+  configuredTolerance,
+  numericEpsilon
+) {
   const distanceScale = Math.max(
-    Math.abs(firstCandidate.hit.s),
-    Math.abs(secondCandidate.hit.s),
+    Math.abs(firstDistance),
+    Math.abs(secondDistance),
     Number.MIN_VALUE
   );
   const derivedDistanceTolerance =
-    firstGeometry.positionTolerance +
-    secondGeometry.positionTolerance +
+    firstPositionTolerance + secondGeometry.positionTolerance +
     getRoundingErrorFactor(
       MERGING_DISTANCE_ERROR_OPERATION_COUNT,
       numericEpsilon
     ) * distanceScale;
-  const distanceTolerance = Math.max(
-    configuredTolerances.surfaceMerging ?? 0,
+  return Math.max(
+    configuredTolerance,
     derivedDistanceTolerance
   );
-  if (
-    Math.abs(firstCandidate.hit.s - secondCandidate.hit.s) >
-    distanceTolerance
-  ) {
-    return false;
-  }
+}
 
-  const firstHit = firstCandidate.hit;
-  const secondHit = secondCandidate.hit;
-  const normalDifferenceX = firstHit.normalX - secondHit.normalX;
-  const normalDifferenceY = firstHit.normalY - secondHit.normalY;
+function normalsAreConsistent(
+  candidate,
+  hit,
+  maximumNormalChordDistanceSquared
+) {
+  const normalDifferenceX = candidate.normalX - hit.normalX;
+  const normalDifferenceY = candidate.normalY - hit.normalY;
   const normalChordDistanceSquared =
     normalDifferenceX * normalDifferenceX +
     normalDifferenceY * normalDifferenceY;
   return normalChordDistanceSquared <= maximumNormalChordDistanceSquared;
+}
+
+function isHitAtEndpoint(geometry, hit, ray) {
+  if (geometry.kind === 'circle') return false;
+  if (hit.u === 0 || hit.u === 1) return true;
+  const hitPoint = {
+    x: ray.originX + hit.s * ray.directionX,
+    y: ray.originY + hit.s * ray.directionY
+  };
+  const endpointTolerance = Math.max(
+    geometry.positionTolerance,
+    geometry.endpointTolerance ?? 0
+  );
+  for (const endpointU of [0, 1]) {
+    const endpoint = evaluatePreparedCurve(geometry, endpointU);
+    if (
+      Math.hypot(
+        hitPoint.x - endpoint.x,
+        hitPoint.y - endpoint.y
+      ) <= endpointTolerance
+    ) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function getRegionCurves(description, regionId) {
+  return description.curves
+    .filter(curve =>
+      curve.ownerKind === 'region' && curve.ownerId === regionId
+    )
+    .map(curve => curve.geometry);
+}
+
+function drawFilledPrimitiveRegion(
+  renderer,
+  geometries,
+  fillColor,
+  outlineColor
+) {
+  if (!renderer.ctx) {
+    for (const geometry of geometries) {
+      drawPrimitiveCurve(renderer, geometry, outlineColor, 1);
+    }
+    return;
+  }
+
+  const ctx = renderer.ctx;
+  ctx.save();
+  ctx.fillStyle = renderer.rgbaToCssColor(fillColor);
+  ctx.beginPath();
+  let previousPoint = null;
+  for (const geometry of geometries) {
+    const points = samplePreparedCurve(geometry);
+    if (points.length === 0) continue;
+    const start = points[0];
+    const connectionTolerance = Math.max(
+      geometry.positionTolerance,
+      geometry.endpointTolerance ?? 0
+    );
+    if (
+      !previousPoint ||
+      Math.hypot(
+        previousPoint.x - start.x,
+        previousPoint.y - start.y
+      ) > connectionTolerance
+    ) {
+      if (previousPoint) ctx.closePath();
+      ctx.moveTo(start.x, start.y);
+    } else {
+      ctx.lineTo(start.x, start.y);
+    }
+    for (let pointIndex = 1; pointIndex < points.length; pointIndex++) {
+      ctx.lineTo(points[pointIndex].x, points[pointIndex].y);
+    }
+    previousPoint = geometry.kind === 'circle'
+      ? null
+      : points[points.length - 1];
+    if (geometry.kind === 'circle') ctx.closePath();
+  }
+  if (previousPoint) ctx.closePath();
+  ctx.fill('evenodd');
+  ctx.restore();
+}
+
+function drawPrimitiveCurve(renderer, geometry, color, lineWidth) {
+  const points = samplePreparedCurve(geometry);
+  for (let pointIndex = 1; pointIndex < points.length; pointIndex++) {
+    renderer.drawSegment({
+      p1: points[pointIndex - 1],
+      p2: points[pointIndex]
+    }, color, false, [], lineWidth);
+  }
+}
+
+function samplePreparedCurve(geometry) {
+  if (geometry.kind === 'circle') {
+    const radius = 1 / Math.abs(geometry.signedInvRadius);
+    const points = [];
+    const sampleCount = 96;
+    for (let index = 0; index <= sampleCount; index++) {
+      const angle = 2 * Math.PI * index / sampleCount;
+      points.push({
+        x: geometry.centerX + radius * Math.cos(angle),
+        y: geometry.centerY + radius * Math.sin(angle)
+      });
+    }
+    return points;
+  }
+
+  let sampleCount;
+  switch (geometry.kind) {
+    case 'lineSegment':
+    case 'smoothLineSegment':
+      sampleCount = 1;
+      break;
+    case 'circularArc': {
+      const sweep = 4 * Math.atan(Math.abs(geometry.bulge));
+      sampleCount = Math.max(8, Math.ceil(sweep / (Math.PI / 32)));
+      break;
+    }
+    case 'cubicBezier':
+      sampleCount = 64;
+      break;
+    default:
+      throw new TypeError(
+        `Unsupported prepared curve kind: ${JSON.stringify(geometry.kind)}`
+      );
+  }
+  const points = [];
+  for (let index = 0; index <= sampleCount; index++) {
+    points.push(evaluatePreparedCurve(geometry, index / sampleCount));
+  }
+  return points;
+}
+
+function formatRegionIds(regionCrossingMask) {
+  const regionIds = [];
+  for (let regionId = 0; regionId < regionCrossingMask.length; regionId++) {
+    if (regionCrossingMask[regionId]) regionIds.push(regionId);
+  }
+  return regionIds.length > 0 ? regionIds.join(',') : 'none';
 }
 
 function createFirstRay(preparedScene) {

@@ -27,6 +27,14 @@
  */
 
 /**
+ * @typedef {Object} SmoothLineSegmentCurveParams
+ * @property {Point} start - The start endpoint.
+ * @property {Point} end - The end endpoint.
+ * @property {Point} startNormal - The optical front normal at `start`.
+ * @property {Point} endNormal - The optical front normal at `end`.
+ */
+
+/**
  * @typedef {Object} CircularArcCurveParams
  * @property {Point} start - The start endpoint.
  * @property {Point} end - The end endpoint.
@@ -54,6 +62,17 @@
  */
 
 /**
+ * A line segment whose optical front normal is the normalized linear
+ * interpolation of its endpoint normals. Its intersection geometry and native
+ * parameter are identical to those of a line segment. Boundary-crossing
+ * orientation remains geometric and is derived from `start` to `end`, rather
+ * than from the interpolated normal.
+ * @typedef {Object} SmoothLineSegmentPrimitiveCurve
+ * @property {'smoothLineSegment'} kind
+ * @property {SmoothLineSegmentCurveParams} params
+ */
+
+/**
  * @typedef {Object} CircularArcPrimitiveCurve
  * @property {'circularArc'} kind
  * @property {CircularArcCurveParams} params
@@ -76,8 +95,8 @@
 /**
  * A curve which will be extracted as an individual intersection primitive and
  * inserted into the BVH. Open curves are directed from `start` to `end`; this
- * direction may be significant for surfaces. Curve order and direction are
- * ignored for region boundaries.
+ * direction is significant for surfaces and for resolving coincident region
+ * boundary pieces.
  *
  * The engine-independent curve parameters are converted during preprocessing
  * into whatever intersection representation an engine requires.
@@ -89,10 +108,12 @@
  * native parameter and returns the neutral placeholder `u = 0.5`.
  *
  * Reversing a line segment means swapping `start` and `end`. Reversing a
- * circular arc means swapping its endpoints and negating `bulge`. Reversing a
- * cubic Bezier means swapping its endpoints and also swapping `control1` and
- * `control2`. Reversing a circle means negating its radius.
- * @typedef {LineSegmentPrimitiveCurve|CircularArcPrimitiveCurve|CubicBezierPrimitiveCurve|CirclePrimitiveCurve} PrimitiveCurve
+ * smooth line segment additionally means swapping and negating its endpoint
+ * normals. Reversing a circular arc means swapping its endpoints and negating
+ * `bulge`. Reversing a cubic Bezier means swapping its endpoints and also
+ * swapping `control1` and `control2`. Reversing a circle means negating its
+ * radius.
+ * @typedef {LineSegmentPrimitiveCurve|SmoothLineSegmentPrimitiveCurve|CircularArcPrimitiveCurve|CubicBezierPrimitiveCurve|CirclePrimitiveCurve} PrimitiveCurve
  */
 
 /**
@@ -272,10 +293,21 @@
 
 /**
  * A bulk optical region. The curves must collectively form a valid closed
- * boundary. Inside/outside is determined by ray casting, so neither the order
- * nor the direction of the curves has meaning. Each curve belongs only to
- * this region, even when its geometry coincides with another primitive's
- * curve.
+ * boundary whose interior follows the even-odd rule. Curve order is
+ * irrelevant, and reversing the direction of every curve does not change the
+ * region. Pieces forming one smooth boundary must nevertheless have
+ * consistent directions. A geometrically self-overlapping boundary section
+ * must be traversed in opposite directions by its coincident pieces.
+ *
+ * At a merged incident point, the engine records whether each region has at
+ * least one positive crossing and at least one negative crossing. Repeated
+ * crossings with the same sign are idempotent; the region changes parity only
+ * when exactly one sign is present. Under the direction constraints above,
+ * this is equivalent to the even-odd rule while remaining insensitive to
+ * duplicate hits at endpoints of consecutive curve pieces.
+ *
+ * Each curve belongs only to this region, even when its geometry coincides
+ * with another primitive's curve.
  *
  * Region-boundary refraction and reflection are built into the engine rather
  * than represented by a formula-defined surface type. When `partialReflect`
