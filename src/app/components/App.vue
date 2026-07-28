@@ -30,6 +30,7 @@
   <ThemeModal />
   <LanguageModal />
   <SimulationEngineModal />
+  <NumericalToleranceModal />
 
   <input type="file" id="openfile" style="display:none">
   <input type="file" id="importShapesFile" accept=".svg,image/svg+xml" style="display:none">
@@ -55,6 +56,7 @@ import ColorModeModal from './ColorModeModal.vue';
 import ThemeModal from './ThemeModal.vue';
 import LanguageModal from './LanguageModal.vue';
 import SimulationEngineModal from './SimulationEngineModal.vue';
+import NumericalToleranceModal from './NumericalToleranceModal.vue';
 
 
 export default {
@@ -73,7 +75,8 @@ export default {
     ColorModeModal,
     ThemeModal,
     LanguageModal,
-    SimulationEngineModal
+    SimulationEngineModal,
+    NumericalToleranceModal
   }
 }
 </script>

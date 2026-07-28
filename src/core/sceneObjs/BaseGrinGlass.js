@@ -62,7 +62,7 @@ class BaseGrinGlass extends BaseGlass {
     const absorptionFnInfo = '<ul><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.absorptionFnInfo.absorption') + '</li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.mathjs') + '<br><code>+ - * / ^ sqrt sin cos tan sec csc cot sinh cosh tanh log exp asin acos atan asinh acosh atanh floor round ceil fix max min abs sign</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.customFunctions') + '</li></ul>';
 
     const sceneObjType = objData?.type ?? this.type;
-    const intersectTolInfo = '<p>' + i18next.t(`simulator:sceneObjs.${sceneObjType}.epsInfo.units`) + '</p><p>' + i18next.t(`simulator:sceneObjs.${sceneObjType}.epsInfo.functions`) + '</p>';
+    const intersectTolInfo = '<p>' + i18next.t(`simulator:sceneObjs.${sceneObjType}.epsInfo.units`) + '</p><p>' + i18next.t(`simulator:sceneObjs.${sceneObjType}.epsInfo.functions`) + '</p><p>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.intersectTolPrimitiveEngineInfo') + '</p>';
 
     return [
       { key: 'refIndexFn', type: 'equation', label: 'n(x,y)',
@@ -120,13 +120,13 @@ class BaseGrinGlass extends BaseGlass {
         obj.stepSize = parseFloat(value);
       }, '<p>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.stepSizeInfo') + '</p>', true);
     }
-    if (objBar.showAdvanced(!this.arePropertiesDefault(['intersectTol']))) {
+    if (!objBar.usesPrimitiveEngine && objBar.showAdvanced(!this.arePropertiesDefault(['intersectTol']))) {
       objBar.createNumber(i18next.t('simulator:sceneObjs.BaseGrinGlass.intersectTol'), 1e-3, 1e-2, 1e-3, this.intersectTol, function (obj, value) {
         obj.intersectTol = parseFloat(value);
       }, '<p>' + i18next.t(`simulator:sceneObjs.${this.constructor.type}.epsInfo.units`) + '</p><p>' + i18next.t(`simulator:sceneObjs.${this.constructor.type}.epsInfo.functions`) + '</p>', true);
     }
 
-    if (objBar.showAdvanced(this.scene.symbolicBodyMerging)) {
+    if (!objBar.usesPrimitiveEngine && objBar.showAdvanced(this.scene.symbolicBodyMerging)) {
       objBar.createBoolean(i18next.t('simulator:sceneObjs.BaseGrinGlass.symbolicBodyMerging'), this.scene.symbolicBodyMerging, function (obj, value) {
         obj.scene.symbolicBodyMerging = value;
       }, '<p>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.symbolicBodyMergingInfo.all') + '</p><p>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.symbolicBodyMergingInfo.impl') + '</p><p>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.symbolicBodyMergingInfo.implNote') + '</p>');

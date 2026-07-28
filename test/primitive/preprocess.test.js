@@ -248,6 +248,35 @@ describe('primitive preprocessing', () => {
     expect(processedScene.bvh.nodes[processedScene.bvh.root].depth).toBe(0);
   });
 
+  it('resolves configured distance tolerances against the scene length scale', () => {
+    const surfaceType = {
+      name: 'Surface',
+      paramNames: [],
+      dag: dag('P_1s'),
+      outRayCount: 1,
+      mergesWithGlass: false
+    };
+    const { processedScene } = preprocessPrimitives([
+      surface(surfaceType, line(0, 0, 1, 0))
+    ], {
+      lengthScale: 10,
+      numericalTolerances: {
+        curveEndpoint: 0.01,
+        surfaceMerging: 0.02,
+        surfaceNormal: 0.03,
+        forwardDistance: 0.04
+      }
+    });
+
+    expect(processedScene.numericalTolerances).toEqual({
+      curveEndpoint: 0.1,
+      surfaceMerging: 0.2,
+      surfaceNormal: 0.03,
+      forwardDistance: 0.4
+    });
+    expect(processedScene.curves[0].geometry.endpointTolerance).toBe(0.1);
+  });
+
   it('allocates shared detector results separately from the transferable scene', () => {
     const detectorType = {
       name: 'Detector',

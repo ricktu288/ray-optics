@@ -96,6 +96,16 @@
       />
 
       <PopupSelectControl
+        :label="$t('simulator:settings.numericalTolerances.title')"
+        :value="numericalTolerancesAreDefault ? 'default' : 'custom'"
+        :display-fn="value => value === 'default' ? $t('simulator:common.defaultOption') : $t('simulator:common.customOption')"
+        :disabled="!isPrimitiveEngine"
+        popup-target="numericalToleranceModal"
+        :popover-content="!isPrimitiveEngine ? $t('simulator:settings.numericalTolerances.primitiveEngineOnly') : ''"
+        :layout="layout"
+      />
+
+      <PopupSelectControl
         :label="$t('simulator:settings.colorMode.title')"
         :value="colorMode"
         :display-fn="value => value === 'default' ? $t('simulator:common.defaultOption') : $t(`simulator:colorModeModal.${value}.title`)"
@@ -226,6 +236,7 @@ import i18next from 'i18next'
 import { parseLinks } from '../../utils/links.js'
 import { app } from '../../services/app.js'
 import { useThemeStore } from '../../store/theme.js'
+import Scene from '../../../core/Scene.js'
 
 export default {
   name: 'SettingsList',
@@ -277,6 +288,10 @@ export default {
       // For theme: show if theme is not default
       const themeNotDefault = !themeStore.isDefaultTheme.value
 
+      // For numerical tolerances: show if any scene override is non-default
+      const numericalTolerancesNotDefault =
+        !numericalTolerancesAreDefault.value
+
       // For spectrum remapping: show if non-default
       const spectrumNotDefault = scene.redWavelength.value !== 620 || scene.violetWavelength.value !== 420
 
@@ -284,7 +299,23 @@ export default {
       const maxRayDepthNotDefault = scene.maxRayDepth.value !== Infinity
       
       // Add more conditions here as more advanced options are added
-      return colorModeNotDefault || themeNotDefault || spectrumNotDefault || maxRayDepthNotDefault
+      return colorModeNotDefault ||
+        themeNotDefault ||
+        numericalTolerancesNotDefault ||
+        spectrumNotDefault ||
+        maxRayDepthNotDefault
+    })
+
+    const isPrimitiveEngine = computed(
+      () => preferences.simulationEngine.value !== 'default'
+    )
+
+    const numericalTolerancesAreDefault = computed(() => {
+      const current = scene.numericalTolerances.value
+      const defaults = Scene.serializableDefaults.numericalTolerances
+      return Object.keys(defaults).every(
+        key => current?.[key] === defaults[key]
+      )
     })
 
     const showLanguageWarning = computed(() => {
@@ -323,6 +354,8 @@ export default {
       showSimulatorControls: preferences.showSimulatorControls,
       help: preferences.help,
       simulationEngine: preferences.simulationEngine,
+      isPrimitiveEngine,
+      numericalTolerancesAreDefault,
       lang,
       localeData,
       showLanguageWarning,

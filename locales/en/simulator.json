@@ -88,6 +88,10 @@
     "theme": {
       "title": "Theme"
     },
+    "numericalTolerances": {
+      "title": "Numerical tolerances",
+      "primitiveEngineOnly": "Numerical tolerances are configurable only when a primitive-based simulation engine is selected."
+    },
     "colorMode": {
       "title": "Color Mode",
       "description": "Determines how the brightnesses (and colors if \"Simulate Colors\" is on) of the rays or images are mapped to the colors on the screen. Only configurable when using \"Correct Brightness\"."
@@ -303,6 +307,7 @@
       "stepSize": "Numerical solver step size",
       "stepSizeInfo": "Step size of Euler's method for solving the eikonal ray equation - see 'step' function and documentation inside the 'BaseGrinGlass.js' file, for more information.",
       "intersectTol": "Intersection tolerance",
+      "intersectTolPrimitiveEngineInfo": "This property is not used when a primitive-based simulation engine is selected. Configure the scene's numerical tolerances instead.",
       "symbolicBodyMerging": "Symbolic body-merging",
       "symbolicBodyMergingInfo": {
         "all": "This toggle applies to all GRIN objects in the simulation.",
@@ -676,6 +681,29 @@
     "translatedFraction": "translated",
     "helpTranslate": "Help us translate this app"
   },
+  "numericalToleranceModal": {
+    "title": "Numerical tolerances",
+    "description": "These values are minimum tolerances stored with the scene. Distance values are relative to the scene length scale, while the surface normal tolerance is an angle in radians. Primitive-based engines may automatically use larger tolerances when required by numerical precision. A value of 0 uses only the automatically derived tolerance.",
+    "backToDefaults": "Back to defaults",
+    "fields": {
+      "curveEndpoint": {
+        "title": "Curve endpoint tolerance",
+        "description": "Minimum distance within which curve endpoints may be treated as connected."
+      },
+      "surfaceMerging": {
+        "title": "Surface merging tolerance",
+        "description": "Minimum distance along a ray within which eligible surface interactions may be treated as simultaneous and merged."
+      },
+      "surfaceNormal": {
+        "title": "Surface normal tolerance",
+        "description": "Maximum angular difference, in radians, between the adjusted normals of surfaces treated as one interaction."
+      },
+      "forwardDistance": {
+        "title": "Minimum forward distance",
+        "description": "Minimum forward distance from a ray's origin at which another interaction may be accepted."
+      }
+    }
+  },
   "simulationEngineModal": {
     "default": {
       "title": "Default",
@@ -689,6 +717,10 @@
     "primitiveCpu": {
       "title": "Primitive-based CPU",
       "description": "Use the experimental primitive-based CPU engine. This early test currently displays a triangle instead of simulated light."
+    },
+    "numericalTolerances": {
+      "description": "Tolerances that affect the interpretation of scene geometry are configured separately and stored with the scene.",
+      "open": "Configure numerical tolerances"
     },
     "configuration": {
       "title": "Advanced engine settings",

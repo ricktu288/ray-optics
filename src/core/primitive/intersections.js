@@ -107,7 +107,13 @@ export function intersectCurveAll(
 
   switch (geometry.kind) {
     case 'lineSegment':
-      intersectLineSegment(geometry, ray, result, tolerances);
+      intersectLineSegment(
+        geometry,
+        ray,
+        result,
+        tolerances,
+        includeEndpointCaps
+      );
       break;
     case 'circularArc':
       intersectCircularArc(geometry, ray, result, tolerances);
@@ -124,7 +130,13 @@ export function intersectCurveAll(
       );
   }
 
-  if (includeEndpointCaps && geometry.kind !== 'circle') {
+  const needsEndpointCaps =
+    geometry.kind === 'circularArc'
+      ? result.hits.length < 2
+      : geometry.kind === 'cubicBezier'
+        ? result.hits.length < 3
+        : false;
+  if (includeEndpointCaps && needsEndpointCaps) {
     addEndpointCap(geometry, ray, 0, result, tolerances);
     addEndpointCap(geometry, ray, 1, result, tolerances);
   }
@@ -261,7 +273,13 @@ export function classifyPointInRegion(geometries, point, options = {}) {
   return 'boundary';
 }
 
-function intersectLineSegment(geometry, ray, result, tolerances) {
+function intersectLineSegment(
+  geometry,
+  ray,
+  result,
+  tolerances,
+  includeEndpointCaps
+) {
   const offsetX = geometry.originX - ray.originX;
   const offsetY = geometry.originY - ray.originY;
   const denominator = cross(
@@ -280,6 +298,10 @@ function intersectLineSegment(geometry, ray, result, tolerances) {
     if (Math.abs(lineDistance) <= geometry.positionTolerance) {
       result.ambiguous = true;
     }
+    if (includeEndpointCaps) {
+      addEndpointCap(geometry, ray, 0, result, tolerances);
+      addEndpointCap(geometry, ray, 1, result, tolerances);
+    }
     return;
   }
 
@@ -290,7 +312,18 @@ function intersectLineSegment(geometry, ray, result, tolerances) {
     ray.directionX,
     ray.directionY
   ) * geometry.invLength / denominator;
-  if (u < 0 || u > 1) return;
+  if (u < 0 || u > 1) {
+    if (includeEndpointCaps) {
+      addEndpointCap(
+        geometry,
+        ray,
+        u < 0 ? 0 : 1,
+        result,
+        tolerances
+      );
+    }
+    return;
+  }
   u = clampUnitParameter(u);
   addOrientedCandidate(
     result,
@@ -517,8 +550,12 @@ function addEndpointCap(geometry, ray, u, result, tolerances) {
     distanceToEndpoint,
     Number.MIN_VALUE
   );
-  const endpointTolerance =
+  const derivedEndpointTolerance =
     geometry.positionTolerance + tolerances.endpoint * arithmeticScale;
+  const endpointTolerance = Math.max(
+    geometry.endpointTolerance ?? 0,
+    derivedEndpointTolerance
+  );
   const perpendicularDistance = Math.abs(cross(
     offsetX,
     offsetY,

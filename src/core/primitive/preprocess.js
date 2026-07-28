@@ -117,6 +117,7 @@ import { validateNumericEpsilon } from './numeric.js';
  *
  * @typedef {Object} ProcessedScene
  * @property {number} numericEpsilon - Relative arithmetic epsilon selected by the engine for geometry preparation and intersection.
+ * @property {{curveEndpoint: number, surfaceMerging: number, surfaceNormal: number, forwardDistance: number}} numericalTolerances - Engine-ready tolerance minimums. Distance values are in world units and `surfaceNormal` is in radians.
  * @property {string} typeSignature - Structural signature of all four type tables.
  * @property {{sources: ProcessedType[], surfaces: ProcessedType[], bulks: ProcessedType[], detectors: ProcessedType[]}} types
  * @property {ProcessedSource[]} sources
@@ -145,6 +146,7 @@ import { validateNumericEpsilon } from './numeric.js';
  * @param {Object} [options]
  * @param {Object} [options.bvhOptions] - Options forwarded to {@link buildBvh}.
  * @param {number} [options.lengthScale=1] - Natural scene length used by engine-selected curve tolerances.
+ * @param {Object} [options.numericalTolerances] - Scene-relative configured tolerance minimums.
  * @param {number} options.numericEpsilon - Relative arithmetic epsilon selected by the engine.
  * @param {boolean} [options.logDebugInfo=false] - Whether to measure preprocessing stages for debug output.
  * @returns {{processedScene: ProcessedScene, detectorResultBindings: DetectorResultBinding[], timings: Object|null}}
@@ -152,6 +154,7 @@ import { validateNumericEpsilon } from './numeric.js';
 export function preprocessPrimitives(primitives, {
   bvhOptions = {},
   lengthScale = 1,
+  numericalTolerances = {},
   numericEpsilon,
   logDebugInfo = false
 } = {}) {
@@ -159,6 +162,28 @@ export function preprocessPrimitives(primitives, {
     throw new TypeError('primitives must be an array.');
   }
   validateNumericEpsilon(numericEpsilon);
+  const resolvedNumericalTolerances = {
+    curveEndpoint: resolveToleranceMinimum(
+      numericalTolerances.curveEndpoint,
+      lengthScale,
+      'curveEndpoint'
+    ),
+    surfaceMerging: resolveToleranceMinimum(
+      numericalTolerances.surfaceMerging,
+      lengthScale,
+      'surfaceMerging'
+    ),
+    surfaceNormal: resolveToleranceMinimum(
+      numericalTolerances.surfaceNormal,
+      1,
+      'surfaceNormal'
+    ),
+    forwardDistance: resolveToleranceMinimum(
+      numericalTolerances.forwardDistance,
+      lengthScale,
+      'forwardDistance'
+    )
+  };
 
   const timing = logDebugInfo ? createTimingRecorder() : null;
   const registries = {
@@ -184,6 +209,7 @@ export function preprocessPrimitives(primitives, {
   ) => {
     const prepared = prepareCurve(curve, {
       lengthScale,
+      endpointTolerance: resolvedNumericalTolerances.curveEndpoint,
       numericEpsilon
     });
     curves.push(createProcessedCurve(
@@ -351,6 +377,7 @@ export function preprocessPrimitives(primitives, {
   const result = {
     processedScene: {
       numericEpsilon,
+      numericalTolerances: resolvedNumericalTolerances,
       typeSignature: hashCanonicalString(typeSignatureSource),
       types: finalizedTypes,
       sources: processedSources,
@@ -365,6 +392,16 @@ export function preprocessPrimitives(primitives, {
   timing?.recordStage('assembleProcessedScene');
   result.timings = timing?.finish() ?? null;
   return result;
+}
+
+function resolveToleranceMinimum(value, scale, name) {
+  const resolvedValue = value ?? 0;
+  if (!Number.isFinite(resolvedValue) || resolvedValue < 0) {
+    throw new RangeError(
+      `numericalTolerances.${name} must be a finite nonnegative number.`
+    );
+  }
+  return resolvedValue * scale;
 }
 
 /**

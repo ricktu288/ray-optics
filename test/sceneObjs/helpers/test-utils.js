@@ -26,6 +26,7 @@ export function createMockObjBar() {
   return {
     controls: [],
     targetObj: null,
+    usesPrimitiveEngine: false,
     setTitle: function() {},
     eventListeners: {},
     setOption: function(func) {

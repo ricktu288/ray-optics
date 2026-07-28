@@ -261,6 +261,23 @@ describe('GrinGlass', () => {
     });
   });
 
+  test('hides legacy-only advanced controls for primitive engines', () => {
+    scene.symbolicBodyMerging = true;
+    user.objBar.usesPrimitiveEngine = true;
+    user.updateObjBar();
+
+    const labels = user.objBar.controls.map(control => control.label);
+    expect(labels).not.toContain(
+      '{{simulator:sceneObjs.BaseGrinGlass.intersectTol}}'
+    );
+    expect(labels).not.toContain(
+      '{{simulator:sceneObjs.BaseGrinGlass.symbolicBodyMerging}}'
+    );
+    expect(labels).toContain(
+      '{{simulator:sceneObjs.BaseGrinGlass.stepSize}}'
+    );
+  });
+
   test('moves the entire object by a vector', () => {
     user.click(0, 0);
     user.click(100, 0);
@@ -384,4 +401,4 @@ describe('GrinGlass', () => {
       ]
     });
   });
-}); 
+});

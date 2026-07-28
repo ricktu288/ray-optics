@@ -47,6 +47,9 @@ class ObjBar {
     /** @property {boolean} shouldShowAdvanced - Whether the advanced options should be shown */
     this.shouldShowAdvanced = false;
 
+    /** @property {boolean} usesPrimitiveEngine - Whether the selected simulation engine uses primitive scene data. */
+    this.usesPrimitiveEngine = false;
+
     /** @property {SceneObject|null} targetObj - The scene object whose options are being edited */
     this.targetObj = null;
 

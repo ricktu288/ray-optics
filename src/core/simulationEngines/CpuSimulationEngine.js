@@ -18,11 +18,17 @@ import CanvasRenderer from '../CanvasRenderer.js';
 import FloatColorRenderer from '../FloatColorRenderer.js';
 import { createDagClosureEvaluator } from '../formula/dag-evaluator.js';
 import { intersectCurveAll } from '../primitive/intersections.js';
-import { validateNumericEpsilon } from '../primitive/numeric.js';
+import {
+  getRoundingErrorFactor,
+  validateNumericEpsilon
+} from '../primitive/numeric.js';
 
 const RAY_COLOR = [1, 0.75, 0.1, 0.8];
-const HIT_COLOR = [0.15, 0.75, 1, 1];
+const OTHER_HIT_COLOR = [0.65, 0.65, 0.65, 0.65];
+const MERGED_HIT_COLOR = [0.15, 0.75, 1, 1];
 const NEAREST_HIT_COLOR = [1, 0.15, 0.1, 1];
+const MERGING_DISTANCE_ERROR_OPERATION_COUNT = 64;
+const NORMAL_ERROR_OPERATION_COUNT = 64;
 
 class CpuSimulationRun {
   constructor(engine, options) {
@@ -125,11 +131,24 @@ class CpuSimulationEngine {
     }
 
     const candidates = [];
-    const curves = preparedScene.description.curves;
+    const description = preparedScene.description;
+    const curves = description.curves;
+    const configuredTolerances = description.numericalTolerances ?? {};
+    const normalTolerance = Math.min(Math.PI, Math.max(
+      configuredTolerances.surfaceNormal ?? 0,
+      getRoundingErrorFactor(NORMAL_ERROR_OPERATION_COUNT, this.numericEpsilon)
+    ));
+    const maximumNormalChordDistanceSquared =
+      4 * Math.sin(normalTolerance * 0.5) ** 2;
     for (let curveId = 0; curveId < curves.length; curveId++) {
       const curve = curves[curveId];
+      const minDistance = Math.max(
+        curve.geometry.positionTolerance,
+        configuredTolerances.forwardDistance ?? 0
+      );
       const intersectionResult = intersectCurveAll(curve.geometry, ray, {
-        numericEpsilon: this.numericEpsilon
+        numericEpsilon: this.numericEpsilon,
+        minDistance
       });
       for (let candidateIndex = 0;
         candidateIndex < intersectionResult.hits.length;
@@ -149,6 +168,20 @@ class CpuSimulationEngine {
         nearestCandidate = candidate;
       }
     }
+    if (nearestCandidate) {
+      for (const candidate of candidates) {
+        candidate.isMerged = candidate !== nearestCandidate &&
+          candidate.curveId !== nearestCandidate.curveId &&
+          hitsAreMerged(
+            nearestCandidate,
+            candidate,
+            curves,
+            configuredTolerances,
+            this.numericEpsilon,
+            maximumNormalChordDistanceSquared
+          );
+      }
+    }
 
     renderer.drawRay({
       p1: { x: ray.originX, y: ray.originY },
@@ -166,7 +199,11 @@ class CpuSimulationEngine {
         y: ray.originY + hit.s * ray.directionY
       };
       const isNearest = candidate === nearestCandidate;
-      const color = isNearest ? NEAREST_HIT_COLOR : HIT_COLOR;
+      const color = isNearest
+        ? NEAREST_HIT_COLOR
+        : candidate.isMerged
+          ? MERGED_HIT_COLOR
+          : OTHER_HIT_COLOR;
       renderer.drawSegment({
         p1: point,
         p2: {
@@ -183,7 +220,7 @@ class CpuSimulationEngine {
         hit.s,
         hit.u,
         hit.sigma,
-        isNearest ? ' [nearest]' : ''
+        isNearest ? ' [nearest]' : candidate.isMerged ? ' [merged]' : ''
       );
     }
     if (candidates.length === 0) {
@@ -243,6 +280,49 @@ class CpuSimulationEngine {
     this.canvasRenderer?.destroy?.();
     this.canvasRenderer = null;
   }
+}
+
+function hitsAreMerged(
+  firstCandidate,
+  secondCandidate,
+  curves,
+  configuredTolerances,
+  numericEpsilon,
+  maximumNormalChordDistanceSquared
+) {
+  const firstGeometry = curves[firstCandidate.curveId].geometry;
+  const secondGeometry = curves[secondCandidate.curveId].geometry;
+  const distanceScale = Math.max(
+    Math.abs(firstCandidate.hit.s),
+    Math.abs(secondCandidate.hit.s),
+    Number.MIN_VALUE
+  );
+  const derivedDistanceTolerance =
+    firstGeometry.positionTolerance +
+    secondGeometry.positionTolerance +
+    getRoundingErrorFactor(
+      MERGING_DISTANCE_ERROR_OPERATION_COUNT,
+      numericEpsilon
+    ) * distanceScale;
+  const distanceTolerance = Math.max(
+    configuredTolerances.surfaceMerging ?? 0,
+    derivedDistanceTolerance
+  );
+  if (
+    Math.abs(firstCandidate.hit.s - secondCandidate.hit.s) >
+    distanceTolerance
+  ) {
+    return false;
+  }
+
+  const firstHit = firstCandidate.hit;
+  const secondHit = secondCandidate.hit;
+  const normalDifferenceX = firstHit.normalX - secondHit.normalX;
+  const normalDifferenceY = firstHit.normalY - secondHit.normalY;
+  const normalChordDistanceSquared =
+    normalDifferenceX * normalDifferenceX +
+    normalDifferenceY * normalDifferenceY;
+  return normalChordDistanceSquared <= maximumNormalChordDistanceSquared;
 }
 
 function createFirstRay(preparedScene) {

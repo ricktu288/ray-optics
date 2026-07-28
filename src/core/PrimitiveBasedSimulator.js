@@ -99,6 +99,8 @@ class PrimitiveBasedSimulator {
     this.isRunning = false;
     this.primitives = [];
     const initialPreprocessing = preprocessPrimitives([], {
+      lengthScale: this.scene.lengthScale,
+      numericalTolerances: this.scene.numericalTolerances,
       numericEpsilon: this.engine.numericEpsilon
     });
     this.processedScene = initialPreprocessing.processedScene;
@@ -296,6 +298,7 @@ class PrimitiveBasedSimulator {
       timings
     } = preprocessPrimitives(primitives, {
       lengthScale: this.scene.lengthScale,
+      numericalTolerances: this.scene.numericalTolerances,
       numericEpsilon: this.engine.numericEpsilon,
       bvhOptions: {
         ...this.bvhOptions,

@@ -257,6 +257,7 @@ function setSimulationEngine(value) {
   app.simulator = simulator;
   if (editor) editor.simulator = simulator;
   bindSimulatorEventListeners(simulator);
+  editor?.selectObj(editor.selectedObjIndex);
   simulator.updateSimulation(false, false);
 }
 
@@ -540,6 +541,7 @@ function initAppService() {
 
       document.getElementById('obj_bar_main').style.display = '';
       document.getElementById('obj_bar_main').innerHTML = '';
+      objBar.usesPrimitiveEngine = simulationEngine !== 'default';
       scene.objs[e.newIndex].populateObjBar(objBar);
 
       if (document.getElementById('obj_bar_main').innerHTML != '') {

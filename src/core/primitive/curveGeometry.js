@@ -30,7 +30,8 @@ const ROOT_ERROR_OPERATION_COUNT = 32;
  * @property {number} tangentX - Unit tangent x component from start to end.
  * @property {number} tangentY - Unit tangent y component from start to end.
  * @property {number} invLength - Inverse segment length.
- * @property {number} positionTolerance - World-space endpoint and forward tolerance.
+ * @property {number} positionTolerance - Derived world-space positional tolerance.
+ * @property {number} endpointTolerance - Minimum world-space endpoint tolerance.
  */
 
 /**
@@ -42,7 +43,8 @@ const ROOT_ERROR_OPERATION_COUNT = 32;
  * @property {number} tangentY - Unit chord direction y component.
  * @property {number} invChordLength - Inverse chord length.
  * @property {number} bulge - Tangent of one quarter of the signed sweep.
- * @property {number} positionTolerance - World-space endpoint and forward tolerance.
+ * @property {number} positionTolerance - Derived world-space positional tolerance.
+ * @property {number} endpointTolerance - Minimum world-space endpoint tolerance.
  */
 
 /**
@@ -59,7 +61,8 @@ const ROOT_ERROR_OPERATION_COUNT = 32;
  * @property {number} control2Y - Normalized second-control y coordinate.
  * @property {number} endX - Normalized end x coordinate.
  * @property {number} endY - Normalized end y coordinate.
- * @property {number} positionTolerance - World-space endpoint and forward tolerance.
+ * @property {number} positionTolerance - Derived world-space positional tolerance.
+ * @property {number} endpointTolerance - Minimum world-space endpoint tolerance.
  */
 
 /**
@@ -68,7 +71,8 @@ const ROOT_ERROR_OPERATION_COUNT = 32;
  * @property {number} centerX - World-space center x coordinate.
  * @property {number} centerY - World-space center y coordinate.
  * @property {number} signedInvRadius - Signed inverse radius preserving front-normal orientation.
- * @property {number} positionTolerance - World-space forward tolerance.
+ * @property {number} positionTolerance - Derived world-space positional tolerance.
+ * @property {number} endpointTolerance - Always zero because a circle has no endpoints.
  */
 
 /**
@@ -86,14 +90,19 @@ const ROOT_ERROR_OPERATION_COUNT = 32;
  * @param {PrimitiveCurve} curve
  * @param {Object} [options]
  * @param {number} [options.lengthScale=1]
+ * @param {number} [options.endpointTolerance=0] - Minimum world-space endpoint tolerance.
  * @param {number} options.numericEpsilon - Relative arithmetic epsilon selected by the engine.
  * @returns {{geometry: PreparedCurveGeometry, bounds: {minX: number, minY: number, maxX: number, maxY: number}}}
  */
 export function prepareCurve(curve, {
   lengthScale = 1,
+  endpointTolerance = 0,
   numericEpsilon
 } = {}) {
   validateNumericEpsilon(numericEpsilon);
+  if (!Number.isFinite(endpointTolerance) || endpointTolerance < 0) {
+    throw new RangeError('endpointTolerance must be a finite nonnegative number.');
+  }
   let geometry;
   let exactBounds;
 
@@ -135,7 +144,7 @@ export function prepareCurve(curve, {
         return prepareCurve({
           kind: 'lineSegment',
           params: { start, end }
-        }, { lengthScale, numericEpsilon });
+        }, { lengthScale, endpointTolerance, numericEpsilon });
       }
       geometry = {
         kind: 'circularArc',
@@ -217,10 +226,15 @@ export function prepareCurve(curve, {
     numericEpsilon
   );
   geometry.positionTolerance = positionTolerance;
+  geometry.endpointTolerance =
+    geometry.kind === 'circle' ? 0 : endpointTolerance;
 
   return {
     geometry,
-    bounds: padBounds(exactBounds, positionTolerance)
+    bounds: padBounds(
+      exactBounds,
+      Math.max(positionTolerance, geometry.endpointTolerance)
+    )
   };
 }
 

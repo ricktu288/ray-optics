@@ -224,7 +224,7 @@ describe('prepared curve intersections', () => {
     expect(secondHit.s).toBeCloseTo(1);
   });
 
-  it('deduplicates an endpoint cap and a nearby ordinary arc root', () => {
+  it('does not add endpoint caps when both ordinary arc roots are present', () => {
     const geometry = prepare('circularArc', {
       start: { x: 420, y: 220 },
       end: { x: 540, y: 360 },
@@ -245,9 +245,9 @@ describe('prepared curve intersections', () => {
 
     expect(result.hits).toHaveLength(2);
     expect(result.hits[0]).toMatchObject({
-      u: 1,
       sigma: -1
     });
+    expect(result.hits[0].u).toBeCloseTo(0.9999960079);
     expect(result.hits[1]).toMatchObject({
       sigma: 1
     });
@@ -288,17 +288,40 @@ describe('prepared curve intersections', () => {
                 offsetRatio,
                 curve: curve.name,
                 u,
-                hits: result.hits
+                missed: result.hits.length === 0
               }).toEqual(expect.objectContaining({
-                hits: expect.arrayContaining([
-                  expect.objectContaining({ u })
-                ])
+                missed: false
               }));
             }
           }
         }
       }
     }
+  });
+
+  it('uses a configured endpoint tolerance as a minimum and pads bounds for it', () => {
+    const prepared = prepareCurve({
+      kind: 'lineSegment',
+      params: {
+        start: { x: 0, y: 0 },
+        end: { x: 1, y: 0 }
+      }
+    }, {
+      lengthScale: 1,
+      endpointTolerance: 0.01,
+      numericEpsilon: FLOAT32_EPSILON
+    });
+    const result = intersectCurveAllWithNumericEpsilon(
+      prepared.geometry,
+      ray(1.005, -1, 0, 1),
+      { numericEpsilon: FLOAT32_EPSILON }
+    );
+
+    expect(result.hits).toEqual([
+      expect.objectContaining({ u: 1 })
+    ]);
+    expect(prepared.geometry.endpointTolerance).toBe(0.01);
+    expect(prepared.bounds.maxX).toBeCloseTo(1.01);
   });
 
   it('has no gap between endpoint and interior hits across wide scales', () => {

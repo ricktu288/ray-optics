@@ -63,6 +63,18 @@
                   v-text="$t('simulator:simulationEngineModal.configuration.backToDefaults')"
                 ></button>
               </div>
+              <div v-if="isPrimitiveEngine" class="form-text mt-2">
+                <span
+                  v-text="$t('simulator:simulationEngineModal.numericalTolerances.description')"
+                ></span>
+                <button
+                  type="button"
+                  class="btn btn-link btn-sm p-0 ms-1 align-baseline"
+                  data-bs-toggle="modal"
+                  data-bs-target="#numericalToleranceModal"
+                  v-text="$t('simulator:simulationEngineModal.numericalTolerances.open')"
+                ></button>
+              </div>
               <section
                 v-for="(section, sectionIndex) in engineConfigSections"
                 :key="section.key"
@@ -209,6 +221,9 @@ export default {
     const preferences = usePreferencesStore()
     const isModalOpen = ref(false)
     const isEngineSettingsOpen = ref(false)
+    const isPrimitiveEngine = computed(
+      () => preferences.simulationEngine.value !== 'default'
+    )
     const engineConfigSections = computed(
       () => ENGINE_CONFIG_SECTIONS[preferences.simulationEngine.value] ?? []
     )
@@ -325,6 +340,7 @@ export default {
 
     return {
       simulationEngine: preferences.simulationEngine,
+      isPrimitiveEngine,
       SIMULATION_ENGINES,
       isEngineSettingsOpen,
       engineConfigSections,
