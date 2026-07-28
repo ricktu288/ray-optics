@@ -113,6 +113,7 @@ describe('BeamSplitter', () => {
       }
     });
     expect(primitive.twoSided).toBe(true);
+    expect(primitive.surfaceType.mergesWithGlass).toBe(false);
     expect(primitive.filter).toEqual({
       wavelength: 500,
       bandwidth: 20,

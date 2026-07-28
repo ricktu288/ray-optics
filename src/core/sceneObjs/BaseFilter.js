@@ -26,7 +26,8 @@ const MIRROR_SURFACE_TYPE = {
     'd_1x = d_0x; d_1y = -d_0y; P_1s = P_0s; P_1p = P_0p',
     ['d_0x', 'd_0y', 'P_0s', 'P_0p']
   ),
-  outRayCount: 1
+  outRayCount: 1,
+  mergesWithGlass: true
 };
 
 /**

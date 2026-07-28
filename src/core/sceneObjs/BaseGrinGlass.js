@@ -23,7 +23,7 @@ import { parseTex } from 'tex-math-parser'
 import * as math from 'mathjs';
 import { equationValueToDisplay } from '../propertyUtils/equationConversion.js';
 import { parseFormula } from '../formula/formula-parser.js';
-import { extractNonIntegerLikeNumbers } from '../formula/parameter-extraction.js';
+import { extractNumbersAsParameters } from '../formula/parameter-extraction.js';
 import { appendPartialDerivatives } from '../formula/derivative.js';
 import { substituteDagParameters } from '../formula/substitution.js';
 import { combineDags } from '../formula/dag-combination.js';
@@ -161,18 +161,15 @@ class BaseGrinGlass extends BaseGlass {
       return null;
     }
 
-    const params = {};
-    if (bulkData.hasOriginShift) {
-      params.x_0 = this.origin.x;
-      params.y_0 = this.origin.y;
-    }
-    Object.assign(params, bulkData.formulaParams);
-
     return {
       kind: 'region',
       curves,
       bulkType: bulkData.bulkType,
-      params,
+      params: {
+        x_0: this.origin.x,
+        y_0: this.origin.y,
+        ...bulkData.formulaParams
+      },
       stepSize: this.stepSize,
       partialReflect: this.partialReflect
     };
@@ -181,22 +178,18 @@ class BaseGrinGlass extends BaseGlass {
   /**
    * Compile and cache the formula data shared by this object's GRIN primitive.
    *
-   * A nonzero coordinate origin is represented by the instance parameters
-   * `x_0` and `y_0`. At the exact origin `(0, 0)`, no shift is inserted and no
-   * origin parameters are added.
+   * The coordinate origin is represented by the instance parameters `x_0` and
+   * `y_0`.
    *
    * @returns {{
    *   bulkType: BulkType,
-   *   formulaParams: Object<string, number>,
-   *   hasOriginShift: boolean
+   *   formulaParams: Object<string, number>
    * }|null} Compiled bulk data, or null if compilation fails.
    */
   getPrimitiveBulkData() {
-    const hasOriginShift = this.origin.x !== 0 || this.origin.y !== 0;
     const cacheKey = JSON.stringify([
       this.refIndexFn,
-      this.absorptionFn,
-      hasOriginShift
+      this.absorptionFn
     ]);
     if (this._primitiveBulkDataCache?.key === cacheKey) {
       if (this._primitiveBulkDataCache.error) {
@@ -228,26 +221,14 @@ class BaseGrinGlass extends BaseGlass {
         { outputLabel: 'alpha' }
       );
 
-      const originParamNames = [];
-      if (hasOriginShift) {
-        const substitutions = {
-          x: parseFormula('x - x_0', ['x', 'x_0']),
-          y: parseFormula('y - y_0', ['y', 'y_0'])
-        };
-        refIndexDag = substituteDagParameters(refIndexDag, substitutions);
-        absorptionDag = substituteDagParameters(absorptionDag, substitutions);
-        originParamNames.push('x_0', 'y_0');
-      }
+      const substitutions = {
+        x: parseFormula('x - x_0', ['x', 'x_0']),
+        y: parseFormula('y - y_0', ['y', 'y_0'])
+      };
+      refIndexDag = substituteDagParameters(refIndexDag, substitutions);
+      absorptionDag = substituteDagParameters(absorptionDag, substitutions);
 
-      const extractedRefIndex = extractNonIntegerLikeNumbers(
-        refIndexDag,
-        { prefix: '_n' }
-      );
-      const extractedAbsorption = extractNonIntegerLikeNumbers(
-        absorptionDag,
-        { prefix: '_alpha' }
-      );
-      const differentiated = appendPartialDerivatives(extractedRefIndex.dag, {
+      const differentiated = appendPartialDerivatives(refIndexDag, {
         sourceLabel: 'n',
         partials: [
           { parameter: 'x', label: 'n_x' },
@@ -259,17 +240,26 @@ class BaseGrinGlass extends BaseGlass {
           differentiated.errors.map(error => error.message).join('; ')
         );
       }
+      const extractedRefIndex = extractNumbersAsParameters(
+        differentiated.dag,
+        { prefix: '_n' }
+      );
+      const extractedAbsorption = extractNumbersAsParameters(
+        absorptionDag,
+        { prefix: '_alpha' }
+      );
 
       const value = {
         bulkType: {
           name: 'GRIN medium',
           paramNames: [
-            ...originParamNames,
+            'x_0',
+            'y_0',
             ...extractedRefIndex.extracted.map(param => param.name),
             ...extractedAbsorption.extracted.map(param => param.name)
           ],
           dag: combineDags([
-            differentiated.dag,
+            extractedRefIndex.dag,
             extractedAbsorption.dag
           ])
         },
@@ -278,8 +268,7 @@ class BaseGrinGlass extends BaseGlass {
             ...extractedRefIndex.extracted,
             ...extractedAbsorption.extracted
           ].map(param => [param.name, param.value])
-        ),
-        hasOriginShift
+        )
       };
       this._primitiveBulkDataCache = { key: cacheKey, value };
       this.error = null;

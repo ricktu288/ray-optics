@@ -88,9 +88,11 @@ describe('primitive preprocessing', () => {
       name: 'Adjustable',
       paramNames: ['gain', 'bias'],
       dag: dag('P_1s'),
-      outRayCount: 1
+      outRayCount: 1,
+      mergesWithGlass: true
     };
     const equivalentType = {
+      mergesWithGlass: true,
       outRayCount: 1,
       dag: dag('P_1s'),
       paramNames: ['gain', 'bias'],
@@ -121,6 +123,7 @@ describe('primitive preprocessing', () => {
     ]);
     expect(processedScene.surfaces[0].params).toBe(primitives[0].params);
     expect(Object.isFrozen(processedScene.types.surfaces[0].definition)).toBe(true);
+    expect(processedScene.types.surfaces[0].definition.mergesWithGlass).toBe(true);
 
     const reversed = preprocessPrimitives([...primitives].reverse()).processedScene;
     expect(reversed.typeSignature).toBe(processedScene.typeSignature);
@@ -140,6 +143,14 @@ describe('primitive preprocessing', () => {
     ]).processedScene;
     expect(changedParams.typeSignature).toBe(firstTypeOnly.typeSignature);
     expect(changedType.typeSignature).not.toBe(firstTypeOnly.typeSignature);
+
+    const changedGlassMerging = preprocessPrimitives([
+      surface({
+        ...firstType,
+        mergesWithGlass: false
+      }, line(0, 0, 1, 0), { gain: 2, bias: 3 })
+    ]).processedScene;
+    expect(changedGlassMerging.typeSignature).not.toBe(firstTypeOnly.typeSignature);
   });
 
   it('creates owner tables, a stable curve table, and BVH curve IDs', () => {
@@ -147,7 +158,8 @@ describe('primitive preprocessing', () => {
       name: 'Surface',
       paramNames: [],
       dag: dag('P_1s'),
-      outRayCount: 1
+      outRayCount: 1,
+      mergesWithGlass: false
     };
     const bulkType = {
       name: 'Bulk',
@@ -323,7 +335,8 @@ describe('primitive preprocessing', () => {
       name: 'Surface',
       paramNames: [],
       dag: dag('P_1s'),
-      outRayCount: 1
+      outRayCount: 1,
+      mergesWithGlass: false
     };
     const previousScene = preprocessPrimitives([
       surface(surfaceType, line(0, 0, 1, 0))

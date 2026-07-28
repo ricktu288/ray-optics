@@ -65,7 +65,7 @@ describe('GRIN glass primitives', () => {
     expect(movedPrimitive.params.y_0).toBe(21);
   });
 
-  test('zero origin adds no shift parameters', () => {
+  test('zero origin includes zero-valued shift parameters', () => {
     const scene = new Scene();
     const glass = new GrinGlass(scene);
     glass.path = [
@@ -78,10 +78,9 @@ describe('GRIN glass primitives', () => {
     glass.origin = { x: 0, y: 0 };
 
     const [primitive] = glass.getPrimitives();
-    expect(primitive.bulkType.paramNames).not.toContain('x_0');
-    expect(primitive.bulkType.paramNames).not.toContain('y_0');
-    expect(primitive.params).not.toHaveProperty('x_0');
-    expect(primitive.params).not.toHaveProperty('y_0');
+    expect(primitive.bulkType.paramNames.slice(0, 2)).toEqual(['x_0', 'y_0']);
+    expect(primitive.params.x_0).toBe(0);
+    expect(primitive.params.y_0).toBe(0);
 
     const values = createDagClosureEvaluator(primitive.bulkType.dag)({
       ...primitive.params,
@@ -93,6 +92,14 @@ describe('GRIN glass primitives', () => {
     expect(values.n_x).toBeCloseTo(1);
     expect(values.n_y).toBeCloseTo(0);
     expect(values.alpha).toBeCloseTo(0.3);
+
+    const originValues = createDagClosureEvaluator(primitive.bulkType.dag)({
+      ...primitive.params,
+      x: 0,
+      y: 0,
+      lambda: 500
+    });
+    expect(originValues.n_x).toBe(0);
   });
 
   test('circle emits one circle boundary', () => {

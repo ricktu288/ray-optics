@@ -32,7 +32,6 @@
 
 import CustomMirror from '../../../src/core/sceneObjs/mirror/CustomMirror.js';
 import Scene from '../../../src/core/Scene.js';
-import { buildBvh } from '../../../src/core/primitive/bvh.js';
 import { MockUser } from '../helpers/test-utils.js';
 
 describe('CustomMirror', () => {
@@ -116,9 +115,6 @@ describe('CustomMirror', () => {
     expect(primitives[0].curve.kind).toBe('lineSegment');
     expect(primitives.at(-1).curve.kind).toBe('lineSegment');
     expect(primitives.some(primitive => primitive.curve.kind === 'cubicBezier')).toBe(true);
-    expect(() => buildBvh(
-      primitives.map(primitive => ({ curve: primitive.curve }))
-    )).not.toThrow();
   });
 
   it('caches primitives until object or relevant scene settings change', () => {

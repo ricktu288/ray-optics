@@ -17,27 +17,7 @@
 import { DagBuilder } from "./dag-builder.js";
 
 /**
- * Return whether a raw number literal should be extracted as a generated parameter.
- *
- * Integer-like literals such as `"2"` are left in place. Decimal or exponent
- * forms such as `"2.0"`, `".5"`, and `"1e3"` are extractable.
- *
- * @param {unknown} raw - Raw number literal text from a DAG number node.
- * @returns {boolean} True when the literal contains a decimal point or exponent.
- *
- * @example
- * isExtractableNumberLiteral("2"); // false
- * isExtractableNumberLiteral("2.0"); // true
- */
-export function isExtractableNumberLiteral(raw) {
-  return typeof raw === "string" && /[.eE]/.test(raw);
-}
-
-/**
- * Replace decimal/exponent number literals in a DAG with generated parameters.
- *
- * Repeated equivalent DAG nodes are extracted once because generated DAG nodes
- * are interned canonically.
+ * Replace number literals in a DAG with generated parameters.
  *
  * @param {{root: number, nodes: Array<object>}} dag - DAG to rewrite.
  * @param {Object} [options={}] - Extraction options.
@@ -50,10 +30,10 @@ export function isExtractableNumberLiteral(raw) {
  * non-empty string.
  *
  * @example
- * const { dag, extracted } = extractNonIntegerLikeNumbers(parsedDag);
+ * const { dag, extracted } = extractNumbersAsParameters(parsedDag);
  * // extracted: [{ name: "_n0", value: 2.5, raw: "2.5" }]
  */
-export function extractNonIntegerLikeNumbers(dag, options = {}) {
+export function extractNumbersAsParameters(dag, options = {}) {
   if (!dag || !Number.isInteger(dag.root) || !Array.isArray(dag.nodes)) {
     throw new TypeError("dag must be an object with root and nodes");
   }
@@ -68,7 +48,9 @@ export function extractNonIntegerLikeNumbers(dag, options = {}) {
       .filter((node) => node.kind === "parameter")
       .map((node) => node.name),
   );
-  const selectedIds = collectExtractableNumberIds(dag);
+  const selectedIds = dag.nodes
+    .filter((node) => node.kind === "number")
+    .map((node) => node.id);
   const namesByOldId = new Map();
   const extracted = [];
   let nextIndex = 0;
@@ -121,33 +103,15 @@ export function extractNonIntegerLikeNumbers(dag, options = {}) {
     return newId;
   }
 
+  for (let oldId = 0; oldId < dag.nodes.length; oldId += 1) {
+    rewrite(oldId);
+  }
+
   return {
     dag: {
-      root: rewrite(dag.root),
+      root: rewrittenByOldId.get(dag.root),
       nodes: builder.nodes,
     },
     extracted,
   };
-}
-
-function collectExtractableNumberIds(dag) {
-  const selected = [];
-  const seen = new Set();
-
-  function visit(id) {
-    if (seen.has(id)) return;
-    seen.add(id);
-
-    const node = dag.nodes[id];
-    if (!node) throw new TypeError(`DAG references missing node ${id}`);
-
-    if (node.kind === "number" && isExtractableNumberLiteral(node.raw)) {
-      selected.push(id);
-    }
-
-    for (const childId of node.args ?? []) visit(childId);
-  }
-
-  visit(dag.root);
-  return selected;
 }

@@ -50,7 +50,8 @@ describe('CpuSimulationEngine temporary intersection visualization', () => {
           name: 'Test surface',
           paramNames: [],
           dag: parseFormula('P_1s = 0; P_1p = 0;', []),
-          outRayCount: 1
+          outRayCount: 1,
+          mergesWithGlass: false
         },
         params: {},
         curve: {

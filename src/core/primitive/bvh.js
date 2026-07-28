@@ -29,6 +29,13 @@ export const DEFAULT_BVH_OPTIONS = Object.freeze({
 });
 
 /**
+ * @typedef {Object} BvhCurveEntry
+ * @property {Object} [geometry] - Prepared curve geometry.
+ * @property {Object} [bounds] - Prepared curve bounds.
+ * @property {PrimitiveCurve} [curve] - Raw primitive curve.
+ */
+
+/**
  * Calculate the axis-aligned bounding box of a primitive curve.
  * @param {PrimitiveCurve} curve - The primitive curve.
  * @param {Object} options
@@ -53,7 +60,7 @@ export function getCurveBounds(curve, { numericEpsilon }) {
  * Prepared entries provide `geometry` and `bounds`, avoiding duplicate curve
  * preparation. Raw `curve` entries remain accepted by this standalone builder.
  *
- * @param {Array<{geometry?: Object, bounds?: Object, curve?: PrimitiveCurve}>} curveEntries
+ * @param {BvhCurveEntry[]} curveEntries
  * @param {Object} [options]
  * @param {number} [options.lineLeafSize=4] - Target number of line segments in a homogeneous leaf.
  * @param {number} [options.arcLeafSize=2] - Target number of circular arcs or circles in a homogeneous leaf.
