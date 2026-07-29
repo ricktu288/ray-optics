@@ -32,6 +32,18 @@ const HIT_COLOR = [1, 0.15, 0.1, 1];
 const NORMAL_COLOR = [0.15, 0.75, 1, 1];
 const MERGING_DISTANCE_ERROR_OPERATION_COUNT = 64;
 const NORMAL_ERROR_OPERATION_COUNT = 64;
+const CONFLICT_NONE = 0;
+const CONFLICT_MERGE = 1;
+const CONFLICT_ORIENTATION = 2;
+const CONFLICT_NORMAL = 3;
+const CONFLICT_NAMES = [
+  'none',
+  'merge',
+  'region-boundary orientation',
+  'normal'
+];
+const ORIENTATION_DIAGNOSTIC_U_MIN = 0.1;
+const ORIENTATION_DIAGNOSTIC_U_MAX = 0.9;
 
 class CpuSimulationRun {
   constructor(engine, options) {
@@ -152,14 +164,12 @@ class CpuSimulationEngine {
           REGION_OUTLINE_COLOR
         );
       }
-      if (candidate.primaryCurveId !== null) {
-        drawPrimitiveCurve(
-          renderer,
-          description.curves[candidate.primaryCurveId].geometry,
-          SELECTED_CURVE_COLOR,
-          3
-        );
-      }
+      drawPrimitiveCurve(
+        renderer,
+        description.curves[candidate.curveId].geometry,
+        SELECTED_CURVE_COLOR,
+        3
+      );
     }
 
     renderer.drawRay({
@@ -172,6 +182,8 @@ class CpuSimulationEngine {
 
     if (candidate) {
       const normalLength = 12 * lengthScale;
+      const representativeCurve = description.curves[candidate.curveId];
+      const discardRay = candidate.conflictType === CONFLICT_NORMAL;
       const point = {
         x: ray.originX + candidate.distance * ray.directionX,
         y: ray.originY + candidate.distance * ray.directionY
@@ -184,31 +196,24 @@ class CpuSimulationEngine {
         }
       }, NORMAL_COLOR, true);
       renderer.drawPoint(point, HIT_COLOR, 8);
-      if (candidate.primaryCurveId !== null) {
-        console.log(
-          '[Primitive CPU candidate] curve %d (%s), owner=%s:%d, s=%s, u=%s, sigma=%s, regions=%s%s',
-          candidate.primaryCurveId,
-          description.curves[candidate.primaryCurveId].geometry.kind,
-          candidate.primaryKind,
-          candidate.primaryOwnerId,
-          candidate.distance,
-          candidate.u,
-          candidate.sigma,
-          formatRegionIds(candidate.regionCrossingMask),
-          candidate.discardRay ? ' [discard ray]' : ''
-        );
-      } else {
-        console.log(
-          '[Primitive CPU candidate] region boundary, s=%s, regions=%s%s',
-          candidate.distance,
-          formatRegionIds(candidate.regionCrossingMask),
-          candidate.discardRay ? ' [discard ray]' : ''
-        );
-      }
-      if (candidate.undefinedBehavior) {
+      console.log(
+        '[Primitive CPU candidate] curve %d (%s), owner=%s:%d, s=%s, u=%s, sigma=%s, regions=%s%s',
+        candidate.curveId,
+        representativeCurve.geometry.kind,
+        representativeCurve.ownerKind,
+        representativeCurve.ownerId,
+        candidate.distance,
+        candidate.u,
+        candidate.sigma,
+        formatRegionIds(candidate.regionCrossingMask),
+        discardRay ? ' [discard ray]' : ''
+      );
+      if (candidate.conflictType !== CONFLICT_NONE) {
         console.warn(
-          '[Primitive CPU candidate] undefined behavior%s',
-          candidate.discardRay ? ' [discard ray]' : ''
+          '[Primitive CPU candidate] %s conflict at curve %d%s',
+          CONFLICT_NAMES[candidate.conflictType],
+          candidate.conflictCurveId,
+          discardRay ? ' [discard ray]' : ''
         );
       }
     } else {
@@ -276,24 +281,22 @@ class CpuSimulationEngine {
  * Positive and negative region crossings are monotonic presence arrays:
  * repeated crossings of one orientation set the same entry again, while a
  * region changes parity only when exactly one orientation is present. A
- * repeated same-orientation hit with `0.1 < u < 0.9` is reported as undefined
- * behavior because idempotence is expected only near a boundary-piece
+ * repeated same-orientation hit with `0.1 < u < 0.9` produces an orientation
+ * diagnostic because idempotence is expected only near a boundary-piece
  * endpoint.
  *
  * @typedef {Object} InteractionCandidate
  * @property {number} distance
  * @property {number} normalX
  * @property {number} normalY
- * @property {number|null} u - Native parameter of the selected primary surface or detector, or null for a boundary-only event.
- * @property {number|null} sigma - Side of the selected primary surface or detector, or null for a boundary-only event.
- * @property {'surface'|'detector'|null} primaryKind
- * @property {number|null} primaryOwnerId
- * @property {number|null} primaryCurveId
+ * @property {number} u - Native parameter of the representative curve hit.
+ * @property {number} sigma - Geometric side of the representative curve hit.
+ * @property {number} curveId - Representative curve ID.
  * @property {Uint8Array} positiveRegionCrossings
  * @property {Uint8Array} negativeRegionCrossings
  * @property {Uint8Array} regionCrossingMask
- * @property {boolean} undefinedBehavior
- * @property {boolean} discardRay
+ * @property {number} conflictType - Two-bit conflict severity.
+ * @property {number} conflictCurveId - One curve identifying the diagnostic location, or -1.
  */
 
 function findFirstRayInteractionCandidate(description, ray, numericEpsilon) {
@@ -324,12 +327,8 @@ function findFirstRayInteractionCandidate(description, ray, numericEpsilon) {
     if (!hit) continue;
 
     if (!candidate) {
-      candidate = createInteractionCandidate(
-        description.regions.length,
-        curve,
-        hit
-      );
-      addOwnerToCandidate(candidate, description, curveId, curve, hit, ray);
+      candidate = createInteractionCandidate(description.regions.length);
+      initializeInteractionCandidate(candidate, curveId, curve, hit);
       continue;
     }
 
@@ -342,26 +341,20 @@ function findFirstRayInteractionCandidate(description, ray, numericEpsilon) {
       numericEpsilon
     );
     if (hit.s < candidate.distance - mergingTolerance) {
-      candidate = createInteractionCandidate(
-        description.regions.length,
-        curve,
-        hit
-      );
-      addOwnerToCandidate(candidate, description, curveId, curve, hit, ray);
+      initializeInteractionCandidate(candidate, curveId, curve, hit);
       continue;
     }
     if (hit.s > candidate.distance + mergingTolerance) continue;
 
-    if (!normalsAreConsistent(
+    mergeHitIntoCandidate(
       candidate,
+      description,
+      curveId,
+      curve,
       hit,
+      ray,
       maximumNormalChordDistanceSquared
-    )) {
-      candidate.discardRay = true;
-      candidate.undefinedBehavior = true;
-      continue;
-    }
-    addOwnerToCandidate(candidate, description, curveId, curve, hit, ray);
+    );
   }
 
   if (!candidate) return null;
@@ -377,114 +370,174 @@ function findFirstRayInteractionCandidate(description, ray, numericEpsilon) {
   return candidate;
 }
 
-function createInteractionCandidate(regionCount, curve, hit) {
+function createInteractionCandidate(regionCount) {
   return {
-    distance: hit.s,
-    distancePositionTolerance: curve.geometry.positionTolerance,
-    normalX: hit.normalX,
-    normalY: hit.normalY,
-    u: null,
-    sigma: null,
-    primaryKind: null,
-    primaryOwnerId: null,
-    primaryCurveId: null,
-    primaryAtEndpoint: false,
-    hasRegionBoundary: false,
+    distance: Infinity,
+    distancePositionTolerance: 0,
+    normalX: 0,
+    normalY: 0,
+    u: 0,
+    sigma: 0,
+    curveId: -1,
     positiveRegionCrossings: new Uint8Array(regionCount),
     negativeRegionCrossings: new Uint8Array(regionCount),
     regionCrossingMask: new Uint8Array(regionCount),
-    undefinedBehavior: false,
-    discardRay: false,
+    conflictType: CONFLICT_NONE,
+    conflictCurveId: -1
   };
 }
 
-function addOwnerToCandidate(
+function initializeInteractionCandidate(
+  candidate,
+  curveId,
+  curve,
+  hit
+) {
+  copyRepresentativeHit(candidate, curveId, curve, hit);
+  candidate.positiveRegionCrossings.fill(0);
+  candidate.negativeRegionCrossings.fill(0);
+  candidate.regionCrossingMask.fill(0);
+  candidate.conflictType = CONFLICT_NONE;
+  candidate.conflictCurveId = -1;
+
+  if (curve.ownerKind === 'region') {
+    getRegionCrossings(candidate, hit.sigma)[curve.ownerId] = 1;
+  }
+}
+
+function mergeHitIntoCandidate(
   candidate,
   description,
   curveId,
   curve,
   hit,
-  ray
+  ray,
+  maximumNormalChordDistanceSquared
 ) {
+  if (candidate.conflictType === CONFLICT_NORMAL) {
+    return;
+  }
+
+  if (!normalsAreConsistent(
+    candidate,
+    hit,
+    maximumNormalChordDistanceSquared
+  )) {
+    recordConflict(candidate, CONFLICT_NORMAL, curveId);
+    return;
+  }
+
   if (curve.ownerKind === 'region') {
-    candidate.hasRegionBoundary = true;
-    const crossings = hit.sigma > 0
-      ? candidate.positiveRegionCrossings
-      : candidate.negativeRegionCrossings;
+    const crossings = getRegionCrossings(candidate, hit.sigma);
     if (
       crossings[curve.ownerId] &&
-      hit.u > 0.1 &&
-      hit.u < 0.9
+      hit.u > ORIENTATION_DIAGNOSTIC_U_MIN &&
+      hit.u < ORIENTATION_DIAGNOSTIC_U_MAX
     ) {
-      candidate.undefinedBehavior = true;
+      recordConflict(candidate, CONFLICT_ORIENTATION, curveId);
     }
     crossings[curve.ownerId] = 1;
-    if (candidate.primaryKind) {
-      checkPrimaryRegionCompatibility(candidate, description);
-    }
-    return;
   }
 
-  const atEndpoint = isHitAtEndpoint(curve.geometry, hit, ray);
-  if (!candidate.primaryKind) {
-    setPrimaryCandidate(
+  const currentCurve = description.curves[candidate.curveId];
+  const shouldReplace = shouldReplaceRepresentative(
+    candidate.curveId,
+    currentCurve,
+    curveId,
+    curve
+  );
+  const compatible = areHitsCompatible(
+    candidate,
+    currentCurve,
+    hit,
+    curve,
+    ray
+  );
+
+  if (!compatible) {
+    recordConflict(
       candidate,
-      curveId,
-      curve,
-      hit,
-      atEndpoint
-    );
-    if (candidate.hasRegionBoundary) {
-      checkPrimaryRegionCompatibility(candidate, description);
-    }
-    return;
-  }
-
-  if (!candidate.primaryAtEndpoint && !atEndpoint) {
-    candidate.undefinedBehavior = true;
-  }
-
-  const shouldReplacePrimary =
-    candidate.primaryKind === 'detector' &&
-      curve.ownerKind === 'surface' ||
-    candidate.primaryKind === curve.ownerKind &&
-      curveId < candidate.primaryCurveId;
-  if (shouldReplacePrimary) {
-    setPrimaryCandidate(
-      candidate,
-      curveId,
-      curve,
-      hit,
-      atEndpoint
+      CONFLICT_MERGE,
+      shouldReplace ? candidate.curveId : curveId
     );
   }
-  if (candidate.hasRegionBoundary) {
-    checkPrimaryRegionCompatibility(candidate, description);
+
+  if (shouldReplace) {
+    copyRepresentativeHit(candidate, curveId, curve, hit);
   }
 }
 
-function setPrimaryCandidate(candidate, curveId, curve, hit, atEndpoint) {
-  candidate.primaryKind = curve.ownerKind;
-  candidate.primaryOwnerId = curve.ownerId;
-  candidate.primaryCurveId = curveId;
-  candidate.primaryAtEndpoint = atEndpoint;
+function copyRepresentativeHit(candidate, curveId, curve, hit) {
+  candidate.distance = hit.s;
+  candidate.distancePositionTolerance = curve.geometry.positionTolerance;
   candidate.normalX = hit.normalX;
   candidate.normalY = hit.normalY;
+  candidate.curveId = curveId;
   candidate.u = hit.u;
   candidate.sigma = hit.sigma;
 }
 
-function checkPrimaryRegionCompatibility(candidate, description) {
-  if (candidate.primaryKind === 'detector') {
-    candidate.undefinedBehavior = true;
+function getRegionCrossings(candidate, sigma) {
+  return sigma > 0
+    ? candidate.positiveRegionCrossings
+    : candidate.negativeRegionCrossings;
+}
+
+function recordConflict(candidate, conflictType, curveId) {
+  if (conflictType < candidate.conflictType) {
     return;
   }
-  const surface = description.surfaces[candidate.primaryOwnerId];
-  const surfaceType =
-    description.types.surfaces[surface.surfaceTypeId].definition;
-  if (!surfaceType.mergesWithGlass) {
-    candidate.undefinedBehavior = true;
+  candidate.conflictType = conflictType;
+  candidate.conflictCurveId = curveId;
+}
+
+function shouldReplaceRepresentative(
+  currentCurveId,
+  currentCurve,
+  newCurveId,
+  newCurve
+) {
+  const currentPriority = getOwnerPriority(currentCurve.ownerKind);
+  const newPriority = getOwnerPriority(newCurve.ownerKind);
+  return newPriority > currentPriority ||
+    newPriority === currentPriority && newCurveId < currentCurveId;
+}
+
+function getOwnerPriority(ownerKind) {
+  switch (ownerKind) {
+    case 'surface':
+      return 2;
+    case 'region':
+      return 1;
+    case 'detector':
+      return 0;
+    default:
+      throw new TypeError(
+        `Unsupported curve owner kind: ${JSON.stringify(ownerKind)}`
+      );
   }
+}
+
+function areHitsCompatible(
+  currentHit,
+  currentCurve,
+  newHit,
+  newCurve,
+  ray
+) {
+  if (
+    isHitAtEndpoint(currentCurve.geometry, currentHit, ray) ||
+    isHitAtEndpoint(newCurve.geometry, newHit, ray)
+  ) {
+    return true;
+  }
+  if (currentCurve.ownerKind === 'region') {
+    return newCurve.mergesWithGlass;
+  }
+  if (newCurve.ownerKind === 'region') {
+    return currentCurve.mergesWithGlass;
+  }
+  return false;
 }
 
 function getMergingDistanceTolerance(
@@ -529,8 +582,8 @@ function isHitAtEndpoint(geometry, hit, ray) {
   if (geometry.kind === 'circle') return false;
   if (hit.u === 0 || hit.u === 1) return true;
   const hitPoint = {
-    x: ray.originX + hit.s * ray.directionX,
-    y: ray.originY + hit.s * ray.directionY
+    x: ray.originX + (hit.s ?? hit.distance) * ray.directionX,
+    y: ray.originY + (hit.s ?? hit.distance) * ray.directionY
   };
   const endpointTolerance = Math.max(
     geometry.positionTolerance,

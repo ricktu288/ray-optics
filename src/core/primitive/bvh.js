@@ -28,11 +28,18 @@ export const DEFAULT_BVH_OPTIONS = Object.freeze({
   consecutiveLocalityFactor: 2
 });
 
+export const BVH_OWNER_KIND_MASKS = Object.freeze({
+  surface: 1 << 0,
+  region: 1 << 1,
+  detector: 1 << 2
+});
+
 /**
  * @typedef {Object} BvhCurveEntry
  * @property {Object} [geometry] - Prepared curve geometry.
  * @property {Object} [bounds] - Prepared curve bounds.
  * @property {PrimitiveCurve} [curve] - Raw primitive curve.
+ * @property {'surface'|'region'|'detector'} [ownerKind] - Curve owner kind used to build node masks.
  */
 
 /**
@@ -121,12 +128,15 @@ export function buildBvh(curveEntries, {
   const addLeaf = (startIndex, endIndex, bounds) => {
     const nodeIndex = nodes.length;
     const start = orderedEntries.length;
+    let ownerKindMask = 0;
     for (let index = startIndex; index < endIndex; index++) {
       const { leafWeight, ...entry } = items[index];
       orderedEntries.push(entry);
+      ownerKindMask |= getOwnerKindMask(entry.ownerKind);
     }
     nodes.push({
       bounds,
+      ownerKindMask,
       depth: 0,
       start,
       count: endIndex - startIndex,
@@ -140,6 +150,8 @@ export function buildBvh(curveEntries, {
     const nodeIndex = nodes.length;
     nodes.push({
       bounds: combineBounds(nodes[left].bounds, nodes[right].bounds),
+      ownerKindMask:
+        nodes[left].ownerKindMask | nodes[right].ownerKindMask,
       depth: 0,
       start: -1,
       count: 0,
@@ -235,6 +247,17 @@ export function buildBvh(curveEntries, {
     nodes,
     entries: orderedEntries
   };
+}
+
+function getOwnerKindMask(ownerKind) {
+  if (ownerKind === undefined) return 0;
+  const mask = BVH_OWNER_KIND_MASKS[ownerKind];
+  if (mask === undefined) {
+    throw new TypeError(
+      `Unsupported BVH curve owner kind: ${JSON.stringify(ownerKind)}`
+    );
+  }
+  return mask;
 }
 
 function createCurveGroup(start, end, bounds, order) {

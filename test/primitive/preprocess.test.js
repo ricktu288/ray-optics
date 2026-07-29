@@ -18,6 +18,7 @@ import {
   createPreprocessingSummary,
   preprocessPrimitives as preprocessPrimitivesWithNumericEpsilon
 } from '../../src/core/primitive/preprocess.js';
+import { BVH_OWNER_KIND_MASKS } from '../../src/core/primitive/bvh.js';
 import { FLOAT32_EPSILON } from '../../src/core/primitive/numeric.js';
 
 function preprocessPrimitives(primitives, options = {}) {
@@ -233,6 +234,8 @@ describe('primitive preprocessing', () => {
         ['region', 0],
         ['detector', 0]
       ]);
+    expect(processedScene.curves.map(curve => curve.mergesWithGlass))
+      .toEqual([false, true, true, false]);
     expect(processedScene.curves[0].geometry).toMatchObject({
       kind: 'lineSegment',
       originX: 0,
@@ -245,7 +248,13 @@ describe('primitive preprocessing', () => {
     expect(processedScene.curves[3].twoSided).toBe(false);
     expect(Array.from(processedScene.bvh.curveIds).sort((a, b) => a - b))
       .toEqual([0, 1, 2, 3]);
-    expect(processedScene.bvh.nodes[processedScene.bvh.root].depth).toBe(0);
+    const rootNode = processedScene.bvh.nodes[processedScene.bvh.root];
+    expect(rootNode.depth).toBe(0);
+    expect(rootNode.ownerKindMask).toBe(
+      BVH_OWNER_KIND_MASKS.surface |
+      BVH_OWNER_KIND_MASKS.region |
+      BVH_OWNER_KIND_MASKS.detector
+    );
   });
 
   it('resolves configured distance tolerances against the scene length scale', () => {

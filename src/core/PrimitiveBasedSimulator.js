@@ -16,7 +16,10 @@
 
 import CanvasRenderer from './CanvasRenderer.js';
 import i18next from 'i18next';
-import { DEFAULT_BVH_OPTIONS } from './primitive/bvh.js';
+import {
+  BVH_OWNER_KIND_MASKS,
+  DEFAULT_BVH_OPTIONS
+} from './primitive/bvh.js';
 import {
   createPreprocessingSummary,
   preprocessPrimitives
@@ -357,10 +360,21 @@ class PrimitiveBasedSimulator {
     const ctx = canvasRenderer.ctx;
     ctx.save();
     ctx.globalCompositeOperation = 'source-over';
-    ctx.strokeStyle = 'rgba(255, 64, 64, 0.5)';
     ctx.setLineDash([]);
 
     for (const node of nodes) {
+      const red = node.ownerKindMask & BVH_OWNER_KIND_MASKS.surface
+        ? 255
+        : 0;
+      const green = node.ownerKindMask & BVH_OWNER_KIND_MASKS.region
+        ? 255
+        : 0;
+      const blue = node.ownerKindMask & BVH_OWNER_KIND_MASKS.detector
+        ? 255
+        : 0;
+      ctx.strokeStyle = red || green || blue
+        ? `rgba(${red}, ${green}, ${blue}, 0.5)`
+        : 'rgba(128, 128, 128, 0.5)';
       ctx.lineWidth =
         Math.max(0.5, 2.5 / (node.depth + 1)) * canvasRenderer.lengthScale;
       const { minX, minY, maxX, maxY } = node.bounds;

@@ -82,6 +82,7 @@ import { validateNumericEpsilon } from './numeric.js';
  * @property {PreparedCurveGeometry} geometry - Prepared engine-independent curve geometry.
  * @property {'surface'|'region'|'detector'} ownerKind - Owner table kind.
  * @property {number} ownerId - Index into the matching owner table.
+ * @property {boolean} mergesWithGlass - Whether this curve can participate in an interaction with coincident region boundaries.
  * @property {boolean} [twoSided] - Whether both oriented sides participate.
  * @property {WavelengthFilter} [filter] - Optional pre-intersection wavelength filter.
  */
@@ -90,7 +91,9 @@ import { validateNumericEpsilon } from './numeric.js';
  * The BVH node array uses child node indices for branches. A leaf has
  * `count > 0`; its `[start, start + count)` range indexes `curveIds`, whose
  * values index the stable `curves` table. The BVH may therefore reorder curves
- * without changing curve or owner IDs.
+ * without changing curve or owner IDs. Every node's `ownerKindMask` is the
+ * bitwise union of the surface, region, and detector kinds contained in its
+ * subtree.
  *
  * @typedef {Object} ProcessedBvh
  * @property {number} root - Root node index, or -1 for an empty tree.
@@ -204,6 +207,7 @@ export function preprocessPrimitives(primitives, {
     curve,
     ownerKind,
     ownerId,
+    mergesWithGlass,
     twoSided,
     filter
   ) => {
@@ -216,6 +220,7 @@ export function preprocessPrimitives(primitives, {
       prepared.geometry,
       ownerKind,
       ownerId,
+      mergesWithGlass,
       twoSided,
       filter
     ));
@@ -251,6 +256,7 @@ export function preprocessPrimitives(primitives, {
           primitive.curve,
           'surface',
           ownerId,
+          primitive.surfaceType.mergesWithGlass,
           primitive.twoSided,
           primitive.filter
         );
@@ -273,6 +279,7 @@ export function preprocessPrimitives(primitives, {
             primitive.curves[curveIndex],
             'region',
             ownerId,
+            true,
             undefined,
             undefined
           );
@@ -314,6 +321,7 @@ export function preprocessPrimitives(primitives, {
           primitive.curve,
           'detector',
           ownerId,
+          false,
           primitive.twoSided,
           undefined
         );
@@ -356,7 +364,8 @@ export function preprocessPrimitives(primitives, {
     curves.map((curveRecord, curveId) => ({
       geometry: curveRecord.geometry,
       bounds: curveBounds[curveId],
-      curveId
+      curveId,
+      ownerKind: curveRecord.ownerKind
     })),
     bvhOptions
   );
@@ -532,11 +541,19 @@ function summarizeTypeCategory(types, instances, typeIdKey, previousTypes) {
   };
 }
 
-function createProcessedCurve(geometry, ownerKind, ownerId, twoSided, filter) {
+function createProcessedCurve(
+  geometry,
+  ownerKind,
+  ownerId,
+  mergesWithGlass,
+  twoSided,
+  filter
+) {
   const processedCurve = {
     geometry,
     ownerKind,
-    ownerId
+    ownerId,
+    mergesWithGlass
   };
   if (ownerKind !== 'region') {
     processedCurve.twoSided = twoSided;

@@ -15,6 +15,7 @@
  */
 
 import {
+  BVH_OWNER_KIND_MASKS,
   buildBvh as buildBvhWithNumericEpsilon,
   DEFAULT_BVH_OPTIONS
 } from '../../src/core/primitive/bvh.js';
@@ -89,6 +90,39 @@ describe('primitive BVH', () => {
     expect(getLeafEntryIds(tree)).toEqual([
       ['back', 'distant', 'front']
     ]);
+  });
+
+  it('propagates owner-kind masks from leaves to branches', () => {
+    const entries = [
+      { ...lineEntry('surface', 0, 0, 1, 0), ownerKind: 'surface' },
+      { ...lineEntry('region', 10, 0, 11, 0), ownerKind: 'region' },
+      { ...lineEntry('detector', 20, 0, 21, 0), ownerKind: 'detector' }
+    ];
+    const tree = buildBvh(entries, {
+      lineLeafSize: 1
+    });
+
+    for (const node of tree.nodes) {
+      if (node.count === 0) {
+        expect(node.ownerKindMask).toBe(
+          tree.nodes[node.left].ownerKindMask |
+          tree.nodes[node.right].ownerKindMask
+        );
+        continue;
+      }
+      const [entry] = tree.entries.slice(
+        node.start,
+        node.start + node.count
+      );
+      expect(node.ownerKindMask).toBe(
+        BVH_OWNER_KIND_MASKS[entry.ownerKind]
+      );
+    }
+    expect(tree.nodes[tree.root].ownerKindMask).toBe(
+      BVH_OWNER_KIND_MASKS.surface |
+      BVH_OWNER_KIND_MASKS.region |
+      BVH_OWNER_KIND_MASKS.detector
+    );
   });
 
   it('uses bounds locality for curves without endpoints', () => {

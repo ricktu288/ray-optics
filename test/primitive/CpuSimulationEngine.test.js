@@ -86,13 +86,11 @@ describe('CpuSimulationEngine temporary intersection visualization', () => {
     expect(renderer.drawPoint).toHaveBeenCalledTimes(1);
     expect(candidate).toMatchObject({
       distance: 5,
-      primaryCurveId: 0,
-      primaryKind: 'surface',
-      primaryOwnerId: 0,
+      curveId: 0,
       u: 0.5,
       sigma: 1,
-      undefinedBehavior: false,
-      discardRay: false
+      conflictType: 0,
+      conflictCurveId: -1
     });
     expect(log).toHaveBeenCalledWith(
       expect.stringContaining('u=%s, sigma=%s, regions=%s%s'),
@@ -199,15 +197,115 @@ describe('CpuSimulationEngine temporary intersection visualization', () => {
     expect(renderer.drawPoint).toHaveBeenCalledTimes(1);
     expect(renderer.drawSegment).toHaveBeenCalledTimes(2);
     expect(candidate).toMatchObject({
-      primaryCurveId: 0,
-      primaryKind: 'surface',
-      primaryOwnerId: 0,
-      discardRay: true
+      curveId: 0,
+      conflictType: 3,
+      conflictCurveId: 2
     });
-    expect(candidate.undefinedBehavior).toBe(true);
     expect(warn).toHaveBeenCalledWith(
-      '[Primitive CPU candidate] undefined behavior%s',
+      '[Primitive CPU candidate] %s conflict at curve %d%s',
+      'normal',
+      2,
       ' [discard ray]'
+    );
+    log.mockRestore();
+    warn.mockRestore();
+  });
+
+  it('selects surfaces over regions and detectors and records merge conflicts', async () => {
+    const sourceType = {
+      name: 'Test source',
+      paramNames: [],
+      dag: parseFormula(
+        'x = 0; y = 0; d_x = 1; d_y = 0; P_s = 1; P_p = 0; lambda = 540;',
+        ['i', 'N']
+      )
+    };
+    const surfaceType = {
+      name: 'Test surface',
+      paramNames: [],
+      dag: parseFormula('P_1s = 0; P_1p = 0;', []),
+      outRayCount: 1,
+      mergesWithGlass: true
+    };
+    const bulkType = {
+      name: 'Test bulk',
+      paramNames: [],
+      dag: parseFormula('n = 1.5; alpha = 0;', ['x', 'y', 'lambda'])
+    };
+    const detectorType = {
+      name: 'Test detector',
+      paramNames: [],
+      dag: parseFormula('k_1 = 0; v_1 = 0;', []),
+      writeCount: 1
+    };
+    const curve = {
+      kind: 'lineSegment',
+      params: {
+        start: { x: 5, y: -2 },
+        end: { x: 5, y: 2 }
+      }
+    };
+    const { processedScene } = preprocessPrimitives([
+      {
+        kind: 'source',
+        sourceType,
+        params: {},
+        rayCount: 1
+      },
+      {
+        kind: 'surface',
+        surfaceType,
+        params: {},
+        curve,
+        twoSided: true
+      },
+      {
+        kind: 'region',
+        curves: [curve],
+        bulkType,
+        params: {},
+        stepSize: 0,
+        partialReflect: true
+      },
+      {
+        kind: 'detector',
+        curve,
+        twoSided: true,
+        detectorType,
+        params: {},
+        resultSize: 1,
+        result: { values: null }
+      }
+    ], {
+      numericEpsilon: FLOAT32_EPSILON
+    });
+    const engine = new CpuSimulationEngine({
+      numericEpsilon: FLOAT32_EPSILON
+    });
+    const renderer = {
+      drawRay: jest.fn(),
+      drawSegment: jest.fn(),
+      drawPoint: jest.fn(),
+      flush: jest.fn()
+    };
+    engine.beginRenderer = jest.fn(() => renderer);
+    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
+    const warn = jest.spyOn(console, 'warn').mockImplementation(() => {});
+    const preparedScene = await engine.prepare(processedScene);
+
+    const candidate = engine.drawFirstRayIntersections({ preparedScene });
+
+    expect(candidate).toMatchObject({
+      curveId: 0,
+      conflictType: 1,
+      conflictCurveId: 2
+    });
+    expect(Array.from(candidate.regionCrossingMask)).toEqual([1]);
+    expect(warn).toHaveBeenCalledWith(
+      '[Primitive CPU candidate] %s conflict at curve %d%s',
+      'merge',
+      2,
+      ''
     );
     log.mockRestore();
     warn.mockRestore();
@@ -274,7 +372,7 @@ describe('CpuSimulationEngine temporary intersection visualization', () => {
 
     expect(renderer.drawPoint).toHaveBeenCalledTimes(1);
     expect(candidate.distance).toBe(1);
-    expect(candidate.primaryCurveId).toBe(1);
+    expect(candidate.curveId).toBe(1);
     log.mockRestore();
   });
 
@@ -356,14 +454,13 @@ describe('CpuSimulationEngine temporary intersection visualization', () => {
     expect(Array.from(candidate.positiveRegionCrossings)).toEqual([1, 1]);
     expect(Array.from(candidate.negativeRegionCrossings)).toEqual([0, 1]);
     expect(Array.from(candidate.regionCrossingMask)).toEqual([1, 0]);
-    expect(candidate.primaryKind).toBeNull();
-    expect(candidate.primaryCurveId).toBeNull();
-    expect(candidate.u).toBeNull();
-    expect(candidate.sigma).toBeNull();
-    expect(candidate.undefinedBehavior).toBe(true);
-    expect(candidate.discardRay).toBe(false);
+    expect(candidate.curveId).toBe(0);
+    expect(candidate.u).toBe(0.5);
+    expect(candidate.sigma).toBe(1);
+    expect(candidate.conflictType).toBe(2);
+    expect(candidate.conflictCurveId).toBe(1);
     expect(renderer.drawPoint).toHaveBeenCalledTimes(1);
-    expect(renderer.drawSegment).toHaveBeenCalledTimes(1);
+    expect(renderer.drawSegment).toHaveBeenCalledTimes(2);
     expect(ctx.fill).toHaveBeenCalledWith('evenodd');
     log.mockRestore();
     warn.mockRestore();
