@@ -109,6 +109,7 @@ function getBvhOptions(engineConfig) {
     lineLeafSize: engineConfig.bvh.lineLeafSize,
     arcLeafSize: engineConfig.bvh.arcLeafSize,
     cubicBezierLeafSize: engineConfig.bvh.cubicBezierLeafSize,
+    directPrimitiveThreshold: engineConfig.bvh.directPrimitiveThreshold,
     consecutiveLocalityFactor: engineConfig.bvh.consecutiveLocalityFactor,
     maxGroupExtent: engineConfig.bvh.maxGroupExtent,
   };

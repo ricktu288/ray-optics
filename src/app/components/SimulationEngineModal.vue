@@ -193,6 +193,7 @@ const COMMON_CONFIG_SECTIONS = [
       { key: 'lineLeafSize', path: ['bvh', 'lineLeafSize'], min: 1, step: 1, integer: true, hasInfo: true },
       { key: 'arcLeafSize', path: ['bvh', 'arcLeafSize'], min: 1, step: 1, integer: true, hasInfo: true },
       { key: 'cubicBezierLeafSize', path: ['bvh', 'cubicBezierLeafSize'], min: 1, step: 1, integer: true, hasInfo: true },
+      { key: 'directPrimitiveThreshold', path: ['bvh', 'directPrimitiveThreshold'], min: 0, step: 1, integer: true, hasInfo: true },
       { key: 'consecutiveLocalityFactor', path: ['bvh', 'consecutiveLocalityFactor'], min: 0, step: 'any', hasInfo: true },
       { key: 'maxGroupExtent', path: ['bvh', 'maxGroupExtent'], min: 0, step: 'any', positive: true, hasInfo: true }
     ]

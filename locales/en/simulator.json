@@ -753,6 +753,10 @@
           "title": "Cubic Bézier curves per leaf",
           "description": "Target maximum number of cubic Bézier curves in a BVH leaf when it contains only cubic Bézier curves. Larger values build faster and use fewer boxes, but may require each ray to test more curves."
         },
+        "directPrimitiveThreshold": {
+          "title": "Direct-build primitive threshold",
+          "description": "Maximum number of primitive curves for which the BVH is built directly with recursive spatial splits. Larger inputs use consecutive grouping and Morton ordering. Higher values may improve ray traversal at the cost of more BVH build work. Set this to 0 to always use grouping and Morton ordering."
+        },
         "drawBounds": {
           "title": "Draw BVH bounds (for debugging)"
         },

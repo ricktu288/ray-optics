@@ -73,12 +73,13 @@ describe('primitive BVH', () => {
       lineLeafSize: 4,
       arcLeafSize: 2,
       cubicBezierLeafSize: 1,
+      directPrimitiveThreshold: 32,
       maxGroupExtent: 100,
       consecutiveLocalityFactor: 2
     });
   });
 
-  it('packs line segments up to the configured leaf size', () => {
+  it('uses leaf capacity directly without grouping a small input', () => {
     const tree = buildBvh([
       lineEntry('front', 0, 0, 8, 0, 'cell-front'),
       lineEntry('back', 0, 4, 8, 4, 'cell-back'),
@@ -91,6 +92,31 @@ describe('primitive BVH', () => {
       ['back', 'distant', 'front']
     ]);
   });
+
+  it('uses grouping when the direct primitive threshold is disabled', () => {
+    const tree = buildBvh([
+      lineEntry('front', 0, 0, 8, 0, 'cell-front'),
+      lineEntry('back', 0, 4, 8, 4, 'cell-back'),
+      lineEntry('distant', 1000, 0, 1008, 0, 'other')
+    ], {
+      directPrimitiveThreshold: 0,
+      maxGroupExtent: 2000
+    });
+
+    expect(getLeafEntryIds(tree)).toEqual([
+      ['distant'],
+      ['back', 'front']
+    ]);
+  });
+
+  it.each([-1, 1.5, Infinity])(
+    'rejects invalid direct primitive threshold %s',
+    directPrimitiveThreshold => {
+      expect(() => buildBvh([], { directPrimitiveThreshold })).toThrow(
+        'directPrimitiveThreshold must be a nonnegative integer.'
+      );
+    }
+  );
 
   it('propagates owner-kind masks from leaves to branches', () => {
     const entries = [
@@ -154,7 +180,7 @@ describe('primitive BVH', () => {
     expect(getLeafEntryIds(tree)).toEqual([['circle-a', 'circle-b']]);
   });
 
-  it('uses the configured maximum group extent to control spatial reordering', () => {
+  it('does not group a small input', () => {
     const entries = [
       lineEntry(0, 0, 0, 10, 0),
       lineEntry(1, 100, 0, 110, 0),
@@ -163,19 +189,21 @@ describe('primitive BVH', () => {
     ];
 
     const smallGroups = buildBvh(entries, {
+      lineLeafSize: 1,
       maxGroupExtent: 20,
       consecutiveLocalityFactor: 1000
     });
     const oneGroup = buildBvh(entries, {
+      lineLeafSize: 1,
       maxGroupExtent: 1000,
       consecutiveLocalityFactor: 1000
     });
 
     expect(smallGroups.entries.map(entry => entry.id)).toEqual([0, 2, 1, 3]);
-    expect(oneGroup.entries.map(entry => entry.id)).toEqual([0, 1, 2, 3]);
+    expect(oneGroup.entries.map(entry => entry.id)).toEqual([0, 2, 1, 3]);
   });
 
-  it('can pack curves into one leaf across consecutive-group boundaries', () => {
+  it('can pack across would-be group boundaries in a small input', () => {
     const tree = buildBvh([
       lineEntry('first', 0, 0, 200, 0),
       lineEntry('second', 0, 0, 200, 0)
@@ -228,7 +256,7 @@ describe('primitive BVH', () => {
     ]);
   });
 
-  it('assigns depth from the final Morton root', () => {
+  it('assigns depth from the final group hierarchy root', () => {
     const tree = buildBvh(Array.from(
       { length: 9 },
       (_, index) => lineEntry(index, index * 100, 0, index * 100 + 1, 0)
@@ -240,5 +268,48 @@ describe('primitive BVH', () => {
       expect(tree.nodes[node.left].depth).toBe(node.depth + 1);
       expect(tree.nodes[node.right].depth).toBe(node.depth + 1);
     }
+  });
+
+  it('uses the Morton hierarchy above the configured direct primitive threshold', () => {
+    const tree = buildBvh(Array.from(
+      { length: 40 },
+      (_, index) => lineEntry(
+        index,
+        index % 2 === 0 ? index * 100 : -index * 100,
+        index * 37,
+        index % 2 === 0 ? index * 100 + 1 : -index * 100 + 1,
+        index * 37
+      )
+    ), {
+      lineLeafSize: 1,
+      directPrimitiveThreshold: 32,
+      maxGroupExtent: 10
+    });
+
+    expect(tree.entries).toHaveLength(40);
+    expect(tree.nodes[tree.root].count).toBe(0);
+    expect(getLeafEntryIds(tree)).toHaveLength(40);
+  });
+
+  it('respects leaf size inside a large-input consecutive group', () => {
+    const tree = buildBvh(Array.from(
+      { length: 40 },
+      (_, index) => lineEntry(
+        index,
+        index,
+        0,
+        index + 0.5,
+        0
+      )
+    ), {
+      lineLeafSize: 4,
+      maxGroupExtent: 1000
+    });
+    const leafCounts = tree.nodes
+      .filter(node => node.count > 0)
+      .map(node => node.count);
+
+    expect(leafCounts).toHaveLength(10);
+    expect(Math.max(...leafCounts)).toBe(4);
   });
 });

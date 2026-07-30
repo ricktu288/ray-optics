@@ -20,6 +20,7 @@ const COMMON_BVH_CONFIG = Object.freeze({
   lineLeafSize: DEFAULT_BVH_OPTIONS.lineLeafSize,
   arcLeafSize: DEFAULT_BVH_OPTIONS.arcLeafSize,
   cubicBezierLeafSize: DEFAULT_BVH_OPTIONS.cubicBezierLeafSize,
+  directPrimitiveThreshold: DEFAULT_BVH_OPTIONS.directPrimitiveThreshold,
   consecutiveLocalityFactor: DEFAULT_BVH_OPTIONS.consecutiveLocalityFactor,
   maxGroupExtent: DEFAULT_BVH_OPTIONS.maxGroupExtent,
   drawBounds: false,

@@ -24,6 +24,7 @@ export const DEFAULT_BVH_OPTIONS = Object.freeze({
   lineLeafSize: 4,
   arcLeafSize: 2,
   cubicBezierLeafSize: 1,
+  directPrimitiveThreshold: 32,
   maxGroupExtent: 100,
   consecutiveLocalityFactor: 2
 });
@@ -56,13 +57,13 @@ export function getCurveBounds(curve, { numericEpsilon }) {
 /**
  * Build a BVH for primitive-curve entries.
  *
- * Spatially consecutive entries are first grouped without regard to their
- * originating scene object. The groups are arranged by Morton order without
- * changing the order inside each group, then flattened into one sequence. That
- * sequence is packed into leaves using the configured leaf size for each curve
- * kind, and the leaves are connected by a balanced hierarchy. A group ends
- * when two adjacent curve bounds are no longer local or when its bounds exceed
- * the configured maximum extent.
+ * Small input sets are built directly by recursive longest-axis weighted
+ * median splits. Larger input sets are first divided into spatially
+ * consecutive groups without regard to their originating scene object. Each
+ * group is packed into leaves using the configured leaf size for each curve
+ * kind, and the group roots are connected by a Morton hierarchy. A group ends
+ * when adjacent curve bounds are no longer local or its bounds exceed the
+ * configured maximum extent.
  *
  * Prepared entries provide `geometry` and `bounds`, avoiding duplicate curve
  * preparation. Raw `curve` entries remain accepted by this standalone builder.
@@ -72,6 +73,7 @@ export function getCurveBounds(curve, { numericEpsilon }) {
  * @param {number} [options.lineLeafSize=4] - Target number of ordinary or smooth line segments in a homogeneous leaf.
  * @param {number} [options.arcLeafSize=2] - Target number of circular arcs or circles in a homogeneous leaf.
  * @param {number} [options.cubicBezierLeafSize=1] - Target number of cubic Bézier curves in a homogeneous leaf.
+ * @param {number} [options.directPrimitiveThreshold=32] - Maximum primitive count for building the hierarchy directly.
  * @param {number} [options.maxGroupExtent=100] - Maximum group width or height in scene coordinates.
  * @param {number} [options.consecutiveLocalityFactor=2] - Maximum adjacent AABB gap, relative to the larger curve extent.
  * @param {number} [options.numericEpsilon] - Relative arithmetic epsilon required when an entry contains an unprepared `curve`.
@@ -81,6 +83,7 @@ export function buildBvh(curveEntries, {
   lineLeafSize = DEFAULT_BVH_OPTIONS.lineLeafSize,
   arcLeafSize = DEFAULT_BVH_OPTIONS.arcLeafSize,
   cubicBezierLeafSize = DEFAULT_BVH_OPTIONS.cubicBezierLeafSize,
+  directPrimitiveThreshold = DEFAULT_BVH_OPTIONS.directPrimitiveThreshold,
   maxGroupExtent = DEFAULT_BVH_OPTIONS.maxGroupExtent,
   consecutiveLocalityFactor = DEFAULT_BVH_OPTIONS.consecutiveLocalityFactor,
   numericEpsilon
@@ -91,6 +94,12 @@ export function buildBvh(curveEntries, {
   validateLeafSize(lineLeafSize, 'lineLeafSize');
   validateLeafSize(arcLeafSize, 'arcLeafSize');
   validateLeafSize(cubicBezierLeafSize, 'cubicBezierLeafSize');
+  if (
+    !Number.isInteger(directPrimitiveThreshold) ||
+    directPrimitiveThreshold < 0
+  ) {
+    throw new RangeError('directPrimitiveThreshold must be a nonnegative integer.');
+  }
   if (!Number.isFinite(maxGroupExtent) || maxGroupExtent <= 0) {
     throw new RangeError('maxGroupExtent must be positive and finite.');
   }
@@ -171,75 +180,113 @@ export function buildBvh(curveEntries, {
     return addParent(left, right);
   };
 
-  const sceneBounds = getItemRangeBounds(items, 0, items.length);
-  const sceneExtent = getBoundsExtent(sceneBounds) || 1;
-  const sceneEpsilon = sceneExtent * SCENE_EPSILON_RATIO;
-  const groups = [];
-  let groupStart = 0;
-  let groupBounds = items[0].bounds;
+  const buildIndexGroup = (startIndex, endIndex) => {
+    const leafRoots = [];
+    let leafStart = startIndex;
+    let accumulatedLeafWeight = 0;
+    let leafBounds = null;
+    for (let index = startIndex; index < endIndex; index++) {
+      const nextLeafWeight = items[index].leafWeight;
+      if (
+        index > leafStart &&
+        accumulatedLeafWeight + nextLeafWeight >
+          1 + LEAF_WEIGHT_EPSILON
+      ) {
+        leafRoots.push(addLeaf(leafStart, index, leafBounds));
+        leafStart = index;
+        accumulatedLeafWeight = 0;
+        leafBounds = null;
+      }
+      accumulatedLeafWeight += nextLeafWeight;
+      leafBounds = leafBounds
+        ? combineBounds(leafBounds, items[index].bounds)
+        : items[index].bounds;
+    }
+    leafRoots.push(addLeaf(leafStart, endIndex, leafBounds));
+    return buildBalancedRootRange(leafRoots, 0, leafRoots.length);
+  };
 
-  for (let index = 1; index < items.length; index++) {
-    const candidateBounds = combineBounds(groupBounds, items[index].bounds);
-    if (
-      !boundsAreLocallyConsecutive(
-        items[index - 1].bounds,
-        items[index].bounds,
-        consecutiveLocalityFactor,
-        sceneEpsilon
-      ) ||
-      getBoundsExtent(candidateBounds) > maxGroupExtent
-    ) {
-      groups.push(createCurveGroup(
-        groupStart,
-        index,
+  const buildDirectItemRange = (startIndex, endIndex) => {
+    const bounds = getItemRangeBounds(items, startIndex, endIndex);
+    let totalLeafWeight = 0;
+    for (let index = startIndex; index < endIndex; index++) {
+      totalLeafWeight += items[index].leafWeight;
+    }
+    if (totalLeafWeight <= 1 + LEAF_WEIGHT_EPSILON) {
+      return addLeaf(startIndex, endIndex, bounds);
+    }
+
+    const sortByX =
+      bounds.maxX - bounds.minX >= bounds.maxY - bounds.minY;
+    const sortedItems = items.slice(startIndex, endIndex).sort((a, b) => {
+      const firstCentroid = sortByX
+        ? a.bounds.minX + a.bounds.maxX
+        : a.bounds.minY + a.bounds.maxY;
+      const secondCentroid = sortByX
+        ? b.bounds.minX + b.bounds.maxX
+        : b.bounds.minY + b.bounds.maxY;
+      return firstCentroid - secondCentroid;
+    });
+    items.splice(startIndex, sortedItems.length, ...sortedItems);
+
+    const targetLeftWeight = totalLeafWeight * 0.5;
+    let leftWeight = 0;
+    let splitIndex = startIndex + 1;
+    for (let index = startIndex; index < endIndex - 1; index++) {
+      leftWeight += items[index].leafWeight;
+      splitIndex = index + 1;
+      if (leftWeight >= targetLeftWeight) break;
+    }
+    const left = buildDirectItemRange(startIndex, splitIndex);
+    const right = buildDirectItemRange(splitIndex, endIndex);
+    return addParent(left, right);
+  };
+
+  let root;
+  if (items.length <= directPrimitiveThreshold) {
+    root = buildDirectItemRange(0, items.length);
+  } else {
+    const sceneBounds = getItemRangeBounds(items, 0, items.length);
+    const sceneExtent = getBoundsExtent(sceneBounds) || 1;
+    const sceneEpsilon = sceneExtent * SCENE_EPSILON_RATIO;
+    const groups = [];
+    let groupStart = 0;
+    let groupBounds = items[0].bounds;
+
+    for (let index = 1; index < items.length; index++) {
+      const candidateBounds = combineBounds(
         groupBounds,
-        groups.length
-      ));
-      groupStart = index;
-      groupBounds = items[index].bounds;
-    } else {
-      groupBounds = candidateBounds;
+        items[index].bounds
+      );
+      if (
+        !boundsAreLocallyConsecutive(
+          items[index - 1].bounds,
+          items[index].bounds,
+          consecutiveLocalityFactor,
+          sceneEpsilon
+        ) ||
+        getBoundsExtent(candidateBounds) > maxGroupExtent
+      ) {
+        groups.push(createCurveGroup(
+          groupStart,
+          index,
+          groupBounds,
+          groups.length
+        ));
+        groupStart = index;
+        groupBounds = items[index].bounds;
+      } else {
+        groupBounds = candidateBounds;
+      }
     }
+    groups.push(createCurveGroup(
+      groupStart,
+      items.length,
+      groupBounds,
+      groups.length
+    ));
+    root = buildMortonGroupHierarchy(groups, buildIndexGroup, addParent);
   }
-  groups.push(createCurveGroup(
-    groupStart,
-    items.length,
-    groupBounds,
-    groups.length
-  ));
-
-  sortByMortonCode(groups);
-  const spatiallyOrderedItems = [];
-  for (const group of groups) {
-    for (let index = group.start; index < group.end; index++) {
-      spatiallyOrderedItems.push(items[index]);
-    }
-  }
-  items = spatiallyOrderedItems;
-
-  const leafRoots = [];
-  let leafStart = 0;
-  let accumulatedLeafWeight = 0;
-  let leafBounds = null;
-  for (let index = 0; index < items.length; index++) {
-    const nextLeafWeight = items[index].leafWeight;
-    if (
-      index > leafStart &&
-      accumulatedLeafWeight + nextLeafWeight > 1 + LEAF_WEIGHT_EPSILON
-    ) {
-      leafRoots.push(addLeaf(leafStart, index, leafBounds));
-      leafStart = index;
-      accumulatedLeafWeight = 0;
-      leafBounds = null;
-    }
-    accumulatedLeafWeight += nextLeafWeight;
-    leafBounds = leafBounds
-      ? combineBounds(leafBounds, items[index].bounds)
-      : items[index].bounds;
-  }
-  leafRoots.push(addLeaf(leafStart, items.length, leafBounds));
-
-  const root = buildBalancedRootRange(leafRoots, 0, leafRoots.length);
   assignNodeDepths(root, nodes);
 
   return {
@@ -247,6 +294,21 @@ export function buildBvh(curveEntries, {
     nodes,
     entries: orderedEntries
   };
+}
+
+function buildMortonGroupHierarchy(groups, buildGroup, addParent) {
+  sortByMortonCode(groups);
+
+  const buildRange = (startIndex, endIndex) => {
+    if (endIndex - startIndex === 1) {
+      return buildGroup(groups[startIndex].start, groups[startIndex].end);
+    }
+    const midpoint = findMortonBoundary(groups, startIndex, endIndex);
+    const left = buildRange(startIndex, midpoint);
+    const right = buildRange(midpoint, endIndex);
+    return addParent(left, right);
+  };
+  return buildRange(0, groups.length);
 }
 
 function getOwnerKindMask(ownerKind) {
@@ -264,6 +326,7 @@ function createCurveGroup(start, end, bounds, order) {
   return {
     start,
     end,
+    bounds,
     order,
     centroidX: (bounds.minX + bounds.maxX) * 0.5,
     centroidY: (bounds.minY + bounds.maxY) * 0.5,
@@ -311,6 +374,31 @@ function expandMortonBits(value) {
   expanded = (expanded | expanded << 2) & 0x33333333;
   expanded = (expanded | expanded << 1) & 0x55555555;
   return expanded;
+}
+
+function findMortonBoundary(items, startIndex, endIndex) {
+  const firstCode = items[startIndex].mortonCode;
+  const lastCode = items[endIndex - 1].mortonCode;
+  if (firstCode === lastCode) {
+    return startIndex + Math.floor((endIndex - startIndex) * 0.5);
+  }
+
+  const commonPrefixLength = Math.clz32(firstCode ^ lastCode);
+  let splitIndex = startIndex;
+  let step = endIndex - startIndex;
+  do {
+    step = Math.floor((step + 1) * 0.5);
+    const candidateIndex = splitIndex + step;
+    if (candidateIndex < endIndex - 1) {
+      const candidatePrefixLength = Math.clz32(
+        firstCode ^ items[candidateIndex].mortonCode
+      );
+      if (candidatePrefixLength > commonPrefixLength) {
+        splitIndex = candidateIndex;
+      }
+    }
+  } while (step > 1);
+  return splitIndex + 1;
 }
 
 function boundsAreLocallyConsecutive(
