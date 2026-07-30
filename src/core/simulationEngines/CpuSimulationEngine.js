@@ -17,12 +17,12 @@
 import CanvasRenderer from '../CanvasRenderer.js';
 import FloatColorRenderer from '../FloatColorRenderer.js';
 import { createDagClosureEvaluator } from '../formula/dag-evaluator.js';
+import { traverseBvhForInteraction } from '../primitive/bvhTraversal.js';
 import {
   createInteractionCandidate,
   createInteractionCandidateContext,
   finalizeInteractionCandidate,
-  INTERSECTION_CONFLICT_NORMAL,
-  updateInteractionCandidate
+  INTERSECTION_CONFLICT_NORMAL
 } from '../primitive/interactionCandidate.js';
 import {
   validateNumericEpsilon
@@ -125,11 +125,12 @@ class CpuSimulationEngine {
       viewport,
       colorMode,
       beginRenderer: options => this.beginRenderer(options),
-      findCandidate: (description, ray) =>
+      findCandidate: (description, ray, traversalDiagnostics) =>
         findFirstRayInteractionCandidate(
           description,
           ray,
-          this.numericEpsilon
+          this.numericEpsilon,
+          traversalDiagnostics
         ),
       conflictNames: CONFLICT_NAMES,
       normalConflictType: INTERSECTION_CONFLICT_NORMAL
@@ -189,16 +190,25 @@ class CpuSimulationEngine {
   }
 }
 
-function findFirstRayInteractionCandidate(description, ray, numericEpsilon) {
+function findFirstRayInteractionCandidate(
+  description,
+  ray,
+  numericEpsilon,
+  traversalDiagnostics
+) {
   const context = createInteractionCandidateContext(
     description,
     numericEpsilon
   );
   const candidate = createInteractionCandidate(description.regions.length);
 
-  for (let curveId = 0; curveId < description.curves.length; curveId++) {
-    updateInteractionCandidate(candidate, context, curveId, ray);
-  }
+  traverseBvhForInteraction(
+    description,
+    ray,
+    candidate,
+    context,
+    traversalDiagnostics
+  );
   return finalizeInteractionCandidate(candidate, context, ray);
 }
 

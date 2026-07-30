@@ -265,9 +265,8 @@ class PrimitiveBasedSimulator {
         const isHighlighted = this.scene.editor?.isObjHighlighted(index) || false;
         obj.draw(this.canvasRendererAboveLight, true, isHighlighted);
       }
-      if (this.drawBvh) {
-        this.drawBvhBounds(this.canvasRendererAboveLight);
-      }
+      // The owner-kind-colored BVH overlay is temporarily disabled while the
+      // CPU first-ray demo draws traversal-result colors on the light layer.
       this.drawExternalHighlightPoints(this.canvasRendererAboveLight);
       this.drawObserver();
     }

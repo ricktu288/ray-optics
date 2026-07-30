@@ -15,6 +15,11 @@
  */
 
 import { evaluatePreparedCurve } from '../primitive/curveGeometry.js';
+import {
+  BVH_NODE_MISSED,
+  BVH_NODE_PRUNED,
+  BVH_NODE_TESTED
+} from '../primitive/bvhTraversal.js';
 
 const RAY_COLOR = [1, 0.75, 0.1, 0.8];
 const REGION_FILL_COLOR = [0.15, 0.65, 1, 0.18];
@@ -22,6 +27,10 @@ const REGION_OUTLINE_COLOR = [0.15, 0.65, 1, 0.45];
 const SELECTED_CURVE_COLOR = [1, 0.2, 0.75, 1];
 const HIT_COLOR = [1, 0.15, 0.1, 1];
 const NORMAL_COLOR = [0.15, 0.75, 1, 1];
+const TESTED_BOUNDS_COLOR = [0.15, 0.9, 0.35, 0.55];
+const MISSED_BOUNDS_COLOR = [1, 0.2, 0.2, 0.45];
+const PRUNED_BOUNDS_COLOR = [0.75, 0.25, 1, 0.7];
+const TESTED_CURVE_COLOR = [1, 0.6, 0.05, 0.95];
 
 /**
  * Temporary visual inspection path for the first source ray. This module is
@@ -59,7 +68,12 @@ export function drawTemporaryFirstRayVisualization({
   }
 
   const description = preparedScene.description;
-  const candidate = findCandidate(description, ray);
+  const traversalDiagnostics = {};
+  const candidate = findCandidate(
+    description,
+    ray,
+    traversalDiagnostics
+  );
 
   if (candidate) {
     for (let regionId = 0;
@@ -73,6 +87,15 @@ export function drawTemporaryFirstRayVisualization({
         REGION_OUTLINE_COLOR
       );
     }
+  }
+
+  drawTraversalDiagnostics(
+    renderer,
+    description,
+    traversalDiagnostics
+  );
+
+  if (candidate) {
     drawPrimitiveCurve(
       renderer,
       description.curves[candidate.curveId].geometry,
@@ -104,6 +127,61 @@ export function drawTemporaryFirstRayVisualization({
   }
   renderer.flush?.();
   return candidate;
+}
+
+function drawTraversalDiagnostics(renderer, description, diagnostics) {
+  if (!diagnostics.nodeStates) return;
+  const nodes = description.bvh.nodes;
+  for (let nodeIndex = 0; nodeIndex < nodes.length; nodeIndex++) {
+    const state = diagnostics.nodeStates[nodeIndex];
+    let color;
+    switch (state) {
+      case BVH_NODE_TESTED:
+        color = TESTED_BOUNDS_COLOR;
+        break;
+      case BVH_NODE_MISSED:
+        color = MISSED_BOUNDS_COLOR;
+        break;
+      case BVH_NODE_PRUNED:
+        color = PRUNED_BOUNDS_COLOR;
+        break;
+      default:
+        continue;
+    }
+    drawBounds(
+      renderer,
+      nodes[nodeIndex].bounds,
+      color,
+      Math.max(0.75, 2.5 / (nodes[nodeIndex].depth + 1))
+    );
+  }
+
+  for (const curveId of diagnostics.testedCurveIds) {
+    drawPrimitiveCurve(
+      renderer,
+      description.curves[curveId].geometry,
+      TESTED_CURVE_COLOR,
+      2
+    );
+  }
+  console.log(
+    '[Primitive CPU BVH] green=tested box, red=missed box, purple=distance-pruned box, orange=tested curve'
+  );
+}
+
+function drawBounds(renderer, bounds, color, lineWidth) {
+  const corners = [
+    { x: bounds.minX, y: bounds.minY },
+    { x: bounds.maxX, y: bounds.minY },
+    { x: bounds.maxX, y: bounds.maxY },
+    { x: bounds.minX, y: bounds.maxY }
+  ];
+  for (let index = 0; index < corners.length; index++) {
+    renderer.drawSegment({
+      p1: corners[index],
+      p2: corners[(index + 1) % corners.length]
+    }, color, false, [], lineWidth);
+  }
 }
 
 function drawCandidate(
