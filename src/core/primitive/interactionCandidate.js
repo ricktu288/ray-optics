@@ -55,11 +55,15 @@ export const INTERSECTION_CONFLICT_NORMAL = 3;
  * loop or acceleration-structure traversal.
  *
  * @param {number} regionCount
+ * @param {number} [maximumDistance=Infinity] - Initial search limit.
  * @returns {InteractionCandidate}
  */
-export function createInteractionCandidate(regionCount) {
+export function createInteractionCandidate(
+  regionCount,
+  maximumDistance = Infinity
+) {
   return {
-    s: Infinity,
+    s: maximumDistance,
     positionTolerance: 0,
     normalX: 0,
     normalY: 0,
@@ -79,11 +83,13 @@ export function createInteractionCandidate(regionCount) {
  *
  * @param {Object} description
  * @param {number} numericEpsilon
+ * @param {number} [maximumDistance=Infinity]
  * @returns {Object}
  */
 export function createInteractionCandidateContext(
   description,
-  numericEpsilon
+  numericEpsilon,
+  maximumDistance = Infinity
 ) {
   validateNumericEpsilon(numericEpsilon);
   const configuredTolerances = description.numericalTolerances ?? {};
@@ -94,6 +100,7 @@ export function createInteractionCandidateContext(
   return {
     description,
     numericEpsilon,
+    maximumDistance,
     forwardDistance: configuredTolerances.forwardDistance ?? 0,
     surfaceMerging: configuredTolerances.surfaceMerging ?? 0,
     maximumNormalChordDistanceSquared:
@@ -142,6 +149,8 @@ export function updateInteractionCandidate(
   )) {
     return;
   }
+
+  if (hit.s > context.maximumDistance) return;
 
   const frontSideOnly =
     curve.ownerKind !== 'region' && !curve.twoSided;

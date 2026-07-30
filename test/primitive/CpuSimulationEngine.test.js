@@ -86,8 +86,12 @@ describe('CpuSimulationEngine temporary first-ray intersection', () => {
     const candidate = engine.drawFirstRayIntersections({ preparedScene });
 
     expect(preparedScene.description).toBe(processedScene);
-    expect(renderer.drawRay).toHaveBeenCalledTimes(1);
-    expect(renderer.drawSegment).not.toHaveBeenCalled();
+    expect(renderer.drawRay).not.toHaveBeenCalled();
+    expect(renderer.drawSegment).toHaveBeenCalledTimes(1);
+    expect(renderer.drawSegment.mock.calls[0][0]).toEqual({
+      p1: { x: 0, y: 0 },
+      p2: { x: 10, y: 0 }
+    });
     expect(renderer.drawPoint).not.toHaveBeenCalled();
     expect(Array.from(diagnostics.testedCurves)).toEqual([1]);
     expect(candidate).toMatchObject({
@@ -201,7 +205,7 @@ describe('CpuSimulationEngine temporary first-ray intersection', () => {
     const candidate = engine.drawFirstRayIntersections({ preparedScene });
 
     expect(renderer.drawPoint).not.toHaveBeenCalled();
-    expect(renderer.drawSegment).not.toHaveBeenCalled();
+    expect(renderer.drawSegment).toHaveBeenCalledTimes(1);
     expect(candidate).toMatchObject({
       curveId: 0,
       conflictType: 3,
@@ -466,7 +470,7 @@ describe('CpuSimulationEngine temporary first-ray intersection', () => {
     expect(candidate.conflictType).toBe(2);
     expect(candidate.conflictCurveId).toBe(1);
     expect(renderer.drawPoint).not.toHaveBeenCalled();
-    expect(renderer.drawSegment).not.toHaveBeenCalled();
+    expect(renderer.drawSegment).toHaveBeenCalledTimes(1);
     expect(ctx.fill).not.toHaveBeenCalled();
     log.mockRestore();
     warn.mockRestore();

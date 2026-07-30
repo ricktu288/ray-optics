@@ -52,6 +52,47 @@ function createVerticalSurface(curveId, x) {
 }
 
 describe('interaction BVH traversal', () => {
+  it('prunes against the initial candidate distance before finding a curve', () => {
+    const curves = [createVerticalSurface(0, 10)];
+    const builtBvh = buildBvh(curves, {
+      numericEpsilon: FLOAT32_EPSILON
+    });
+    const description = {
+      numericalTolerances: {},
+      curves,
+      regions: [],
+      bvh: {
+        root: builtBvh.root,
+        nodes: builtBvh.nodes,
+        curveIds: Uint32Array.of(0)
+      }
+    };
+    const diagnostics = attachCpuBvhTraversalDiagnostics(description);
+    const context = createInteractionCandidateContext(
+      description,
+      FLOAT32_EPSILON
+    );
+    const candidate = createInteractionCandidate(0, 5);
+
+    traverseBvhForInteraction(
+      description,
+      {
+        originX: 0,
+        originY: 0,
+        directionX: 1,
+        directionY: 0,
+        wavelength: 540
+      },
+      candidate,
+      context,
+      diagnostics
+    );
+
+    expect(candidate).toMatchObject({ s: 5, curveId: -1 });
+    expect(Array.from(diagnostics.testedCurves)).toEqual([0]);
+    expect(diagnostics.nodeStates[builtBvh.root]).toBe(BVH_NODE_PRUNED);
+  });
+
   it('visits the nearer child first and prunes a separated farther child', () => {
     const curves = [
       createVerticalSurface(0, 2),

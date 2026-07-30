@@ -76,7 +76,7 @@ export function traverseBvhForInteraction(
   while (stack.length > 0) {
     const near = stack.pop();
     const nodeIndex = stack.pop();
-    if (candidate.curveId >= 0 && near > candidate.s) {
+    if (near > candidate.s) {
       setNodeState(diagnostics, nodeIndex, BVH_NODE_PRUNED);
       continue;
     }

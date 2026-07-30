@@ -58,6 +58,74 @@ const ray = {
 };
 
 describe('interaction candidate updates', () => {
+  it('uses the initial candidate distance as the first-hit limit', () => {
+    const description = createDescription(true);
+    const beforeSurfaceContext = createInteractionCandidateContext(
+      description,
+      FLOAT32_EPSILON,
+      4
+    );
+    const atSurfaceContext = createInteractionCandidateContext(
+      description,
+      FLOAT32_EPSILON,
+      5
+    );
+    const beforeSurface = createInteractionCandidate(0, 4);
+    const atSurface = createInteractionCandidate(0, 5);
+
+    updateInteractionCandidate(
+      beforeSurface,
+      beforeSurfaceContext,
+      0,
+      ray
+    );
+    updateInteractionCandidate(atSurface, atSurfaceContext, 0, ray);
+
+    expect(beforeSurface).toMatchObject({
+      s: 4,
+      curveId: -1
+    });
+    expect(atSurface).toMatchObject({
+      s: 5,
+      curveId: 0
+    });
+  });
+
+  it('rejects merged hits beyond the original distance limit', () => {
+    const description = createDescription(true);
+    description.numericalTolerances.surfaceMerging = 0.001;
+    description.curves.push({
+      ...description.curves[0],
+      geometry: prepareCurve({
+        kind: 'lineSegment',
+        params: {
+          start: { x: 5.0005, y: -1 },
+          end: { x: 5.0005, y: 1 }
+        }
+      }, {
+        numericEpsilon: FLOAT32_EPSILON
+      }).geometry,
+      ownerId: 1
+    });
+    const maximumDistance = 5.00025;
+    const context = createInteractionCandidateContext(
+      description,
+      FLOAT32_EPSILON,
+      maximumDistance
+    );
+    const candidate = createInteractionCandidate(0, maximumDistance);
+
+    updateInteractionCandidate(candidate, context, 0, ray);
+    updateInteractionCandidate(candidate, context, 1, ray);
+
+    expect(candidate).toMatchObject({
+      s: 5,
+      curveId: 0,
+      conflictType: 0,
+      conflictCurveId: -1
+    });
+  });
+
   it('populates a two-sided candidate normal only when requested', () => {
     const description = createDescription(true);
     const context = createInteractionCandidateContext(

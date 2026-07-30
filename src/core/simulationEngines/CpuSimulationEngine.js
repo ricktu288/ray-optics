@@ -125,11 +125,12 @@ class CpuSimulationEngine {
       viewport,
       colorMode,
       beginRenderer: options => this.beginRenderer(options),
-      findCandidate: (description, ray) =>
+      findCandidate: (description, ray, maximumDistance) =>
         findFirstRayInteractionCandidate(
           description,
           ray,
           this.numericEpsilon,
+          maximumDistance,
           description.cpuBvhTraversalDiagnostics
         ),
       conflictNames: CONFLICT_NAMES,
@@ -194,13 +195,18 @@ function findFirstRayInteractionCandidate(
   description,
   ray,
   numericEpsilon,
+  maximumDistance,
   traversalDiagnostics
 ) {
   const context = createInteractionCandidateContext(
     description,
-    numericEpsilon
+    numericEpsilon,
+    maximumDistance
   );
-  const candidate = createInteractionCandidate(description.regions.length);
+  const candidate = createInteractionCandidate(
+    description.regions.length,
+    maximumDistance
+  );
 
   traverseBvhForInteraction(
     description,

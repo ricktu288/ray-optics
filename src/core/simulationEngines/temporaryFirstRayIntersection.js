@@ -15,6 +15,7 @@
  */
 
 const RAY_COLOR = [1, 0.75, 0.1, 0.8];
+const TEMPORARY_SEGMENT_LENGTH = 10;
 
 /**
  * Temporary first-ray path used until the CPU engine performs full tracing.
@@ -47,13 +48,19 @@ export function drawTemporaryFirstRay({
     return;
   }
 
-  const candidate = findCandidate(preparedScene.description, ray);
+  const maximumDistance =
+    TEMPORARY_SEGMENT_LENGTH * (viewport.lengthScale ?? 1);
+  const candidate = findCandidate(
+    preparedScene.description,
+    ray,
+    maximumDistance
+  );
   if (renderer) {
-    renderer.drawRay({
+    renderer.drawSegment({
       p1: { x: ray.originX, y: ray.originY },
       p2: {
-        x: ray.originX + ray.directionX,
-        y: ray.originY + ray.directionY
+        x: ray.originX + maximumDistance * ray.directionX,
+        y: ray.originY + maximumDistance * ray.directionY
       }
     }, RAY_COLOR);
     renderer.flush?.();
