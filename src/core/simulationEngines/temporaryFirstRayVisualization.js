@@ -118,8 +118,8 @@ function drawCandidate(
   const representativeCurve = description.curves[candidate.curveId];
   const discardRay = candidate.conflictType === normalConflictType;
   const point = {
-    x: ray.originX + candidate.distance * ray.directionX,
-    y: ray.originY + candidate.distance * ray.directionY
+    x: ray.originX + candidate.s * ray.directionX,
+    y: ray.originY + candidate.s * ray.directionY
   };
   const normalLength = 12 * lengthScale;
   renderer.drawSegment({
@@ -136,7 +136,7 @@ function drawCandidate(
     representativeCurve.geometry.kind,
     representativeCurve.ownerKind,
     representativeCurve.ownerId,
-    candidate.distance,
+    candidate.s,
     candidate.u,
     candidate.sigma,
     formatRegionIds(candidate.regionCrossingMask),

@@ -19,10 +19,9 @@ import {
   prepareCurve
 } from '../../src/core/primitive/curveGeometry.js';
 import {
-  intersectCurve as intersectCurveWithNumericEpsilon,
-  intersectCurveAll as intersectCurveAllWithNumericEpsilon,
-  intersectProcessedCurve as intersectProcessedCurveWithNumericEpsilon
-} from '../../src/core/primitive/intersections.js';
+  ensureCurveIntersectionNormal,
+  intersectCurve as intersectCurveGeometry
+} from '../../src/core/primitive/nearestIntersection.js';
 import { FLOAT32_EPSILON } from '../../src/core/primitive/numeric.js';
 
 function prepare(kind, params, options) {
@@ -37,14 +36,26 @@ function ray(originX, originY, directionX, directionY) {
 }
 
 function intersectCurve(geometry, inputRay, options = {}) {
-  return intersectCurveWithNumericEpsilon(geometry, inputRay, {
-    numericEpsilon: FLOAT32_EPSILON,
-    ...options
+  const numericEpsilon = options.numericEpsilon ?? FLOAT32_EPSILON;
+  const hit = intersectCurveGeometry(geometry, inputRay, {
+    ...options,
+    numericEpsilon
   });
+  if (!hit) return null;
+  return ensureCurveIntersectionNormal(
+    geometry,
+    inputRay,
+    hit,
+    { numericEpsilon }
+  );
 }
 
-function intersectCurveAll(geometry, inputRay, options = {}) {
-  return intersectCurveAllWithNumericEpsilon(geometry, inputRay, {
+function intersectCurveWithNumericEpsilon(
+  geometry,
+  inputRay,
+  options
+) {
+  return intersectCurveGeometry(geometry, inputRay, {
     numericEpsilon: FLOAT32_EPSILON,
     ...options
   });
@@ -56,15 +67,21 @@ function intersectProcessedCurve(
   wavelength,
   options = {}
 ) {
-  return intersectProcessedCurveWithNumericEpsilon(
-    processedCurve,
+  const filter = processedCurve.filter;
+  const inFilterInterval = !filter ||
+    Math.abs(wavelength - filter.wavelength) <= filter.bandwidth;
+  const filterPasses = !filter ||
+    (filter.invert ? !inFilterInterval : inFilterInterval);
+  if (!filterPasses) return null;
+  const hit = intersectCurve(
+    processedCurve.geometry,
     inputRay,
-    wavelength,
-    {
-      numericEpsilon: FLOAT32_EPSILON,
-      ...options
-    }
+    options
   );
+  if (!hit) return null;
+  const frontSideOnly =
+    processedCurve.ownerKind !== 'region' && !processedCurve.twoSided;
+  return frontSideOnly && hit.sigma !== 1 ? null : hit;
 }
 
 function scalePoint(point, scale, offsetX, offsetY) {
@@ -189,14 +206,49 @@ function createTransverseRayThroughCurve(
   return createRayDirectedToPoint(origin, target, numericEpsilon);
 }
 
+function createTransverseRayThroughExtendedCurve(
+  geometry,
+  u,
+  scale,
+  numericEpsilon
+) {
+  const target = evaluatePreparedCurve(geometry, u);
+  const secantStart = evaluatePreparedCurve(geometry, u - 1e-5);
+  const secantEnd = evaluatePreparedCurve(geometry, u + 1e-5);
+  const tangentX = secantEnd.x - secantStart.x;
+  const tangentY = secantEnd.y - secantStart.y;
+  const tangentLength = Math.hypot(tangentX, tangentY);
+  const origin = {
+    x: target.x + 2 * scale * tangentY / tangentLength,
+    y: target.y - 2 * scale * tangentX / tangentLength
+  };
+  return createRayDirectedToPoint(origin, target, numericEpsilon);
+}
+
 describe('prepared curve intersections', () => {
-  it('returns line distance, native parameter, adjusted normal, and side', () => {
+  it('calculates line distance/parameter before normal/side', () => {
     const geometry = prepare('lineSegment', {
       start: { x: 0, y: 0 },
       end: { x: 2, y: 0 }
     });
-    const hit = intersectCurve(geometry, ray(1, 2, 0, -1));
+    const inputRay = ray(1, 2, 0, -1);
+    const hit = intersectCurveGeometry(geometry, inputRay, {
+      numericEpsilon: FLOAT32_EPSILON
+    });
 
+    expect(hit).toEqual({
+      s: 2,
+      u: 0.5,
+      normalX: 0,
+      normalY: 0,
+      sigma: 0
+    });
+    ensureCurveIntersectionNormal(
+      geometry,
+      inputRay,
+      hit,
+      { numericEpsilon: FLOAT32_EPSILON }
+    );
     expect(hit.s).toBeCloseTo(2);
     expect(hit.u).toBeCloseTo(0.5);
     expect(hit.normalX).toBeCloseTo(0);
@@ -220,7 +272,7 @@ describe('prepared curve intersections', () => {
     expect(hit.sigma).toBe(1);
   });
 
-  it('uses geometric orientation for a smooth line crossing side', () => {
+  it('uses the interpolated smooth normal for crossing side', () => {
     const geometry = prepare('smoothLineSegment', {
       start: { x: 0, y: 0 },
       end: { x: 10, y: 0 },
@@ -230,12 +282,12 @@ describe('prepared curve intersections', () => {
     const hit = intersectCurve(geometry, ray(6, -0.1, -1, 0.1));
 
     expect(hit.u).toBeCloseTo(0.5);
-    expect(hit.sigma).toBe(-1);
+    expect(hit.sigma).toBe(1);
     expect(hit.normalX).toBeGreaterThan(0);
     expect(hit.normalY).toBeGreaterThan(0);
   });
 
-  it('uses endpoint caps to close a sub-f32 gap between connected pieces', () => {
+  it('extends a line parameter interval across a sub-f32 junction gap', () => {
     const first = prepare('lineSegment', {
       start: { x: 0, y: 0 },
       end: { x: 1, y: 0 }
@@ -249,13 +301,13 @@ describe('prepared curve intersections', () => {
     const firstHit = intersectCurve(first, throughGap);
     const secondHit = intersectCurve(second, throughGap);
 
-    expect(firstHit.u).toBe(1);
-    expect(secondHit.u).toBe(0);
+    expect(firstHit.u).toBeGreaterThan(1);
+    expect(secondHit.u).toBeLessThan(0);
     expect(firstHit.s).toBeCloseTo(1);
     expect(secondHit.s).toBeCloseTo(1);
   });
 
-  it('does not add endpoint caps when both ordinary arc roots are present', () => {
+  it('selects the nearest ordinary arc root', () => {
     const geometry = prepare('circularArc', {
       start: { x: 420, y: 220 },
       end: { x: 540, y: 360 },
@@ -264,7 +316,7 @@ describe('prepared curve intersections', () => {
     const directionX = 80;
     const directionY = 0.0001;
     const directionLength = Math.hypot(directionX, directionY);
-    const result = intersectCurveAll(
+    const hit = intersectCurve(
       geometry,
       ray(
         280,
@@ -274,15 +326,8 @@ describe('prepared curve intersections', () => {
       )
     );
 
-    expect(result.hits).toHaveLength(2);
-    expect(result.hits[0]).toMatchObject({
-      sigma: -1
-    });
-    expect(result.hits[0].u).toBeCloseTo(0.9999960079);
-    expect(result.hits[1]).toMatchObject({
-      sigma: 1
-    });
-    expect(result.hits[1].u).toBeCloseTo(0.6323119014);
+    expect(hit).toMatchObject({ sigma: -1 });
+    expect(hit.u).toBeCloseTo(0.9999960079);
   });
 
   it('always counts a ray directed to an endpoint across wide scales', () => {
@@ -307,7 +352,7 @@ describe('prepared curve intersections', () => {
                 scale,
                 numericEpsilon
               );
-              const result = intersectCurveAllWithNumericEpsilon(
+              const hit = intersectCurveWithNumericEpsilon(
                 geometry,
                 inputRay,
                 { numericEpsilon }
@@ -319,7 +364,7 @@ describe('prepared curve intersections', () => {
                 offsetRatio,
                 curve: curve.name,
                 u,
-                missed: result.hits.length === 0
+                missed: hit === null
               }).toEqual(expect.objectContaining({
                 missed: false
               }));
@@ -330,7 +375,7 @@ describe('prepared curve intersections', () => {
     }
   });
 
-  it('uses a configured endpoint tolerance as a minimum and pads bounds for it', () => {
+  it('uses a configured endpoint tolerance to extend a line and its bounds', () => {
     const prepared = prepareCurve({
       kind: 'lineSegment',
       params: {
@@ -342,17 +387,56 @@ describe('prepared curve intersections', () => {
       endpointTolerance: 0.01,
       numericEpsilon: FLOAT32_EPSILON
     });
-    const result = intersectCurveAllWithNumericEpsilon(
+    const hit = intersectCurveWithNumericEpsilon(
       prepared.geometry,
       ray(1.005, -1, 0, 1),
       { numericEpsilon: FLOAT32_EPSILON }
     );
 
-    expect(result.hits).toEqual([
-      expect.objectContaining({ u: 1 })
-    ]);
+    expect(hit.u).toBeGreaterThan(1);
     expect(prepared.geometry.endpointTolerance).toBe(0.01);
     expect(prepared.bounds.maxX).toBeCloseTo(1.01);
+  });
+
+  it.each([
+    {
+      name: 'circular arc',
+      curve: {
+        kind: 'circularArc',
+        params: {
+          start: { x: -1, y: 0 },
+          end: { x: 1, y: 0 },
+          bulge: 0.5
+        }
+      }
+    },
+    {
+      name: 'cubic Bezier',
+      curve: {
+        kind: 'cubicBezier',
+        params: {
+          start: { x: -1, y: 0 },
+          control1: { x: -0.25, y: -0.2 },
+          control2: { x: 0.25, y: 0.2 },
+          end: { x: 1, y: 0 }
+        }
+      }
+    }
+  ])('extends the $name parameter interval at a junction', ({ curve }) => {
+    const geometry = prepareCurve(curve, {
+      lengthScale: 1,
+      endpointTolerance: 0.01,
+      numericEpsilon: FLOAT32_EPSILON
+    }).geometry;
+    const inputRay = createTransverseRayThroughExtendedCurve(
+      geometry,
+      1.002,
+      1,
+      FLOAT32_EPSILON
+    );
+    const hit = intersectCurve(geometry, inputRay);
+
+    expect(hit.u).toBeGreaterThan(1);
   });
 
   it('has no gap between endpoint and interior hits across wide scales', () => {
@@ -383,7 +467,7 @@ describe('prepared curve intersections', () => {
                   numericEpsilon
                 );
 
-                const result = intersectCurveAllWithNumericEpsilon(
+                const hit = intersectCurveWithNumericEpsilon(
                   geometry,
                   inputRay,
                   { numericEpsilon }
@@ -404,9 +488,8 @@ describe('prepared curve intersections', () => {
                   4 * geometry.positionTolerance,
                   64 * numericEpsilon * Math.abs(targetDistance)
                 );
-                const targetHit = result.hits.some(hit =>
-                  Math.abs(hit.s - targetDistance) <= targetDistanceTolerance
-                );
+                const targetHit = hit &&
+                  Math.abs(hit.s - targetDistance) <= targetDistanceTolerance;
 
                 expect({
                   numericEpsilon,
@@ -470,32 +553,6 @@ describe('prepared curve intersections', () => {
     expect(outwardHit.normalX).toBeCloseTo(-1);
     expect(inwardHit).toMatchObject({ u: 0.5, sigma: -1 });
     expect(inwardHit.normalX).toBeCloseTo(-1);
-  });
-
-  it('finds all three intersections of a looping scalar cubic', () => {
-    const geometry = prepare('cubicBezier', {
-      start: { x: 0, y: -0.08 },
-      control1: { x: 1 / 3, y: 0.14 },
-      control2: { x: 2 / 3, y: -0.14 },
-      end: { x: 1, y: 0.08 }
-    });
-    const result = intersectCurveAll(
-      geometry,
-      ray(-1, 0, 1, 0)
-    );
-
-    expect(result.ambiguous).toBe(false);
-    expect(result.hits).toHaveLength(3);
-    expect(result.hits.map(hit => hit.u)).toEqual([
-      expect.closeTo(0.2, 6),
-      expect.closeTo(0.5, 6),
-      expect.closeTo(0.8, 6)
-    ]);
-    expect(result.hits.map(hit => hit.s)).toEqual([
-      expect.closeTo(1.2, 6),
-      expect.closeTo(1.5, 6),
-      expect.closeTo(1.8, 6)
-    ]);
   });
 
   it('handles a nearly linear cubic without replacing its geometry', () => {
@@ -581,5 +638,17 @@ describe('prepared curve intersections', () => {
     });
 
     expect(intersectCurve(geometry, ray(0, 0, 0, 1))).toBeNull();
+  });
+
+  it('does not apply region tangency policy to an ordinary intersection', () => {
+    const geometry = prepare('circle', {
+      center: { x: 0, y: 0 },
+      radius: 1
+    });
+
+    expect(intersectCurve(geometry, ray(-2, 1, 1, 0))).toMatchObject({
+      s: expect.closeTo(2),
+      u: 0.5
+    });
   });
 });

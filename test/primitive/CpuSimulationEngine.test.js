@@ -85,7 +85,7 @@ describe('CpuSimulationEngine temporary intersection visualization', () => {
     expect(renderer.drawSegment).toHaveBeenCalledTimes(2);
     expect(renderer.drawPoint).toHaveBeenCalledTimes(1);
     expect(candidate).toMatchObject({
-      distance: 5,
+      s: 5,
       curveId: 0,
       u: 0.5,
       sigma: 1,
@@ -371,7 +371,7 @@ describe('CpuSimulationEngine temporary intersection visualization', () => {
     const candidate = engine.drawFirstRayIntersections({ preparedScene });
 
     expect(renderer.drawPoint).toHaveBeenCalledTimes(1);
-    expect(candidate.distance).toBe(1);
+    expect(candidate.s).toBe(1);
     expect(candidate.curveId).toBe(1);
     log.mockRestore();
   });

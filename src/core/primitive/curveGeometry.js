@@ -99,9 +99,9 @@ const ROOT_ERROR_OPERATION_COUNT = 32;
  * Prepare a primitive curve for engine-independent intersection testing.
  *
  * The returned bounds include the same engine-selected positional tolerance
- * used by endpoint-cap intersection tests. An engine that packs bounds into a
- * lower-precision representation is responsible for outward rounding while
- * packing.
+ * used to extend open curves' accepted parameter intervals at their endpoints.
+ * An engine that packs bounds into a lower-precision representation is
+ * responsible for outward rounding while packing.
  *
  * @param {PrimitiveCurve} curve
  * @param {Object} [options]
