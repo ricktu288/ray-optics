@@ -758,7 +758,8 @@
           "description": "Maximum number of primitive curves for which the BVH is built directly with recursive spatial splits. Larger inputs use consecutive grouping and Morton ordering. Higher values may improve ray traversal at the cost of more BVH build work. Set this to 0 to always use grouping and Morton ordering."
         },
         "drawBounds": {
-          "title": "Draw BVH bounds (for debugging)"
+          "title": "Visualize CPU BVH traversal (for debugging)",
+          "description": "Accumulates traversal activity over all CPU rays. Green boxes were traversed, red boxes failed a ray-bounds test, purple boxes were skipped after a nearer intersection was found, and orange curves received intersection tests. Unvisited boxes are omitted. This diagnostic is unavailable in the WebGPU engine."
         },
         "consecutiveLocalityFactor": {
           "title": "Consecutive locality factor",

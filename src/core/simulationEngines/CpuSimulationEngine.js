@@ -28,8 +28,8 @@ import {
   validateNumericEpsilon
 } from '../primitive/numeric.js';
 import {
-  drawTemporaryFirstRayVisualization
-} from './temporaryFirstRayVisualization.js';
+  drawTemporaryFirstRay
+} from './temporaryFirstRayIntersection.js';
 
 const CONFLICT_NAMES = [
   'none',
@@ -120,17 +120,17 @@ class CpuSimulationEngine {
     viewport = {},
     colorMode = 'default'
   } = {}) {
-    return drawTemporaryFirstRayVisualization({
+    return drawTemporaryFirstRay({
       preparedScene,
       viewport,
       colorMode,
       beginRenderer: options => this.beginRenderer(options),
-      findCandidate: (description, ray, traversalDiagnostics) =>
+      findCandidate: (description, ray) =>
         findFirstRayInteractionCandidate(
           description,
           ray,
           this.numericEpsilon,
-          traversalDiagnostics
+          description.cpuBvhTraversalDiagnostics
         ),
       conflictNames: CONFLICT_NAMES,
       normalConflictType: INTERSECTION_CONFLICT_NORMAL

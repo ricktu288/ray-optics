@@ -16,8 +16,9 @@
 
 import { buildBvh } from '../../src/core/primitive/bvh.js';
 import {
+  attachCpuBvhTraversalDiagnostics,
   BVH_NODE_PRUNED,
-  BVH_NODE_TESTED,
+  BVH_NODE_TRAVERSED,
   traverseBvhForInteraction
 } from '../../src/core/primitive/bvhTraversal.js';
 import { prepareCurve } from '../../src/core/primitive/curveGeometry.js';
@@ -84,7 +85,7 @@ describe('interaction BVH traversal', () => {
       FLOAT32_EPSILON
     );
     const candidate = createInteractionCandidate(0);
-    const diagnostics = {};
+    const diagnostics = attachCpuBvhTraversalDiagnostics(description);
 
     traverseBvhForInteraction(
       description,
@@ -97,7 +98,8 @@ describe('interaction BVH traversal', () => {
     expect(finalizeInteractionCandidate(candidate, context, ray))
       .toBe(candidate);
     expect(candidate).toMatchObject({ s: 2, curveId: 0 });
-    expect(diagnostics.testedCurveIds).toEqual([0]);
+    expect(Array.from(diagnostics.testedCurves)).toEqual([1, 0]);
+    expect(description.cpuBvhTraversalDiagnostics).toBe(diagnostics);
 
     const leafStates = new Map();
     for (let nodeIndex = 0;
@@ -108,7 +110,59 @@ describe('interaction BVH traversal', () => {
       const curveId = description.bvh.curveIds[node.start];
       leafStates.set(curveId, diagnostics.nodeStates[nodeIndex]);
     }
-    expect(leafStates.get(0)).toBe(BVH_NODE_TESTED);
+    expect(leafStates.get(0)).toBe(BVH_NODE_TRAVERSED);
     expect(leafStates.get(1)).toBe(BVH_NODE_PRUNED);
+  });
+
+  it('accumulates the strongest state reached by any ray', () => {
+    const curves = [
+      createVerticalSurface(0, 2),
+      createVerticalSurface(1, 10)
+    ];
+    const builtBvh = buildBvh(curves, {
+      lineLeafSize: 1,
+      numericEpsilon: FLOAT32_EPSILON
+    });
+    const description = {
+      numericalTolerances: {},
+      curves,
+      regions: [],
+      bvh: {
+        root: builtBvh.root,
+        nodes: builtBvh.nodes,
+        curveIds: Uint32Array.from(
+          builtBvh.entries.map(entry => entry.curveId)
+        )
+      }
+    };
+    const diagnostics = attachCpuBvhTraversalDiagnostics(description);
+    const trace = (originX, directionX) => {
+      const ray = {
+        originX,
+        originY: 0,
+        directionX,
+        directionY: 0,
+        wavelength: 540
+      };
+      const context = createInteractionCandidateContext(
+        description,
+        FLOAT32_EPSILON
+      );
+      traverseBvhForInteraction(
+        description,
+        ray,
+        createInteractionCandidate(0),
+        context,
+        diagnostics
+      );
+    };
+
+    trace(0, 1);
+    trace(12, -1);
+
+    expect(Array.from(diagnostics.testedCurves)).toEqual([1, 1]);
+    expect(Array.from(diagnostics.nodeStates)).toEqual(
+      Array(description.bvh.nodes.length).fill(BVH_NODE_TRAVERSED)
+    );
   });
 });

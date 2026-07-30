@@ -16,10 +16,14 @@
 
 import CanvasRenderer from './CanvasRenderer.js';
 import i18next from 'i18next';
+import { DEFAULT_BVH_OPTIONS } from './primitive/bvh.js';
 import {
-  BVH_OWNER_KIND_MASKS,
-  DEFAULT_BVH_OPTIONS
-} from './primitive/bvh.js';
+  attachCpuBvhTraversalDiagnostics,
+  BVH_NODE_MISSED,
+  BVH_NODE_PRUNED,
+  BVH_NODE_TRAVERSED
+} from './primitive/bvhTraversal.js';
+import { drawPreparedCurve } from './primitive/drawPreparedCurve.js';
 import {
   createPreprocessingSummary,
   preprocessPrimitives
@@ -33,6 +37,10 @@ const GREEN_WAVELENGTH = 540;
 const YELLOW_WAVELENGTH = 580;
 const RED_WAVELENGTH = 620;
 const INFRARED_WAVELENGTH = 700;
+const BVH_MISSED_COLOR = 'rgba(255, 51, 51, 0.45)';
+const BVH_PRUNED_COLOR = 'rgba(191, 64, 255, 0.7)';
+const BVH_TRAVERSED_COLOR = 'rgba(38, 230, 89, 0.55)';
+const BVH_TESTED_CURVE_COLOR = [1, 0.6, 0.05, 0.95];
 
 /**
  * Temporary simulator shell used to exercise the new constructor and backend
@@ -214,6 +222,12 @@ class PrimitiveBasedSimulator {
     this.brightnessScale = update.result?.brightnessScale ?? this.brightnessScale;
     run.dispose?.();
     if (this.activeRun === run) this.activeRun = null;
+    if (this.drawBvh && this.engine.kind === 'primitiveCpu') {
+      this.drawBvhTraversalDiagnostics(this.canvasRendererAboveLight);
+      this.drawExternalHighlightPrimitiveCurves(
+        this.canvasRendererAboveLight
+      );
+    }
   }
 
   drawSceneLayers(skipGrid) {
@@ -265,8 +279,9 @@ class PrimitiveBasedSimulator {
         const isHighlighted = this.scene.editor?.isObjHighlighted(index) || false;
         obj.draw(this.canvasRendererAboveLight, true, isHighlighted);
       }
-      // The owner-kind-colored BVH overlay is temporarily disabled while the
-      // CPU first-ray demo draws traversal-result colors on the light layer.
+      this.drawExternalHighlightPrimitiveCurves(
+        this.canvasRendererAboveLight
+      );
       this.drawExternalHighlightPoints(this.canvasRendererAboveLight);
       this.drawObserver();
     }
@@ -348,32 +363,39 @@ class PrimitiveBasedSimulator {
     }
     this.primitives = primitives;
     this.processedScene = processedScene;
+    if (this.drawBvh && this.engine.kind === 'primitiveCpu') {
+      attachCpuBvhTraversalDiagnostics(processedScene);
+    }
     this.detectorResultBindings = detectorResultBindings;
     this.primitiveBvh = processedScene.bvh;
   }
 
-  drawBvhBounds(canvasRenderer) {
-    const nodes = this.primitiveBvh?.nodes;
-    if (!nodes?.length) return;
+  drawBvhTraversalDiagnostics(canvasRenderer) {
+    const diagnostics =
+      this.processedScene?.cpuBvhTraversalDiagnostics;
+    const nodes = this.processedScene?.bvh.nodes;
+    if (!canvasRenderer?.ctx || !diagnostics || !nodes?.length) return;
 
     const ctx = canvasRenderer.ctx;
     ctx.save();
     ctx.globalCompositeOperation = 'source-over';
     ctx.setLineDash([]);
 
-    for (const node of nodes) {
-      const red = node.ownerKindMask & BVH_OWNER_KIND_MASKS.surface
-        ? 255
-        : 0;
-      const green = node.ownerKindMask & BVH_OWNER_KIND_MASKS.region
-        ? 255
-        : 0;
-      const blue = node.ownerKindMask & BVH_OWNER_KIND_MASKS.detector
-        ? 255
-        : 0;
-      ctx.strokeStyle = red || green || blue
-        ? `rgba(${red}, ${green}, ${blue}, 0.5)`
-        : 'rgba(128, 128, 128, 0.5)';
+    for (let nodeIndex = 0; nodeIndex < nodes.length; nodeIndex++) {
+      const node = nodes[nodeIndex];
+      switch (diagnostics.nodeStates[nodeIndex]) {
+        case BVH_NODE_MISSED:
+          ctx.strokeStyle = BVH_MISSED_COLOR;
+          break;
+        case BVH_NODE_PRUNED:
+          ctx.strokeStyle = BVH_PRUNED_COLOR;
+          break;
+        case BVH_NODE_TRAVERSED:
+          ctx.strokeStyle = BVH_TRAVERSED_COLOR;
+          break;
+        default:
+          continue;
+      }
       ctx.lineWidth =
         Math.max(0.5, 2.5 / (node.depth + 1)) * canvasRenderer.lengthScale;
       const { minX, minY, maxX, maxY } = node.bounds;
@@ -381,6 +403,18 @@ class PrimitiveBasedSimulator {
     }
 
     ctx.restore();
+
+    for (let curveId = 0;
+      curveId < diagnostics.testedCurves.length;
+      curveId++) {
+      if (!diagnostics.testedCurves[curveId]) continue;
+      drawPreparedCurve(
+        canvasRenderer,
+        this.processedScene.curves[curveId].geometry,
+        BVH_TESTED_CURVE_COLOR,
+        2
+      );
+    }
   }
 
   drawGrid() {
@@ -438,6 +472,23 @@ class PrimitiveBasedSimulator {
       ctx.stroke();
     }
     ctx.restore();
+  }
+
+  drawExternalHighlightPrimitiveCurves(canvasRenderer) {
+    const curveIds =
+      this.scene.editor?.externalHighlightPrimitiveCurveIds;
+    if (!canvasRenderer?.ctx || !curveIds?.length) return;
+
+    for (const curveId of curveIds) {
+      const geometry = this.processedScene?.curves[curveId]?.geometry;
+      if (!geometry) continue;
+      drawPreparedCurve(
+        canvasRenderer,
+        geometry,
+        this.scene.highlightColor,
+        3
+      );
+    }
   }
 
   completeRun(generation) {

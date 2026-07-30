@@ -121,7 +121,10 @@
                     >
                   </div>
                 </div>
-                <div v-if="section.key === 'bvh'" class="form-check mt-2 mb-2">
+                <div
+                  v-if="section.key === 'bvh' && simulationEngine === 'primitiveCpu'"
+                  class="form-check mt-2 mb-2"
+                >
                   <input
                     class="form-check-input"
                     type="checkbox"
@@ -135,6 +138,11 @@
                       for="simulationEngineDrawBvh"
                       v-text="$t('simulator:simulationEngineModal.configuration.fields.drawBounds.title')"
                     ></label>
+                    <InfoPopoverIcon
+                      light-background
+                      placement="left"
+                      :content="$t('simulator:simulationEngineModal.configuration.fields.drawBounds.description')"
+                    />
                   </div>
                 </div>
               </section>

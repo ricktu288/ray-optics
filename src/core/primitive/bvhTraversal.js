@@ -18,8 +18,24 @@ import { updateInteractionCandidate } from './interactionCandidate.js';
 
 export const BVH_NODE_UNVISITED = 0;
 export const BVH_NODE_MISSED = 1;
-export const BVH_NODE_TESTED = 2;
-export const BVH_NODE_PRUNED = 3;
+export const BVH_NODE_PRUNED = 2;
+export const BVH_NODE_TRAVERSED = 3;
+
+/**
+ * Attach CPU-only traversal diagnostics to the host-created scene description.
+ * The CPU engine mutates these arrays through the same object reference.
+ *
+ * @param {Object} description
+ * @returns {Object} The attached diagnostics.
+ */
+export function attachCpuBvhTraversalDiagnostics(description) {
+  const diagnostics = {
+    nodeStates: new Uint8Array(description.bvh.nodes.length),
+    testedCurves: new Uint8Array(description.curves.length)
+  };
+  description.cpuBvhTraversalDiagnostics = diagnostics;
+  return diagnostics;
+}
 
 /**
  * Traverse the prepared curve BVH using an explicit stack and update an
@@ -34,7 +50,7 @@ export const BVH_NODE_PRUNED = 3;
  * @param {Object} ray
  * @param {Object} candidate
  * @param {Object} candidateContext
- * @param {Object} [diagnostics]
+ * @param {{nodeStates: Uint8Array, testedCurves: Uint8Array}} [diagnostics] - Optional CPU-only state accumulated across traversals.
  */
 export function traverseBvhForInteraction(
   description,
@@ -44,7 +60,6 @@ export function traverseBvhForInteraction(
   diagnostics
 ) {
   const { root, nodes, curveIds } = description.bvh;
-  initializeDiagnostics(diagnostics, nodes.length);
   if (root < 0) return;
 
   const rootNear = intersectRayBounds(
@@ -56,7 +71,6 @@ export function traverseBvhForInteraction(
     setNodeState(diagnostics, root, BVH_NODE_MISSED);
     return;
   }
-  setNodeState(diagnostics, root, BVH_NODE_TESTED);
 
   const stack = [root, rootNear];
   while (stack.length > 0) {
@@ -66,12 +80,13 @@ export function traverseBvhForInteraction(
       setNodeState(diagnostics, nodeIndex, BVH_NODE_PRUNED);
       continue;
     }
+    setNodeState(diagnostics, nodeIndex, BVH_NODE_TRAVERSED);
 
     const node = nodes[nodeIndex];
     if (node.count > 0) {
       for (let offset = 0; offset < node.count; offset++) {
         const curveId = curveIds[node.start + offset];
-        diagnostics?.testedCurveIds.push(curveId);
+        if (diagnostics) diagnostics.testedCurves[curveId] = 1;
         updateInteractionCandidate(
           candidate,
           candidateContext,
@@ -125,11 +140,9 @@ function testChildBounds(
     nodes[nodeIndex].bounds,
     minDistance
   );
-  setNodeState(
-    diagnostics,
-    nodeIndex,
-    Number.isFinite(near) ? BVH_NODE_TESTED : BVH_NODE_MISSED
-  );
+  if (!Number.isFinite(near)) {
+    setNodeState(diagnostics, nodeIndex, BVH_NODE_MISSED);
+  }
   return near;
 }
 
@@ -167,12 +180,11 @@ function intersectRayBounds(ray, bounds, minDistance) {
     : Infinity;
 }
 
-function initializeDiagnostics(diagnostics, nodeCount) {
-  if (!diagnostics) return;
-  diagnostics.nodeStates = new Uint8Array(nodeCount);
-  diagnostics.testedCurveIds = [];
-}
-
 function setNodeState(diagnostics, nodeIndex, state) {
-  if (diagnostics) diagnostics.nodeStates[nodeIndex] = state;
+  if (
+    diagnostics &&
+    state > diagnostics.nodeStates[nodeIndex]
+  ) {
+    diagnostics.nodeStates[nodeIndex] = state;
+  }
 }
