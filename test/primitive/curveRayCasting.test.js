@@ -16,7 +16,6 @@
 
 import { prepareCurve } from '../../src/core/primitive/curveGeometry.js';
 import {
-  classifyPointInRegion as classifyPointInRegionWithNumericEpsilon,
   countCurveRayCrossings as countCurveRayCrossingsWithNumericEpsilon
 } from '../../src/core/primitive/intersections.js';
 import { FLOAT32_EPSILON } from '../../src/core/primitive/numeric.js';
@@ -30,22 +29,6 @@ function prepareLine(start, end) {
   }).geometry;
 }
 
-function squareCurves() {
-  return [
-    prepareLine({ x: -1, y: -1 }, { x: 1, y: -1 }),
-    prepareLine({ x: 1, y: -1 }, { x: 1, y: 1 }),
-    prepareLine({ x: 1, y: 1 }, { x: -1, y: 1 }),
-    prepareLine({ x: -1, y: 1 }, { x: -1, y: -1 })
-  ];
-}
-
-function classifyPointInRegion(curves, point, options = {}) {
-  return classifyPointInRegionWithNumericEpsilon(curves, point, {
-    numericEpsilon: FLOAT32_EPSILON,
-    ...options
-  });
-}
-
 function countCurveRayCrossings(geometry, ray, options = {}) {
   return countCurveRayCrossingsWithNumericEpsilon(geometry, ray, {
     numericEpsilon: FLOAT32_EPSILON,
@@ -54,53 +37,20 @@ function countCurveRayCrossings(geometry, ray, options = {}) {
 }
 
 describe('primitive region ray casting', () => {
-  it('classifies points independently of curve order and orientation', () => {
-    const curves = squareCurves();
-    const reversed = [...curves].reverse().map(geometry => {
-      const start = {
-        x: geometry.originX,
-        y: geometry.originY
-      };
-      const length = 1 / geometry.invLength;
-      const end = {
-        x: start.x + geometry.tangentX * length,
-        y: start.y + geometry.tangentY * length
-      };
-      return prepareLine(end, start);
+  it('returns the crossing count and nearest forward distance', () => {
+    const segment = prepareLine({ x: 1, y: -1 }, { x: 1, y: 1 });
+    const result = countCurveRayCrossings(segment, {
+      originX: 0,
+      originY: 0,
+      directionX: 1,
+      directionY: 0
     });
 
-    expect(classifyPointInRegion(curves, { x: 0, y: 0 })).toBe('inside');
-    expect(classifyPointInRegion(curves, { x: 3, y: 0 })).toBe('outside');
-    expect(classifyPointInRegion(reversed, { x: 0, y: 0 })).toBe('inside');
-  });
-
-  it('returns boundary when every retry starts on a curve', () => {
-    expect(classifyPointInRegion(
-      squareCurves(),
-      { x: 1, y: 0 }
-    )).toBe('boundary');
-  });
-
-  it('retries a cast which lands exactly on a remote corner', () => {
-    const direction = {
-      x: 0.9238795042037964,
-      y: 0.3826834261417389
-    };
-    const corner = { x: direction.x * 2, y: direction.y * 2 };
-    const curves = [
-      prepareLine(corner, { x: corner.x + 2, y: corner.y }),
-      prepareLine(
-        { x: corner.x + 2, y: corner.y },
-        { x: corner.x + 2, y: corner.y + 2 }
-      ),
-      prepareLine(
-        { x: corner.x + 2, y: corner.y + 2 },
-        { x: corner.x, y: corner.y + 2 }
-      ),
-      prepareLine({ x: corner.x, y: corner.y + 2 }, corner)
-    ];
-
-    expect(classifyPointInRegion(curves, { x: 0, y: 0 })).toBe('outside');
+    expect(result).toEqual({
+      count: 1,
+      nearestForwardS: 1,
+      ambiguous: false
+    });
   });
 
   it('marks endpoint and tangent crossings as ambiguous', () => {
@@ -113,9 +63,32 @@ describe('primitive region ray casting', () => {
     });
 
     expect(endpointResult.ambiguous).toBe(true);
+    expect(endpointResult.nearestForwardS).toBe(1);
+
+    const circle = prepareCurve({
+      kind: 'circle',
+      params: {
+        center: { x: 0, y: 0 },
+        radius: 1
+      }
+    }, {
+      numericEpsilon: FLOAT32_EPSILON
+    }).geometry;
+    const tangentResult = countCurveRayCrossings(circle, {
+      originX: -2,
+      originY: 1,
+      directionX: 1,
+      directionY: 0
+    });
+
+    expect(tangentResult).toEqual({
+      count: 0,
+      nearestForwardS: 2,
+      ambiguous: true
+    });
   });
 
-  it('classifies a circular region', () => {
+  it('reports origin contacts without using them as a retry distance', () => {
     const circle = prepareCurve({
       kind: 'circle',
       params: {
@@ -126,8 +99,17 @@ describe('primitive region ray casting', () => {
       numericEpsilon: FLOAT32_EPSILON
     }).geometry;
 
-    expect(classifyPointInRegion([circle], { x: 0, y: 0 })).toBe('inside');
-    expect(classifyPointInRegion([circle], { x: 3, y: 0 })).toBe('outside');
-    expect(classifyPointInRegion([circle], { x: 2, y: 0 })).toBe('boundary');
+    const result = countCurveRayCrossings(circle, {
+      originX: 2,
+      originY: 0,
+      directionX: 1,
+      directionY: 0
+    });
+
+    expect(result).toEqual({
+      count: 0,
+      nearestForwardS: Infinity,
+      ambiguous: true
+    });
   });
 });

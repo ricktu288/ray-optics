@@ -28,14 +28,6 @@ const TANGENT_ERROR_OPERATION_COUNT = 32;
 const CUBIC_VALUE_ERROR_OPERATION_COUNT = 64;
 const ENDPOINT_ERROR_OPERATION_COUNT = 32;
 
-const RAY_CAST_DIRECTIONS = Object.freeze([
-  Object.freeze({ directionX: 0.9238795042037964, directionY: 0.3826834261417389 }),
-  Object.freeze({ directionX: 0.525731086730957, directionY: 0.8506507873535156 }),
-  Object.freeze({ directionX: -0.2669335901737213, directionY: 0.9637149572372437 }),
-  Object.freeze({ directionX: 0.7986354827880859, directionY: -0.6018150448799133 }),
-  Object.freeze({ directionX: -0.6626200675964355, directionY: -0.7489557266235352 })
-]);
-
 /**
  * Geometry-owned data for one isolated curve hit. `normalX` and `normalY`
  * form the adjusted incident-side optical normal. `sigma` records which side
@@ -48,6 +40,14 @@ const RAY_CAST_DIRECTIONS = Object.freeze([
  * @property {number} normalX - Adjusted incident-side unit normal x component.
  * @property {number} normalY - Adjusted incident-side unit normal y component.
  * @property {number} sigma - Geometric side of the oriented curve, either 1 or -1.
+ * @property {boolean} [tangent] - Whether the hit is numerically tangent. Present in all-candidate results and excluded from ordinary interaction results.
+ */
+
+/**
+ * @typedef {Object} CurveRayCrossingResult
+ * @property {number} count - Number of unambiguous forward crossings.
+ * @property {number} nearestForwardS - Nearest forward contact outside the origin exclusion distance, including ambiguous contacts, or `Infinity`.
+ * @property {boolean} ambiguous - Whether the cast contains an origin, endpoint, tangent, or singular contact.
  */
 
 /**
@@ -58,22 +58,23 @@ const RAY_CAST_DIRECTIONS = Object.freeze([
  * @param {Object} [options]
  * @param {number} options.numericEpsilon - Relative arithmetic epsilon selected by the engine.
  * @param {number} [options.minDistance]
- * @param {number} [options.maxDistance=Infinity]
- * @param {boolean} [options.includeTangents=false]
- * @param {boolean} [options.includeEndpointCaps=true]
  * @param {Object} [out]
  * @returns {CurveIntersection|null}
  */
 export function intersectCurve(geometry, ray, options = {}, out = {}) {
   const result = intersectCurveAll(geometry, ray, options);
-  if (result.hits.length === 0) return null;
-  copyHit(result.hits[0], out);
-  return out;
+  for (const hit of result.hits) {
+    if (!hit.tangent) {
+      copyHit(hit, out);
+      return out;
+    }
+  }
+  return null;
 }
 
 /**
- * Find all accepted intersections with one prepared curve, ordered by ray
- * distance and then native curve parameter.
+ * Find all accepted intersections with one prepared curve, including tangent
+ * candidates, ordered by ray distance and then native curve parameter.
  *
  * `result.ambiguous` reports a non-isolated or singular geometric case. The
  * ordinary hits remain available so a caller can choose deterministic
@@ -84,9 +85,6 @@ export function intersectCurve(geometry, ray, options = {}, out = {}) {
  * @param {Object} [options]
  * @param {number} options.numericEpsilon - Relative arithmetic epsilon selected by the engine.
  * @param {number} [options.minDistance]
- * @param {number} [options.maxDistance=Infinity]
- * @param {boolean} [options.includeTangents=false]
- * @param {boolean} [options.includeEndpointCaps=true]
  * @param {{hits: Object[], ambiguous: boolean}} [result]
  * @returns {{hits: Object[], ambiguous: boolean}}
  */
@@ -95,10 +93,7 @@ export function intersectCurveAll(
   ray,
   {
     numericEpsilon,
-    minDistance = geometry.positionTolerance,
-    maxDistance = Infinity,
-    includeTangents = false,
-    includeEndpointCaps = true
+    minDistance = geometry.positionTolerance
   } = {},
   result = { hits: [], ambiguous: false }
 ) {
@@ -113,8 +108,7 @@ export function intersectCurveAll(
         geometry,
         ray,
         result,
-        tolerances,
-        includeEndpointCaps
+        tolerances
       );
       break;
     case 'circularArc':
@@ -138,7 +132,7 @@ export function intersectCurveAll(
       : geometry.kind === 'cubicBezier'
         ? result.hits.length < 3
         : false;
-  if (includeEndpointCaps && needsEndpointCaps) {
+  if (needsEndpointCaps) {
     addEndpointCap(geometry, ray, 0, result, tolerances);
     addEndpointCap(geometry, ray, 1, result, tolerances);
   }
@@ -147,12 +141,10 @@ export function intersectCurveAll(
   for (const hit of result.hits) {
     if (
       !Number.isFinite(hit.s) ||
-      hit.s <= minDistance ||
-      hit.s > maxDistance
+      hit.s <= minDistance
     ) {
       continue;
     }
-    if (hit.tangent && !includeTangents) continue;
     addDistinctHit(
       filteredHits,
       hit,
@@ -188,6 +180,7 @@ export function intersectProcessedCurve(
 
   const result = intersectCurveAll(processedCurve.geometry, ray, options);
   for (const hit of result.hits) {
+    if (hit.tangent) continue;
     if (processedCurve.ownerKind !== 'region' &&
         !processedCurve.twoSided &&
         hit.sigma !== 1) {
@@ -203,32 +196,39 @@ export function intersectProcessedCurve(
  * Count forward crossings of one curve for an even-odd region ray cast.
  *
  * Endpoint, tangent, origin, and singular contacts are reported as ambiguous
- * so the region classifier can retry with another deterministic direction.
+ * so the membership traversal can retry with another deterministic direction.
  *
  * @param {Object} geometry
  * @param {Object} ray
  * @param {Object} [options]
- * @returns {{count: number, ambiguous: boolean}}
+ * @param {number} options.numericEpsilon - Relative arithmetic epsilon selected by the engine.
+ * @param {number} [options.originTolerance] - Symmetric origin exclusion distance. Contacts inside it make the result ambiguous.
+ * @param {Object} [out] - Reusable result object.
+ * @returns {CurveRayCrossingResult}
  */
-export function countCurveRayCrossings(geometry, ray, options = {}) {
-  const positionTolerance =
-    options.positionTolerance ?? geometry.positionTolerance;
+export function countCurveRayCrossings(
+  geometry,
+  ray,
+  options = {},
+  out = {}
+) {
+  const originTolerance =
+    options.originTolerance ?? geometry.positionTolerance;
   const result = intersectCurveAll(geometry, ray, {
     numericEpsilon: options.numericEpsilon,
-    minDistance: -positionTolerance,
-    maxDistance: options.maxDistance ?? Infinity,
-    includeTangents: true,
-    includeEndpointCaps: true
+    minDistance: -originTolerance
   });
 
   let count = 0;
+  let nearestForwardS = Infinity;
   let ambiguous = result.ambiguous;
   for (const hit of result.hits) {
-    if (Math.abs(hit.s) <= positionTolerance) {
+    if (Math.abs(hit.s) <= originTolerance) {
       ambiguous = true;
       continue;
     }
     if (hit.s < 0) continue;
+    nearestForwardS = Math.min(nearestForwardS, hit.s);
     if (hit.tangent) {
       ambiguous = true;
       continue;
@@ -239,48 +239,17 @@ export function countCurveRayCrossings(geometry, ray, options = {}) {
     }
     count++;
   }
-  return { count, ambiguous };
-}
-
-/**
- * Classify a point against a collection of prepared curves using deterministic
- * retry directions.
- *
- * @param {Object[]} geometries
- * @param {{x: number, y: number}} point
- * @param {Object} [options]
- * @returns {'inside'|'outside'|'boundary'}
- */
-export function classifyPointInRegion(geometries, point, options = {}) {
-  for (const direction of RAY_CAST_DIRECTIONS) {
-    const ray = {
-      originX: point.x,
-      originY: point.y,
-      ...direction
-    };
-    let crossings = 0;
-    let ambiguous = false;
-    for (const geometry of geometries) {
-      const curveResult = countCurveRayCrossings(geometry, ray, options);
-      if (curveResult.ambiguous) {
-        ambiguous = true;
-        break;
-      }
-      crossings += curveResult.count;
-    }
-    if (!ambiguous) {
-      return crossings % 2 === 1 ? 'inside' : 'outside';
-    }
-  }
-  return 'boundary';
+  out.count = count;
+  out.nearestForwardS = nearestForwardS;
+  out.ambiguous = ambiguous;
+  return out;
 }
 
 function intersectLineSegment(
   geometry,
   ray,
   result,
-  tolerances,
-  includeEndpointCaps
+  tolerances
 ) {
   const offsetX = geometry.originX - ray.originX;
   const offsetY = geometry.originY - ray.originY;
@@ -300,10 +269,8 @@ function intersectLineSegment(
     if (Math.abs(lineDistance) <= geometry.positionTolerance) {
       result.ambiguous = true;
     }
-    if (includeEndpointCaps) {
-      addEndpointCap(geometry, ray, 0, result, tolerances);
-      addEndpointCap(geometry, ray, 1, result, tolerances);
-    }
+    addEndpointCap(geometry, ray, 0, result, tolerances);
+    addEndpointCap(geometry, ray, 1, result, tolerances);
     return;
   }
 
@@ -315,15 +282,13 @@ function intersectLineSegment(
     ray.directionY
   ) * geometry.invLength / denominator;
   if (u < 0 || u > 1) {
-    if (includeEndpointCaps) {
-      addEndpointCap(
-        geometry,
-        ray,
-        u < 0 ? 0 : 1,
-        result,
-        tolerances
-      );
-    }
+    addEndpointCap(
+      geometry,
+      ray,
+      u < 0 ? 0 : 1,
+      result,
+      tolerances
+    );
     return;
   }
   u = clampUnitParameter(u);
