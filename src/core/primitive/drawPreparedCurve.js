@@ -34,11 +34,75 @@ export function drawPreparedCurve(
   ctx.strokeStyle = renderer.rgbaToCssColor(color);
   ctx.lineWidth = lineWidth * renderer.lengthScale;
   ctx.beginPath();
+  const start = getPreparedCurveEndpoint(geometry, false);
+  ctx.moveTo(start.x, start.y);
+  appendPreparedCurvePath(ctx, geometry);
+  ctx.stroke();
+  ctx.restore();
+}
+
+/**
+ * Fill and outline an ordered set of prepared region-boundary curves.
+ *
+ * @param {Object} renderer
+ * @param {Object[]} geometries
+ * @param {number[]|Object} fillColor
+ * @param {number[]|Object} outlineColor
+ * @param {number} [lineWidth=1]
+ */
+export function drawPreparedRegion(
+  renderer,
+  geometries,
+  fillColor,
+  outlineColor,
+  lineWidth = 1
+) {
+  const ctx = renderer.ctx;
+  ctx.save();
+  ctx.setLineDash([]);
+  ctx.fillStyle = renderer.rgbaToCssColor(fillColor);
+  ctx.strokeStyle = renderer.rgbaToCssColor(outlineColor);
+  ctx.lineWidth = lineWidth * renderer.lengthScale;
+  ctx.beginPath();
+
+  let previousEnd = null;
+  for (const geometry of geometries) {
+    const start = getPreparedCurveEndpoint(geometry, false);
+    const connectionTolerance = Math.max(
+      geometry.positionTolerance,
+      geometry.endpointTolerance ?? 0
+    );
+    if (
+      !previousEnd ||
+      Math.hypot(
+        previousEnd.x - start.x,
+        previousEnd.y - start.y
+      ) > connectionTolerance
+    ) {
+      if (previousEnd) ctx.closePath();
+      ctx.moveTo(start.x, start.y);
+    } else {
+      ctx.lineTo(start.x, start.y);
+    }
+    appendPreparedCurvePath(ctx, geometry);
+    if (geometry.kind === 'circle') {
+      ctx.closePath();
+      previousEnd = null;
+    } else {
+      previousEnd = getPreparedCurveEndpoint(geometry, true);
+    }
+  }
+  if (previousEnd) ctx.closePath();
+  ctx.fill('evenodd');
+  ctx.stroke();
+  ctx.restore();
+}
+
+function appendPreparedCurvePath(ctx, geometry) {
   switch (geometry.kind) {
     case 'lineSegment':
     case 'smoothLineSegment': {
       const length = 1 / geometry.invLength;
-      ctx.moveTo(geometry.originX, geometry.originY);
       ctx.lineTo(
         geometry.originX + geometry.tangentX * length,
         geometry.originY + geometry.tangentY * length
@@ -73,10 +137,6 @@ export function drawPreparedCurve(
       const scale = 1 / geometry.invScale;
       const worldX = x => geometry.originX + x * scale;
       const worldY = y => geometry.originY + y * scale;
-      ctx.moveTo(
-        worldX(geometry.startX),
-        worldY(geometry.startY)
-      );
       ctx.bezierCurveTo(
         worldX(geometry.control1X),
         worldY(geometry.control1Y),
@@ -101,6 +161,50 @@ export function drawPreparedCurve(
         `Unsupported prepared curve kind: ${JSON.stringify(geometry.kind)}`
       );
   }
-  ctx.stroke();
-  ctx.restore();
+}
+
+function getPreparedCurveEndpoint(geometry, end) {
+  switch (geometry.kind) {
+    case 'lineSegment':
+    case 'smoothLineSegment': {
+      if (!end) {
+        return { x: geometry.originX, y: geometry.originY };
+      }
+      const length = 1 / geometry.invLength;
+      return {
+        x: geometry.originX + geometry.tangentX * length,
+        y: geometry.originY + geometry.tangentY * length
+      };
+    }
+    case 'circularArc': {
+      const direction = end ? 0.5 : -0.5;
+      const chordLength = 1 / geometry.invChordLength;
+      return {
+        x: geometry.originX +
+          direction * geometry.tangentX * chordLength,
+        y: geometry.originY +
+          direction * geometry.tangentY * chordLength
+      };
+    }
+    case 'cubicBezier': {
+      const scale = 1 / geometry.invScale;
+      return {
+        x: geometry.originX +
+          (end ? geometry.endX : geometry.startX) * scale,
+        y: geometry.originY +
+          (end ? geometry.endY : geometry.startY) * scale
+      };
+    }
+    case 'circle': {
+      const radius = 1 / Math.abs(geometry.signedInvRadius);
+      return {
+        x: geometry.centerX + radius,
+        y: geometry.centerY
+      };
+    }
+    default:
+      throw new TypeError(
+        `Unsupported prepared curve kind: ${JSON.stringify(geometry.kind)}`
+      );
+  }
 }

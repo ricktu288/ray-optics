@@ -17,26 +17,16 @@
 import CanvasRenderer from '../CanvasRenderer.js';
 import FloatColorRenderer from '../FloatColorRenderer.js';
 import { createDagClosureEvaluator } from '../formula/dag-evaluator.js';
-import { traverseBvhForInteraction } from '../primitive/bvhTraversal.js';
 import {
-  createInteractionCandidate,
-  createInteractionCandidateContext,
-  finalizeInteractionCandidate,
-  INTERSECTION_CONFLICT_NORMAL
-} from '../primitive/interactionCandidate.js';
+  createRegionMembershipResult,
+  traverseBvhForRegionMembership
+} from '../primitive/regionMembership.js';
 import {
   validateNumericEpsilon
 } from '../primitive/numeric.js';
 import {
-  drawTemporaryFirstRay
-} from './temporaryFirstRayIntersection.js';
-
-const CONFLICT_NAMES = [
-  'none',
-  'merge',
-  'region-boundary orientation',
-  'normal'
-];
+  runTemporaryFirstRayMembership
+} from './temporaryFirstRayMembership.js';
 
 class CpuSimulationRun {
   constructor(engine, options) {
@@ -51,7 +41,7 @@ class CpuSimulationRun {
       return this.getCompleteUpdate();
     }
 
-    this.engine.drawFirstRayIntersections(this.options);
+    this.engine.runFirstRayMembership(this.options);
     this.isComplete = true;
     return this.getCompleteUpdate();
   }
@@ -83,9 +73,8 @@ class CpuSimulationRun {
 }
 
 /**
- * Temporary CPU simulation engine. A run currently finds and visualizes the
- * interaction candidate of the first ray emitted by the first source, then
- * completes immediately.
+ * Temporary CPU simulation engine. A run currently determines the region
+ * membership at the first source ray's origin, then completes immediately.
  */
 class CpuSimulationEngine {
   constructor({
@@ -115,26 +104,27 @@ class CpuSimulationEngine {
     return new CpuSimulationRun(this, options);
   }
 
-  drawFirstRayIntersections({
+  runFirstRayMembership({
     preparedScene,
     viewport = {},
     colorMode = 'default'
   } = {}) {
-    return drawTemporaryFirstRay({
+    this.beginRenderer({
+      origin: viewport.origin || { x: 0, y: 0 },
+      scale: viewport.scale ?? 1,
+      lengthScale: viewport.lengthScale ?? 1,
+      colorMode
+    });
+    return runTemporaryFirstRayMembership({
       preparedScene,
-      viewport,
-      colorMode,
-      beginRenderer: options => this.beginRenderer(options),
-      findCandidate: (description, ray, maximumDistance) =>
-        findFirstRayInteractionCandidate(
+      findMembership: (description, ray, result) =>
+        findFirstRayRegionMembership(
           description,
           ray,
           this.numericEpsilon,
-          maximumDistance,
-          description.cpuBvhTraversalDiagnostics
-        ),
-      conflictNames: CONFLICT_NAMES,
-      normalConflictType: INTERSECTION_CONFLICT_NORMAL
+          description.cpuBvhTraversalDiagnostics,
+          result
+        )
     });
   }
 
@@ -191,31 +181,20 @@ class CpuSimulationEngine {
   }
 }
 
-function findFirstRayInteractionCandidate(
+function findFirstRayRegionMembership(
   description,
   ray,
   numericEpsilon,
-  maximumDistance,
-  traversalDiagnostics
+  traversalDiagnostics,
+  result = createRegionMembershipResult(description.regions.length)
 ) {
-  const context = createInteractionCandidateContext(
-    description,
-    numericEpsilon,
-    maximumDistance
-  );
-  const candidate = createInteractionCandidate(
-    description.regions.length,
-    maximumDistance
-  );
-
-  traverseBvhForInteraction(
+  return traverseBvhForRegionMembership(
     description,
     ray,
-    candidate,
-    context,
+    result,
+    numericEpsilon,
     traversalDiagnostics
   );
-  return finalizeInteractionCandidate(candidate, context, ray);
 }
 
 export default CpuSimulationEngine;

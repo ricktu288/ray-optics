@@ -23,7 +23,10 @@ import {
   BVH_NODE_PRUNED,
   BVH_NODE_TRAVERSED
 } from './primitive/bvhTraversal.js';
-import { drawPreparedCurve } from './primitive/drawPreparedCurve.js';
+import {
+  drawPreparedCurve,
+  drawPreparedRegion
+} from './primitive/drawPreparedCurve.js';
 import {
   createPreprocessingSummary,
   preprocessPrimitives
@@ -41,6 +44,10 @@ const BVH_MISSED_COLOR = 'rgba(255, 51, 51, 0.45)';
 const BVH_PRUNED_COLOR = 'rgba(191, 64, 255, 0.7)';
 const BVH_TRAVERSED_COLOR = 'rgba(38, 230, 89, 0.55)';
 const BVH_TESTED_CURVE_COLOR = [1, 0.6, 0.05, 0.95];
+const MEMBERSHIP_REGION_FILL_COLOR = [0.15, 0.65, 1, 0.18];
+const MEMBERSHIP_REGION_OUTLINE_COLOR = [0.15, 0.65, 1, 0.6];
+const MEMBERSHIP_ACTUAL_RAY_COLOR = [1, 0.75, 0.1, 0.8];
+const MEMBERSHIP_RETRY_RAY_COLOR = [0.15, 0.8, 1, 0.7];
 
 /**
  * Temporary simulator shell used to exercise the new constructor and backend
@@ -222,6 +229,11 @@ class PrimitiveBasedSimulator {
     this.brightnessScale = update.result?.brightnessScale ?? this.brightnessScale;
     run.dispose?.();
     if (this.activeRun === run) this.activeRun = null;
+    if (this.engine.kind === 'primitiveCpu') {
+      this.drawTemporaryFirstRayMembership(
+        this.canvasRendererAboveLight
+      );
+    }
     if (this.drawBvh && this.engine.kind === 'primitiveCpu') {
       this.drawBvhTraversalDiagnostics(this.canvasRendererAboveLight);
       this.drawExternalHighlightPrimitiveCurves(
@@ -414,6 +426,43 @@ class PrimitiveBasedSimulator {
         BVH_TESTED_CURVE_COLOR,
         2
       );
+    }
+  }
+
+  drawTemporaryFirstRayMembership(canvasRenderer) {
+    const visualization =
+      this.processedScene?.temporaryFirstRayMembership;
+    if (!canvasRenderer?.ctx || !visualization) return;
+    const { membership, testRays } = visualization;
+
+    for (let regionId = 0;
+      regionId < membership.regionMask.length;
+      regionId++) {
+      if (!membership.regionMask[regionId]) continue;
+      const geometries = this.processedScene.curves
+        .filter(curve =>
+          curve.ownerKind === 'region' && curve.ownerId === regionId
+        )
+        .map(curve => curve.geometry);
+      drawPreparedRegion(
+        canvasRenderer,
+        geometries,
+        MEMBERSHIP_REGION_FILL_COLOR,
+        MEMBERSHIP_REGION_OUTLINE_COLOR
+      );
+    }
+
+    for (let rayIndex = 0; rayIndex < testRays.length; rayIndex++) {
+      const ray = testRays[rayIndex];
+      canvasRenderer.drawRay({
+        p1: { x: ray.originX, y: ray.originY },
+        p2: {
+          x: ray.originX + ray.directionX,
+          y: ray.originY + ray.directionY
+        }
+      }, rayIndex === 0
+        ? MEMBERSHIP_ACTUAL_RAY_COLOR
+        : MEMBERSHIP_RETRY_RAY_COLOR);
     }
   }
 

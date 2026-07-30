@@ -16,7 +16,8 @@
 
 import { prepareCurve } from '../../src/core/primitive/curveGeometry';
 import {
-  drawPreparedCurve
+  drawPreparedCurve,
+  drawPreparedRegion
 } from '../../src/core/primitive/drawPreparedCurve';
 import { FLOAT32_EPSILON } from '../../src/core/primitive/numeric';
 
@@ -31,6 +32,8 @@ function createRenderer() {
       lineTo: jest.fn(),
       arc: jest.fn(),
       bezierCurveTo: jest.fn(),
+      closePath: jest.fn(),
+      fill: jest.fn(),
       stroke: jest.fn()
     },
     lengthScale: 2,
@@ -95,6 +98,35 @@ describe('prepared primitive curve drawing', () => {
     drawPreparedCurve(renderer, geometry, [1, 0, 0, 1]);
 
     expect(renderer.ctx.arc).toHaveBeenCalledTimes(1);
+    expect(renderer.ctx.stroke).toHaveBeenCalledTimes(1);
+  });
+
+  it('fills a connected region path with the even-odd rule', () => {
+    const renderer = createRenderer();
+    const geometries = [
+      [[0, 0], [4, 0]],
+      [[4, 0], [4, 3]],
+      [[4, 3], [0, 3]],
+      [[0, 3], [0, 0]]
+    ].map(([start, end]) => prepareCurve({
+      kind: 'lineSegment',
+      params: {
+        start: { x: start[0], y: start[1] },
+        end: { x: end[0], y: end[1] }
+      }
+    }, {
+      numericEpsilon: FLOAT32_EPSILON
+    }).geometry);
+
+    drawPreparedRegion(
+      renderer,
+      geometries,
+      [0, 0, 1, 0.2],
+      [0, 0, 1, 1]
+    );
+
+    expect(renderer.ctx.fill).toHaveBeenCalledWith('evenodd');
+    expect(renderer.ctx.closePath).toHaveBeenCalledTimes(1);
     expect(renderer.ctx.stroke).toHaveBeenCalledTimes(1);
   });
 });

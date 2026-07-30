@@ -68,7 +68,7 @@ export function traverseBvhForInteraction(
     candidateContext.forwardDistance
   );
   if (!Number.isFinite(rootNear)) {
-    setNodeState(diagnostics, root, BVH_NODE_MISSED);
+    markBvhNodeState(diagnostics, root, BVH_NODE_MISSED);
     return;
   }
 
@@ -77,10 +77,10 @@ export function traverseBvhForInteraction(
     const near = stack.pop();
     const nodeIndex = stack.pop();
     if (near > candidate.s) {
-      setNodeState(diagnostics, nodeIndex, BVH_NODE_PRUNED);
+      markBvhNodeState(diagnostics, nodeIndex, BVH_NODE_PRUNED);
       continue;
     }
-    setNodeState(diagnostics, nodeIndex, BVH_NODE_TRAVERSED);
+    markBvhNodeState(diagnostics, nodeIndex, BVH_NODE_TRAVERSED);
 
     const node = nodes[nodeIndex];
     if (node.count > 0) {
@@ -141,12 +141,12 @@ function testChildBounds(
     minDistance
   );
   if (!Number.isFinite(near)) {
-    setNodeState(diagnostics, nodeIndex, BVH_NODE_MISSED);
+    markBvhNodeState(diagnostics, nodeIndex, BVH_NODE_MISSED);
   }
   return near;
 }
 
-function intersectRayBounds(ray, bounds, minDistance) {
+export function intersectRayBounds(ray, bounds, minDistance) {
   let near = -Infinity;
   let far = Infinity;
 
@@ -180,7 +180,7 @@ function intersectRayBounds(ray, bounds, minDistance) {
     : Infinity;
 }
 
-function setNodeState(diagnostics, nodeIndex, state) {
+export function markBvhNodeState(diagnostics, nodeIndex, state) {
   if (
     diagnostics &&
     state > diagnostics.nodeStates[nodeIndex]

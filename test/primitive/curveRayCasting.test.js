@@ -104,7 +104,7 @@ describe('primitive region ray casting', () => {
     });
   });
 
-  it('reports origin contacts as ambiguous', () => {
+  it('ignores origin contacts', () => {
     const circle = prepareCurve({
       kind: 'circle',
       params: {
@@ -124,7 +124,7 @@ describe('primitive region ray casting', () => {
 
     expect(result).toEqual({
       count: 0,
-      ambiguous: true,
+      ambiguous: false,
       nearestForwardS: Infinity
     });
   });

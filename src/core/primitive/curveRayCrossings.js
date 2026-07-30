@@ -137,7 +137,6 @@ function countLineSegmentCrossings(
   }
   const distanceScale = Math.abs(denominator);
   if (Math.abs(lineDistance) <= originTolerance * distanceScale) {
-    out.ambiguous = true;
     return;
   }
   if (lineDistance * denominator < 0) return;
@@ -426,7 +425,6 @@ function addCubicCrossing(
     (point.y - originY) * directionY;
   if (!Number.isFinite(projection)) return Infinity;
   if (Math.abs(projection) <= originTolerance * directionLengthSquared) {
-    out.ambiguous = true;
     return Infinity;
   }
   if (projection < 0) return Infinity;
@@ -459,7 +457,6 @@ function isForwardRoot(
 ) {
   if (!Number.isFinite(s)) return false;
   if (Math.abs(s) <= originTolerance) {
-    out.ambiguous = true;
     return false;
   }
   if (s < 0) return false;
