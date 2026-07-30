@@ -14,7 +14,11 @@
  * limitations under the License.
  */
 
-import { collectNodeLabels, validateDagShape } from "./dag-util.js";
+import {
+  collectNodeLabels,
+  collectReachableNodeIds,
+  validateDagShape,
+} from "./dag-util.js";
 
 /**
  * Build a closure-based DAG evaluator.
@@ -27,11 +31,18 @@ import { collectNodeLabels, validateDagShape } from "./dag-util.js";
 export function createDagClosureEvaluator(dag, options = {}) {
   validateDagShape(dag);
   const labels = selectOutputLabels(dag, options.labels);
-  const evaluators = dag.nodes.map((node) => createNodeEvaluator(node));
+  const reachableNodes = collectReachableNodeIds(
+    dag,
+    labels.map(([_label, id]) => id)
+  );
+  const evaluators = dag.nodes.map((node, id) =>
+    reachableNodes.has(id) ? createNodeEvaluator(node) : null
+  );
 
   return function interpretDag(params = {}) {
     const values = new Array(evaluators.length);
     for (let index = 0; index < evaluators.length; index += 1) {
+      if (!evaluators[index]) continue;
       values[index] = finiteOrNaN(evaluators[index](values, params));
     }
 

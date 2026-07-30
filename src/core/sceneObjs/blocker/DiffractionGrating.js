@@ -19,6 +19,9 @@ import BaseSceneObj from '../BaseSceneObj.js';
 import i18next from 'i18next';
 import Simulator from '../../Simulator.js';
 import geometry from '../../geometry.js';
+import {
+  createDiffractionGratingPrimitive
+} from '../diffractionGratingPrimitive.js';
 
 /**
  * Diffraction Grating
@@ -129,6 +132,21 @@ class DiffractionGrating extends LineObjMixin(BaseSceneObj) {
     ctx.stroke();
     ctx.setLineDash([]);
     ctx.lineWidth = 1 * ls;
+  }
+
+  getPrimitives() {
+    if (!this.p1 || !this.p2 ||
+        (this.p1.x === this.p2.x && this.p1.y === this.p2.y)) {
+      return [];
+    }
+    const primitive = createDiffractionGratingPrimitive(this, {
+      kind: 'lineSegment',
+      params: {
+        start: { x: this.p1.x, y: this.p1.y },
+        end: { x: this.p2.x, y: this.p2.y }
+      }
+    }, this.mirrored, 1);
+    return primitive ? [primitive] : [];
   }
 
   onSimulationStart() {

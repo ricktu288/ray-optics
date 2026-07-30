@@ -18,6 +18,7 @@ import BaseGrinGlass from '../BaseGrinGlass.js';
 import CurveObjMixin from '../CurveObjMixin.js';
 import i18next from 'i18next';
 import geometry from '../../geometry.js';
+import { createBezierPrimitiveCurves } from '../primitiveCurveHelpers.js';
 
 /**
  * Gradient-index glass of the shape consists of Bezier curves.
@@ -138,6 +139,14 @@ class CurveGrinGlass extends CurveObjMixin(BaseGrinGlass) {
       ctx.bezierCurveTo(p[1].x, p[1].y, p[2].x, p[2].y, p[3].x, p[3].y);
     }
     ctx.closePath();
+  }
+
+  getPrimitives() {
+    if (this.notDone) return [];
+    const curves = createBezierPrimitiveCurves(this.curves);
+    if (curves.length === 0) return [];
+    const primitive = this.createGrinPrimitive(curves);
+    return primitive ? [primitive] : [];
   }
 
   move(diffX, diffY) {

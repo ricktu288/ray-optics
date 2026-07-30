@@ -21,6 +21,9 @@ import Simulator from '../../Simulator.js';
 import geometry from '../../geometry.js';
 import { equationValueForListDisplay } from '../../propertyUtils/equationConversion.js';
 import escapeHtml from 'escape-html';
+import {
+  createSampledPrimitiveCurveEntries
+} from '../primitiveCurveHelpers.js';
 
 /**
  * Mirror with shape defined by parametric curve pieces.
@@ -137,6 +140,12 @@ class ParamMirror extends ParamCurveObjMixin(BaseFilter) {
     ctx.stroke();
   }
 
+  getPrimitives() {
+    return createSampledPrimitiveCurveEntries(this, {
+      skipBoundarySegments: true
+    }).map(({ curve }) => this.createMirrorPrimitive(curve));
+  }
+
   checkRayIntersects(ray) {
     if (!this.checkRayIntersectFilter(ray)) {
       return null;
@@ -225,4 +234,4 @@ class ParamMirror extends ParamCurveObjMixin(BaseFilter) {
   }
 }
 
-export default ParamMirror; 
+export default ParamMirror;

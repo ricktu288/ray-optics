@@ -40,6 +40,46 @@ export function collectParameterNames(dag) {
   );
 }
 
+/**
+ * Collect parameters which are dependencies of the selected output labels.
+ *
+ * @param {Object} dag
+ * @param {string[]} labels
+ * @returns {Set<string>}
+ */
+export function collectReferencedParameterNames(dag, labels) {
+  const labelIds = collectNodeLabels(dag);
+  const outputIds = labels.map(label => {
+    const id = labelIds.get(label);
+    if (id === undefined) {
+      throw new TypeError(`Unknown label: ${JSON.stringify(label)}`);
+    }
+    return id;
+  });
+  const reachable = collectReachableNodeIds(dag, outputIds);
+  return new Set(
+    dag.nodes
+      .filter(node =>
+        reachable.has(node.id) && node.kind === "parameter"
+      )
+      .map(node => node.name),
+  );
+}
+
+export function collectReachableNodeIds(dag, outputIds) {
+  const reachable = new Set();
+  const stack = [...outputIds];
+  while (stack.length > 0) {
+    const id = stack.pop();
+    if (reachable.has(id)) continue;
+    reachable.add(id);
+    for (const childId of dag.nodes[id].args ?? []) {
+      stack.push(childId);
+    }
+  }
+  return reachable;
+}
+
 export function collectNodeLabels(dag) {
   const labels = new Map();
   for (const node of dag.nodes) {

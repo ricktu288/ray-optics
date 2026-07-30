@@ -131,6 +131,10 @@ function createSimulator(engine) {
     );
   }
 
+  const engineConfig = resolveSimulationEngineConfig(
+    engine,
+    app.simulationEngineConfigs
+  );
   const simulationEngine = engine === 'webgpu'
     ? new WebGpuSimulationEngine({
       device: requestWebGpuDevice,
@@ -140,14 +144,11 @@ function createSimulator(engine) {
     })
     : new CpuSimulationEngine({
       numericEpsilon: FLOAT32_EPSILON,
+      minimumRayBrightness: engineConfig.minimumRayBrightness,
       ctxMain: canvasLight.getContext('2d'),
       glMain: gl,
       ctxVirtual: document.createElement('canvas').getContext('2d'),
     });
-  const engineConfig = resolveSimulationEngineConfig(
-    engine,
-    app.simulationEngineConfigs
-  );
 
   return new PrimitiveBasedSimulator({
     scene,

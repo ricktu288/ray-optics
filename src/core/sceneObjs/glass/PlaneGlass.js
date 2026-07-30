@@ -18,6 +18,9 @@ import BaseGlass from '../BaseGlass.js';
 import LineObjMixin from '../LineObjMixin.js';
 import i18next from 'i18next';
 import geometry from '../../geometry.js';
+import BaseFilter from '../BaseFilter.js';
+
+const HALF_PLANE_RADIUS_IN_LENGTH_SCALES = 1e6;
 
 /**
  * Glass of the shape of a half-plane.
@@ -89,6 +92,45 @@ class PlaneGlass extends LineObjMixin(BaseGlass) {
       ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
       ctx.fillRect(this.p2.x - 1.5 * ls, this.p2.y - 1.5 * ls, 3 * ls, 3 * ls);
     }
+  }
+
+  getPrimitives() {
+    if (!this.p1 || !this.p2) return [];
+    const dx = this.p2.x - this.p1.x;
+    const dy = this.p2.y - this.p1.y;
+    const length = Math.hypot(dx, dy);
+    if (!(length > 0) || !Number.isFinite(length)) return [];
+
+    const radius =
+      HALF_PLANE_RADIUS_IN_LENGTH_SCALES * this.scene.lengthScale;
+    const tx = dx / length;
+    const ty = dy / length;
+    const center = {
+      x: (this.p1.x + this.p2.x) * 0.5,
+      y: (this.p1.y + this.p2.y) * 0.5
+    };
+    const start = { x: center.x - tx * radius, y: center.y - ty * radius };
+    const end = { x: center.x + tx * radius, y: center.y + ty * radius };
+    const diameter = {
+      kind: 'lineSegment',
+      params: { start, end }
+    };
+    // The directed boundary's glass side is its left side. Close that side
+    // with a large semicircle and absorb rays at the artificial far boundary.
+    const farArc = {
+      kind: 'circularArc',
+      params: { start: end, end: start, bulge: 1 }
+    };
+    return [
+      this.createGlassPrimitive([diameter, farArc]),
+      {
+        kind: 'surface',
+        curve: farArc,
+        twoSided: true,
+        surfaceType: BaseFilter.ABSORBER_SURFACE_TYPE,
+        params: {}
+      }
+    ];
   }
 
   checkMouseOver(mouse) {

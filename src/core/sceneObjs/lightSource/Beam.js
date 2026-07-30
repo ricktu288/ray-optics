@@ -19,7 +19,49 @@ import LineObjMixin from '../LineObjMixin.js';
 import Simulator from '../../Simulator.js';
 import geometry from '../../geometry.js';
 import i18next from 'i18next';
-import { exp } from 'mathjs';
+import { parseFormula } from '../../formula/formula-parser.js';
+
+const BEAM_POINT_SOURCE_TYPE = {
+  name: 'Beam point',
+  paramNames: [
+    'x_0', 'y_0', 'normal', 'delta_angle', 'P', 'lambert', 'lambda_0'
+  ],
+  dag: parseFormula(
+    `
+      pair = floor((i + 1) / 2);
+      parity = i - 2 * floor(i / 2);
+      angle = pair * delta_angle * (2 * parity - 1);
+      x = x_0;
+      y = y_0;
+      d_x = sin(normal + angle);
+      d_y = cos(normal + angle);
+      P_s = P * (1 - lambert + lambert * cos(angle));
+      P_p = P * (1 - lambert + lambert * cos(angle));
+      lambda = lambda_0;
+    `,
+    [
+      'i', 'x_0', 'y_0', 'normal', 'delta_angle', 'P', 'lambert',
+      'lambda_0'
+    ]
+  )
+};
+
+const RANDOM_BEAM_RAY_SOURCE_TYPE = {
+  name: 'Random beam ray',
+  paramNames: ['x_0', 'y_0', 'd_x_0', 'd_y_0', 'P_s_0', 'P_p_0', 'lambda_0'],
+  dag: parseFormula(
+    `
+      x = x_0;
+      y = y_0;
+      d_x = d_x_0;
+      d_y = d_y_0;
+      P_s = P_s_0;
+      P_p = P_p_0;
+      lambda = lambda_0;
+    `,
+    ['x_0', 'y_0', 'd_x_0', 'd_y_0', 'P_s_0', 'P_p_0', 'lambda_0']
+  )
+};
 
 /**
  * A parallel or divergent beam of light.
@@ -136,6 +178,104 @@ class Beam extends LineObjMixin(BaseSceneObj) {
     super.scale(scale, center);
     this.brightness /= scale;
     return true;
+  }
+
+  getPrimitives() {
+    if (!this.p1 || !this.p2) return [];
+    const length = geometry.segmentLength(this);
+    if (!(length > 0) || !Number.isFinite(length)) return [];
+
+    let rayDensity = this.scene.rayDensity;
+    let positionCount;
+    let randomRayCount;
+    let angleStep;
+    let angularCount;
+    let rayPower;
+    do {
+      const n = length * rayDensity / this.scene.lengthScale;
+      positionCount = Math.max(0, Math.floor(n + 0.5));
+      const angularSamples = parseInt(rayDensity * 500);
+      if (!(angularSamples > 0)) return [];
+      angleStep = Math.PI * 2 / angularSamples;
+      const halfAngle = this.emisAngle / 180 * Math.PI * 0.5;
+      angularCount = 1;
+      for (let angle = angleStep; angle < halfAngle; angle += angleStep) {
+        angularCount += 2;
+      }
+      const brightnessFactor =
+        1 / (1 + Math.floor(halfAngle / angleStep) * 2);
+      const expectedBrightness =
+        this.brightness * this.scene.lengthScale / rayDensity *
+        brightnessFactor;
+      rayPower = Math.min(expectedBrightness, 1) * 0.5;
+      randomRayCount = Math.max(
+        0,
+        Math.ceil(n * (1 + Math.floor(halfAngle / angleStep) * 2))
+      );
+      if (this.scene.colorMode !== 'default' && expectedBrightness > 1) {
+        rayDensity += 1 / 500;
+      } else {
+        break;
+      }
+    } while (true);
+
+    const dx = this.p2.x - this.p1.x;
+    const dy = this.p2.y - this.p1.y;
+    const normal = Math.atan2(dx, dy) + Math.PI / 2;
+    const wavelength = this.scene.simulateColors
+      ? this.wavelength
+      : Simulator.GREEN_WAVELENGTH;
+
+    if (this.random) {
+      this.initRandom();
+      const halfAngle = this.emisAngle / 180 * Math.PI * 0.5;
+      const primitives = [];
+      for (let i = 0; i < randomRayCount; i++) {
+        const position = this.getRandom(i * 2);
+        const angle = (this.getRandom(i * 2 + 1) * 2 - 1) * halfAngle;
+        const power = rayPower * (this.lambert ? Math.cos(angle) : 1);
+        primitives.push({
+          kind: 'source',
+          sourceType: RANDOM_BEAM_RAY_SOURCE_TYPE,
+          params: {
+            x_0: this.p1.x + position * dx,
+            y_0: this.p1.y + position * dy,
+            d_x_0: Math.sin(normal + angle),
+            d_y_0: Math.cos(normal + angle),
+            P_s_0: power,
+            P_p_0: power,
+            lambda_0: wavelength
+          },
+          rayCount: 1
+        });
+      }
+      return primitives;
+    }
+
+    // Keep the two-dimensional position/angle sampling split into one source
+    // per position. This keeps every source-local invocation index small and
+    // exactly representable by f32 engines.
+    const stepX = dx / (length * rayDensity / this.scene.lengthScale);
+    const stepY = dy / (length * rayDensity / this.scene.lengthScale);
+    const primitives = [];
+    for (let positionIndex = 0; positionIndex < positionCount; positionIndex++) {
+      const position = positionIndex + 0.5;
+      primitives.push({
+        kind: 'source',
+        sourceType: BEAM_POINT_SOURCE_TYPE,
+        params: {
+          x_0: this.p1.x + position * stepX,
+          y_0: this.p1.y + position * stepY,
+          normal,
+          delta_angle: angleStep,
+          P: rayPower,
+          lambert: this.lambert ? 1 : 0,
+          lambda_0: wavelength
+        },
+        rayCount: angularCount
+      });
+    }
+    return primitives;
   }
 
   onSimulationStart() {

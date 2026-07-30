@@ -30,6 +30,17 @@ const MIRROR_SURFACE_TYPE = {
   mergesWithGlass: true
 };
 
+const ABSORBER_SURFACE_TYPE = {
+  name: 'Absorber',
+  paramNames: [],
+  dag: parseFormula(
+    'd_1x = d_0x; d_1y = d_0y; P_1s = 0; P_1p = 0',
+    ['d_0x', 'd_0y']
+  ),
+  outRayCount: 1,
+  mergesWithGlass: true
+};
+
 /**
  * The base class for optical elements with wavelength filter functionality, including mirrors (which have the dichroic feature) and blockers.
  * @class
@@ -41,6 +52,7 @@ const MIRROR_SURFACE_TYPE = {
  */
 class BaseFilter extends BaseSceneObj {
   static MIRROR_SURFACE_TYPE = MIRROR_SURFACE_TYPE;
+  static ABSORBER_SURFACE_TYPE = ABSORBER_SURFACE_TYPE;
 
   static getPropertySchema(objData, scene) {
     return [
@@ -119,6 +131,25 @@ class BaseFilter extends BaseSceneObj {
     if (filter) {
       primitive.filter = filter;
     }
+    return primitive;
+  }
+
+  /**
+   * Build a two-sided absorbing primitive for the supplied curve.
+   * @param {PrimitiveCurve} curve
+   * @param {boolean} [withFilter=true]
+   * @returns {SurfacePrimitive}
+   */
+  createAbsorberPrimitive(curve, withFilter = true) {
+    const primitive = {
+      kind: 'surface',
+      curve,
+      twoSided: true,
+      surfaceType: ABSORBER_SURFACE_TYPE,
+      params: {}
+    };
+    const filter = withFilter ? this.getPrimitiveWavelengthFilter() : null;
+    if (filter) primitive.filter = filter;
     return primitive;
   }
 };

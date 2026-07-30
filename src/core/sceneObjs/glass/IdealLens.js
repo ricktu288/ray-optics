@@ -18,6 +18,29 @@ import BaseSceneObj from '../BaseSceneObj.js';
 import LineObjMixin from '../LineObjMixin.js';
 import i18next from 'i18next';
 import geometry from '../../geometry.js';
+import { parseFormula } from '../../formula/formula-parser.js';
+
+const IDEAL_LENS_SURFACE_TYPE = {
+  name: 'Ideal lens',
+  paramNames: ['center_x', 'center_y', 'tangent_x', 'tangent_y', 'f'],
+  dag: parseFormula(
+    `
+      h = sigma * ((x - center_x) * tangent_x + (y - center_y) * tangent_y);
+      slope = d_0x / (-d_0y) - h / f;
+      norm = sqrt(1 + slope * slope);
+      d_1x = slope / norm;
+      d_1y = -1 / norm;
+      P_1s = P_0s;
+      P_1p = P_0p;
+    `,
+    [
+      'd_0x', 'd_0y', 'P_0s', 'P_0p', 'x', 'y', 'sigma',
+      'center_x', 'center_y', 'tangent_x', 'tangent_y', 'f'
+    ]
+  ),
+  outRayCount: 1,
+  mergesWithGlass: false
+};
 
 /**
  * Ideal lens
@@ -143,6 +166,33 @@ class IdealLens extends LineObjMixin(BaseSceneObj) {
     super.scale(scale, center);
     this.focalLength *= scale;
     return true;
+  }
+
+  getPrimitives() {
+    if (!this.p1 || !this.p2) return [];
+    const dx = this.p2.x - this.p1.x;
+    const dy = this.p2.y - this.p1.y;
+    const length = Math.hypot(dx, dy);
+    if (!(length > 0) || !Number.isFinite(length)) return [];
+    return [{
+      kind: 'surface',
+      curve: {
+        kind: 'lineSegment',
+        params: {
+          start: { x: this.p1.x, y: this.p1.y },
+          end: { x: this.p2.x, y: this.p2.y }
+        }
+      },
+      twoSided: true,
+      surfaceType: IDEAL_LENS_SURFACE_TYPE,
+      params: {
+        center_x: (this.p1.x + this.p2.x) * 0.5,
+        center_y: (this.p1.y + this.p2.y) * 0.5,
+        tangent_x: dx / length,
+        tangent_y: dy / length,
+        f: this.focalLength
+      }
+    }];
   }
 
   checkRayIntersects(ray) {

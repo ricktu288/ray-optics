@@ -81,6 +81,19 @@ class CircleBlocker extends CircleObjMixin(BaseFilter) {
     }
   }
 
+  getPrimitives() {
+    if (!this.p1 || !this.p2) return [];
+    const radius = geometry.distance(this.p1, this.p2);
+    if (!(radius > 0) || !Number.isFinite(radius)) return [];
+    return [this.createAbsorberPrimitive({
+      kind: 'circle',
+      params: {
+        center: { x: this.p1.x, y: this.p1.y },
+        radius
+      }
+    })];
+  }
+
   checkRayIntersects(ray) {
     if (this.checkRayIntersectFilter(ray)) {
       return this.checkRayIntersectsShape(ray);

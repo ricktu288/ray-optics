@@ -187,6 +187,20 @@ class Aperture extends BaseFilter {
     };
   }
 
+  getPrimitives() {
+    if (![this.p1, this.p2, this.p3, this.p4].every(Boolean)) return [];
+    const pairs = [[this.p1, this.p3], [this.p2, this.p4]];
+    return pairs
+      .filter(([start, end]) => start.x !== end.x || start.y !== end.y)
+      .map(([start, end]) => this.createAbsorberPrimitive({
+        kind: 'lineSegment',
+        params: {
+          start: { x: start.x, y: start.y },
+          end: { x: end.x, y: end.y }
+        }
+      }));
+  }
+
   onConstructMouseDown(mouse, ctrl, shift) {
     if (!this.constructionPoint) {
       // Initialize the construction stage.

@@ -18,6 +18,10 @@ import BaseCustomSurface from '../BaseCustomSurface.js';
 import i18next from 'i18next';
 import Simulator from '../../Simulator.js';
 import geometry from '../../geometry.js';
+import { createArcOrLineCurve } from '../primitiveCurveHelpers.js';
+import {
+  createCustomSurfacePrimitive
+} from '../customSurfacePrimitive.js';
 
 /**
  * A custom surface with shape of a circular arc.
@@ -281,6 +285,57 @@ class CustomArcSurface extends BaseCustomSurface {
   
   getDefaultCenter() {
     return this.p3;
+  }
+
+  getPrimitives() {
+    if (!this.p1 || !this.p2 || !this.p3) return [];
+    const curve = createArcOrLineCurve(this.p1, this.p2, this.p3);
+    if (!curve) return [];
+    try {
+      let primitive;
+      if (curve.kind === 'lineSegment') {
+        primitive = createCustomSurfacePrimitive({
+          curve,
+          outRays: this.outRays,
+          twoSided: this.twoSided,
+          positionExpression: '-1 + 2 * u',
+          name: 'Custom arc surface'
+        });
+      } else {
+        const center = geometry.linesIntersection(
+          geometry.perpendicularBisector(geometry.line(this.p1, this.p3)),
+          geometry.perpendicularBisector(geometry.line(this.p2, this.p3))
+        );
+        const startAngle = Math.atan2(
+          this.p1.y - center.y,
+          this.p1.x - center.x
+        );
+        const angleSpan = 4 * Math.atan(curve.params.bulge);
+        const rawAngle =
+          '(atan2(y - center_y, x - center_x) - start_angle)';
+        const directedAngle = angleSpan > 0
+          ? `(${rawAngle} - 2 * pi * floor(${rawAngle} / (2 * pi)))`
+          : `(${rawAngle} - 2 * pi * ceil(${rawAngle} / (2 * pi)))`;
+        primitive = createCustomSurfacePrimitive({
+          curve,
+          outRays: this.outRays,
+          twoSided: this.twoSided,
+          positionExpression: `-1 + 2 * ${directedAngle} / angle_span`,
+          params: {
+            center_x: center.x,
+            center_y: center.y,
+            start_angle: startAngle,
+            angle_span: angleSpan
+          },
+          name: 'Custom arc surface'
+        });
+      }
+      this.error = null;
+      return [primitive];
+    } catch (error) {
+      this.error = error.toString();
+      return [];
+    }
   }
 
   onConstructMouseDown(mouse, ctrl, shift) {

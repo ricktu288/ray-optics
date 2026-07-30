@@ -18,6 +18,7 @@ import BaseFilter from '../BaseFilter.js';
 import i18next from 'i18next';
 import Simulator from '../../Simulator.js';
 import geometry from '../../geometry.js';
+import { createLineSegmentCurve } from '../primitiveCurveHelpers.js';
 
 /**
  * Parabolic mirror.
@@ -237,6 +238,48 @@ class ParabolicMirror extends BaseFilter {
   
   getDefaultCenter() {
     return this.p3;
+  }
+
+  getPrimitives() {
+    if (!this.p1 || !this.p2 || !this.p3) return [];
+    if (this.isDegenerate()) {
+      const curve = createLineSegmentCurve(this.p1, this.p2);
+      return curve ? [this.createMirrorPrimitive(curve)] : [];
+    }
+
+    const length = geometry.distance(this.p1, this.p2);
+    if (!(length > 0)) return [];
+    const tangentX = (this.p2.x - this.p1.x) / length;
+    const tangentY = (this.p2.y - this.p1.y) / length;
+    const normalX = tangentY;
+    const normalY = -tangentX;
+    const height =
+      (this.p3.x - this.p1.x) * normalX +
+      (this.p3.y - this.p1.y) * normalY;
+    const vertex = {
+      x: (this.p1.x + this.p2.x) * 0.5 + normalX * height,
+      y: (this.p1.y + this.p2.y) * 0.5 + normalY * height
+    };
+    const quadraticControl = {
+      x: 2 * vertex.x - 0.5 * (this.p1.x + this.p2.x),
+      y: 2 * vertex.y - 0.5 * (this.p1.y + this.p2.y)
+    };
+    const curve = {
+      kind: 'cubicBezier',
+      params: {
+        start: { x: this.p1.x, y: this.p1.y },
+        control1: {
+          x: this.p1.x + 2 / 3 * (quadraticControl.x - this.p1.x),
+          y: this.p1.y + 2 / 3 * (quadraticControl.y - this.p1.y)
+        },
+        control2: {
+          x: this.p2.x + 2 / 3 * (quadraticControl.x - this.p2.x),
+          y: this.p2.y + 2 / 3 * (quadraticControl.y - this.p2.y)
+        },
+        end: { x: this.p2.x, y: this.p2.y }
+      }
+    };
+    return [this.createMirrorPrimitive(curve)];
   }
 
   onConstructMouseDown(mouse, ctrl, shift) {

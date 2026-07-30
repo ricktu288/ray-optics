@@ -150,7 +150,18 @@ export function updateInteractionCandidate(
     return;
   }
 
-  if (hit.s > context.maximumDistance) return;
+  if (hit.s > context.maximumDistance) {
+    if (candidate.curveId >= 0) return;
+    const mergingTolerance = getMergingDistanceTolerance(
+      candidate.positionTolerance,
+      curve.geometry,
+      candidate.s,
+      hit.s,
+      context.surfaceMerging,
+      numericEpsilon
+    );
+    if (hit.s > candidate.s + mergingTolerance) return;
+  }
 
   const frontSideOnly =
     curve.ownerKind !== 'region' && !curve.twoSided;

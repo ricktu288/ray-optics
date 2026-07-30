@@ -25,6 +25,9 @@ import escapeHtml from 'escape-html';
 import { Bezier } from 'bezier-js';
 import * as math from 'mathjs';
 import { curveTypePropertyInfoHtml } from '../ParamCurveObjMixin.js';
+import {
+  createSampledPrimitiveCurveEntries
+} from '../primitiveCurveHelpers.js';
 
 function compileEquationDerivative(eqnLatex) {
   const p = latexToMathJS(eqnLatex);
@@ -519,6 +522,14 @@ class CustomGlass extends LineObjMixin(BaseGlass) {
 
   getIncidentType(ray) {
     return this.getIncidentData(ray).incidentType;
+  }
+
+  getPrimitives() {
+    this._invalidateCurveIfLengthScaleChanged();
+    const curves = createSampledPrimitiveCurveEntries(this).map(
+      entry => entry.curve
+    );
+    return curves.length > 0 ? [this.createGlassPrimitive(curves)] : [];
   }
   
   /* Utility methods */

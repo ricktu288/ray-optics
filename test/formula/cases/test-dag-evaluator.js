@@ -308,4 +308,23 @@ function assertSameOutputs(left, right) {
   );
 }
 
+{
+  const dag = parseFormula(
+    "unused = x; selected = y + 1",
+    ["x", "y"],
+  );
+  const params = {
+    get x() {
+      throw new Error("unselected branch was evaluated");
+    },
+    y: 2,
+  };
+  const interpreted = createDagClosureEvaluator(
+    dag,
+    { labels: ["selected"] },
+  );
+
+  assert.equal(interpreted(params).selected, 3);
+}
+
 console.log("dag evaluator tests passed");

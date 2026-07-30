@@ -717,7 +717,7 @@
     },
     "primitiveCpu": {
       "title": "Primitive-based CPU",
-      "description": "Use the experimental primitive-based CPU engine. This early test currently displays a triangle instead of simulated light."
+      "description": "Use the experimental primitive-based CPU engine with complete ray tracing, including surfaces, refractive regions, GRIN stepping, and detectors."
     },
     "numericalTolerances": {
       "description": "Tolerances that affect the interpretation of scene geometry are configured separately and stored with the scene.",

@@ -18,6 +18,10 @@ import i18next from 'i18next';
 import Simulator from '../../Simulator.js';
 import geometry from '../../geometry.js';
 import BaseSceneObj from '../BaseSceneObj.js';
+import { createArcOrLineCurve } from '../primitiveCurveHelpers.js';
+import {
+  createDiffractionGratingPrimitive
+} from '../diffractionGratingPrimitive.js';
 
 /**
  * Mirror with shape of a circular arc. Diffracts light. 
@@ -139,6 +143,14 @@ class ConcaveDiffractionGrating extends BaseSceneObj {
       ctx.fillStyle = 'rgb(255,0,0)';
       ctx.fillRect(this.p1.x - 1.5 * ls, this.p1.y - 1.5 * ls, 3 * ls, 3 * ls);
     }
+  }
+
+  getPrimitives() {
+    if (!this.p1 || !this.p2 || !this.p3) return [];
+    const curve = createArcOrLineCurve(this.p1, this.p2, this.p3);
+    if (!curve) return [];
+    const primitive = createDiffractionGratingPrimitive(this, curve, true, -1);
+    return primitive ? [primitive] : [];
   }
 
   move(diffX, diffY) {

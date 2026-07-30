@@ -21,6 +21,9 @@ import Simulator from '../../Simulator.js';
 import geometry from '../../geometry.js';
 import { equationValueForListDisplay } from '../../propertyUtils/equationConversion.js';
 import escapeHtml from 'escape-html';
+import {
+  createSampledPrimitiveCurveEntries
+} from '../primitiveCurveHelpers.js';
 
 /**
  * Glass with shape defined by parametric curve pieces.
@@ -139,6 +142,13 @@ class ParamGlass extends ParamCurveObjMixin(BaseGlass) {
       this.drawPath(canvasRenderer);
       this.fillGlass(canvasRenderer, isAboveLight, isHovered);
     }
+  }
+
+  getPrimitives() {
+    const curves = createSampledPrimitiveCurveEntries(this, {
+      skipBoundarySegments: true
+    }).map(entry => entry.curve);
+    return curves.length > 0 ? [this.createGlassPrimitive(curves)] : [];
   }
 
   checkRayIntersects(ray) {
@@ -303,4 +313,4 @@ class ParamGlass extends ParamCurveObjMixin(BaseGlass) {
   }
 }
 
-export default ParamGlass; 
+export default ParamGlass;

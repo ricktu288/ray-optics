@@ -91,6 +91,33 @@ describe('interaction candidate updates', () => {
     });
   });
 
+  it('merges a hit into an empty finite candidate at the step limit', () => {
+    const description = createDescription(true);
+    description.numericalTolerances.surfaceMerging = 0.001;
+    description.curves[0].geometry = prepareCurve({
+      kind: 'lineSegment',
+      params: {
+        start: { x: 5.0005, y: -1 },
+        end: { x: 5.0005, y: 1 }
+      }
+    }, {
+      numericEpsilon: FLOAT32_EPSILON
+    }).geometry;
+    const context = createInteractionCandidateContext(
+      description,
+      FLOAT32_EPSILON,
+      5
+    );
+    const candidate = createInteractionCandidate(0, 5);
+
+    updateInteractionCandidate(candidate, context, 0, ray);
+
+    expect(candidate).toMatchObject({
+      s: 5.0005,
+      curveId: 0
+    });
+  });
+
   it('rejects merged hits beyond the original distance limit', () => {
     const description = createDescription(true);
     description.numericalTolerances.surfaceMerging = 0.001;

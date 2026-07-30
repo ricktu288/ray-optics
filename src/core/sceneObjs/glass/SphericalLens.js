@@ -397,6 +397,10 @@ class SphericalLens extends Glass {
     return super.checkRayIntersects(ray);
   }
 
+  getPrimitives() {
+    return this.path ? super.getPrimitives() : [];
+  }
+
   /* Utility methods */
 
 

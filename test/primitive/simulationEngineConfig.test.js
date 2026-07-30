@@ -42,4 +42,13 @@ describe('simulation engine configuration', () => {
     expect(resolved.bvh.directPrimitiveThreshold).toBe(0);
     expect(resolved.bvh.lineLeafSize).toBe(4);
   });
+
+  it.each(['primitiveCpu', 'webgpu'])(
+    'provides the minimum active ray brightness to %s',
+    engineKind => {
+      expect(
+        DEFAULT_SIMULATION_ENGINE_CONFIGS[engineKind].minimumRayBrightness
+      ).toBe(1e-6);
+    }
+  );
 });

@@ -28,36 +28,83 @@ const bulkType = {
   dag: parseFormula('n = 1.5; alpha = 0;', ['x', 'y', 'lambda'])
 };
 
-function createProcessedScene(curves, directionX = 1, directionY = 0) {
-  const sourceType = {
-    name: 'Test source',
-    paramNames: [],
-    dag: parseFormula(
-      `
-        x = 5;
-        y = 5;
-        d_x = ${directionX};
-        d_y = ${directionY};
-        P_s = 0.5;
-        P_p = 0.5;
-        lambda = 540;
-      `,
-      ['i', 'N']
-    )
-  };
-  return preprocessPrimitives([
-    {
-      kind: 'source',
-      sourceType,
-      params: {},
-      rayCount: 1
+const sourceType = {
+  name: 'Test source',
+  paramNames: [
+    'x_0',
+    'y_0',
+    'delta_x',
+    'd_x_0',
+    'd_y_0',
+    'P'
+  ],
+  dag: parseFormula(
+    `
+      x = x_0 + i * delta_x;
+      y = y_0;
+      d_x = d_x_0;
+      d_y = d_y_0;
+      P_s = P;
+      P_p = P;
+      lambda = 540;
+    `,
+    ['i', 'N', 'x_0', 'y_0', 'delta_x', 'd_x_0', 'd_y_0', 'P']
+  )
+};
+
+const mirrorSurfaceType = {
+  name: 'Test mirror',
+  paramNames: [],
+  outRayCount: 1,
+  mergesWithGlass: false,
+  dag: parseFormula(
+    `
+      d_1x = d_0x;
+      d_1y = -d_0y;
+      P_1s = P_0s;
+      P_1p = P_0p;
+    `,
+    ['d_0x', 'd_0y', 'P_0s', 'P_0p']
+  )
+};
+
+function source({
+  x = 5,
+  y = 5,
+  deltaX = 0,
+  directionX = 1,
+  directionY = 0,
+  power = 0.5,
+  rayCount = 1
+} = {}) {
+  return {
+    kind: 'source',
+    sourceType,
+    params: {
+      x_0: x,
+      y_0: y,
+      delta_x: deltaX,
+      d_x_0: directionX,
+      d_y_0: directionY,
+      P: power
     },
+    rayCount
+  };
+}
+
+function createProcessedScene(
+  curves,
+  sources = [source()],
+  stepSize = 1
+) {
+  return preprocessPrimitives([
+    ...sources,
     {
       kind: 'region',
       curves,
       bulkType,
       params: {},
-      stepSize: 1,
+      stepSize,
       partialReflect: true
     }
   ], {
@@ -98,9 +145,20 @@ function rectangleCurves() {
   ];
 }
 
-describe('CpuSimulationEngine temporary first-ray membership', () => {
-  it('keeps the scene reference and stores the containing regions', async () => {
-    const processedScene = createProcessedScene(rectangleCurves());
+async function advanceUntilPhase(run, phase) {
+  let update;
+  while (run.phase !== phase && !run.isComplete) {
+    update = await run.advance({ timeBudgetMs: 0 });
+  }
+  return update;
+}
+
+describe('CpuSimulationEngine initial ray buffers', () => {
+  it('populates every source ray and stores each initial membership', async () => {
+    const processedScene = createProcessedScene(rectangleCurves(), [
+      source({ rayCount: 2, deltaX: 10 }),
+      source({ x: 2, y: 2 })
+    ]);
     const diagnostics = attachCpuBvhTraversalDiagnostics(processedScene);
     const engine = new CpuSimulationEngine({
       numericEpsilon: FLOAT32_EPSILON
@@ -109,70 +167,441 @@ describe('CpuSimulationEngine temporary first-ray membership', () => {
     const log = jest.spyOn(console, 'log').mockImplementation(() => {});
     const preparedScene = await engine.prepare(processedScene);
 
-    const membership = engine.runFirstRayMembership({ preparedScene });
+    const run = await engine.createRun({ preparedScene });
+    const update = await advanceUntilPhase(run, 'render');
 
     expect(preparedScene.description).toBe(processedScene);
-    expect(Array.from(membership.regionMask)).toEqual([1]);
-    expect(membership.ambiguousCurveId).toBe(-1);
-    expect(membership.discardRay).toBe(false);
-    expect(processedScene.temporaryFirstRayMembership).toEqual({
-      testRays: [expect.objectContaining({
+    expect(update.status).toBe('running');
+    expect(update.outputUpdated).toBe(false);
+    expect(run.rayBuffers[0]).toHaveLength(3);
+    expect(run.rayBuffers[1]).toEqual([]);
+    expect(run.hitBuffer).toHaveLength(3);
+    expect(run.hitBuffer).toEqual([
+      expect.objectContaining({
+        s: 1,
+        curveId: -1
+      }),
+      expect.objectContaining({
+        s: Infinity,
+        curveId: -1
+      }),
+      expect.objectContaining({
+        s: 1,
+        curveId: -1
+      })
+    ]);
+    expect(run.destinationRayCount).toBe(2);
+    expect(run.interactionIndexBuffers).toEqual([
+      expect.objectContaining({
+        kind: 'grinStep',
+        interactionCount: 2,
+        sourceRayIndices: Uint32Array.of(0, 2),
+        destinationRayStarts: Uint32Array.of(0)
+      }),
+      expect.objectContaining({
+        kind: 'regionBoundary',
+        fresnel: false,
+        interactionCount: 0
+      }),
+      expect.objectContaining({
+        kind: 'regionBoundary',
+        fresnel: true,
+        interactionCount: 0
+      })
+    ]);
+    expect(run.rayBuffers[0]).toEqual([
+      expect.objectContaining({
         originX: 5,
         originY: 5,
         directionX: 1,
-        directionY: 0
-      })],
-      membership
-    });
+        directionY: 0,
+        brightnessS: 0.5,
+        brightnessP: 0.5,
+        wavelength: 540,
+        membership: Uint8Array.of(1)
+      }),
+      expect.objectContaining({
+        originX: 15,
+        membership: Uint8Array.of(0)
+      }),
+      expect.objectContaining({
+        originX: 2,
+        originY: 2,
+        membership: Uint8Array.of(1)
+      })
+    ]);
     expect(Array.from(diagnostics.testedCurves)).toContain(1);
     expect(log).toHaveBeenCalledWith(
-      '[Primitive CPU membership] ray origin is inside regions: %s',
-      '0'
+      '[Primitive CPU initialization] sources=%d slots=%d active=%d inactive=%d invalid=%d membershipRetries=%d membershipDiscarded=%d regions=%d',
+      2,
+      3,
+      3,
+      0,
+      0,
+      0,
+      0,
+      1
     );
+    expect(log.mock.calls[1]).toEqual([
+      '[Primitive CPU initial rays]\n' +
+      '  first:\n' +
+      '    #0 o=(5,5) d=(1,0) P=(0.5,0.5) lambda=540 regions=[0]\n' +
+      '    #1 o=(15,5) d=(1,0) P=(0.5,0.5) lambda=540 regions=[]\n' +
+      '    #2 o=(2,2) d=(1,0) P=(0.5,0.5) lambda=540 regions=[0]\n' +
+      '  last:\n' +
+      '    #0 o=(5,5) d=(1,0) P=(0.5,0.5) lambda=540 regions=[0]\n' +
+      '    #1 o=(15,5) d=(1,0) P=(0.5,0.5) lambda=540 regions=[]\n' +
+      '    #2 o=(2,2) d=(1,0) P=(0.5,0.5) lambda=540 regions=[0]'
+    ]);
+    expect(log.mock.calls[2]).toEqual([
+      '[Primitive CPU interaction indices] ' +
+      'types=3 activeTypes=1 interactions=2 destinationSlots=2\n' +
+      '  grinStep out#0 hits=2 [0->0 2->1]\n' +
+      '  regionBoundary[noFresnel] hits=0 out=1\n' +
+      '  regionBoundary[fresnel] hits=0 out=2'
+    ]);
     log.mockRestore();
   });
 
-  it('warns on an ambiguous cast and retries from half the nearest distance', async () => {
+  it('retries an ambiguous cast from half the nearest distance', async () => {
+    const processedScene = createProcessedScene(rectangleCurves(), [
+      source({ directionX: 1, directionY: 1 })
+    ]);
+    const engine = new CpuSimulationEngine({
+      numericEpsilon: FLOAT32_EPSILON
+    });
+    engine.beginRenderer = jest.fn();
+    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
+    const preparedScene = await engine.prepare(processedScene);
+
+    const run = await engine.createRun({ preparedScene });
+    await run.advance();
+
+    expect(run.summary.membershipRetryCount).toBe(1);
+    expect(run.summary.membershipDiscardedRayCount).toBe(0);
+    expect(Array.from(run.currentRayBuffer[0].membership)).toEqual([1]);
+    expect(engine.beginRenderer).toHaveBeenCalledTimes(1);
+    log.mockRestore();
+  });
+
+  it('pauses and resumes population and membership using the time budget', async () => {
+    const processedScene = createProcessedScene(rectangleCurves(), [
+      source({ rayCount: 2, deltaX: 1 })
+    ]);
+    const engine = new CpuSimulationEngine({
+      numericEpsilon: FLOAT32_EPSILON
+    });
+    engine.beginRenderer = jest.fn();
+    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
+    const preparedScene = await engine.prepare(processedScene);
+    const run = await engine.createRun({ preparedScene });
+    const visitedPhases = new Set([run.phase]);
+
+    let update = await run.advance({ timeBudgetMs: 0 });
+    visitedPhases.add(run.phase);
+    expect(update.status).toBe('running');
+    expect(run.currentRayBuffer).toHaveLength(1);
+
+    let advanceCount = 1;
+    while (update.status !== 'complete') {
+      update = await run.advance({ timeBudgetMs: 0 });
+      visitedPhases.add(run.phase);
+      advanceCount++;
+    }
+
+    expect(advanceCount).toBeGreaterThan(2);
+    expect(visitedPhases).toEqual(new Set([
+      'populate',
+      'membership',
+      'intersection',
+      'interactionIndexCount',
+      'interactionIndexFill',
+      'render',
+      'outgoing',
+      'subsample',
+      'complete'
+    ]));
+    expect(run.passIndex).toBeGreaterThan(0);
+    expect(run.processedRayCount).toBeGreaterThanOrEqual(2);
+    expect(log.mock.calls.length).toBeGreaterThanOrEqual(3);
+    log.mockRestore();
+  });
+
+  it('stores the nearest boundary hit when no GRIN step limits the ray', async () => {
     const processedScene = createProcessedScene(
       rectangleCurves(),
-      1,
-      1
+      [source()],
+      0
     );
     const engine = new CpuSimulationEngine({
       numericEpsilon: FLOAT32_EPSILON
     });
     engine.beginRenderer = jest.fn();
     const log = jest.spyOn(console, 'log').mockImplementation(() => {});
-    const warn = jest.spyOn(console, 'warn').mockImplementation(() => {});
     const preparedScene = await engine.prepare(processedScene);
+    const run = await engine.createRun({ preparedScene });
 
-    const membership = engine.runFirstRayMembership({ preparedScene });
+    await advanceUntilPhase(run, 'render');
 
-    expect(membership.ambiguousCurveId).toBe(-1);
-    expect(membership.discardRay).toBe(false);
-    const { testRays } =
-      processedScene.temporaryFirstRayMembership;
-    expect(testRays).toHaveLength(2);
-    expect(testRays[0]).toMatchObject({
-      originX: 5,
-      originY: 5
+    expect(run.hitBuffer).toHaveLength(1);
+    expect(run.hitBuffer[0]).toMatchObject({
+      s: 5,
+      u: 0.5,
+      curveId: expect.any(Number),
+      normalX: -1,
+      normalY: 0,
+      sigma: 1
     });
-    expect(testRays[1]).toMatchObject({
-      originX: 7.5,
-      originY: 7.5
+    expect(run.hitBuffer[0].curveId).toBeGreaterThanOrEqual(0);
+    expect(run.summary.finiteHitCount).toBe(1);
+    expect(run.summary.grinStepCount).toBe(0);
+    expect(run.destinationRayCount).toBe(2);
+    expect(run.interactionIndexBuffers[2]).toMatchObject({
+      interactionCount: 1,
+      sourceRayIndices: Uint32Array.of(0),
+      destinationRayStarts: Uint32Array.of(0, 1)
     });
-    expect(warn).toHaveBeenCalledWith(
-      '[Primitive CPU membership] Ambiguous crossing for regions %s at curve %d on attempt %d.',
-      '0',
-      expect.any(Number),
-      1
-    );
-    expect(warn).not.toHaveBeenCalledWith(
-      '[Primitive CPU membership] Membership remains ambiguous after %d attempts; ray discarded.',
-      expect.any(Number)
-    );
-    expect(engine.beginRenderer).toHaveBeenCalledTimes(1);
     log.mockRestore();
-    warn.mockRestore();
+  });
+
+  it('prefers a boundary exactly at the GRIN step endpoint', async () => {
+    const processedScene = createProcessedScene(
+      rectangleCurves(),
+      [source()],
+      5
+    );
+    const engine = new CpuSimulationEngine({
+      numericEpsilon: FLOAT32_EPSILON
+    });
+    engine.beginRenderer = jest.fn();
+    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
+    const preparedScene = await engine.prepare(processedScene);
+    const run = await engine.createRun({ preparedScene });
+
+    await advanceUntilPhase(run, 'render');
+
+    expect(run.hitBuffer[0]).toMatchObject({
+      s: 5,
+      curveId: expect.any(Number)
+    });
+    expect(run.hitBuffer[0].curveId).toBeGreaterThanOrEqual(0);
+    expect(run.summary.finiteHitCount).toBe(1);
+    expect(run.summary.grinStepCount).toBe(0);
+    log.mockRestore();
+  });
+
+  it('uses a zero-distance hit for a weak ray without mutating the ray', async () => {
+    const processedScene = createProcessedScene(rectangleCurves(), [
+      source({ power: 2e-7 })
+    ]);
+    const engine = new CpuSimulationEngine({
+      numericEpsilon: FLOAT32_EPSILON,
+      minimumRayBrightness: 1e-6
+    });
+    engine.beginRenderer = jest.fn();
+    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
+    const preparedScene = await engine.prepare(processedScene);
+    const run = await engine.createRun({
+      preparedScene,
+      colorMode: 'linear'
+    });
+
+    const update = await advanceUntilPhase(run, 'render');
+
+    expect(run.currentRayBuffer[0]).toMatchObject({
+      brightnessS: 2e-7,
+      brightnessP: 2e-7
+    });
+    expect(run.hitBuffer[0]).toMatchObject({
+      s: 0,
+      curveId: -1
+    });
+    expect(update.result.totalTruncation).toBeCloseTo(4e-7);
+    expect(run.summary.weakRayCount).toBe(1);
+    log.mockRestore();
+  });
+
+  it('prefix-subsamples weak legacy-color rays while producing the buffer', async () => {
+    const processedScene = createProcessedScene(rectangleCurves(), [
+      source({ power: 0.004, rayCount: 3 })
+    ]);
+    const engine = new CpuSimulationEngine({
+      numericEpsilon: FLOAT32_EPSILON
+    });
+    engine.beginRenderer = jest.fn();
+    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
+    const preparedScene = await engine.prepare(processedScene);
+    const run = await engine.createRun({
+      preparedScene,
+      colorMode: 'default'
+    });
+
+    const update = await advanceUntilPhase(run, 'render');
+
+    expect(run.currentRayBuffer.map(ray => [
+      ray.brightnessS,
+      ray.brightnessP
+    ])).toEqual([
+      [0, 0],
+      [0.005, 0.005],
+      [0.005, 0.005]
+    ]);
+    expect(run.hitBuffer[0].s).toBe(0);
+    expect(run.summary.legacySubsampledRayCount).toBe(2);
+    expect(run.summary.legacySubsamplingSkippedRayCount).toBe(1);
+    expect(update.result.totalTruncation).toBeCloseTo(0.024);
+    log.mockRestore();
+  });
+
+  it('renders the initial finite ray from the ray and hit buffers', async () => {
+    const processedScene = createProcessedScene(
+      rectangleCurves(),
+      [source()],
+      0
+    );
+    const renderer = {
+      isSVG: false,
+      drawSegment: jest.fn(),
+      drawRay: jest.fn(),
+      drawPoint: jest.fn(),
+      applyColorTransformation: jest.fn(),
+      flush: jest.fn()
+    };
+    const engine = new CpuSimulationEngine({
+      numericEpsilon: FLOAT32_EPSILON
+    });
+    engine.beginRenderer = jest.fn(() => {
+      engine.canvasRenderer = renderer;
+      return renderer;
+    });
+    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
+    const preparedScene = await engine.prepare(processedScene);
+    const run = await engine.createRun({
+      preparedScene,
+      colorMode: 'default',
+      rendering: {
+        mode: 'rays',
+        simulateColors: false,
+        showRayArrows: true,
+        getThemeRayColor: (_type, alpha) => [1, 0, 0, alpha],
+        getThemeRayDash: () => []
+      }
+    });
+
+    const update = await advanceUntilPhase(run, 'outgoing');
+
+    expect(renderer.drawSegment).toHaveBeenCalledWith({
+      p1: { x: 5, y: 5 },
+      p2: { x: 10, y: 5 }
+    }, [1, 0, 0, 1], true, []);
+    expect(renderer.drawRay).not.toHaveBeenCalled();
+    expect(update.outputUpdated).toBe(true);
+    log.mockRestore();
+  });
+
+  it('traces surface outputs through the completed ping-pong loop', async () => {
+    const processedScene = preprocessPrimitives([
+      source({ x: 5, y: 5 }),
+      {
+        kind: 'surface',
+        curve: {
+          kind: 'lineSegment',
+          params: {
+            start: { x: 10, y: 0 },
+            end: { x: 10, y: 10 }
+          }
+        },
+        twoSided: true,
+        surfaceType: mirrorSurfaceType,
+        params: {}
+      }
+    ], {
+      numericEpsilon: FLOAT32_EPSILON
+    }).processedScene;
+    const engine = new CpuSimulationEngine({
+      numericEpsilon: FLOAT32_EPSILON
+    });
+    engine.beginRenderer = jest.fn();
+    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
+    const preparedScene = await engine.prepare(processedScene);
+    const run = await engine.createRun({ preparedScene });
+
+    const update = await run.advance();
+
+    expect(update.status).toBe('complete');
+    expect(run.passIndex).toBe(1);
+    expect(run.processedRayCount).toBe(2);
+    expect(run.currentRayBuffer).toEqual([
+      expect.objectContaining({
+        originX: 10,
+        originY: 5,
+        directionX: -1,
+        directionY: 0,
+        brightnessS: 0.5,
+        brightnessP: 0.5,
+        membership: new Uint8Array(0)
+      })
+    ]);
+    expect(run.hitBuffer[0]).toMatchObject({
+      s: Infinity,
+      curveId: -1
+    });
+    log.mockRestore();
+  });
+
+  it('accumulates detector results and continues the incident ray', async () => {
+    const detectorType = {
+      name: 'Test detector',
+      paramNames: [],
+      writeCount: 1,
+      dag: parseFormula(
+        'k_1 = 0; v_1 = P_0s + P_0p',
+        ['P_0s', 'P_0p']
+      )
+    };
+    const processedScene = preprocessPrimitives([
+      source({ x: 5, y: 5 }),
+      {
+        kind: 'detector',
+        curve: {
+          kind: 'lineSegment',
+          params: {
+            start: { x: 10, y: 0 },
+            end: { x: 10, y: 10 }
+          }
+        },
+        twoSided: true,
+        detectorType,
+        params: {},
+        resultId: 0,
+        resultSize: 1,
+        result: { values: null }
+      }
+    ], {
+      numericEpsilon: FLOAT32_EPSILON
+    }).processedScene;
+    const engine = new CpuSimulationEngine({
+      numericEpsilon: FLOAT32_EPSILON
+    });
+    engine.beginRenderer = jest.fn();
+    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
+    const preparedScene = await engine.prepare(processedScene);
+    const run = await engine.createRun({ preparedScene });
+
+    const update = await run.advance();
+
+    expect(update.status).toBe('complete');
+    expect(Array.from(update.result.detectors[0])).toEqual([1]);
+    expect(run.currentRayBuffer[0]).toMatchObject({
+      originX: 10,
+      originY: 5,
+      directionX: 1,
+      directionY: 0
+    });
+    expect(run.hitBuffer[0]).toMatchObject({
+      s: Infinity,
+      curveId: -1
+    });
+    log.mockRestore();
   });
 });
