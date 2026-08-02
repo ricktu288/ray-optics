@@ -93,7 +93,7 @@ describe('interaction candidate updates', () => {
 
   it('merges a hit into an empty finite candidate at the step limit', () => {
     const description = createDescription(true);
-    description.numericalTolerances.surfaceMerging = 0.001;
+    description.numericalTolerances.interactionMerging = 0.001;
     description.curves[0].geometry = prepareCurve({
       kind: 'lineSegment',
       params: {
@@ -120,7 +120,7 @@ describe('interaction candidate updates', () => {
 
   it('rejects merged hits beyond the original distance limit', () => {
     const description = createDescription(true);
-    description.numericalTolerances.surfaceMerging = 0.001;
+    description.numericalTolerances.interactionMerging = 0.001;
     description.curves.push({
       ...description.curves[0],
       geometry: prepareCurve({

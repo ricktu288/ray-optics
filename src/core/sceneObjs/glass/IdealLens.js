@@ -39,7 +39,7 @@ const IDEAL_LENS_SURFACE_TYPE = {
     ]
   ),
   outRayCount: 1,
-  mergesWithGlass: false
+  mergesWithBoundary: false
 };
 
 /**

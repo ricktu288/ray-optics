@@ -104,7 +104,7 @@ export function createDiffractionGratingPrimitive(
         ]
       ),
       outRayCount: maxOutRayCount,
-      mergesWithGlass: false
+      mergesWithBoundary: false
     },
     params
   };

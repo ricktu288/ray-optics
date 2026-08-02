@@ -28,7 +28,7 @@ const COMMON_BVH_CONFIG = Object.freeze({
 
 const COMMON_PRIMITIVE_ENGINE_CONFIG = Object.freeze({
   logDebugInfo: false,
-  minimumRayBrightness: 1e-6,
+  minimumRayPower: 1e-6,
   bvh: COMMON_BVH_CONFIG,
 });
 

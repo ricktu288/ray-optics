@@ -94,7 +94,7 @@ export function createInteractionCandidateContext(
   validateNumericEpsilon(numericEpsilon);
   const configuredTolerances = description.numericalTolerances ?? {};
   const normalTolerance = Math.min(Math.PI, Math.max(
-    configuredTolerances.surfaceNormal ?? 0,
+    configuredTolerances.interactionNormal ?? 0,
     getRoundingErrorFactor(NORMAL_ERROR_OPERATION_COUNT, numericEpsilon)
   ));
   return {
@@ -102,7 +102,7 @@ export function createInteractionCandidateContext(
     numericEpsilon,
     maximumDistance,
     forwardDistance: configuredTolerances.forwardDistance ?? 0,
-    surfaceMerging: configuredTolerances.surfaceMerging ?? 0,
+    interactionMerging: configuredTolerances.interactionMerging ?? 0,
     maximumNormalChordDistanceSquared:
       4 * Math.sin(normalTolerance * 0.5) ** 2,
     hitScratch: {
@@ -157,7 +157,7 @@ export function updateInteractionCandidate(
       curve.geometry,
       candidate.s,
       hit.s,
-      context.surfaceMerging,
+      context.interactionMerging,
       numericEpsilon
     );
     if (hit.s > candidate.s + mergingTolerance) return;
@@ -197,7 +197,7 @@ export function updateInteractionCandidate(
     curve.geometry,
     candidate.s,
     hit.s,
-    context.surfaceMerging,
+    context.interactionMerging,
     numericEpsilon
   );
   if (hit.s < candidate.s - mergingTolerance) {
@@ -427,10 +427,10 @@ function areHitsCompatible(
     return true;
   }
   if (currentCurve.ownerKind === 'region') {
-    return newCurve.mergesWithGlass;
+    return newCurve.mergesWithBoundary;
   }
   if (newCurve.ownerKind === 'region') {
-    return currentCurve.mergesWithGlass;
+    return currentCurve.mergesWithBoundary;
   }
   return false;
 }

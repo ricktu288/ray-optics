@@ -27,7 +27,7 @@ const MIRROR_SURFACE_TYPE = {
     ['d_0x', 'd_0y', 'P_0s', 'P_0p']
   ),
   outRayCount: 1,
-  mergesWithGlass: true
+  mergesWithBoundary: true
 };
 
 const ABSORBER_SURFACE_TYPE = {
@@ -38,7 +38,7 @@ const ABSORBER_SURFACE_TYPE = {
     ['d_0x', 'd_0y']
   ),
   outRayCount: 1,
-  mergesWithGlass: true
+  mergesWithBoundary: true
 };
 
 /**

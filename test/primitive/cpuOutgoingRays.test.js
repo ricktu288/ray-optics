@@ -26,8 +26,8 @@ const sourceRay = {
   originY: 0,
   directionX: 1,
   directionY: 0,
-  brightnessS: 1,
-  brightnessP: 0.5,
+  powerS: 1,
+  powerP: 0.5,
   wavelength: 540,
   membership: Uint8Array.of(1)
 };
@@ -159,15 +159,15 @@ describe('CPU outgoing-ray calculations', () => {
     expect(destination[0]).toMatchObject({
       directionX: -1,
       directionY: 0,
-      brightnessS: 1.5,
-      brightnessP: 0,
+      powerS: 1.5,
+      powerP: 0,
       membership: Uint8Array.of(1)
     });
     expect(destination[1]).toMatchObject({
       directionX: 1,
       directionY: 0,
-      brightnessS: 1,
-      brightnessP: 0,
+      powerS: 1,
+      powerP: 0,
       membership: Uint8Array.of(0)
     });
   });
@@ -220,12 +220,12 @@ describe('CPU outgoing-ray calculations', () => {
 
     expect(activeCount).toBe(1);
     expect(destination[0]).toMatchObject({
-      brightnessS: 1,
-      brightnessP: 0.5
+      powerS: 1,
+      powerP: 0.5
     });
   });
 
-  it('writes transmitted then reflected Fresnel outputs', () => {
+  it('writes transmitted then reflected partial-reflection outputs', () => {
     const description = baseDescription();
     const prepared = prepareCpuOutgoingRayData(description);
     const destination = new Array(2);
@@ -235,7 +235,7 @@ describe('CPU outgoing-ray calculations', () => {
       prepared,
       type: {
         kind: 'regionBoundary',
-        fresnel: true,
+        partialReflect: true,
         outRayCount: 2,
         interactionCount: 1,
         destinationRayStart: 0
@@ -253,15 +253,15 @@ describe('CPU outgoing-ray calculations', () => {
       directionY: 0,
       membership: Uint8Array.of(0)
     });
-    expect(destination[0].brightnessS).toBeCloseTo(0.96);
-    expect(destination[0].brightnessP).toBeCloseTo(0.48);
+    expect(destination[0].powerS).toBeCloseTo(0.96);
+    expect(destination[0].powerP).toBeCloseTo(0.48);
     expect(destination[1]).toMatchObject({
       directionX: -1,
       directionY: 0,
       membership: Uint8Array.of(1)
     });
-    expect(destination[1].brightnessS).toBeCloseTo(0.04);
-    expect(destination[1].brightnessP).toBeCloseTo(0.02);
+    expect(destination[1].powerS).toBeCloseTo(0.04);
+    expect(destination[1].powerP).toBeCloseTo(0.02);
   });
 
   it('uses every active bulk region for a GRIN step', () => {
@@ -354,8 +354,8 @@ describe('CPU outgoing-ray calculations', () => {
     expect(destination[0]).toMatchObject({
       originX: 1,
       directionX: 1,
-      brightnessS: 1,
-      brightnessP: 0.5,
+      powerS: 1,
+      powerP: 0.5,
       membership: Uint8Array.of(1)
     });
   });

@@ -33,7 +33,7 @@ export function beginCpuRayRendering(ctxMain, rendering) {
 /**
  * Render one ray from an immutable ray-buffer entry and its completed hit.
  * Inactive rays and zero-distance hits draw nothing. They are skipped without
- * resetting nearby-ray state so CPU-only brightness subsampling does not
+ * resetting nearby-ray state so CPU-only power subsampling does not
  * break image and observer pairing.
  */
 export function renderCpuRay({
@@ -60,8 +60,8 @@ export function renderCpuRay({
       x: ray.originX + ray.directionX,
       y: ray.originY + ray.directionY
     },
-    brightnessS: ray.brightnessS,
-    brightnessP: ray.brightnessP,
+    powerS: ray.powerS,
+    powerP: ray.powerP,
     wavelength: ray.wavelength
   };
   const hasFiniteEnd = Number.isFinite(hit.s);
@@ -74,7 +74,7 @@ export function renderCpuRay({
   const segmentLengthSquared = hasFiniteEnd
     ? geometry.distanceSquared(rayLine.p1, endPoint)
     : Infinity;
-  const power = ray.brightnessS + ray.brightnessP;
+  const power = ray.powerS + ray.powerP;
   const appearance = getRayAppearance(
     ray,
     power,
@@ -310,7 +310,7 @@ function drawObservedExtension(
   renderer,
   rendering
 ) {
-  const power = ray.brightnessS + ray.brightnessP;
+  const power = ray.powerS + ray.powerP;
   const color = rendering.simulateColors
     ? rendering.wavelengthToColor(
         ray.wavelength,
@@ -399,16 +399,16 @@ function getNearbyRayAppearance(
     return {
       color: rendering.wavelengthToColor(
         ray.wavelength,
-        0.5 * (ray.brightnessS + ray.brightnessP),
+        0.5 * (ray.powerS + ray.powerP),
         shouldTransformColor(renderer, rendering)
       )
     };
   }
   const nearbyAlpha = 0.5 * (
-    ray.brightnessS +
-    ray.brightnessP +
-    previousRay.brightnessS +
-    previousRay.brightnessP
+    ray.powerS +
+    ray.powerP +
+    previousRay.powerS +
+    previousRay.powerP
   );
   const usesLegacyCanvas = rendering.colorMode === 'default';
   if (ctxMain && usesLegacyCanvas) {
@@ -456,5 +456,5 @@ function shouldTransformColor(renderer, rendering) {
 }
 
 function isRayActive(ray) {
-  return ray.brightnessS !== 0 || ray.brightnessP !== 0;
+  return ray.powerS !== 0 || ray.powerP !== 0;
 }

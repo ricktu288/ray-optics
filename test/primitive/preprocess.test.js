@@ -90,10 +90,10 @@ describe('primitive preprocessing', () => {
       paramNames: ['gain', 'bias'],
       dag: dag('P_1s'),
       outRayCount: 1,
-      mergesWithGlass: true
+      mergesWithBoundary: true
     };
     const equivalentType = {
-      mergesWithGlass: true,
+      mergesWithBoundary: true,
       outRayCount: 1,
       dag: dag('P_1s'),
       paramNames: ['gain', 'bias'],
@@ -124,7 +124,7 @@ describe('primitive preprocessing', () => {
     ]);
     expect(processedScene.surfaces[0].params).toBe(primitives[0].params);
     expect(Object.isFrozen(processedScene.types.surfaces[0].definition)).toBe(true);
-    expect(processedScene.types.surfaces[0].definition.mergesWithGlass).toBe(true);
+    expect(processedScene.types.surfaces[0].definition.mergesWithBoundary).toBe(true);
 
     const reversed = preprocessPrimitives([...primitives].reverse()).processedScene;
     expect(reversed.typeSignature).toBe(processedScene.typeSignature);
@@ -148,7 +148,7 @@ describe('primitive preprocessing', () => {
     const changedGlassMerging = preprocessPrimitives([
       surface({
         ...firstType,
-        mergesWithGlass: false
+        mergesWithBoundary: false
       }, line(0, 0, 1, 0), { gain: 2, bias: 3 })
     ]).processedScene;
     expect(changedGlassMerging.typeSignature).not.toBe(firstTypeOnly.typeSignature);
@@ -160,7 +160,7 @@ describe('primitive preprocessing', () => {
       paramNames: [],
       dag: dag('P_1s'),
       outRayCount: 1,
-      mergesWithGlass: false
+      mergesWithBoundary: false
     };
     const bulkType = {
       name: 'Bulk',
@@ -234,7 +234,7 @@ describe('primitive preprocessing', () => {
         ['region', 0],
         ['detector', 0]
       ]);
-    expect(processedScene.curves.map(curve => curve.mergesWithGlass))
+    expect(processedScene.curves.map(curve => curve.mergesWithBoundary))
       .toEqual([false, true, true, false]);
     expect(processedScene.curves[0].geometry).toMatchObject({
       kind: 'lineSegment',
@@ -263,7 +263,7 @@ describe('primitive preprocessing', () => {
       paramNames: [],
       dag: dag('P_1s'),
       outRayCount: 1,
-      mergesWithGlass: false
+      mergesWithBoundary: false
     };
     const { processedScene } = preprocessPrimitives([
       surface(surfaceType, line(0, 0, 1, 0))
@@ -271,16 +271,16 @@ describe('primitive preprocessing', () => {
       lengthScale: 10,
       numericalTolerances: {
         curveEndpoint: 0.01,
-        surfaceMerging: 0.02,
-        surfaceNormal: 0.03,
+        interactionMerging: 0.02,
+        interactionNormal: 0.03,
         forwardDistance: 0.04
       }
     });
 
     expect(processedScene.numericalTolerances).toEqual({
       curveEndpoint: 0.1,
-      surfaceMerging: 0.2,
-      surfaceNormal: 0.03,
+      interactionMerging: 0.2,
+      interactionNormal: 0.03,
       forwardDistance: 0.4
     });
     expect(processedScene.curves[0].geometry.endpointTolerance).toBe(0.1);
@@ -374,7 +374,7 @@ describe('primitive preprocessing', () => {
       paramNames: [],
       dag: dag('P_1s'),
       outRayCount: 1,
-      mergesWithGlass: false
+      mergesWithBoundary: false
     };
     const previousScene = preprocessPrimitives([
       surface(surfaceType, line(0, 0, 1, 0))

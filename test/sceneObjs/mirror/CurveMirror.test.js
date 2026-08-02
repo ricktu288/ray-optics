@@ -48,7 +48,7 @@ describe('CurveMirror', () => {
         },
         twoSided: true,
         surfaceType: expect.objectContaining({
-          mergesWithGlass: true
+          mergesWithBoundary: true
         }),
         params: {},
         filter: {

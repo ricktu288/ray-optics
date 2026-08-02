@@ -64,12 +64,12 @@ describe('interaction index buffers', () => {
       }),
       expect.objectContaining({
         kind: 'regionBoundary',
-        fresnel: false,
+        partialReflect: false,
         outRayCount: 1
       }),
       expect.objectContaining({
         kind: 'regionBoundary',
-        fresnel: true,
+        partialReflect: true,
         outRayCount: 2
       }),
       expect.objectContaining({

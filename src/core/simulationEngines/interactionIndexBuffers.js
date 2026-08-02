@@ -16,7 +16,7 @@
 
 const GRIN_STEP_TYPE_INDEX = 0;
 const REGION_BOUNDARY_TYPE_INDEX = 1;
-const FRESNEL_REGION_BOUNDARY_TYPE_INDEX = 2;
+const PARTIAL_REFLECTION_REGION_BOUNDARY_TYPE_INDEX = 2;
 const FIXED_TYPE_COUNT = 3;
 
 /**
@@ -33,14 +33,14 @@ export function createInteractionTypeLayout(description) {
       'regionBoundary',
       -1,
       false,
-      'Region boundary without Fresnel reflection',
+      'Region boundary without partial reflection',
       1
     ),
     createType(
       'regionBoundary',
       -1,
       true,
-      'Region boundary with Fresnel reflection',
+      'Region boundary with partial reflection',
       2
     )
   ];
@@ -133,8 +133,8 @@ export function getInteractionTypeIndex(description, layout, hit) {
       return layout.detectorTypeOffset +
         description.detectors[curve.ownerId].detectorTypeId;
     case 'region':
-      return hasFresnelReflection(description, hit)
-        ? FRESNEL_REGION_BOUNDARY_TYPE_INDEX
+      return hasPartialReflection(description, hit)
+        ? PARTIAL_REFLECTION_REGION_BOUNDARY_TYPE_INDEX
         : REGION_BOUNDARY_TYPE_INDEX;
     default:
       throw new TypeError(
@@ -165,20 +165,20 @@ export function allocateInteractionIndexBuffers(buffers) {
 function createType(
   kind,
   typeId,
-  fresnel,
+  partialReflect,
   name,
   outRayCount
 ) {
   return {
     kind,
     typeId,
-    fresnel,
+    partialReflect,
     name,
     outRayCount
   };
 }
 
-function hasFresnelReflection(description, hit) {
+function hasPartialReflection(description, hit) {
   for (let regionId = 0;
     regionId < hit.regionCrossingMask.length;
     regionId++) {

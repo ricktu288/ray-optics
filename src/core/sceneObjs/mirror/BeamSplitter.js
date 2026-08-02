@@ -38,7 +38,7 @@ const BEAM_SPLITTER_SURFACE_TYPE = {
     ['d_0x', 'd_0y', 'P_0s', 'P_0p', 'T']
   ),
   outRayCount: 2,
-  mergesWithGlass: false
+  mergesWithBoundary: false
 };
 
 /**

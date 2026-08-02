@@ -44,10 +44,10 @@ describe('simulation engine configuration', () => {
   });
 
   it.each(['primitiveCpu', 'webgpu'])(
-    'provides the minimum active ray brightness to %s',
+    'provides the minimum active ray power to %s',
     engineKind => {
       expect(
-        DEFAULT_SIMULATION_ENGINE_CONFIGS[engineKind].minimumRayBrightness
+        DEFAULT_SIMULATION_ENGINE_CONFIGS[engineKind].minimumRayPower
       ).toBe(1e-6);
     }
   );

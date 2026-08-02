@@ -683,21 +683,21 @@
   },
   "numericalToleranceModal": {
     "title": "Numerical tolerances",
-    "description": "These values are minimum tolerances stored with the scene. Distance values are relative to the scene length scale, while the surface normal tolerance is an angle in radians. Primitive-based engines may automatically use larger tolerances when required by numerical precision. A value of 0 uses only the automatically derived tolerance.",
-    "thresholdWarning": "Surface spacing close to one of these tolerance thresholds may produce unexpected behavior.",
+    "description": "These values are minimum tolerances stored with the scene. Distance values are relative to the scene length scale, while the interaction normal tolerance is an angle in radians. Primitive-based engines may automatically use larger tolerances when required by numerical precision. A value of 0 uses only the automatically derived tolerance.",
+    "thresholdWarning": "Interaction geometry close to one of these tolerance thresholds may produce unexpected behavior.",
     "backToDefaults": "Back to defaults",
     "fields": {
       "curveEndpoint": {
         "title": "Curve endpoint tolerance",
         "description": "Minimum distance within which curve endpoints may be treated as connected."
       },
-      "surfaceMerging": {
-        "title": "Surface merging tolerance",
-        "description": "Minimum distance along a ray within which eligible surface interactions may be treated as simultaneous and merged."
+      "interactionMerging": {
+        "title": "Interaction merging tolerance",
+        "description": "Minimum distance along a ray within which eligible hits may be treated as one interaction."
       },
-      "surfaceNormal": {
-        "title": "Surface normal tolerance",
-        "description": "Maximum angular difference, in radians, between the adjusted normals of surfaces treated as one interaction."
+      "interactionNormal": {
+        "title": "Interaction normal tolerance",
+        "description": "Maximum angular difference, in radians, between the adjusted normals of hits treated as one interaction."
       },
       "forwardDistance": {
         "title": "Minimum forward distance",

@@ -226,8 +226,8 @@ function writeGrinStep(
     point,
     directionX: steppedDirectionX / steppedLength,
     directionY: steppedDirectionY / steppedLength,
-    brightnessS: sourceRay.brightnessS * absorption,
-    brightnessP: sourceRay.brightnessP * absorption,
+    powerS: sourceRay.powerS * absorption,
+    powerP: sourceRay.powerP * absorption,
     membership: sourceRay.membership
   });
   destination[
@@ -265,8 +265,8 @@ function writeRegionBoundary(
     'index'
   );
   const absorption = Math.exp(-incidentMedium.alpha * hit.s);
-  const brightnessS = sourceRay.brightnessS * absorption;
-  const brightnessP = sourceRay.brightnessP * absorption;
+  const powerS = sourceRay.powerS * absorption;
+  const powerP = sourceRay.powerP * absorption;
   const relativeIndex = incidentMedium.n / transmittedMedium.n;
   const cosIncident = -(
     sourceRay.directionX * hit.normalX +
@@ -298,8 +298,8 @@ function writeRegionBoundary(
       point,
       directionX: reflectedDirectionX,
       directionY: reflectedDirectionY,
-      brightnessS,
-      brightnessP,
+      powerS,
+      powerP,
       membership: sourceRay.membership
     });
     destination[
@@ -322,7 +322,7 @@ function writeRegionBoundary(
     (relativeIndex * cosIncident - cosTransmitted) * hit.normalY;
   let reflectedFractionS = 0;
   let reflectedFractionP = 0;
-  if (type.fresnel) {
+  if (type.partialReflect) {
     reflectedFractionS = square(
       (relativeIndex * cosIncident - cosTransmitted) /
       (relativeIndex * cosIncident + cosTransmitted)
@@ -337,8 +337,8 @@ function writeRegionBoundary(
     point,
     directionX: transmittedDirectionX,
     directionY: transmittedDirectionY,
-    brightnessS: brightnessS * (1 - reflectedFractionS),
-    brightnessP: brightnessP * (1 - reflectedFractionP),
+    powerS: powerS * (1 - reflectedFractionS),
+    powerP: powerP * (1 - reflectedFractionP),
     membership: sourceRay.membership
   });
   applyMembershipCrossings(
@@ -355,8 +355,8 @@ function writeRegionBoundary(
       point,
       directionX: reflectedDirectionX,
       directionY: reflectedDirectionY,
-      brightnessS: brightnessS * reflectedFractionS,
-      brightnessP: brightnessP * reflectedFractionP,
+      powerS: powerS * reflectedFractionS,
+      powerP: powerP * reflectedFractionP,
       membership: sourceRay.membership
     });
     destination[
@@ -399,8 +399,8 @@ function writeSurfaceOutputs(
       : 'alpha'
   );
   const absorption = Math.exp(-incidentMedium.alpha * hit.s);
-  input.P_0s = sourceRay.brightnessS * absorption;
-  input.P_0p = sourceRay.brightnessP * absorption;
+  input.P_0s = sourceRay.powerS * absorption;
+  input.P_0p = sourceRay.powerP * absorption;
   if (surfaceType.needsRefractiveIndices) {
     input.n_0 = incidentMedium.n;
     input.n_1 = evaluateEffectiveMedium(
@@ -439,8 +439,8 @@ function writeSurfaceOutputs(
       point,
       directionX,
       directionY,
-      brightnessS: evaluated[`P_${labelIndex}s`],
-      brightnessP: evaluated[`P_${labelIndex}p`],
+      powerS: evaluated[`P_${labelIndex}s`],
+      powerP: evaluated[`P_${labelIndex}p`],
       membership: sourceRay.membership
     });
     if (crossesBoundary) {
@@ -487,8 +487,8 @@ function writeDetectorOutput(
       : 'alpha'
   );
   const absorption = Math.exp(-incidentMedium.alpha * hit.s);
-  input.P_0s = sourceRay.brightnessS * absorption;
-  input.P_0p = sourceRay.brightnessP * absorption;
+  input.P_0s = sourceRay.powerS * absorption;
+  input.P_0p = sourceRay.powerP * absorption;
   if (detectorType.needsRefractiveIndices) {
     input.n_0 = incidentMedium.n;
     input.n_1 = evaluateEffectiveMedium(
@@ -522,8 +522,8 @@ function writeDetectorOutput(
     point,
     directionX: sourceRay.directionX,
     directionY: sourceRay.directionY,
-    brightnessS: input.P_0s,
-    brightnessP: input.P_0p,
+    powerS: input.P_0s,
+    powerP: input.P_0p,
     membership: sourceRay.membership
   });
   destination[
@@ -546,8 +546,8 @@ function setCommonInteractionInputs(
   input.d_0y =
     sourceRay.directionX * hit.normalX +
     sourceRay.directionY * hit.normalY;
-  input.P_0s = sourceRay.brightnessS;
-  input.P_0p = sourceRay.brightnessP;
+  input.P_0s = sourceRay.powerS;
+  input.P_0p = sourceRay.powerP;
   input.lambda = sourceRay.wavelength;
   input.x = point.x;
   input.y = point.y;
@@ -627,8 +627,8 @@ function createOutputRay({
   point,
   directionX,
   directionY,
-  brightnessS,
-  brightnessP,
+  powerS,
+  powerP,
   membership
 }) {
   const valid =
@@ -637,17 +637,17 @@ function createOutputRay({
     Number.isFinite(directionX) &&
     Number.isFinite(directionY) &&
     directionX * directionX + directionY * directionY > 0 &&
-    Number.isFinite(brightnessS) &&
-    brightnessS >= 0 &&
-    Number.isFinite(brightnessP) &&
-    brightnessP >= 0;
+    Number.isFinite(powerS) &&
+    powerS >= 0 &&
+    Number.isFinite(powerP) &&
+    powerP >= 0;
   return {
     originX: point.x,
     originY: point.y,
     directionX: valid ? directionX : 0,
     directionY: valid ? directionY : 0,
-    brightnessS: valid ? brightnessS : 0,
-    brightnessP: valid ? brightnessP : 0,
+    powerS: valid ? powerS : 0,
+    powerP: valid ? powerP : 0,
     wavelength: sourceRay.wavelength,
     membership: Uint8Array.from(membership)
   };
@@ -659,8 +659,8 @@ function createInactiveRay(sourceRay, point) {
     point,
     directionX: 0,
     directionY: 0,
-    brightnessS: 0,
-    brightnessP: 0,
+    powerS: 0,
+    powerP: 0,
     membership: sourceRay.membership
   });
 }
@@ -731,7 +731,7 @@ function createDetectorOutputLabels(writeCount) {
 }
 
 function isRayActive(ray) {
-  return ray.brightnessS !== 0 || ray.brightnessP !== 0;
+  return ray.powerS !== 0 || ray.powerP !== 0;
 }
 
 function square(value) {

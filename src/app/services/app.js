@@ -144,7 +144,7 @@ function createSimulator(engine) {
     })
     : new CpuSimulationEngine({
       numericEpsilon: FLOAT32_EPSILON,
-      minimumRayBrightness: engineConfig.minimumRayBrightness,
+      minimumRayPower: engineConfig.minimumRayPower,
       ctxMain: canvasLight.getContext('2d'),
       glMain: gl,
       ctxVirtual: document.createElement('canvas').getContext('2d'),

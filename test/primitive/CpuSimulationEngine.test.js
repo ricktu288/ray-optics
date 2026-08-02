@@ -56,7 +56,7 @@ const mirrorSurfaceType = {
   name: 'Test mirror',
   paramNames: [],
   outRayCount: 1,
-  mergesWithGlass: false,
+  mergesWithBoundary: false,
   dag: parseFormula(
     `
       d_1x = d_0x;
@@ -208,12 +208,12 @@ describe('CpuSimulationEngine initial ray buffers', () => {
       }),
       expect.objectContaining({
         kind: 'regionBoundary',
-        fresnel: false,
+        partialReflect: false,
         interactionCount: 0
       }),
       expect.objectContaining({
         kind: 'regionBoundary',
-        fresnel: true,
+        partialReflect: true,
         interactionCount: 0
       })
     ]);
@@ -223,8 +223,8 @@ describe('CpuSimulationEngine initial ray buffers', () => {
         originY: 5,
         directionX: 1,
         directionY: 0,
-        brightnessS: 0.5,
-        brightnessP: 0.5,
+        powerS: 0.5,
+        powerP: 0.5,
         wavelength: 540,
         membership: Uint8Array.of(1)
       }),
@@ -265,8 +265,8 @@ describe('CpuSimulationEngine initial ray buffers', () => {
       '[Primitive CPU interaction indices] ' +
       'types=3 activeTypes=1 interactions=2 destinationSlots=2\n' +
       '  grinStep out#0 hits=2 [0->0 2->1]\n' +
-      '  regionBoundary[noFresnel] hits=0 out=1\n' +
-      '  regionBoundary[fresnel] hits=0 out=2'
+      '  regionBoundary[noPartialReflect] hits=0 out=1\n' +
+      '  regionBoundary[partialReflect] hits=0 out=2'
     ]);
     log.mockRestore();
   });
@@ -405,7 +405,7 @@ describe('CpuSimulationEngine initial ray buffers', () => {
       ]);
       const engine = new CpuSimulationEngine({
         numericEpsilon: FLOAT32_EPSILON,
-        minimumRayBrightness: 1e-6
+        minimumRayPower: 1e-6
       });
       engine.beginRenderer = jest.fn();
       const log = jest.spyOn(console, 'log').mockImplementation(() => {});
@@ -418,8 +418,8 @@ describe('CpuSimulationEngine initial ray buffers', () => {
       const update = await advanceUntilPhase(run, 'render');
 
       expect(run.currentRayBuffer[0]).toMatchObject({
-        brightnessS: 2e-7,
-        brightnessP: 2e-7
+        powerS: 2e-7,
+        powerP: 2e-7
       });
       expect(run.hitBuffer[0]).toMatchObject({
         s: 0,
@@ -449,8 +449,8 @@ describe('CpuSimulationEngine initial ray buffers', () => {
     const update = await advanceUntilPhase(run, 'render');
 
     expect(run.currentRayBuffer.map(ray => [
-      ray.brightnessS,
-      ray.brightnessP
+      ray.powerS,
+      ray.powerP
     ])).toEqual([
       [0.004, 0.004],
       [0.004, 0.004],
@@ -481,8 +481,8 @@ describe('CpuSimulationEngine initial ray buffers', () => {
     const update = await advanceUntilPass(run, 1);
 
     const outgoingBrightness = run.currentRayBuffer.map(ray => [
-      ray.brightnessS,
-      ray.brightnessP
+      ray.powerS,
+      ray.powerP
     ]);
     expect(outgoingBrightness[0][0]).toBeCloseTo(0.00768);
     expect(outgoingBrightness[0][1]).toBeCloseTo(0.00768);
@@ -578,8 +578,8 @@ describe('CpuSimulationEngine initial ray buffers', () => {
         originY: 5,
         directionX: -1,
         directionY: 0,
-        brightnessS: 0.004,
-        brightnessP: 0.004,
+        powerS: 0.004,
+        powerP: 0.004,
         membership: new Uint8Array(0)
       })
     ]);

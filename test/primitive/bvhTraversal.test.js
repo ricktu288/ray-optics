@@ -46,7 +46,7 @@ function createVerticalSurface(curveId, x) {
     ownerKind: 'surface',
     ownerId: curveId,
     twoSided: true,
-    mergesWithGlass: false,
+    mergesWithBoundary: false,
     filter: null
   };
 }

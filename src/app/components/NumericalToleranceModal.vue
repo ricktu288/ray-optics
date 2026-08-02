@@ -106,8 +106,8 @@ import { useSceneStore } from '../store/scene.js'
 
 const TOLERANCE_FIELDS = [
   'curveEndpoint',
-  'surfaceMerging',
-  'surfaceNormal',
+  'interactionMerging',
+  'interactionNormal',
   'forwardDistance'
 ]
 

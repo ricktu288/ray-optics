@@ -40,7 +40,7 @@ const IDEAL_MIRROR_SURFACE_TYPE = {
     ]
   ),
   outRayCount: 1,
-  mergesWithGlass: true
+  mergesWithBoundary: true
 };
 
 /**

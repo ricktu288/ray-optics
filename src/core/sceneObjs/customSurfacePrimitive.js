@@ -152,7 +152,7 @@ export function createCustomSurfacePrimitive({
     paramNames,
     dag: combineDags(outputDags),
     outRayCount: slot,
-    mergesWithGlass: true
+    mergesWithBoundary: true
   };
   if (surfaceTypeCache.size >= MAX_SURFACE_TYPE_CACHE_SIZE) {
     surfaceTypeCache.clear();

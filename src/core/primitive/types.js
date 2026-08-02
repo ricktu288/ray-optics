@@ -195,7 +195,7 @@
  * @property {string[]} paramNames - The formula symbols and keys accepted in a surface primitive's `params` object. Their order defines the packed parameter layout and is therefore significant, particularly for WebGPU buffers. Names must not collide with reserved surface-DAG symbols.
  * @property {Object} dag - The formula DAG containing the required labeled outputs.
  * @property {number} outRayCount - The constant positive number of outgoing-ray slots.
- * @property {boolean} mergesWithGlass - Whether the surface interaction supports coincident glass boundaries.
+ * @property {boolean} mergesWithBoundary - Whether the surface interaction supports coincident region boundaries.
  */
 
 /**

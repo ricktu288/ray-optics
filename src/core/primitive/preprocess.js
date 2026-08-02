@@ -82,7 +82,7 @@ import { validateNumericEpsilon } from './numeric.js';
  * @property {PreparedCurveGeometry} geometry - Prepared engine-independent curve geometry.
  * @property {'surface'|'region'|'detector'} ownerKind - Owner table kind.
  * @property {number} ownerId - Index into the matching owner table.
- * @property {boolean} mergesWithGlass - Whether this curve can participate in an interaction with coincident region boundaries.
+ * @property {boolean} mergesWithBoundary - Whether this curve can participate in an interaction with coincident region boundaries.
  * @property {boolean} [twoSided] - Whether both oriented sides participate.
  * @property {WavelengthFilter} [filter] - Optional pre-intersection wavelength filter.
  */
@@ -120,7 +120,7 @@ import { validateNumericEpsilon } from './numeric.js';
  *
  * @typedef {Object} ProcessedScene
  * @property {number} numericEpsilon - Relative arithmetic epsilon selected by the engine for geometry preparation and intersection.
- * @property {{curveEndpoint: number, surfaceMerging: number, surfaceNormal: number, forwardDistance: number}} numericalTolerances - Engine-ready tolerance minimums. Distance values are in world units and `surfaceNormal` is in radians.
+ * @property {{curveEndpoint: number, interactionMerging: number, interactionNormal: number, forwardDistance: number}} numericalTolerances - Engine-ready tolerance minimums. Distance values are in world units and `interactionNormal` is in radians.
  * @property {string} typeSignature - Structural signature of all four type tables.
  * @property {{sources: ProcessedType[], surfaces: ProcessedType[], bulks: ProcessedType[], detectors: ProcessedType[]}} types
  * @property {ProcessedSource[]} sources
@@ -171,15 +171,15 @@ export function preprocessPrimitives(primitives, {
       lengthScale,
       'curveEndpoint'
     ),
-    surfaceMerging: resolveToleranceMinimum(
-      numericalTolerances.surfaceMerging,
+    interactionMerging: resolveToleranceMinimum(
+      numericalTolerances.interactionMerging,
       lengthScale,
-      'surfaceMerging'
+      'interactionMerging'
     ),
-    surfaceNormal: resolveToleranceMinimum(
-      numericalTolerances.surfaceNormal,
+    interactionNormal: resolveToleranceMinimum(
+      numericalTolerances.interactionNormal,
       1,
-      'surfaceNormal'
+      'interactionNormal'
     ),
     forwardDistance: resolveToleranceMinimum(
       numericalTolerances.forwardDistance,
@@ -207,7 +207,7 @@ export function preprocessPrimitives(primitives, {
     curve,
     ownerKind,
     ownerId,
-    mergesWithGlass,
+    mergesWithBoundary,
     twoSided,
     filter
   ) => {
@@ -220,7 +220,7 @@ export function preprocessPrimitives(primitives, {
       prepared.geometry,
       ownerKind,
       ownerId,
-      mergesWithGlass,
+      mergesWithBoundary,
       twoSided,
       filter
     ));
@@ -256,7 +256,7 @@ export function preprocessPrimitives(primitives, {
           primitive.curve,
           'surface',
           ownerId,
-          primitive.surfaceType.mergesWithGlass,
+          primitive.surfaceType.mergesWithBoundary,
           primitive.twoSided,
           primitive.filter
         );
@@ -545,7 +545,7 @@ function createProcessedCurve(
   geometry,
   ownerKind,
   ownerId,
-  mergesWithGlass,
+  mergesWithBoundary,
   twoSided,
   filter
 ) {
@@ -553,7 +553,7 @@ function createProcessedCurve(
     geometry,
     ownerKind,
     ownerId,
-    mergesWithGlass
+    mergesWithBoundary
   };
   if (ownerKind !== 'region') {
     processedCurve.twoSided = twoSided;

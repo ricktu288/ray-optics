@@ -54,8 +54,8 @@ function ray(originX, originY, directionX, directionY, power = 0.5) {
     originY,
     directionX,
     directionY,
-    brightnessS: power,
-    brightnessP: power,
+    powerS: power,
+    powerP: power,
     wavelength: 540,
     membership: new Uint8Array(0)
   };

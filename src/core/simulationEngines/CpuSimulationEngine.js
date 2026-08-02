@@ -59,7 +59,7 @@ import {
 const MAX_MEMBERSHIP_ATTEMPTS = 4;
 const GOLDEN_ANGLE_COS = -0.737368878;
 const GOLDEN_ANGLE_SIN = 0.675490294;
-const LEGACY_MINIMUM_RAY_BRIGHTNESS = 0.01;
+const LEGACY_MINIMUM_RAY_POWER = 0.01;
 export const NO_HIT_CURVE_ID = -1;
 export const TERMINATE_HIT_CURVE_ID = -2;
 const SOURCE_OUTPUT_LABELS = [
@@ -105,7 +105,7 @@ class CpuSimulationRun {
     this.totalTruncation = 0;
     this.hasRenderedOutput = false;
     this.warningState = {
-      totalBrightness: 0,
+      totalPower: 0,
       first: null
     };
     this.rendering = createRenderingOptions(options);
@@ -268,8 +268,8 @@ class CpuSimulationRun {
     );
     this.summary.membershipRetryCount += membership.attemptCount - 1;
     if (!membership.resolved) {
-      ray.brightnessS = 0;
-      ray.brightnessP = 0;
+      ray.powerS = 0;
+      ray.powerP = 0;
       this.summary.membershipDiscardedRayCount++;
       return;
     }
@@ -289,11 +289,11 @@ class CpuSimulationRun {
       return;
     }
 
-    const brightness = ray.brightnessS + ray.brightnessP;
-    const minimumBrightness = this.engine.minimumRayBrightness;
-    if (brightness < minimumBrightness) {
+    const power = ray.powerS + ray.powerP;
+    const minimumPower = this.engine.minimumRayPower;
+    if (power < minimumPower) {
       this.hitBuffer.push(createInteractionCandidate(regionCount, 0));
-      this.totalTruncation += brightness;
+      this.totalTruncation += power;
       this.summary.weakRayCount++;
       this.processedRayCount++;
       return;
@@ -334,7 +334,7 @@ class CpuSimulationRun {
         warningType,
         candidate.curveId,
         candidate.conflictCurveId,
-        brightness
+        power
       );
     }
     if (
@@ -407,8 +407,8 @@ class CpuSimulationRun {
       .sourceRayIndices[writeIndex] = sourceRayIndex;
   }
 
-  recordWarning(type, curveId, conflictingCurveId, brightness) {
-    this.warningState.totalBrightness += brightness;
+  recordWarning(type, curveId, conflictingCurveId, power) {
+    this.warningState.totalPower += power;
     if (this.warningState.first) return;
     this.warningState.first = {
       type,
@@ -516,19 +516,19 @@ class CpuSimulationRun {
         localInteractionIndex
       ];
       if (!isRayActive(ray)) continue;
-      const brightness = ray.brightnessS + ray.brightnessP;
-      if (brightness <= LEGACY_MINIMUM_RAY_BRIGHTNESS) {
-        this.totalTruncation += brightness;
+      const power = ray.powerS + ray.powerP;
+      if (power <= LEGACY_MINIMUM_RAY_POWER) {
+        this.totalTruncation += power;
         const amplification = Math.floor(
-          LEGACY_MINIMUM_RAY_BRIGHTNESS / brightness
+          LEGACY_MINIMUM_RAY_POWER / power
         ) + 1;
         if (samplingIndex % amplification !== 0) {
-          ray.brightnessS = 0;
-          ray.brightnessP = 0;
+          ray.powerS = 0;
+          ray.powerP = 0;
           continue;
         }
-        ray.brightnessS *= amplification;
-        ray.brightnessP *= amplification;
+        ray.powerS *= amplification;
+        ray.powerP *= amplification;
       }
       activeCount++;
     }
@@ -594,7 +594,7 @@ class CpuSimulationRun {
         processedRayCount: this.processedRayCount,
         totalTruncation: this.totalTruncation,
         warning: this.warningState.first,
-        warningBrightness: this.warningState.totalBrightness,
+        warningPower: this.warningState.totalPower,
       },
     };
   }
@@ -615,9 +615,9 @@ class CpuSimulationRun {
 class CpuSimulationEngine {
   constructor({
     numericEpsilon,
-    minimumRayBrightness =
+    minimumRayPower =
       DEFAULT_SIMULATION_ENGINE_CONFIGS.primitiveCpu
-        .minimumRayBrightness,
+        .minimumRayPower,
     ctxMain = null,
     glMain = null,
     ctxVirtual = null
@@ -625,14 +625,14 @@ class CpuSimulationEngine {
     this.kind = 'primitiveCpu';
     this.numericEpsilon = validateNumericEpsilon(numericEpsilon);
     if (
-      !Number.isFinite(minimumRayBrightness) ||
-      minimumRayBrightness < 0
+      !Number.isFinite(minimumRayPower) ||
+      minimumRayPower < 0
     ) {
       throw new RangeError(
-        'minimumRayBrightness must be a nonnegative finite number.'
+        'minimumRayPower must be a nonnegative finite number.'
       );
     }
-    this.minimumRayBrightness = minimumRayBrightness;
+    this.minimumRayPower = minimumRayPower;
     this.ctxMain = ctxMain;
     this.glMain = glMain;
     this.ctxVirtual = ctxVirtual;
@@ -724,16 +724,16 @@ function createInitialRay(output, regionCount) {
     Number.isFinite(output.P_p) &&
     output.P_p >= 0 &&
     Number.isFinite(output.lambda);
-  const brightnessS = valid ? output.P_s : 0;
-  const brightnessP = valid ? output.P_p : 0;
+  const powerS = valid ? output.P_s : 0;
+  const powerP = valid ? output.P_p : 0;
   return {
     ray: {
       originX: output.x,
       originY: output.y,
       directionX: output.d_x,
       directionY: output.d_y,
-      brightnessS,
-      brightnessP,
+      powerS,
+      powerP,
       wavelength: output.lambda,
       membership: new Uint8Array(regionCount)
     },
@@ -742,7 +742,7 @@ function createInitialRay(output, regionCount) {
 }
 
 function isRayActive(ray) {
-  return ray.brightnessS !== 0 || ray.brightnessP !== 0;
+  return ray.powerS !== 0 || ray.powerP !== 0;
 }
 
 function getSmallestPositiveStepSize(description, membership) {
@@ -885,7 +885,7 @@ function formatCompactRay(ray, rayIndex) {
     `#${rayIndex} ` +
     `o=(${formatNumber(ray.originX)},${formatNumber(ray.originY)}) ` +
     `d=(${formatNumber(ray.directionX)},${formatNumber(ray.directionY)}) ` +
-    `P=(${formatNumber(ray.brightnessS)},${formatNumber(ray.brightnessP)}) ` +
+    `P=(${formatNumber(ray.powerS)},${formatNumber(ray.powerP)}) ` +
     `lambda=${formatNumber(ray.wavelength)} ` +
     `regions=[${regionIds.join(',')}]`
   );
@@ -935,9 +935,9 @@ function formatInteractionTypeLabel(buffer) {
     case 'grinStep':
       return 'grinStep';
     case 'regionBoundary':
-      return buffer.fresnel
-        ? 'regionBoundary[fresnel]'
-        : 'regionBoundary[noFresnel]';
+      return buffer.partialReflect
+        ? 'regionBoundary[partialReflect]'
+        : 'regionBoundary[noPartialReflect]';
     case 'surface':
       return `surface[${buffer.typeId}] ${JSON.stringify(buffer.name)}`;
     case 'detector':
