@@ -620,6 +620,58 @@ describe('CpuSimulationEngine initial ray buffers', () => {
     log.mockRestore();
   });
 
+  it('stops before an interaction beyond the legacy maximum ray depth',
+    async () => {
+      const mirror = x => ({
+        kind: 'surface',
+        curve: {
+          kind: 'lineSegment',
+          params: {
+            start: { x, y: -10 },
+            end: { x, y: 10 }
+          }
+        },
+        twoSided: true,
+        surfaceType: mirrorSurfaceType,
+        params: {}
+      });
+      const processedScene = preprocessPrimitives([
+        source({ x: 0, y: 0 }),
+        mirror(1),
+        mirror(-1)
+      ], {
+        numericEpsilon: FLOAT32_EPSILON
+      }).processedScene;
+      const engine = new CpuSimulationEngine({
+        numericEpsilon: FLOAT32_EPSILON
+      });
+      engine.beginRenderer = jest.fn();
+      const log = jest.spyOn(console, 'log').mockImplementation(() => {});
+      const preparedScene = await engine.prepare(processedScene);
+      const run = await engine.createRun({
+        preparedScene,
+        maxRayDepth: 1
+      });
+
+      const update = await run.advance();
+
+      expect(update.status).toBe('complete');
+      expect(run.passIndex).toBe(1);
+      expect(run.processedRayCount).toBe(2);
+      expect(run.currentRayBuffer[0]).toMatchObject({
+        originX: 1,
+        originY: 0,
+        directionX: -1,
+        directionY: 0
+      });
+      expect(run.hitBuffer[0]).toMatchObject({
+        s: 2,
+        curveId: expect.any(Number)
+      });
+      expect(update.result.totalTruncation).toBeCloseTo(1);
+      log.mockRestore();
+    });
+
   it('includes the effective tolerance in an interaction warning', async () => {
     const surface = x => ({
       kind: 'surface',

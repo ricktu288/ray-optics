@@ -17,6 +17,15 @@ export const WEBGPU_PIXEL_STRIDE = 16;
 export function createWebGpuExecutionPlan(description, parameterRanges) {
   const regionWordCount = Math.ceil(description.regions.length / 32);
   const curveKindMask = createCurveKindMask(description.curves);
+  const maximumBvhDepth = description.bvh.nodes.reduce(
+    (maximum, node) => Math.max(maximum, node.depth ?? 0),
+    0
+  );
+  const regionBoundaryVariants = [false, true].filter(partialReflect =>
+    description.regions.some(region =>
+      region.partialReflect === partialReflect
+    )
+  );
   const surfaceDependencies = description.types.surfaces.map((type, typeId) => {
     const parameters = collectParameterNames(type.definition.dag);
     const consumesRefractiveIndices =
@@ -96,6 +105,7 @@ export function createWebGpuExecutionPlan(description, parameterRanges) {
   return {
     typeSignature: description.typeSignature,
     curveKindMask,
+    maximumBvhDepth,
     regionWordCount,
     surfaceDependencies,
     buffers: {
@@ -133,7 +143,9 @@ export function createWebGpuExecutionPlan(description, parameterRanges) {
     specializationSignature: JSON.stringify({
       typeSignature: description.typeSignature,
       curveKindMask,
+      maximumBvhDepth,
       regionWordCount,
+      regionBoundaryVariants,
       guards: collectGuardSignatures(parameterRanges),
       surfaceDependencies: surfaceDependencies.map(value =>
         value.consumesRefractiveIndices),

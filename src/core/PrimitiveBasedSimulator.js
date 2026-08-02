@@ -144,6 +144,7 @@ class PrimitiveBasedSimulator {
     this.activeRun = null;
     this.runGeneration = 0;
     this.isRunning = false;
+    this.simulationStartPending = false;
     this.primitives = [];
     const initialPreprocessing = preprocessPrimitives([], {
       lengthScale: this.scene.lengthScale,
@@ -191,9 +192,12 @@ class PrimitiveBasedSimulator {
     this.simulationStartTime = new Date();
     this.error = null;
     this.isRunning = true;
+    this.simulationStartPending = Boolean(
+      this.engine.deferSimulationStartUntilPause
+    );
     this.isLightLayerSynced = true;
     this.emit('lightLayerSyncChange', { isSynced: true });
-    this.emit('simulationStart', null);
+    if (!this.simulationStartPending) this.emit('simulationStart', null);
 
     this.runEngine(generation)
       .then(() => this.completeRun(generation))
@@ -233,6 +237,7 @@ class PrimitiveBasedSimulator {
       colorMode: this.scene.colorMode,
       rayPowerCutoff: this.scene.numericalTolerances.rayPowerCutoff,
       rayCountLimit: this.rayCountLimit,
+      maxRayDepth: this.scene.maxRayDepth,
       rendering: {
         mode: this.scene.mode,
         simulateColors: this.scene.simulateColors,
@@ -268,6 +273,10 @@ class PrimitiveBasedSimulator {
 
       this.publishRunUpdate(update);
       if (update.status !== 'complete') {
+        if (this.simulationStartPending) {
+          this.simulationStartPending = false;
+          this.emit('simulationStart', null);
+        }
         this.emit('simulationPause', null);
       }
       this.updateSimulation(true, true);
@@ -596,6 +605,7 @@ class PrimitiveBasedSimulator {
   completeRun(generation) {
     if (generation !== this.runGeneration) return;
     this.isRunning = false;
+    this.simulationStartPending = false;
     this.emit('requestUpdateErrorAndWarning');
     this.emit('simulationComplete', null);
   }
@@ -611,6 +621,7 @@ class PrimitiveBasedSimulator {
     this.activeRun?.dispose?.();
     this.activeRun = null;
     this.isRunning = false;
+    this.simulationStartPending = false;
     this.emit('simulationStop', null);
   }
 

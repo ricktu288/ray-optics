@@ -136,6 +136,27 @@ describe('WebGpuSimulationEngine staged execution', () => {
     expect(engine.applyLegacyPowerSubsampling).toBe(false);
   });
 
+  it('applies maximum ray depth in the Node-compatible WebGPU run',
+    async () => {
+      const engine = new WebGpuSimulationEngine();
+      const preparedScene = await engine.prepare(process([
+        source(),
+        rectangularRegion()
+      ]));
+      const run = await engine.createRun({
+        preparedScene,
+        maxRayDepth: 0,
+        rendering: { mode: 'rays' }
+      });
+
+      const update = await finish(run);
+
+      expect(update.status).toBe('complete');
+      expect(run.referenceRun.passIndex).toBe(0);
+      expect(update.result.processedRayCount).toBe(1);
+      expect(update.result.totalTruncation).toBeCloseTo(1);
+    });
+
   it('renders one ray into a Node Canvas 2D output', async () => {
     const canvas = createCanvas(16, 12);
     const ctx = canvas.getContext('2d');
@@ -166,7 +187,7 @@ describe('WebGpuSimulationEngine staged execution', () => {
     expect(pixel[3]).toBeGreaterThanOrEqual(250);
   });
 
-  it('clears a Node Canvas as soon as a replacement run is created',
+  it('retains the old frame until a replacement frame is ready',
     async () => {
       const canvas = createCanvas(16, 12);
       const ctx = canvas.getContext('2d');
@@ -185,10 +206,11 @@ describe('WebGpuSimulationEngine staged execution', () => {
       await finish(await engine.createRun(options));
       expect(ctx.getImageData(8, 5, 1, 1).data[3]).toBeGreaterThan(0);
 
-      await engine.createRun(options);
+      const replacement = await engine.createRun(options);
 
-      expect(Array.from(ctx.getImageData(8, 5, 1, 1).data))
-        .toEqual([0, 0, 0, 0]);
+      expect(ctx.getImageData(8, 5, 1, 1).data[3]).toBeGreaterThan(0);
+      await finish(replacement);
+      expect(ctx.getImageData(8, 5, 1, 1).data[3]).toBeGreaterThan(0);
     });
 
   it('keeps ready records owned by the run that produced them', async () => {
@@ -228,7 +250,7 @@ describe('WebGpuSimulationEngine staged execution', () => {
 
       expect(draw).toHaveBeenCalledTimes(1);
       expect(draw.mock.calls[0][0]).toEqual([]);
-      expect(engine.clearPending).toBe(false);
+      expect(run.clearPending).toBe(false);
     });
 
   it('discards source wavelengths outside the scene-derived UV-IR range', async () => {
@@ -418,6 +440,31 @@ describe('WebGpuSimulationEngine staged execution', () => {
       expect(createdBuffers.find(
         descriptor => descriptor.label === 'WebGPU scene bvhNodes'
       ).size).toBe(32);
+      backend.destroy();
+    });
+
+  it('reuses compiled pipelines for a parameter-only scene update',
+    async () => {
+      const engine = new WebGpuSimulationEngine();
+      const first = await engine.prepare(process([source(540, 0)]));
+      const second = await engine.prepare(process([source(540, 2)]));
+      const device = createComputeTestDevice();
+      const backend = new WebGpuComputeBackend(device, first, {
+        workgroupSize: 64,
+        maxBatchRayEvents: 1024,
+        maxReadyLineRecords: 1024,
+        maxReadyPointRecords: 1024,
+      });
+      await backend.initialize();
+      const pipelineCount = device.createComputePipelineAsync.mock.calls.length;
+
+      expect(backend.canUpdatePreparedScene(second)).toBe(true);
+      backend.updatePreparedScene(second);
+
+      expect(device.createComputePipelineAsync).toHaveBeenCalledTimes(
+        pipelineCount
+      );
+      expect(backend.preparedScene).toBe(second);
       backend.destroy();
     });
 

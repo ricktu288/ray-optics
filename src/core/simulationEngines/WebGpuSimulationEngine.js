@@ -10,7 +10,8 @@
 
 import { FLOAT32_EPSILON, validateNumericEpsilon } from '../primitive/numeric.js';
 import CpuSimulationEngine, {
-  CpuSimulationRun
+  CpuSimulationRun,
+  normalizeMaxRayDepth
 } from './CpuSimulationEngine.js';
 import {
   WEBGPU_MAX_POLARIZED_POWER,
@@ -82,7 +83,10 @@ class WebGpuSimulationRun {
     this.trackNativeStatePromise(options.nativeStatePromise ?? null);
     this.nativeState = null;
     this.nativeFinished = !this.nativeStatePromise;
+    this.maxRayDepth = normalizeMaxRayDepth(options.maxRayDepth);
     this.detectorOverflowWarned = false;
+    this.clearPending = Boolean(engine.rasterizer);
+    this.hasPresentedRun = false;
   }
 
   async advance({
@@ -109,32 +113,38 @@ class WebGpuSimulationRun {
       simulateColors: this.options.rendering?.simulateColors ?? false,
     };
     if (this.engine.rasterizer && records.length > 0) {
-      await this.engine.rasterizer.draw(records, presentation, {
+      const presented = await this.engine.rasterizer.draw(records, presentation, {
         isCancelled: () => this.isCancelled,
+        resetAccumulation: this.clearPending,
       });
-      this.engine.clearPending = false;
+      if (presented !== false) {
+        this.clearPending = false;
+      }
     } else if (
       this.engine.rasterizer &&
       (
-        this.engine.clearPending ||
-        (update.status === 'complete' && !this.engine.hasPresentedRun)
+        this.clearPending ||
+        (update.status === 'complete' && !this.hasPresentedRun)
       )
     ) {
       // If this first advance produced no render geometry, its return is the
       // first natural pause at which to present the pending clear.  A first
       // advance that did render combines clearing and rasterization in one
       // submission instead.
-      await this.engine.rasterizer.draw([], presentation, {
+      const presented = await this.engine.rasterizer.draw([], presentation, {
         isCancelled: () => this.isCancelled,
+        resetAccumulation: this.clearPending,
       });
-      this.engine.clearPending = false;
+      if (presented !== false) {
+        this.clearPending = false;
+      }
     }
     // Presentation is deliberately submitted before waiting for the small
     // native state readback. This keeps dragging responsive even when the
     // preceding compute batch takes appreciable time.
     await this.advanceNativeCompute();
     if (records.length > 0 || update.status === 'complete') {
-      this.engine.hasPresentedRun = true;
+      this.hasPresentedRun = true;
     }
     this.isComplete = update.status === 'complete' && this.nativeFinished;
     this.lastUpdate = {
@@ -159,7 +169,7 @@ class WebGpuSimulationRun {
       this.detectorOverflowWarned = true;
     }
     if (this.isCancelled || state.currentRayCount === 0 ||
-        state.resizeNeeded) {
+        state.resizeNeeded || state.pingPongIndex >= this.maxRayDepth) {
       this.nativeFinished = true;
       return;
     }
@@ -168,7 +178,10 @@ class WebGpuSimulationRun {
       label: 'WebGPU continued ray interactions',
     });
     backend.encodeContinuation(encoder, {
-      pingPongCount: backend.getPingPongCount(state.currentRayCount),
+      pingPongCount: Math.min(
+        backend.getPingPongCount(state.currentRayCount),
+        this.maxRayDepth - state.pingPongIndex
+      ),
       startDirection: state.pingPongIndex & 1,
     });
     const consumeState = backend.encodeStateReadback(encoder);
@@ -241,9 +254,8 @@ class WebGpuSimulationEngine {
     this.executionMode = 'node-reference';
     this.applyLegacyPowerSubsampling = false;
     this.applyRayPowerCutoffInDefaultMode = true;
+    this.deferSimulationStartUntilPause = true;
     this.logExecutionDebugInfo = false;
-    this.hasPresentedRun = false;
-    this.clearPending = false;
   }
 
   async prepare(description, rangeOptions = {}) {
@@ -293,22 +305,13 @@ class WebGpuSimulationEngine {
   async createRun(options = {}) {
     await this.initialize();
     if (this.isDisposed) throw new Error('The WebGPU engine was disposed.');
-    this.hasPresentedRun = false;
-    const clearPresentation = {
-      origin: options.viewport?.origin ?? { x: 0, y: 0 },
-      scale: options.viewport?.scale ?? 1,
-      colorMode: options.colorMode ?? 'default',
-      simulateColors: options.rendering?.simulateColors ?? false,
-    };
-    const clearWasPresented = await this.rasterizer?.clear(
-      clearPresentation
-    ) === true;
-    this.clearPending = !!this.rasterizer && !clearWasPresented;
-    if (clearWasPresented) this.hasPresentedRun = true;
+    // Match the tested scatter-plot scheduler: the first visual submission
+    // clears accumulation and renders/presents the new records atomically.
+    // Until that submission is ready, retain the preceding completed frame.
     let nativeStatePromise = null;
     if (this.device) {
       await this.ensureComputeBackend(options.preparedScene);
-      nativeStatePromise = this.startNativeRun();
+      nativeStatePromise = this.startNativeRun(options.maxRayDepth);
     }
     return new WebGpuSimulationRun(this, { ...options, nativeStatePromise });
   }
@@ -384,6 +387,11 @@ class WebGpuSimulationEngine {
     if (this.computePreparedScene === preparedScene && this.computeBackend) {
       return;
     }
+    if (this.computeBackend?.canUpdatePreparedScene(preparedScene)) {
+      this.computeBackend.updatePreparedScene(preparedScene);
+      this.computePreparedScene = preparedScene;
+      return;
+    }
     this.computeBackend?.destroy();
     this.computeBackend = null;
     this.computePreparedScene = null;
@@ -401,12 +409,20 @@ class WebGpuSimulationEngine {
     this.computePreparedScene = preparedScene;
   }
 
-  startNativeRun() {
+  startNativeRun(maxRayDepthValue) {
     if (!this.computeBackend?.canEmitAllSources) return null;
+    const maxRayDepth = normalizeMaxRayDepth(maxRayDepthValue);
+    if (maxRayDepth === 0) return null;
+    this.computeBackend.resetRunControl();
     const encoder = this.device.createCommandEncoder({
       label: 'WebGPU initial source emission and interactions',
     });
-    this.computeBackend.encodeInitialTrace(encoder);
+    this.computeBackend.encodeInitialTrace(encoder, {
+      pingPongCount: Math.min(
+        this.computeBackend.getInitialPingPongCount(),
+        maxRayDepth
+      )
+    });
     const consumeState = this.computeBackend.encodeStateReadback(encoder);
     this.device.queue.submit([encoder.finish()]);
     return consumeState();
@@ -423,7 +439,6 @@ class WebGpuSimulationEngine {
     this.rasterizer = null;
     this.computeBackend = null;
     this.computePreparedScene = null;
-    this.clearPending = false;
     this.device = null;
     this.deviceSource = null;
     this.executionPlan = null;

@@ -110,13 +110,13 @@ function createBrowserWebGpuOutput(canvas) {
       device = nextDevice;
       context = canvas.getContext('webgpu');
       if (!context) throw new Error('The WebGPU canvas context could not be created.');
-    },
-    acquireView() {
       context.configure({
         device,
         format,
         alphaMode: 'premultiplied',
       });
+    },
+    acquireView() {
       return context.getCurrentTexture().createView();
     },
     dispose() {

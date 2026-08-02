@@ -600,7 +600,7 @@ export class WebGpuAtomicRayRasterizer {
   async draw(
     records,
     { origin, scale, colorMode, simulateColors = false },
-    { isCancelled = null } = {}
+    { isCancelled = null, resetAccumulation = false } = {}
   ) {
     const size = this.output.getSize?.() ?? this.output.size;
     const width = size?.width ?? 1;
@@ -620,6 +620,7 @@ export class WebGpuAtomicRayRasterizer {
     const view = await this.output.acquireView(this.device);
     if (isCancelled?.()) return false;
     const encoder = this.device.createCommandEncoder();
+    if (resetAccumulation) encoder.clearBuffer(this.pixelBuffer);
     if (records.length > 0) {
       const raster = encoder.beginRenderPass({
         colorAttachments: [{
@@ -738,8 +739,12 @@ export class WebGpuCanvasRayRasterizer {
     scale,
     colorMode,
     simulateColors = false
-  }) {
+  }, { resetAccumulation = false } = {}) {
     this.ensureSize();
+    if (resetAccumulation) {
+      this.accumulation.fill(0);
+      this.overflow.fill(0);
+    }
     for (const record of records) {
       const contribution = encodeWebGpuColorContribution(
         record.color, colorMode, simulateColors
@@ -767,6 +772,7 @@ export class WebGpuCanvasRayRasterizer {
       image.data[outputOffset + 3] = toByte(mapped[3]);
     }
     this.ctx.putImageData(image, 0, 0);
+    return true;
   }
 
   rasterRecord(

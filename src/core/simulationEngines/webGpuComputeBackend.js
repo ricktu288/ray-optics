@@ -4,7 +4,10 @@
  */
 
 import { WEBGPU_RAY_STRIDE } from './webGpuExecutionPlan.js';
-import { WEBGPU_RUN_CONTROL_SIZE } from './webGpuStorage.js';
+import {
+  WEBGPU_RUN_CONTROL_SIZE,
+  createWebGpuRunControlData
+} from './webGpuStorage.js';
 import { WebGpuInteractionIndexStage } from './webGpuInteractionIndex.js';
 import { WebGpuInitialMembershipStage } from './webGpuMembership.js';
 import { WebGpuOutgoingStage } from './webGpuOutgoing.js';
@@ -55,7 +58,13 @@ export class WebGpuStaticSceneStorage {
   constructor(device, packedScene) {
     this.device = device;
     this.buffers = Object.create(null);
+    this.capacities = Object.create(null);
     for (const name of STATIC_STORAGE_FIELDS) {
+      const byteLength = packedScene[name].byteLength;
+      this.capacities[name] = Math.max(
+        STATIC_STORAGE_MINIMUM_SIZES[name],
+        alignTo4(byteLength)
+      );
       this.buffers[name] = createInitializedBuffer(
         device,
         packedScene[name],
@@ -66,9 +75,27 @@ export class WebGpuStaticSceneStorage {
     }
   }
 
+  canUpdate(packedScene) {
+    return STATIC_STORAGE_FIELDS.every(name =>
+      packedScene[name].byteLength <= this.capacities[name]
+    );
+  }
+
+  update(packedScene) {
+    if (!this.canUpdate(packedScene)) {
+      throw new RangeError('Updated WebGPU static scene storage does not fit.');
+    }
+    for (const name of STATIC_STORAGE_FIELDS) {
+      const data = packedScene[name];
+      if (data.byteLength === 0) continue;
+      this.device.queue.writeBuffer(this.buffers[name], 0, toBytes(data));
+    }
+  }
+
   destroy() {
     for (const buffer of Object.values(this.buffers)) buffer.destroy?.();
     this.buffers = Object.create(null);
+    this.capacities = Object.create(null);
   }
 }
 
@@ -330,6 +357,68 @@ export class WebGpuComputeBackend {
       this.destroy();
       throw error;
     }
+  }
+
+  canUpdatePreparedScene(nextPreparedScene) {
+    const current = this.preparedScene;
+    if (!current || !this.staticStorage?.canUpdate(
+      nextPreparedScene.packedStorage
+    )) return false;
+    if (
+      current.executionPlan.specializationSignature !==
+      nextPreparedScene.executionPlan.specializationSignature
+    ) return false;
+    const countNames = [
+      'sources', 'sourceRays', 'surfaces', 'regions', 'detectors',
+      'detectorResultValues', 'curves', 'bvhNodes', 'regionWords',
+      'interactionTypes'
+    ];
+    if (countNames.some(name =>
+      current.packedStorage.counts[name] !==
+      nextPreparedScene.packedStorage.counts[name]
+    )) return false;
+    if (
+      current.runtimeDescription.bvh.root !==
+      nextPreparedScene.runtimeDescription.bvh.root ||
+      JSON.stringify(current.packedStorage.sourceTypeRanges) !==
+      JSON.stringify(nextPreparedScene.packedStorage.sourceTypeRanges) ||
+      JSON.stringify(current.parameterRanges.wavelengthRange) !==
+      JSON.stringify(nextPreparedScene.parameterRanges.wavelengthRange) ||
+      JSON.stringify(current.runtimeDescription.numericalTolerances) !==
+      JSON.stringify(nextPreparedScene.runtimeDescription.numericalTolerances)
+    ) return false;
+    return nextPreparedScene.packedStorage.counts.sourceRays <=
+      this.sourceStage.rayCapacity;
+  }
+
+  updatePreparedScene(nextPreparedScene) {
+    if (!this.canUpdatePreparedScene(nextPreparedScene)) {
+      throw new Error('The prepared WebGPU scene requires backend rebuilding.');
+    }
+    this.staticStorage.update(nextPreparedScene.packedStorage);
+    this.preparedScene = nextPreparedScene;
+    this.sourceStage.description = nextPreparedScene.runtimeDescription;
+    this.sourceStage.packedScene = nextPreparedScene.packedStorage;
+    this.membershipStage.description = nextPreparedScene.runtimeDescription;
+    this.rawTraceStage.description = nextPreparedScene.runtimeDescription;
+    this.outgoingStage.description = nextPreparedScene.runtimeDescription;
+  }
+
+  resetRunControl() {
+    const sourceRayCount = this.preparedScene.packedStorage.counts.sourceRays;
+    this.device.queue.writeBuffer(
+      this.interactionIndexStage.buffers.runControl,
+      0,
+      createWebGpuRunControlData({
+        currentRayCount: Math.min(
+          sourceRayCount,
+          this.sourceStage.rayCapacity
+        ),
+        rayCapacity: this.sourceStage.rayCapacity,
+        readyLineCapacity: this.config.maxReadyLineRecords,
+        readyPointCapacity: this.config.maxReadyPointRecords,
+      })
+    );
   }
 
   encodeSourceEmission(commandEncoder) {

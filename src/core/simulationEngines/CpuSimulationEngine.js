@@ -90,6 +90,7 @@ export class CpuSimulationRun {
       );
     }
     this.rayPowerCutoff = rayPowerCutoff;
+    this.maxRayDepth = normalizeMaxRayDepth(options.maxRayDepth);
     this.isCancelled = false;
     this.isComplete = false;
     this.phase = 'populate';
@@ -465,6 +466,15 @@ export class CpuSimulationRun {
         this.completeSimulation();
         return;
       }
+      // Match the legacy simulator's depth rule. Source rays start at depth
+      // zero. Their segment to the next interaction is rendered, but an
+      // interaction beyond maxRayDepth is discarded before any surface,
+      // detector, or GRIN outgoing logic runs.
+      if (this.passIndex >= this.maxRayDepth) {
+        this.recordDepthTruncation();
+        this.completeSimulation();
+        return;
+      }
       const destination = this.nextRayBuffer;
       destination.length = 0;
       destination.length = this.destinationRayCount;
@@ -495,6 +505,15 @@ export class CpuSimulationRun {
       state: this.renderState,
       firstPass: this.passIndex === 0
     }) || this.hasRenderedOutput;
+  }
+
+  recordDepthTruncation() {
+    for (const type of this.interactionIndexBuffers) {
+      for (const sourceRayIndex of type.sourceRayIndices) {
+        const ray = this.currentRayBuffer[sourceRayIndex];
+        this.totalTruncation += ray.powerS + ray.powerP;
+      }
+    }
   }
 
   writeNextOutgoingInteraction() {
@@ -648,6 +667,11 @@ export class CpuSimulationRun {
   dispose() {
     this.cancel();
   }
+}
+
+export function normalizeMaxRayDepth(value) {
+  if (!Number.isFinite(value)) return Infinity;
+  return Math.max(0, Math.floor(value));
 }
 
 function serializeWarningTolerance(tolerance) {
