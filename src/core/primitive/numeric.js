@@ -19,6 +19,13 @@
  */
 export const FLOAT32_EPSILON = 2 ** -23;
 
+const PARAMETER_ERROR_OPERATION_COUNT = 32;
+const TANGENT_ERROR_OPERATION_COUNT = 32;
+const CUBIC_VALUE_ERROR_OPERATION_COUNT = 64;
+const MERGING_DISTANCE_ERROR_OPERATION_COUNT = 64;
+const INTERACTION_NORMAL_ERROR_OPERATION_COUNT = 64;
+const intersectionTolerancePolicyCache = new Map();
+
 /**
  * Require an engine-supplied relative arithmetic epsilon.
  *
@@ -56,4 +63,52 @@ export function getRoundingErrorFactor(operationCount, numericEpsilon) {
     );
   }
   return accumulatedEpsilon / (1 - accumulatedEpsilon);
+}
+
+/**
+ * Return the immutable, epsilon-dependent portion of curve-intersection
+ * tolerances. Runtime coordinate, curve, and ray scales are deliberately
+ * applied by the intersection routines rather than stored here.
+ *
+ * Policies are cached by epsilon so direct callers and engine-owned contexts
+ * share the same object instead of rebuilding it for every tested curve.
+ *
+ * @param {number} numericEpsilon
+ * @returns {{numericEpsilon: number, parameter: number, tangent: number, cubicValue: number, mergingDistance: number, interactionNormal: number, rootRefinementSteps: number}}
+ */
+export function getIntersectionTolerancePolicy(numericEpsilon) {
+  validateNumericEpsilon(numericEpsilon);
+  const cached = intersectionTolerancePolicyCache.get(numericEpsilon);
+  if (cached) return cached;
+
+  const parameter = getRoundingErrorFactor(
+    PARAMETER_ERROR_OPERATION_COUNT,
+    numericEpsilon
+  );
+  const policy = Object.freeze({
+    numericEpsilon,
+    parameter,
+    tangent: getRoundingErrorFactor(
+      TANGENT_ERROR_OPERATION_COUNT,
+      numericEpsilon
+    ),
+    cubicValue: getRoundingErrorFactor(
+      CUBIC_VALUE_ERROR_OPERATION_COUNT,
+      numericEpsilon
+    ),
+    mergingDistance: getRoundingErrorFactor(
+      MERGING_DISTANCE_ERROR_OPERATION_COUNT,
+      numericEpsilon
+    ),
+    interactionNormal: getRoundingErrorFactor(
+      INTERACTION_NORMAL_ERROR_OPERATION_COUNT,
+      numericEpsilon
+    ),
+    rootRefinementSteps: Math.max(
+      1,
+      Math.ceil(-Math.log2(parameter)) + 1
+    )
+  });
+  intersectionTolerancePolicyCache.set(numericEpsilon, policy);
+  return policy;
 }

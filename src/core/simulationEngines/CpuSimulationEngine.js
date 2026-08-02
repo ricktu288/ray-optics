@@ -22,7 +22,11 @@ import {
   createInteractionCandidateContext,
   finalizeInteractionCandidate,
   INTERSECTION_CONFLICT_NONE,
-  INTERSECTION_CONFLICT_NORMAL
+  INTERSECTION_CONFLICT_NORMAL,
+  INTERSECTION_TOLERANCE_MERGING,
+  INTERSECTION_TOLERANCE_NONE,
+  INTERSECTION_TOLERANCE_NORMAL,
+  INTERSECTION_TOLERANCE_NORMAL_CONSTRUCTION
 } from '../primitive/interactionCandidate.js';
 import {
   createRegionMembershipResult,
@@ -34,9 +38,6 @@ import {
 import {
   validateNumericEpsilon
 } from '../primitive/numeric.js';
-import {
-  DEFAULT_SIMULATION_ENGINE_CONFIGS
-} from './config.js';
 import {
   beginCpuRayRendering,
   createCpuRayRenderState,
@@ -60,6 +61,7 @@ const MAX_MEMBERSHIP_ATTEMPTS = 4;
 const GOLDEN_ANGLE_COS = -0.737368878;
 const GOLDEN_ANGLE_SIN = 0.675490294;
 const LEGACY_MINIMUM_RAY_POWER = 0.01;
+const DEFAULT_RAY_POWER_CUTOFF = 1e-6;
 export const NO_HIT_CURVE_ID = -1;
 export const TERMINATE_HIT_CURVE_ID = -2;
 const SOURCE_OUTPUT_LABELS = [
@@ -76,6 +78,18 @@ class CpuSimulationRun {
   constructor(engine, options) {
     this.engine = engine;
     this.options = options;
+    const rayPowerCutoff =
+      options.rayPowerCutoff ?? DEFAULT_RAY_POWER_CUTOFF;
+    if (
+      typeof rayPowerCutoff !== 'number' ||
+      Number.isNaN(rayPowerCutoff) ||
+      rayPowerCutoff < 0
+    ) {
+      throw new RangeError(
+        'rayPowerCutoff must be a nonnegative number.'
+      );
+    }
+    this.rayPowerCutoff = rayPowerCutoff;
     this.isCancelled = false;
     this.isComplete = false;
     this.phase = 'populate';
@@ -290,7 +304,10 @@ class CpuSimulationRun {
     }
 
     const power = ray.powerS + ray.powerP;
-    const minimumPower = this.engine.minimumRayPower;
+    const minimumPower =
+      (this.options.colorMode ?? 'default') === 'default'
+        ? 0
+        : this.rayPowerCutoff;
     if (power < minimumPower) {
       this.hitBuffer.push(createInteractionCandidate(regionCount, 0));
       this.totalTruncation += power;
@@ -330,11 +347,22 @@ class CpuSimulationRun {
       warningType = INTERSECTION_CONFLICT_NORMAL;
     }
     if (warningType !== INTERSECTION_CONFLICT_NONE) {
+      const tolerance = candidate.conflictToleranceKind ===
+        INTERSECTION_TOLERANCE_NONE
+        ? {
+          kind: INTERSECTION_TOLERANCE_NORMAL_CONSTRUCTION,
+          value: this.interactionContext.tolerancePolicy.tangent
+        }
+        : {
+          kind: candidate.conflictToleranceKind,
+          value: candidate.conflictTolerance
+        };
       this.recordWarning(
         warningType,
         candidate.curveId,
         candidate.conflictCurveId,
-        power
+        power,
+        tolerance
       );
     }
     if (
@@ -407,14 +435,15 @@ class CpuSimulationRun {
       .sourceRayIndices[writeIndex] = sourceRayIndex;
   }
 
-  recordWarning(type, curveId, conflictingCurveId, power) {
+  recordWarning(type, curveId, conflictingCurveId, power, tolerance) {
     this.warningState.totalPower += power;
     if (this.warningState.first) return;
     this.warningState.first = {
       type,
       rayIndex: this.intersectionRayIndex - 1,
       curveId,
-      conflictingCurveId
+      conflictingCurveId,
+      tolerance: serializeWarningTolerance(tolerance)
     };
   }
 
@@ -608,31 +637,49 @@ class CpuSimulationRun {
   }
 }
 
+function serializeWarningTolerance(tolerance) {
+  switch (tolerance.kind) {
+    case INTERSECTION_TOLERANCE_MERGING:
+      return {
+        kind: 'interactionMerging',
+        unit: 'sceneUnits',
+        value: tolerance.value
+      };
+    case INTERSECTION_TOLERANCE_NORMAL:
+      return {
+        kind: 'interactionNormal',
+        unit: 'radians',
+        value: tolerance.value
+      };
+    case INTERSECTION_TOLERANCE_NORMAL_CONSTRUCTION:
+      return {
+        kind: 'normalConstruction',
+        unit: 'normalizedMagnitude',
+        value: tolerance.value
+      };
+    default:
+      throw new TypeError(
+        `Unsupported warning tolerance kind: ${tolerance.kind}`
+      );
+  }
+}
+
 /**
  * CPU primitive simulation engine using the same staged, typed interaction
  * layout intended for the WebGPU implementation.
  */
 class CpuSimulationEngine {
   constructor({
-    numericEpsilon,
-    minimumRayPower =
-      DEFAULT_SIMULATION_ENGINE_CONFIGS.primitiveCpu
-        .minimumRayPower,
+    // JavaScript Number arithmetic is binary64. Keep binary64 as the CPU
+    // default so this backend can diagnose failures caused by WebGPU f32
+    // precision; tests may still supply a different epsilon explicitly.
+    numericEpsilon = Number.EPSILON,
     ctxMain = null,
     glMain = null,
     ctxVirtual = null
   } = {}) {
     this.kind = 'primitiveCpu';
     this.numericEpsilon = validateNumericEpsilon(numericEpsilon);
-    if (
-      !Number.isFinite(minimumRayPower) ||
-      minimumRayPower < 0
-    ) {
-      throw new RangeError(
-        'minimumRayPower must be a nonnegative finite number.'
-      );
-    }
-    this.minimumRayPower = minimumRayPower;
     this.ctxMain = ctxMain;
     this.glMain = glMain;
     this.ctxVirtual = ctxVirtual;

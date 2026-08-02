@@ -44,6 +44,29 @@ const BVH_PRUNED_COLOR = 'rgba(191, 64, 255, 0.7)';
 const BVH_TRAVERSED_COLOR = 'rgba(38, 230, 89, 0.55)';
 const BVH_TESTED_CURVE_COLOR = [1, 0.6, 0.05, 0.95];
 
+function formatPrimitiveEngineWarning(warning) {
+  const tolerance = warning.tolerance;
+  if (!tolerance) return null;
+  const kind = i18next.t(
+    `simulator:generalWarnings.primitiveToleranceKinds.${tolerance.kind}`
+  );
+  const unit = i18next.t(
+    `simulator:generalWarnings.primitiveToleranceUnits.${tolerance.unit}`
+  );
+  return i18next.t('simulator:generalWarnings.primitiveInteractionConflict', {
+    rayIndex: warning.rayIndex,
+    curveId: warning.curveId,
+    conflictingCurveId: warning.conflictingCurveId,
+    toleranceKind: kind,
+    tolerance: formatToleranceValue(tolerance.value),
+    toleranceUnit: unit
+  });
+}
+
+function formatToleranceValue(value) {
+  return Number.isFinite(value) ? value.toExponential(6) : 'n/a';
+}
+
 /**
  * Temporary simulator shell used to exercise the new constructor and backend
  * switching before the primitive-based simulation is implemented.
@@ -101,6 +124,8 @@ class PrimitiveBasedSimulator {
     this.simulationStartTime = null;
     this.error = null;
     this.warning = null;
+    this.preprocessingWarning = null;
+    this.engineWarning = null;
     this.eventListeners = {};
 
     this.canvasRendererBelowLight = null;
@@ -193,6 +218,7 @@ class PrimitiveBasedSimulator {
       preparedScene,
       viewport,
       colorMode: this.scene.colorMode,
+      rayPowerCutoff: this.scene.numericalTolerances.rayPowerCutoff,
       rayCountLimit: this.rayCountLimit,
       rendering: {
         mode: this.scene.mode,
@@ -256,6 +282,10 @@ class PrimitiveBasedSimulator {
     for (const binding of this.detectorResultBindings) {
       const values = detectorResults[binding.resultId];
       if (values) binding.result.values = values;
+    }
+    if (update.result?.warning) {
+      this.engineWarning = update.result.warning;
+      this.refreshWarning();
     }
   }
 
@@ -345,10 +375,12 @@ class PrimitiveBasedSimulator {
     const hasDetector = primitives.some(
       primitive => primitive?.kind === 'detector'
     );
-    this.warning = this.brightnessScale === -1 &&
+    this.preprocessingWarning = this.brightnessScale === -1 &&
       (hasDetector || this.scene.simulateColors)
       ? i18next.t('simulator:generalWarnings.brightnessInconsistent')
       : null;
+    this.engineWarning = null;
+    this.refreshWarning();
     const collectionTime = this.logDebugInfo
       ? (
         typeof performance !== 'undefined' && typeof performance.now === 'function'
@@ -416,6 +448,15 @@ class PrimitiveBasedSimulator {
     }
     this.detectorResultBindings = detectorResultBindings;
     this.primitiveBvh = processedScene.bvh;
+  }
+
+  refreshWarning() {
+    const warnings = [this.preprocessingWarning];
+    if (this.engineWarning) {
+      warnings.push(formatPrimitiveEngineWarning(this.engineWarning));
+    }
+    this.warning = warnings.filter(Boolean).join('<br>');
+    if (!this.warning) this.warning = null;
   }
 
   drawBvhTraversalDiagnostics(canvasRenderer) {

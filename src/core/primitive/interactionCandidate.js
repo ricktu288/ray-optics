@@ -20,12 +20,10 @@ import {
   intersectCurve
 } from './nearestIntersection.js';
 import {
-  getRoundingErrorFactor,
+  getIntersectionTolerancePolicy,
   validateNumericEpsilon
 } from './numeric.js';
 
-const MERGING_DISTANCE_ERROR_OPERATION_COUNT = 64;
-const NORMAL_ERROR_OPERATION_COUNT = 64;
 const ORIENTATION_DIAGNOSTIC_U_MIN = 0.1;
 const ORIENTATION_DIAGNOSTIC_U_MAX = 0.9;
 
@@ -33,6 +31,11 @@ export const INTERSECTION_CONFLICT_NONE = 0;
 export const INTERSECTION_CONFLICT_MERGE = 1;
 export const INTERSECTION_CONFLICT_ORIENTATION = 2;
 export const INTERSECTION_CONFLICT_NORMAL = 3;
+
+export const INTERSECTION_TOLERANCE_NONE = 0;
+export const INTERSECTION_TOLERANCE_MERGING = 1;
+export const INTERSECTION_TOLERANCE_NORMAL = 2;
+export const INTERSECTION_TOLERANCE_NORMAL_CONSTRUCTION = 3;
 
 /**
  * @typedef {Object} InteractionCandidate
@@ -48,6 +51,8 @@ export const INTERSECTION_CONFLICT_NORMAL = 3;
  * @property {Uint8Array} regionCrossingMask
  * @property {number} conflictType
  * @property {number} conflictCurveId
+ * @property {number} conflictToleranceKind
+ * @property {number} conflictTolerance
  */
 
 /**
@@ -74,7 +79,9 @@ export function createInteractionCandidate(
     negativeRegionCrossings: new Uint8Array(regionCount),
     regionCrossingMask: new Uint8Array(regionCount),
     conflictType: INTERSECTION_CONFLICT_NONE,
-    conflictCurveId: -1
+    conflictCurveId: -1,
+    conflictToleranceKind: INTERSECTION_TOLERANCE_NONE,
+    conflictTolerance: 0
   };
 }
 
@@ -93,16 +100,19 @@ export function createInteractionCandidateContext(
 ) {
   validateNumericEpsilon(numericEpsilon);
   const configuredTolerances = description.numericalTolerances ?? {};
+  const tolerancePolicy = getIntersectionTolerancePolicy(numericEpsilon);
   const normalTolerance = Math.min(Math.PI, Math.max(
     configuredTolerances.interactionNormal ?? 0,
-    getRoundingErrorFactor(NORMAL_ERROR_OPERATION_COUNT, numericEpsilon)
+    tolerancePolicy.interactionNormal
   ));
   return {
     description,
     numericEpsilon,
+    tolerancePolicy,
     maximumDistance,
     forwardDistance: configuredTolerances.forwardDistance ?? 0,
     interactionMerging: configuredTolerances.interactionMerging ?? 0,
+    normalTolerance,
     maximumNormalChordDistanceSquared:
       4 * Math.sin(normalTolerance * 0.5) ** 2,
     hitScratch: {
@@ -140,6 +150,7 @@ export function updateInteractionCandidate(
     ray,
     {
       numericEpsilon,
+      tolerancePolicy: context.tolerancePolicy,
       minDistance: Math.max(
         curve.geometry.positionTolerance,
         context.forwardDistance
@@ -158,7 +169,7 @@ export function updateInteractionCandidate(
       candidate.s,
       hit.s,
       context.interactionMerging,
-      numericEpsilon
+      context.tolerancePolicy.mergingDistance
     );
     if (hit.s > candidate.s + mergingTolerance) return;
   }
@@ -172,7 +183,7 @@ export function updateInteractionCandidate(
         curve.geometry,
         ray,
         hit,
-        { numericEpsilon }
+        { numericEpsilon, tolerancePolicy: context.tolerancePolicy }
       ) ||
       hit.sigma !== 1
     )
@@ -198,7 +209,7 @@ export function updateInteractionCandidate(
     candidate.s,
     hit.s,
     context.interactionMerging,
-    numericEpsilon
+    context.tolerancePolicy.mergingDistance
   );
   if (hit.s < candidate.s - mergingTolerance) {
     initializeInteractionCandidate(
@@ -223,18 +234,26 @@ export function updateInteractionCandidate(
       context.description.curves[candidate.curveId].geometry,
       ray,
       candidate,
-      { numericEpsilon }
+      { numericEpsilon, tolerancePolicy: context.tolerancePolicy }
     ) ||
     !ensureCurveIntersectionNormal(
       curve.geometry,
       ray,
       hit,
-      { numericEpsilon }
+      { numericEpsilon, tolerancePolicy: context.tolerancePolicy }
     )
   ) {
     return;
   }
-  mergeHitIntoCandidate(candidate, context, curveId, curve, hit, ray);
+  mergeHitIntoCandidate(
+    candidate,
+    context,
+    curveId,
+    curve,
+    hit,
+    ray,
+    mergingTolerance
+  );
 }
 
 /**
@@ -252,7 +271,10 @@ export function finalizeInteractionCandidate(candidate, context, ray) {
     geometry,
     ray,
     candidate,
-    { numericEpsilon: context.numericEpsilon }
+    {
+      numericEpsilon: context.numericEpsilon,
+      tolerancePolicy: context.tolerancePolicy
+    }
   )) return null;
   for (let regionId = 0;
     regionId < candidate.regionCrossingMask.length;
@@ -280,7 +302,10 @@ function initializeInteractionCandidate(
       curve.geometry,
       ray,
       hit,
-      { numericEpsilon: context.numericEpsilon }
+      {
+        numericEpsilon: context.numericEpsilon,
+        tolerancePolicy: context.tolerancePolicy
+      }
     )
   ) {
     return;
@@ -298,6 +323,8 @@ function initializeInteractionCandidate(
   candidate.regionCrossingMask.fill(0);
   candidate.conflictType = INTERSECTION_CONFLICT_NONE;
   candidate.conflictCurveId = -1;
+  candidate.conflictToleranceKind = INTERSECTION_TOLERANCE_NONE;
+  candidate.conflictTolerance = 0;
 
   if (curve.ownerKind === 'region') {
     getRegionCrossings(candidate, candidate.sigma)[curve.ownerId] = 1;
@@ -310,14 +337,24 @@ function mergeHitIntoCandidate(
   curveId,
   curve,
   hit,
-  ray
+  ray,
+  mergingTolerance
 ) {
-  if (!normalsAreConsistent(
+  const normalChordDistanceSquared = getNormalChordDistanceSquared(
     candidate,
-    hit,
+    hit
+  );
+  if (
+    normalChordDistanceSquared >
     context.maximumNormalChordDistanceSquared
-  )) {
-    recordConflict(candidate, INTERSECTION_CONFLICT_NORMAL, curveId);
+  ) {
+    recordConflict(
+      candidate,
+      INTERSECTION_CONFLICT_NORMAL,
+      curveId,
+      INTERSECTION_TOLERANCE_NORMAL,
+      context.normalTolerance
+    );
     return;
   }
 
@@ -331,7 +368,9 @@ function mergeHitIntoCandidate(
       recordConflict(
         candidate,
         INTERSECTION_CONFLICT_ORIENTATION,
-        curveId
+        curveId,
+        INTERSECTION_TOLERANCE_MERGING,
+        mergingTolerance
       );
     }
     crossings[curve.ownerId] = 1;
@@ -354,7 +393,9 @@ function mergeHitIntoCandidate(
     recordConflict(
       candidate,
       INTERSECTION_CONFLICT_MERGE,
-      shouldReplace ? candidate.curveId : curveId
+      shouldReplace ? candidate.curveId : curveId,
+      INTERSECTION_TOLERANCE_MERGING,
+      mergingTolerance
     );
   }
 
@@ -380,10 +421,18 @@ function getRegionCrossings(candidate, sigma) {
     : candidate.negativeRegionCrossings;
 }
 
-function recordConflict(candidate, conflictType, curveId) {
+function recordConflict(
+  candidate,
+  conflictType,
+  curveId,
+  toleranceKind,
+  tolerance
+) {
   if (conflictType < candidate.conflictType) return;
   candidate.conflictType = conflictType;
   candidate.conflictCurveId = curveId;
+  candidate.conflictToleranceKind = toleranceKind;
+  candidate.conflictTolerance = tolerance;
 }
 
 function shouldReplaceRepresentative(
@@ -441,33 +490,27 @@ function getMergingDistanceTolerance(
   firstDistance,
   secondDistance,
   configuredTolerance,
-  numericEpsilon
+  relativeErrorFactor
 ) {
   const distanceScale = Math.max(
     Math.abs(firstDistance),
     Math.abs(secondDistance),
     Number.MIN_VALUE
   );
-  const derivedDistanceTolerance =
+  return Math.max(
+    configuredTolerance,
     firstPositionTolerance + secondGeometry.positionTolerance +
-    getRoundingErrorFactor(
-      MERGING_DISTANCE_ERROR_OPERATION_COUNT,
-      numericEpsilon
-    ) * distanceScale;
-  return Math.max(configuredTolerance, derivedDistanceTolerance);
+      relativeErrorFactor * distanceScale
+  );
 }
 
-function normalsAreConsistent(
-  candidate,
-  hit,
-  maximumNormalChordDistanceSquared
-) {
+function getNormalChordDistanceSquared(candidate, hit) {
   const normalDifferenceX = candidate.normalX - hit.normalX;
   const normalDifferenceY = candidate.normalY - hit.normalY;
   return (
     normalDifferenceX * normalDifferenceX +
     normalDifferenceY * normalDifferenceY
-  ) <= maximumNormalChordDistanceSquared;
+  );
 }
 
 function isHitAtEndpoint(geometry, hit, ray) {

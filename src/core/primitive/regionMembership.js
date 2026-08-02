@@ -22,6 +22,7 @@ import {
   markBvhNodeState
 } from './bvhTraversal.js';
 import { countCurveRayCrossings } from './curveRayCrossings.js';
+import { getIntersectionTolerancePolicy } from './numeric.js';
 
 /**
  * Create reusable output storage for one region-membership ray cast.
@@ -74,6 +75,7 @@ export function traverseBvhForRegionMembership(
 
   const originTolerance =
     description.numericalTolerances?.forwardDistance ?? 0;
+  const tolerancePolicy = getIntersectionTolerancePolicy(numericEpsilon);
   if (!Number.isFinite(intersectRayBounds(
     ray,
     nodes[root].bounds,
@@ -102,6 +104,7 @@ export function traverseBvhForRegionMembership(
           ray,
           {
             numericEpsilon,
+            tolerancePolicy,
             originTolerance: Math.max(
               curve.geometry.positionTolerance,
               originTolerance

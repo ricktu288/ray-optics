@@ -162,6 +162,12 @@ async function advanceUntilPass(run, passIndex) {
 }
 
 describe('CpuSimulationEngine initial ray buffers', () => {
+  it('uses binary64 numerical tolerances by default', () => {
+    const engine = new CpuSimulationEngine();
+
+    expect(engine.numericEpsilon).toBe(Number.EPSILON);
+  });
+
   it('populates every source ray and stores each initial membership', async () => {
     const processedScene = createProcessedScene(rectangleCurves(), [
       source({ rayCount: 2, deltaX: 10 }),
@@ -397,39 +403,63 @@ describe('CpuSimulationEngine initial ray buffers', () => {
     log.mockRestore();
   });
 
-  it.each(['default', 'linear'])(
-    'uses the configurable cutoff for a weak %s-color source ray',
-    async colorMode => {
-      const processedScene = createProcessedScene(rectangleCurves(), [
-        source({ power: 2e-7 })
-      ]);
-      const engine = new CpuSimulationEngine({
-        numericEpsilon: FLOAT32_EPSILON,
-        minimumRayPower: 1e-6
-      });
-      engine.beginRenderer = jest.fn();
-      const log = jest.spyOn(console, 'log').mockImplementation(() => {});
-      const preparedScene = await engine.prepare(processedScene);
-      const run = await engine.createRun({
-        preparedScene,
-        colorMode
-      });
+  it('uses the scene cutoff for a weak Correct Brightness source ray', async () => {
+    const processedScene = createProcessedScene(rectangleCurves(), [
+      source({ power: 2e-7 })
+    ]);
+    const engine = new CpuSimulationEngine({
+      numericEpsilon: FLOAT32_EPSILON
+    });
+    engine.beginRenderer = jest.fn();
+    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
+    const preparedScene = await engine.prepare(processedScene);
+    const run = await engine.createRun({
+      preparedScene,
+      colorMode: 'linear',
+      rayPowerCutoff: 1e-6
+    });
 
-      const update = await advanceUntilPhase(run, 'render');
+    const update = await advanceUntilPhase(run, 'render');
 
-      expect(run.currentRayBuffer[0]).toMatchObject({
-        powerS: 2e-7,
-        powerP: 2e-7
-      });
-      expect(run.hitBuffer[0]).toMatchObject({
-        s: 0,
-        curveId: -1
-      });
-      expect(update.result.totalTruncation).toBeCloseTo(4e-7);
-      expect(run.summary.weakRayCount).toBe(1);
-      log.mockRestore();
-    }
-  );
+    expect(run.currentRayBuffer[0]).toMatchObject({
+      powerS: 2e-7,
+      powerP: 2e-7
+    });
+    expect(run.hitBuffer[0]).toMatchObject({
+      s: 0,
+      curveId: -1
+    });
+    expect(update.result.totalTruncation).toBeCloseTo(4e-7);
+    expect(run.summary.weakRayCount).toBe(1);
+    log.mockRestore();
+  });
+
+  it('overrides the scene cutoff when Correct Brightness is off', async () => {
+    const processedScene = createProcessedScene(rectangleCurves(), [
+      source({ power: 2e-7 })
+    ]);
+    const engine = new CpuSimulationEngine({
+      numericEpsilon: FLOAT32_EPSILON
+    });
+    engine.beginRenderer = jest.fn();
+    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
+    const preparedScene = await engine.prepare(processedScene);
+    const run = await engine.createRun({
+      preparedScene,
+      colorMode: 'default',
+      rayPowerCutoff: 1e-6
+    });
+
+    const update = await advanceUntilPhase(run, 'render');
+
+    expect(run.hitBuffer[0]).toMatchObject({
+      s: 1,
+      curveId: -1
+    });
+    expect(update.result.totalTruncation).toBe(0);
+    expect(run.summary.weakRayCount).toBe(0);
+    log.mockRestore();
+  });
 
   it('does not apply the legacy cutoff while producing source rays', async () => {
     const processedScene = createProcessedScene(rectangleCurves(), [
@@ -586,6 +616,53 @@ describe('CpuSimulationEngine initial ray buffers', () => {
     expect(run.hitBuffer[0]).toMatchObject({
       s: Infinity,
       curveId: -1
+    });
+    log.mockRestore();
+  });
+
+  it('includes the effective tolerance in an interaction warning', async () => {
+    const surface = x => ({
+      kind: 'surface',
+      curve: {
+        kind: 'lineSegment',
+        params: {
+          start: { x, y: 0 },
+          end: { x, y: 10 }
+        }
+      },
+      twoSided: true,
+      surfaceType: mirrorSurfaceType,
+      params: {}
+    });
+    const processedScene = preprocessPrimitives([
+      source({ x: 5, y: 5 }),
+      surface(10),
+      surface(10.0005)
+    ], {
+      numericEpsilon: FLOAT32_EPSILON,
+      numericalTolerances: {
+        interactionMerging: 0.001
+      }
+    }).processedScene;
+    const engine = new CpuSimulationEngine({
+      numericEpsilon: FLOAT32_EPSILON
+    });
+    engine.beginRenderer = jest.fn();
+    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
+    const preparedScene = await engine.prepare(processedScene);
+    const run = await engine.createRun({ preparedScene });
+
+    const update = await advanceUntilPhase(run, 'render');
+
+    expect(update.result.warning).toMatchObject({
+      rayIndex: 0,
+      curveId: 0,
+      conflictingCurveId: 1,
+      tolerance: {
+        kind: 'interactionMerging',
+        unit: 'sceneUnits',
+        value: 0.001
+      }
     });
     log.mockRestore();
   });

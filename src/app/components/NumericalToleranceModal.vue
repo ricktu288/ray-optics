@@ -108,7 +108,8 @@ const TOLERANCE_FIELDS = [
   'curveEndpoint',
   'interactionMerging',
   'interactionNormal',
-  'forwardDistance'
+  'forwardDistance',
+  'rayPowerCutoff'
 ]
 
 const DEFAULT_TOLERANCES = Scene.serializableDefaults.numericalTolerances

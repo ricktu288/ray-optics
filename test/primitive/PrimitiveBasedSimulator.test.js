@@ -22,7 +22,7 @@ import Detector from '../../src/core/sceneObjs/other/Detector.js';
 function createScene() {
   return {
     lengthScale: 1,
-    numericalTolerances: {},
+    numericalTolerances: { rayPowerCutoff: 1e-6 },
     colorMode: 'default',
     simulateColors: false,
     opticalObjs: []
@@ -104,6 +104,9 @@ describe('PrimitiveBasedSimulator BVH diagnostics', () => {
 
     await simulator.runEngine(0);
 
+    expect(simulator.engine.createRun).toHaveBeenCalledWith(
+      expect.objectContaining({ rayPowerCutoff: 1e-6 })
+    );
     expect(result.values).toEqual(Float64Array.of(2, 3));
     expect(simulator.updateSimulation).toHaveBeenCalledWith(true, true);
     expect(run.dispose).toHaveBeenCalled();
@@ -242,6 +245,37 @@ describe('PrimitiveBasedSimulator BVH diagnostics', () => {
 
     expect(simulator.brightnessScale).toBe(0);
     expect(simulator.warning).toBeNull();
+  });
+});
+
+describe('PrimitiveBasedSimulator engine warnings', () => {
+  it('surfaces a structured tolerance warning', () => {
+    const simulator = createSimulator('primitiveCpu', false);
+
+    simulator.publishRunUpdate({
+      progress: {},
+      result: {
+        warning: {
+          rayIndex: 3,
+          curveId: 4,
+          conflictingCurveId: 7,
+          tolerance: {
+            kind: 'interactionMerging',
+            unit: 'sceneUnits',
+            value: 2e-4
+          }
+        }
+      }
+    });
+
+    expect(simulator.engineWarning.tolerance).toEqual({
+      kind: 'interactionMerging',
+      unit: 'sceneUnits',
+      value: 2e-4
+    });
+    expect(simulator.warning).toBe(
+      '{{simulator:generalWarnings.primitiveInteractionConflict}}'
+    );
   });
 });
 

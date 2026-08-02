@@ -297,7 +297,7 @@ export default {
 
       // For max depth: show if non-default (i.e. not Infinity)
       const maxRayDepthNotDefault = scene.maxRayDepth.value !== Infinity
-      
+
       // Add more conditions here as more advanced options are added
       return colorModeNotDefault ||
         themeNotDefault ||

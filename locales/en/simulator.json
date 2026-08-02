@@ -683,8 +683,8 @@
   },
   "numericalToleranceModal": {
     "title": "Numerical tolerances",
-    "description": "These values are minimum tolerances stored with the scene. Distance values are relative to the scene length scale, while the interaction normal tolerance is an angle in radians. Primitive-based engines may automatically use larger tolerances when required by numerical precision. A value of 0 uses only the automatically derived tolerance.",
-    "thresholdWarning": "Interaction geometry close to one of these tolerance thresholds may produce unexpected behavior.",
+    "description": "These numerical thresholds are stored with the scene. Distance values are relative to the scene length scale, the interaction normal tolerance is an angle in radians, and minimum ray power is dimensionless. Primitive-based engines may automatically use larger geometry tolerances when required by numerical precision. For geometry tolerances, 0 uses only the automatically derived value; for minimum ray power, 0 disables the cutoff.",
+    "thresholdWarning": "Geometry or ray power close to one of these thresholds may produce unexpected behavior.",
     "backToDefaults": "Back to defaults",
     "fields": {
       "curveEndpoint": {
@@ -702,6 +702,10 @@
       "forwardDistance": {
         "title": "Minimum forward distance",
         "description": "Minimum forward distance from a ray's origin at which another interaction may be accepted."
+      },
+      "rayPowerCutoff": {
+        "title": "Minimum ray power",
+        "description": "Primitive-based engines stop tracing a ray when its combined s- and p-polarized power is below this value, which can affect detector results. Set it to 0 to disable this cutoff. The primitive-based CPU engine overrides it with legacy low-power ray subsampling when \"Correct Brightness\" is off."
       }
     }
   },
@@ -717,10 +721,10 @@
     },
     "primitiveCpu": {
       "title": "Primitive-based CPU",
-      "description": "Use the experimental primitive-based CPU engine with complete ray tracing, including surfaces, refractive regions, GRIN stepping, and detectors."
+      "description": "Use the experimental primitive-based CPU engine as a double-precision reference, with complete ray tracing including surfaces, refractive regions, GRIN stepping, and detectors."
     },
     "numericalTolerances": {
-      "description": "Tolerances that affect the interpretation of scene geometry are configured separately and stored with the scene.",
+      "description": "Numerical thresholds that affect geometry and ray termination are configured separately and stored with the scene.",
       "open": "Configure numerical tolerances"
     },
     "configuration": {
@@ -781,6 +785,17 @@
     "autoSyncUrlTooLarge": "The scene is too large to sync with URL. Please save it manually.",
     "identicalObjects": "There are two identical optical elements in the scene that overlap completely. This may cause unexpected behavior.",
     "brightnessInconsistent": "The brightnesses of two or more light sources saturate with inconsistent ratios. This may lead to wrong detector readings and color rendering. Please increase the ray density or reduce the brightnesses of the light sources.",
+    "primitiveInteractionConflict": "Numerically ambiguous primitive interaction at ray {{rayIndex}} (curves {{curveId}} and {{conflictingCurveId}}). The effective {{toleranceKind}} tolerance was {{tolerance}} {{toleranceUnit}}.",
+    "primitiveToleranceKinds": {
+      "interactionMerging": "interaction-merging",
+      "interactionNormal": "interaction-normal",
+      "normalConstruction": "normal-construction"
+    },
+    "primitiveToleranceUnits": {
+      "sceneUnits": "scene units",
+      "radians": "radians",
+      "normalizedMagnitude": "normalized magnitude"
+    },
     "blackBecomesTransparent": "When using \"Correct Brightness\" with a non-black background, the black part of the light's color becomes transparent due to additive color mixing. Please set all theme colors of light to have unit HSV value to avoid this issue.",
     "undefinedBehaviorOverlapping": "Surface merging is not supported for overlap between \"{{involvedObj1}}\" and \"{{involvedObj2}}\", resulting in undefined behavior. Please move the objects slightly apart (or move the light source) to get a well-defined behavior.",
     "undefinedBehaviorSingle": "Undefined behavior encountered at the object \"{{involvedObj}}\". Please move the object or the light source slightly to get a well-defined behavior."

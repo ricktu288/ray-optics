@@ -189,7 +189,7 @@ function extractNonDefaults(obj, defaults) {
  * @property {string} colorMode - The mode of rendering the color of rays (color mapping functions, etc, including the brightness behavior when `simulateColors` is false). Possible values are 'default' (when 'Correct Brightness' is off), 'linear' (Linear Value), 'linearRGB' (Linear RGB), 'reinhard' (Reinhard), and 'colorizedIntensity' (Color-coded Intensity).
  * @property {boolean} showRayArrows - The "Show Ray Arrows" option indicating if the arrows are shown on the rays indicating its direction.
  * @property {boolean} symbolicBodyMerging - The "Symbolic body-merging" option in the gradient-index glass objects (which is a global option), indicating if the symbolic math is used to calculate the effective refractive index resulting from the "body-merging" of several gradient-index glass objects.
- * @property {{curveEndpoint: number, interactionMerging: number, interactionNormal: number, forwardDistance: number}} numericalTolerances - Minimum tolerances used by primitive-based simulation engines. Distance values are relative to the scene length scale, while `interactionNormal` is an angle in radians. Zero selects only the engine-derived numerical tolerance.
+ * @property {{curveEndpoint: number, interactionMerging: number, interactionNormal: number, forwardDistance: number, rayPowerCutoff: number}} numericalTolerances - Numerical thresholds used by primitive-based simulation engines. Distance values are relative to the scene length scale, `interactionNormal` is an angle in radians, and `rayPowerCutoff` is a dimensionless power. Zero selects only engine-derived geometric tolerance or disables the power cutoff. The primitive CPU engine's legacy brightness mode overrides `rayPowerCutoff`.
  * @property {number} maxRayDepth - The maximum number of ray-object interactions allowed before truncating rays (Infinity for no limit).
  * @property {string|null} randomSeed - The seed for the random number generator used in the simulation, null if using randomly generated seed. Using a seed allows the simulation to be deterministic for the same version of this app when randomness is used. However, reproducibility is only guaranteed if the scene is just loaded (that is, no other editing has been done on the scene). Also, reproducibility is not guaranteed across different versions of the app.
  * @property {function} rng - The random number generator.
@@ -224,7 +224,8 @@ class Scene {
       curveEndpoint: 0,
       interactionMerging: 1e-6,
       interactionNormal: 1e-6,
-      forwardDistance: 1e-6
+      forwardDistance: 1e-6,
+      rayPowerCutoff: 1e-6
     },
     maxRayDepth: Infinity,
     randomSeed: null,

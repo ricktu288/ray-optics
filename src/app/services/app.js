@@ -143,8 +143,6 @@ function createSimulator(engine) {
       ownsDevice: true,
     })
     : new CpuSimulationEngine({
-      numericEpsilon: FLOAT32_EPSILON,
-      minimumRayPower: engineConfig.minimumRayPower,
       ctxMain: canvasLight.getContext('2d'),
       glMain: gl,
       ctxVirtual: document.createElement('canvas').getContext('2d'),

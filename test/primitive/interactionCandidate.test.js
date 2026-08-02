@@ -19,6 +19,10 @@ import {
   createInteractionCandidate,
   createInteractionCandidateContext,
   finalizeInteractionCandidate,
+  INTERSECTION_CONFLICT_MERGE,
+  INTERSECTION_CONFLICT_NORMAL,
+  INTERSECTION_TOLERANCE_MERGING,
+  INTERSECTION_TOLERANCE_NORMAL,
   updateInteractionCandidate
 } from '../../src/core/primitive/interactionCandidate.js';
 import {
@@ -150,6 +154,73 @@ describe('interaction candidate updates', () => {
       curveId: 0,
       conflictType: 0,
       conflictCurveId: -1
+    });
+  });
+
+  it('records the effective tolerance for an incompatible merged hit', () => {
+    const description = createDescription(true);
+    description.numericalTolerances.interactionMerging = 0.001;
+    description.curves.push({
+      ...description.curves[0],
+      geometry: prepareCurve({
+        kind: 'lineSegment',
+        params: {
+          start: { x: 5.0005, y: -1 },
+          end: { x: 5.0005, y: 1 }
+        }
+      }, {
+        numericEpsilon: FLOAT32_EPSILON
+      }).geometry,
+      ownerId: 1
+    });
+    const context = createInteractionCandidateContext(
+      description,
+      FLOAT32_EPSILON
+    );
+    const candidate = createInteractionCandidate(0);
+
+    updateInteractionCandidate(candidate, context, 0, ray);
+    updateInteractionCandidate(candidate, context, 1, ray);
+
+    expect(candidate).toMatchObject({
+      conflictType: INTERSECTION_CONFLICT_MERGE,
+      conflictCurveId: 1,
+      conflictToleranceKind: INTERSECTION_TOLERANCE_MERGING,
+      conflictTolerance: 0.001
+    });
+  });
+
+  it('records the angular tolerance for inconsistent merged normals', () => {
+    const description = createDescription(true);
+    description.numericalTolerances.interactionMerging = 0.001;
+    description.numericalTolerances.interactionNormal = 0.01;
+    description.curves.push({
+      ...description.curves[0],
+      geometry: prepareCurve({
+        kind: 'lineSegment',
+        params: {
+          start: { x: 4.9, y: -1 },
+          end: { x: 5.1, y: 1 }
+        }
+      }, {
+        numericEpsilon: FLOAT32_EPSILON
+      }).geometry,
+      ownerId: 1
+    });
+    const context = createInteractionCandidateContext(
+      description,
+      FLOAT32_EPSILON
+    );
+    const candidate = createInteractionCandidate(0);
+
+    updateInteractionCandidate(candidate, context, 0, ray);
+    updateInteractionCandidate(candidate, context, 1, ray);
+
+    expect(candidate).toMatchObject({
+      conflictType: INTERSECTION_CONFLICT_NORMAL,
+      conflictCurveId: 1,
+      conflictToleranceKind: INTERSECTION_TOLERANCE_NORMAL,
+      conflictTolerance: 0.01
     });
   });
 

@@ -16,13 +16,8 @@
 
 import { solveQuadraticRoots } from './curveGeometry.js';
 import {
-  getRoundingErrorFactor,
-  validateNumericEpsilon
+  getIntersectionTolerancePolicy
 } from './numeric.js';
-
-const PARAMETER_ERROR_OPERATION_COUNT = 32;
-const TANGENT_ERROR_OPERATION_COUNT = 32;
-const CUBIC_VALUE_ERROR_OPERATION_COUNT = 64;
 
 /**
  * Count forward crossings of one curve for an even-odd region ray cast.
@@ -31,6 +26,7 @@ const CUBIC_VALUE_ERROR_OPERATION_COUNT = 64;
  * @param {{originX: number, originY: number, directionX: number, directionY: number}} ray
  * @param {Object} [options]
  * @param {number} options.numericEpsilon
+ * @param {Object} [options.tolerancePolicy]
  * @param {number} [options.originTolerance]
  * @param {Object} [out]
  * @returns {{count: number, ambiguous: boolean, nearestForwardS: number}}
@@ -41,7 +37,8 @@ export function countCurveRayCrossings(
   options = {},
   out = {}
 ) {
-  const tolerances = createIntersectionTolerances(options.numericEpsilon);
+  const tolerances = options.tolerancePolicy ??
+    getIntersectionTolerancePolicy(options.numericEpsilon);
   const originTolerance =
     options.originTolerance ?? geometry.positionTolerance;
   out.count = 0;
@@ -536,30 +533,6 @@ function evaluateCubicLocal(geometry, u) {
   return {
     x: oneMinusU * x012 + u * x123,
     y: oneMinusU * y012 + u * y123
-  };
-}
-
-function createIntersectionTolerances(numericEpsilon) {
-  validateNumericEpsilon(numericEpsilon);
-  const parameter = getRoundingErrorFactor(
-    PARAMETER_ERROR_OPERATION_COUNT,
-    numericEpsilon
-  );
-  return {
-    numericEpsilon,
-    parameter,
-    tangent: getRoundingErrorFactor(
-      TANGENT_ERROR_OPERATION_COUNT,
-      numericEpsilon
-    ),
-    cubicValue: getRoundingErrorFactor(
-      CUBIC_VALUE_ERROR_OPERATION_COUNT,
-      numericEpsilon
-    ),
-    rootRefinementSteps: Math.max(
-      1,
-      Math.ceil(-Math.log2(parameter)) + 1
-    )
   };
 }
 

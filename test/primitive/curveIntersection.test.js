@@ -22,7 +22,10 @@ import {
   ensureCurveIntersectionNormal,
   intersectCurve as intersectCurveGeometry
 } from '../../src/core/primitive/nearestIntersection.js';
-import { FLOAT32_EPSILON } from '../../src/core/primitive/numeric.js';
+import {
+  FLOAT32_EPSILON,
+  getIntersectionTolerancePolicy
+} from '../../src/core/primitive/numeric.js';
 
 function prepare(kind, params, options) {
   return prepareCurve({ kind, params }, {
@@ -226,6 +229,22 @@ function createTransverseRayThroughExtendedCurve(
 }
 
 describe('prepared curve intersections', () => {
+  it('reuses the immutable intersection tolerance policy for an epsilon', () => {
+    const first = getIntersectionTolerancePolicy(FLOAT32_EPSILON);
+    const second = getIntersectionTolerancePolicy(FLOAT32_EPSILON);
+
+    expect(second).toBe(first);
+    expect(Object.isFrozen(first)).toBe(true);
+    expect(first).toMatchObject({
+      numericEpsilon: FLOAT32_EPSILON,
+      parameter: expect.any(Number),
+      tangent: expect.any(Number),
+      cubicValue: expect.any(Number),
+      mergingDistance: expect.any(Number),
+      interactionNormal: expect.any(Number),
+      rootRefinementSteps: expect.any(Number)
+    });
+  });
   it('calculates line distance/parameter before normal/side', () => {
     const geometry = prepare('lineSegment', {
       start: { x: 0, y: 0 },

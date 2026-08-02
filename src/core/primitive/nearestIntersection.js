@@ -16,13 +16,8 @@
 
 import { solveQuadraticRoots } from './curveGeometry.js';
 import {
-  getRoundingErrorFactor,
-  validateNumericEpsilon
+  getIntersectionTolerancePolicy
 } from './numeric.js';
-
-const PARAMETER_ERROR_OPERATION_COUNT = 32;
-const TANGENT_ERROR_OPERATION_COUNT = 32;
-const CUBIC_VALUE_ERROR_OPERATION_COUNT = 64;
 
 /**
  * Find only the nearest geometric intersection with one prepared curve.
@@ -33,13 +28,15 @@ const CUBIC_VALUE_ERROR_OPERATION_COUNT = 64;
  * @param {{originX: number, originY: number, directionX: number, directionY: number}} ray
  * @param {Object} [options]
  * @param {number} options.numericEpsilon
+ * @param {Object} [options.tolerancePolicy]
  * @param {number} [options.minDistance]
  * @param {Object} [out]
  * @returns {{s: number, u: number, normalX: number, normalY: number, sigma: number}|null}
  */
 export function intersectCurve(geometry, ray, options = {}, out = {}) {
   const minDistance = options.minDistance ?? geometry.positionTolerance;
-  const tolerances = createIntersectionTolerances(options.numericEpsilon);
+  const tolerances = options.tolerancePolicy ??
+    getIntersectionTolerancePolicy(options.numericEpsilon);
   out.s = Infinity;
   out.normalX = 0;
   out.normalY = 0;
@@ -89,6 +86,7 @@ export function intersectCurve(geometry, ray, options = {}, out = {}) {
  * @param {{s: number, u: number, normalX: number, normalY: number, sigma: number}} intersection
  * @param {Object} [options]
  * @param {number} options.numericEpsilon
+ * @param {Object} [options.tolerancePolicy]
  * @returns {{s: number, u: number, normalX: number, normalY: number, sigma: number}|null}
  */
 export function ensureCurveIntersectionNormal(
@@ -100,11 +98,9 @@ export function ensureCurveIntersectionNormal(
   if (intersection.normalX !== 0 || intersection.normalY !== 0) {
     return intersection;
   }
-  validateNumericEpsilon(options.numericEpsilon);
-  const normalTolerance = getRoundingErrorFactor(
-    TANGENT_ERROR_OPERATION_COUNT,
-    options.numericEpsilon
-  );
+  const tolerancePolicy = options.tolerancePolicy ??
+    getIntersectionTolerancePolicy(options.numericEpsilon);
+  const normalTolerance = tolerancePolicy.tangent;
   let frontNormalX;
   let frontNormalY;
 
@@ -543,30 +539,6 @@ function evaluateArcLocal(b, u) {
   return {
     x: (u - 0.5) / weight,
     y: 2 * h * product / weight
-  };
-}
-
-function createIntersectionTolerances(numericEpsilon) {
-  validateNumericEpsilon(numericEpsilon);
-  const parameter = getRoundingErrorFactor(
-    PARAMETER_ERROR_OPERATION_COUNT,
-    numericEpsilon
-  );
-  return {
-    numericEpsilon,
-    parameter,
-    tangent: getRoundingErrorFactor(
-      TANGENT_ERROR_OPERATION_COUNT,
-      numericEpsilon
-    ),
-    cubicValue: getRoundingErrorFactor(
-      CUBIC_VALUE_ERROR_OPERATION_COUNT,
-      numericEpsilon
-    ),
-    rootRefinementSteps: Math.max(
-      1,
-      Math.ceil(-Math.log2(parameter)) + 1
-    )
   };
 }
 
