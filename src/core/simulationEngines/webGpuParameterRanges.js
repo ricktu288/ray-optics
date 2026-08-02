@@ -245,6 +245,10 @@ export function estimateWebGpuParameterRanges(description, {
       type,
       description.types.sources[type.typeId].definition.dag
     );
+    validateSourceCoordinateOutputs(
+      type,
+      description.types.sources[type.typeId].definition.dag
+    );
   }
   for (const type of bulkTypes) {
     attachDagSpecialization(
@@ -558,6 +562,25 @@ function attachDagSpecialization(type, dag) {
     parameters: type.parameters
   });
   type.guardSignature = type.specialization.guardSignature;
+}
+
+function validateSourceCoordinateOutputs(type, dag) {
+  const labels = collectNodeLabels(dag);
+  for (const label of ['x', 'y']) {
+    const nodeId = labels.get(label);
+    if (nodeId === undefined) {
+      throw new TypeError(`source type ${type.typeId} has no ${label} output.`);
+    }
+    const range = type.specialization.rangeResult.nodeRanges[nodeId];
+    for (const [minimum, maximum] of range.intervals) {
+      if (minimum < -WEBGPU_SPATIAL_MAX || maximum > WEBGPU_SPATIAL_MAX) {
+        throw new RangeError(
+          `source type ${type.typeId} ${label} output may exceed the ` +
+          `WebGPU spatial limit ${WEBGPU_SPATIAL_MAX}.`
+        );
+      }
+    }
+  }
 }
 
 function collectInstanceParameterRange(

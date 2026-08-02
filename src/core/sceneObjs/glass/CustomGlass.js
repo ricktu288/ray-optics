@@ -602,6 +602,13 @@ class CustomGlass extends LineObjMixin(BaseGlass) {
     return true;
   }
 
+  // createSampledPrimitiveCurveEntries uses the ParamCurveObjMixin method
+  // name when preparing cubic Bezier primitives. CustomGlass maintains the
+  // same data under its older helper name, so expose the shared contract here.
+  _ensureCubicBezierPathReady() {
+    return this._ensureBezierPathReady();
+  }
+
   /**
    * Initialize the path points based on the equations.
    * This method is called by draw() and checkRayIntersects() when needed.

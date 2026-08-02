@@ -84,6 +84,95 @@ function surface(type, curve, params = {}) {
 }
 
 describe('primitive preprocessing', () => {
+  it('normalizes legacy numeric strings before creating the processed scene', () => {
+    const sourceType = {
+      name: 'Legacy source',
+      paramNames: ['power'],
+      dag: dag('P_s')
+    };
+    const surfaceType = {
+      name: 'Legacy surface',
+      paramNames: ['gain'],
+      dag: dag('P_1s'),
+      outRayCount: 1,
+      mergesWithBoundary: false
+    };
+    const bulkType = {
+      name: 'Legacy bulk',
+      paramNames: ['n'],
+      dag: dag('n')
+    };
+    const detectorType = {
+      name: 'Legacy detector',
+      paramNames: ['scale'],
+      dag: detectorDag(),
+      writeCount: 1
+    };
+    const result = { values: null };
+    const primitives = [
+      {
+        kind: 'source',
+        sourceType,
+        params: { power: '1.2' },
+        rayCount: '2'
+      },
+      {
+        kind: 'surface',
+        curve: line('0', '0', '1', '0'),
+        twoSided: true,
+        filter: { wavelength: '540', bandwidth: '10', invert: false },
+        surfaceType,
+        params: { gain: '2.5' }
+      },
+      {
+        kind: 'region',
+        curves: [{
+          kind: 'circle',
+          params: { center: { x: '3', y: '4' }, radius: '2' }
+        }],
+        bulkType,
+        params: { n: '1.5' },
+        stepSize: '0.25',
+        partialReflect: true
+      },
+      {
+        kind: 'detector',
+        curve: line('6', '0', '7', '0'),
+        twoSided: true,
+        detectorType,
+        params: { scale: '3' },
+        resultSize: '8',
+        result
+      }
+    ];
+
+    const { processedScene } = preprocessPrimitives(primitives);
+
+    expect(processedScene.sources[0]).toMatchObject({
+      params: { power: 1.2 },
+      rayCount: 2
+    });
+    expect(processedScene.surfaces[0].params).toEqual({ gain: 2.5 });
+    expect(processedScene.regions[0]).toMatchObject({
+      params: { n: 1.5 },
+      stepSize: 0.25
+    });
+    expect(processedScene.detectors[0]).toMatchObject({
+      params: { scale: 3 },
+      resultSize: 8
+    });
+    expect(processedScene.curves[0]).toMatchObject({
+      geometry: { originX: 0, originY: 0 },
+      filter: { wavelength: 540, bandwidth: 10, invert: false }
+    });
+    expect(processedScene.curves[1].geometry).toMatchObject({
+      centerX: 3,
+      centerY: 4,
+      signedInvRadius: 0.5
+    });
+    expect(primitives[0].params.power).toBe('1.2');
+  });
+
   it('deduplicates structural types while preserving engine-neutral parameters', () => {
     const firstType = {
       name: 'Adjustable',

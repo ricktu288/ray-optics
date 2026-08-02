@@ -47,7 +47,10 @@ import {
   computeImportShapesDefaults as computeImportShapesDefaultsPure,
   importedHandleOffsetBelowBBox,
 } from '../utils/shapeImport.js';
-import { resolveSimulationEngineConfig } from '../../core/simulationEngines/config.js';
+import {
+  WEBGPU_MIN_STORAGE_BUFFERS_PER_SHADER_STAGE,
+  resolveSimulationEngineConfig
+} from '../../core/simulationEngines/config.js';
 
 function initScene() {
   scene = new Scene();
@@ -73,7 +76,24 @@ async function requestWebGpuDevice() {
   }
   const adapter = await navigator.gpu.requestAdapter();
   if (!adapter) throw new Error('No WebGPU adapter is available.');
-  return adapter.requestDevice();
+  const availableStorageBuffers =
+    adapter.limits.maxStorageBuffersPerShaderStage;
+  if (
+    availableStorageBuffers <
+    WEBGPU_MIN_STORAGE_BUFFERS_PER_SHADER_STAGE
+  ) {
+    throw new Error(
+      'This WebGPU adapter supports only ' + availableStorageBuffers +
+      ' storage buffers per shader stage; the simulation engine requires ' +
+      WEBGPU_MIN_STORAGE_BUFFERS_PER_SHADER_STAGE + '.'
+    );
+  }
+  return adapter.requestDevice({
+    requiredLimits: {
+      maxStorageBuffersPerShaderStage:
+        WEBGPU_MIN_STORAGE_BUFFERS_PER_SHADER_STAGE,
+    },
+  });
 }
 
 function createBrowserWebGpuOutput(canvas) {
@@ -83,6 +103,9 @@ function createBrowserWebGpuOutput(canvas) {
 
   return {
     format,
+    getSize() {
+      return { width: canvas.width, height: canvas.height };
+    },
     initialize(nextDevice) {
       device = nextDevice;
       context = canvas.getContext('webgpu');
@@ -141,6 +164,7 @@ function createSimulator(engine) {
       output: createBrowserWebGpuOutput(canvasLightWebGPU),
       numericEpsilon: FLOAT32_EPSILON,
       ownsDevice: true,
+      config: engineConfig,
     })
     : new CpuSimulationEngine({
       ctxMain: canvasLight.getContext('2d'),

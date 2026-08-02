@@ -55,7 +55,7 @@ describe('WebGPU scene parameter range estimation', () => {
       name: 'Parameterized source',
       paramNames: ['gain', 'offset'],
       dag: parseFormula(
-        'x = gain; y = offset; d_x = 1; d_y = 0; P_s = 1; P_p = 0; lambda = 540;',
+        'x = gain; y = 0; unused = offset; d_x = 1; d_y = 0; P_s = 1; P_p = 0; lambda = 540;',
         ['gain', 'offset', 'i', 'N']
       )
     };

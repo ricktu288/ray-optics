@@ -17,6 +17,7 @@
 import {
   collectNodeLabels,
   collectParameterNames,
+  collectReachableNodeIds,
   validateDagShape,
 } from "./dag-util.js";
 import { estimateDagRanges } from "./range-estimator.js";
@@ -50,10 +51,15 @@ export function generateDagWgslFunction(dag, options = {}) {
   const labels = validateLabelContract(dag, options.labels);
   const parameterIndexes = new Map(parameters.map((name, index) => [name, index]));
   const labelIds = collectNodeLabels(dag);
+  const reachableNodeIds = collectReachableNodeIds(
+    dag,
+    labels.map((label) => labelIds.get(label))
+  );
   const states = [];
 
   const body = [];
   for (const node of dag.nodes) {
+    if (!reachableNodeIds.has(node.id)) continue;
     const state = generateNode(node, parameterIndexes, states, rangeResult.nodeRanges);
     states[node.id] = state;
     body.push(`  var v${node.id}: ${state.type} = ${state.expression};`);
@@ -438,6 +444,7 @@ function validateWgslIdentifier(value, name) {
 }
 
 const WGSL_RESERVED_WORDS = new Set([
+  "active",
   "alias",
   "break",
   "case",

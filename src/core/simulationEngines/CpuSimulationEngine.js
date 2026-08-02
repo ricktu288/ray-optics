@@ -74,7 +74,7 @@ const SOURCE_OUTPUT_LABELS = [
   'lambda'
 ];
 
-class CpuSimulationRun {
+export class CpuSimulationRun {
   constructor(engine, options) {
     this.engine = engine;
     this.options = options;
@@ -154,7 +154,8 @@ class CpuSimulationRun {
       origin: options.viewport?.origin || { x: 0, y: 0 },
       scale: options.viewport?.scale ?? 1,
       lengthScale: options.viewport?.lengthScale ?? 1,
-      colorMode: options.colorMode ?? 'default'
+      colorMode: options.colorMode ?? 'default',
+      rendering: this.rendering
     });
     beginCpuRayRendering(this.engine.ctxMain, this.rendering);
   }
@@ -167,17 +168,23 @@ class CpuSimulationRun {
     return this.rayBuffers[1 - this.currentRayBufferIndex];
   }
 
-  async advance({ timeBudgetMs = Infinity } = {}) {
+  async advance({
+    timeBudgetMs = Infinity,
+    itemBudget = Infinity
+  } = {}) {
     if (this.isCancelled || this.isComplete) {
       return this.getUpdate();
     }
 
     const startTime = getCurrentTime();
+    let processedItemCount = 0;
     do {
       this.advanceOneWorkItem();
+      processedItemCount++;
     } while (
       !this.isCancelled &&
       !this.isComplete &&
+      processedItemCount < Math.max(1, itemBudget) &&
       (
         !Number.isFinite(timeBudgetMs) ||
         getCurrentTime() - startTime < Math.max(0, timeBudgetMs)
@@ -266,7 +273,9 @@ class CpuSimulationRun {
       this.summary.activeRayCount =
         this.summary.activeSourceRayCount -
         this.summary.membershipDiscardedRayCount;
-      logInitialRayBuffer(this.currentRayBuffer, this.summary);
+      if (this.engine.logExecutionDebugInfo !== false) {
+        logInitialRayBuffer(this.currentRayBuffer, this.summary);
+      }
       this.phase = 'intersection';
       return;
     }
@@ -305,7 +314,8 @@ class CpuSimulationRun {
 
     const power = ray.powerS + ray.powerP;
     const minimumPower =
-      (this.options.colorMode ?? 'default') === 'default'
+      (this.options.colorMode ?? 'default') === 'default' &&
+      this.engine.applyRayPowerCutoffInDefaultMode !== true
         ? 0
         : this.rayPowerCutoff;
     if (power < minimumPower) {
@@ -414,10 +424,12 @@ class CpuSimulationRun {
       this.interactionIndexRayIndex >=
       this.hitBuffer.length
     ) {
-      logInteractionIndexBuffers(
-        this.interactionIndexBuffers,
-        this.destinationRayCount
-      );
+      if (this.engine.logExecutionDebugInfo !== false) {
+        logInteractionIndexBuffers(
+          this.interactionIndexBuffers,
+          this.destinationRayCount
+        );
+      }
       this.phase = 'render';
       return;
     }
@@ -516,6 +528,7 @@ class CpuSimulationRun {
         detectorResults: this.detectorResults
       });
       this.outgoingActiveRayCount +=
+        this.engine.applyLegacyPowerSubsampling !== false &&
         (this.options.colorMode ?? 'default') === 'default' &&
         type.outRayCount >= 2
           ? this.applyLegacyOutgoingSubsampling(
@@ -684,11 +697,18 @@ class CpuSimulationEngine {
     this.glMain = glMain;
     this.ctxVirtual = ctxVirtual;
     this.canvasRenderer = null;
+    // The weak-ray sampling rule is a compatibility behavior of the legacy
+    // canvas/CPU path.  Backends which reuse the primitive event loop but use
+    // additive accumulation (notably WebGPU) deliberately disable it.
+    this.applyLegacyPowerSubsampling = true;
+    this.applyRayPowerCutoffInDefaultMode = false;
+    this.logExecutionDebugInfo = true;
   }
 
-  async prepare(description) {
+  async prepare(description, { logDebugInfo = false } = {}) {
     return {
       description,
+      logDebugInfo: Boolean(logDebugInfo),
       interactionTypeLayout:
         createInteractionTypeLayout(description),
       outgoingRayData:

@@ -16,6 +16,11 @@
 
 import { DEFAULT_BVH_OPTIONS } from '../primitive/bvh.js';
 
+// Native trace uses 13 storage bindings and an n_0/n_1 surface pipeline uses
+// 14. The WebGPU guaranteed default is only 8, so browser device creation must
+// explicitly request this supported adapter limit.
+export const WEBGPU_MIN_STORAGE_BUFFERS_PER_SHADER_STAGE = 14;
+
 const COMMON_BVH_CONFIG = Object.freeze({
   lineLeafSize: DEFAULT_BVH_OPTIONS.lineLeafSize,
   arcLeafSize: DEFAULT_BVH_OPTIONS.arcLeafSize,
@@ -42,6 +47,13 @@ export const DEFAULT_SIMULATION_ENGINE_CONFIGS = Object.freeze({
   webgpu: Object.freeze({
     ...COMMON_PRIMITIVE_ENGINE_CONFIG,
     workgroupSize: 64,
+    // These are implementation tuning values, intentionally not exposed by
+    // the configuration modal until representative scenes have been profiled.
+    maxItemsPerAdvance: 262144,
+    maxBatchRayEvents: 262144,
+    maxReadyLineRecords: 262144,
+    maxReadyPointRecords: 65536,
+    maxPingPongsPerSubmission: 64,
   }),
 });
 

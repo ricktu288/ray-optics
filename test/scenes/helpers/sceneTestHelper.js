@@ -20,7 +20,7 @@ import { createCanvas } from 'canvas';
 import sharp from 'sharp';
 const rayOptics = require('../../../dist-node/rayOptics.js');
 
-const SUPPORTED_ENGINES = new Set(['default', 'primitiveCpu']);
+const SUPPORTED_ENGINES = new Set(['default', 'primitiveCpu', 'webgpu']);
 
 function createSimulator({
   scene,
@@ -60,11 +60,19 @@ function createSimulator({
 
   const bvhSettings = engineSettings.bvh ?? {};
   const { drawBounds = false, ...bvhOptions } = bvhSettings;
-  const engine = new rayOptics.CpuSimulationEngine({
-    numericEpsilon: engineSettings.numericEpsilon,
-    ctxMain: ctxLight,
-    ctxVirtual
-  });
+  const engine = engineKind === 'webgpu'
+    ? new rayOptics.WebGpuSimulationEngine({
+      numericEpsilon:
+        engineSettings.numericEpsilon ?? rayOptics.FLOAT32_EPSILON,
+      ctxMain: ctxLight,
+      ctxVirtual,
+      config: engineSettings
+    })
+    : new rayOptics.CpuSimulationEngine({
+      numericEpsilon: engineSettings.numericEpsilon,
+      ctxMain: ctxLight,
+      ctxVirtual
+    });
   return new rayOptics.PrimitiveBasedSimulator({
     scene,
     engine,
@@ -216,7 +224,7 @@ export function compareCSV(actualData, expectedData, tolerance = 1e-3) {
  * @param {string} jsonPath - Path to the scene JSON file
  * @param {boolean} writeOutput - Whether to write output files
  * @param {Object} [options={}] - Scene-test simulation options
- * @param {'default'|'primitiveCpu'} [options.engine='default'] - Simulation engine to use
+ * @param {'default'|'primitiveCpu'|'webgpu'} [options.engine='default'] - Simulation engine to use
  * @param {Object} [options.engineSettings={}] - Settings for the selected engine
  * @returns {Promise<{imageBuffer?: Buffer, detectorData?: string}>} Generated outputs
  */
@@ -339,7 +347,7 @@ export async function runScene(
 
   // Generate detector data
   if (detector && detector.irradMap) {
-    if (engineKind === 'primitiveCpu') {
+    if (engineKind === 'primitiveCpu' || engineKind === 'webgpu') {
       detector.updateMeasurementsFromPrimitiveResults();
     }
     if (detector.binData) {

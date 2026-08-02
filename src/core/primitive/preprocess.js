@@ -211,9 +211,14 @@ export function preprocessPrimitives(primitives, {
     ownerId,
     mergesWithBoundary,
     twoSided,
-    filter
+    filter,
+    curvePath
   ) => {
-    const prepared = prepareCurve(curve, {
+    const normalizedCurve = normalizePrimitiveCurve(
+      curve,
+      curvePath
+    );
+    const prepared = prepareCurve(normalizedCurve, {
       lengthScale,
       endpointTolerance: resolvedNumericalTolerances.curveEndpoint,
       numericEpsilon
@@ -240,8 +245,14 @@ export function preprocessPrimitives(primitives, {
         );
         sources.push({
           typeRecord,
-          params: primitive.params,
-          rayCount: primitive.rayCount
+          params: normalizeNumericStrings(
+            primitive.params,
+            `primitives[${primitiveIndex}].params`
+          ),
+          rayCount: normalizeNumericString(
+            primitive.rayCount,
+            `primitives[${primitiveIndex}].rayCount`
+          )
         });
         break;
       }
@@ -253,7 +264,10 @@ export function preprocessPrimitives(primitives, {
         const ownerId = surfaces.length;
         surfaces.push({
           typeRecord,
-          params: primitive.params
+          params: normalizeNumericStrings(
+            primitive.params,
+            `primitives[${primitiveIndex}].params`
+          )
         });
         appendProcessedCurve(
           primitive.curve,
@@ -261,7 +275,11 @@ export function preprocessPrimitives(primitives, {
           ownerId,
           primitive.surfaceType.mergesWithBoundary,
           primitive.twoSided,
-          primitive.filter
+          normalizeNumericStrings(
+            primitive.filter,
+            `primitives[${primitiveIndex}].filter`
+          ),
+          `primitives[${primitiveIndex}].curve`
         );
         break;
       }
@@ -273,8 +291,14 @@ export function preprocessPrimitives(primitives, {
         const ownerId = regions.length;
         regions.push({
           typeRecord,
-          params: primitive.params,
-          stepSize: primitive.stepSize,
+          params: normalizeNumericStrings(
+            primitive.params,
+            `primitives[${primitiveIndex}].params`
+          ),
+          stepSize: normalizeNumericString(
+            primitive.stepSize,
+            `primitives[${primitiveIndex}].stepSize`
+          ),
           partialReflect: primitive.partialReflect
         });
         for (let curveIndex = 0; curveIndex < primitive.curves.length; curveIndex++) {
@@ -284,7 +308,8 @@ export function preprocessPrimitives(primitives, {
             ownerId,
             true,
             undefined,
-            undefined
+            undefined,
+            `primitives[${primitiveIndex}].curves[${curveIndex}]`
           );
         }
         break;
@@ -298,9 +323,13 @@ export function preprocessPrimitives(primitives, {
         const typeRecord = registries.detectors.register(
           primitive.detectorType
         );
+        const resultSize = normalizeNumericString(
+          primitive.resultSize,
+          `primitives[${primitiveIndex}].resultSize`
+        );
         let resultRange = detectorResults.get(primitive.result);
         if (resultRange) {
-          if (resultRange.resultSize !== primitive.resultSize) {
+          if (resultRange.resultSize !== resultSize) {
             throw new RangeError(
               `primitives[${primitiveIndex}].resultSize does not match the other primitives using the same result holder.`
             );
@@ -308,7 +337,7 @@ export function preprocessPrimitives(primitives, {
         } else {
           resultRange = {
             resultId: detectorResultBindings.length,
-            resultSize: primitive.resultSize
+            resultSize
           };
           detectorResults.set(primitive.result, resultRange);
           detectorResultBindings.push({
@@ -321,7 +350,10 @@ export function preprocessPrimitives(primitives, {
         const ownerId = detectors.length;
         detectors.push({
           typeRecord,
-          params: primitive.params,
+          params: normalizeNumericStrings(
+            primitive.params,
+            `primitives[${primitiveIndex}].params`
+          ),
           ...resultRange
         });
         appendProcessedCurve(
@@ -330,7 +362,8 @@ export function preprocessPrimitives(primitives, {
           ownerId,
           false,
           primitive.twoSided,
-          undefined
+          undefined,
+          `primitives[${primitiveIndex}].curve`
         );
         break;
       }
@@ -408,6 +441,52 @@ export function preprocessPrimitives(primitives, {
   timing?.recordStage('assembleProcessedScene');
   result.timings = timing?.finish() ?? null;
   return result;
+}
+
+/**
+ * Convert numeric strings left by older scene data without mutating primitive
+ * objects. Primitive parameter contracts contain only numbers, including the
+ * nested point objects used by curve geometry.
+ */
+function normalizeNumericStrings(value, path) {
+  if (typeof value === 'string') {
+    return normalizeNumericString(value, path);
+  }
+  if (!value || typeof value !== 'object') {
+    return value;
+  }
+
+  let normalized = value;
+  const keys = Object.keys(value);
+  for (const key of keys) {
+    const child = normalizeNumericStrings(
+      value[key],
+      Array.isArray(value) ? `${path}[${key}]` : `${path}.${key}`
+    );
+    if (Object.is(child, value[key])) continue;
+    if (normalized === value) {
+      normalized = Array.isArray(value) ? [...value] : { ...value };
+    }
+    normalized[key] = child;
+  }
+  return normalized;
+}
+
+function normalizeNumericString(value, path) {
+  if (typeof value !== 'string') return value;
+  if (value.trim() === '') {
+    throw new TypeError(`${path} must be numeric, but received an empty string.`);
+  }
+  const numericValue = Number(value);
+  if (Number.isNaN(numericValue)) {
+    throw new TypeError(`${path} must be numeric, but received ${JSON.stringify(value)}.`);
+  }
+  return numericValue;
+}
+
+function normalizePrimitiveCurve(curve, path) {
+  const params = normalizeNumericStrings(curve.params, `${path}.params`);
+  return params === curve.params ? curve : { ...curve, params };
 }
 
 function validateDetectorTypeContract(detectorType, primitiveIndex) {
