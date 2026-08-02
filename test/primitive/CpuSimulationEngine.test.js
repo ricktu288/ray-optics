@@ -153,6 +153,14 @@ async function advanceUntilPhase(run, phase) {
   return update;
 }
 
+async function advanceUntilPass(run, passIndex) {
+  let update;
+  while (run.passIndex < passIndex && !run.isComplete) {
+    update = await run.advance({ timeBudgetMs: 0 });
+  }
+  return update;
+}
+
 describe('CpuSimulationEngine initial ray buffers', () => {
   it('populates every source ray and stores each initial membership', async () => {
     const processedScene = createProcessedScene(rectangleCurves(), [
@@ -196,7 +204,7 @@ describe('CpuSimulationEngine initial ray buffers', () => {
         kind: 'grinStep',
         interactionCount: 2,
         sourceRayIndices: Uint32Array.of(0, 2),
-        destinationRayStarts: Uint32Array.of(0)
+        destinationRayStart: 0
       }),
       expect.objectContaining({
         kind: 'regionBoundary',
@@ -318,7 +326,6 @@ describe('CpuSimulationEngine initial ray buffers', () => {
       'interactionIndexFill',
       'render',
       'outgoing',
-      'subsample',
       'complete'
     ]));
     expect(run.passIndex).toBeGreaterThan(0);
@@ -359,7 +366,7 @@ describe('CpuSimulationEngine initial ray buffers', () => {
     expect(run.interactionIndexBuffers[2]).toMatchObject({
       interactionCount: 1,
       sourceRayIndices: Uint32Array.of(0),
-      destinationRayStarts: Uint32Array.of(0, 1)
+      destinationRayStart: 0
     });
     log.mockRestore();
   });
@@ -390,38 +397,41 @@ describe('CpuSimulationEngine initial ray buffers', () => {
     log.mockRestore();
   });
 
-  it('uses a zero-distance hit for a weak ray without mutating the ray', async () => {
-    const processedScene = createProcessedScene(rectangleCurves(), [
-      source({ power: 2e-7 })
-    ]);
-    const engine = new CpuSimulationEngine({
-      numericEpsilon: FLOAT32_EPSILON,
-      minimumRayBrightness: 1e-6
-    });
-    engine.beginRenderer = jest.fn();
-    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
-    const preparedScene = await engine.prepare(processedScene);
-    const run = await engine.createRun({
-      preparedScene,
-      colorMode: 'linear'
-    });
+  it.each(['default', 'linear'])(
+    'uses the configurable cutoff for a weak %s-color source ray',
+    async colorMode => {
+      const processedScene = createProcessedScene(rectangleCurves(), [
+        source({ power: 2e-7 })
+      ]);
+      const engine = new CpuSimulationEngine({
+        numericEpsilon: FLOAT32_EPSILON,
+        minimumRayBrightness: 1e-6
+      });
+      engine.beginRenderer = jest.fn();
+      const log = jest.spyOn(console, 'log').mockImplementation(() => {});
+      const preparedScene = await engine.prepare(processedScene);
+      const run = await engine.createRun({
+        preparedScene,
+        colorMode
+      });
 
-    const update = await advanceUntilPhase(run, 'render');
+      const update = await advanceUntilPhase(run, 'render');
 
-    expect(run.currentRayBuffer[0]).toMatchObject({
-      brightnessS: 2e-7,
-      brightnessP: 2e-7
-    });
-    expect(run.hitBuffer[0]).toMatchObject({
-      s: 0,
-      curveId: -1
-    });
-    expect(update.result.totalTruncation).toBeCloseTo(4e-7);
-    expect(run.summary.weakRayCount).toBe(1);
-    log.mockRestore();
-  });
+      expect(run.currentRayBuffer[0]).toMatchObject({
+        brightnessS: 2e-7,
+        brightnessP: 2e-7
+      });
+      expect(run.hitBuffer[0]).toMatchObject({
+        s: 0,
+        curveId: -1
+      });
+      expect(update.result.totalTruncation).toBeCloseTo(4e-7);
+      expect(run.summary.weakRayCount).toBe(1);
+      log.mockRestore();
+    }
+  );
 
-  it('prefix-subsamples weak legacy-color rays while producing the buffer', async () => {
+  it('does not apply the legacy cutoff while producing source rays', async () => {
     const processedScene = createProcessedScene(rectangleCurves(), [
       source({ power: 0.004, rayCount: 3 })
     ]);
@@ -442,14 +452,45 @@ describe('CpuSimulationEngine initial ray buffers', () => {
       ray.brightnessS,
       ray.brightnessP
     ])).toEqual([
-      [0, 0],
-      [0.005, 0.005],
-      [0.005, 0.005]
+      [0.004, 0.004],
+      [0.004, 0.004],
+      [0.004, 0.004]
     ]);
-    expect(run.hitBuffer[0].s).toBe(0);
-    expect(run.summary.legacySubsampledRayCount).toBe(2);
-    expect(run.summary.legacySubsamplingSkippedRayCount).toBe(1);
-    expect(update.result.totalTruncation).toBeCloseTo(0.024);
+    expect(run.hitBuffer[0].s).toBe(1);
+    expect(update.result.totalTruncation).toBe(0);
+    log.mockRestore();
+  });
+
+  it('legacy-subsamples every output of a nominally branching interaction', async () => {
+    const processedScene = createProcessedScene(
+      rectangleCurves(),
+      [source({ power: 0.004, rayCount: 2 })],
+      0
+    );
+    const engine = new CpuSimulationEngine({
+      numericEpsilon: FLOAT32_EPSILON
+    });
+    engine.beginRenderer = jest.fn();
+    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
+    const preparedScene = await engine.prepare(processedScene);
+    const run = await engine.createRun({
+      preparedScene,
+      colorMode: 'default'
+    });
+
+    const update = await advanceUntilPass(run, 1);
+
+    const outgoingBrightness = run.currentRayBuffer.map(ray => [
+      ray.brightnessS,
+      ray.brightnessP
+    ]);
+    expect(outgoingBrightness[0][0]).toBeCloseTo(0.00768);
+    expect(outgoingBrightness[0][1]).toBeCloseTo(0.00768);
+    expect(outgoingBrightness[1]).toEqual([0, 0]);
+    expect(outgoingBrightness[2][0]).toBeCloseTo(0.00512);
+    expect(outgoingBrightness[2][1]).toBeCloseTo(0.00512);
+    expect(outgoingBrightness[3]).toEqual([0, 0]);
+    expect(update.result.totalTruncation).toBeCloseTo(0.016);
     log.mockRestore();
   });
 
@@ -501,7 +542,7 @@ describe('CpuSimulationEngine initial ray buffers', () => {
 
   it('traces surface outputs through the completed ping-pong loop', async () => {
     const processedScene = preprocessPrimitives([
-      source({ x: 5, y: 5 }),
+      source({ x: 5, y: 5, power: 0.004 }),
       {
         kind: 'surface',
         curve: {
@@ -537,8 +578,8 @@ describe('CpuSimulationEngine initial ray buffers', () => {
         originY: 5,
         directionX: -1,
         directionY: 0,
-        brightnessS: 0.5,
-        brightnessP: 0.5,
+        brightnessS: 0.004,
+        brightnessP: 0.004,
         membership: new Uint8Array(0)
       })
     ]);

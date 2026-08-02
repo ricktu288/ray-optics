@@ -90,7 +90,7 @@ export function createInteractionIndexBuffers(layout) {
     ...type,
     interactionCount: 0,
     sourceRayIndices: new Uint32Array(0),
-    destinationRayStarts: new Uint32Array(type.outRayCount)
+    destinationRayStart: 0
   }));
 }
 
@@ -103,8 +103,7 @@ export function resetInteractionIndexBuffers(buffers) {
   for (const buffer of buffers) {
     buffer.interactionCount = 0;
     buffer.sourceRayIndices = new Uint32Array(0);
-    buffer.destinationRayStarts =
-      new Uint32Array(buffer.outRayCount);
+    buffer.destinationRayStart = 0;
   }
 }
 
@@ -156,15 +155,9 @@ export function allocateInteractionIndexBuffers(buffers) {
   for (const buffer of buffers) {
     buffer.sourceRayIndices =
       new Uint32Array(buffer.interactionCount);
-    buffer.destinationRayStarts =
-      new Uint32Array(buffer.outRayCount);
-    for (let outRayIndex = 0;
-      outRayIndex < buffer.outRayCount;
-      outRayIndex++) {
-      buffer.destinationRayStarts[outRayIndex] =
-        destinationRayCount;
-      destinationRayCount += buffer.interactionCount;
-    }
+    buffer.destinationRayStart = destinationRayCount;
+    destinationRayCount +=
+      buffer.outRayCount * buffer.interactionCount;
   }
   return destinationRayCount;
 }

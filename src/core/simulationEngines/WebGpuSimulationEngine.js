@@ -62,7 +62,6 @@ class WebGpuSimulationRun {
         detectors: [],
         processedRayCount: 0,
         totalTruncation: 0,
-        brightnessScale: 0,
       },
     };
   }

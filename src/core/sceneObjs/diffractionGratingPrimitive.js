@@ -51,6 +51,10 @@ export function createDiffractionGratingPrimitive(
     ? '(-1 - d_0x)'
     : '(d_0x - 1)';
   const orderOperator = localOrderSign > 0 ? '+' : '-';
+  statements.push(
+    'c = lambda * 0.000001 * line_density',
+    `m_min = ceil(${minimumOrderExpression} / c)`
+  );
   for (let index = 0; index < maxOutRayCount; index++) {
     let intensityExpression;
     if (obj.customBrightness) {
@@ -62,14 +66,20 @@ export function createDiffractionGratingPrimitive(
         'fallback(guardNonzero(m_ORDER, (sin(pi * slit_ratio * m_ORDER) / (pi * slit_ratio * m_ORDER)) ^ 2 * slit_ratio * slit_ratio), slit_ratio * slit_ratio)';
     }
     const slot = index + 1;
+    const preferredOrder = index === 0
+      ? 0
+      : (index % 2 === 1 ? (index + 1) / 2 : -index / 2);
     intensityExpression = intensityExpression.replaceAll(
       'm_ORDER',
       `m_${slot}`
     );
     statements.push(
-      `c_${slot} = lambda * 0.000001 * line_density`,
-      `m_${slot} = ceil(${minimumOrderExpression} / c_${slot}) + ${index}`,
-      `q_${slot} = d_0x ${orderOperator} m_${slot} * c_${slot}`,
+      // Keep a physical diffraction order in the same output slot as the
+      // incident angle changes. Orders separated by maxOutRayCount may share
+      // a slot because they can never be valid simultaneously.
+      `m_${slot} = ${preferredOrder} + ${maxOutRayCount} * ` +
+        `ceil((m_min - (${preferredOrder})) / ${maxOutRayCount})`,
+      `q_${slot} = d_0x ${orderOperator} m_${slot} * c`,
       `d_${slot}x = q_${slot}`,
       `d_${slot}y = ${mirrored ? '' : '-'}sqrt(1 - q_${slot} * q_${slot})`,
       `P_${slot}s = P_0s * (${intensityExpression})`,

@@ -231,7 +231,7 @@ function writeGrinStep(
     membership: sourceRay.membership
   });
   destination[
-    type.destinationRayStarts[0] + localIndex
+    type.destinationRayStart + localIndex
   ] = output;
   return isRayActive(output) ? 1 : 0;
 }
@@ -285,7 +285,8 @@ function writeRegionBoundary(
       outRayIndex < type.outRayCount;
       outRayIndex++) {
       destination[
-        type.destinationRayStarts[outRayIndex] + localIndex
+        type.destinationRayStart +
+        outRayIndex * type.interactionCount + localIndex
       ] = createInactiveRay(sourceRay, point);
     }
     return 0;
@@ -302,11 +303,11 @@ function writeRegionBoundary(
       membership: sourceRay.membership
     });
     destination[
-      type.destinationRayStarts[0] + localIndex
+      type.destinationRayStart + localIndex
     ] = reflected;
     if (type.outRayCount > 1) {
       destination[
-        type.destinationRayStarts[1] + localIndex
+        type.destinationRayStart + type.interactionCount + localIndex
       ] = createInactiveRay(sourceRay, point);
     }
     return isRayActive(reflected) ? 1 : 0;
@@ -345,7 +346,7 @@ function writeRegionBoundary(
     hit.regionCrossingMask
   );
   destination[
-    type.destinationRayStarts[0] + localIndex
+    type.destinationRayStart + localIndex
   ] = transmitted;
   let activeCount = isRayActive(transmitted) ? 1 : 0;
   if (type.outRayCount > 1) {
@@ -359,7 +360,7 @@ function writeRegionBoundary(
       membership: sourceRay.membership
     });
     destination[
-      type.destinationRayStarts[1] + localIndex
+      type.destinationRayStart + type.interactionCount + localIndex
     ] = reflected;
     if (isRayActive(reflected)) activeCount++;
   }
@@ -449,7 +450,8 @@ function writeSurfaceOutputs(
       );
     }
     destination[
-      type.destinationRayStarts[outRayIndex] + localIndex
+      type.destinationRayStart +
+      outRayIndex * type.interactionCount + localIndex
     ] = output;
     if (isRayActive(output)) activeCount++;
   }
@@ -525,7 +527,7 @@ function writeDetectorOutput(
     membership: sourceRay.membership
   });
   destination[
-    type.destinationRayStarts[0] + localIndex
+    type.destinationRayStart + localIndex
   ] = output;
   return isRayActive(output) ? 1 : 0;
 }

@@ -138,6 +138,7 @@ class PointSource extends BaseSceneObj {
   }
 
   getPrimitives() {
+    this.brightnessScale = null;
     let rayDensity = this.scene.rayDensity;
     let expectedBrightness;
     do {
@@ -151,6 +152,10 @@ class PointSource extends BaseSceneObj {
     if (!(angularSamples > 0) || !Number.isFinite(this.x) ||
         !Number.isFinite(this.y)) {
       return [];
+    }
+    if (this.scene.colorMode === 'default') {
+      this.brightnessScale =
+        Math.min(expectedBrightness, 1) / expectedBrightness;
     }
     return [{
       kind: 'source',

@@ -130,6 +130,7 @@ class AngleSource extends LineObjMixin(BaseSceneObj) {
   }
 
   getPrimitives() {
+    this.brightnessScale = null;
     if (!this.p1 || !this.p2 || (this.p1.x === this.p2.x && this.p1.y === this.p2.y)) {
       return [];
     }
@@ -158,6 +159,10 @@ class AngleSource extends LineObjMixin(BaseSceneObj) {
       this.p2.y - this.p1.y,
       this.p2.x - this.p1.x
     );
+    if (this.scene.colorMode === 'default') {
+      this.brightnessScale =
+        Math.min(expectBrightness, 1) / expectBrightness;
+    }
 
     return [{
       kind: 'source',

@@ -96,14 +96,13 @@ class CpuSimulationRun {
     this.outgoingTypeIndex = 0;
     this.outgoingInteractionIndex = 0;
     this.outgoingActiveRayCount = 0;
-    this.subsampleRayIndex = 0;
+    this.legacySubsamplingIndex = 0;
     this.renderRayIndex = 0;
     this.passIndex = 0;
     this.renderGroupStarts = [0];
     this.renderGroupStartIndex = 0;
     this.processedRayCount = 0;
     this.totalTruncation = 0;
-    this.legacyWeakBrightnessPrefix = 0;
     this.hasRenderedOutput = false;
     this.warningState = {
       totalBrightness: 0,
@@ -131,8 +130,6 @@ class CpuSimulationRun {
       membershipDiscardedRayCount: 0,
       activeRayCount: 0,
       weakRayCount: 0,
-      legacySubsampledRayCount: 0,
-      legacySubsamplingSkippedRayCount: 0,
       finiteHitCount: 0,
       grinStepCount: 0,
       escapingRayCount: 0,
@@ -205,9 +202,6 @@ class CpuSimulationRun {
       case 'outgoing':
         this.writeNextOutgoingInteraction();
         break;
-      case 'subsample':
-        this.subsampleNextOutgoingRay();
-        break;
       default:
         throw new Error(`Unknown CPU simulation phase: ${this.phase}`);
     }
@@ -237,34 +231,7 @@ class CpuSimulationRun {
         output,
         this.summary.regionCount
       );
-      let active = isRayActive(ray);
-      if (
-        active &&
-        (this.options.colorMode ?? 'default') === 'default'
-      ) {
-        const brightness = ray.brightnessS + ray.brightnessP;
-        if (brightness < LEGACY_MINIMUM_RAY_BRIGHTNESS) {
-          this.totalTruncation += brightness;
-          this.legacyWeakBrightnessPrefix += brightness;
-          if (
-            this.legacyWeakBrightnessPrefix >=
-            LEGACY_MINIMUM_RAY_BRIGHTNESS
-          ) {
-            this.legacyWeakBrightnessPrefix -=
-              LEGACY_MINIMUM_RAY_BRIGHTNESS;
-            const brightnessScale =
-              LEGACY_MINIMUM_RAY_BRIGHTNESS / brightness;
-            ray.brightnessS *= brightnessScale;
-            ray.brightnessP *= brightnessScale;
-            this.summary.legacySubsampledRayCount++;
-          } else {
-            ray.brightnessS = 0;
-            ray.brightnessP = 0;
-            active = false;
-            this.summary.legacySubsamplingSkippedRayCount++;
-          }
-        }
-      }
+      const active = isRayActive(ray);
       this.currentRayBuffer.push(ray);
       this.summary.raySlotCount++;
       if (active) {
@@ -323,10 +290,7 @@ class CpuSimulationRun {
     }
 
     const brightness = ray.brightnessS + ray.brightnessP;
-    const minimumBrightness =
-      this.options.colorMode === 'default'
-        ? LEGACY_MINIMUM_RAY_BRIGHTNESS
-        : this.engine.minimumRayBrightness;
+    const minimumBrightness = this.engine.minimumRayBrightness;
     if (brightness < minimumBrightness) {
       this.hitBuffer.push(createInteractionCandidate(regionCount, 0));
       this.totalTruncation += brightness;
@@ -512,7 +476,7 @@ class CpuSimulationRun {
         this.outgoingInteractionIndex++;
       const sourceRayIndex =
         type.sourceRayIndices[localInteractionIndex];
-      this.outgoingActiveRayCount += writeCpuOutgoingRays({
+      const activeCount = writeCpuOutgoingRays({
         description: this.options.preparedScene.description,
         prepared: this.options.preparedScene.outgoingRayData,
         type,
@@ -522,48 +486,53 @@ class CpuSimulationRun {
         destinationRayBuffer: this.nextRayBuffer,
         detectorResults: this.detectorResults
       });
+      this.outgoingActiveRayCount +=
+        (this.options.colorMode ?? 'default') === 'default' &&
+        type.outRayCount >= 2
+          ? this.applyLegacyOutgoingSubsampling(
+            type,
+            localInteractionIndex,
+            this.legacySubsamplingIndex++
+          )
+          : activeCount;
       return;
     }
 
-    if ((this.options.colorMode ?? 'default') === 'default') {
-      this.subsampleRayIndex = 0;
-      this.outgoingActiveRayCount = 0;
-      this.phase = 'subsample';
-      return;
-    }
     this.finishOutgoingPass();
   }
 
-  subsampleNextOutgoingRay() {
-    if (this.subsampleRayIndex >= this.nextRayBuffer.length) {
-      this.finishOutgoingPass();
-      return;
-    }
-    const ray = this.nextRayBuffer[this.subsampleRayIndex++];
-    if (!isRayActive(ray)) return;
-    const brightness = ray.brightnessS + ray.brightnessP;
-    if (brightness < LEGACY_MINIMUM_RAY_BRIGHTNESS) {
-      this.totalTruncation += brightness;
-      this.legacyWeakBrightnessPrefix += brightness;
-      if (
-        this.legacyWeakBrightnessPrefix >=
-        LEGACY_MINIMUM_RAY_BRIGHTNESS
-      ) {
-        this.legacyWeakBrightnessPrefix -=
-          LEGACY_MINIMUM_RAY_BRIGHTNESS;
-        const brightnessScale =
-          LEGACY_MINIMUM_RAY_BRIGHTNESS / brightness;
-        ray.brightnessS *= brightnessScale;
-        ray.brightnessP *= brightnessScale;
-        this.summary.legacySubsampledRayCount++;
-      } else {
-        ray.brightnessS = 0;
-        ray.brightnessP = 0;
-        this.summary.legacySubsamplingSkippedRayCount++;
-        return;
+  applyLegacyOutgoingSubsampling(
+    type,
+    localInteractionIndex,
+    samplingIndex
+  ) {
+    let activeCount = 0;
+    for (let outRayIndex = 0;
+      outRayIndex < type.outRayCount;
+      outRayIndex++) {
+      const ray = this.nextRayBuffer[
+        type.destinationRayStart +
+        outRayIndex * type.interactionCount +
+        localInteractionIndex
+      ];
+      if (!isRayActive(ray)) continue;
+      const brightness = ray.brightnessS + ray.brightnessP;
+      if (brightness <= LEGACY_MINIMUM_RAY_BRIGHTNESS) {
+        this.totalTruncation += brightness;
+        const amplification = Math.floor(
+          LEGACY_MINIMUM_RAY_BRIGHTNESS / brightness
+        ) + 1;
+        if (samplingIndex % amplification !== 0) {
+          ray.brightnessS = 0;
+          ray.brightnessP = 0;
+          continue;
+        }
+        ray.brightnessS *= amplification;
+        ray.brightnessP *= amplification;
       }
+      activeCount++;
     }
-    this.outgoingActiveRayCount++;
+    return activeCount;
   }
 
   finishOutgoingPass() {
@@ -624,7 +593,6 @@ class CpuSimulationRun {
         detectors: this.detectorResults,
         processedRayCount: this.processedRayCount,
         totalTruncation: this.totalTruncation,
-        brightnessScale: 0,
         warning: this.warningState.first,
         warningBrightness: this.warningState.totalBrightness,
       },
@@ -995,7 +963,8 @@ function formatCompactInteractionIndices(buffer, outRayIndex) {
   }
   const pairs = localIndices.map(index =>
     `${sourceIndices[index]}->` +
-    `${buffer.destinationRayStarts[outRayIndex] + index}`
+    `${buffer.destinationRayStart +
+      outRayIndex * buffer.interactionCount + index}`
   );
   if (lastStart > firstEnd) pairs.splice(5, 0, '...');
   return `hits=${count} [${pairs.join(' ')}]`;
@@ -1005,8 +974,13 @@ function getDestinationRayGroupStarts(buffers) {
   const starts = [];
   for (const buffer of buffers) {
     if (buffer.interactionCount === 0) continue;
-    for (const start of buffer.destinationRayStarts) {
-      starts.push(start);
+    for (let outRayIndex = 0;
+      outRayIndex < buffer.outRayCount;
+      outRayIndex++) {
+      starts.push(
+        buffer.destinationRayStart +
+        outRayIndex * buffer.interactionCount
+      );
     }
   }
   return starts;

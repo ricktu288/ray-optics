@@ -145,7 +145,8 @@ describe('CPU outgoing-ray calculations', () => {
         kind: 'surface',
         typeId: 0,
         outRayCount: 2,
-        destinationRayStarts: Uint32Array.of(0, 1)
+        interactionCount: 1,
+        destinationRayStart: 0
       },
       localInteractionIndex: 0,
       sourceRay,
@@ -207,7 +208,8 @@ describe('CPU outgoing-ray calculations', () => {
         kind: 'surface',
         typeId: 0,
         outRayCount: 1,
-        destinationRayStarts: Uint32Array.of(0)
+        interactionCount: 1,
+        destinationRayStart: 0
       },
       localInteractionIndex: 0,
       sourceRay,
@@ -235,7 +237,8 @@ describe('CPU outgoing-ray calculations', () => {
         kind: 'regionBoundary',
         fresnel: true,
         outRayCount: 2,
-        destinationRayStarts: Uint32Array.of(0, 1)
+        interactionCount: 1,
+        destinationRayStart: 0
       },
       localInteractionIndex: 0,
       sourceRay,
@@ -277,7 +280,8 @@ describe('CPU outgoing-ray calculations', () => {
       type: {
         kind: 'grinStep',
         outRayCount: 1,
-        destinationRayStarts: Uint32Array.of(0)
+        interactionCount: 1,
+        destinationRayStart: 0
       },
       localInteractionIndex: 0,
       sourceRay,
@@ -334,7 +338,8 @@ describe('CPU outgoing-ray calculations', () => {
         kind: 'detector',
         typeId: 0,
         outRayCount: 1,
-        destinationRayStarts: Uint32Array.of(0)
+        interactionCount: 1,
+        destinationRayStart: 0
       },
       localInteractionIndex: 0,
       sourceRay,

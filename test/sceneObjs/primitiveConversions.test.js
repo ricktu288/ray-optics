@@ -10,6 +10,8 @@ import { createDagClosureEvaluator } from '../../src/core/formula/dag-evaluator.
 import { FLOAT32_EPSILON } from '../../src/core/primitive/numeric.js';
 import { preprocessPrimitives } from '../../src/core/primitive/preprocess.js';
 import Beam from '../../src/core/sceneObjs/lightSource/Beam.js';
+import AngleSource from '../../src/core/sceneObjs/lightSource/AngleSource.js';
+import PointSource from '../../src/core/sceneObjs/lightSource/PointSource.js';
 import DiffractionGrating from '../../src/core/sceneObjs/blocker/DiffractionGrating.js';
 import PlaneGlass from '../../src/core/sceneObjs/glass/PlaneGlass.js';
 import CustomArcSurface from '../../src/core/sceneObjs/other/CustomArcSurface.js';
@@ -187,10 +189,10 @@ describe('additional scene-object primitive conversions', () => {
       P_0p: 0.6,
       lambda: 380
     });
-    expect(values.d_3x).toBeCloseTo(0);
-    expect(values.d_3y).toBeCloseTo(-1);
-    expect(values.P_3s).toBeCloseTo(0.1);
-    expect(values.P_3p).toBeCloseTo(0.15);
+    expect(values.d_1x).toBeCloseTo(0);
+    expect(values.d_1y).toBeCloseTo(-1);
+    expect(values.P_1s).toBeCloseTo(0.1);
+    expect(values.P_1p).toBeCloseTo(0.15);
     expect(() => preprocessPrimitives([primitive], {
       numericEpsilon: FLOAT32_EPSILON
     })).not.toThrow();
@@ -213,10 +215,49 @@ describe('additional scene-object primitive conversions', () => {
       P_0p: 0.6,
       lambda: 380
     });
-    expect(values.d_2x).toBeCloseTo(-0.38);
-    expect(values.P_2s).toBeCloseTo(0.32);
-    expect(values.d_4x).toBeCloseTo(0.38);
-    expect(values.P_4s).toBeCloseTo(0.08);
+    expect(values.d_2x).toBeCloseTo(0.38);
+    expect(values.P_2s).toBeCloseTo(0.08);
+    expect(values.d_3x).toBeCloseTo(-0.38);
+    expect(values.P_3s).toBeCloseTo(0.32);
+  });
+
+  test('diffraction orders keep stable slots across incident-angle sign', () => {
+    const scene = new Scene();
+    const grating = new DiffractionGrating(scene);
+    grating.p1 = { x: 0, y: 0 };
+    grating.p2 = { x: 10, y: 0 };
+    grating.lineDensity = 2000;
+
+    const [primitive] = grating.getPrimitives();
+    const evaluate = createDagClosureEvaluator(primitive.surfaceType.dag);
+    const commonInputs = {
+      ...primitive.params,
+      P_0s: 0.4,
+      P_0p: 0.6,
+      lambda: 500
+    };
+    const before = evaluate({ ...commonInputs, d_0x: -0.001 });
+    const after = evaluate({ ...commonInputs, d_0x: 0.001 });
+
+    // m_min changes from 0 to -1 here. The zeroth order remains in slot 1
+    // instead of every continuing order shifting by one output slot.
+    expect(before.d_1x).toBeCloseTo(-0.001);
+    expect(after.d_1x).toBeCloseTo(0.001);
+    expect(before.P_1s).toBeGreaterThan(0);
+    expect(after.P_1s).toBeGreaterThan(0);
+    for (let slot = 1; slot <= primitive.surfaceType.outRayCount; slot++) {
+      if (!Number.isFinite(before[`d_${slot}y`]) ||
+          !Number.isFinite(after[`d_${slot}y`])) {
+        continue;
+      }
+      const beforeOrder = Math.round(
+        before[`d_${slot}x`] - (-0.001)
+      );
+      const afterOrder = Math.round(
+        after[`d_${slot}x`] - 0.001
+      );
+      expect(afterOrder).toBe(beforeOrder);
+    }
   });
 
   test('beam uses one source primitive per sampled point', () => {
@@ -233,6 +274,43 @@ describe('additional scene-object primitive conversions', () => {
     expect(primitives.every(
       primitive => primitive.rayCount === primitives[0].rayCount
     )).toBe(true);
+  });
+
+  test('source mappings expose their legacy brightness scales', () => {
+    const scene = new Scene();
+    scene.rayDensity = 1;
+    scene.colorMode = 'default';
+
+    const point = new PointSource(scene);
+    point.x = 0;
+    point.y = 0;
+    point.brightness = 2;
+    point.getPrimitives();
+
+    const angle = new AngleSource(scene);
+    angle.p1 = { x: 0, y: 0 };
+    angle.p2 = { x: 10, y: 0 };
+    angle.brightness = 2;
+    angle.getPrimitives();
+
+    const beam = new Beam(scene);
+    beam.p1 = { x: 0, y: 0 };
+    beam.p2 = { x: 10, y: 0 };
+    beam.emisAngle = 0;
+    beam.brightness = 2;
+    beam.getPrimitives();
+
+    expect(point.brightnessScale).toBe(0.5);
+    expect(angle.brightnessScale).toBe(0.5);
+    expect(beam.brightnessScale).toBe(0.5);
+
+    scene.colorMode = 'linear';
+    point.getPrimitives();
+    angle.getPrimitives();
+    beam.getPrimitives();
+    expect(point.brightnessScale).toBeNull();
+    expect(angle.brightnessScale).toBeNull();
+    expect(beam.brightnessScale).toBeNull();
   });
 
   test('random beam uses one source primitive per individual ray', () => {

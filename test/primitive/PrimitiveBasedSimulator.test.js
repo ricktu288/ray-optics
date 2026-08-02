@@ -16,11 +16,15 @@
 
 import PrimitiveBasedSimulator from '../../src/core/PrimitiveBasedSimulator';
 import { FLOAT32_EPSILON } from '../../src/core/primitive/numeric';
+import i18next from 'i18next';
+import Detector from '../../src/core/sceneObjs/other/Detector.js';
 
 function createScene() {
   return {
     lengthScale: 1,
     numericalTolerances: {},
+    colorMode: 'default',
+    simulateColors: false,
     opticalObjs: []
   };
 }
@@ -87,8 +91,7 @@ describe('PrimitiveBasedSimulator BVH diagnostics', () => {
           totalTruncation: 0
         },
         result: {
-          detectors: [Float64Array.of(2, 3)],
-          brightnessScale: 0
+          detectors: [Float64Array.of(2, 3)]
         }
       })),
       dispose: jest.fn()
@@ -97,10 +100,165 @@ describe('PrimitiveBasedSimulator BVH diagnostics', () => {
       description
     }));
     simulator.engine.createRun = jest.fn(async () => run);
+    simulator.updateSimulation = jest.fn();
 
     await simulator.runEngine(0);
 
     expect(result.values).toEqual(Float64Array.of(2, 3));
+    expect(simulator.updateSimulation).toHaveBeenCalledWith(true, true);
     expect(run.dispose).toHaveBeenCalled();
   });
+
+  it('publishes progress and detector readings on every paused update', async () => {
+    const simulator = createSimulator('primitiveCpu', false);
+    simulator.enableTimer = true;
+    const result = { values: null };
+    simulator.detectorResultBindings = [{
+      resultId: 0,
+      result,
+      resultSize: 1
+    }];
+    simulator.scene.origin = { x: 0, y: 0 };
+    simulator.scene.scale = 1;
+    simulator.scene.colorMode = 'default';
+    simulator.scene.mode = 'rays';
+    simulator.scene.simulateColors = false;
+    simulator.scene.showRayArrows = false;
+    simulator.scene.observer = null;
+    const updates = [{
+      status: 'running',
+      progress: {
+        processedRayCount: 4,
+        totalTruncation: 0.25
+      },
+      result: {
+        detectors: [Float64Array.of(2)]
+      }
+    }, {
+      status: 'complete',
+      progress: {
+        processedRayCount: 7,
+        totalTruncation: 0.5
+      },
+      result: {
+        detectors: [Float64Array.of(3)]
+      }
+    }];
+    const run = {
+      advance: jest.fn(async () => updates.shift()),
+      dispose: jest.fn()
+    };
+    simulator.engine.prepare = jest.fn(async description => ({
+      description
+    }));
+    simulator.engine.createRun = jest.fn(async () => run);
+    simulator.updateSimulation = jest.fn();
+    const pauseSnapshots = [];
+    simulator.on('simulationPause', () => {
+      pauseSnapshots.push({
+        processedRayCount: simulator.processedRayCount,
+        totalTruncation: simulator.totalTruncation,
+        brightnessScale: simulator.brightnessScale,
+        detectorValues: Array.from(result.values)
+      });
+    });
+
+    await simulator.runEngine(0);
+
+    expect(pauseSnapshots).toEqual([{
+      processedRayCount: 4,
+      totalTruncation: 0.25,
+      brightnessScale: 0,
+      detectorValues: [2]
+    }]);
+    expect(simulator.updateSimulation).toHaveBeenNthCalledWith(
+      1,
+      true,
+      true
+    );
+    expect(simulator.updateSimulation).toHaveBeenNthCalledWith(
+      2,
+      true,
+      true
+    );
+    expect(result.values).toEqual(Float64Array.of(3));
+    expect(simulator.processedRayCount).toBe(7);
+    expect(simulator.totalTruncation).toBe(0.5);
+    expect(simulator.brightnessScale).toBe(0);
+  });
+
+  it('reports a consistent mapped brightness scale to simulator status', () => {
+    const simulator = createSimulator('primitiveCpu', false);
+    simulator.scene.opticalObjs = [
+      createMappedObject('PointSource', 0.5),
+      createMappedObject('Beam', 0.5)
+    ];
+
+    simulator.collectAndPreprocessPrimitives();
+
+    expect(simulator.brightnessScale).toBe(0.5);
+    expect(simulator.warning).toBeNull();
+  });
+
+  it('reports the legacy inconsistent-brightness warning after mapping', () => {
+    const simulator = createSimulator('primitiveCpu', false);
+    simulator.scene.opticalObjs = [
+      createMappedObject('PointSource', 0.5),
+      createMappedObject('Beam', 0.25),
+      createDetector(simulator.scene)
+    ];
+
+    simulator.collectAndPreprocessPrimitives();
+
+    expect(simulator.brightnessScale).toBe(-1);
+    expect(simulator.warning).toBe(
+      i18next.t('simulator:generalWarnings.brightnessInconsistent')
+    );
+  });
+
+  it('does not count a Detector object which produces no detector primitive', () => {
+    const simulator = createSimulator('primitiveCpu', false);
+    simulator.scene.opticalObjs = [
+      createMappedObject('PointSource', 0.5),
+      createMappedObject('Beam', 0.25),
+      createMappedObject('Detector', null)
+    ];
+
+    simulator.collectAndPreprocessPrimitives();
+
+    expect(simulator.brightnessScale).toBe(-1);
+    expect(simulator.warning).toBeNull();
+  });
+
+  it('ignores mapped brightness scales outside legacy color mode', () => {
+    const simulator = createSimulator('primitiveCpu', false);
+    simulator.scene.colorMode = 'linear';
+    simulator.scene.opticalObjs = [
+      createMappedObject('PointSource', 0.5),
+      createMappedObject('Beam', 0.25)
+    ];
+
+    simulator.collectAndPreprocessPrimitives();
+
+    expect(simulator.brightnessScale).toBe(0);
+    expect(simulator.warning).toBeNull();
+  });
 });
+
+function createMappedObject(type, brightnessScale) {
+  return {
+    brightnessScale: null,
+    constructor: { type },
+    getPrimitives() {
+      this.brightnessScale = brightnessScale;
+      return [];
+    }
+  };
+}
+
+function createDetector(scene) {
+  const detector = new Detector(scene);
+  detector.p1 = { x: 0, y: 0 };
+  detector.p2 = { x: 10, y: 0 };
+  return detector;
+}

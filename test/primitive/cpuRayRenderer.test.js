@@ -143,7 +143,7 @@ describe('CPU primitive ray rendering', () => {
     });
   });
 
-  it('matches legacy default-color image opacity for unequal nearby rays', () => {
+  it('applies nearby-ray power once to default-color images', () => {
     const renderer = createRenderer();
     const rendering = createRendering({
       mode: 'images',
@@ -171,7 +171,7 @@ describe('CPU primitive ray rendering', () => {
 
     expect(renderer.drawPoint).toHaveBeenCalledTimes(1);
     expect(rendering.getThemeImageColor)
-      .toHaveBeenCalledWith(expect.any(String), 0.2);
+      .toHaveBeenCalledWith(expect.any(String), 1);
     expect(ctxMain.globalAlpha).toBeCloseTo(0.4);
   });
 

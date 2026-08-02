@@ -410,11 +410,12 @@ function getNearbyRayAppearance(
     previousRay.brightnessS +
     previousRay.brightnessP
   );
-  if (ctxMain) ctxMain.globalAlpha = nearbyAlpha;
+  const usesLegacyCanvas = rendering.colorMode === 'default';
+  if (ctxMain && usesLegacyCanvas) {
+    ctxMain.globalAlpha = nearbyAlpha;
+  }
   return {
-    alpha: rendering.colorMode === 'default'
-      ? ray.brightnessS + ray.brightnessP
-      : nearbyAlpha
+    alpha: usesLegacyCanvas ? 1 : nearbyAlpha
   };
 }
 

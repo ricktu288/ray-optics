@@ -154,10 +154,8 @@ class PrimitiveBasedSimulator {
     const generation = this.runGeneration;
     this.processedRayCount = 0;
     this.totalTruncation = 0;
-    this.brightnessScale = 0;
     this.simulationStartTime = new Date();
     this.error = null;
-    this.warning = null;
     this.isRunning = true;
     this.isLightLayerSynced = true;
     this.emit('lightLayerSyncChange', { isSynced: true });
@@ -229,19 +227,16 @@ class PrimitiveBasedSimulator {
         return;
       }
 
-      this.processedRayCount = update.progress?.processedRayCount ?? this.processedRayCount;
-      this.totalTruncation = update.progress?.totalTruncation ?? this.totalTruncation;
+      this.publishRunUpdate(update);
+      if (update.status !== 'complete') {
+        this.emit('simulationPause', null);
+      }
+      this.updateSimulation(true, true);
       if (update.status !== 'complete' && this.enableTimer) {
         await new Promise(resolve => setTimeout(resolve, 0));
       }
     } while (update.status !== 'complete');
 
-    this.brightnessScale = update.result?.brightnessScale ?? this.brightnessScale;
-    const detectorResults = update.result?.detectors ?? [];
-    for (const binding of this.detectorResultBindings) {
-      const values = detectorResults[binding.resultId];
-      if (values) binding.result.values = values;
-    }
     run.dispose?.();
     if (this.activeRun === run) this.activeRun = null;
     if (this.drawBvh && this.engine.kind === 'primitiveCpu') {
@@ -249,6 +244,18 @@ class PrimitiveBasedSimulator {
       this.drawExternalHighlightPrimitiveCurves(
         this.canvasRendererAboveLight
       );
+    }
+  }
+
+  publishRunUpdate(update) {
+    this.processedRayCount =
+      update.progress?.processedRayCount ?? this.processedRayCount;
+    this.totalTruncation =
+      update.progress?.totalTruncation ?? this.totalTruncation;
+    const detectorResults = update.result?.detectors ?? [];
+    for (const binding of this.detectorResultBindings) {
+      const values = detectorResults[binding.resultId];
+      if (values) binding.result.values = values;
     }
   }
 
@@ -317,12 +324,31 @@ class PrimitiveBasedSimulator {
         : Date.now())
       : null;
     const primitives = [];
+    let brightnessScale = 0;
     for (const obj of this.scene.opticalObjs) {
       const objPrimitives = obj.getPrimitives();
       if (Array.isArray(objPrimitives)) {
         primitives.push(...objPrimitives);
       }
+      if (this.scene.colorMode !== 'default' || !obj.brightnessScale) {
+        continue;
+      }
+      if (brightnessScale === 0) {
+        brightnessScale = obj.brightnessScale;
+      } else if (brightnessScale !== obj.brightnessScale) {
+        brightnessScale = -1;
+      }
     }
+    this.brightnessScale = this.scene.colorMode === 'default'
+      ? brightnessScale
+      : 0;
+    const hasDetector = primitives.some(
+      primitive => primitive?.kind === 'detector'
+    );
+    this.warning = this.brightnessScale === -1 &&
+      (hasDetector || this.scene.simulateColors)
+      ? i18next.t('simulator:generalWarnings.brightnessInconsistent')
+      : null;
     const collectionTime = this.logDebugInfo
       ? (
         typeof performance !== 'undefined' && typeof performance.now === 'function'

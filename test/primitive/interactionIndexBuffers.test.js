@@ -150,13 +150,13 @@ describe('interaction index buffers', () => {
 
     expect(destinationRayCount).toBe(10);
     expect(buffers.map(buffer =>
-      Array.from(buffer.destinationRayStarts)
+      buffer.destinationRayStart
     )).toEqual([
-      [0],
-      [2],
-      [3, 4],
-      [5, 7],
-      [9]
+      0,
+      2,
+      3,
+      5,
+      9
     ]);
     expect(buffers.map(buffer =>
       buffer.sourceRayIndices.length

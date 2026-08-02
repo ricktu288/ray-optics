@@ -64,6 +64,15 @@ class BaseSceneObj {
     this.error = null;
     /** @property {string|null} warning - The warning message of the object. */
     this.warning = null;
+    /**
+     * @property {number|null} brightnessScale - Transient legacy-color-mode
+     * brightness scale produced while mapping this object's user-facing
+     * properties to primitives. A source sets this in `getPrimitives()` to 1
+     * when no cap is needed or to the ratio applied when its per-ray
+     * brightness is capped at 1. It is null outside the legacy color mode,
+     * is not serialized, and is not part of the primitive representation.
+     */
+    this.brightnessScale = null;
     /** @property {string|null} name - The name of the object. */
     this.name = jsonObj?.name || '';
     /** @property {'default'|'locked'|'unlocked'} locked - Lock override: 'default' follows scene.lockObjs, 'locked' always locked, 'unlocked' always unlocked. Not serialized when 'default'. */

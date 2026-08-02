@@ -181,6 +181,7 @@ class Beam extends LineObjMixin(BaseSceneObj) {
   }
 
   getPrimitives() {
+    this.brightnessScale = null;
     if (!this.p1 || !this.p2) return [];
     const length = geometry.segmentLength(this);
     if (!(length > 0) || !Number.isFinite(length)) return [];
@@ -191,6 +192,7 @@ class Beam extends LineObjMixin(BaseSceneObj) {
     let angleStep;
     let angularCount;
     let rayPower;
+    let expectedBrightness;
     do {
       const n = length * rayDensity / this.scene.lengthScale;
       positionCount = Math.max(0, Math.floor(n + 0.5));
@@ -204,7 +206,7 @@ class Beam extends LineObjMixin(BaseSceneObj) {
       }
       const brightnessFactor =
         1 / (1 + Math.floor(halfAngle / angleStep) * 2);
-      const expectedBrightness =
+      expectedBrightness =
         this.brightness * this.scene.lengthScale / rayDensity *
         brightnessFactor;
       rayPower = Math.min(expectedBrightness, 1) * 0.5;
@@ -225,6 +227,10 @@ class Beam extends LineObjMixin(BaseSceneObj) {
     const wavelength = this.scene.simulateColors
       ? this.wavelength
       : Simulator.GREEN_WAVELENGTH;
+    if (this.scene.colorMode === 'default') {
+      this.brightnessScale =
+        Math.min(expectedBrightness, 1) / expectedBrightness;
+    }
 
     if (this.random) {
       this.initRandom();
