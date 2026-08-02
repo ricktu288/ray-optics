@@ -277,6 +277,41 @@ describe('PrimitiveBasedSimulator engine warnings', () => {
       '{{simulator:generalWarnings.primitiveInteractionConflict}}'
     );
   });
+
+  it('marks curve IDs with namespaced diagnostic references', () => {
+    const simulator = createSimulator('primitiveCpu', false);
+    const originalTranslate = i18next.t;
+    i18next.t = (key, options = {}) => {
+      if (key === 'simulator:generalWarnings.primitiveInteractionConflict') {
+        return `curves ${options.curveId} and ${options.conflictingCurveId}`;
+      }
+      return `{{${key}}}`;
+    };
+
+    try {
+      simulator.publishRunUpdate({
+        progress: {},
+        result: {
+          warning: {
+            rayIndex: 3,
+            curveId: 4,
+            conflictingCurveId: 7,
+            tolerance: {
+              kind: 'interactionMerging',
+              unit: 'sceneUnits',
+              value: 2e-4
+            }
+          }
+        }
+      });
+
+      expect(simulator.warning).toBe(
+        'curves ⟦pc:4⟧ and ⟦pc:7⟧'
+      );
+    } finally {
+      i18next.t = originalTranslate;
+    }
+  });
 });
 
 function createMappedObject(type, brightnessScale) {

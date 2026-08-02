@@ -54,7 +54,7 @@
       <div v-html="formattedMousePosition"></div>
       <div v-html="formattedSimulatorStatus.join('<br>')"></div>
     </div>
-    <div id="warning" class="status-alert" v-show="warnings.length > 0" @click="onJsonToggleClick"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="status-alert__lead-icon bi bi-exclamation-triangle-fill" viewBox="0 0 16 20">
+    <div id="warning" class="status-alert" v-show="warnings.length > 0" @click="onJsonToggleClick" @mouseover="onPrimitiveCurveReferenceEnter" @mouseout="onPrimitiveCurveReferenceLeave" @focusin="onPrimitiveCurveReferenceEnter" @focusout="onPrimitiveCurveReferenceLeave"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="status-alert__lead-icon bi bi-exclamation-triangle-fill" viewBox="0 0 16 20">
         <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
       </svg><span class="status-alert__message">
         <span class="status-alert__text" v-html="formattedWarningsHtml"></span><button
@@ -73,7 +73,7 @@
         </button>
       </span>
     </div>
-    <div id="error" class="status-alert" v-show="errors.length > 0" @click="onJsonToggleClick"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="status-alert__lead-icon bi bi-exclamation-circle-fill" viewBox="0 0 16 20">
+    <div id="error" class="status-alert" v-show="errors.length > 0" @click="onJsonToggleClick" @mouseover="onPrimitiveCurveReferenceEnter" @mouseout="onPrimitiveCurveReferenceLeave" @focusin="onPrimitiveCurveReferenceEnter" @focusout="onPrimitiveCurveReferenceLeave"><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="status-alert__lead-icon bi bi-exclamation-circle-fill" viewBox="0 0 16 20">
         <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4m.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2"/>
       </svg><span class="status-alert__message">
         <span class="status-alert__text" v-html="formattedErrorsHtml"></span><button
@@ -201,7 +201,11 @@ export default {
 
     const formattedWarningsHtml = computed(() => {
       const labels = {
-        expand: i18next.t('simulator:footer.jsonFold.expand')
+        expand: i18next.t('simulator:footer.jsonFold.expand'),
+        primitiveCurve: curveId => i18next.t(
+          'simulator:footer.primitiveCurveReference.highlight',
+          { curveId }
+        )
       }
       return status.activeWarnings.value
         .map((line, lineIdx) =>
@@ -217,7 +221,11 @@ export default {
 
     const formattedErrorsHtml = computed(() => {
       const labels = {
-        expand: i18next.t('simulator:footer.jsonFold.expand')
+        expand: i18next.t('simulator:footer.jsonFold.expand'),
+        primitiveCurve: curveId => i18next.t(
+          'simulator:footer.primitiveCurveReference.highlight',
+          { curveId }
+        )
       }
       return status.activeErrors.value
         .map((line, lineIdx) =>
@@ -245,6 +253,49 @@ export default {
         expandedJsonErrors.value = { ...expandedJsonErrors.value, [key]: true }
       }
     }
+
+    let highlightedPrimitiveCurveId = null
+
+    const getPrimitiveCurveReference = (target) =>
+      target.closest?.('.status-alert__primitive-curve-ref') ?? null
+
+    const referenceContainsTarget = (reference, target) =>
+      Boolean(target?.nodeType) && reference.contains(target)
+
+    const setPrimitiveCurveHighlight = (curveId) => {
+      if (highlightedPrimitiveCurveId === curveId) return
+      highlightedPrimitiveCurveId = curveId
+      app.editor?.setExternalHighlightPrimitiveCurveIds(
+        curveId === null ? [] : [curveId]
+      )
+      app.simulator?.updateSimulation(true, true)
+    }
+
+    const onPrimitiveCurveReferenceEnter = (e) => {
+      const reference = getPrimitiveCurveReference(e.target)
+      if (!reference) return
+      if (referenceContainsTarget(reference, e.relatedTarget)) return
+      const curveId = Number(reference.dataset.primitiveCurveId)
+      if (!Number.isSafeInteger(curveId) || curveId < 0) return
+      setPrimitiveCurveHighlight(curveId)
+    }
+
+    const onPrimitiveCurveReferenceLeave = (e) => {
+      const reference = getPrimitiveCurveReference(e.target)
+      if (
+        !reference ||
+        referenceContainsTarget(reference, e.relatedTarget)
+      ) return
+      setPrimitiveCurveHighlight(null)
+    }
+
+    watch(
+      [
+        () => (status.activeWarnings.value ?? []).join('\u0000'),
+        () => (status.activeErrors.value ?? []).join('\u0000')
+      ],
+      () => setPrimitiveCurveHighlight(null)
+    )
 
     const warningsCopied = ref(false)
     const errorsCopied = ref(false)
@@ -286,6 +337,9 @@ export default {
     onBeforeUnmount(() => {
       if (warningsCopiedTimer !== null) clearTimeout(warningsCopiedTimer)
       if (errorsCopiedTimer !== null) clearTimeout(errorsCopiedTimer)
+      if (highlightedPrimitiveCurveId !== null) {
+        setPrimitiveCurveHighlight(null)
+      }
     })
 
     return {
@@ -311,7 +365,9 @@ export default {
       copyErrors,
       warningsCopied,
       errorsCopied,
-      onJsonToggleClick
+      onJsonToggleClick,
+      onPrimitiveCurveReferenceEnter,
+      onPrimitiveCurveReferenceLeave
     }
   }
 }
@@ -508,6 +564,37 @@ export default {
 :deep(.status-alert__json-expanded) {
   overflow-wrap: anywhere;
   word-break: break-word;
+}
+
+:deep(.status-alert__primitive-curve-ref) {
+  display: inline-block;
+  margin: 0 1px;
+  padding: 0 0.3em;
+  border: 1px solid currentColor;
+  border-radius: 0.35em;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 700;
+  line-height: 1.25;
+  cursor: crosshair;
+  vertical-align: baseline;
+}
+
+#warning :deep(.status-alert__primitive-curve-ref) {
+  border-color: rgba(0, 0, 0, 0.45);
+  background: rgba(0, 0, 0, 0.08);
+}
+
+#error :deep(.status-alert__primitive-curve-ref) {
+  border-color: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.14);
+}
+
+:deep(.status-alert__primitive-curve-ref:hover),
+:deep(.status-alert__primitive-curve-ref:focus-visible) {
+  outline: 2px solid currentColor;
+  outline-offset: 1px;
 }
 
 </style>

@@ -947,6 +947,9 @@
     "jsonFold": {
       "expand": "Expand message"
     },
+    "primitiveCurveReference": {
+      "highlight": "Highlight primitive curve {{curveId}}"
+    },
     "betaFeatures": {
       "title": "Beta features",
       "description": "You are using the following beta features:",

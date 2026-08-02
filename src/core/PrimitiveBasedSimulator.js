@@ -30,6 +30,9 @@ import {
   createPreprocessingSummary,
   preprocessPrimitives
 } from './primitive/preprocess.js';
+import {
+  formatPrimitiveCurveReference
+} from './primitive/diagnosticReference.js';
 
 const UV_WAVELENGTH = 380;
 const VIOLET_WAVELENGTH = 420;
@@ -55,12 +58,18 @@ function formatPrimitiveEngineWarning(warning) {
   );
   return i18next.t('simulator:generalWarnings.primitiveInteractionConflict', {
     rayIndex: warning.rayIndex,
-    curveId: warning.curveId,
-    conflictingCurveId: warning.conflictingCurveId,
+    curveId: formatWarningCurveId(warning.curveId),
+    conflictingCurveId: formatWarningCurveId(warning.conflictingCurveId),
     toleranceKind: kind,
     tolerance: formatToleranceValue(tolerance.value),
     toleranceUnit: unit
   });
+}
+
+function formatWarningCurveId(curveId) {
+  return Number.isSafeInteger(curveId) && curveId >= 0
+    ? formatPrimitiveCurveReference(curveId)
+    : String(curveId)
 }
 
 function formatToleranceValue(value) {
