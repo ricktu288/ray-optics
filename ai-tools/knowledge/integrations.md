@@ -29,7 +29,7 @@ If the detector has `irradMap` set to true, the following additional properties 
 
 ## Getting Image
 
-Before using image generation, the user needs to have the `node-canvas` package installed by running `npm install node-canvas`.
+Before using image generation, the user needs to have the `node-canvas` package installed by running `npm install canvas`.
 
 To generate an image, you need to add a crop box object to the scene with the following format:
 ```json
@@ -53,5 +53,3 @@ The JSON data returned by the script will also include some statistics about the
 - `brightnessScale`: The brightness scale of the simulation (see the info box of a detector object in the web app for more information)
 - `error`: Any errors that occurred during the simulation
 - `warning`: Any warnings that occurred during the simulation
-
-

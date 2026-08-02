@@ -331,7 +331,7 @@ First, the `ArcCoating` module is defined to represent a single arc-shaped thin-
       "numPoints": 1,
       "params": [
         "h=5:1:100:90",
-        "d=5:1:50:60",
+        "d=5:1:100:60",
         "R_1=-500:1:500:250",
         "R_2=-500:1:500:-250",
         "A=1.1:0.01:3:1.5",

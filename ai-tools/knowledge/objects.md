@@ -2,7 +2,7 @@
 
 This is a list of objects (optical elements, decorations, etc.) that can be used in the scene or modules, and their JSON representation.
 
-Except for the coordinates, all parameters listed below are the default values, and can be omitted if they are not changed.
+Except for points, formulas, and text, all parameters listed below are set to their default values and can be omitted if unchanged.
 
 ## Light Source
 
@@ -63,7 +63,7 @@ A point source of light at `p1` pointing towards `p2` with a finite angle of emi
   "p2": { "x": 600, "y": 300 },
   "brightness": 0.5,
   "wavelength": 540,
-  "emisAngle": 30
+  "emisAngle": 36.001
 }
 ```
 
@@ -314,13 +314,13 @@ A ideal lens defined by a segment (the shape of the infinitely thin lens) from `
 }
 ```
 
-### Ideal Curved Mirror
+### Ideal curved mirror
 
-A ideal curved mirror defined by a segment (the nearly flat surface under the paraxial approximation) from `p1` to `p2` and a focal length (positive for converging, negative for diverging).
+An ideal curved mirror defined by a segment (the nearly flat surface under the paraxial approximation) from `p1` to `p2` and a focal length (positive for converging, negative for diverging).
 
 ```json
 {
-  "type": "IdealCurvedMirror",
+  "type": "IdealMirror",
   "p1": { "x": 500, "y": 300 },
   "p2": { "x": 500, "y": 400 },
   "focalLength": 100
@@ -329,9 +329,9 @@ A ideal curved mirror defined by a segment (the nearly flat surface under the pa
 
 ## Diffraction Grating
 
-In each diffraction grating below, the `lineDensity` property is the number of lines per millimeter. To control the intensity, one way is to assume it is an array of microscopic blockers which blocks a ratio of `slitRatio` of the line segment:
+In each diffraction grating below, the `lineDensity` property is the number of lines per millimeter. To control the intensity, one way is to model it as an array of microscopic blockers whose slits occupy a ratio of `slitRatio` (**Slit width / line spacing** in the UI) of each line interval.
 
-Another way is to set `customIntensity` to `true` and set `brightnesses` to an array of numbers between 0 and 1. The numbers in the array correspond to m = 0, 1, -1, 2, -2, …. The number is to be normalized to the brightness of the incident ray.
+Another way is to enable **Custom Brightness** by setting `customBrightness` to `true` and set `brightnesses` to an array of numbers between 0 and 1. The numbers in the array correspond to m = 0, 1, -1, 2, -2, …. The number is to be normalized to the brightness of the incident ray.
 
 ### Linear Diffraction Grating
 
@@ -342,10 +342,10 @@ A trasmittive (`mirrored == false`) or reflective (`mirrored == true`) linear di
   "type": "DiffractionGrating",
   "p1": { "x": 500, "y": 300 },
   "p2": { "x": 500, "y": 400 },
-  "lineDensity": 100,
-  "mirrored": true,
+  "lineDensity": 1000,
+  "mirrored": false,
   "slitRatio": 0.5,
-  "customIntensity": false,
+  "customBrightness": false,
   "brightnesses": [
     1,
     0.5,
@@ -354,19 +354,19 @@ A trasmittive (`mirrored == false`) or reflective (`mirrored == true`) linear di
 }
 ```
 
-### Convex Diffraction Grating
+### Concave Grating
 
 A reflective diffraction grating with the shape of a circular arc. The arc is defined by two endpoints (`p1` and `p2`) and an additional point on the arc (`p3`) that determines its curvature. In the following example the focal point is at the left of the surface.
 
 ```json
 {
-  "type": "ConvexDiffractionGrating",
+  "type": "ConcaveDiffractionGrating",
   "p1": { "x": 500, "y": 300 },
   "p2": { "x": 500, "y": 400 },
   "p3": { "x": 510, "y": 350 },
-  "lineDensity": 100,
+  "lineDensity": 1000,
   "slitRatio": 0.5,
-  "customIntensity": false,
+  "customBrightness": false,
   "brightnesses": [
     1,
     0.5,
@@ -537,7 +537,7 @@ When $t$ is used in the equations, it interpolates uniformly (with respect to an
 
 ### Custom Parametric Surface
 
-A custom surface with the shape of a parametric curve. The `pieces` property is an array of pieces with `eqnX` and `eqnY` equations with a parameter `t` in the range `tMin` to `tMax` with a step size of `tStep` (which determines the sample points on the curve, and can be large if the piece is a line segment). The curve can be either open or closed (but the end of one piece should match the start of the next piece). When `twoSided` is `false`, a positively oriented curve only handles rays from inside to outside, and vice versa. The following is an example of a closed semicircle beam splitter with transmission ratio 0.7 and only handles incident rays from inside to outside.
+A custom surface with the shape of a parametric curve. The `pieces` property is an array of pieces with `eqnX` and `eqnY` equations with a parameter `t` in the range `tMin` to `tMax` with a step size of `tStep` (which determines the sample points on the curve, and can be large if the piece is a line segment). The curve can be either open or closed (but the end of one piece should match the start of the next piece). When `twoSided` is `false`, a positively oriented curve only handles rays from inside to outside, and vice versa. The following is an example of a closed circular beam splitter with transmission ratio 0.7 that only handles incident rays from inside to outside.
 
 ```json
 {
@@ -547,7 +547,7 @@ A custom surface with the shape of a parametric curve. The `pieces` property is 
       "eqnX": "``500+50*cos(2*pi*t)``",
       "eqnY": "``500+50*sin(2*pi*t)``",
       "tMin": 0,
-      "tMax": "`pi`",
+      "tMax": 1,
       "tStep": 0.01
     }
   ],
