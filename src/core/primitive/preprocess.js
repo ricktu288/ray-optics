@@ -16,6 +16,7 @@
 
 import { buildBvh } from './bvh.js';
 import { prepareCurve } from './curveGeometry.js';
+import { collectParameterNames } from '../formula/dag-util.js';
 import { validateNumericEpsilon } from './numeric.js';
 
 /**
@@ -80,6 +81,7 @@ import { validateNumericEpsilon } from './numeric.js';
  *
  * @typedef {Object} ProcessedCurve
  * @property {PreparedCurveGeometry} geometry - Prepared engine-independent curve geometry.
+ * @property {{minX: number, minY: number, maxX: number, maxY: number}} bounds - Conservative world-space bounds, including the engine-selected positional and endpoint tolerances.
  * @property {'surface'|'region'|'detector'} ownerKind - Owner table kind.
  * @property {number} ownerId - Index into the matching owner table.
  * @property {boolean} mergesWithBoundary - Whether this curve can participate in an interaction with coincident region boundaries.
@@ -218,6 +220,7 @@ export function preprocessPrimitives(primitives, {
     });
     curves.push(createProcessedCurve(
       prepared.geometry,
+      prepared.bounds,
       ownerKind,
       ownerId,
       mergesWithBoundary,
@@ -288,6 +291,10 @@ export function preprocessPrimitives(primitives, {
       }
 
       case 'detector': {
+        validateDetectorTypeContract(
+          primitive.detectorType,
+          primitiveIndex
+        );
         const typeRecord = registries.detectors.register(
           primitive.detectorType
         );
@@ -401,6 +408,19 @@ export function preprocessPrimitives(primitives, {
   timing?.recordStage('assembleProcessedScene');
   result.timings = timing?.finish() ?? null;
   return result;
+}
+
+function validateDetectorTypeContract(detectorType, primitiveIndex) {
+  const forbidden = new Set(['n_0', 'n_1']);
+  const declaredNames = detectorType?.paramNames ?? [];
+  const referencedNames = collectParameterNames(detectorType?.dag);
+  for (const name of forbidden) {
+    if (declaredNames.includes(name) || referencedNames.has(name)) {
+      throw new TypeError(
+        `primitives[${primitiveIndex}].detectorType must not declare or reference ${JSON.stringify(name)}.`
+      );
+    }
+  }
 }
 
 function resolveToleranceMinimum(value, scale, name) {
@@ -543,6 +563,7 @@ function summarizeTypeCategory(types, instances, typeIdKey, previousTypes) {
 
 function createProcessedCurve(
   geometry,
+  bounds,
   ownerKind,
   ownerId,
   mergesWithBoundary,
@@ -551,6 +572,7 @@ function createProcessedCurve(
 ) {
   const processedCurve = {
     geometry,
+    bounds,
     ownerKind,
     ownerId,
     mergesWithBoundary

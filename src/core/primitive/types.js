@@ -274,10 +274,11 @@
  * through `params`.
  *
  * `alpha` is the local power-absorption coefficient in inverse scene-length
- * units. Propagation through a distance `L` in a locally constant medium
- * multiplies both polarized powers by `exp(-alpha * L)`. Thus zero represents
- * no bulk absorption, positive values absorb light, and negative values
- * represent gain.
+ * units. It is applied only when the engine performs a GRIN step: a step of
+ * length `L` multiplies both polarized powers by `exp(-alpha * L)`. A segment
+ * ending at a boundary, authored surface, or detector does not apply a
+ * partial-step absorption update. Thus zero represents no bulk absorption,
+ * positive values absorb light, and negative values represent gain.
  *
  * The formula compiler symbolically derives `n_x` and `n_y`, the partial
  * derivatives of `n` with respect to world-space `x` and `y`. They are part of
@@ -348,8 +349,10 @@
  * Defines how one detector hit contributes to a logical result array.
  * Detector types use the same immutable, structurally deduplicated plain-data
  * convention as surface types. Their DAG accepts the reserved hit inputs
- * documented by {@link SurfaceType}, including `u` and `sigma`, together with
- * the instance parameters named by `paramNames`.
+ * documented by {@link SurfaceType}, except for `n_0` and `n_1`, together
+ * with the instance parameters named by `paramNames`. Detectors observe ray
+ * power rather than participating in refraction, so detector types must not
+ * declare or reference `n_0` or `n_1`.
  *
  * `writeCount` is the fixed positive number of result writes produced by one
  * hit. For every one-based write index `j` from 1 through `writeCount`, the DAG
@@ -379,8 +382,8 @@
  * incidents are accumulated and exposed as detector results. For a one-sided
  * detector, an intersection from behind the curve's front normal is ignored
  * and produces no detector reading. Detector formulas use the reserved
- * hit-input symbols documented by {@link SurfaceType}, including `u` and
- * `sigma` for
+ * hit-input symbols documented by {@link SurfaceType}, except `n_0` and
+ * `n_1`, and include `u` and `sigma` for
  * distinguishing the two geometric sides; they define detector outputs rather
  * than outgoing-ray slots.
  * @typedef {Object} DetectorPrimitive

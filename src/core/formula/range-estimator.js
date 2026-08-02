@@ -26,10 +26,13 @@ const U32 = new Uint32Array(F32.buffer);
 /**
  * Estimate finite f32 value ranges for every DAG node.
  *
- * Parameter ranges are closed interval unions:
+ * Parameter ranges are closed interval unions. Callers which know an input
+ * can also carry the runtime invalid state may pass
+ * `{ intervals, maybeInvalid: true }`:
  *
  * ```js
  * estimateDagRanges(dag, { x: [[-1, 1]], i: [[0, 10], [20, 30]] })
+ * estimateDagRanges(dag, { x: { intervals: [[-1, 1]], maybeInvalid: true } })
  * ```
  *
  * Returned intervals are disjoint, sorted, finite, and clamped to f32 range.
@@ -346,10 +349,17 @@ function rounded(info, kind) {
 }
 
 function normalizeInputRange(value, name) {
-  if (!Array.isArray(value) || value.length === 0) {
+  const intervals = Array.isArray(value) ? value : value?.intervals;
+  const maybeInvalid = Array.isArray(value)
+    ? false
+    : value?.maybeInvalid;
+  if (!Array.isArray(intervals) || intervals.length === 0) {
     throw new TypeError(`Missing range for parameter ${JSON.stringify(name)}`);
   }
-  return makeInfo(value.map((interval, index) => {
+  if (typeof maybeInvalid !== "boolean") {
+    throw new TypeError(`Range ${JSON.stringify(name)} maybeInvalid must be boolean`);
+  }
+  return makeInfo(intervals.map((interval, index) => {
     if (!Array.isArray(interval) || interval.length !== 2) {
       throw new TypeError(`Range ${JSON.stringify(name)}[${index}] must be [min, max]`);
     }
@@ -359,7 +369,7 @@ function normalizeInputRange(value, name) {
     }
     if (lo > hi) throw new TypeError(`Range ${JSON.stringify(name)}[${index}] has min greater than max`);
     return [lo, hi];
-  }), false);
+  }), maybeInvalid);
 }
 
 function finiteLiteral(value) {
@@ -406,12 +416,12 @@ function mapIntervals(info, fn) {
 function clampFiniteInterval([lo, hi]) {
   if (Number.isNaN(lo) || Number.isNaN(hi)) return { interval: null, invalid: true };
   let invalid = false;
-  if (!Number.isFinite(lo) || lo < -F32_MAX) {
-    lo = lo === Infinity ? F32_MAX : -F32_MAX;
+  if (!Number.isFinite(lo) || lo < -F32_MAX || lo > F32_MAX) {
+    lo = lo > 0 ? F32_MAX : -F32_MAX;
     invalid = true;
   }
-  if (!Number.isFinite(hi) || hi > F32_MAX) {
-    hi = F32_MAX;
+  if (!Number.isFinite(hi) || hi < -F32_MAX || hi > F32_MAX) {
+    hi = hi > 0 ? F32_MAX : -F32_MAX;
     invalid = true;
   }
   if (lo > hi) return { interval: null, invalid: true };

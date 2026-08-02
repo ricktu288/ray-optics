@@ -46,6 +46,14 @@ function assertDoesNotCover(range, value) {
 }
 
 {
+  const range = rootRange("x", ["x"], {
+    x: { intervals: [[2, 2]], maybeInvalid: true },
+  });
+  assert.deepEqual(range.intervals, [[2, 2]]);
+  assert.equal(range.maybeInvalid, true);
+}
+
+{
   const range = rootRange("x / y", ["x", "y"], { x: [[1, 2]], y: [[-1, 1]] });
   assert.equal(range.maybeInvalid, true);
   assertCovers(range, -2);
@@ -70,6 +78,13 @@ function assertDoesNotCover(range, value) {
   const range = rootRange("exp(x)", ["x"], { x: [[1000, 1000]] });
   assert.equal(range.maybeInvalid, true);
   assertCovers(range, F32_MAX);
+}
+
+{
+  const range = rootRange("x * x", ["x"], { x: [[2e20, 2e20]] });
+  assert.equal(range.maybeInvalid, true);
+  assert.equal(range.intervals.length, 1);
+  assert.equal(range.intervals[0][1], F32_MAX);
 }
 
 {

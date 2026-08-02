@@ -15,6 +15,11 @@
  */
 
 import { validateNumericEpsilon } from '../primitive/numeric.js';
+import {
+  estimateWebGpuParameterRanges,
+  formatWebGpuParameterRangeSummary,
+  recordWebGpuRecompilationNeeds
+} from './webGpuParameterRanges.js';
 
 const TRIANGLE_SHADER = `
   @vertex
@@ -92,10 +97,27 @@ class WebGpuSimulationEngine {
     this.pipeline = null;
     this.isInitialized = false;
     this.isDisposed = false;
+    this.guardSignaturesByType = null;
   }
 
-  async prepare(description) {
-    return { description };
+  async prepare(description, rangeOptions = {}) {
+    const parameterRanges = estimateWebGpuParameterRanges(
+      description,
+      rangeOptions
+    );
+    this.guardSignaturesByType = recordWebGpuRecompilationNeeds(
+      parameterRanges,
+      this.guardSignaturesByType
+    );
+    if (rangeOptions.logDebugInfo) {
+      console.log(formatWebGpuParameterRangeSummary(
+        parameterRanges
+      ));
+    }
+    return {
+      description,
+      parameterRanges
+    };
   }
 
   async createRun() {
@@ -173,6 +195,7 @@ class WebGpuSimulationEngine {
     this.device = null;
     this.deviceSource = null;
     this.pipeline = null;
+    this.guardSignaturesByType = null;
   }
 }
 

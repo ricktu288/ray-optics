@@ -43,7 +43,17 @@ const TEST_DIRS = fs.readdirSync(SCENES_DIR)
     return fs.statSync(fullPath).isDirectory() && name !== 'helpers';
   });
 
-describe('Scene Tests', () => {
+const SCENE_TEST_ENGINE = process.env.SCENE_TEST_ENGINE ?? 'default';
+let SCENE_TEST_ENGINE_SETTINGS = {};
+try {
+  SCENE_TEST_ENGINE_SETTINGS = JSON.parse(
+    process.env.SCENE_TEST_ENGINE_SETTINGS ?? '{}'
+  );
+} catch (error) {
+  throw new Error(`Invalid SCENE_TEST_ENGINE_SETTINGS: ${error.message}`);
+}
+
+describe(`Scene Tests (${SCENE_TEST_ENGINE})`, () => {
   // Test each scene in each directory
   TEST_DIRS.forEach(dirName => {
     describe(dirName, () => {
@@ -58,7 +68,14 @@ describe('Scene Tests', () => {
 
         // Run the scene and get outputs
         const writeOutput = process.env.WRITE_OUTPUT === 'true';
-        const { imageBuffer, detectorData, simulatorError, simulatorWarning } = await runScene(jsonPath, writeOutput);
+        const { imageBuffer, detectorData, simulatorError, simulatorWarning } = await runScene(
+          jsonPath,
+          writeOutput,
+          {
+            engine: SCENE_TEST_ENGINE,
+            engineSettings: SCENE_TEST_ENGINE_SETTINGS
+          }
+        );
 
         // Expect there is no error
         expect(simulatorError).toBe(null, `Error in scene ${jsonPath}`);

@@ -18,7 +18,10 @@ import assert from "node:assert/strict";
 import { appendPartialDerivatives } from "../../../src/core/formula/derivative.js";
 import { createDagClosureEvaluator } from "../../../src/core/formula/dag-evaluator.js";
 import { generateDagJsEvaluator } from "../../../src/core/formula/dag-js-generator.js";
-import { generateDagWgslFunction } from "../../../src/core/formula/dag-wgsl-generator.js";
+import {
+  createDagWgslSpecialization,
+  generateDagWgslFunction,
+} from "../../../src/core/formula/dag-wgsl-generator.js";
 import { parseFormula } from "../../../src/core/formula/formula-parser.js";
 
 function loadGeneratedJsEvaluator(dag, options) {
@@ -279,6 +282,77 @@ function assertSameOutputs(left, right) {
 
   assert.match(compiled.code, /w_guard_nonzero/);
   assert.match(compiled.code, /w_fallback/);
+}
+
+{
+  const dag = parseFormula("1 / x", ["x"], { outputLabel: "value" });
+  const positive = createDagWgslSpecialization(dag, {
+    parameters: [{ name: "x", range: [[1, 2]] }],
+  });
+  const shiftedPositive = createDagWgslSpecialization(dag, {
+    parameters: [{ name: "x", range: [[3, 4]] }],
+  });
+  const includingZero = createDagWgslSpecialization(dag, {
+    parameters: [{ name: "x", range: [[0, 1]] }],
+  });
+  assert.equal(positive.guardSignature, shiftedPositive.guardSignature);
+  assert.notEqual(positive.guardSignature, includingZero.guardSignature);
+
+  const generated = generateDagWgslFunction(dag, {
+    parameters: [{ name: "x", range: [[1, 2]] }],
+    labels: ["value"],
+    specialization: positive,
+  });
+  const generatedShifted = generateDagWgslFunction(dag, {
+    parameters: [{ name: "x", range: [[3, 4]] }],
+    labels: ["value"],
+    specialization: shiftedPositive,
+  });
+  const generatedIncludingZero = generateDagWgslFunction(dag, {
+    parameters: [{ name: "x", range: [[0, 1]] }],
+    labels: ["value"],
+    specialization: includingZero,
+  });
+  assert.equal(generated.specialization, positive);
+  assert.equal(generated.guardSignature, positive.guardSignature);
+  assert.equal(generated.code, generatedShifted.code);
+  assert.notEqual(generated.code, generatedIncludingZero.code);
+  assert.throws(
+    () => generateDagWgslFunction(dag, {
+      parameters: [{ name: "x", range: [[0, 1]] }],
+      labels: ["value"],
+      specialization: positive,
+    }),
+    /parameter ranges do not match/,
+  );
+}
+
+{
+  const dag = parseFormula("fallback(1 / x, 0)", ["x"], {
+    outputLabel: "value",
+  });
+  const specialization = createDagWgslSpecialization(dag, {
+    parameters: [{ name: "x", range: [[0, 1]] }],
+  });
+  assert.equal(
+    specialization.guardProfile[dag.root],
+    "wrapped",
+  );
+}
+
+{
+  const dag = parseFormula("x + 1", ["x"], { outputLabel: "value" });
+  const finite = createDagWgslSpecialization(dag, {
+    parameters: [{ name: "x", range: [[1, 1]] }],
+  });
+  const maybeInvalid = createDagWgslSpecialization(dag, {
+    parameters: [{
+      name: "x",
+      range: [[1, 1]],
+      maybeInvalid: true,
+    }],
+  });
+  assert.notEqual(finite.guardSignature, maybeInvalid.guardSignature);
 }
 
 {

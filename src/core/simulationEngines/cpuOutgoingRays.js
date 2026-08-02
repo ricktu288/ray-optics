@@ -34,17 +34,9 @@ export function prepareCpuOutgoingRayData(description) {
     if (labels.has('n_x')) grinLabels.push('n_x');
     if (labels.has('n_y')) grinLabels.push('n_y');
     return {
-      evaluateAlpha: createDagClosureEvaluator(
-        type.definition.dag,
-        { labels: ['alpha'] }
-      ),
       evaluateIndex: createDagClosureEvaluator(
         type.definition.dag,
         { labels: ['n'] }
-      ),
-      evaluateIndexAndAlpha: createDagClosureEvaluator(
-        type.definition.dag,
-        { labels: ['n', 'alpha'] }
       ),
       evaluateGrin: createDagClosureEvaluator(
         type.definition.dag,
@@ -73,18 +65,12 @@ export function prepareCpuOutgoingRayData(description) {
     const definition = type.definition;
     const outputLabels =
       createDetectorOutputLabels(definition.writeCount);
-    const parameters = collectReferencedParameterNames(
-      definition.dag,
-      outputLabels
-    );
     return {
       evaluate: createDagClosureEvaluator(
         definition.dag,
         { labels: outputLabels }
       ),
-      writeCount: definition.writeCount,
-      needsRefractiveIndices:
-        parameters.has('n_0') || parameters.has('n_1')
+      writeCount: definition.writeCount
     };
   });
 
@@ -253,7 +239,7 @@ function writeRegionBoundary(
     null,
     point,
     sourceRay.wavelength,
-    'indexAndAlpha'
+    'index'
   );
   const transmittedMedium = evaluateEffectiveMedium(
     description,
@@ -264,9 +250,8 @@ function writeRegionBoundary(
     sourceRay.wavelength,
     'index'
   );
-  const absorption = Math.exp(-incidentMedium.alpha * hit.s);
-  const powerS = sourceRay.powerS * absorption;
-  const powerP = sourceRay.powerP * absorption;
+  const powerS = sourceRay.powerS;
+  const powerP = sourceRay.powerP;
   const relativeIndex = incidentMedium.n / transmittedMedium.n;
   const cosIncident = -(
     sourceRay.directionX * hit.normalX +
@@ -387,22 +372,16 @@ function writeSurfaceOutputs(
     hit,
     point
   );
-  const incidentMedium = evaluateEffectiveMedium(
-    description,
-    prepared,
-    sourceRay.membership,
-    null,
-    point,
-    sourceRay.wavelength,
-    surfaceType.needsRefractiveIndices
-      ? 'indexAndAlpha'
-      : 'alpha'
-  );
-  const absorption = Math.exp(-incidentMedium.alpha * hit.s);
-  input.P_0s = sourceRay.powerS * absorption;
-  input.P_0p = sourceRay.powerP * absorption;
   if (surfaceType.needsRefractiveIndices) {
-    input.n_0 = incidentMedium.n;
+    input.n_0 = evaluateEffectiveMedium(
+      description,
+      prepared,
+      sourceRay.membership,
+      null,
+      point,
+      sourceRay.wavelength,
+      'index'
+    ).n;
     input.n_1 = evaluateEffectiveMedium(
       description,
       prepared,
@@ -475,32 +454,6 @@ function writeDetectorOutput(
   const input = prepared.detectorInputs[curve.ownerId];
   const point = getHitPoint(sourceRay, hit);
   setCommonInteractionInputs(input, sourceRay, hit, point);
-  const incidentMedium = evaluateEffectiveMedium(
-    description,
-    prepared,
-    sourceRay.membership,
-    null,
-    point,
-    sourceRay.wavelength,
-    detectorType.needsRefractiveIndices
-      ? 'indexAndAlpha'
-      : 'alpha'
-  );
-  const absorption = Math.exp(-incidentMedium.alpha * hit.s);
-  input.P_0s = sourceRay.powerS * absorption;
-  input.P_0p = sourceRay.powerP * absorption;
-  if (detectorType.needsRefractiveIndices) {
-    input.n_0 = incidentMedium.n;
-    input.n_1 = evaluateEffectiveMedium(
-      description,
-      prepared,
-      sourceRay.membership,
-      hit.regionCrossingMask,
-      point,
-      sourceRay.wavelength,
-      'index'
-    ).n;
-  }
   const evaluated = detectorType.evaluate(input);
   const result = detectorResults[detector.resultId];
   for (let writeIndex = 1;
@@ -589,30 +542,22 @@ function evaluateEffectiveMedium(
       bulkType,
       evaluationKind
     )(input);
-    if (evaluationKind !== 'alpha') {
-      const regionN = evaluated.n;
-      const previousN = n;
-      if (evaluationKind === 'grin') {
-        nX = nX * regionN + previousN * (evaluated.n_x ?? 0);
-        nY = nY * regionN + previousN * (evaluated.n_y ?? 0);
-      }
-      n = previousN * regionN;
-    }
-    if (evaluationKind !== 'index') {
+    const regionN = evaluated.n;
+    const previousN = n;
+    if (evaluationKind === 'grin') {
+      nX = nX * regionN + previousN * (evaluated.n_x ?? 0);
+      nY = nY * regionN + previousN * (evaluated.n_y ?? 0);
       alpha += evaluated.alpha;
     }
+    n = previousN * regionN;
   }
   return { n, nX, nY, alpha };
 }
 
 function selectBulkEvaluator(bulkType, evaluationKind) {
   switch (evaluationKind) {
-    case 'alpha':
-      return bulkType.evaluateAlpha;
     case 'index':
       return bulkType.evaluateIndex;
-    case 'indexAndAlpha':
-      return bulkType.evaluateIndexAndAlpha;
     case 'grin':
       return bulkType.evaluateGrin;
     default:

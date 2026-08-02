@@ -212,7 +212,11 @@ class PrimitiveBasedSimulator {
     this.activeRun?.cancel?.();
     this.activeRun?.dispose?.();
 
-    const preparedScene = await this.engine.prepare(this.processedScene);
+    const preparedScene = await this.engine.prepare(this.processedScene, {
+      violetWavelength: this.scene.violetWavelength,
+      redWavelength: this.scene.redWavelength,
+      logDebugInfo: this.logDebugInfo
+    });
     if (generation !== this.runGeneration) return;
 
     const viewport = {

@@ -23,13 +23,30 @@ import { estimateDagRanges } from "./range-estimator.js";
 
 export const DEFAULT_WGSL_WORKGROUP_SIZE = 128;
 
+/**
+ * Perform the range-dependent portion of WGSL generation once. The returned
+ * object can be compared by `guardSignature` and later supplied to
+ * `generateDagWgslFunction` without estimating the DAG again.
+ */
+export function createDagWgslSpecialization(dag, options = {}) {
+  validateDagShape(dag);
+  const parameterContract = validateParameterContract(
+    dag,
+    options.parameters
+  );
+  return createSpecializationFromContract(dag, parameterContract);
+}
+
 export function generateDagWgslFunction(dag, options = {}) {
   validateDagShape(dag);
   const functionName = validateWgslIdentifier(options.functionName ?? "evaluateDag", "functionName");
   const parameterContract = validateParameterContract(dag, options.parameters);
   const parameters = parameterContract.map((parameter) => parameter.name);
   const parameterRanges = Object.fromEntries(parameterContract.map((parameter) => [parameter.name, parameter.range]));
-  const rangeResult = estimateDagRanges(dag, parameterRanges);
+  const specialization = options.specialization
+    ? validateSpecialization(dag, parameterContract, options.specialization)
+    : createSpecializationFromContract(dag, parameterContract);
+  const rangeResult = specialization.rangeResult;
   const labels = validateLabelContract(dag, options.labels);
   const parameterIndexes = new Map(parameters.map((name, index) => [name, index]));
   const labelIds = collectNodeLabels(dag);
@@ -55,7 +72,80 @@ ${body.join("\n")}
     parameterCount: parameters.length,
     outputCount: labels.length,
     functionName,
+    specialization,
+    guardSignature: specialization.guardSignature,
   };
+}
+
+function createSpecializationFromContract(dag, parameterContract) {
+  const parameterRangeInfos = Object.fromEntries(
+    parameterContract.map((parameter) => [parameter.name, {
+      intervals: parameter.range,
+      maybeInvalid: parameter.maybeInvalid,
+    }]),
+  );
+  const rangeResult = estimateDagRanges(dag, parameterRangeInfos);
+  const guardProfile = createGuardProfile(dag, rangeResult.nodeRanges);
+  return {
+    dag,
+    parameterContract: parameterContract.map(cloneParameterContractEntry),
+    rangeResult,
+    guardProfile,
+    guardSignature: JSON.stringify(guardProfile),
+  };
+}
+
+function validateSpecialization(dag, parameterContract, specialization) {
+  if (!specialization || specialization.dag !== dag) {
+    throw new TypeError("WGSL specialization was created for a different DAG");
+  }
+  if (!parameterContractsEqual(
+    parameterContract,
+    specialization.parameterContract,
+  )) {
+    throw new TypeError("WGSL specialization parameter ranges do not match");
+  }
+  if (
+    !specialization.rangeResult ||
+    specialization.rangeResult.nodeRanges?.length !== dag.nodes.length
+  ) {
+    throw new TypeError("WGSL specialization has invalid node ranges");
+  }
+  return specialization;
+}
+
+function createGuardProfile(dag, nodeRanges) {
+  return dag.nodes.map((node) => {
+    if (node.kind === "number") {
+      return nodeRanges[node.id].maybeInvalid ? "wrapped" : "raw";
+    }
+    if (node.kind === "constant" || node.kind === "parameter") return "fixed";
+    if (node.kind !== "call") {
+      return nodeRanges[node.id].maybeInvalid ? "wrapped" : "raw";
+    }
+    if (
+      node.name === "guardNonzero" &&
+      rangeExcludesZero(nodeRanges[node.args[0]])
+    ) return "alias";
+    if (
+      node.name === "guardNonNegative" &&
+      rangeIsNonNegative(nodeRanges[node.args[0]])
+    ) return "alias";
+    if (
+      node.name === "guardNotInteger" &&
+      rangeHasNoIntegers(nodeRanges[node.args[0]])
+    ) return "alias";
+    if (
+      node.name === "guardValid" &&
+      !nodeRanges[node.args[0]].maybeInvalid
+    ) return "alias";
+    if (
+      node.name === "fallback" &&
+      !nodeRanges[node.args[0]].maybeInvalid
+    ) return "alias";
+    if (node.name === "fallback") return "wrapped";
+    return nodeRanges[node.id].maybeInvalid ? "wrapped" : "raw";
+  });
 }
 
 function generateNode(node, parameterIndexes, states, nodeRanges) {
@@ -252,6 +342,7 @@ function validateParameterContract(dag, parameters) {
   return parameters.map((parameter) => ({
     name: parameter.name,
     range: parameter.range.map(([lo, hi]) => [lo, hi]),
+    maybeInvalid: parameter.maybeInvalid ?? false,
   }));
 }
 
@@ -261,6 +352,12 @@ function validateParameterEntry(parameter, index) {
   }
   if (typeof parameter.name !== "string" || parameter.name.length === 0) {
     throw new TypeError(`WGSL parameter ${index} name must be a non-empty string`);
+  }
+  if (
+    parameter.maybeInvalid !== undefined &&
+    typeof parameter.maybeInvalid !== "boolean"
+  ) {
+    throw new TypeError(`WGSL parameter ${JSON.stringify(parameter.name)} maybeInvalid must be boolean`);
   }
   if (!Array.isArray(parameter.range) || parameter.range.length === 0) {
     throw new TypeError(`WGSL parameter ${JSON.stringify(parameter.name)} range must be a non-empty interval array`);
@@ -278,6 +375,30 @@ function validateParameterEntry(parameter, index) {
     }
   }
   return parameter.name;
+}
+
+function cloneParameterContractEntry(parameter) {
+  return {
+    name: parameter.name,
+    range: parameter.range.map(([lo, hi]) => [lo, hi]),
+    maybeInvalid: parameter.maybeInvalid,
+  };
+}
+
+function parameterContractsEqual(left, right) {
+  if (!Array.isArray(right) || left.length !== right.length) return false;
+  return left.every((parameter, index) => {
+    const candidate = right[index];
+    return (
+      parameter.name === candidate?.name &&
+      parameter.maybeInvalid === candidate.maybeInvalid &&
+      parameter.range.length === candidate.range?.length &&
+      parameter.range.every(([lo, hi], rangeIndex) =>
+        lo === candidate.range[rangeIndex][0] &&
+        hi === candidate.range[rangeIndex][1]
+      )
+    );
+  });
 }
 
 function validateLabelContract(dag, labels) {

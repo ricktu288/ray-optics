@@ -368,6 +368,44 @@ describe('primitive preprocessing', () => {
       .toThrow(/same result holder/);
   });
 
+  it('rejects detector types which consume refractive indices', () => {
+    const detectorType = {
+      name: 'Invalid refractive detector',
+      paramNames: [],
+      writeCount: 1,
+      dag: {
+        root: 2,
+        nodes: [
+          {
+            id: 0,
+            kind: 'number',
+            value: 0,
+            raw: '0',
+            label: 'k_1'
+          },
+          { id: 1, kind: 'parameter', name: 'n_0' },
+          {
+            id: 2,
+            kind: 'binary',
+            op: '+',
+            args: [1, 0],
+            label: 'v_1'
+          }
+        ]
+      }
+    };
+
+    expect(() => preprocessPrimitives([{
+      kind: 'detector',
+      curve: line(0, 0, 1, 0),
+      twoSided: true,
+      detectorType,
+      params: {},
+      resultSize: 1,
+      result: { values: null }
+    }])).toThrow(/detectorType must not.*"n_0"/);
+  });
+
   it('summarizes BVH structure, registered type usage, and type changes', () => {
     const surfaceType = {
       name: 'Surface',

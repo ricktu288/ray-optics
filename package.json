@@ -57,7 +57,7 @@
     "test:primitive": "jest test/primitive",
     "test:propertyUtils": "jest test/propertyUtils",
     "test:sceneObjs": "jest test/sceneObjs",
-    "test:scenes": "npm run build-node && jest test/scenes",
+    "test:scenes": "node ./scripts/testScenes.mjs",
     "build-pages": "node ./scripts/buildPages.mjs",
     "build-pages:release": "node ./scripts/buildPages.mjs --release",
     "build-scenes": "node ./scripts/buildScenes.mjs",

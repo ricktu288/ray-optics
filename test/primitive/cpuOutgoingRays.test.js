@@ -82,6 +82,7 @@ function hit(overrides = {}) {
 describe('CPU outgoing-ray calculations', () => {
   it('evaluates n_0 and n_1 only for surface DAGs which use them', () => {
     const description = baseDescription();
+    description.regions[0].params.alpha_value = Math.log(2);
     const refractiveSurface = {
       definition: {
         name: 'Refractive inputs',
@@ -227,6 +228,7 @@ describe('CPU outgoing-ray calculations', () => {
 
   it('writes transmitted then reflected partial-reflection outputs', () => {
     const description = baseDescription();
+    description.regions[0].params.alpha_value = Math.log(2);
     const prepared = prepareCpuOutgoingRayData(description);
     const destination = new Array(2);
 
@@ -267,7 +269,7 @@ describe('CPU outgoing-ray calculations', () => {
   it('uses every active bulk region for a GRIN step', () => {
     const description = baseDescription();
     description.types.bulks = [bulkType(parseFormula(
-      'n = 1; alpha = 0; n_x = 0; n_y = 0.1',
+      `n = 1; alpha = ${Math.log(2)}; n_x = 0; n_y = 0.1`,
       []
     ))];
     description.regions[0].params = {};
@@ -301,10 +303,13 @@ describe('CPU outgoing-ray calculations', () => {
     expect(destination[0].directionY).toBeCloseTo(
       0.1 / Math.hypot(1, 0.1)
     );
+    expect(destination[0].powerS).toBeCloseTo(0.5);
+    expect(destination[0].powerP).toBeCloseTo(0.25);
   });
 
   it('accumulates detector writes and continues the ray', () => {
     const description = baseDescription();
+    description.regions[0].params.alpha_value = Math.log(2);
     description.types.detectors = [{
       definition: {
         name: 'Detector',

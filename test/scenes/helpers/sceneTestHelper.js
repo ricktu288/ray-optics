@@ -20,6 +20,79 @@ import { createCanvas } from 'canvas';
 import sharp from 'sharp';
 const rayOptics = require('../../../dist-node/rayOptics.js');
 
+const SUPPORTED_ENGINES = new Set(['default', 'primitiveCpu']);
+
+function createSimulator({
+  scene,
+  engineKind,
+  engineSettings,
+  ctxLight,
+  ctxBelowLight,
+  ctxAboveLight,
+  ctxGrid,
+  ctxVirtual,
+  rayCountLimit,
+  tempCanvasFactory
+}) {
+  if (!SUPPORTED_ENGINES.has(engineKind)) {
+    throw new Error(
+      `Unsupported scene-test engine ${JSON.stringify(engineKind)}. ` +
+      `Expected one of: ${Array.from(SUPPORTED_ENGINES).join(', ')}.`
+    );
+  }
+
+  if (engineKind === 'default') {
+    const simulator = new rayOptics.Simulator(
+      scene,
+      ctxLight,
+      ctxBelowLight,
+      ctxAboveLight,
+      ctxGrid,
+      ctxVirtual,
+      false,
+      rayCountLimit,
+      null,
+      null,
+      tempCanvasFactory
+    );
+    return simulator;
+  }
+
+  const bvhSettings = engineSettings.bvh ?? {};
+  const { drawBounds = false, ...bvhOptions } = bvhSettings;
+  const engine = new rayOptics.CpuSimulationEngine({
+    numericEpsilon: engineSettings.numericEpsilon,
+    ctxMain: ctxLight,
+    ctxVirtual
+  });
+  return new rayOptics.PrimitiveBasedSimulator({
+    scene,
+    engine,
+    ctxBelowLight,
+    ctxAboveLight,
+    ctxGrid,
+    ctxVirtual,
+    enableTimer: false,
+    rayCountLimit,
+    tempCanvasFactory,
+    logDebugInfo: Boolean(engineSettings.logDebugInfo),
+    drawBvh: Boolean(drawBounds),
+    bvhOptions
+  });
+}
+
+function resolveRayCountLimit(defaultLimit, engineSettings) {
+  const rayCountLimit = engineSettings.rayCountLimit ?? defaultLimit;
+  if (
+    typeof rayCountLimit !== 'number' ||
+    Number.isNaN(rayCountLimit) ||
+    rayCountLimit < 0
+  ) {
+    throw new RangeError('Scene-test rayCountLimit must be a nonnegative number.');
+  }
+  return rayCountLimit;
+}
+
 /**
  * Compare two PNG images pixel by pixel
  * @param {Buffer} actualImage - The actual image buffer
@@ -142,9 +215,20 @@ export function compareCSV(actualData, expectedData, tolerance = 1e-3) {
  * Run a scene and generate outputs
  * @param {string} jsonPath - Path to the scene JSON file
  * @param {boolean} writeOutput - Whether to write output files
+ * @param {Object} [options={}] - Scene-test simulation options
+ * @param {'default'|'primitiveCpu'} [options.engine='default'] - Simulation engine to use
+ * @param {Object} [options.engineSettings={}] - Settings for the selected engine
  * @returns {Promise<{imageBuffer?: Buffer, detectorData?: string}>} Generated outputs
  */
-export async function runScene(jsonPath, writeOutput = false) {
+export async function runScene(
+  jsonPath,
+  writeOutput = false,
+  { engine: engineKind = 'default', engineSettings = {} } = {}
+) {
+  if (!engineSettings || typeof engineSettings !== 'object' || Array.isArray(engineSettings)) {
+    throw new TypeError('Scene-test engine settings must be an object.');
+  }
+
   // Load and parse scene
   const sceneJson = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
   const outputBase = path.basename(jsonPath, '.json');
@@ -197,21 +281,6 @@ export async function runScene(jsonPath, writeOutput = false) {
       canvas.height = imageHeight;
     });
 
-    // Initialize simulator with canvases
-    simulator = new rayOptics.Simulator(
-      scene, 
-      ctxLight, 
-      ctxBelowLight, 
-      ctxAboveLight, 
-      ctxGrid, 
-      ctxVirtual, 
-      false,
-      Infinity,
-      null,
-      null,
-      (width, height) => createCanvas(width, height)
-    );
-
     // Set cropbox settings
     originalScale = scene.scale;
     originalOrigin = { ...scene.origin };
@@ -225,10 +294,35 @@ export async function runScene(jsonPath, writeOutput = false) {
       scene.theme.background.color = { r: 0.01, g: 0.01, b: 0.01 };
     }
     
-    simulator.rayCountLimit = cropBox.rayCountLimit || 1e7;
+    simulator = createSimulator({
+      scene,
+      engineKind,
+      engineSettings,
+      ctxLight,
+      ctxBelowLight,
+      ctxAboveLight,
+      ctxGrid,
+      ctxVirtual,
+      rayCountLimit: resolveRayCountLimit(
+        cropBox.rayCountLimit || 1e7,
+        engineSettings
+      ),
+      tempCanvasFactory: (width, height) => createCanvas(width, height)
+    });
   } else {
     // Create simulator without canvases
-    simulator = new rayOptics.Simulator(scene, null, null, null, null, null, false, Infinity, null, null, (width, height) => createCanvas(width, height));
+    simulator = createSimulator({
+      scene,
+      engineKind,
+      engineSettings,
+      ctxLight: null,
+      ctxBelowLight: null,
+      ctxAboveLight: null,
+      ctxGrid: null,
+      ctxVirtual: null,
+      rayCountLimit: resolveRayCountLimit(Infinity, engineSettings),
+      tempCanvasFactory: (width, height) => createCanvas(width, height)
+    });
   }
 
   // Run simulation
@@ -245,18 +339,23 @@ export async function runScene(jsonPath, writeOutput = false) {
 
   // Generate detector data
   if (detector && detector.irradMap) {
-    // Generate detector data in the same format as Detector.js
-    const binSize = detector.binSize;
-    const rows = detector.binData.map((value, i) => 
-      `${i * binSize},${value / binSize}`
-    );
-    outputs.detectorData = `Position,Irradiance\n${rows.join('\n')}`;
-    
-    if (writeOutput) {
-      fs.writeFileSync(
-        path.join(outputDir, `${outputBase}.csv`),
-        outputs.detectorData
+    if (engineKind === 'primitiveCpu') {
+      detector.updateMeasurementsFromPrimitiveResults();
+    }
+    if (detector.binData) {
+      // Generate detector data in the same format as Detector.js
+      const binSize = detector.binSize;
+      const rows = detector.binData.map((value, i) =>
+        `${i * binSize},${value / binSize}`
       );
+      outputs.detectorData = `Position,Irradiance\n${rows.join('\n')}`;
+
+      if (writeOutput) {
+        fs.writeFileSync(
+          path.join(outputDir, `${outputBase}.csv`),
+          outputs.detectorData
+        );
+      }
     }
   }
 
