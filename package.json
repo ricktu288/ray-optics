@@ -80,6 +80,7 @@
     "jsdoc": "^4.0.4",
     "jsdoc-vuejs": "^4.0.0",
     "vue-loader": "^17.4.2",
-    "vue-template-compiler": "^2.7.16"
+    "vue-template-compiler": "^2.7.16",
+    "webgpu": "^0.4.0"
   }
 }

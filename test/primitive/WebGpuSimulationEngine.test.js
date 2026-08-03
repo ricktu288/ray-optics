@@ -4,7 +4,6 @@
  */
 
 import { parseFormula } from '../../src/core/formula/formula-parser.js';
-import { createCanvas } from 'canvas';
 import { FLOAT32_EPSILON } from '../../src/core/primitive/numeric.js';
 import { preprocessPrimitives } from '../../src/core/primitive/preprocess.js';
 import WebGpuSimulationEngine from '../../src/core/simulationEngines/WebGpuSimulationEngine.js';
@@ -110,194 +109,14 @@ function rectangularRegion() {
   };
 }
 
-async function finish(run) {
-  let update;
-  do {
-    update = await run.advance();
-  } while (update.status !== 'complete');
-  return update;
-}
-
 describe('WebGpuSimulationEngine staged execution', () => {
-  it('runs in Node without a native GPU and reports the compatibility mode', async () => {
+  it('requires native WebGPU rather than silently running the CPU engine',
+    async () => {
     const engine = new WebGpuSimulationEngine();
     const preparedScene = await engine.prepare(process([source()]));
-    const run = await engine.createRun({
-      preparedScene,
-      viewport: { origin: { x: 0, y: 0 }, scale: 1, lengthScale: 1 },
-      colorMode: 'default',
-      rendering: { mode: 'rays' }
-    });
-
-    const update = await finish(run);
-
-    expect(update.executionMode).toBe('node-reference');
-    expect(update.result.processedRayCount).toBe(1);
-    expect(engine.applyLegacyPowerSubsampling).toBe(false);
-  });
-
-  it('applies maximum ray depth in the Node-compatible WebGPU run',
-    async () => {
-      const engine = new WebGpuSimulationEngine();
-      const preparedScene = await engine.prepare(process([
-        source(),
-        rectangularRegion()
-      ]));
-      const run = await engine.createRun({
-        preparedScene,
-        maxRayDepth: 0,
-        rendering: { mode: 'rays' }
-      });
-
-      const update = await finish(run);
-
-      expect(update.status).toBe('complete');
-      expect(run.referenceRun.passIndex).toBe(0);
-      expect(update.result.processedRayCount).toBe(1);
-      expect(update.result.totalTruncation).toBeCloseTo(1);
-    });
-
-  it('renders one ray into a Node Canvas 2D output', async () => {
-    const canvas = createCanvas(16, 12);
-    const ctx = canvas.getContext('2d');
-    const engine = new WebGpuSimulationEngine({ ctxMain: ctx });
-    const preparedScene = await engine.prepare(process([source()]));
-    const run = await engine.createRun({
-      preparedScene,
-      viewport: {
-        origin: { x: 0, y: 5.5 },
-        scale: 1,
-        lengthScale: 1
-      },
-      colorMode: 'default',
-      rendering: {
-        mode: 'rays',
-        getThemeRayColor: (_type, alpha) => [1, 1, 0.5, alpha],
-        getThemeRayDash: () => []
-      }
-    });
-
-    await finish(run);
-    const pixel = Array.from(ctx.getImageData(8, 5, 1, 1).data);
-
-    expect(pixel[0]).toBeGreaterThanOrEqual(250);
-    expect(pixel[1]).toBeGreaterThanOrEqual(250);
-    expect(pixel[2]).toBeGreaterThanOrEqual(125);
-    expect(pixel[2]).toBeLessThanOrEqual(130);
-    expect(pixel[3]).toBeGreaterThanOrEqual(250);
-  });
-
-  it('retains the old frame until a replacement frame is ready',
-    async () => {
-      const canvas = createCanvas(16, 12);
-      const ctx = canvas.getContext('2d');
-      const engine = new WebGpuSimulationEngine({ ctxMain: ctx });
-      const preparedScene = await engine.prepare(process([source()]));
-      const options = {
-        preparedScene,
-        viewport: { origin: { x: 0, y: 5.5 }, scale: 1, lengthScale: 1 },
-        colorMode: 'default',
-        rendering: {
-          mode: 'rays',
-          getThemeRayColor: (_type, alpha) => [1, 1, 0.5, alpha],
-          getThemeRayDash: () => []
-        }
-      };
-      await finish(await engine.createRun(options));
-      expect(ctx.getImageData(8, 5, 1, 1).data[3]).toBeGreaterThan(0);
-
-      const replacement = await engine.createRun(options);
-
-      expect(ctx.getImageData(8, 5, 1, 1).data[3]).toBeGreaterThan(0);
-      await finish(replacement);
-      expect(ctx.getImageData(8, 5, 1, 1).data[3]).toBeGreaterThan(0);
-    });
-
-  it('keeps ready records owned by the run that produced them', async () => {
-    const engine = new WebGpuSimulationEngine();
-    const preparedScene = await engine.prepare(process([source()]));
-    const first = await engine.createRun({
-      preparedScene,
-      rendering: { mode: 'rays' }
-    });
-    const firstCollector = first.canvasRenderer;
-    const second = await engine.createRun({
-      preparedScene,
-      rendering: { mode: 'rays' }
-    });
-    const marker = { kind: 'line' };
-    second.canvasRenderer.records.push(marker);
-
-    expect(firstCollector).not.toBe(second.canvasRenderer);
-    expect(firstCollector.takeNewRecords()).toEqual([]);
-    expect(second.canvasRenderer.takeNewRecords()).toEqual([marker]);
-  });
-
-  it('presents a pending GPU clear at the first pause without geometry',
-    async () => {
-      const engine = new WebGpuSimulationEngine();
-      const draw = jest.fn(async () => {});
-      engine.isInitialized = true;
-      engine.rasterizer = { clear: jest.fn(() => false), draw };
-      const preparedScene = await engine.prepare(process([source()]));
-      const run = await engine.createRun({
-        preparedScene,
-        rendering: { mode: 'rays' }
-      });
-
-      expect(draw).not.toHaveBeenCalled();
-      await run.advance({ itemBudget: 1 });
-
-      expect(draw).toHaveBeenCalledTimes(1);
-      expect(draw.mock.calls[0][0]).toEqual([]);
-      expect(run.clearPending).toBe(false);
-    });
-
-  it('discards source wavelengths outside the scene-derived UV-IR range', async () => {
-    const engine = new WebGpuSimulationEngine();
-    const preparedScene = await engine.prepare(process([source(900)]), {
-      violetWavelength: 420,
-      redWavelength: 620
-    });
-    const run = await engine.createRun({
-      preparedScene,
-      rendering: { mode: 'rays' }
-    });
-
-    const update = await finish(run);
-
-    expect(update.result.processedRayCount).toBe(0);
-  });
-
-  it('applies rayPowerCutoff in the default color mode without the 0.01 rule', async () => {
-    const canvas = createCanvas(16, 12);
-    const ctx = canvas.getContext('2d');
-    const engine = new WebGpuSimulationEngine({ ctxMain: ctx });
-    const preparedScene = await engine.prepare(
-      process([source(540, 0, 4e-4)])
+    await expect(engine.createRun({ preparedScene })).rejects.toThrow(
+      /requires a WebGPU device and output/
     );
-    const run = await engine.createRun({
-      preparedScene,
-      viewport: {
-        origin: { x: 0, y: 5.5 },
-        scale: 1,
-        lengthScale: 1
-      },
-      colorMode: 'default',
-      rayPowerCutoff: 1e-3,
-      rendering: {
-        mode: 'rays',
-        getThemeRayColor: (_type, alpha) => [1, 1, 0.5, alpha],
-        getThemeRayDash: () => []
-      }
-    });
-
-    const update = await finish(run);
-    const pixel = Array.from(ctx.getImageData(8, 5, 1, 1).data);
-
-    expect(pixel).toEqual([0, 0, 0, 0]);
-    expect(update.result.totalTruncation).toBeCloseTo(4e-4);
-    expect(engine.applyLegacyPowerSubsampling).toBe(false);
   });
 
   it('packs authored runtime parameters as saturated f32 values', async () => {
@@ -393,6 +212,10 @@ describe('WebGpuSimulationEngine staged execution', () => {
       expect(shader).toContain('fn source_0(');
       expect(shader).toContain('@compute @workgroup_size(64)');
       expect(shader).toContain('sourceMain(');
+      expect(shader).toContain('while (low < high)');
+      expect(shader).not.toContain(
+        'relativeEntry < sourceUniforms.dispatchEntryCount'
+      );
       expect(shader).toContain(
         'instanceParameters[source.parameterOffset + 0u]'
       );
@@ -411,6 +234,7 @@ describe('WebGpuSimulationEngine staged execution', () => {
         setPipeline: jest.fn(),
         setBindGroup: jest.fn(),
         dispatchWorkgroups,
+        dispatchWorkgroupsIndirect: jest.fn(),
         end: jest.fn(),
       };
       const device = createComputeTestDevice();
@@ -423,14 +247,14 @@ describe('WebGpuSimulationEngine staged execution', () => {
       const beginComputePass = jest.fn(() => computePass);
       backend.encodeInitialTrace({ beginComputePass, clearBuffer: jest.fn() });
 
-      expect(device.createComputePipelineAsync).toHaveBeenCalledTimes(5);
-      expect(device.createBindGroup).toHaveBeenCalledTimes(6);
-      expect(beginComputePass).toHaveBeenCalledTimes(5);
-      expect(dispatchWorkgroups).toHaveBeenCalledTimes(5);
+      expect(device.createComputePipelineAsync).toHaveBeenCalledTimes(6);
+      expect(device.createBindGroup).toHaveBeenCalledTimes(8);
+      expect(beginComputePass).toHaveBeenCalledTimes(6);
+      expect(dispatchWorkgroups).toHaveBeenCalledTimes(3);
       expect(dispatchWorkgroups).toHaveBeenNthCalledWith(1, 1);
       expect(dispatchWorkgroups).toHaveBeenNthCalledWith(2, 1);
       expect(backend.sourceStage.rayBuffer.descriptor.size)
-        .toBe(WEBGPU_RAY_STRIDE);
+        .toBe(1024 * WEBGPU_RAY_STRIDE);
       const createdBuffers = device.createBuffer.mock.calls.map(
         ([descriptor]) => descriptor
       );
@@ -478,8 +302,9 @@ describe('WebGpuSimulationEngine staged execution', () => {
       expect(shader).toContain('fn fillMain(');
       expect(shader).toContain('fn advanceMain(');
       expect(shader).toContain(
-        'atomicStore(&runControl[0], atomicLoad(&runControl[4]))'
+        'atomicStore(&runControl[0],nextRayCount)'
       );
+      expect(shader).toContain('atomicStore(&dispatchArguments[0]');
       expect(shader).toContain('atomicStore(&runControl[8], 1u)');
       expect(shader).toContain('interactionRayIndices[outputIndex] = rayIndex');
     });
@@ -503,7 +328,8 @@ describe('WebGpuSimulationEngine staged execution', () => {
       const dispatchWorkgroups = jest.fn();
       const computePass = {
         setPipeline: jest.fn(), setBindGroup: jest.fn(),
-        dispatchWorkgroups, end: jest.fn(),
+        dispatchWorkgroups, dispatchWorkgroupsIndirect: jest.fn(),
+        end: jest.fn(),
       };
       const device = createComputeTestDevice();
       const backend = new WebGpuComputeBackend(device, prepared, {
@@ -516,12 +342,12 @@ describe('WebGpuSimulationEngine staged execution', () => {
 
       expect(backend.membershipStage).not.toBeNull();
       expect(backend.membershipStage.regionWordCount).toBe(1);
-      expect(beginComputePass).toHaveBeenCalledTimes(7);
-      expect(dispatchWorkgroups).toHaveBeenCalledTimes(8);
-      expect(device.createComputePipelineAsync).toHaveBeenCalledTimes(8);
-      expect(device.createBindGroup).toHaveBeenCalledTimes(11);
+      expect(beginComputePass).toHaveBeenCalledTimes(8);
+      expect(dispatchWorkgroups).toHaveBeenCalledTimes(4);
+      expect(device.createComputePipelineAsync).toHaveBeenCalledTimes(9);
+      expect(device.createBindGroup).toHaveBeenCalledTimes(13);
       expect(backend.outgoingStage.rayNextBuffer.descriptor.size)
-        .toBe(WEBGPU_RAY_STRIDE);
+        .toBe(1024 * WEBGPU_RAY_STRIDE);
       backend.destroy();
     });
 
@@ -728,7 +554,7 @@ describe('WebGpuSimulationEngine staged execution', () => {
     });
   });
 
-  it('initializes the 64-byte GPU run-control block', () => {
+  it('initializes the GPU run-control block and indirect scratch', () => {
     const control = createWebGpuRunControlData({
       currentRayCount: 12,
       rayCapacity: 64,
@@ -736,22 +562,22 @@ describe('WebGpuSimulationEngine staged execution', () => {
       readyPointCapacity: 32,
     });
 
-    expect(control.byteLength).toBe(64);
+    expect(control.byteLength).toBe(80);
     expect(Array.from(control.slice(0, 10))).toEqual([
       12, 64, 128, 32, 0, 0, 0, 0, 0, 0
     ]);
   });
 
   it('decodes signed detector values and their overflow flags', () => {
-    const data = new ArrayBuffer(64 + 3 * 8);
+    const data = new ArrayBuffer(80 + 3 * 8);
     const view = new DataView(data);
     view.setUint32(0, 7, true);
     view.setUint32(4, 32, true);
     view.setUint32(44, 3, true);
-    view.setInt32(64, 1572864, true);
-    view.setInt32(72, -524288, true);
-    view.setUint32(76, 1, true);
-    view.setInt32(80, 2097152, true);
+    view.setInt32(80, 1572864, true);
+    view.setInt32(88, -524288, true);
+    view.setUint32(92, 1, true);
+    view.setInt32(96, 2097152, true);
     const state = decodeWebGpuRunState(data, {
       detectors: [
         { resultId: 0, resultSize: 2 },
@@ -762,9 +588,8 @@ describe('WebGpuSimulationEngine staged execution', () => {
     expect(state.currentRayCount).toBe(7);
     expect(state.rayCapacity).toBe(32);
     expect(state.pingPongIndex).toBe(3);
-    expect(Array.from(state.detectors[0].values)).toEqual([1.5, -0.5]);
-    expect(Array.from(state.detectors[0].overflow)).toEqual([0, 1]);
-    expect(Array.from(state.detectors[1].values)).toEqual([2]);
+    expect(Array.from(state.detectors[0])).toEqual([1.5, -0.5]);
+    expect(Array.from(state.detectors[1])).toEqual([2]);
     expect(state.detectorOverflow).toBe(true);
   });
 

@@ -16,7 +16,12 @@
 
 import fs from 'fs';
 import path from 'path';
-import { compareImages, compareCSV, runScene } from './helpers/sceneTestHelper.js';
+import {
+  compareImages,
+  compareCSV,
+  disposeWebGpuTestDevice,
+  runScene
+} from './helpers/sceneTestHelper.js';
 
 // Function to recursively find all JSON files in a directory
 function findJsonFiles(dir) {
@@ -54,6 +59,11 @@ try {
 }
 
 describe(`Scene Tests (${SCENE_TEST_ENGINE})`, () => {
+  afterAll(async () => {
+    if (SCENE_TEST_ENGINE === 'webgpu') {
+      await disposeWebGpuTestDevice();
+    }
+  });
   // Test each scene in each directory
   TEST_DIRS.forEach(dirName => {
     describe(dirName, () => {

@@ -64,7 +64,7 @@ export class WebGpuRawTraceStage {
     const tolerance = getIntersectionTolerancePolicy(
       this.description.numericEpsilon
     );
-    const uniformData = new ArrayBuffer(48);
+    const uniformData = new ArrayBuffer(64);
     const uniformView = new DataView(uniformData);
     uniformView.setUint32(0, Math.min(
       this.description.sources.reduce(
@@ -102,6 +102,7 @@ export class WebGpuRawTraceStage {
       40, Math.fround(4 * Math.sin(normalTolerance * 0.5) ** 2), true
     );
     uniformView.setFloat32(44, Math.fround(tolerance.mergingDistance), true);
+    uniformView.setFloat32(48, 0, true);
     this.uniformBuffer = createInitializedBuffer(
       this.device, uniformData,
       BUFFER_USAGE_UNIFORM | BUFFER_USAGE_COPY_DST,
@@ -209,13 +210,23 @@ export class WebGpuRawTraceStage {
     });
   }
 
+  configureRun(options) {
+    this.device.queue.writeBuffer(
+      this.uniformBuffer,
+      48,
+      new Float32Array([Math.fround(options.rayPowerCutoff ?? 1e-6)])
+    );
+  }
+
   encode(commandEncoder, direction = 0) {
     const pass = commandEncoder.beginComputePass({ label: 'WebGPU raw trace' });
     pass.setPipeline(this.pipeline);
     pass.setBindGroup(0, direction === 0
       ? this.bindGroup
       : this.alternateBindGroup);
-    pass.dispatchWorkgroups(Math.ceil(this.rayCapacity / this.workgroupSize));
+    pass.dispatchWorkgroupsIndirect(
+      this.interactionBuffers.dispatchIndirect, 0
+    );
     pass.end();
   }
 
@@ -289,7 +300,8 @@ struct TraceUniforms { rayCount: u32, rayCapacity: u32, bvhRoot: i32,
   curveCount: u32, regionCount:u32, regionWordCount:u32,
   surfaceTypeOffset:u32, detectorTypeOffset:u32, forwardDistance:f32,
   interactionMerging:f32, maximumNormalChordDistanceSquared:f32,
-  mergingDistanceFactor:f32 };
+  mergingDistanceFactor:f32,rayPowerCutoff:f32,
+  padding0:u32,padding1:u32,padding2:u32 };
 
 @group(0) @binding(0) var<storage, read> rays: array<Ray>;
 @group(0) @binding(1) var<storage, read> curves: array<CurveDescriptor>;
@@ -406,6 +418,15 @@ fn rawTraceMain(@builtin(global_invocation_id) invocation: vec3u) {
   var hit=Hit(F32_MAX,0.0,vec2f(0.0),-1,0.0,0u,0xffffffffu);
   if ((ray.flags&1u)==0u) {
     hits[rayIndex]=hit; interactionTypeByRay[rayIndex]=0xffffffffu; return;
+  }
+  atomicAdd(&runControl[16],1u);
+  let power=ray.powers.x+ray.powers.y;
+  if(power<traceUniforms.rayPowerCutoff){
+    hit.s=0.0;hits[rayIndex]=hit;
+    interactionTypeByRay[rayIndex]=0xffffffffu;
+    atomicAdd(&runControl[17],u32(round(min(
+      power*1048576.0,4294967040.0))));
+    return;
   }
   let maximumDistance=getMaximumDistance(rayIndex); hit.s=maximumDistance;
   if (traceUniforms.bvhRoot<0) {

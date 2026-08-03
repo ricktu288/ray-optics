@@ -12,6 +12,7 @@ const BUFFER_USAGE_COPY_SRC = 0x0004;
 const BUFFER_USAGE_COPY_DST = 0x0008;
 const BUFFER_USAGE_UNIFORM = 0x0040;
 const BUFFER_USAGE_STORAGE = 0x0080;
+const BUFFER_USAGE_INDIRECT = 0x0100;
 
 /**
  * GPU count/scan/fill resources shared by every ping-pong.  The prefix scan
@@ -56,8 +57,10 @@ export class WebGpuInteractionIndexStage {
         rayCapacity: this.rayCapacity,
         readyLineCapacity: this.readyLineCapacity,
         readyPointCapacity: this.readyPointCapacity,
+        workgroupSize: this.workgroupSize,
       }),
-      BUFFER_USAGE_STORAGE | BUFFER_USAGE_COPY_SRC | BUFFER_USAGE_COPY_DST,
+      BUFFER_USAGE_STORAGE | BUFFER_USAGE_COPY_SRC | BUFFER_USAGE_COPY_DST |
+        BUFFER_USAGE_INDIRECT,
       'WebGPU run control'
     );
     this.buffers.interactionTypeCounts = createZeroBuffer(
@@ -75,6 +78,19 @@ export class WebGpuInteractionIndexStage {
     this.buffers.interactionRayIndices = createZeroBuffer(
       this.device, this.rayCapacity * 4,
       'WebGPU interaction ray indices'
+    );
+    this.buffers.dispatchIndirect = createInitializedBuffer(
+      this.device,
+      new Uint32Array([
+        Math.ceil(Math.min(
+          this.packedScene.counts.sourceRays,
+          this.rayCapacity
+        ) / this.workgroupSize),
+        1,
+        1,
+      ]),
+      BUFFER_USAGE_STORAGE | BUFFER_USAGE_COPY_DST | BUFFER_USAGE_INDIRECT,
+      'WebGPU ray dispatch arguments'
     );
     this.buffers.uniforms = createInitializedBuffer(
       this.device,
@@ -157,6 +173,7 @@ export class WebGpuInteractionIndexStage {
       layout: this.advancePipeline.getBindGroupLayout(0),
       entries: [
         { binding: 3, resource: { buffer: this.buffers.runControl } },
+        { binding: 7, resource: { buffer: this.buffers.dispatchIndirect } },
       ],
     });
   }
@@ -180,7 +197,7 @@ export class WebGpuInteractionIndexStage {
     });
     pass.setPipeline(this.fillPipeline);
     pass.setBindGroup(0, this.fillBindGroup);
-    pass.dispatchWorkgroups(Math.ceil(this.rayCapacity / this.workgroupSize));
+    pass.dispatchWorkgroupsIndirect(this.buffers.dispatchIndirect, 0);
     pass.end();
   }
 
@@ -245,6 +262,8 @@ struct IndexUniforms {
   interactionTypeByRay: array<u32>;
 @group(0) @binding(6) var<storage, read_write>
   interactionRayIndices: array<u32>;
+@group(0) @binding(7) var<storage, read_write>
+  dispatchArguments: array<atomic<u32>>;
 
 @compute @workgroup_size(1)
 fn prefixMain(@builtin(global_invocation_id) invocation: vec3u) {
@@ -302,8 +321,13 @@ fn fillMain(@builtin(global_invocation_id) invocation: vec3u) {
 @compute @workgroup_size(1)
 fn advanceMain(@builtin(global_invocation_id) invocation: vec3u) {
   if (invocation.x != 0u) { return; }
-  atomicStore(&runControl[0], atomicLoad(&runControl[4]));
+  let nextRayCount=atomicLoad(&runControl[4]);
+  atomicStore(&runControl[0],nextRayCount);
   atomicStore(&runControl[4], 0u);
+  atomicStore(&dispatchArguments[0],
+    (nextRayCount+${workgroupSize - 1}u)/${workgroupSize}u);
+  atomicStore(&dispatchArguments[1],1u);
+  atomicStore(&dispatchArguments[2],1u);
   atomicAdd(&runControl[11], 1u);
 }
 `;

@@ -12,7 +12,7 @@ export const WEBGPU_REGION_DESCRIPTOR_STRIDE = 32;
 export const WEBGPU_DETECTOR_DESCRIPTOR_STRIDE = 32;
 export const WEBGPU_CURVE_DESCRIPTOR_STRIDE = 32;
 export const WEBGPU_BVH_NODE_STRIDE = 32;
-export const WEBGPU_RUN_CONTROL_SIZE = 64;
+export const WEBGPU_RUN_CONTROL_SIZE = 80;
 
 export const WEBGPU_CURVE_KINDS = Object.freeze({
   lineSegment: 0,
@@ -186,6 +186,7 @@ export function createWebGpuRunControlData({
   rayCapacity = 0,
   readyLineCapacity = 0,
   readyPointCapacity = 0,
+  workgroupSize = 64,
 } = {}) {
   const data = new Uint32Array(WEBGPU_RUN_CONTROL_SIZE / 4);
   data[0] = currentRayCount;
@@ -194,7 +195,12 @@ export function createWebGpuRunControlData({
   data[3] = readyPointCapacity;
   // 4 nextRayCount, 5 requiredRayCapacity, 6 readyLineCount,
   // 7 readyPointCount, 8 resizeNeeded, 9 cancelRequested,
-  // 10 phase, 11 pingPongIndex, 12-15 indirect arguments/scratch.
+  // 10 phase, 11 pingPongIndex, 12-15 indirect arguments/scratch,
+  // 16 processedRayCount, 17 totalTruncation as atomic f32 bits,
+  // 18 warning flags, 19 ready-geometry overflow.
+  data[12] = Math.ceil(currentRayCount / workgroupSize);
+  data[13] = 1;
+  data[14] = 1;
   return data;
 }
 

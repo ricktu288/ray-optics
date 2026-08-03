@@ -46,6 +46,31 @@ const BEAM_POINT_SOURCE_TYPE = {
   )
 };
 
+// A parallel beam is one source instance whose invocation index selects the
+// sampled position.  Divergent beams deliberately use BEAM_POINT_SOURCE_TYPE
+// once per position so all angular samples from one point remain adjacent.
+const PARALLEL_BEAM_SOURCE_TYPE = {
+  name: 'Parallel beam',
+  paramNames: [
+    'x_0', 'y_0', 'step_x', 'step_y', 'd_x_0', 'd_y_0', 'P', 'lambda_0'
+  ],
+  dag: parseFormula(
+    `
+      x = x_0 + i * step_x;
+      y = y_0 + i * step_y;
+      d_x = d_x_0;
+      d_y = d_y_0;
+      P_s = P;
+      P_p = P;
+      lambda = lambda_0;
+    `,
+    [
+      'i', 'x_0', 'y_0', 'step_x', 'step_y', 'd_x_0', 'd_y_0', 'P',
+      'lambda_0'
+    ]
+  )
+};
+
 const RANDOM_BEAM_RAY_SOURCE_TYPE = {
   name: 'Random beam ray',
   paramNames: ['x_0', 'y_0', 'd_x_0', 'd_y_0', 'P_s_0', 'P_p_0', 'lambda_0'],
@@ -263,6 +288,23 @@ class Beam extends LineObjMixin(BaseSceneObj) {
     // exactly representable by f32 engines.
     const stepX = dx / (length * rayDensity / this.scene.lengthScale);
     const stepY = dy / (length * rayDensity / this.scene.lengthScale);
+    if (angularCount === 1) {
+      return [{
+        kind: 'source',
+        sourceType: PARALLEL_BEAM_SOURCE_TYPE,
+        params: {
+          x_0: this.p1.x + 0.5 * stepX,
+          y_0: this.p1.y + 0.5 * stepY,
+          step_x: stepX,
+          step_y: stepY,
+          d_x_0: Math.sin(normal),
+          d_y_0: Math.cos(normal),
+          P: rayPower,
+          lambda_0: wavelength
+        },
+        rayCount: positionCount
+      }];
+    }
     const primitives = [];
     for (let positionIndex = 0; positionIndex < positionCount; positionIndex++) {
       const position = positionIndex + 0.5;

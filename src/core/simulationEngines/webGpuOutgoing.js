@@ -531,36 +531,36 @@ export class WebGpuOutgoingStage {
     const pass = commandEncoder.beginComputePass({
       label: 'WebGPU typed outgoing rays',
     });
-    const workgroupCount = Math.ceil(
-      this.rayCapacity / this.workgroupSize
+    const dispatch = () => pass.dispatchWorkgroupsIndirect(
+      this.interactionBuffers.dispatchIndirect, 0
     );
     if (this.grinPipeline) {
       pass.setPipeline(this.grinPipeline);
       pass.setBindGroup(0, direction === 0
         ? this.grinBindGroup
         : this.grinReverseBindGroup);
-      pass.dispatchWorkgroups(workgroupCount);
+      dispatch();
     }
     for (const { pipeline } of this.boundaryPipelines) {
       pass.setPipeline(pipeline);
       pass.setBindGroup(0, direction === 0
         ? this.boundaryBindGroup
         : this.boundaryReverseBindGroup);
-      pass.dispatchWorkgroups(workgroupCount);
+      dispatch();
     }
     for (const stage of this.surfaceStages) {
       pass.setPipeline(stage.pipeline);
       pass.setBindGroup(0, (direction === 0
         ? this.surfaceBindGroups
         : this.surfaceReverseBindGroups).get(stage.needsBulk));
-      pass.dispatchWorkgroups(workgroupCount);
+      dispatch();
     }
     for (const stage of this.detectorStages) {
       pass.setPipeline(stage.pipeline);
       pass.setBindGroup(0, direction === 0
         ? this.detectorBindGroup
         : this.detectorReverseBindGroup);
-      pass.dispatchWorkgroups(workgroupCount);
+      dispatch();
     }
     pass.end();
   }

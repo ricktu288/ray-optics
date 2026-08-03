@@ -11,6 +11,7 @@ import {
 import { WebGpuInteractionIndexStage } from './webGpuInteractionIndex.js';
 import { WebGpuInitialMembershipStage } from './webGpuMembership.js';
 import { WebGpuOutgoingStage } from './webGpuOutgoing.js';
+import { WebGpuRenderPreparationStage } from './webGpuRenderPreparation.js';
 import { WebGpuRawTraceStage } from './webGpuTrace.js';
 
 const BUFFER_USAGE_MAP_READ = 0x0001;
@@ -272,6 +273,7 @@ export class WebGpuComputeBackend {
     this.interactionIndexStage = null;
     this.rawTraceStage = null;
     this.outgoingStage = null;
+    this.renderPreparationStage = null;
     this.canEmitAllSources = false;
   }
 
@@ -286,8 +288,10 @@ export class WebGpuComputeBackend {
         this.config.maxBatchRayEvents * WEBGPU_RAY_STRIDE) /
       WEBGPU_RAY_STRIDE
     ));
+    // Reserve the configured batch capacity, not merely the initial source
+    // count. Splitting/refraction may grow the next ping-pong while indirect
+    // dispatch keeps unused capacity free of invocation cost.
     const rayCapacity = Math.max(1, Math.min(
-      Math.max(1, sourceRayCount),
       this.config.maxBatchRayEvents,
       deviceRayLimit
     ));
@@ -353,6 +357,23 @@ export class WebGpuComputeBackend {
         this.outgoingStage.membershipNextBuffer
       );
       this.outgoingStage.setReverseDirectionBindings();
+      this.renderPreparationStage = new WebGpuRenderPreparationStage(
+        this.device,
+        {
+          rayBuffer: this.sourceStage.rayBuffer,
+          alternateRayBuffer: this.outgoingStage.rayNextBuffer,
+          hitBuffer: this.rawTraceStage.hitBuffer,
+          runControl: this.interactionIndexStage.buffers.runControl,
+          dispatchIndirect:
+            this.interactionIndexStage.buffers.dispatchIndirect,
+          rayCapacity,
+          geometryCapacity:
+            (this.config.maxReadyLineRecords ?? rayCapacity * 5) +
+            (this.config.maxReadyPointRecords ?? rayCapacity),
+          workgroupSize: this.config.workgroupSize,
+        }
+      );
+      await this.renderPreparationStage.initialize();
     } catch (error) {
       this.destroy();
       throw error;
@@ -404,6 +425,11 @@ export class WebGpuComputeBackend {
     this.outgoingStage.description = nextPreparedScene.runtimeDescription;
   }
 
+  configureRun(options) {
+    this.renderPreparationStage.configure(options);
+    this.rawTraceStage.configureRun(options);
+  }
+
   resetRunControl() {
     const sourceRayCount = this.preparedScene.packedStorage.counts.sourceRays;
     this.device.queue.writeBuffer(
@@ -417,7 +443,20 @@ export class WebGpuComputeBackend {
         rayCapacity: this.sourceStage.rayCapacity,
         readyLineCapacity: this.config.maxReadyLineRecords,
         readyPointCapacity: this.config.maxReadyPointRecords,
+        workgroupSize: this.config.workgroupSize,
       })
+    );
+    this.device.queue.writeBuffer(
+      this.interactionIndexStage.buffers.dispatchIndirect,
+      0,
+      new Uint32Array([
+        Math.ceil(Math.min(
+          sourceRayCount,
+          this.sourceStage.rayCapacity
+        ) / this.config.workgroupSize),
+        1,
+        1,
+      ])
     );
   }
 
@@ -432,6 +471,7 @@ export class WebGpuComputeBackend {
 
   encodeInitialTrace(commandEncoder, {
     pingPongCount = this.getInitialPingPongCount(),
+    terminalTrace = false,
   } = {}) {
     if (!Number.isSafeInteger(pingPongCount) || pingPongCount <= 0) {
       throw new RangeError('pingPongCount must be a positive safe integer.');
@@ -443,16 +483,29 @@ export class WebGpuComputeBackend {
       pingPongCount,
       startDirection: 0,
     });
+    if (terminalTrace) this.encodeTerminalTrace(commandEncoder,
+      pingPongCount & 1);
+  }
+
+  encodeInitialTerminalTrace(commandEncoder) {
+    commandEncoder.clearBuffer(this.outgoingStage.detectorResultBuffer);
+    this.encodeSourceEmission(commandEncoder);
+    this.membershipStage?.encode(commandEncoder);
+    this.encodeTerminalTrace(commandEncoder, 0);
   }
 
   encodeContinuation(commandEncoder, {
     pingPongCount,
     startDirection,
+    terminalTrace = false,
   }) {
     this.encodePingPongs(commandEncoder, {
       pingPongCount,
       startDirection,
     });
+    if (terminalTrace) this.encodeTerminalTrace(
+      commandEncoder, (startDirection + pingPongCount) & 1
+    );
   }
 
   encodePingPongs(commandEncoder, { pingPongCount, startDirection }) {
@@ -466,10 +519,26 @@ export class WebGpuComputeBackend {
       const direction = (startDirection + pingPong) & 1;
       this.interactionIndexStage.encodeReset(commandEncoder);
       this.rawTraceStage.encode(commandEncoder, direction);
+      this.renderPreparationStage.encode(commandEncoder, direction);
       this.interactionIndexStage.encodePrefixAndFill(commandEncoder);
       this.outgoingStage.encode(commandEncoder, direction);
       this.interactionIndexStage.encodeAdvance(commandEncoder);
     }
+  }
+
+  encodeTerminalTrace(commandEncoder, direction) {
+    this.interactionIndexStage.encodeReset(commandEncoder);
+    this.rawTraceStage.encode(commandEncoder, direction);
+    this.renderPreparationStage.encode(commandEncoder, direction);
+  }
+
+  encodeReadyGeometryReset(commandEncoder) {
+    commandEncoder.clearBuffer(
+      this.interactionIndexStage.buffers.runControl, 6 * 4, 2 * 4
+    );
+    commandEncoder.clearBuffer(
+      this.interactionIndexStage.buffers.runControl, 19 * 4, 4
+    );
   }
 
   getInitialPingPongCount() {
@@ -479,7 +548,7 @@ export class WebGpuComputeBackend {
     return this.getPingPongCount(rayCount);
   }
 
-  getPingPongCount(rayCount) {
+  getPingPongCount(rayCount, maximumRecordsPerRay = 1) {
     if (!Number.isSafeInteger(rayCount) || rayCount <= 0) return 1;
     const limits = [this.config.maxPingPongsPerSubmission ?? 1];
     for (const itemLimit of [
@@ -490,6 +559,12 @@ export class WebGpuComputeBackend {
         limits.push(Math.max(1, Math.floor(itemLimit / rayCount)));
       }
     }
+    const geometryCapacity =
+      (this.config.maxReadyLineRecords ?? this.sourceStage.rayCapacity * 5) +
+      (this.config.maxReadyPointRecords ?? this.sourceStage.rayCapacity);
+    limits.push(Math.max(1, Math.floor(
+      geometryCapacity / Math.max(1, rayCount * maximumRecordsPerRay)
+    )));
     return Math.max(1, Math.min(...limits));
   }
 
@@ -552,12 +627,14 @@ export class WebGpuComputeBackend {
     this.membershipStage?.destroy();
     this.rawTraceStage?.destroy();
     this.outgoingStage?.destroy();
+    this.renderPreparationStage?.destroy();
     this.interactionIndexStage?.destroy();
     this.staticStorage?.destroy();
     this.sourceStage = null;
     this.membershipStage = null;
     this.rawTraceStage = null;
     this.outgoingStage = null;
+    this.renderPreparationStage = null;
     this.interactionIndexStage = null;
     this.staticStorage = null;
   }
@@ -578,7 +655,7 @@ export function decodeWebGpuRunState(data, description) {
     throw new RangeError('WebGPU detector-result readback is truncated.');
   }
   const view = new DataView(bytes);
-  const detectors = detectorLayout.results.map(({ offset, size }) => {
+  const decodedDetectors = detectorLayout.results.map(({ offset, size }) => {
     const values = new Float64Array(size);
     const overflow = new Uint8Array(size);
     for (let index = 0; index < size; index++) {
@@ -602,8 +679,12 @@ export function decodeWebGpuRunState(data, description) {
     cancelRequested: control[9] !== 0,
     phase: control[10],
     pingPongIndex: control[11],
-    detectors,
-    detectorOverflow: detectors.some(result =>
+    processedRayCount: control[16],
+    totalTruncation: control[17] / DETECTOR_FIXED_POINT_SCALE,
+    warningFlags: control[18],
+    readyGeometryOverflow: control[19] !== 0,
+    detectors: decodedDetectors.map(result => result.values),
+    detectorOverflow: decodedDetectors.some(result =>
       result.overflow.some(value => value !== 0)
     ),
   };
@@ -711,27 +792,32 @@ fn sourceMain(@builtin(global_invocation_id) invocation: vec3u) {
     return;
   }
 
-  var descriptorIndex = 0u;
-  var localRayIndex = 0u;
-  var found = false;
-  for (var relativeEntry = 0u;
-       relativeEntry < sourceUniforms.dispatchEntryCount;
-       relativeEntry++) {
+  // Entries are ordered by typeRayStart. Find the last entry whose start is
+  // not greater than this invocation. A linear scan made sources containing
+  // many instances (notably divergent/random beams) quadratic in ray count.
+  var low = 0u;
+  var high = sourceUniforms.dispatchEntryCount;
+  while (low < high) {
+    let middle = low + (high - low) / 2u;
     let entry = sourceDispatchEntries[
-      sourceUniforms.dispatchEntryOffset + relativeEntry
+      sourceUniforms.dispatchEntryOffset + middle
     ];
-    let candidate = sourceDescriptors[entry.descriptorIndex];
-    if (typeRayIndex >= entry.typeRayStart &&
-        typeRayIndex - entry.typeRayStart < candidate.rayCount) {
-      descriptorIndex = entry.descriptorIndex;
-      localRayIndex = typeRayIndex - entry.typeRayStart;
-      found = true;
-      break;
+    if (entry.typeRayStart <= typeRayIndex) {
+      low = middle + 1u;
+    } else {
+      high = middle;
     }
   }
-  if (!found) {
+  if (low == 0u) {
     return;
   }
+  let entry = sourceDispatchEntries[
+    sourceUniforms.dispatchEntryOffset + low - 1u
+  ];
+  let descriptorIndex = entry.descriptorIndex;
+  let localRayIndex = typeRayIndex - entry.typeRayStart;
+  let candidate = sourceDescriptors[descriptorIndex];
+  if (localRayIndex >= candidate.rayCount) { return; }
 
   let source = sourceDescriptors[descriptorIndex];
   let outputIndex = source.rayStart + localRayIndex;

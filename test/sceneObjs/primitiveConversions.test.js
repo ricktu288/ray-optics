@@ -260,7 +260,7 @@ describe('additional scene-object primitive conversions', () => {
     }
   });
 
-  test('beam uses one source primitive per sampled point', () => {
+  test('divergent beam uses one source primitive per sampled point', () => {
     const scene = new Scene();
     scene.rayDensity = 1;
     const beam = new Beam(scene);
@@ -274,6 +274,28 @@ describe('additional scene-object primitive conversions', () => {
     expect(primitives.every(
       primitive => primitive.rayCount === primitives[0].rayCount
     )).toBe(true);
+  });
+
+  test('parallel beam uses one source primitive for all sampled points', () => {
+    const scene = new Scene();
+    scene.rayDensity = 1;
+    const beam = new Beam(scene);
+    beam.p1 = { x: 0, y: 0 };
+    beam.p2 = { x: 10, y: 0 };
+    beam.emisAngle = 0;
+
+    const primitives = beam.getPrimitives();
+    expect(primitives).toHaveLength(1);
+    expect(primitives[0].rayCount).toBe(10);
+    const evaluate = createDagClosureEvaluator(primitives[0].sourceType.dag);
+    const first = evaluate({ ...primitives[0].params, i: 0 });
+    const last = evaluate({ ...primitives[0].params, i: 9 });
+    expect(first.x).toBeCloseTo(0.5);
+    expect(last.x).toBeCloseTo(9.5);
+    expect(first.y).toBeCloseTo(0);
+    expect(last.y).toBeCloseTo(0);
+    expect(first.d_x).toBeCloseTo(last.d_x);
+    expect(first.d_y).toBeCloseTo(last.d_y);
   });
 
   test('source mappings expose their legacy brightness scales', () => {

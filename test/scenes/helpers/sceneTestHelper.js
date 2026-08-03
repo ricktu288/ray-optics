@@ -20,6 +20,101 @@ import { createCanvas } from 'canvas';
 import sharp from 'sharp';
 const rayOptics = require('../../../dist-node/rayOptics.js');
 
+const webGpuPackageDirectory = path.dirname(
+  require.resolve('webgpu/package.json')
+);
+const webGpuArchitecture = process.platform === 'darwin'
+  ? 'universal'
+  : process.arch;
+const { create: createWebGpu, globals: webGpuGlobals } = require(path.join(
+  webGpuPackageDirectory,
+  'dist',
+  `${process.platform}-${webGpuArchitecture}.dawn.node`
+));
+Object.assign(globalThis, webGpuGlobals);
+const nodeGpu = createWebGpu([]);
+let webGpuDevicePromise = null;
+
+export async function disposeWebGpuTestDevice() {
+  if (!webGpuDevicePromise) return;
+  const device = await webGpuDevicePromise;
+  device.destroy();
+  webGpuDevicePromise = null;
+}
+
+async function getWebGpuDevice() {
+  if (!webGpuDevicePromise) {
+    webGpuDevicePromise = (async () => {
+      const adapter = await nodeGpu.requestAdapter({
+        powerPreference: 'high-performance'
+      });
+      if (!adapter) throw new Error('No native WebGPU adapter is available.');
+      return adapter.requestDevice({
+        requiredLimits: {
+          maxStorageBuffersPerShaderStage: 14,
+          maxStorageBufferBindingSize:
+            adapter.limits.maxStorageBufferBindingSize,
+          maxBufferSize: adapter.limits.maxBufferSize,
+        }
+      });
+    })();
+  }
+  return webGpuDevicePromise;
+}
+
+function createNodeWebGpuOutput(ctx) {
+  let device = null;
+  let texture = null;
+  const width = Math.max(1, ctx?.canvas?.width ?? 1);
+  const height = Math.max(1, ctx?.canvas?.height ?? 1);
+  return {
+    format: 'rgba8unorm',
+    getSize: () => ({ width, height }),
+    initialize(nextDevice) {
+      device = nextDevice;
+      texture = device.createTexture({
+        size: [width, height],
+        format: this.format,
+        usage: GPUTextureUsage.RENDER_ATTACHMENT |
+          GPUTextureUsage.COPY_SRC,
+      });
+    },
+    acquireView: () => texture.createView(),
+    async readIntoCanvas() {
+      if (!ctx || !texture) return;
+      const bytesPerRow = Math.ceil(width * 4 / 256) * 256;
+      const readback = device.createBuffer({
+        size: bytesPerRow * height,
+        usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.MAP_READ,
+      });
+      const encoder = device.createCommandEncoder();
+      encoder.copyTextureToBuffer(
+        { texture },
+        { buffer: readback, bytesPerRow, rowsPerImage: height },
+        [width, height]
+      );
+      device.queue.submit([encoder.finish()]);
+      await readback.mapAsync(GPUMapMode.READ);
+      const source = new Uint8Array(readback.getMappedRange());
+      const image = ctx.createImageData(width, height);
+      for (let row = 0; row < height; row++) {
+        image.data.set(
+          source.subarray(row * bytesPerRow, row * bytesPerRow + width * 4),
+          row * width * 4
+        );
+      }
+      ctx.putImageData(image, 0, 0);
+      readback.unmap();
+      readback.destroy();
+    },
+    dispose() {
+      texture?.destroy();
+      texture = null;
+      device = null;
+    },
+  };
+}
+
 const SUPPORTED_ENGINES = new Set(['default', 'primitiveCpu', 'webgpu']);
 
 function createSimulator({
@@ -62,6 +157,8 @@ function createSimulator({
   const { drawBounds = false, ...bvhOptions } = bvhSettings;
   const engine = engineKind === 'webgpu'
     ? new rayOptics.WebGpuSimulationEngine({
+      device: getWebGpuDevice,
+      output: createNodeWebGpuOutput(ctxLight),
       numericEpsilon:
         engineSettings.numericEpsilon ?? rayOptics.FLOAT32_EPSILON,
       ctxMain: ctxLight,
@@ -253,7 +350,6 @@ export async function runScene(
       resolve();
     });
   });
-
   // Find CropBox and Detector
   const cropBox = scene.objs.find(obj => obj.constructor.type === 'CropBox');
   const detector = scene.objs.find(obj => obj.constructor.type === 'Detector');
@@ -344,6 +440,9 @@ export async function runScene(
     });
     simulator.updateSimulation(false, false);
   });
+  if (engineKind === 'webgpu') {
+    await simulator.engine.output.readIntoCanvas();
+  }
 
   // Generate detector data
   if (detector && detector.irradMap) {

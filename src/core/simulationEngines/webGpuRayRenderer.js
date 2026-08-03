@@ -651,6 +651,63 @@ export class WebGpuAtomicRayRasterizer {
     return true;
   }
 
+  async drawGpuGeometry(
+    geometryBuffer,
+    recordCount,
+    { origin, scale, colorMode, simulateColors = false },
+    { isCancelled = null, resetAccumulation = false } = {}
+  ) {
+    const size = this.output.getSize?.() ?? this.output.size;
+    this.ensureSize(size?.width ?? 1, size?.height ?? 1);
+    this.device.queue.writeBuffer(this.uniformBuffer, 0, new Float32Array([
+      origin.x, origin.y, scale, 0,
+      this.width, this.height, recordCount,
+      colorModeId(colorMode, simulateColors)
+    ]));
+    const geometryBindGroup = this.device.createBindGroup({
+      layout: this.rasterPipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 0, resource: { buffer: this.uniformBuffer } },
+        { binding: 1, resource: { buffer: geometryBuffer } },
+        { binding: 2, resource: { buffer: this.pixelBuffer } },
+      ],
+    });
+    const view = await this.output.acquireView(this.device);
+    if (isCancelled?.()) return false;
+    const encoder = this.device.createCommandEncoder({
+      label: 'WebGPU raster native ready geometry',
+    });
+    if (resetAccumulation) encoder.clearBuffer(this.pixelBuffer);
+    if (recordCount > 0) {
+      const raster = encoder.beginRenderPass({
+        colorAttachments: [{
+          view: this.dummyView,
+          clearValue: { r: 0, g: 0, b: 0, a: 0 },
+          loadOp: 'clear',
+          storeOp: 'store',
+        }],
+      });
+      raster.setPipeline(this.rasterPipeline);
+      raster.setBindGroup(0, geometryBindGroup);
+      raster.draw(6, recordCount);
+      raster.end();
+    }
+    const present = encoder.beginRenderPass({
+      colorAttachments: [{
+        view,
+        clearValue: { r: 0, g: 0, b: 0, a: 0 },
+        loadOp: 'clear',
+        storeOp: 'store',
+      }],
+    });
+    present.setPipeline(this.presentPipeline);
+    present.setBindGroup(0, this.presentBindGroup);
+    present.draw(3);
+    present.end();
+    this.device.queue.submit([encoder.finish()]);
+    return true;
+  }
+
   async clear({
     origin = { x: 0, y: 0 },
     scale = 1,
