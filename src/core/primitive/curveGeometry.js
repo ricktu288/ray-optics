@@ -23,6 +23,12 @@ const POSITION_ERROR_OPERATION_COUNT = 16;
 const ROOT_ERROR_OPERATION_COUNT = 32;
 
 /**
+ * Signals that a curve has no usable geometry and may be safely discarded by
+ * primitive preprocessing. Other validation errors remain distinguishable.
+ */
+export class DegenerateCurveError extends RangeError {}
+
+/**
  * @typedef {Object} PreparedLineSegmentGeometry
  * @property {'lineSegment'} kind
  * @property {number} originX - World-space start endpoint x coordinate.
@@ -130,7 +136,9 @@ export function prepareCurve(curve, {
       const dy = end.y - start.y;
       const length = Math.hypot(dx, dy);
       if (!(length > 0)) {
-        throw new RangeError('A line segment must have distinct endpoints.');
+        throw new DegenerateCurveError(
+          'A line segment must have distinct endpoints.'
+        );
       }
       geometry = {
         kind: curve.kind,
@@ -171,7 +179,9 @@ export function prepareCurve(curve, {
       const dy = end.y - start.y;
       const chordLength = Math.hypot(dx, dy);
       if (!(chordLength > 0)) {
-        throw new RangeError('A circular arc must have distinct endpoints.');
+        throw new DegenerateCurveError(
+          'A circular arc must have distinct endpoints.'
+        );
       }
       if (bulge === 0) {
         return prepareCurve({
@@ -203,7 +213,9 @@ export function prepareCurve(curve, {
         maxControlY - minControlY
       );
       if (!(scale > 0)) {
-        throw new RangeError('A cubic Bezier must not collapse to one point.');
+        throw new DegenerateCurveError(
+          'A cubic Bezier must not collapse to one point.'
+        );
       }
       const originX = (minControlX + maxControlX) * 0.5;
       const originY = (minControlY + maxControlY) * 0.5;
@@ -230,7 +242,9 @@ export function prepareCurve(curve, {
       const { center, radius } = curve.params;
       const absoluteRadius = Math.abs(radius);
       if (!(absoluteRadius > 0)) {
-        throw new RangeError('A circle must have a nonzero radius.');
+        throw new DegenerateCurveError(
+          'A circle must have a nonzero radius.'
+        );
       }
       geometry = {
         kind: 'circle',
@@ -319,7 +333,7 @@ export function evaluatePreparedCurve(geometry, u, out = {}) {
 function normalizePrimitiveNormal(normal, name) {
   const length = Math.hypot(normal?.x, normal?.y);
   if (!(length > 0) || !Number.isFinite(length)) {
-    throw new RangeError(
+    throw new DegenerateCurveError(
       `A smooth line segment's ${name} must be a finite nonzero vector.`
     );
   }

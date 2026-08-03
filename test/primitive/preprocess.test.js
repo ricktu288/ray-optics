@@ -346,6 +346,123 @@ describe('primitive preprocessing', () => {
     );
   });
 
+  it('discards degenerate curves and owners across every curve kind', () => {
+    const skippedSurfaceType = {
+      name: 'Skipped surface',
+      paramNames: [],
+      dag: dag('P_1s'),
+      outRayCount: 1,
+      mergesWithBoundary: false
+    };
+    const validSurfaceType = {
+      ...skippedSurfaceType,
+      name: 'Valid surface'
+    };
+    const bulkType = {
+      name: 'Bulk',
+      paramNames: [],
+      dag: dag('n')
+    };
+    const detectorType = {
+      name: 'Detector',
+      paramNames: [],
+      dag: detectorDag(),
+      writeCount: 1
+    };
+    const point = { x: 4, y: 5 };
+    const degenerateCurves = [
+      line(0, 0, 0, 0),
+      {
+        kind: 'smoothLineSegment',
+        params: {
+          start: { x: 0, y: 0 },
+          end: { x: 1, y: 0 },
+          startNormal: { x: 0, y: 0 },
+          endNormal: { x: 0, y: 1 }
+        }
+      },
+      {
+        kind: 'circularArc',
+        params: { start: point, end: point, bulge: 1 }
+      },
+      {
+        kind: 'cubicBezier',
+        params: {
+          start: point,
+          control1: point,
+          control2: point,
+          end: point
+        }
+      },
+      {
+        kind: 'circle',
+        params: { center: point, radius: 0 }
+      }
+    ];
+    const droppedDetectorResult = { values: null };
+    const validDetectorResult = { values: null };
+
+    const { processedScene, detectorResultBindings } = preprocessPrimitives([
+      ...degenerateCurves.map(curve => surface(skippedSurfaceType, curve)),
+      surface(validSurfaceType, line(10, 0, 11, 0)),
+      {
+        kind: 'region',
+        curves: [line(20, 0, 20, 0), line(20, 0, 21, 0)],
+        bulkType,
+        params: {},
+        stepSize: 0,
+        partialReflect: false
+      },
+      {
+        kind: 'region',
+        curves: [{
+          kind: 'circle',
+          params: { center: point, radius: 0 }
+        }],
+        bulkType,
+        params: {},
+        stepSize: 0,
+        partialReflect: false
+      },
+      {
+        kind: 'detector',
+        curve: line(30, 0, 30, 0),
+        twoSided: true,
+        detectorType,
+        params: {},
+        resultSize: 1,
+        result: droppedDetectorResult
+      },
+      {
+        kind: 'detector',
+        curve: line(30, 0, 31, 0),
+        twoSided: true,
+        detectorType,
+        params: {},
+        resultSize: 1,
+        result: validDetectorResult
+      }
+    ]);
+
+    expect(processedScene.surfaces).toHaveLength(1);
+    expect(processedScene.regions).toHaveLength(1);
+    expect(processedScene.detectors).toHaveLength(1);
+    expect(processedScene.curves.map(curve => [curve.ownerKind, curve.ownerId]))
+      .toEqual([
+        ['surface', 0],
+        ['region', 0],
+        ['detector', 0]
+      ]);
+    expect(processedScene.types.surfaces).toHaveLength(1);
+    expect(processedScene.types.surfaces[0].definition.name)
+      .toBe('Valid surface');
+    expect(detectorResultBindings).toEqual([{
+      resultId: 0,
+      result: validDetectorResult,
+      resultSize: 1
+    }]);
+  });
+
   it('resolves configured distance tolerances against the scene length scale', () => {
     const surfaceType = {
       name: 'Surface',

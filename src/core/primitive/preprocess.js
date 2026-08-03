@@ -15,7 +15,10 @@
  */
 
 import { buildBvh } from './bvh.js';
-import { prepareCurve } from './curveGeometry.js';
+import {
+  DegenerateCurveError,
+  prepareCurve
+} from './curveGeometry.js';
 import { collectParameterNames } from '../formula/dag-util.js';
 import { validateNumericEpsilon } from './numeric.js';
 
@@ -146,6 +149,8 @@ import { validateNumericEpsilon } from './numeric.js';
 
 /**
  * Convert scene-object primitives into an engine-independent processed scene.
+ * Degenerate curves are discarded. A surface or detector owning one is
+ * discarded with it, while a region is retained if any boundary remains.
  *
  * @param {Primitive[]} primitives - Primitives collected in scene order.
  * @param {Object} [options]
@@ -205,24 +210,30 @@ export function preprocessPrimitives(primitives, {
   const curveBounds = [];
   const detectorResults = new Map();
   const detectorResultBindings = [];
-  const appendProcessedCurve = (
-    curve,
-    ownerKind,
-    ownerId,
-    mergesWithBoundary,
-    twoSided,
-    filter,
-    curvePath
-  ) => {
+  const preparePrimitiveCurve = (curve, curvePath) => {
     const normalizedCurve = normalizePrimitiveCurve(
       curve,
       curvePath
     );
-    const prepared = prepareCurve(normalizedCurve, {
-      lengthScale,
-      endpointTolerance: resolvedNumericalTolerances.curveEndpoint,
-      numericEpsilon
-    });
+    try {
+      return prepareCurve(normalizedCurve, {
+        lengthScale,
+        endpointTolerance: resolvedNumericalTolerances.curveEndpoint,
+        numericEpsilon
+      });
+    } catch (error) {
+      if (error instanceof DegenerateCurveError) return null;
+      throw error;
+    }
+  };
+  const appendProcessedCurve = (
+    prepared,
+    ownerKind,
+    ownerId,
+    mergesWithBoundary,
+    twoSided,
+    filter
+  ) => {
     curves.push(createProcessedCurve(
       prepared.geometry,
       prepared.bounds,
@@ -258,6 +269,11 @@ export function preprocessPrimitives(primitives, {
       }
 
       case 'surface': {
+        const prepared = preparePrimitiveCurve(
+          primitive.curve,
+          `primitives[${primitiveIndex}].curve`
+        );
+        if (!prepared) break;
         const typeRecord = registries.surfaces.register(
           primitive.surfaceType
         );
@@ -270,7 +286,7 @@ export function preprocessPrimitives(primitives, {
           )
         });
         appendProcessedCurve(
-          primitive.curve,
+          prepared,
           'surface',
           ownerId,
           primitive.surfaceType.mergesWithBoundary,
@@ -278,13 +294,23 @@ export function preprocessPrimitives(primitives, {
           normalizeNumericStrings(
             primitive.filter,
             `primitives[${primitiveIndex}].filter`
-          ),
-          `primitives[${primitiveIndex}].curve`
+          )
         );
         break;
       }
 
       case 'region': {
+        const preparedCurves = [];
+        for (let curveIndex = 0; curveIndex < primitive.curves.length; curveIndex++) {
+          const prepared = preparePrimitiveCurve(
+            primitive.curves[curveIndex],
+            `primitives[${primitiveIndex}].curves[${curveIndex}]`
+          );
+          if (prepared) {
+            preparedCurves.push(prepared);
+          }
+        }
+        if (preparedCurves.length === 0) break;
         const typeRecord = registries.bulks.register(
           primitive.bulkType
         );
@@ -301,21 +327,25 @@ export function preprocessPrimitives(primitives, {
           ),
           partialReflect: primitive.partialReflect
         });
-        for (let curveIndex = 0; curveIndex < primitive.curves.length; curveIndex++) {
+        for (const prepared of preparedCurves) {
           appendProcessedCurve(
-            primitive.curves[curveIndex],
+            prepared,
             'region',
             ownerId,
             true,
             undefined,
-            undefined,
-            `primitives[${primitiveIndex}].curves[${curveIndex}]`
+            undefined
           );
         }
         break;
       }
 
       case 'detector': {
+        const prepared = preparePrimitiveCurve(
+          primitive.curve,
+          `primitives[${primitiveIndex}].curve`
+        );
+        if (!prepared) break;
         validateDetectorTypeContract(
           primitive.detectorType,
           primitiveIndex
@@ -357,13 +387,12 @@ export function preprocessPrimitives(primitives, {
           ...resultRange
         });
         appendProcessedCurve(
-          primitive.curve,
+          prepared,
           'detector',
           ownerId,
           false,
           primitive.twoSided,
-          undefined,
-          `primitives[${primitiveIndex}].curve`
+          undefined
         );
         break;
       }
