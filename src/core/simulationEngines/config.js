@@ -49,13 +49,13 @@ export const DEFAULT_SIMULATION_ENGINE_CONFIGS = Object.freeze({
     workgroupSize: 64,
     // These are implementation tuning values, intentionally not exposed by
     // the configuration modal until representative scenes have been profiled.
-    maxItemsPerAdvance: 262144,
-    maxBatchRayEvents: 262144,
-    maxReadyLineRecords: 262144,
-    maxReadyPointRecords: 65536,
+    maxItemsPerAdvance: 1048576,
+    maxBatchRayEvents: 1048576,
+    maxReadyLineRecords: 1048576,
+    maxReadyPointRecords: 1048576,
     // Keep submissions short while interactive updates are being evaluated.
     // Even zero-work indirect dispatches retain command/pass overhead.
-    maxPingPongsPerSubmission: 2,
+    maxPingPongsPerSubmission: 8,
   }),
 });
 

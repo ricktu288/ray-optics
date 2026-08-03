@@ -525,6 +525,46 @@ describe('WebGpuSimulationEngine staged execution', () => {
       expect(shader).toContain('additionOverflow=');
     });
 
+  it('traces later detector instances with the packed 32-byte stride',
+    async () => {
+      const detectorType = {
+        name: 'Power detector', paramNames: [], writeCount: 1,
+        dag: parseFormula(
+          'k_1 = 0; v_1 = P_0s + P_0p;',
+          ['P_0s', 'P_0p']
+        )
+      };
+      const detector = (x) => ({
+        kind: 'detector', detectorType, params: {}, resultSize: 1,
+        result: {}, twoSided: true,
+        curve: {
+          kind: 'lineSegment',
+          params: { start: { x, y: -1 }, end: { x, y: 1 } }
+        }
+      });
+      const engine = new WebGpuSimulationEngine();
+      const prepared = await engine.prepare(process([
+        source(), detector(1), detector(2)
+      ]));
+      const descriptors = new DataView(
+        prepared.packedStorage.detectorDescriptors
+      );
+      const trace = createWebGpuRawTraceShader(
+        prepared.runtimeDescription, 64
+      );
+
+      expect(descriptors.byteLength).toBe(64);
+      expect(descriptors.getUint32(16, true)).toBe(1);
+      expect(descriptors.getUint32(32, true)).toBe(0);
+      expect(trace.code).toContain('struct DetectorDescriptor');
+      expect(trace.code).toContain(
+        'detectors:array<DetectorDescriptor>'
+      );
+      expect(trace.code).toContain(
+        'resultSize:u32, resultOffset:u32,\n  padding0:u32, padding1:u32'
+      );
+    });
+
   it('specializes raw BVH trace code to the curve kinds in the scene', () => {
     const trace = createWebGpuRawTraceShader({
       numericEpsilon: FLOAT32_EPSILON,

@@ -302,6 +302,9 @@ struct RegionDescriptor { typeId:u32, parameterOffset:u32, parameterCount:u32,
   flags:u32, stepSize:f32, padding0:u32, padding1:u32, padding2:u32 };
 struct InstanceDescriptor { typeId:u32, parameterOffset:u32,
   parameterCount:u32, extra:u32 };
+struct DetectorDescriptor { typeId:u32, parameterOffset:u32,
+  parameterCount:u32, resultId:u32, resultSize:u32, resultOffset:u32,
+  padding0:u32, padding1:u32 };
 struct Hit { s: f32, u: f32, normal: vec2f, curveId: i32, sigma: f32,
   conflict: u32, interactionType: u32 };
 struct TraceUniforms { rayCount: u32, rayCapacity: u32, bvhRoot: i32,
@@ -319,7 +322,7 @@ struct TraceUniforms { rayCount: u32, rayCapacity: u32, bvhRoot: i32,
 @group(0) @binding(5) var<storage, read> memberships:array<u32>;
 @group(0) @binding(6) var<storage, read> regions:array<RegionDescriptor>;
 @group(0) @binding(7) var<storage, read> surfaces:array<InstanceDescriptor>;
-@group(0) @binding(8) var<storage, read> detectors:array<InstanceDescriptor>;
+@group(0) @binding(8) var<storage, read> detectors:array<DetectorDescriptor>;
 @group(0) @binding(9) var<storage, read_write> hits: array<Hit>;
 @group(0) @binding(10) var<storage, read_write> crossings:array<u32>;
 @group(0) @binding(11) var<storage, read_write>
