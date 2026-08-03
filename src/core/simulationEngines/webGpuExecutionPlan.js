@@ -53,12 +53,19 @@ export function createWebGpuExecutionPlan(description, parameterRanges) {
     pass('trace', [
       'rayCurrent', 'membershipCurrent', 'bvhNodes', 'bvhCurveIds',
       'curveGeometry', 'regionDescriptors'
-    ], ['hits', 'crossingScratch', 'interactionTypeCounts']),
+    ], ['hits', 'crossingScratch', 'interactionTypeByRay']),
     pass('prepareRenderGeometry', ['rayCurrent', 'hits'],
       ['readyLines', 'readyPoints']),
+    pass('interactionBlockCount', ['interactionTypeByRay'],
+      ['interactionBlockOffsets']),
+    pass('interactionBlockPrefix', ['interactionBlockOffsets'],
+      ['interactionBlockOffsets', 'interactionTypeCounts']),
     pass('interactionPrefixScan', ['interactionTypeCounts'],
       ['interactionTypeStates', 'runControl']),
-    pass('interactionIndexFill', ['hits', 'interactionTypeStates'],
+    pass('stableInteractionIndexFill', [
+      'interactionTypeByRay', 'interactionBlockOffsets',
+      'interactionTypeStates'
+    ],
       ['interactionRayIndices']),
   );
   if (description.regions.length > 0) {
@@ -130,6 +137,11 @@ export function createWebGpuExecutionPlan(description, parameterRanges) {
       interactionTypeCounts: { stride: 4, dynamic: true },
       interactionTypeStates: { stride: 16, dynamic: true },
       interactionRayIndices: { stride: 4, dynamic: true },
+      interactionBlockOffsets: {
+        stride: 4,
+        dynamic: true,
+        shape: 'rayBlockByInteractionType'
+      },
       crossingScratch: { stride: regionWordCount * 8, dynamic: true },
       readyLines: { stride: 64, dynamic: true, batching: 'submission' },
       readyPoints: { stride: 32, dynamic: true, batching: 'submission' },

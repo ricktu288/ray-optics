@@ -638,7 +638,7 @@ struct Hit { s:f32, u:f32, normal:vec2f, curveId:i32, sigma:f32,
 struct RegionDescriptor { typeId:u32, parameterOffset:u32, parameterCount:u32,
   flags:u32, stepSize:f32, padding0:u32, padding1:u32, padding2:u32 };
 struct InteractionTypeState { interactionCount:u32, sourceIndexStart:u32,
-  destinationRayStart:u32, cursor:atomic<u32> };
+  destinationRayStart:u32, reserved:u32 };
 struct OutgoingUniforms { rayCapacity:u32, regionCount:u32,
   regionWordCount:u32, padding:u32 };
 struct BulkResult { n:f32, nX:f32, nY:f32, alpha:f32, invalid:bool };
@@ -695,9 +695,12 @@ fn copyMembership(sourceRayIndex:u32,destinationRayIndex:u32) {
     membershipsNext[destinationBase+wordIndex]=memberships[sourceBase+wordIndex];
   }
 }
-fn writeInactive(source:Ray,point:vec2f,destinationRayIndex:u32) {
+fn writeInactive(
+  source:Ray,point:vec2f,destinationRayIndex:u32,groupStart:bool
+) {
   raysNext[destinationRayIndex]=Ray(
-    point,vec2f(0.0),vec2f(0.0),source.wavelength,2u
+    point,vec2f(0.0),vec2f(0.0),source.wavelength,
+    2u|select(0u,4u,groupStart)
   );
 }
 
@@ -730,12 +733,12 @@ fn grinOutgoingMain(@builtin(global_invocation_id) invocation:vec3u) {
     !finiteNumber(powers.x)||!finiteNumber(powers.y)||
     powers.x<0.0||powers.y<0.0;
   if (invalid) {
-    writeInactive(source,point,destinationRayIndex); return;
+    writeInactive(source,point,destinationRayIndex,localIndex==0u); return;
   }
   let isActive=powers.x!=0.0||powers.y!=0.0;
   raysNext[destinationRayIndex]=Ray(
     point,stepped/steppedLength,powers,source.wavelength,
-    select(0u,1u,isActive)
+    select(0u,1u,isActive)|select(0u,4u,localIndex==0u)
   );
 }`;
 }
@@ -780,7 +783,7 @@ struct Hit { s:f32, u:f32, normal:vec2f, curveId:i32, sigma:f32,
 struct RegionDescriptor { typeId:u32, parameterOffset:u32, parameterCount:u32,
   flags:u32, stepSize:f32, padding0:u32, padding1:u32, padding2:u32 };
 struct InteractionTypeState { interactionCount:u32, sourceIndexStart:u32,
-  destinationRayStart:u32, cursor:atomic<u32> };
+  destinationRayStart:u32, reserved:u32 };
 struct OutgoingUniforms { rayCapacity:u32, regionCount:u32,
   regionWordCount:u32, padding:u32 };
 struct IndexResult { n:f32, invalid:bool };
@@ -854,7 +857,8 @@ fn copyMembership(
 }
 fn writeBoundaryRay(
   source:Ray,point:vec2f,direction:vec2f,powers:vec2f,
-  sourceRayIndex:u32,destinationRayIndex:u32,toggleCrossings:bool
+  sourceRayIndex:u32,destinationRayIndex:u32,toggleCrossings:bool,
+  groupStart:bool
 ) {
   copyMembership(sourceRayIndex,destinationRayIndex,toggleCrossings);
   let invalid=!finiteNumber(point.x)||!finiteNumber(point.y)||
@@ -866,15 +870,17 @@ fn writeBoundaryRay(
   let isActive=!invalid&&(rayPowers.x!=0.0||rayPowers.y!=0.0);
   raysNext[destinationRayIndex]=Ray(point,
     select(direction,vec2f(0.0),invalid),rayPowers,source.wavelength,
-    select(select(0u,1u,isActive),2u,invalid));
+    select(select(0u,1u,isActive),2u,invalid)|
+      select(0u,4u,groupStart));
 }
 fn writeInactiveBoundaryRay(
   source:Ray,point:vec2f,sourceRayIndex:u32,destinationRayIndex:u32,
-  invalid:bool
+  invalid:bool,groupStart:bool
 ) {
   copyMembership(sourceRayIndex,destinationRayIndex,false);
   raysNext[destinationRayIndex]=Ray(
-    point,vec2f(0.0),vec2f(0.0),source.wavelength,select(0u,2u,invalid));
+    point,vec2f(0.0),vec2f(0.0),source.wavelength,
+    select(0u,2u,invalid)|select(0u,4u,groupStart));
 }
 fn processRegionBoundary(localIndex:u32,typeIndex:u32,partialReflect:bool) {
   if (atomicLoad(&runControl[8])!=0u ||
@@ -899,24 +905,24 @@ fn processRegionBoundary(localIndex:u32,typeIndex:u32,partialReflect:bool) {
   let reflectedDirection=source.direction+2.0*cosIncident*hit.normal;
   if (incident.invalid||transmitted.invalid||!finiteNumber(radicand)) {
     writeInactiveBoundaryRay(
-      source,point,sourceRayIndex,transmittedIndex,true);
+      source,point,sourceRayIndex,transmittedIndex,true,localIndex==0u);
     if (partialReflect) {
       let reflectedIndex=destinationStart+interactionCount+localIndex;
       if (reflectedIndex<outgoingUniforms.rayCapacity) {
         writeInactiveBoundaryRay(
-          source,point,sourceRayIndex,reflectedIndex,true);
+          source,point,sourceRayIndex,reflectedIndex,true,localIndex==0u);
       }
     }
     return;
   }
   if (radicand<0.0) {
     writeBoundaryRay(source,point,reflectedDirection,source.powers,
-      sourceRayIndex,transmittedIndex,false);
+      sourceRayIndex,transmittedIndex,false,localIndex==0u);
     if (partialReflect) {
       let reflectedIndex=destinationStart+interactionCount+localIndex;
       if (reflectedIndex<outgoingUniforms.rayCapacity) {
         writeInactiveBoundaryRay(
-          source,point,sourceRayIndex,reflectedIndex,false);
+          source,point,sourceRayIndex,reflectedIndex,false,localIndex==0u);
       }
     }
     return;
@@ -934,13 +940,13 @@ fn processRegionBoundary(localIndex:u32,typeIndex:u32,partialReflect:bool) {
   }
   writeBoundaryRay(source,point,transmittedDirection,
     source.powers*(vec2f(1.0)-reflectedFractions),
-    sourceRayIndex,transmittedIndex,true);
+    sourceRayIndex,transmittedIndex,true,localIndex==0u);
   if (partialReflect) {
     let reflectedIndex=destinationStart+interactionCount+localIndex;
     if (reflectedIndex<outgoingUniforms.rayCapacity) {
       writeBoundaryRay(source,point,reflectedDirection,
         source.powers*reflectedFractions,
-        sourceRayIndex,reflectedIndex,false);
+        sourceRayIndex,reflectedIndex,false,localIndex==0u);
     }
   }
 }
@@ -1010,7 +1016,7 @@ export function createWebGpuSurfaceOutgoingShader({
       .destinationRayStart+${outputIndex}u*interactionCount+localIndex;
     if (destinationRayIndex<outgoingUniforms.rayCapacity) {
       writeSurfaceRay(source,point,direction,powers,dagInvalid,curve,hit,
-        sourceRayIndex,destinationRayIndex);
+        sourceRayIndex,destinationRayIndex,localIndex==0u);
     }
   }`;
     }
@@ -1034,7 +1040,7 @@ struct CurveDescriptor { kind:u32,ownerKind:u32,ownerId:u32,flags:u32,
 struct InstanceDescriptor { typeId:u32,parameterOffset:u32,
   parameterCount:u32,extra:u32 };
 struct InteractionTypeState { interactionCount:u32,sourceIndexStart:u32,
-  destinationRayStart:u32,cursor:atomic<u32> };
+  destinationRayStart:u32,reserved:u32 };
 struct OutgoingUniforms { rayCapacity:u32,regionCount:u32,
   regionWordCount:u32,padding:u32 };
 struct IndexResult { n:f32,invalid:bool };
@@ -1085,7 +1091,7 @@ fn surfaceCrossesBoundary(
 fn writeSurfaceRay(
   source:Ray,point:vec2f,direction:vec2f,powers:vec2f,
   dagInvalid:bool,curve:CurveDescriptor,hit:Hit,
-  sourceIndex:u32,destinationIndex:u32
+  sourceIndex:u32,destinationIndex:u32,groupStart:bool
 ) {
   let invalid=dagInvalid||!finiteNumber(point.x)||!finiteNumber(point.y)||
     !finiteNumber(direction.x)||!finiteNumber(direction.y)||
@@ -1097,7 +1103,8 @@ fn writeSurfaceRay(
   let isActive=!invalid&&(outputPowers.x!=0.0||outputPowers.y!=0.0);
   raysNext[destinationIndex]=Ray(point,select(direction,vec2f(0.0),invalid),
     outputPowers,source.wavelength,
-    select(select(0u,1u,isActive),2u,invalid));
+    select(select(0u,1u,isActive),2u,invalid)|
+      select(0u,4u,groupStart));
 }
 @compute @workgroup_size(${workgroupSize})
 fn surfaceOutgoingMain(@builtin(global_invocation_id) invocation:vec3u) {
@@ -1219,7 +1226,7 @@ struct CurveDescriptor { kind:u32,ownerKind:u32,ownerId:u32,flags:u32,
 struct DetectorDescriptor { typeId:u32,parameterOffset:u32,parameterCount:u32,
   resultId:u32,resultSize:u32,resultOffset:u32,padding0:u32,padding1:u32 };
 struct InteractionTypeState { interactionCount:u32,sourceIndexStart:u32,
-  destinationRayStart:u32,cursor:atomic<u32> };
+  destinationRayStart:u32,reserved:u32 };
 struct DetectorResultCell { value:atomic<i32>,overflow:atomic<u32> };
 struct OutgoingUniforms { rayCapacity:u32,regionCount:u32,
   regionWordCount:u32,padding:u32 };
@@ -1284,7 +1291,7 @@ fn detectorOutgoingMain(@builtin(global_invocation_id) invocation:vec3u){
   let invalid=!finiteNumber(point.x)||!finiteNumber(point.y);
   raysNext[destinationIndex]=Ray(point,select(source.direction,vec2f(0.0),invalid),
     select(source.powers,vec2f(0.0),invalid),source.wavelength,
-    select(source.flags,2u,invalid));
+    select(source.flags&1u,2u,invalid)|select(0u,4u,localIndex==0u));
 }`;
 }
 

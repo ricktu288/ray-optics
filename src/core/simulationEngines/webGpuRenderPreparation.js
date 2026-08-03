@@ -363,12 +363,14 @@ fn prepareMain(@builtin(global_invocation_id) invocation:vec3u){
     }
     return;
   }
-  if(rayIndex<1u||(rays[rayIndex-1u].flags&1u)==0u){return;}
+  if(rayIndex<1u||(ray.flags&4u)!=0u||
+      (rays[rayIndex-1u].flags&1u)==0u){return;}
   let previous=rays[rayIndex-1u];
   let intersection=lineIntersection(ray,previous);
   if(!finite2(intersection)){return;}
   var nearby=false;
-  if(rayIndex>=2u&&(rays[rayIndex-2u].flags&1u)!=0u){
+  if(rayIndex>=2u&&(previous.flags&4u)==0u&&
+      (rays[rayIndex-2u].flags&1u)!=0u){
     let previousIntersection=lineIntersection(previous,rays[rayIndex-2u]);
     nearby=finite2(previousIntersection)&&
       dot(previousIntersection-intersection,previousIntersection-intersection)<

@@ -15,10 +15,11 @@ const BUFFER_USAGE_STORAGE = 0x0080;
 const BUFFER_USAGE_INDIRECT = 0x0100;
 
 /**
- * GPU count/scan/fill resources shared by every ping-pong.  The prefix scan
- * is intentionally one invocation: registered interaction-type counts are
- * tiny compared with ray counts, and a serial scan avoids another hierarchy
- * of temporary buffers and submissions.
+ * GPU stable-partition resources shared by every ping-pong. Contiguous ray
+ * blocks are counted and prefix-scanned by interaction type, then scattered
+ * without changing their source order. The fixed-size per-block scans exploit
+ * the long same-type runs common in optical scenes while keeping alternating
+ * worst cases strictly bounded.
  */
 export class WebGpuInteractionIndexStage {
   constructor(device, {
@@ -36,10 +37,16 @@ export class WebGpuInteractionIndexStage {
     this.workgroupSize = workgroupSize;
     this.readyLineCapacity = readyLineCapacity;
     this.readyPointCapacity = readyPointCapacity;
+    this.typeCount = packedScene.counts.interactionTypes;
+    this.blockCount = Math.ceil(rayCapacity / workgroupSize);
     this.buffers = Object.create(null);
+    this.countPipeline = null;
+    this.blockPrefixPipeline = null;
     this.prefixPipeline = null;
     this.fillPipeline = null;
     this.advancePipeline = null;
+    this.countBindGroup = null;
+    this.blockPrefixBindGroup = null;
     this.prefixBindGroup = null;
     this.fillBindGroup = null;
     this.advanceBindGroup = null;
@@ -79,6 +86,11 @@ export class WebGpuInteractionIndexStage {
       this.device, this.rayCapacity * 4,
       'WebGPU interaction ray indices'
     );
+    this.buffers.interactionBlockOffsets = createZeroBuffer(
+      this.device,
+      Math.max(1, this.blockCount * Math.max(1, typeCount)) * 4,
+      'WebGPU stable interaction block offsets'
+    );
     this.buffers.dispatchIndirect = createInitializedBuffer(
       this.device,
       new Uint32Array([
@@ -98,7 +110,7 @@ export class WebGpuInteractionIndexStage {
         typeCount,
         this.rayCapacity,
         this.rayCapacity,
-        0,
+        this.blockCount,
       ]),
       BUFFER_USAGE_UNIFORM | BUFFER_USAGE_COPY_DST,
       'WebGPU interaction index uniforms'
@@ -111,6 +123,16 @@ export class WebGpuInteractionIndexStage {
         code: createWebGpuInteractionIndexShader(this.workgroupSize),
       });
       await validateShaderModule(module, 'interaction index');
+      this.countPipeline = await createComputePipeline(this.device, {
+        label: 'WebGPU stable interaction block count',
+        layout: 'auto',
+        compute: { module, entryPoint: 'countMain' },
+      });
+      this.blockPrefixPipeline = await createComputePipeline(this.device, {
+        label: 'WebGPU stable interaction block prefix',
+        layout: 'auto',
+        compute: { module, entryPoint: 'blockPrefixMain' },
+      });
       this.prefixPipeline = await createComputePipeline(this.device, {
         label: 'WebGPU interaction prefix scan',
         layout: 'auto',
@@ -150,6 +172,34 @@ export class WebGpuInteractionIndexStage {
       { binding: 3, resource: { buffer: this.buffers.runControl } },
       { binding: 4, resource: { buffer: this.buffers.uniforms } },
     ];
+    this.countBindGroup = this.device.createBindGroup({
+      label: 'WebGPU stable interaction count bindings',
+      layout: this.countPipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 3, resource: { buffer: this.buffers.runControl } },
+        { binding: 4, resource: { buffer: this.buffers.uniforms } },
+        { binding: 5, resource: {
+          buffer: this.buffers.interactionTypeByRay
+        } },
+        { binding: 8, resource: {
+          buffer: this.buffers.interactionBlockOffsets
+        } },
+      ],
+    });
+    this.blockPrefixBindGroup = this.device.createBindGroup({
+      label: 'WebGPU stable interaction block-prefix bindings',
+      layout: this.blockPrefixPipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 1, resource: {
+          buffer: this.buffers.interactionTypeCounts
+        } },
+        { binding: 3, resource: { buffer: this.buffers.runControl } },
+        { binding: 4, resource: { buffer: this.buffers.uniforms } },
+        { binding: 8, resource: {
+          buffer: this.buffers.interactionBlockOffsets
+        } },
+      ],
+    });
     this.prefixBindGroup = this.device.createBindGroup({
       label: 'WebGPU interaction prefix bindings',
       layout: this.prefixPipeline.getBindGroupLayout(0),
@@ -159,12 +209,19 @@ export class WebGpuInteractionIndexStage {
       label: 'WebGPU interaction fill bindings',
       layout: this.fillPipeline.getBindGroupLayout(0),
       entries: [
-        ...common,
+        { binding: 2, resource: {
+          buffer: this.buffers.interactionTypeStates
+        } },
+        { binding: 3, resource: { buffer: this.buffers.runControl } },
+        { binding: 4, resource: { buffer: this.buffers.uniforms } },
         { binding: 5, resource: {
           buffer: this.buffers.interactionTypeByRay
         } },
         { binding: 6, resource: {
           buffer: this.buffers.interactionRayIndices
+        } },
+        { binding: 8, resource: {
+          buffer: this.buffers.interactionBlockOffsets
         } },
       ],
     });
@@ -178,13 +235,24 @@ export class WebGpuInteractionIndexStage {
     });
   }
 
-  encodeReset(commandEncoder) {
-    commandEncoder.clearBuffer(this.buffers.interactionTypeCounts);
-    commandEncoder.clearBuffer(this.buffers.interactionTypeStates);
-  }
-
   encodePrefixAndFill(commandEncoder) {
     let pass = commandEncoder.beginComputePass({
+      label: 'WebGPU stable interaction block count',
+    });
+    pass.setPipeline(this.countPipeline);
+    pass.setBindGroup(0, this.countBindGroup);
+    pass.dispatchWorkgroupsIndirect(this.buffers.dispatchIndirect, 0);
+    pass.end();
+
+    pass = commandEncoder.beginComputePass({
+      label: 'WebGPU stable interaction block prefix',
+    });
+    pass.setPipeline(this.blockPrefixPipeline);
+    pass.setBindGroup(0, this.blockPrefixBindGroup);
+    pass.dispatchWorkgroups(Math.max(1, this.typeCount));
+    pass.end();
+
+    pass = commandEncoder.beginComputePass({
       label: 'WebGPU interaction prefix scan',
     });
     pass.setPipeline(this.prefixPipeline);
@@ -193,7 +261,7 @@ export class WebGpuInteractionIndexStage {
     pass.end();
 
     pass = commandEncoder.beginComputePass({
-      label: 'WebGPU interaction index fill',
+      label: 'WebGPU stable interaction index fill',
     });
     pass.setPipeline(this.fillPipeline);
     pass.setBindGroup(0, this.fillBindGroup);
@@ -214,9 +282,13 @@ export class WebGpuInteractionIndexStage {
   destroy() {
     for (const buffer of Object.values(this.buffers)) buffer.destroy?.();
     this.buffers = Object.create(null);
+    this.countPipeline = null;
+    this.blockPrefixPipeline = null;
     this.prefixPipeline = null;
     this.fillPipeline = null;
     this.advancePipeline = null;
+    this.countBindGroup = null;
+    this.blockPrefixBindGroup = null;
     this.prefixBindGroup = null;
     this.fillBindGroup = null;
     this.advanceBindGroup = null;
@@ -239,20 +311,20 @@ struct InteractionTypeState {
   interactionCount: u32,
   sourceIndexStart: u32,
   destinationRayStart: u32,
-  cursor: atomic<u32>,
+  reserved: u32,
 };
 
 struct IndexUniforms {
   typeCount: u32,
   rayCapacity: u32,
   indexCapacity: u32,
-  _padding: u32,
+  blockCount: u32,
 };
 
 @group(0) @binding(0) var<storage, read>
   typeDescriptors: array<InteractionTypeDescriptor>;
 @group(0) @binding(1) var<storage, read_write>
-  typeCounts: array<atomic<u32>>;
+  typeCounts: array<u32>;
 @group(0) @binding(2) var<storage, read_write>
   typeStates: array<InteractionTypeState>;
 @group(0) @binding(3) var<storage, read_write>
@@ -264,6 +336,70 @@ struct IndexUniforms {
   interactionRayIndices: array<u32>;
 @group(0) @binding(7) var<storage, read_write>
   dispatchArguments: array<atomic<u32>>;
+@group(0) @binding(8) var<storage, read_write>
+  interactionBlockOffsets: array<u32>;
+
+var<workgroup> blockTypes: array<u32, ${workgroupSize}>;
+var<workgroup> blockDestinations: array<u32, ${workgroupSize}>;
+
+@compute @workgroup_size(${workgroupSize})
+fn countMain(
+  @builtin(workgroup_id) workgroup: vec3u,
+  @builtin(local_invocation_id) local: vec3u
+) {
+  let blockIndex = workgroup.x;
+  let rayIndex = blockIndex * ${workgroupSize}u + local.x;
+  let currentRayCount = atomicLoad(&runControl[0]);
+  var rayType = 0xffffffffu;
+  if (rayIndex < currentRayCount && rayIndex < indexUniforms.rayCapacity) {
+    rayType = interactionTypeByRay[rayIndex];
+  }
+  blockTypes[local.x] = rayType;
+  workgroupBarrier();
+  if (local.x != 0u || blockIndex >= indexUniforms.blockCount) { return; }
+  for (var typeIndex = 0u;
+       typeIndex < indexUniforms.typeCount;
+       typeIndex++) {
+    interactionBlockOffsets[
+      blockIndex * indexUniforms.typeCount + typeIndex
+    ] = 0u;
+  }
+  var index = 0u;
+  while (index < ${workgroupSize}u) {
+    let typeIndex = blockTypes[index];
+    var runEnd = index + 1u;
+    while (runEnd < ${workgroupSize}u &&
+           blockTypes[runEnd] == typeIndex) {
+      runEnd++;
+    }
+    if (typeIndex < indexUniforms.typeCount) {
+      let offset = blockIndex * indexUniforms.typeCount + typeIndex;
+      interactionBlockOffsets[offset] += runEnd - index;
+    }
+    index = runEnd;
+  }
+}
+
+@compute @workgroup_size(1)
+fn blockPrefixMain(@builtin(global_invocation_id) invocation: vec3u) {
+  let typeIndex = invocation.x;
+  if (typeIndex >= indexUniforms.typeCount) { return; }
+  let activeBlockCount = min(
+    indexUniforms.blockCount,
+    (atomicLoad(&runControl[0]) + ${workgroupSize - 1}u) /
+      ${workgroupSize}u
+  );
+  var count = 0u;
+  for (var blockIndex = 0u;
+       blockIndex < activeBlockCount;
+       blockIndex++) {
+    let offset = blockIndex * indexUniforms.typeCount + typeIndex;
+    let blockCount = interactionBlockOffsets[offset];
+    interactionBlockOffsets[offset] = count;
+    count += blockCount;
+  }
+  typeCounts[typeIndex] = count;
+}
 
 @compute @workgroup_size(1)
 fn prefixMain(@builtin(global_invocation_id) invocation: vec3u) {
@@ -274,12 +410,12 @@ fn prefixMain(@builtin(global_invocation_id) invocation: vec3u) {
   for (var typeIndex = 0u;
        typeIndex < indexUniforms.typeCount;
        typeIndex++) {
-    let interactionCount = atomicLoad(&typeCounts[typeIndex]);
+    let interactionCount = typeCounts[typeIndex];
     let outRayCount = typeDescriptors[typeIndex].outRayCount;
     typeStates[typeIndex].interactionCount = interactionCount;
     typeStates[typeIndex].sourceIndexStart = sourceIndexStart;
     typeStates[typeIndex].destinationRayStart = destinationRayStart;
-    atomicStore(&typeStates[typeIndex].cursor, 0u);
+    typeStates[typeIndex].reserved = 0u;
     sourceIndexStart += interactionCount;
     if (outRayCount != 0u &&
         interactionCount > (0xffffffffu - destinationRayStart) /
@@ -299,20 +435,47 @@ fn prefixMain(@builtin(global_invocation_id) invocation: vec3u) {
 }
 
 @compute @workgroup_size(${workgroupSize})
-fn fillMain(@builtin(global_invocation_id) invocation: vec3u) {
-  if (atomicLoad(&runControl[8]) != 0u) { return; }
-  let rayIndex = invocation.x;
+fn fillMain(
+  @builtin(workgroup_id) workgroup: vec3u,
+  @builtin(local_invocation_id) local: vec3u
+) {
+  let canFill = atomicLoad(&runControl[8]) == 0u;
+  let blockIndex = workgroup.x;
+  let rayIndex = blockIndex * ${workgroupSize}u + local.x;
   let currentRayCount = atomicLoad(&runControl[0]);
-  if (rayIndex >= currentRayCount || rayIndex >= indexUniforms.rayCapacity) {
-    return;
+  var rayType = 0xffffffffu;
+  if (canFill && rayIndex < currentRayCount &&
+      rayIndex < indexUniforms.rayCapacity) {
+    rayType = interactionTypeByRay[rayIndex];
   }
-  let typeIndex = interactionTypeByRay[rayIndex];
-  if (typeIndex >= indexUniforms.typeCount) { return; }
-  if (atomicLoad(&typeCounts[typeIndex]) == 0u ||
-      typeDescriptors[typeIndex].outRayCount == 0u) { return; }
-  let localIndex = atomicAdd(&typeStates[typeIndex].cursor, 1u);
-  if (localIndex >= typeStates[typeIndex].interactionCount) { return; }
-  let outputIndex = typeStates[typeIndex].sourceIndexStart + localIndex;
+  blockTypes[local.x] = rayType;
+  blockDestinations[local.x] = 0xffffffffu;
+  workgroupBarrier();
+  if (canFill && local.x == 0u &&
+      blockIndex < indexUniforms.blockCount) {
+    var index = 0u;
+    while (index < ${workgroupSize}u) {
+      let typeIndex = blockTypes[index];
+      var runEnd = index + 1u;
+      while (runEnd < ${workgroupSize}u &&
+             blockTypes[runEnd] == typeIndex) {
+        runEnd++;
+      }
+      if (typeIndex < indexUniforms.typeCount) {
+        let offset = blockIndex * indexUniforms.typeCount + typeIndex;
+        let blockCursor = interactionBlockOffsets[offset];
+        let destinationStart = typeStates[typeIndex].sourceIndexStart;
+        for (var runIndex = index; runIndex < runEnd; runIndex++) {
+          blockDestinations[runIndex] =
+            destinationStart + blockCursor + runIndex - index;
+        }
+        interactionBlockOffsets[offset] = blockCursor + runEnd - index;
+      }
+      index = runEnd;
+    }
+  }
+  workgroupBarrier();
+  let outputIndex = blockDestinations[local.x];
   if (outputIndex < indexUniforms.indexCapacity) {
     interactionRayIndices[outputIndex] = rayIndex;
   }

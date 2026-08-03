@@ -45,6 +45,9 @@ import {
 import {
   createWebGpuRawTraceShader
 } from '../../src/core/simulationEngines/webGpuTrace.js';
+import {
+  createWebGpuRenderPreparationShader
+} from '../../src/core/simulationEngines/webGpuRenderPreparation.js';
 
 const sourceType = {
   name: 'WebGPU test source',
@@ -222,6 +225,9 @@ describe('WebGpuSimulationEngine staged execution', () => {
       expect(shader).toContain(
         'output[6].value < sourceUniforms.wavelengthMin'
       );
+      expect(shader).toContain(
+        'select(0u, 4u, outputIndex == 0u)'
+      );
       expect(shader).not.toContain('surface_0');
     });
 
@@ -247,10 +253,10 @@ describe('WebGpuSimulationEngine staged execution', () => {
       const beginComputePass = jest.fn(() => computePass);
       backend.encodeInitialTrace({ beginComputePass, clearBuffer: jest.fn() });
 
-      expect(device.createComputePipelineAsync).toHaveBeenCalledTimes(6);
-      expect(device.createBindGroup).toHaveBeenCalledTimes(8);
-      expect(beginComputePass).toHaveBeenCalledTimes(6);
-      expect(dispatchWorkgroups).toHaveBeenCalledTimes(3);
+      expect(device.createComputePipelineAsync).toHaveBeenCalledTimes(8);
+      expect(device.createBindGroup).toHaveBeenCalledTimes(10);
+      expect(beginComputePass).toHaveBeenCalledTimes(8);
+      expect(dispatchWorkgroups).toHaveBeenCalledTimes(4);
       expect(dispatchWorkgroups).toHaveBeenNthCalledWith(1, 1);
       expect(dispatchWorkgroups).toHaveBeenNthCalledWith(2, 1);
       expect(backend.sourceStage.rayBuffer.descriptor.size)
@@ -330,6 +336,8 @@ describe('WebGpuSimulationEngine staged execution', () => {
 
       expect(shader).toContain('@compute @workgroup_size(1)');
       expect(shader).toContain('fn prefixMain(');
+      expect(shader).toContain('fn countMain(');
+      expect(shader).toContain('fn blockPrefixMain(');
       expect(shader).toContain('@compute @workgroup_size(64)');
       expect(shader).toContain('fn fillMain(');
       expect(shader).toContain('fn advanceMain(');
@@ -339,6 +347,10 @@ describe('WebGpuSimulationEngine staged execution', () => {
       expect(shader).toContain('atomicStore(&dispatchArguments[0]');
       expect(shader).toContain('atomicStore(&runControl[8], 1u)');
       expect(shader).toContain('interactionRayIndices[outputIndex] = rayIndex');
+      expect(shader).toContain('interactionBlockOffsets[offset] = count');
+      expect(shader).not.toContain(
+        'atomicAdd(&typeStates[typeIndex].cursor, 1u)'
+      );
     });
 
   it('builds and schedules initial region membership before raw tracing',
@@ -374,10 +386,10 @@ describe('WebGpuSimulationEngine staged execution', () => {
 
       expect(backend.membershipStage).not.toBeNull();
       expect(backend.membershipStage.regionWordCount).toBe(1);
-      expect(beginComputePass).toHaveBeenCalledTimes(8);
-      expect(dispatchWorkgroups).toHaveBeenCalledTimes(4);
-      expect(device.createComputePipelineAsync).toHaveBeenCalledTimes(9);
-      expect(device.createBindGroup).toHaveBeenCalledTimes(13);
+      expect(beginComputePass).toHaveBeenCalledTimes(10);
+      expect(dispatchWorkgroups).toHaveBeenCalledTimes(5);
+      expect(device.createComputePipelineAsync).toHaveBeenCalledTimes(11);
+      expect(device.createBindGroup).toHaveBeenCalledTimes(15);
       expect(backend.outgoingStage.rayNextBuffer.descriptor.size)
         .toBe(1024 * WEBGPU_RAY_STRIDE);
       backend.destroy();
@@ -438,6 +450,9 @@ describe('WebGpuSimulationEngine staged execution', () => {
       expect(generated.code).toContain('fn surface_0(');
       expect(generated.code).toContain('fn surfaceOutgoingMain(');
       expect(generated.code).toContain('fn surfaceCrossesBoundary(');
+      expect(generated.code).toContain(
+        'destinationRayIndex,localIndex==0u'
+      );
       expect(generated.code).not.toContain('fn bulk_n_');
       expect(generated.code).not.toContain('@binding(14)');
     });
@@ -526,7 +541,10 @@ describe('WebGpuSimulationEngine staged execution', () => {
     expect(trace.code).toContain('fn curveNormal(');
     expect(trace.code).toContain('fn mergeCandidate(');
     expect(trace.code).toContain('fn classifyCandidate(');
-    expect(trace.code).toContain('atomicAdd(&interactionTypeCounts');
+    expect(trace.code).not.toContain('atomicAdd(&interactionTypeCounts');
+    expect(trace.code).toContain(
+      'interactionTypeByRay[rayIndex]=interactionType'
+    );
     expect(trace.code).toContain('rayIndex>=atomicLoad(&runControl[0])');
     expect(trace.code).toContain('frontSideOnly=curve.ownerKind!=1u');
     expect(trace.code).not.toContain('fn intersectArc(');
@@ -558,6 +576,13 @@ describe('WebGpuSimulationEngine staged execution', () => {
     }, 64);
     expect(empty.supported).toBe(true);
     expect(empty.code).toContain('fn rawTraceMain(');
+  });
+
+  it('keeps image-neighbor checks within stable outgoing groups', () => {
+    const shader = createWebGpuRenderPreparationShader(64);
+
+    expect(shader).toContain('(ray.flags&4u)!=0u');
+    expect(shader).toContain('(previous.flags&4u)==0u');
   });
 
   it('batches multiple small ping-pongs until an item capacity is reached', () => {

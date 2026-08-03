@@ -559,7 +559,6 @@ export class WebGpuComputeBackend {
     }
     for (let pingPong = 0; pingPong < pingPongCount; pingPong++) {
       const direction = (startDirection + pingPong) & 1;
-      this.interactionIndexStage.encodeReset(commandEncoder);
       this.rawTraceStage.encode(commandEncoder, direction);
       this.renderPreparationStage.encode(commandEncoder, direction);
       this.interactionIndexStage.encodePrefixAndFill(commandEncoder);
@@ -569,7 +568,9 @@ export class WebGpuComputeBackend {
   }
 
   encodeTerminalTrace(commandEncoder, direction) {
-    this.interactionIndexStage.encodeReset(commandEncoder);
+    // The final ray generation uses the same trace and render-preparation
+    // shaders (including image/observer preparation). It only omits indexing
+    // and outgoing-ray generation because no later ray generation is needed.
     this.rawTraceStage.encode(commandEncoder, direction);
     this.renderPreparationStage.encode(commandEncoder, direction);
   }
@@ -899,7 +900,9 @@ fn sourceMain(@builtin(global_invocation_id) invocation: vec3u) {
     output[6].value > sourceUniforms.wavelengthMax;
   let rayIsActive = !invalid &&
     (output[4].value != 0.0 || output[5].value != 0.0);
-  let flags = select(0u, 1u, rayIsActive) | select(0u, 2u, invalid);
+  let flags = select(0u, 1u, rayIsActive) |
+    select(0u, 2u, invalid) |
+    select(0u, 4u, outputIndex == 0u);
   rays[outputIndex] = Ray(
     vec2f(output[0].value, output[1].value),
     vec2f(output[2].value, output[3].value),

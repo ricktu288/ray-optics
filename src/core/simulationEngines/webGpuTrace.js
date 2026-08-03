@@ -918,9 +918,6 @@ fn finishCandidate(rayIndex:u32,hit:ptr<function,Hit>) {
   let interactionType=classifyCandidate(rayIndex,*hit);
   (*hit).interactionType=interactionType;
   hits[rayIndex]=*hit; interactionTypeByRay[rayIndex]=interactionType;
-  if (interactionType!=0xffffffffu) {
-    atomicAdd(&interactionTypeCounts[interactionType],1u);
-  }
 }`;
 }
 
