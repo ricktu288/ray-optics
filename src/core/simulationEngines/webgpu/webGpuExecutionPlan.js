@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 
-import { collectParameterNames } from '../formula/dag-util.js';
+import { collectParameterNames } from '../../formula/dag-util.js';
 
 export const WEBGPU_RAY_STRIDE = 32;
 export const WEBGPU_HIT_STRIDE = 32;

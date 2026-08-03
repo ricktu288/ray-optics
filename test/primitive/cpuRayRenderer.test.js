@@ -18,7 +18,7 @@ import {
   createCpuRayRenderState,
   finishCpuRayRendering,
   renderCpuRay
-} from '../../src/core/simulationEngines/cpuRayRenderer';
+} from '../../src/core/simulationEngines/cpu/cpuRayRenderer';
 
 function createRenderer() {
   return {

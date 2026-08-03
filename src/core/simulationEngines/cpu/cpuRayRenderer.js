@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import geometry from '../geometry.js';
+import geometry from '../../geometry.js';
 
 export function createCpuRayRenderState() {
   return {

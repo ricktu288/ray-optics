@@ -17,7 +17,7 @@
 import { parseFormula } from '../../src/core/formula/formula-parser.js';
 import { FLOAT32_EPSILON } from '../../src/core/primitive/numeric.js';
 import { preprocessPrimitives } from '../../src/core/primitive/preprocess.js';
-import WebGpuSimulationEngine from '../../src/core/simulationEngines/WebGpuSimulationEngine.js';
+import WebGpuSimulationEngine from '../../src/core/simulationEngines/webgpu/WebGpuSimulationEngine.js';
 import {
   WEBGPU_F32_MAX,
   WEBGPU_F32_MIN_NORMAL,
@@ -25,7 +25,7 @@ import {
   WEBGPU_SPATIAL_MAX,
   deriveWebGpuWavelengthRange,
   estimateWebGpuParameterRanges
-} from '../../src/core/simulationEngines/webGpuParameterRanges.js';
+} from '../../src/core/simulationEngines/webgpu/webGpuParameterRanges.js';
 
 function line(startX, startY, endX, endY) {
   return {

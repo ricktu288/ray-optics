@@ -4,7 +4,7 @@
  */
 
 import { clampWebGpuParameterToF32 } from './webGpuParameterRanges.js';
-import { createInteractionTypeLayout } from './interactionIndexBuffers.js';
+import { createInteractionTypeLayout } from '../interactionIndexBuffers.js';
 
 export const WEBGPU_SOURCE_DESCRIPTOR_STRIDE = 16;
 export const WEBGPU_INSTANCE_DESCRIPTOR_STRIDE = 16;

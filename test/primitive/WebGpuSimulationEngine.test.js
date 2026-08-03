@@ -6,7 +6,7 @@
 import { parseFormula } from '../../src/core/formula/formula-parser.js';
 import { FLOAT32_EPSILON } from '../../src/core/primitive/numeric.js';
 import { preprocessPrimitives } from '../../src/core/primitive/preprocess.js';
-import WebGpuSimulationEngine from '../../src/core/simulationEngines/WebGpuSimulationEngine.js';
+import WebGpuSimulationEngine from '../../src/core/simulationEngines/webgpu/WebGpuSimulationEngine.js';
 import {
   applyWebGpuAnalyticCoverage,
   calculateWebGpuArrowCoverage,
@@ -14,40 +14,40 @@ import {
   encodeWebGpuColorContribution,
   toneMapWebGpuColorContribution,
   WebGpuReadyRayRenderer
-} from '../../src/core/simulationEngines/webGpuRayRenderer.js';
+} from '../../src/core/simulationEngines/webgpu/webGpuRayRenderer.js';
 import {
   WEBGPU_HIT_STRIDE,
   WEBGPU_PIXEL_STRIDE,
   WEBGPU_RAY_STRIDE,
-} from '../../src/core/simulationEngines/webGpuExecutionPlan.js';
+} from '../../src/core/simulationEngines/webgpu/webGpuExecutionPlan.js';
 import {
   WebGpuBatchController,
   createWebGpuRunControlData,
   packWebGpuScene
-} from '../../src/core/simulationEngines/webGpuStorage.js';
+} from '../../src/core/simulationEngines/webgpu/webGpuStorage.js';
 import {
   WebGpuComputeBackend,
   decodeWebGpuRunState,
   createWebGpuSourceShader
-} from '../../src/core/simulationEngines/webGpuComputeBackend.js';
+} from '../../src/core/simulationEngines/webgpu/webGpuComputeBackend.js';
 import {
   createWebGpuInteractionIndexShader
-} from '../../src/core/simulationEngines/webGpuInteractionIndex.js';
+} from '../../src/core/simulationEngines/webgpu/webGpuInteractionIndex.js';
 import {
   createWebGpuInitialMembershipShader
-} from '../../src/core/simulationEngines/webGpuMembership.js';
+} from '../../src/core/simulationEngines/webgpu/webGpuMembership.js';
 import {
   createWebGpuGrinOutgoingShader,
   createWebGpuRegionBoundaryOutgoingShader,
   createWebGpuSurfaceOutgoingShader,
   createWebGpuDetectorOutgoingShader
-} from '../../src/core/simulationEngines/webGpuOutgoing.js';
+} from '../../src/core/simulationEngines/webgpu/webGpuOutgoing.js';
 import {
   createWebGpuRawTraceShader
-} from '../../src/core/simulationEngines/webGpuTrace.js';
+} from '../../src/core/simulationEngines/webgpu/webGpuTrace.js';
 import {
   createWebGpuRenderPreparationShader
-} from '../../src/core/simulationEngines/webGpuRenderPreparation.js';
+} from '../../src/core/simulationEngines/webgpu/webGpuRenderPreparation.js';
 
 const sourceType = {
   name: 'WebGPU test source',

@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import { createDagClosureEvaluator } from '../formula/dag-evaluator.js';
+import { createDagClosureEvaluator } from '../../formula/dag-evaluator.js';
 import {
   collectNodeLabels,
   collectReferencedParameterNames
-} from '../formula/dag-util.js';
+} from '../../formula/dag-util.js';
 
 /**
  * Prepare CPU formula evaluators and reusable instance-input objects. This is

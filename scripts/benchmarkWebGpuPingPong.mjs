@@ -13,8 +13,8 @@ import { create, globals } from 'webgpu';
 import { parseFormula } from '../src/core/formula/formula-parser.js';
 import { FLOAT32_EPSILON } from '../src/core/primitive/numeric.js';
 import { preprocessPrimitives } from '../src/core/primitive/preprocess.js';
-import CpuSimulationEngine from '../src/core/simulationEngines/CpuSimulationEngine.js';
-import WebGpuSimulationEngine from '../src/core/simulationEngines/WebGpuSimulationEngine.js';
+import CpuSimulationEngine from '../src/core/simulationEngines/cpu/CpuSimulationEngine.js';
+import WebGpuSimulationEngine from '../src/core/simulationEngines/webgpu/WebGpuSimulationEngine.js';
 
 Object.assign(globalThis, globals);
 

@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 
-import { getIntersectionTolerancePolicy } from '../primitive/numeric.js';
+import { getIntersectionTolerancePolicy } from '../../primitive/numeric.js';
 
 const BUFFER_USAGE_COPY_SRC = 0x0004;
 const BUFFER_USAGE_COPY_DST = 0x0008;

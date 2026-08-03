@@ -8,7 +8,7 @@
  *     http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import CanvasRenderer from '../CanvasRenderer.js';
+import CanvasRenderer from '../../CanvasRenderer.js';
 
 const BUFFER_USAGE_COPY_DST = 0x0008;
 const BUFFER_USAGE_UNIFORM = 0x0040;

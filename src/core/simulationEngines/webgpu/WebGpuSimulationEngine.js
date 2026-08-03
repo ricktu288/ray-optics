@@ -8,7 +8,7 @@
  *     http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { FLOAT32_EPSILON, validateNumericEpsilon } from '../primitive/numeric.js';
+import { FLOAT32_EPSILON, validateNumericEpsilon } from '../../primitive/numeric.js';
 import {
   clampWebGpuParameterToF32,
   estimateWebGpuParameterRanges,
@@ -30,7 +30,7 @@ import {
 } from './webGpuRayRenderer.js';
 import {
   WEBGPU_MIN_STORAGE_BUFFERS_PER_SHADER_STAGE
-} from './config.js';
+} from '../config.js';
 
 const DEFAULT_WEBGPU_RUN_CONFIG = Object.freeze({
   workgroupSize: 64,

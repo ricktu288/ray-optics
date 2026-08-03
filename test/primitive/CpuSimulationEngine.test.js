@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import CpuSimulationEngine from '../../src/core/simulationEngines/CpuSimulationEngine';
+import CpuSimulationEngine from '../../src/core/simulationEngines/cpu/CpuSimulationEngine';
 import { parseFormula } from '../../src/core/formula/formula-parser';
 import {
   attachCpuBvhTraversalDiagnostics

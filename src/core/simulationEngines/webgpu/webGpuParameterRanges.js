@@ -17,12 +17,12 @@
 import {
   collectNodeLabels,
   collectParameterNames
-} from '../formula/dag-util.js';
-import { estimateDagRanges } from '../formula/range-estimator.js';
+} from '../../formula/dag-util.js';
+import { estimateDagRanges } from '../../formula/range-estimator.js';
 import {
   createDagWgslSpecialization
-} from '../formula/dag-wgsl-generator.js';
-import { getIntersectionTolerancePolicy } from '../primitive/numeric.js';
+} from '../../formula/dag-wgsl-generator.js';
+import { getIntersectionTolerancePolicy } from '../../primitive/numeric.js';
 
 export const WEBGPU_F32_MAX = 3.4028234663852886e38;
 export const WEBGPU_F32_MIN_NORMAL = 2 ** -126;

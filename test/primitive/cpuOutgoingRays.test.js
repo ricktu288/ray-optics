@@ -19,7 +19,7 @@ import {
   createCpuDetectorResults,
   prepareCpuOutgoingRayData,
   writeCpuOutgoingRays
-} from '../../src/core/simulationEngines/cpuOutgoingRays.js';
+} from '../../src/core/simulationEngines/cpu/cpuOutgoingRays.js';
 
 const sourceRay = {
   originX: 0,

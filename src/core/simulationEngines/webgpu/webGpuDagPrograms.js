@@ -3,11 +3,11 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 
-import { collectNodeLabels } from '../formula/dag-util.js';
+import { collectNodeLabels } from '../../formula/dag-util.js';
 import {
   generateDagWgslFunction,
   WGSL_RUNTIME_CODE
-} from '../formula/dag-wgsl-generator.js';
+} from '../../formula/dag-wgsl-generator.js';
 
 const SOURCE_LABELS = [
   'x', 'y', 'd_x', 'd_y', 'P_s', 'P_p', 'lambda'
@@ -103,4 +103,3 @@ function detectorLabels(writeCount) {
   }
   return labels;
 }
-

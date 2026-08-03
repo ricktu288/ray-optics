@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import CanvasRenderer from '../CanvasRenderer.js';
-import FloatColorRenderer from '../FloatColorRenderer.js';
-import { createDagClosureEvaluator } from '../formula/dag-evaluator.js';
+import CanvasRenderer from '../../CanvasRenderer.js';
+import FloatColorRenderer from '../../FloatColorRenderer.js';
+import { createDagClosureEvaluator } from '../../formula/dag-evaluator.js';
 import {
   createInteractionCandidate,
   createInteractionCandidateContext,
@@ -27,17 +27,17 @@ import {
   INTERSECTION_TOLERANCE_NONE,
   INTERSECTION_TOLERANCE_NORMAL,
   INTERSECTION_TOLERANCE_NORMAL_CONSTRUCTION
-} from '../primitive/interactionCandidate.js';
+} from '../../primitive/interactionCandidate.js';
 import {
   createRegionMembershipResult,
   traverseBvhForRegionMembership
-} from '../primitive/regionMembership.js';
+} from '../../primitive/regionMembership.js';
 import {
   traverseBvhForInteraction
-} from '../primitive/bvhTraversal.js';
+} from '../../primitive/bvhTraversal.js';
 import {
   validateNumericEpsilon
-} from '../primitive/numeric.js';
+} from '../../primitive/numeric.js';
 import {
   beginCpuRayRendering,
   createCpuRayRenderState,
@@ -50,7 +50,7 @@ import {
   createInteractionTypeLayout,
   getInteractionTypeIndex,
   resetInteractionIndexBuffers
-} from './interactionIndexBuffers.js';
+} from '../interactionIndexBuffers.js';
 import {
   createCpuDetectorResults,
   prepareCpuOutgoingRayData,
