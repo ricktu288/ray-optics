@@ -602,6 +602,7 @@ export class WebGpuAtomicRayRasterizer {
     { origin, scale, colorMode, simulateColors = false },
     { isCancelled = null, resetAccumulation = false } = {}
   ) {
+    if (isCancelled?.()) return false;
     const size = this.output.getSize?.() ?? this.output.size;
     const width = size?.width ?? 1;
     const height = size?.height ?? 1;
@@ -658,6 +659,7 @@ export class WebGpuAtomicRayRasterizer {
     { origin, scale, colorMode, simulateColors = false },
     { isCancelled = null, resetAccumulation = false } = {}
   ) {
+    if (isCancelled?.()) return false;
     const size = this.output.getSize?.() ?? this.output.size;
     this.ensureSize(size?.width ?? 1, size?.height ?? 1);
     this.device.queue.writeBuffer(this.uniformBuffer, 0, new Float32Array([
@@ -716,6 +718,7 @@ export class WebGpuAtomicRayRasterizer {
     { origin, scale, colorMode, simulateColors = false },
     { isCancelled = null, resetAccumulation = false } = {}
   ) {
+    if (isCancelled?.()) return false;
     const size = this.output.getSize?.() ?? this.output.size;
     this.ensureSize(size?.width ?? 1, size?.height ?? 1);
     this.device.queue.writeBuffer(this.uniformBuffer, 0, new Float32Array([

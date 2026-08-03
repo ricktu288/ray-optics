@@ -73,14 +73,14 @@ class WebGpuSimulationRun {
   }
 
   async advance() {
-    if (this.isCancelled || this.isComplete) return this.getUpdate();
+    if (this.isStale() || this.isComplete) return this.getUpdate();
     const [state, presented] = await Promise.all([
       this.statePromise,
       this.presentationPromise,
     ]);
     this.statePromise = null;
     this.presentationPromise = null;
-    if (this.isCancelled) return this.getUpdate();
+    if (this.isStale()) return this.getUpdate();
     this.nativeState = state;
     this.reportOverflow(state);
     const geometryCapacity = this.engine.computeBackend
@@ -143,7 +143,7 @@ class WebGpuSimulationRun {
       presentationPromise: this.engine.presentNativeGeometry(
         this.options,
         {
-          isCancelled: () => this.isCancelled,
+          isCancelled: () => this.isStale(),
           resetAccumulation: false,
         }
       ),
@@ -174,7 +174,7 @@ class WebGpuSimulationRun {
         processedRayCount: state?.processedRayCount ?? 0,
         totalTruncation: state?.totalTruncation ?? 0,
       },
-      outputUpdated: outputUpdated && !this.isCancelled,
+      outputUpdated: outputUpdated && !this.isStale(),
       result: {
         detectors: state?.detectors ?? [],
         processedRayCount: state?.processedRayCount ?? 0,
@@ -187,6 +187,10 @@ class WebGpuSimulationRun {
 
   cancel() {
     this.isCancelled = true;
+  }
+
+  isStale() {
+    return this.isCancelled || this.options.isCurrent?.() === false;
   }
 
   dispose() {
@@ -223,6 +227,9 @@ class WebGpuSimulationEngine {
     this.executionPlan = null;
     this.computeBackend = null;
     this.computePreparedScene = null;
+    this.stagedComputeBackend = null;
+    this.stagedComputePreparedScene = null;
+    this.computeBackendRequestToken = 0;
     this.executionMode = 'uninitialized';
     this.applyLegacyPowerSubsampling = false;
     this.applyRayPowerCutoffInDefaultMode = true;
@@ -269,18 +276,43 @@ class WebGpuSimulationEngine {
   }
 
   async createRun(options = {}) {
+    const isCurrent = typeof options.isCurrent === 'function'
+      ? options.isCurrent
+      : () => true;
     await this.initialize();
     if (this.isDisposed) throw new Error('The WebGPU engine was disposed.');
+    const run = new WebGpuSimulationRun(this, options);
+    if (!isCurrent()) {
+      run.cancel();
+      return run;
+    }
     // Match the tested scatter-plot scheduler: the first visual submission
     // clears accumulation and renders/presents the new records atomically.
     // Until that submission is ready, retain the preceding completed frame.
-    let nativeBatch = null;
     if (this.device) {
-      await this.ensureComputeBackend(options.preparedScene);
+      const backendReady = await this.ensureComputeBackend(
+        options.preparedScene,
+        isCurrent
+      );
+      if (!backendReady || !isCurrent()) {
+        run.cancel();
+        return run;
+      }
       this.computeBackend.configureRun(options);
-      nativeBatch = this.startNativeRun(options);
+      if (!isCurrent()) {
+        run.cancel();
+        return run;
+      }
+      const nativeBatch = this.startNativeRun(options, {
+        isCancelled: () => run.isStale(),
+      });
+      if (!nativeBatch) {
+        run.cancel();
+        return run;
+      }
+      run.trackNativeBatch(nativeBatch);
     }
-    return new WebGpuSimulationRun(this, { ...options, nativeBatch });
+    return run;
   }
 
   beginRenderer({ origin, scale, lengthScale }) {
@@ -332,37 +364,88 @@ class WebGpuSimulationEngine {
     if (this.isDisposed) return;
     this.rasterizer = new WebGpuAtomicRayRasterizer(device, this.output);
     await this.rasterizer.initialize();
+    if (this.isDisposed) {
+      this.rasterizer.destroy();
+      this.rasterizer = null;
+      return;
+    }
     this.executionMode = 'webgpu-raster-atomic';
     this.isInitialized = true;
   }
 
-  async ensureComputeBackend(preparedScene) {
+  async ensureComputeBackend(preparedScene, isCurrent = () => true) {
+    if (!isCurrent()) return false;
+    const requestToken = ++this.computeBackendRequestToken;
     if (this.computePreparedScene === preparedScene && this.computeBackend) {
-      return;
+      this.discardStagedComputeBackend();
+      return true;
     }
     if (this.computeBackend?.canUpdatePreparedScene(preparedScene)) {
+      this.discardStagedComputeBackend();
       this.computeBackend.updatePreparedScene(preparedScene);
       this.computePreparedScene = preparedScene;
-      return;
+      return true;
     }
-    this.computeBackend?.destroy();
-    this.computeBackend = null;
-    this.computePreparedScene = null;
+    if (this.stagedComputeBackend) {
+      if (
+        this.stagedComputePreparedScene === preparedScene ||
+        this.stagedComputeBackend.canUpdatePreparedScene(preparedScene)
+      ) {
+        if (this.stagedComputePreparedScene !== preparedScene) {
+          this.stagedComputeBackend.updatePreparedScene(preparedScene);
+        }
+        const previousBackend = this.computeBackend;
+        this.computeBackend = this.stagedComputeBackend;
+        this.computePreparedScene = preparedScene;
+        this.stagedComputeBackend = null;
+        this.stagedComputePreparedScene = null;
+        previousBackend?.destroy();
+        return true;
+      }
+      this.discardStagedComputeBackend();
+    }
     const backend = new WebGpuComputeBackend(
       this.device,
       preparedScene,
       this.runConfig
     );
-    await backend.initialize();
-    if (this.isDisposed) {
+    try {
+      await backend.initialize();
+    } catch (error) {
       backend.destroy();
-      return;
+      if (requestToken !== this.computeBackendRequestToken || !isCurrent()) {
+        return false;
+      }
+      throw error;
     }
+    if (
+      this.isDisposed ||
+      requestToken !== this.computeBackendRequestToken
+    ) {
+      backend.destroy();
+      return false;
+    }
+    if (!isCurrent()) {
+      this.discardStagedComputeBackend();
+      this.stagedComputeBackend = backend;
+      this.stagedComputePreparedScene = preparedScene;
+      return false;
+    }
+    const previousBackend = this.computeBackend;
     this.computeBackend = backend;
     this.computePreparedScene = preparedScene;
+    previousBackend?.destroy();
+    return true;
   }
 
-  startNativeRun(options) {
+  discardStagedComputeBackend() {
+    this.stagedComputeBackend?.destroy();
+    this.stagedComputeBackend = null;
+    this.stagedComputePreparedScene = null;
+  }
+
+  startNativeRun(options, { isCancelled = null } = {}) {
+    if (isCancelled?.()) return null;
     if (!this.computeBackend?.canEmitAllSources) {
       throw new RangeError(
         'Source population exceeds the native WebGPU ray capacity.'
@@ -391,11 +474,13 @@ class WebGpuSimulationEngine {
           pingPongCount === maxRayDepth,
       });
     }
+    if (isCancelled?.()) return null;
     const consumeState = this.computeBackend.encodeStateReadback(encoder);
     this.device.queue.submit([encoder.finish()]);
     return {
       statePromise: consumeState(),
       presentationPromise: this.presentNativeGeometry(options, {
+        isCancelled,
         resetAccumulation: true,
       }),
     };
@@ -421,6 +506,8 @@ class WebGpuSimulationEngine {
 
   dispose() {
     this.isDisposed = true;
+    this.computeBackendRequestToken++;
+    this.discardStagedComputeBackend();
     this.computeBackend?.destroy();
     this.rasterizer?.destroy?.();
     this.output?.dispose?.();

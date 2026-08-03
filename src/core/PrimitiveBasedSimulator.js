@@ -145,6 +145,7 @@ class PrimitiveBasedSimulator {
     this.runGeneration = 0;
     this.webGpuFrameRequest = null;
     this.pendingWebGpuRunGeneration = null;
+    this.webGpuRunLoopActive = false;
     this.isRunning = false;
     this.simulationStartPending = false;
     this.primitives = [];
@@ -202,6 +203,10 @@ class PrimitiveBasedSimulator {
     if (!this.simulationStartPending) this.emit('simulationStart', null);
 
     if (this.engine.kind === 'webgpu') {
+      // Invalidate an already submitted run immediately. A newer run may be
+      // delayed by requestAnimationFrame or pipeline construction, so waiting
+      // until that run starts would leave the old presentation eligible.
+      this.activeRun?.cancel?.();
       this.scheduleWebGpuRun(generation);
       return;
     }
@@ -210,14 +215,10 @@ class PrimitiveBasedSimulator {
 
   scheduleWebGpuRun(generation) {
     this.pendingWebGpuRunGeneration = generation;
-    if (this.webGpuFrameRequest !== null) return;
+    if (this.webGpuRunLoopActive || this.webGpuFrameRequest !== null) return;
     const launch = () => {
       this.webGpuFrameRequest = null;
-      const pendingGeneration = this.pendingWebGpuRunGeneration;
-      this.pendingWebGpuRunGeneration = null;
-      if (pendingGeneration === this.runGeneration) {
-        this.startEngineRun(pendingGeneration);
-      }
+      this.runPendingWebGpuRuns();
     };
     if (typeof requestAnimationFrame === 'function') {
       this.webGpuFrameRequest = requestAnimationFrame(launch);
@@ -227,8 +228,29 @@ class PrimitiveBasedSimulator {
     }
   }
 
+  async runPendingWebGpuRuns() {
+    if (this.webGpuRunLoopActive) return;
+    this.webGpuRunLoopActive = true;
+    try {
+      while (this.pendingWebGpuRunGeneration !== null) {
+        const generation = this.pendingWebGpuRunGeneration;
+        this.pendingWebGpuRunGeneration = null;
+        if (generation !== this.runGeneration) continue;
+        // Do not overlap backend construction or presentation between scene
+        // generations. Updates arriving while this awaits replace the single
+        // pending generation above and are processed next.
+        await this.startEngineRun(generation);
+      }
+    } finally {
+      this.webGpuRunLoopActive = false;
+      if (this.pendingWebGpuRunGeneration !== null) {
+        this.scheduleWebGpuRun(this.pendingWebGpuRunGeneration);
+      }
+    }
+  }
+
   startEngineRun(generation) {
-    this.runEngine(generation)
+    return this.runEngine(generation)
       .then(() => this.completeRun(generation))
       .catch(err => {
         if (generation !== this.runGeneration) return;
@@ -242,8 +264,10 @@ class PrimitiveBasedSimulator {
   }
 
   async runEngine(generation) {
-    this.activeRun?.cancel?.();
-    this.activeRun?.dispose?.();
+    const previousRun = this.activeRun;
+    this.activeRun = null;
+    previousRun?.cancel?.();
+    previousRun?.dispose?.();
 
     const preparedScene = await this.engine.prepare(this.processedScene, {
       violetWavelength: this.scene.violetWavelength,
@@ -262,6 +286,7 @@ class PrimitiveBasedSimulator {
     };
     const run = await this.engine.createRun({
       preparedScene,
+      isCurrent: () => generation === this.runGeneration,
       viewport,
       colorMode: this.scene.colorMode,
       rayPowerCutoff: this.scene.numericalTolerances.rayPowerCutoff,
