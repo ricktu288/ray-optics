@@ -83,12 +83,12 @@ function process(primitives) {
   }).processedScene;
 }
 
-function source(wavelength = 540, position = 0, power = 1) {
+function source(wavelength = 540, position = 0, power = 1, rayCount = 1) {
   return {
     kind: 'source',
     sourceType,
     params: { wavelength, power, position },
-    rayCount: 1
+    rayCount
   };
 }
 
@@ -291,6 +291,38 @@ describe('WebGpuSimulationEngine staged execution', () => {
       expect(backend.preparedScene).toBe(second);
       backend.destroy();
     });
+
+  it('updates source ray counts without rebuilding GPU resources', async () => {
+    const engine = new WebGpuSimulationEngine();
+    const first = await engine.prepare(process([source(540, 0, 1, 1)]));
+    const second = await engine.prepare(process([source(540, 0, 1, 65)]));
+    const device = createComputeTestDevice();
+    const backend = new WebGpuComputeBackend(device, first, {
+      workgroupSize: 64,
+      maxBatchRayEvents: 1024,
+      maxReadyLineRecords: 1024,
+      maxReadyPointRecords: 1024,
+    });
+    await backend.initialize();
+    const pipelineCount = device.createComputePipelineAsync.mock.calls.length;
+    const sourceUniformBuffer = backend.sourceStage.typeStages[0].uniformBuffer;
+    device.queue.writeBuffer.mockClear();
+
+    expect(backend.canUpdatePreparedScene(second)).toBe(true);
+    backend.updatePreparedScene(second);
+
+    expect(device.createComputePipelineAsync).toHaveBeenCalledTimes(
+      pipelineCount
+    );
+    expect(backend.sourceStage.typeStages[0].typeRange.rayCount).toBe(65);
+    const uniformWrite = device.queue.writeBuffer.mock.calls.find(
+      ([buffer]) => buffer === sourceUniformBuffer
+    );
+    expect(uniformWrite).toBeDefined();
+    expect(new DataView(uniformWrite[2]).getUint32(8, true)).toBe(65);
+    expect(backend.canEmitAllSources).toBe(true);
+    backend.destroy();
+  });
 
   it('builds the capacity-gated interaction scan and index-fill shader',
     () => {

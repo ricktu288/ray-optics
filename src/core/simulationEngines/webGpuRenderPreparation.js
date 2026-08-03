@@ -7,6 +7,7 @@ const BUFFER_USAGE_COPY_SRC = 0x0004;
 const BUFFER_USAGE_COPY_DST = 0x0008;
 const BUFFER_USAGE_UNIFORM = 0x0040;
 const BUFFER_USAGE_STORAGE = 0x0080;
+const BUFFER_USAGE_INDIRECT = 0x0100;
 
 export const WEBGPU_READY_GEOMETRY_STRIDE = 64;
 
@@ -30,6 +31,7 @@ export class WebGpuRenderPreparationStage {
     this.geometryCapacity = geometryCapacity;
     this.workgroupSize = workgroupSize;
     this.geometryBuffer = null;
+    this.drawIndirectBuffer = null;
     this.uniformBuffer = null;
     this.pipeline = null;
     this.bindGroups = [];
@@ -43,6 +45,17 @@ export class WebGpuRenderPreparationStage {
       usage: BUFFER_USAGE_STORAGE | BUFFER_USAGE_COPY_SRC |
         BUFFER_USAGE_COPY_DST,
     });
+    this.drawIndirectBuffer = this.device.createBuffer({
+      label: 'WebGPU ready geometry draw arguments',
+      size: 16,
+      usage: BUFFER_USAGE_STORAGE | BUFFER_USAGE_COPY_DST |
+        BUFFER_USAGE_INDIRECT,
+    });
+    this.device.queue.writeBuffer(
+      this.drawIndirectBuffer,
+      0,
+      new Uint32Array([6, 0, 0, 0])
+    );
     this.uniformBuffer = this.device.createBuffer({
       label: 'WebGPU render preparation uniforms',
       size: 16 * 16,
@@ -75,6 +88,7 @@ export class WebGpuRenderPreparationStage {
           { binding: 2, resource: { buffer: this.geometryBuffer } },
           { binding: 3, resource: { buffer: this.runControl } },
           { binding: 4, resource: { buffer: this.uniformBuffer } },
+          { binding: 5, resource: { buffer: this.drawIndirectBuffer } },
         ],
       })
     );
@@ -100,8 +114,10 @@ export class WebGpuRenderPreparationStage {
 
   destroy() {
     this.geometryBuffer?.destroy?.();
+    this.drawIndirectBuffer?.destroy?.();
     this.uniformBuffer?.destroy?.();
     this.geometryBuffer = null;
+    this.drawIndirectBuffer = null;
     this.uniformBuffer = null;
     this.pipeline = null;
     this.bindGroups.length = 0;
@@ -213,6 +229,7 @@ struct Config { values:array<vec4f,16> };
 @group(0) @binding(2) var<storage,read_write> geometry:array<ReadyGeometry>;
 @group(0) @binding(3) var<storage,read_write> control:array<atomic<u32>>;
 @group(0) @binding(4) var<uniform> config:Config;
+@group(0) @binding(5) var<storage,read_write> drawArguments:array<atomic<u32>>;
 
 fn finite2(value:vec2f)->bool {
   return all(value==value)&&all(abs(value)<=vec2f(F32_MAX));
@@ -262,6 +279,7 @@ fn pushRecord(p0:vec2f,p1:vec2f,color:vec4f,width:f32,dash:vec2f,
   geometry[index]=ReadyGeometry(vec4f(p0,p1),color,
     vec4f(max(1.0,width),dash,max(1.0,endWidth)),
     vec4f(kind,pointSize,0.0,0.0));
+  atomicAdd(&drawArguments[1],1u);
 }
 fn pushLine(p0:vec2f,p1:vec2f,color:vec4f,dash:vec2f){
   pushRecord(p0,p1,color,config.values[1].y*config.values[1].x,

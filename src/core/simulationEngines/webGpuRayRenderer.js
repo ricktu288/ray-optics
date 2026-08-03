@@ -648,7 +648,8 @@ export class WebGpuAtomicRayRasterizer {
     present.draw(3);
     present.end();
     this.device.queue.submit([encoder.finish()]);
-    return true;
+    await waitForSubmittedWork(this.device);
+    return !isCancelled?.();
   }
 
   async drawGpuGeometry(
@@ -705,7 +706,64 @@ export class WebGpuAtomicRayRasterizer {
     present.draw(3);
     present.end();
     this.device.queue.submit([encoder.finish()]);
-    return true;
+    await waitForSubmittedWork(this.device);
+    return !isCancelled?.();
+  }
+
+  async drawGpuGeometryIndirect(
+    geometryBuffer,
+    drawIndirectBuffer,
+    { origin, scale, colorMode, simulateColors = false },
+    { isCancelled = null, resetAccumulation = false } = {}
+  ) {
+    const size = this.output.getSize?.() ?? this.output.size;
+    this.ensureSize(size?.width ?? 1, size?.height ?? 1);
+    this.device.queue.writeBuffer(this.uniformBuffer, 0, new Float32Array([
+      origin.x, origin.y, scale, 0,
+      this.width, this.height, 0,
+      colorModeId(colorMode, simulateColors)
+    ]));
+    const geometryBindGroup = this.device.createBindGroup({
+      layout: this.rasterPipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 0, resource: { buffer: this.uniformBuffer } },
+        { binding: 1, resource: { buffer: geometryBuffer } },
+        { binding: 2, resource: { buffer: this.pixelBuffer } },
+      ],
+    });
+    const view = await this.output.acquireView(this.device);
+    if (isCancelled?.()) return false;
+    const encoder = this.device.createCommandEncoder({
+      label: 'WebGPU raster native ready geometry indirect',
+    });
+    if (resetAccumulation) encoder.clearBuffer(this.pixelBuffer);
+    const raster = encoder.beginRenderPass({
+      colorAttachments: [{
+        view: this.dummyView,
+        clearValue: { r: 0, g: 0, b: 0, a: 0 },
+        loadOp: 'clear',
+        storeOp: 'store',
+      }],
+    });
+    raster.setPipeline(this.rasterPipeline);
+    raster.setBindGroup(0, geometryBindGroup);
+    raster.drawIndirect(drawIndirectBuffer, 0);
+    raster.end();
+    const present = encoder.beginRenderPass({
+      colorAttachments: [{
+        view,
+        clearValue: { r: 0, g: 0, b: 0, a: 0 },
+        loadOp: 'clear',
+        storeOp: 'store',
+      }],
+    });
+    present.setPipeline(this.presentPipeline);
+    present.setBindGroup(0, this.presentBindGroup);
+    present.draw(3);
+    present.end();
+    this.device.queue.submit([encoder.finish()]);
+    await waitForSubmittedWork(this.device);
+    return !isCancelled?.();
   }
 
   async clear({
@@ -739,6 +797,7 @@ export class WebGpuAtomicRayRasterizer {
     present.draw(3);
     present.end();
     this.device.queue.submit([encoder.finish()]);
+    await waitForSubmittedWork(this.device);
     return true;
   }
 
@@ -753,6 +812,10 @@ export class WebGpuAtomicRayRasterizer {
     this.dummyTexture = null;
     this.dummyView = null;
   }
+}
+
+async function waitForSubmittedWork(device) {
+  await device.queue.onSubmittedWorkDone?.();
 }
 
 /**

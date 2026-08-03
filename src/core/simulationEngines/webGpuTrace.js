@@ -218,6 +218,14 @@ export class WebGpuRawTraceStage {
     );
   }
 
+  updateSourceRayCount(rayCount) {
+    this.device.queue.writeBuffer(
+      this.uniformBuffer,
+      0,
+      new Uint32Array([Math.min(rayCount, this.rayCapacity)])
+    );
+  }
+
   encode(commandEncoder, direction = 0) {
     const pass = commandEncoder.beginComputePass({ label: 'WebGPU raw trace' });
     pass.setPipeline(this.pipeline);

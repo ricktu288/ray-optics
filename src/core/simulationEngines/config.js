@@ -53,7 +53,9 @@ export const DEFAULT_SIMULATION_ENGINE_CONFIGS = Object.freeze({
     maxBatchRayEvents: 262144,
     maxReadyLineRecords: 262144,
     maxReadyPointRecords: 65536,
-    maxPingPongsPerSubmission: 64,
+    // Keep submissions short while interactive updates are being evaluated.
+    // Even zero-work indirect dispatches retain command/pass overhead.
+    maxPingPongsPerSubmission: 2,
   }),
 });
 

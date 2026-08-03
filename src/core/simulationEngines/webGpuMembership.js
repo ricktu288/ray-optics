@@ -140,6 +140,15 @@ export class WebGpuInitialMembershipStage {
     pass.end();
   }
 
+  updateSourceRayCount(rayCount) {
+    if (!this.uniformBuffer) return;
+    this.device.queue.writeBuffer(
+      this.uniformBuffer,
+      0,
+      new Uint32Array([Math.min(rayCount, this.rayCapacity)])
+    );
+  }
+
   destroy() {
     this.membershipBuffer?.destroy?.();
     this.uniformBuffer?.destroy?.();

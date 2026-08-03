@@ -137,7 +137,6 @@ export class WebGpuSourceComputeStage {
 
     try {
       for (const typeRange of this.packedScene.sourceTypeRanges) {
-        if (typeRange.rayCount === 0) continue;
         this.typeStages.push(await this.createTypeStage(typeRange));
       }
     } catch (error) {
@@ -213,11 +212,12 @@ export class WebGpuSourceComputeStage {
   }
 
   encode(commandEncoder) {
-    if (this.typeStages.length === 0) return;
+    if (!this.typeStages.some(stage => stage.typeRange.rayCount > 0)) return;
     const pass = commandEncoder.beginComputePass({
       label: 'WebGPU source emission',
     });
     for (const stage of this.typeStages) {
+      if (stage.typeRange.rayCount === 0) continue;
       pass.setPipeline(stage.pipeline);
       pass.setBindGroup(0, stage.bindGroup);
       pass.dispatchWorkgroups(Math.ceil(
@@ -225,6 +225,37 @@ export class WebGpuSourceComputeStage {
       ));
     }
     pass.end();
+  }
+
+  updatePreparedScene({
+    description,
+    packedScene,
+    dagPrograms,
+    wavelengthRange,
+  }) {
+    const nextRanges = new Map(packedScene.sourceTypeRanges.map(
+      typeRange => [typeRange.typeId, typeRange]
+    ));
+    for (const stage of this.typeStages) {
+      const typeRange = nextRanges.get(stage.typeId);
+      if (!typeRange) {
+        throw new Error('The prepared WebGPU source topology has changed.');
+      }
+      stage.typeRange = typeRange;
+      this.device.queue.writeBuffer(
+        stage.uniformBuffer,
+        0,
+        createSourceUniformData({
+          typeRange,
+          rayCapacity: this.rayCapacity,
+          wavelengthRange,
+        })
+      );
+    }
+    this.description = description;
+    this.packedScene = packedScene;
+    this.dagPrograms = dagPrograms;
+    this.wavelengthRange = wavelengthRange;
   }
 
   /** Test/debug readback. It is deliberately not used by normal execution. */
@@ -390,7 +421,7 @@ export class WebGpuComputeBackend {
       nextPreparedScene.executionPlan.specializationSignature
     ) return false;
     const countNames = [
-      'sources', 'sourceRays', 'surfaces', 'regions', 'detectors',
+      'sources', 'surfaces', 'regions', 'detectors',
       'detectorResultValues', 'curves', 'bvhNodes', 'regionWords',
       'interactionTypes'
     ];
@@ -401,8 +432,10 @@ export class WebGpuComputeBackend {
     if (
       current.runtimeDescription.bvh.root !==
       nextPreparedScene.runtimeDescription.bvh.root ||
-      JSON.stringify(current.packedStorage.sourceTypeRanges) !==
-      JSON.stringify(nextPreparedScene.packedStorage.sourceTypeRanges) ||
+      !sourceTypeRangesHaveCompatibleTopology(
+        current.packedStorage.sourceTypeRanges,
+        nextPreparedScene.packedStorage.sourceTypeRanges
+      ) ||
       JSON.stringify(current.parameterRanges.wavelengthRange) !==
       JSON.stringify(nextPreparedScene.parameterRanges.wavelengthRange) ||
       JSON.stringify(current.runtimeDescription.numericalTolerances) !==
@@ -418,10 +451,19 @@ export class WebGpuComputeBackend {
     }
     this.staticStorage.update(nextPreparedScene.packedStorage);
     this.preparedScene = nextPreparedScene;
-    this.sourceStage.description = nextPreparedScene.runtimeDescription;
-    this.sourceStage.packedScene = nextPreparedScene.packedStorage;
+    this.sourceStage.updatePreparedScene({
+      description: nextPreparedScene.runtimeDescription,
+      packedScene: nextPreparedScene.packedStorage,
+      dagPrograms: nextPreparedScene.dagPrograms,
+      wavelengthRange: nextPreparedScene.parameterRanges.wavelengthRange[0],
+    });
+    const sourceRayCount = nextPreparedScene.packedStorage.counts.sourceRays;
+    this.canEmitAllSources = sourceRayCount <= this.sourceStage.rayCapacity;
     this.membershipStage.description = nextPreparedScene.runtimeDescription;
+    this.membershipStage.updateSourceRayCount(sourceRayCount);
+    this.interactionIndexStage.packedScene = nextPreparedScene.packedStorage;
     this.rawTraceStage.description = nextPreparedScene.runtimeDescription;
+    this.rawTraceStage.updateSourceRayCount(sourceRayCount);
     this.outgoingStage.description = nextPreparedScene.runtimeDescription;
   }
 
@@ -539,6 +581,9 @@ export class WebGpuComputeBackend {
     commandEncoder.clearBuffer(
       this.interactionIndexStage.buffers.runControl, 19 * 4, 4
     );
+    commandEncoder.clearBuffer(
+      this.renderPreparationStage.drawIndirectBuffer, 4, 4
+    );
   }
 
   getInitialPingPongCount() {
@@ -638,6 +683,21 @@ export class WebGpuComputeBackend {
     this.interactionIndexStage = null;
     this.staticStorage = null;
   }
+}
+
+function sourceTypeRangesHaveCompatibleTopology(currentRanges, nextRanges) {
+  if (currentRanges.length !== nextRanges.length) return false;
+  return currentRanges.every((current, index) => {
+    const next = nextRanges[index];
+    return current.typeId === next.typeId &&
+      current.dispatchEntryOffset === next.dispatchEntryOffset &&
+      current.dispatchEntryCount === next.dispatchEntryCount &&
+      current.descriptorIndices.length === next.descriptorIndices.length &&
+      current.descriptorIndices.every(
+        (descriptorIndex, descriptorOffset) =>
+          descriptorIndex === next.descriptorIndices[descriptorOffset]
+      );
+  });
 }
 
 export function decodeWebGpuRunState(data, description) {

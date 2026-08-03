@@ -143,6 +143,8 @@ class PrimitiveBasedSimulator {
 
     this.activeRun = null;
     this.runGeneration = 0;
+    this.webGpuFrameRequest = null;
+    this.pendingWebGpuRunGeneration = null;
     this.isRunning = false;
     this.simulationStartPending = false;
     this.primitives = [];
@@ -199,6 +201,33 @@ class PrimitiveBasedSimulator {
     this.emit('lightLayerSyncChange', { isSynced: true });
     if (!this.simulationStartPending) this.emit('simulationStart', null);
 
+    if (this.engine.kind === 'webgpu') {
+      this.scheduleWebGpuRun(generation);
+      return;
+    }
+    this.startEngineRun(generation);
+  }
+
+  scheduleWebGpuRun(generation) {
+    this.pendingWebGpuRunGeneration = generation;
+    if (this.webGpuFrameRequest !== null) return;
+    const launch = () => {
+      this.webGpuFrameRequest = null;
+      const pendingGeneration = this.pendingWebGpuRunGeneration;
+      this.pendingWebGpuRunGeneration = null;
+      if (pendingGeneration === this.runGeneration) {
+        this.startEngineRun(pendingGeneration);
+      }
+    };
+    if (typeof requestAnimationFrame === 'function') {
+      this.webGpuFrameRequest = requestAnimationFrame(launch);
+    } else {
+      this.webGpuFrameRequest = true;
+      Promise.resolve().then(launch);
+    }
+  }
+
+  startEngineRun(generation) {
     this.runEngine(generation)
       .then(() => this.completeRun(generation))
       .catch(err => {
@@ -264,7 +293,7 @@ class PrimitiveBasedSimulator {
     let update;
     do {
       update = await run.advance({
-        timeBudgetMs: this.enableTimer ? 16 : Infinity,
+        timeBudgetMs: this.enableTimer ? 200 : Infinity,
       });
       if (generation !== this.runGeneration) {
         run.cancel?.();
@@ -617,6 +646,13 @@ class PrimitiveBasedSimulator {
   stopSimulation() {
     if (!this.isRunning) return;
     this.runGeneration++;
+    this.pendingWebGpuRunGeneration = null;
+    if (
+      this.webGpuFrameRequest !== null &&
+      this.webGpuFrameRequest !== true &&
+      typeof cancelAnimationFrame === 'function'
+    ) cancelAnimationFrame(this.webGpuFrameRequest);
+    this.webGpuFrameRequest = null;
     this.activeRun?.cancel?.();
     this.activeRun?.dispose?.();
     this.activeRun = null;
