@@ -16,7 +16,9 @@
 
 import { spawnSync } from 'child_process';
 
-const SUPPORTED_ENGINES = new Set(['default', 'primitiveCpu', 'webgpu']);
+const SUPPORTED_ENGINES = new Set([
+  'default', 'primitiveCpu', 'webgpu', 'webgpuMegakernel'
+]);
 
 function readOption(args, index, name) {
   const argument = args[index];

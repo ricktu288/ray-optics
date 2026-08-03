@@ -115,7 +115,9 @@ function createNodeWebGpuOutput(ctx) {
   };
 }
 
-const SUPPORTED_ENGINES = new Set(['default', 'primitiveCpu', 'webgpu']);
+const SUPPORTED_ENGINES = new Set([
+  'default', 'primitiveCpu', 'webgpu', 'webgpuMegakernel'
+]);
 
 function createSimulator({
   scene,
@@ -155,8 +157,10 @@ function createSimulator({
 
   const bvhSettings = engineSettings.bvh ?? {};
   const { drawBounds = false, ...bvhOptions } = bvhSettings;
-  const engine = engineKind === 'webgpu'
-    ? new rayOptics.WebGpuSimulationEngine({
+  const engine = engineKind === 'webgpu' || engineKind === 'webgpuMegakernel'
+    ? new (engineKind === 'webgpu'
+      ? rayOptics.WebGpuSimulationEngine
+      : rayOptics.WebGpuMegakernelSimulationEngine)({
       device: getWebGpuDevice,
       output: createNodeWebGpuOutput(ctxLight),
       numericEpsilon:
@@ -321,7 +325,7 @@ export function compareCSV(actualData, expectedData, tolerance = 1e-3) {
  * @param {string} jsonPath - Path to the scene JSON file
  * @param {boolean} writeOutput - Whether to write output files
  * @param {Object} [options={}] - Scene-test simulation options
- * @param {'default'|'primitiveCpu'|'webgpu'} [options.engine='default'] - Simulation engine to use
+ * @param {'default'|'primitiveCpu'|'webgpu'|'webgpuMegakernel'} [options.engine='default'] - Simulation engine to use
  * @param {Object} [options.engineSettings={}] - Settings for the selected engine
  * @returns {Promise<{imageBuffer?: Buffer, detectorData?: string}>} Generated outputs
  */
@@ -440,13 +444,14 @@ export async function runScene(
     });
     simulator.updateSimulation(false, false);
   });
-  if (engineKind === 'webgpu') {
+  if (engineKind === 'webgpu' || engineKind === 'webgpuMegakernel') {
     await simulator.engine.output.readIntoCanvas();
   }
 
   // Generate detector data
   if (detector && detector.irradMap) {
-    if (engineKind === 'primitiveCpu' || engineKind === 'webgpu') {
+    if (engineKind === 'primitiveCpu' || engineKind === 'webgpu' ||
+        engineKind === 'webgpuMegakernel') {
       detector.updateMeasurementsFromPrimitiveResults();
     }
     if (detector.binData) {

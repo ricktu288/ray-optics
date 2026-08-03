@@ -202,7 +202,7 @@ class PrimitiveBasedSimulator {
     this.emit('lightLayerSyncChange', { isSynced: true });
     if (!this.simulationStartPending) this.emit('simulationStart', null);
 
-    if (this.engine.kind === 'webgpu') {
+    if (isWebGpuEngine(this.engine)) {
       // Invalidate an already submitted run immediately. A newer run may be
       // delayed by requestAnimationFrame or pipeline construction, so waiting
       // until that run starts would leave the old presentation eligible.
@@ -256,8 +256,11 @@ class PrimitiveBasedSimulator {
         if (generation !== this.runGeneration) return;
         this.activeRun?.dispose?.();
         this.activeRun = null;
-        this.error = this.engine.kind === 'webgpu'
-          ? i18next.t('simulator:simulationEngineModal.webgpu.unavailable', { message: err.message })
+        this.error = isWebGpuEngine(this.engine)
+          ? i18next.t(
+            `simulator:simulationEngineModal.${this.engine.kind}.unavailable`,
+            { message: err.message }
+          )
           : i18next.t('simulator:settings.correctBrightness.error');
         this.completeRun(generation);
       });
@@ -819,6 +822,10 @@ class PrimitiveBasedSimulator {
   getThemeImageSize(imageType) {
     return this.scene.theme[imageType]?.size || this.scene.theme.realImage.size || 5;
   }
+}
+
+function isWebGpuEngine(engine) {
+  return engine?.kind === 'webgpu' || engine?.kind === 'webgpuMegakernel';
 }
 
 function formatChangeStatus(changed) {

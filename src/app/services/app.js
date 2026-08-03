@@ -27,6 +27,7 @@ import {
   PrimitiveBasedSimulator,
   CpuSimulationEngine,
   WebGpuSimulationEngine,
+  WebGpuMegakernelSimulationEngine,
   FLOAT32_EPSILON,
   Editor,
   geometry,
@@ -57,7 +58,9 @@ function initScene() {
   app.scene = scene;
 }
 
-const SIMULATION_ENGINES = ['default', 'webgpu', 'primitiveCpu'];
+const SIMULATION_ENGINES = [
+  'default', 'webgpu', 'webgpuMegakernel', 'primitiveCpu'
+];
 
 function normalizeSimulationEngine(value) {
   return SIMULATION_ENGINES.includes(value) ? value : 'default';
@@ -158,8 +161,11 @@ function createSimulator(engine) {
     engine,
     app.simulationEngineConfigs
   );
-  const simulationEngine = engine === 'webgpu'
-    ? new WebGpuSimulationEngine({
+  const simulationEngine = engine === 'webgpu' ||
+    engine === 'webgpuMegakernel'
+    ? new (engine === 'webgpu'
+      ? WebGpuSimulationEngine
+      : WebGpuMegakernelSimulationEngine)({
       device: requestWebGpuDevice,
       output: createBrowserWebGpuOutput(canvasLightWebGPU),
       numericEpsilon: FLOAT32_EPSILON,

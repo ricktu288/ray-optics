@@ -60,7 +60,8 @@ try {
 
 describe(`Scene Tests (${SCENE_TEST_ENGINE})`, () => {
   afterAll(async () => {
-    if (SCENE_TEST_ENGINE === 'webgpu') {
+    if (SCENE_TEST_ENGINE === 'webgpu' ||
+        SCENE_TEST_ENGINE === 'webgpuMegakernel') {
       await disposeWebGpuTestDevice();
     }
   });

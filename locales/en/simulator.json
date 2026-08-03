@@ -716,8 +716,13 @@
     },
     "webgpu": {
       "title": "WebGPU",
-      "description": "Use the experimental primitive-based WebGPU engine. This early test currently displays a triangle instead of simulated light.",
+      "description": "Use the experimental primitive-based staged WebGPU engine.",
       "unavailable": "WebGPU could not be initialized: {{message}}"
+    },
+    "webgpuMegakernel": {
+      "title": "WebGPU megakernel",
+      "description": "Use the experimental primitive-based WebGPU engine that traces several interactions locally and stably compacts branched rays between dispatches.",
+      "unavailable": "The WebGPU megakernel engine could not be initialized: {{message}}"
     },
     "primitiveCpu": {
       "title": "Primitive-based CPU",
@@ -776,6 +781,14 @@
         "workgroupSize": {
           "title": "Workgroup size",
           "description": "Number of WebGPU invocations in each workgroup."
+        },
+        "maxLocalIterations": {
+          "title": "Maximum local interactions",
+          "description": "Maximum number of ray interactions traced locally by one megakernel invocation before its continuation is returned to the stable queue."
+        },
+        "maxPingPongsPerSubmission": {
+          "title": "Ping-pongs per submission",
+          "description": "Number of alternating megakernel and stable-compaction cycles encoded into one GPU submission before reading back control and detector state. Render geometry accumulates across all cycles."
         }
       }
     }

@@ -63,13 +63,17 @@ export default {
   setup() {
     const sceneStore = useSceneStore()
     const preferences = usePreferencesStore()
+    const isWebGpuEngine = computed(() =>
+      preferences.simulationEngine.value === 'webgpu' ||
+      preferences.simulationEngine.value === 'webgpuMegakernel'
+    )
     const showCanvasLight = computed(() =>
-      preferences.simulationEngine.value !== 'webgpu' && sceneStore.colorMode.value === 'default'
+      !isWebGpuEngine.value && sceneStore.colorMode.value === 'default'
     )
     const showCanvasLightWebGL = computed(() =>
-      preferences.simulationEngine.value !== 'webgpu' && sceneStore.colorMode.value !== 'default'
+      !isWebGpuEngine.value && sceneStore.colorMode.value !== 'default'
     )
-    const showCanvasLightWebGPU = computed(() => preferences.simulationEngine.value === 'webgpu')
+    const showCanvasLightWebGPU = computed(() => isWebGpuEngine.value)
 
     function resizeCanvas(canvas) {
       canvas.width = window.innerWidth * (window.devicePixelRatio || 1);

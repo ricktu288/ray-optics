@@ -186,7 +186,12 @@ import { usePreferencesStore } from '../store/preferences'
 import { DEFAULT_SIMULATION_ENGINE_CONFIGS } from '../../core/simulationEngines/config.js'
 import InfoPopoverIcon from './InfoPopoverIcon.vue'
 
-const SIMULATION_ENGINES = ['default', 'webgpu', 'primitiveCpu']
+const SIMULATION_ENGINES = [
+  'default',
+  'webgpu',
+  'webgpuMegakernel',
+  'primitiveCpu'
+]
 
 const getPathValue = (object, path) => {
   const keys = Array.isArray(path) ? path : [path]
@@ -216,6 +221,17 @@ const ENGINE_CONFIG_SECTIONS = {
       key: 'webgpu',
       fields: [
         { key: 'workgroupSize', path: ['workgroupSize'], min: 1, step: 1, integer: true, hasInfo: true }
+      ]
+    }
+  ],
+  webgpuMegakernel: [
+    ...COMMON_CONFIG_SECTIONS,
+    {
+      key: 'webgpu',
+      fields: [
+        { key: 'workgroupSize', path: ['workgroupSize'], min: 3, step: 1, integer: true, hasInfo: true },
+        { key: 'maxLocalIterations', path: ['maxLocalIterations'], min: 1, step: 1, integer: true, hasInfo: true },
+        { key: 'maxPingPongsPerSubmission', path: ['maxPingPongsPerSubmission'], min: 1, step: 1, integer: true, hasInfo: true }
       ]
     }
   ]
