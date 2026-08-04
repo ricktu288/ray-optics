@@ -90,10 +90,11 @@ struct TraceUniforms { rayCount:u32,rayCapacity:u32,bvhRoot:i32,
   interactionMerging:f32,maximumNormalChordDistanceSquared:f32,
   mergingDistanceFactor:f32,rayPowerCutoff:f32,
   padding0:u32,padding1:u32,padding2:u32 };
-struct MegaUniforms { rayCapacity:u32,activeOffset:u32,maxRayDepth:u32,
-  maximumOutputs:u32,regionCount:u32,regionWordCount:u32,
-  renderVariant:u32,payloadSize:u32,inputRayBase:u32,outputRayBase:u32,
-  inputMembershipBase:u32,outputMembershipBase:u32 };
+struct MegaUniforms { rayCapacity:u32,inputActiveOffset:u32,
+  inputCountWord:u32,maxRayDepth:u32,maximumOutputs:u32,regionCount:u32,
+  regionWordCount:u32,membershipStride:u32,renderVariant:u32,payloadSize:u32,
+  inputRayBase:u32,outputRayBase:u32,inputMembershipBase:u32,
+  outputMembershipBase:u32,blockOffset:u32,extentWord:u32 };
 struct Config { values:array<vec4f,16> };
 struct ReadyGeometry { p0p1:vec4f,color:vec4f,style:vec4f,extra:vec4f };
 struct IndexResult { n:f32,invalid:bool };
@@ -130,10 +131,15 @@ ${renderHelpers}
 ${neighborMode ? createNeighborDeclarations(workgroupSize) : ''}
 ${createRenderFunctions(renderVariant)}
 
-fn recordCollectorExtent(slot:u32) {
+fn recordOutput(slot:u32) {
+  let generation=atomicLoad(&control[21])+1u;
+  membershipStorage[megaUniforms.outputMembershipBase+
+    slot*megaUniforms.membershipStride+megaUniforms.regionWordCount]=generation;
+  atomicAdd(&control[megaUniforms.blockOffset+
+    slot/${workgroupSize}u],1u);
   let collectorBlocks=slot/${workgroupSize}u+1u;
-  let outputDirection=megaUniforms.outputRayBase/megaUniforms.rayCapacity;
-  atomicMax(&drawArguments[4u+3u*outputDirection],collectorBlocks);
+  atomicMax(&control[20],collectorBlocks);
+  atomicMax(&drawArguments[megaUniforms.extentWord],collectorBlocks);
 }
 
 fn acceptChild(child:Ray,toggle:bool,incident:ptr<function,Membership>,
@@ -154,6 +160,7 @@ fn acceptChild(child:Ray,toggle:bool,incident:ptr<function,Membership>,
   outputChild.flags=(outputChild.flags&7u)|(min(depth,536870911u)<<3u);
   rayStorage[megaUniforms.outputRayBase+slot]=outputChild;
   storeMembership(slot,incident,toggle,front,back);
+  recordOutput(slot);
   (*slotCount)=(*slotCount)+1u;
 }
 
@@ -279,12 +286,13 @@ function createMegakernelMain({ workgroupSize, maxLocalIterations,
 fn megakernelMain(@builtin(global_invocation_id) invocation:vec3u,
   @builtin(workgroup_id) workgroup:vec3u,
   @builtin(local_invocation_id) local:vec3u) {
-  let startRayCount=atomicLoad(&control[0]);${mapping}
+  let startRayCount=atomicLoad(&control[megaUniforms.inputCountWord]);${mapping}
   var ray=Ray(vec2f(0.0),vec2f(0.0),vec2f(0.0),0.0,0u);
   var rayIndex=0u;var depth=0u;var membership:Membership;
   var isActive=false;var slotCount=0u;
   if(valid){
-    rayIndex=atomicLoad(&control[megaUniforms.activeOffset+logicalIndex]);
+    rayIndex=atomicLoad(&control[
+      megaUniforms.inputActiveOffset+logicalIndex]);
     if(rayIndex<megaUniforms.rayCapacity){
       ray=rayStorage[megaUniforms.inputRayBase+rayIndex];depth=ray.flags>>3u;
       loadMembership(rayIndex,&membership);isActive=(ray.flags&1u)!=0u;
@@ -329,8 +337,6 @@ fn megakernelMain(@builtin(global_invocation_id) invocation:vec3u,
   }
   if(isActive&&real){writeSuspended(ray,&membership,logicalIndex,startRayCount,
     depth,&slotCount);}
-  if(real&&slotCount>0u){recordCollectorExtent(
-    logicalIndex+(slotCount-1u)*startRayCount);}
 }`;
 }
 
@@ -376,7 +382,7 @@ function createTraceStateCode(description, regionWords, stackSize) {
 fn loadMembership(index:u32,value:ptr<function,Membership>){
   for(var word=0u;word<REGION_WORDS;word++){
     (*value)[word]=membershipStorage[megaUniforms.inputMembershipBase+
-      index*REGION_WORDS+word];
+      index*megaUniforms.membershipStride+word];
   }
 }
 fn storeMembership(index:u32,value:ptr<function,Membership>,toggle:bool,
@@ -385,7 +391,7 @@ fn storeMembership(index:u32,value:ptr<function,Membership>,toggle:bool,
     var result=(*value)[word];
     if(toggle){result^=(*front)[word]^(*back)[word];}
     membershipStorage[megaUniforms.outputMembershipBase+
-      index*REGION_WORDS+word]=result;
+      index*megaUniforms.membershipStride+word]=result;
   }
 }
 fn copyMembershipValue(source:ptr<function,Membership>,
@@ -626,7 +632,8 @@ fn writeSuspended(ray:Ray,membership:ptr<function,Membership>,logical:u32,
   rayStorage[megaUniforms.outputRayBase+slot]=outputRay;
   for(var word=0u;word<REGION_WORDS;word++){
     membershipStorage[megaUniforms.outputMembershipBase+
-      slot*REGION_WORDS+word]=(*membership)[word];}
+      slot*megaUniforms.membershipStride+word]=(*membership)[word];}
+  recordOutput(slot);
   (*slotCount)=(*slotCount)+1u;
 }
 `;

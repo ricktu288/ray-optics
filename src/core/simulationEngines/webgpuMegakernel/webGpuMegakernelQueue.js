@@ -14,8 +14,9 @@ export const MEGAKERNEL_COLLECTOR_BLOCK_COUNT_WORD = 20;
 export function createMegakernelQueueLayout(rayCapacity, workgroupSize) {
   const blockCount = Math.ceil(rayCapacity / workgroupSize);
   let offset = MEGAKERNEL_CONTROL_WORDS;
-  const activeOffset = offset;
-  offset += rayCapacity;
+  const activeOffsets = [offset, offset + rayCapacity];
+  offset += rayCapacity * 2;
+  const activeOffset = activeOffsets[0];
   const blockOffset = offset;
   offset += blockCount;
   return Object.freeze({
@@ -23,6 +24,7 @@ export function createMegakernelQueueLayout(rayCapacity, workgroupSize) {
     workgroupSize,
     blockCount,
     activeOffset,
+    activeOffsets: Object.freeze(activeOffsets),
     blockOffset,
     wordLength: offset,
     byteLength: alignTo4(offset * 4),
@@ -33,11 +35,8 @@ export function createMegakernelQueueBuffer(device, layout, sourceRayCount) {
   const data = new Uint32Array(layout.wordLength);
   data[0] = sourceRayCount;
   data[1] = layout.rayCapacity;
-  data[4] = sourceRayCount;
+  data[4] = 0;
   data[5] = sourceRayCount;
-  data[12] = Math.ceil(sourceRayCount / layout.workgroupSize);
-  data[13] = 1;
-  data[14] = 1;
   for (let index = 0; index < sourceRayCount; index++) {
     data[layout.activeOffset + index] = index;
   }
@@ -51,76 +50,49 @@ export function createMegakernelQueueBuffer(device, layout, sourceRayCount) {
   return buffer;
 }
 
-export function createMegakernelQueueUniformData(layout, rayBase = 0) {
+export function createMegakernelQueueUniformData(
+  layout,
+  direction,
+  rayBase,
+  membershipBase,
+  membershipStride
+) {
   return new Uint32Array([
     layout.rayCapacity,
-    layout.activeOffset,
+    layout.activeOffsets[direction],
     layout.blockOffset,
     layout.blockCount,
     rayBase,
+    membershipBase,
+    membershipStride,
+    direction === 0 ? 0 : 4,
+    direction * 3,
     0,
     0,
     0,
   ]);
 }
 
-export function createMegakernelRayFlagClearUniformData(
-  rayCapacity,
-  rayBase = 0
-) {
-  return new Uint32Array([rayCapacity, rayBase, 0, 0]);
-}
-
-/** Clears only stale activity flags before a ray-buffer half is reused. */
-export function createMegakernelRayFlagClearShader(workgroupSize) {
-  return `
-struct Ray { origin:vec2f,direction:vec2f,powers:vec2f,
-  wavelength:f32,flags:u32 };
-struct ClearConfig { rayCapacity:u32,rayBase:u32,padding0:u32,padding1:u32 };
-@group(0) @binding(0) var<storage,read_write> rays:array<Ray>;
-@group(0) @binding(1) var<uniform> config:ClearConfig;
-
-@compute @workgroup_size(${workgroupSize})
-fn clearMain(@builtin(global_invocation_id) invocation:vec3u) {
-  if(invocation.x<config.rayCapacity){
-    rays[config.rayBase+invocation.x].flags=0u;
-  }
-}
-`;
-}
-
 /**
- * Stable-compacts isActive output slots without copying ray payloads. Each block
- * is counted, a single small prefix pass assigns block starts, and the fill
- * pass preserves physical (therefore slot-major) order.
+ * Stable-compacts current-generation output slots without copying ray payloads.
+ * Tracing has already counted each block, so a prefix and fill preserve the
+ * physical (therefore slot-major) order in two dispatches.
  */
 export function createMegakernelCollectorShader(workgroupSize) {
   return `
 struct Ray { origin:vec2f,direction:vec2f,powers:vec2f,
   wavelength:f32,flags:u32 };
 struct QueueConfig { rayCapacity:u32,activeOffset:u32,blockOffset:u32,
-  blockCount:u32,rayBase:u32,padding0:u32,padding1:u32,padding2:u32 };
+  blockCount:u32,rayBase:u32,membershipBase:u32,membershipStride:u32,
+  countWord:u32,dispatchWord:u32,padding0:u32,padding1:u32,padding2:u32 };
 @group(0) @binding(0) var<storage,read> rays:array<Ray>;
 @group(0) @binding(1) var<storage,read_write> queue:array<atomic<u32>>;
 @group(0) @binding(2) var<uniform> config:QueueConfig;
 @group(0) @binding(3) var<storage,read_write>
   dispatchArguments:array<atomic<u32>>;
+@group(0) @binding(4) var<storage,read> memberships:array<u32>;
 var<workgroup> flags:array<u32,${workgroupSize}>;
 var<workgroup> destinations:array<u32,${workgroupSize}>;
-
-@compute @workgroup_size(${workgroupSize})
-fn countMain(@builtin(workgroup_id) group:vec3u,
-  @builtin(local_invocation_id) local:vec3u) {
-  let index=group.x*${workgroupSize}u+local.x;
-  flags[local.x]=select(0u,1u,index<config.rayCapacity&&
-    (rays[config.rayBase+index].flags&1u)!=0u);
-  workgroupBarrier();
-  if(local.x!=0u||group.x>=config.blockCount){return;}
-  var count=0u;
-  for(var lane=0u;lane<${workgroupSize}u;lane++){count+=flags[lane];}
-  atomicStore(&queue[config.blockOffset+group.x],count);
-  atomicMax(&queue[${MEGAKERNEL_COLLECTOR_BLOCK_COUNT_WORD}],group.x+1u);
-}
 
 @compute @workgroup_size(1)
 fn prefixMain(@builtin(global_invocation_id) id:vec3u) {
@@ -133,19 +105,23 @@ fn prefixMain(@builtin(global_invocation_id) id:vec3u) {
     let blockCount=atomicLoad(&queue[offset]);
     atomicStore(&queue[offset],count);count+=blockCount;
   }
-  atomicStore(&queue[0],count);atomicMax(&queue[5],count);
+  atomicStore(&queue[config.countWord],count);atomicMax(&queue[5],count);
   let payload=max(1u,atomicLoad(&queue[15]));
-  atomicStore(&dispatchArguments[0],(count+payload-1u)/payload);
-  atomicStore(&dispatchArguments[1],1u);
-  atomicStore(&dispatchArguments[2],1u);
+  atomicStore(&dispatchArguments[config.dispatchWord],
+    (count+payload-1u)/payload);
   atomicAdd(&queue[11],1u);
+  atomicAdd(&queue[21],1u);
 }
 
 @compute @workgroup_size(${workgroupSize})
 fn fillMain(@builtin(workgroup_id) group:vec3u,
   @builtin(local_invocation_id) local:vec3u) {
   let index=group.x*${workgroupSize}u+local.x;
+  var generation=0u;
+  if(index<config.rayCapacity){generation=memberships[config.membershipBase+
+    index*config.membershipStride+config.membershipStride-1u];}
   let isActive=select(0u,1u,index<config.rayCapacity&&
+    generation==atomicLoad(&queue[21])&&
     (rays[config.rayBase+index].flags&1u)!=0u);
   flags[local.x]=isActive;workgroupBarrier();
   if(local.x==0u&&group.x<config.blockCount){

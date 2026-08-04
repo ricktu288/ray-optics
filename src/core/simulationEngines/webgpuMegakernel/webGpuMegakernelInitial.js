@@ -22,7 +22,7 @@ export function createMegakernelInitialShader({
   if (!membership.supported) return membership;
   const regionWordCount = Math.max(1, Math.ceil(description.regions.length / 32));
   const membershipCode = membership.code
-    ? extractMembershipCode(membership.code)
+    ? extractMembershipCode(membership.code, regionWordCount)
     : emptyMembershipCode(regionWordCount);
   const sourcePrograms = dagPrograms.sources.map(program => program.code)
     .join('\n');
@@ -50,7 +50,7 @@ struct Attempt { mask:array<u32,${regionWordCount}>,ambiguous:u32,
   nearest:f32 };
 struct InitialConfig { sourceCount:u32,sourceRayCount:u32,rayCapacity:u32,
   regionWordCount:u32,wavelengthMin:f32,wavelengthMax:f32,
-  padding0:u32,padding1:u32 };
+  membershipStride:u32,padding1:u32 };
 @group(0) @binding(0) var<storage,read> sourceDescriptors:
   array<SourceDescriptor>;
 @group(0) @binding(1) var<storage,read> instanceParameters:array<f32>;
@@ -137,6 +137,8 @@ export function createMegakernelInitialUniformData(description, rayCapacity) {
 export function createMegakernelInitialConfigData({
   description,
   rayCapacity,
+  membershipStride = Math.max(1,
+    Math.ceil(description.regions.length / 32)) + 1,
   wavelengthRange,
 }) {
   const data = new ArrayBuffer(32);
@@ -149,6 +151,7 @@ export function createMegakernelInitialConfigData({
   view.setUint32(12, Math.ceil(description.regions.length / 32), true);
   view.setFloat32(16, wavelengthRange[0], true);
   view.setFloat32(20, wavelengthRange[1], true);
+  view.setUint32(24, membershipStride, true);
   return data;
 }
 
@@ -182,7 +185,7 @@ function createSourceCase(definition, program, typeId) {
   }`;
 }
 
-function extractMembershipCode(code) {
+function extractMembershipCode(code, regionWordCount) {
   const constantsStart = code.indexOf('const PARAMETER_TOLERANCE');
   const structsStart = code.indexOf('struct Ray');
   const helpersStart = code.indexOf('fn cross2');
@@ -191,8 +194,11 @@ function extractMembershipCode(code) {
       mainStart < 0) {
     throw new Error('Unexpected initial-membership WGSL structure.');
   }
-  return code.slice(constantsStart, structsStart) +
-    code.slice(helpersStart, mainStart);
+  return (code.slice(constantsStart, structsStart) +
+    code.slice(helpersStart, mainStart)).replace(
+    `let base=rayIndex*${regionWordCount}u;`,
+    'let base=rayIndex*initialConfig.membershipStride;'
+  );
 }
 
 function emptyMembershipCode(regionWordCount) {

@@ -87,6 +87,9 @@ export function decodeWebGpuMegakernelRunState(data, description) {
     throw new RangeError('WebGPU megakernel run-state readback is truncated.');
   }
   const control = new Uint32Array(bytes, 0, WEBGPU_RUN_CONTROL_SIZE / 4);
+  const currentDirection = control[11] & 1;
+  const currentCountWord = currentDirection === 0 ? 0 : 4;
+  const nextCountWord = currentDirection === 0 ? 4 : 0;
   const detectorLayout = createDetectorResultLayout(description);
   const requiredByteLength = WEBGPU_RUN_CONTROL_SIZE +
     detectorLayout.valueCount * 8;
@@ -106,11 +109,11 @@ export function decodeWebGpuMegakernelRunState(data, description) {
     return { values, overflow };
   });
   return {
-    currentRayCount: control[0],
+    currentRayCount: control[currentCountWord],
     rayCapacity: control[1],
     readyLineCapacity: control[2],
     readyPointCapacity: control[3],
-    nextRayCount: control[4],
+    nextRayCount: control[nextCountWord],
     requiredRayCapacity: control[5],
     readyLineCount: control[6],
     readyPointCount: control[7],

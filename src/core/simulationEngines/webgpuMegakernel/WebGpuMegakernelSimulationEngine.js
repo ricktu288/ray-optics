@@ -86,7 +86,7 @@ class WebGpuMegakernelSimulationRun {
       this.hasPresentedRun = true;
     }
     this.isComplete = state.currentRayCount === 0 || state.resizeNeeded;
-    if (!this.isComplete) this.scheduleContinuation(state);
+    if (!this.isComplete) await this.scheduleContinuation(state);
     this.lastUpdate = this.createUpdate(
       this.isComplete ? 'complete' : 'running',
       recordCount > 0 || this.hasPresentedRun
@@ -111,24 +111,30 @@ class WebGpuMegakernelSimulationRun {
     }
   }
 
-  scheduleContinuation(state) {
+  async scheduleContinuation(state) {
     const backend = this.engine.computeBackend;
+    const isCancelled = () => this.isStale();
+    const preparedPresentation = await this.engine.prepareNativeGeometry(
+      this.options,
+      { isCancelled }
+    );
+    if (!preparedPresentation || isCancelled()) return;
     const encoder = this.engine.device.createCommandEncoder({
       label: 'WebGPU continued megakernel tracing',
     });
     backend.encodeReadyGeometryReset(encoder);
     backend.encodeContinuation(encoder, state.pingPongIndex & 1);
     const consumeState = backend.encodeStateReadback(encoder);
+    this.engine.encodeNativeGeometry(
+      encoder,
+      preparedPresentation,
+      { resetAccumulation: false }
+    );
     this.engine.device.queue.submit([encoder.finish()]);
+    const completion = this.engine.rasterizer.waitForSubmittedWork();
     this.trackNativeBatch({
       statePromise: consumeState(),
-      presentationPromise: this.engine.presentNativeGeometry(
-        this.options,
-        {
-          isCancelled: () => this.isStale(),
-          resetAccumulation: false,
-        }
-      ),
+      presentationPromise: completion.then(() => !isCancelled()),
     });
   }
 
@@ -285,7 +291,7 @@ class WebGpuMegakernelSimulationEngine {
         run.cancel();
         return run;
       }
-      const nativeBatch = this.startNativeRun(options, {
+      const nativeBatch = await this.startNativeRun(options, {
         isCancelled: () => run.isStale(),
       });
       if (!nativeBatch) {
@@ -426,13 +432,18 @@ class WebGpuMegakernelSimulationEngine {
     this.stagedComputePreparedScene = null;
   }
 
-  startNativeRun(options, { isCancelled = null } = {}) {
+  async startNativeRun(options, { isCancelled = null } = {}) {
     if (isCancelled?.()) return null;
     if (!this.computeBackend?.canEmitAllSources) {
       throw new RangeError(
         'Source population exceeds the native WebGPU ray capacity.'
       );
     }
+    const preparedPresentation = await this.prepareNativeGeometry(
+      options,
+      { isCancelled }
+    );
+    if (!preparedPresentation || isCancelled?.()) return null;
     this.computeBackend.resetRunControl();
     const encoder = this.device.createCommandEncoder({
       label: 'WebGPU initial source emission and interactions',
@@ -441,31 +452,42 @@ class WebGpuMegakernelSimulationEngine {
     this.computeBackend.encodeInitial(encoder);
     if (isCancelled?.()) return null;
     const consumeState = this.computeBackend.encodeStateReadback(encoder);
+    this.encodeNativeGeometry(
+      encoder,
+      preparedPresentation,
+      { resetAccumulation: true }
+    );
     this.device.queue.submit([encoder.finish()]);
+    const completion = this.rasterizer.waitForSubmittedWork();
     return {
       statePromise: consumeState(),
-      presentationPromise: this.presentNativeGeometry(options, {
-        isCancelled,
-        resetAccumulation: true,
-      }),
+      presentationPromise: completion.then(() => !isCancelled?.()),
     };
   }
 
-  presentNativeGeometry(options, {
-    isCancelled = null,
-    resetAccumulation = false,
-  } = {}) {
+  prepareNativeGeometry(options, { isCancelled = null } = {}) {
     const stage = this.computeBackend.renderPreparationStage;
-    return this.rasterizer.drawGpuGeometryIndirect(
+    return this.rasterizer.prepareGpuGeometryIndirect(
       stage.geometryBuffer,
-      stage.drawIndirectBuffer,
       {
         origin: options.viewport?.origin ?? { x: 0, y: 0 },
         scale: options.viewport?.scale ?? 1,
         colorMode: options.colorMode ?? 'default',
         simulateColors: options.rendering?.simulateColors ?? false,
       },
-      { isCancelled, resetAccumulation }
+      { isCancelled }
+    );
+  }
+
+  encodeNativeGeometry(encoder, preparedPresentation, {
+    resetAccumulation = false,
+  } = {}) {
+    const stage = this.computeBackend.renderPreparationStage;
+    this.rasterizer.encodeGpuGeometryIndirect(
+      encoder,
+      stage.drawIndirectBuffer,
+      preparedPresentation,
+      { resetAccumulation }
     );
   }
 

@@ -21,8 +21,6 @@ import {
   createMegakernelQueueBuffer,
   createMegakernelQueueLayout,
   createMegakernelQueueUniformData,
-  createMegakernelRayFlagClearShader,
-  createMegakernelRayFlagClearUniformData,
 } from './webGpuMegakernelQueue.js';
 import { createWebGpuMegakernelShader } from './webGpuMegakernelShader.js';
 import {
@@ -51,6 +49,7 @@ export class WebGpuMegakernelBackend {
     this.staticStorage = null;
     this.rayCapacity = 0;
     this.regionWordCount = 0;
+    this.membershipStride = 0;
     this.rayBuffer = null;
     this.membershipBuffer = null;
     this.queueBuffer = null;
@@ -65,11 +64,8 @@ export class WebGpuMegakernelBackend {
     this.initialMembershipUniformBuffer = null;
     this.initialConfigBuffer = null;
     this.collectorUniformBuffers = [];
-    this.rayFlagClearUniformBuffers = [];
     this.initialPipeline = null;
     this.initialBindGroup = null;
-    this.rayFlagClearPipeline = null;
-    this.rayFlagClearBindGroups = [];
     this.collectorPipelines = null;
     this.collectorBindGroups = [];
     this.megakernelStages = new Map();
@@ -88,11 +84,12 @@ export class WebGpuMegakernelBackend {
       scene.packedStorage
     );
     this.regionWordCount = Math.max(1, scene.packedStorage.counts.regionWords);
+    this.membershipStride = this.regionWordCount + 1;
     const maximumBinding = this.device.limits?.maxStorageBufferBindingSize ??
       this.config.maxBatchRayEvents * WEBGPU_RAY_STRIDE * 2;
     const rayLimit = Math.floor(maximumBinding / (WEBGPU_RAY_STRIDE * 2));
     const membershipLimit = Math.floor(maximumBinding /
-      (this.regionWordCount * 4 * 2));
+      (this.membershipStride * 4 * 2));
     this.rayCapacity = Math.max(1, Math.min(
       this.config.maxBatchRayEvents,
       rayLimit,
@@ -107,7 +104,6 @@ export class WebGpuMegakernelBackend {
     this.createDynamicBuffers(sourceRayCount);
     try {
       await this.initializeInitialPipeline();
-      await this.initializeRayFlagClear();
       await this.initializeCollector();
     } catch (error) {
       this.destroy();
@@ -131,7 +127,7 @@ export class WebGpuMegakernelBackend {
     });
     this.membershipBuffer = this.device.createBuffer({
       label: 'WebGPU megakernel ping-pong memberships',
-      size: this.rayCapacity * this.regionWordCount * 4 * 2,
+      size: this.rayCapacity * this.membershipStride * 4 * 2,
       usage: storage,
     });
     this.queueBuffer = createMegakernelQueueBuffer(
@@ -140,21 +136,11 @@ export class WebGpuMegakernelBackend {
       Math.min(sourceRayCount, this.rayCapacity)
     );
     this.dispatchIndirectBuffer = this.device.createBuffer({
-      label: 'WebGPU megakernel indirect dispatch arguments',
-      size: 12,
+      label: 'WebGPU megakernel per-half trace dispatch arguments',
+      size: INDIRECT_ARGUMENT_WORDS * 4 * 2,
       usage: BUFFER_USAGE_STORAGE | BUFFER_USAGE_COPY_DST |
         BUFFER_USAGE_INDIRECT,
     });
-    this.device.queue.writeBuffer(
-      this.dispatchIndirectBuffer,
-      0,
-      new Uint32Array([
-        Math.ceil(Math.min(sourceRayCount, this.rayCapacity) /
-          this.config.workgroupSize),
-        1,
-        1,
-      ])
-    );
     this.detectorResultBuffer = this.device.createBuffer({
       label: 'WebGPU megakernel detector results',
       size: Math.max(8,
@@ -177,9 +163,11 @@ export class WebGpuMegakernelBackend {
     this.device.queue.writeBuffer(
       this.drawIndirectBuffer,
       0,
-      // The first four words are drawIndirect arguments. Each ray-buffer half
-      // then has persistent dispatchWorkgroupsIndirect extent arguments.
-      new Uint32Array([6, 0, 0, 0, 0, 1, 1, 0, 1, 1])
+      // Draw arguments followed by per-half collector extents.
+      new Uint32Array([
+        6, 0, 0, 0,
+        0, 1, 1, 0, 1, 1,
+      ])
     );
     this.traceUniformBuffer = createUniformBuffer(
       this.device,
@@ -191,7 +179,7 @@ export class WebGpuMegakernelBackend {
     this.megaUniformBuffers = Array.from({ length: 2 }, (_value, direction) =>
       this.device.createBuffer({
         label: `WebGPU megakernel direction ${direction} uniforms`,
-        size: 48,
+        size: 64,
         usage: BUFFER_USAGE_UNIFORM | BUFFER_USAGE_COPY_DST,
       })
     );
@@ -246,6 +234,7 @@ export class WebGpuMegakernelBackend {
       createMegakernelInitialConfigData({
         description,
         rayCapacity: this.rayCapacity,
+        membershipStride: this.membershipStride,
         wavelengthRange:
           this.preparedScene.parameterRanges.wavelengthRange[0],
       }),
@@ -283,16 +272,13 @@ export class WebGpuMegakernelBackend {
         storageLayoutEntry(1),
         uniformLayoutEntry(2),
         storageLayoutEntry(3),
+        storageLayoutEntry(4, true),
       ],
     });
     const pipelineLayout = this.device.createPipelineLayout({
       bindGroupLayouts: [bindGroupLayout],
     });
     this.collectorPipelines = {
-      count: await createComputePipeline(this.device, {
-        label: 'WebGPU megakernel queue count', layout: pipelineLayout,
-        compute: { module, entryPoint: 'countMain' },
-      }),
       prefix: await createComputePipeline(this.device, {
         label: 'WebGPU megakernel queue prefix', layout: pipelineLayout,
         compute: { module, entryPoint: 'prefixMain' },
@@ -308,7 +294,10 @@ export class WebGpuMegakernelBackend {
         this.device,
         createMegakernelQueueUniformData(
           this.queueLayout,
-          direction * this.rayCapacity
+          direction,
+          direction * this.rayCapacity,
+          direction * this.rayCapacity * this.membershipStride,
+          this.membershipStride
         ),
         `WebGPU megakernel collector direction ${direction} uniforms`
       )
@@ -316,60 +305,17 @@ export class WebGpuMegakernelBackend {
     this.rebuildCollectorBindGroups();
   }
 
-  async initializeRayFlagClear() {
-    const module = this.device.createShaderModule({
-      label: 'WebGPU megakernel stale ray flag clear',
-      code: createMegakernelRayFlagClearShader(this.config.workgroupSize),
-    });
-    await validateShaderModule(module, 'megakernel stale ray flag clear');
-    const bindGroupLayout = this.device.createBindGroupLayout({
-      label: 'WebGPU megakernel stale ray flag clear layout',
-      entries: [
-        storageLayoutEntry(0),
-        uniformLayoutEntry(1),
-      ],
-    });
-    this.rayFlagClearPipeline = await createComputePipeline(this.device, {
-      label: 'WebGPU megakernel stale ray flag clear',
-      layout: this.device.createPipelineLayout({
-        bindGroupLayouts: [bindGroupLayout],
-      }),
-      compute: { module, entryPoint: 'clearMain' },
-    });
-    this.rayFlagClearUniformBuffers = Array.from(
-      { length: 2 },
-      (_value, direction) => createUniformBuffer(
-        this.device,
-        createMegakernelRayFlagClearUniformData(
-          this.rayCapacity,
-          direction * this.rayCapacity
-        ),
-        `WebGPU megakernel stale ray flag direction ${direction} uniforms`
-      )
-    );
-    this.rayFlagClearBindGroups = this.rayFlagClearUniformBuffers.map(
-      (uniformBuffer, direction) => this.device.createBindGroup({
-        label: `WebGPU megakernel stale ray flag direction ${direction} ` +
-          'bindings',
-        layout: this.rayFlagClearPipeline.getBindGroupLayout(0),
-        entries: [
-          entry(0, this.rayBuffer),
-          entry(1, uniformBuffer),
-        ],
-      })
-    );
-  }
-
   rebuildCollectorBindGroups() {
     this.collectorBindGroups = this.collectorUniformBuffers.map(
       (uniformBuffer, direction) => this.device.createBindGroup({
         label: `WebGPU megakernel collector direction ${direction} bindings`,
-        layout: this.collectorPipelines.count.getBindGroupLayout(0),
+        layout: this.collectorPipelines.prefix.getBindGroupLayout(0),
         entries: [
           entry(0, this.rayBuffer),
           entry(1, this.queueBuffer),
           entry(2, uniformBuffer),
           entry(3, this.dispatchIndirectBuffer),
+          entry(4, this.membershipBuffer),
         ],
       })
     );
@@ -485,24 +431,30 @@ export class WebGpuMegakernelBackend {
   }
 
   writeMegakernelUniforms() {
-    const membershipSpan = this.rayCapacity * this.regionWordCount;
+    const membershipSpan = this.rayCapacity * this.membershipStride;
     for (let direction = 0; direction < 2; direction++) {
+      const outputDirection = direction ^ 1;
       this.device.queue.writeBuffer(
         this.megaUniformBuffers[direction],
         0,
         new Uint32Array([
           this.rayCapacity,
-          this.queueLayout.activeOffset,
+          this.queueLayout.activeOffsets[direction],
+          direction === 0 ? 0 : 4,
           this.maxRayDepth,
           this.currentStage.maximumOutputs ?? 1,
           this.preparedScene.packedStorage.counts.regions,
           this.regionWordCount,
+          this.membershipStride,
           renderVariantId(this.currentRenderVariant),
           this.currentPayloadSize,
           direction * this.rayCapacity,
-          (direction ^ 1) * this.rayCapacity,
+          outputDirection * this.rayCapacity,
           direction * membershipSpan,
-          (direction ^ 1) * membershipSpan,
+          outputDirection * membershipSpan,
+          this.queueLayout.blockOffset,
+          RAY_EXTENT_DISPATCH_WORD +
+            outputDirection * INDIRECT_ARGUMENT_WORDS,
         ])
       );
     }
@@ -513,16 +465,16 @@ export class WebGpuMegakernelBackend {
       this.preparedScene.packedStorage.counts.sourceRays,
       this.rayCapacity
     );
-    const data = new Uint32Array(32);
+    // Word 21 is a persistent output generation. Do not reset it between
+    // compatible scene updates, or stale slots from the preceding frame could
+    // look current when the ping-pong index restarts at zero.
+    const data = new Uint32Array(21);
     data[0] = count;
     data[1] = this.rayCapacity;
     data[2] = this.config.maxReadyLineRecords;
     data[3] = this.config.maxReadyPointRecords;
-    data[4] = count;
+    data[4] = 0;
     data[5] = count;
-    data[12] = Math.ceil(count / this.currentPayloadSize);
-    data[13] = 1;
-    data[14] = 1;
     data[15] = this.currentPayloadSize;
     this.device.queue.writeBuffer(this.queueBuffer, 0, data);
     this.device.queue.writeBuffer(
@@ -530,6 +482,9 @@ export class WebGpuMegakernelBackend {
       0,
       new Uint32Array([
         Math.ceil(count / this.currentPayloadSize),
+        1,
+        1,
+        0,
         1,
         1,
       ])
@@ -579,30 +534,27 @@ export class WebGpuMegakernelBackend {
   encodeMegakernel(commandEncoder, direction) {
     const outputDirection = direction ^ 1;
     const extentOffset = rayExtentDispatchIndirectOffset(outputDirection);
-    // Clear only flags that may remain from the last use of this physical
-    // half. The tracing shader then rebuilds the same persistent extent for
-    // the collector and for the half's next reuse.
-    let pass = commandEncoder.beginComputePass({
-      label: `WebGPU stale ray flag clear direction ${outputDirection}`,
-    });
-    pass.setPipeline(this.rayFlagClearPipeline);
-    pass.setBindGroup(0, this.rayFlagClearBindGroups[outputDirection]);
-    pass.dispatchWorkgroupsIndirect(this.drawIndirectBuffer, extentOffset);
-    pass.end();
+    // Tracing rebuilds generation-tagged block counts. Clearing this compact
+    // metadata replaces both the ray clear and collector count dispatches.
+    commandEncoder.clearBuffer(
+      this.queueBuffer,
+      this.queueLayout.blockOffset * 4,
+      this.queueLayout.blockCount * 4
+    );
     commandEncoder.clearBuffer(
       this.drawIndirectBuffer, extentOffset, 4
     );
     commandEncoder.clearBuffer(
       this.queueBuffer, MEGAKERNEL_COLLECTOR_BLOCK_COUNT_WORD * 4, 4
     );
-    pass = commandEncoder.beginComputePass({
+    const pass = commandEncoder.beginComputePass({
       label: `WebGPU ${this.currentRenderVariant} tracing megakernel`,
     });
     pass.setPipeline(this.currentStage.pipeline);
     pass.setBindGroup(0, this.currentStage.bindGroups[direction]);
     pass.dispatchWorkgroupsIndirect(
       this.dispatchIndirectBuffer,
-      0
+      direction * INDIRECT_ARGUMENT_WORDS * 4
     );
     pass.end();
   }
@@ -611,15 +563,6 @@ export class WebGpuMegakernelBackend {
     const bindGroup = this.collectorBindGroups[outputDirection];
     const extentOffset = rayExtentDispatchIndirectOffset(outputDirection);
     let pass = commandEncoder.beginComputePass({
-      label: 'WebGPU megakernel active queue count',
-    });
-    pass.setPipeline(this.collectorPipelines.count);
-    pass.setBindGroup(0, bindGroup);
-    pass.dispatchWorkgroupsIndirect(
-      this.drawIndirectBuffer, extentOffset
-    );
-    pass.end();
-    pass = commandEncoder.beginComputePass({
       label: 'WebGPU megakernel active queue prefix',
     });
     pass.setPipeline(this.collectorPipelines.prefix);
@@ -712,6 +655,7 @@ export class WebGpuMegakernelBackend {
       createMegakernelInitialConfigData({
         description: next.runtimeDescription,
         rayCapacity: this.rayCapacity,
+        membershipStride: this.membershipStride,
         wavelengthRange: next.parameterRanges.wavelengthRange[0],
       })
     );
@@ -722,13 +666,10 @@ export class WebGpuMegakernelBackend {
     for (const buffer of [
       ...this.megaUniformBuffers,
       ...this.collectorUniformBuffers,
-      ...this.rayFlagClearUniformBuffers,
     ]) buffer.destroy?.();
     this.megaUniformBuffers = [];
     this.collectorUniformBuffers = [];
-    this.rayFlagClearUniformBuffers = [];
     this.collectorBindGroups = [];
-    this.rayFlagClearBindGroups = [];
     for (const name of [
       'rayBuffer', 'membershipBuffer', 'queueBuffer',
       'dispatchIndirectBuffer',
@@ -743,7 +684,6 @@ export class WebGpuMegakernelBackend {
     this.currentStage = null;
     this.initialPipeline = null;
     this.collectorPipelines = null;
-    this.rayFlagClearPipeline = null;
   }
 }
 

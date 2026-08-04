@@ -64,7 +64,7 @@ export const DEFAULT_SIMULATION_ENGINE_CONFIGS = Object.freeze({
     maxReadyLineRecords: 1048576,
     maxReadyPointRecords: 1048576,
     maxLocalIterations: 1024,
-    maxPingPongsPerSubmission: 1,
+    maxPingPongsPerSubmission: 2,
   }),
 });
 
