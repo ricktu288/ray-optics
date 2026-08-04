@@ -12,7 +12,10 @@ import { createWebGpuMegakernelShader } from
   '../../src/core/simulationEngines/webgpuMegakernel/webGpuMegakernelShader.js';
 import { createMegakernelInitialShader } from
   '../../src/core/simulationEngines/webgpuMegakernel/webGpuMegakernelInitial.js';
-import { createMegakernelCollectorShader } from
+import {
+  createMegakernelCollectorShader,
+  createMegakernelRayFlagClearShader,
+} from
   '../../src/core/simulationEngines/webgpuMegakernel/webGpuMegakernelQueue.js';
 import { WebGpuMegakernelBackend } from
   '../../src/core/simulationEngines/webgpuMegakernel/webGpuMegakernelBackend.js';
@@ -105,6 +108,10 @@ describe('WebGpuMegakernelSimulationEngine', () => {
       expect(rays.maximumOutputs).toBe(2);
       expect(rays.code).toContain('fn megakernelMain(');
       expect(rays.code).toContain('fn surface_0(');
+      expect(rays.code).toContain('fn recordCollectorExtent(slot:u32)');
+      expect(rays.code).toContain(
+        'atomicMax(&drawArguments[4u+3u*outputDirection],collectorBlocks)'
+      );
       expect(rays.code).not.toContain('sharedRays');
       expect(rays.code).not.toContain('fn lineIntersection(');
       expect(images.code).toContain('var<workgroup> sharedRays');
@@ -126,7 +133,94 @@ describe('WebGpuMegakernelSimulationEngine', () => {
       'queue[config.activeOffset+destinations[local.x]]'
     );
     expect(code).toContain('dispatchArguments:array<atomic<u32>>');
+    expect(code).toContain(
+      'activeBlocks=min(atomicLoad(\n    &queue[20]),config.blockCount)'
+    );
     expect(code).not.toContain('atomicAdd(&queue[config.activeOffset');
+  });
+
+  it('clears only activity flags through an indirect high-water extent', () => {
+    const code = createMegakernelRayFlagClearShader(64);
+
+    expect(code).toContain('@compute @workgroup_size(64)');
+    expect(code).toContain('rays[config.rayBase+invocation.x].flags=0u');
+  });
+
+  it('bounds collector scans with tracing high-water dispatch arguments', () => {
+    const backend = new WebGpuMegakernelBackend(null, {}, {});
+    backend.drawIndirectBuffer = {};
+    backend.collectorBindGroups = [{}];
+    backend.collectorPipelines = { count: {}, prefix: {}, fill: {} };
+    const encodedPasses = [];
+    const commandEncoder = { beginComputePass: jest.fn(() => {
+      const pass = { setPipeline: jest.fn(), setBindGroup: jest.fn(),
+        dispatchWorkgroups: jest.fn(),
+        dispatchWorkgroupsIndirect: jest.fn(), end: jest.fn() };
+      encodedPasses.push(pass);
+      return pass;
+    }) };
+
+    backend.encodeCollector(commandEncoder, 0);
+
+    expect(encodedPasses[0].dispatchWorkgroupsIndirect)
+      .toHaveBeenCalledWith(backend.drawIndirectBuffer, 16);
+    expect(encodedPasses[1].dispatchWorkgroups).toHaveBeenCalledWith(1);
+    expect(encodedPasses[2].dispatchWorkgroupsIndirect)
+      .toHaveBeenCalledWith(backend.drawIndirectBuffer, 16);
+
+    backend.encodeCollector(commandEncoder, 1);
+    expect(encodedPasses[3].dispatchWorkgroupsIndirect)
+      .toHaveBeenCalledWith(backend.drawIndirectBuffer, 28);
+    expect(encodedPasses[5].dispatchWorkgroupsIndirect)
+      .toHaveBeenCalledWith(backend.drawIndirectBuffer, 28);
+  });
+
+  it('clears the reused output half by its prior indirect extent', () => {
+    const backend = new WebGpuMegakernelBackend(null, {}, {});
+    backend.rayFlagClearPipeline = {};
+    backend.rayFlagClearBindGroups = [{}, {}];
+    backend.drawIndirectBuffer = {};
+    backend.queueBuffer = {};
+    backend.dispatchIndirectBuffer = {};
+    backend.currentStage = { pipeline: {}, bindGroups: [{}, {}] };
+    const passes = [];
+    const commandEncoder = {
+      clearBuffer: jest.fn(),
+      beginComputePass: jest.fn(() => {
+        const pass = { setPipeline: jest.fn(), setBindGroup: jest.fn(),
+          dispatchWorkgroupsIndirect: jest.fn(), end: jest.fn() };
+        passes.push(pass);
+        return pass;
+      }),
+    };
+
+    backend.encodeMegakernel(commandEncoder, 0);
+
+    expect(passes[0].dispatchWorkgroupsIndirect)
+      .toHaveBeenCalledWith(backend.drawIndirectBuffer, 28);
+    expect(commandEncoder.clearBuffer)
+      .toHaveBeenCalledWith(backend.drawIndirectBuffer, 28, 4);
+    expect(commandEncoder.clearBuffer.mock.calls.some(
+      ([buffer]) => buffer === backend.rayBuffer
+    )).toBe(false);
+    expect(passes[1].dispatchWorkgroupsIndirect)
+      .toHaveBeenCalledWith(backend.dispatchIndirectBuffer, 0);
+  });
+
+  it('does not clear the full ray buffer when starting a frame', () => {
+    const backend = new WebGpuMegakernelBackend(null, {
+      packedStorage: { counts: { sourceRays: 0 } }
+    }, {});
+    backend.detectorResultBuffer = {};
+    backend.rayBuffer = {};
+    const commandEncoder = { clearBuffer: jest.fn() };
+
+    backend.encodeInitial(commandEncoder);
+
+    expect(commandEncoder.clearBuffer)
+      .toHaveBeenCalledTimes(1);
+    expect(commandEncoder.clearBuffer)
+      .toHaveBeenCalledWith(backend.detectorResultBuffer);
   });
 
   it('alternates several ping-pongs in one command submission', () => {

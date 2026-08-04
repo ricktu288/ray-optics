@@ -8,6 +8,7 @@ const BUFFER_USAGE_COPY_DST = 0x0008;
 const BUFFER_USAGE_STORAGE = 0x0080;
 
 export const MEGAKERNEL_CONTROL_WORDS = 32;
+export const MEGAKERNEL_COLLECTOR_BLOCK_COUNT_WORD = 20;
 
 /** Queue metadata shared by the two ray-buffer directions. */
 export function createMegakernelQueueLayout(rayCapacity, workgroupSize) {
@@ -63,6 +64,31 @@ export function createMegakernelQueueUniformData(layout, rayBase = 0) {
   ]);
 }
 
+export function createMegakernelRayFlagClearUniformData(
+  rayCapacity,
+  rayBase = 0
+) {
+  return new Uint32Array([rayCapacity, rayBase, 0, 0]);
+}
+
+/** Clears only stale activity flags before a ray-buffer half is reused. */
+export function createMegakernelRayFlagClearShader(workgroupSize) {
+  return `
+struct Ray { origin:vec2f,direction:vec2f,powers:vec2f,
+  wavelength:f32,flags:u32 };
+struct ClearConfig { rayCapacity:u32,rayBase:u32,padding0:u32,padding1:u32 };
+@group(0) @binding(0) var<storage,read_write> rays:array<Ray>;
+@group(0) @binding(1) var<uniform> config:ClearConfig;
+
+@compute @workgroup_size(${workgroupSize})
+fn clearMain(@builtin(global_invocation_id) invocation:vec3u) {
+  if(invocation.x<config.rayCapacity){
+    rays[config.rayBase+invocation.x].flags=0u;
+  }
+}
+`;
+}
+
 /**
  * Stable-compacts isActive output slots without copying ray payloads. Each block
  * is counted, a single small prefix pass assigns block starts, and the fill
@@ -93,13 +119,16 @@ fn countMain(@builtin(workgroup_id) group:vec3u,
   var count=0u;
   for(var lane=0u;lane<${workgroupSize}u;lane++){count+=flags[lane];}
   atomicStore(&queue[config.blockOffset+group.x],count);
+  atomicMax(&queue[${MEGAKERNEL_COLLECTOR_BLOCK_COUNT_WORD}],group.x+1u);
 }
 
 @compute @workgroup_size(1)
 fn prefixMain(@builtin(global_invocation_id) id:vec3u) {
   if(id.x!=0u){return;}
   var count=0u;
-  for(var block=0u;block<config.blockCount;block++){
+  let activeBlocks=min(atomicLoad(
+    &queue[${MEGAKERNEL_COLLECTOR_BLOCK_COUNT_WORD}]),config.blockCount);
+  for(var block=0u;block<activeBlocks;block++){
     let offset=config.blockOffset+block;
     let blockCount=atomicLoad(&queue[offset]);
     atomicStore(&queue[offset],count);count+=blockCount;

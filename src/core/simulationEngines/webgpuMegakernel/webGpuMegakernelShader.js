@@ -130,6 +130,12 @@ ${renderHelpers}
 ${neighborMode ? createNeighborDeclarations(workgroupSize) : ''}
 ${createRenderFunctions(renderVariant)}
 
+fn recordCollectorExtent(slot:u32) {
+  let collectorBlocks=slot/${workgroupSize}u+1u;
+  let outputDirection=megaUniforms.outputRayBase/megaUniforms.rayCapacity;
+  atomicMax(&drawArguments[4u+3u*outputDirection],collectorBlocks);
+}
+
 fn acceptChild(child:Ray,toggle:bool,incident:ptr<function,Membership>,
   front:ptr<function,CrossingMask>,back:ptr<function,CrossingMask>,
   continuation:ptr<function,Ray>,continuationMembership:ptr<function,Membership>,
@@ -323,6 +329,8 @@ fn megakernelMain(@builtin(global_invocation_id) invocation:vec3u,
   }
   if(isActive&&real){writeSuspended(ray,&membership,logicalIndex,startRayCount,
     depth,&slotCount);}
+  if(real&&slotCount>0u){recordCollectorExtent(
+    logicalIndex+(slotCount-1u)*startRayCount);}
 }`;
 }
 
