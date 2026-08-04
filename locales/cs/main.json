@@ -43,6 +43,22 @@
     "PointSource": {
       "title": "Bodový zdroj",
       "description": "Paprsky vycházejí z jediného bodu, počet lze nastavit pomocí posuvníku \"Hustota paprsků\"."
+    },
+    "AngleSource": {
+      "description": "Bodový zdroj s definovanou výsečí paprsků"
+    },
+    "Mirror": {
+      "title": "Plochý",
+      "description": "Simulovat odraz světla na zrcadle."
+    },
+    "otherMirror": {
+      "title": "Zakřivený"
+    },
+    "ArcMirror": {
+      "title": "Kruhový oblouk"
+    },
+    "ParabolicMirror": {
+      "title": "Parabolický"
     }
   },
   "meta": {
