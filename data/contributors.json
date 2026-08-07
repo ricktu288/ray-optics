@@ -1003,5 +1003,17 @@
       ]
     },
     "firstCommit": "2026-07-16"
+  },
+  {
+    "name": "staclu",
+    "githubEmails": [
+      "staclu@seznam.cz"
+    ],
+    "contributions": {
+      "translations": [
+        "cs"
+      ]
+    },
+    "firstCommit": "2026-08-04"
   }
 ]
