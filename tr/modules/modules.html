@@ -1,0 +1,474 @@
+<!--
+  Copyright 2024 The Ray Optics Simulation authors and contributors
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../thirdparty/bootstrap/bootstrap.min.css">
+  <link rel="icon" href="../../img/icon.png" type="image/png">
+  <style>
+    .module-image {
+      width: 150px;
+      height: 150px !important;
+      float: left;
+      margin-right: 9px;
+      margin-bottom: 9px;
+    }
+
+    .right-caption>img {
+      float: left;
+      margin-right: 9px;
+    }
+
+    .caption {
+      padding: 0px !important;
+    }
+
+    .module-title {
+      font-size: 16pt;
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+
+    .beta-badge {
+      display: inline-block;
+      background: orange;
+      color: white;
+      font-size: 9pt;
+      font-weight: 600;
+      line-height: 1.2em;
+      height: 1.2em;
+      padding: 0 6px;
+      padding-top: 1px;
+      margin-left: 6px;
+      vertical-align: top;
+      border-radius: 0.6em;
+    }
+
+    .import-btn {
+      float: right;
+      margin-right: 8px;
+    }
+
+    .module-contributor {
+      font-size: 8pt;
+      color: #888;
+      margin-top: 0px;
+      margin-bottom: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .collapse {
+      padding-top: 8px;
+    }
+
+    body {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+      font-size: 12pt;
+    }
+
+    ::-webkit-scrollbar {
+      background: none;
+      width: 12px;
+      height: 12px;
+    }
+    ::-webkit-scrollbar-thumb {
+      border: solid 0 rgba(0, 0, 0, 0);
+      border-right-width: 4px;
+      border-left-width: 4px;
+      -webkit-border-radius: 6px 2px;
+      -webkit-box-shadow:
+      inset 0 0 0 0px rgba(112, 112, 112, 0.35),
+      inset 0 0 0 4px rgba(112, 112, 112, 0.35);
+    }
+    ::-webkit-scrollbar-track-piece {
+      margin: 4px 0;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        border-right-width: 3px;
+        border-left-width: 3px;
+      -webkit-box-shadow:
+        inset 0 0 0 0px rgba(128,128,128,0.9),
+        inset 0 0 0 4px rgba(128,128,128,0.9);
+    }
+    ::-webkit-scrollbar-corner {
+      background: transparent;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <ul style="padding-left: 1.5rem;">
+      <li>“Modül” özelliği, bu simülatörde mevcut araçlar tarafından oluşturulan nesneleri birleştirerek, özelleştirerek veya yeniden yapılandırarak yeni araçlar oluşturmaya olanak tanır.</li>
+      <li>İçe aktarılan modüller “Diğer” kategorisinde araçlar olarak görünecektir. Kontrol noktası sırasına göre boş alanı seçin ve tıklayın (bkz. “Özellikler”).</li>
+      <li>İçe aktarılan modüller sahnenin verilerine gömülüdür, bu nedenle modüllerin yazarları bunları güncellediğinde otomatik olarak güncellenmezler.</li>
+    </ul>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/FresnelLens-thumbnail.avif" type="image/avif">
+        <img src="../../modules/FresnelLens-thumbnail.jpg" alt="Fresnel Merceği" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">Fresnel Merceği (<code>FresnelLens</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'FresnelLens'},'*');this.innerText='İçeri aktarıldı';this.classList.remove('btn-primary');this.classList.add('btn-success');">İçeri aktar</button></p>
+        <p class="module-contributor">Yi-Ting Tu</p>
+        <span id="module-desc">
+          Yarım daire şeklinde bir cam parçasından yapılmış Fresnel merceği. <a target="_blank" href="../../gallery/fresnel-lens">Bu Galeri örneğinin</a> modülerleştirilmiş versiyonu.
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-FresnelLens">
+          Özellikler
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-FresnelLens" class="collapse">
+      Kontrol noktası serisi
+      <ol>
+        <li>Merceğin ilk uç noktası</li>
+        <li>Merceğin ikinci uç noktası</li>
+      </ol>
+      Değişkenler
+      <ul>
+        <li><code>N_slice</code>: Dilim sayısı</li>
+        <li><code>refIndex</code>: Merceğin kırılma indisi</li>
+      </ul>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/ContSpectrum-thumbnail.avif" type="image/avif">
+        <img src="../../modules/ContSpectrum-thumbnail.jpg" alt="Sürekli spektrum ışık kaynağı" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">Sürekli spektrum ışık kaynağı (<code>ContSpectrum</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'ContSpectrum'},'*');this.innerText='İçeri aktarıldı';this.classList.remove('btn-primary');this.classList.add('btn-success');">İçeri aktar</button></p>
+        <p class="module-contributor">Yi-Ting Tu</p>
+        <span id="module-desc">
+          Belirli bir sabit adımla ayrıştırılmış, düzgün bir sürekli spektruma sahip ışık kaynağı. Yalnızca “Renkleri Simüle Et” seçeneği açıkken çalışır.
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-ContSpectrum">
+          Özellikler
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-ContSpectrum" class="collapse">
+      Kontrol noktası serisi
+      <ol>
+        <li>Işınların kaynağı</li>
+        <li>Işınların yönünü belirler</li>
+      </ol>
+      Değişkenler
+      <ul>
+        <li><code>min</code>: Minimum dalga boyu</li>
+        <li><code>step</code>: Dalgaboyu adımı</li>
+        <li><code>max</code>: Maksimum dalgaboyu</li>
+        <li><code>brightness</code>: Toplam parlaklık</li>
+      </ul>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/RainbowPointSource-thumbnail.avif" type="image/avif">
+        <img src="../../modules/RainbowPointSource-thumbnail.jpg" alt="Gökkuşağı Nokta Kaynağı" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">Gökkuşağı Nokta Kaynağı (<code>RainbowPointSource</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'RainbowPointSource'},'*');this.innerText='İçeri aktarıldı';this.classList.remove('btn-primary');this.classList.add('btn-success');">İçeri aktar</button></p>
+        <p class="module-contributor">Brad Goodman</p>
+        <span id="module-desc">
+          Nokta ışık kaynağı &lt;360 derece - ancak bir renk spektrumu yayar. “Renkleri Simüle Et” seçeneği açık olarak çalıştırılmalıdır.
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-RainbowPointSource">
+          Özellikler
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-RainbowPointSource" class="collapse">
+      Kontrol noktası serisi
+      <ol>
+        <li>Kaynak</li>
+      </ol>
+      Değişkenler
+      <ul>
+        <li><code>N</code>: Işınların sayısı</li>
+        <li><code>brightness</code>: Toplam parlaklık</li>
+        <li><code>angle</code>: Emisyon açısı</li>
+        <li><code>lambdaMin</code>: Minimum dalga boyu</li>
+        <li><code>lambdaMax</code>: Maksimum dalga boyu</li>
+      </ul>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/CoatedLens-thumbnail.avif" type="image/avif">
+        <img src="../../modules/CoatedLens-thumbnail.jpg" alt="Kaplamalı Küresel Mercek" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">Kaplamalı Küresel Mercek (<code>CoatedLens</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'CoatedLens'},'*');this.innerText='İçeri aktarıldı';this.classList.remove('btn-primary');this.classList.add('btn-success');">İçeri aktar</button></p>
+        <p class="module-contributor">Yi-Ting Tu</p>
+        <span id="module-desc">
+          Her iki tarafında tek katmanlı kaplamalar bulunan küresel bir mercek. Bu modüle gömülü olan <code>ArcCoating</code> modülü, cam yüzeyi ile örtüştüğünde kaplaması haline gelen tek bir ince film tabakasını temsil eder.
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-CoatedLens">
+          Özellikler
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-CoatedLens" class="collapse">
+      Kontrol noktası serisi
+      <ol>
+        <li>Merceğin merkezi</li>
+      </ol>
+      Değişkenler
+      <ul>
+        <li><code>h</code>: Merceğin yüksekliği</li>
+        <li><code>d</code>: Mercek kalınlığı</li>
+        <li><code>R_1</code>: Ön yüzeyin eğrilik yarıçapı</li>
+        <li><code>R_2</code>: Arka yüzeyin eğrilik yarıçapı</li>
+        <li><code>A</code>: Camın Cauchy katsayısı \(A\)</li>
+        <li><code>B</code>: Camın cauchy katsayısı \(B\) mikrometre kare cinsinden</li>
+        <li><code>d_c</code>: Kaplama tabakasının kalınlığı nanometre cinsinden</li>
+        <li><code>A_c</code>: Kaplama malzemesinin Cauchy katsayısı \(A\)</li>
+        <li><code>B_c</code>: Mikrometre kare cinsinden kaplama malzemesinin Cauchy katsayısı \(B\)</li>
+      </ul>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/CircleSource-thumbnail.avif" type="image/avif">
+        <img src="../../modules/CircleSource-thumbnail.jpg" alt="Dairesel ışık kaynağı" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">Dairesel ışık kaynağı (<code>CircleSource</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'CircleSource'},'*');this.innerText='İçeri aktarıldı';this.classList.remove('btn-primary');this.classList.add('btn-success');">İçeri aktar</button></p>
+        <p class="module-contributor">Yi-Ting Tu</p>
+        <span id="module-desc">
+          Çevresi boyunca 180 derecelik eşit nokta kaynakları bulunan bir daire.
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-CircleSource">
+          Özellikler
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-CircleSource" class="collapse">
+      Kontrol noktası serisi
+      <ol>
+        <li>Çemberin merkezi</li>
+      </ol>
+      Değişkenler
+      <ul>
+        <li><code>r</code>: Dairenin yarıçapı</li>
+        <li><code>N</code>: Noktasal kaynakların sayısı</li>
+        <li><code>brightness</code>: Toplam parlaklık</li>
+      </ul>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/EllipticalMirror-thumbnail.avif" type="image/avif">
+        <img src="../../modules/EllipticalMirror-thumbnail.jpg" alt="Eliptik Ayna" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">Eliptik Ayna (<code>EllipticalMirror</code>)<span class="beta-badge">Beta</span><button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'EllipticalMirror'},'*');this.innerText='İçeri aktarıldı';this.classList.remove('btn-primary');this.classList.add('btn-success');">İçeri aktar</button></p>
+        <p class="module-contributor">Yi-Ting Tu</p>
+        <span id="module-desc">
+          İki odak noktası ve büyük yarı eksenin uzunluğu ile tanımlanan eliptik bir ayna.
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-EllipticalMirror">
+          Özellikler
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-EllipticalMirror" class="collapse">
+      Kontrol noktası serisi
+      <ol>
+        <li>İlk odak noktası</li>
+        <li>İkinci odak noktası</li>
+      </ol>
+      Değişkenler
+      <ul>
+        <li><code>a</code>: Yarı büyük eksen uzunluğu</li>
+        <li><code>tMin</code>: Eğrinin minimum açısı</li>
+        <li><code>tMax</code>: Eğrinin maksimum açısı</li>
+        <li><code>tStep</code>: Eğrinin adım açısı</li>
+      </ul>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/Chaff-thumbnail.avif" type="image/avif">
+        <img src="../../modules/Chaff-thumbnail.jpg" alt="Chaff(Yanıltıcı)" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">Chaff(Yanıltıcı) (<code>Chaff</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'Chaff'},'*');this.innerText='İçeri aktarıldı';this.classList.remove('btn-primary');this.classList.add('btn-success');">İçeri aktar</button></p>
+        <p class="module-contributor">Stas Fainer, Yi-Ting Tu</p>
+        <span id="module-desc">
+          Rastgele ayna parçalarından oluşan dikdörtgen şeklindeki yanıltıcı(Chaff). <a target="_blank" href="../../gallery/chaff-countermeasure">Bu Galeri örneğinin</a> modüler bir versiyonu.
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-Chaff">
+          Özellikler
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-Chaff" class="collapse">
+      Kontrol noktası serisi
+      <ol>
+        <li>Chaff sol üst köşesi</li>
+        <li>chaff sağ alt köşesi</li>
+      </ol>
+      Değişkenler
+      <ul>
+        <li><code>N</code>: Chaff içindeki ayna sayısı</li>
+        <li><code>L</code>: Aynaların uzunluğu</li>
+      </ul>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/BeamExpander-thumbnail.avif" type="image/avif">
+        <img src="../../modules/BeamExpander-thumbnail.jpg" alt="Işın Genişletici" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">Işın Genişletici (<code>BeamExpander</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'BeamExpander'},'*');this.innerText='İçeri aktarıldı';this.classList.remove('btn-primary');this.classList.add('btn-success');">İçeri aktar</button></p>
+        <p class="module-contributor">Yi-Ting Tu</p>
+        <span id="module-desc">
+          Odak uzaklıklarının toplamı, aralarındaki mesafeye eşit olan iki ideal merceğin birleşimi. Bu mercekler, paralel ışık demetinin çapını genişletir veya daraltır. <a target="_blank" href="../../gallery/beam-expanders">Bu Galeri örneğinin</a> modüler versiyonu.
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-BeamExpander">
+          Özellikler
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-BeamExpander" class="collapse">
+      Kontrol noktası serisi
+      <ol>
+        <li>İlk merceğin merkezi</li>
+        <li>İkinci merceğin ikinci noktası</li>
+        <li>Lenslerin ortak odak noktasını belirler</li>
+      </ol>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/RayRelay-thumbnail.avif" type="image/avif">
+        <img src="../../modules/RayRelay-thumbnail.jpg" alt="Işın Aktarıcı" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">Işın Aktarıcı (<code>RayRelay</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'RayRelay'},'*');this.innerText='İçeri aktarıldı';this.classList.remove('btn-primary');this.classList.add('btn-success');">İçeri aktar</button></p>
+        <p class="module-contributor">Stas Fainer, Yi-Ting Tu</p>
+        <span id="module-desc">
+          Odak uzaklığı \(f\) olan ve mercekler arasındaki mesafe \(d\) olan bir dizi ideal özdeş mercek. Işın yörüngesinin sapmaması, ancak ve ancak \(d\leq 4f\) olduğunda garanti edilir. <a target="_blank" href="../../gallery/ray-relaying">Bu Galeri örneğinin</a> modülerleştirilmiş versiyonu.
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-RayRelay">
+          Özellikler
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-RayRelay" class="collapse">
+      Kontrol noktası serisi
+      <ol>
+        <li>İlk merceğin ilk odak noktası</li>
+        <li>İlk merceğin ikinci uç noktası (ilk nokta ile aynı \(x\) değerine sahip olmalıdır)</li>
+      </ol>
+      Değişkenler
+      <ul>
+        <li><code>f</code>: Merceklerin odak uzaklığı</li>
+        <li><code>d</code>: Mercekler arasındaki mesafe</li>
+        <li><code>N</code>: Lens sayısı</li>
+      </ul>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/OpticalFiber-thumbnail.avif" type="image/avif">
+        <img src="../../modules/OpticalFiber-thumbnail.jpg" alt="Optik Fiber" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">Optik Fiber (<code>OpticalFiber</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'OpticalFiber'},'*');this.innerText='İçeri aktarıldı';this.classList.remove('btn-primary');this.classList.add('btn-success');">İçeri aktar</button></p>
+        <p class="module-contributor">josephernest, Yi-Ting Tu</p>
+        <span id="module-desc">
+          Belirli bir çekirdek ve kaplama kalınlığına ve kırılma indislerine sahip çizgi şeklindeki optik fiber.
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-OpticalFiber">
+          Özellikler
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-OpticalFiber" class="collapse">
+      Kontrol noktası serisi
+      <ol>
+        <li>Optik fiberin ilk uç noktası</li>
+        <li>Optik fiberin ikinci uç noktası</li>
+      </ol>
+      Değişkenler
+      <ul>
+        <li><code>X</code>: The thickness of the core</li>
+        <li><code>Y</code>: Kaplamanın kalınlığı</li>
+        <li><code>n_1</code>: The refractive index of the core</li>
+        <li><code>n_2</code>: Kaplamanın kırılma indisi</li>
+      </ul>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/CubeBeamSplitter-thumbnail.avif" type="image/avif">
+        <img src="../../modules/CubeBeamSplitter-thumbnail.jpg" alt="Küp Işın Ayırıcı" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">Küp Işın Ayırıcı (<code>CubeBeamSplitter</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'CubeBeamSplitter'},'*');this.innerText='İçeri aktarıldı';this.classList.remove('btn-primary');this.classList.add('btn-success');">İçeri aktar</button></p>
+        <p class="module-contributor">Feng</p>
+        <span id="module-desc">
+          Küp ışın ayırıcı, yaygın olarak kullanılan bir optik bileşendir. Bu, boyut ve açı açısından ayarlanabilen bir küp ışın ayırıcı modülüdür.
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-CubeBeamSplitter">
+          Özellikler
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-CubeBeamSplitter" class="collapse">
+      Kontrol noktası serisi
+      <ol>
+        <li>Küpün (karenin) merkezi</li>
+      </ol>
+      Değişkenler
+      <ul>
+        <li><code>size</code>: Küpün boyutu</li>
+        <li><code>angle</code>: Küpün dönme açısı (derece cinsinden)</li>
+        <li><code>refIndex</code>: Küpün kırılma indisi (“Renkleri Simüle Et” seçeneği etkin olduğunda Cauchy katsayısı \(A\))</li>
+        <li><code>cauchyB</code>: Küpün Cauchy katsayısı \(B\) (kare mikrometre cinsinden)</li>
+        <li><code>splitRatio</code>: Diyagonal ışın ayırıcının iletim oranı</li>
+      </ul>
+    </div>
+
+    <h2>Kişiselleştirme</h2>
+    <p>Modüller doğrudan web uygulamasının kenar çubuğunda yapılabilir veya özelleştirilmiş olabilir (görüler -&gt; Show sidebar). ithal modüllerin özelleştirmesi yalnızca mevcut sahneyi etkileyecektir. Başka bir sahneden özel modüller ithal etmek için aşağıdaki &quot;Import from file&quot; below to import custom modülleri from another scene.</p>
+
+    <h2>Katkı</h2>
+    <p>Yukarıdaki listeye katkı yapabilirsiniz. Modülünüzü katkıda bulunmak için <a target="_blank" href="https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-modules">Modül katkısı</a> bölümüne bakın.</p>
+  </div>
+
+  <script src="../../thirdparty/jquery.min.js"></script>
+  <script src="../../thirdparty/bootstrap/bootstrap.min.js"></script>
+  <script id="MathJax-script" async src="../../thirdparty/mathjax/tex-mml-chtml.js"></script>
+</body>
+
+</html>

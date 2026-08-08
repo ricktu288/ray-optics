@@ -1,0 +1,474 @@
+<!--
+  Copyright 2024 The Ray Optics Simulation authors and contributors
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!DOCTYPE html>
+<html lang="lo">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../thirdparty/bootstrap/bootstrap.min.css">
+  <link rel="icon" href="../../img/icon.png" type="image/png">
+  <style>
+    .module-image {
+      width: 150px;
+      height: 150px !important;
+      float: left;
+      margin-right: 9px;
+      margin-bottom: 9px;
+    }
+
+    .right-caption>img {
+      float: left;
+      margin-right: 9px;
+    }
+
+    .caption {
+      padding: 0px !important;
+    }
+
+    .module-title {
+      font-size: 16pt;
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+
+    .beta-badge {
+      display: inline-block;
+      background: orange;
+      color: white;
+      font-size: 9pt;
+      font-weight: 600;
+      line-height: 1.2em;
+      height: 1.2em;
+      padding: 0 6px;
+      padding-top: 1px;
+      margin-left: 6px;
+      vertical-align: top;
+      border-radius: 0.6em;
+    }
+
+    .import-btn {
+      float: right;
+      margin-right: 8px;
+    }
+
+    .module-contributor {
+      font-size: 8pt;
+      color: #888;
+      margin-top: 0px;
+      margin-bottom: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .collapse {
+      padding-top: 8px;
+    }
+
+    body {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+      font-size: 12pt;
+    }
+
+    ::-webkit-scrollbar {
+      background: none;
+      width: 12px;
+      height: 12px;
+    }
+    ::-webkit-scrollbar-thumb {
+      border: solid 0 rgba(0, 0, 0, 0);
+      border-right-width: 4px;
+      border-left-width: 4px;
+      -webkit-border-radius: 6px 2px;
+      -webkit-box-shadow:
+      inset 0 0 0 0px rgba(112, 112, 112, 0.35),
+      inset 0 0 0 4px rgba(112, 112, 112, 0.35);
+    }
+    ::-webkit-scrollbar-track-piece {
+      margin: 4px 0;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        border-right-width: 3px;
+        border-left-width: 3px;
+      -webkit-box-shadow:
+        inset 0 0 0 0px rgba(128,128,128,0.9),
+        inset 0 0 0 4px rgba(128,128,128,0.9);
+    }
+    ::-webkit-scrollbar-corner {
+      background: transparent;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <ul style="padding-left: 1.5rem;">
+      <li>ຄຸນສົມບັດ &quot;ໂມດູນ&quot; ອະນຸຍາດໃຫ້ສ້າງເຄື່ອງມືໃໝ່ໂດຍການລວມ, ການເຮັດໃຫ້ສະເພາະເຈາະຈົງ, ຫຼື ການກຳນົດຄ່າພາຣາມິເຕີໃໝ່ຂອງວັດຖຸທີ່ສ້າງຂຶ້ນໂດຍເຄື່ອງມືທີ່ມີຢູ່ແລ້ວໃນຕົວຈຳລອງນີ້.</li>
+      <li>ໂມດູນທີ່ນຳເຂົ້າຈະປະກົດເປັນເຄື່ອງມືໃນໝວດໝູ່ &quot;ອື່ນໆ&quot;. ກະລຸນາເລືອກ ແລະ ຄລິກໃສ່ບ່ອນວ່າງຕາມລຳດັບຂອງລຳດັບຈຸດຄວບຄຸມ (ເບິ່ງ &quot;ຂໍ້ກຳນົດສະເພາະ&quot;).</li>
+      <li>ໂມດູນທີ່ນຳເຂົ້າແມ່ນຖືກຝັງຢູ່ໃນຂໍ້ມູນຂອງສາກ, ດັ່ງນັ້ນຈະບໍ່ຖືກອັບເດດໂດຍອັດຕະໂນມັດເມື່ອຜູ້ຂຽນໂມດູນເຮັດການອັບເດດ.</li>
+    </ul>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/FresnelLens-thumbnail.avif" type="image/avif">
+        <img src="../../modules/FresnelLens-thumbnail.jpg" alt="ເລນເຟຣເນລ (Fresnel Lens)" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">ເລນເຟຣເນລ (Fresnel Lens) (<code>FresnelLens</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'FresnelLens'},'*');this.innerText='ນຳເຂົ້າແລ້ວ';this.classList.remove('btn-primary');this.classList.add('btn-success');">ນຳເຂົ້າ</button></p>
+        <p class="module-contributor">Yi-Ting Tu</p>
+        <span id="module-desc">
+          ເລນເຟຣເນລທີ່ເຮັດຈາກແກ້ວເຄິ່ງວົງມົນ. ເປັນເວີຊັນໂມດູນຂອງ <a target="_blank" href="../../lo/gallery/fresnel-lens">ຕົວຢ່າງໃນຄັງຮູບພາບນີ້</a>.
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-FresnelLens">
+          ຂໍ້ກຳນົດສະເພາະ
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-FresnelLens" class="collapse">
+      ລຳດັບຈຸດຄວບຄຸມ
+      <ol>
+        <li>ຈຸດປາຍທຳອິດຂອງເລນ</li>
+        <li>ຈຸດປາຍທີສອງຂອງເລນ</li>
+      </ol>
+      ພາຣາມິເຕີ
+      <ul>
+        <li><code>N_slice</code>: ຈຳນວນຊິ້ນສ່ວນ (slices)</li>
+        <li><code>refIndex</code>: ດັດຊະນີຫັກເຫຂອງເລນ</li>
+      </ul>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/ContSpectrum-thumbnail.avif" type="image/avif">
+        <img src="../../modules/ContSpectrum-thumbnail.jpg" alt="ແຫຼ່ງກຳເນີດແສງສະເປກຕຳຕໍ່ເນື່ອງ" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">ແຫຼ່ງກຳເນີດແສງສະເປກຕຳຕໍ່ເນື່ອງ (<code>ContSpectrum</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'ContSpectrum'},'*');this.innerText='ນຳເຂົ້າແລ້ວ';this.classList.remove('btn-primary');this.classList.add('btn-success');">ນຳເຂົ້າ</button></p>
+        <p class="module-contributor">Yi-Ting Tu</p>
+        <span id="module-desc">
+          ແຫຼ່ງກຳເນີດແສງທີ່ມີສະເປກຕຳຕໍ່ເນື່ອງແບບສະໝ່ຳສະເໝີ ທີ່ຖືກແບ່ງເປັນຊ່ວງດ້ວຍຂັ້ນຕອນຄົງທີ່. ໃຊ້ໄດ້ສະເພາະຕອນທີ່ເປີດ &quot;ຈຳລອງສີ&quot; ເທົ່ານັ້ນ.
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-ContSpectrum">
+          ຂໍ້ກຳນົດສະເພາະ
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-ContSpectrum" class="collapse">
+      ລຳດັບຈຸດຄວບຄຸມ
+      <ol>
+        <li>ຈຸດກຳເນີດຂອງລັງສີ</li>
+        <li>ກຳນົດທິດທາງຂອງລັງສີ</li>
+      </ol>
+      ພາຣາມິເຕີ
+      <ul>
+        <li><code>min</code>: ຄວາມຍາວຄື້ນຕ່ຳສຸດ</li>
+        <li><code>step</code>: ຂັ້ນຕອນຂອງຄວາມຍາວຄື້ນ</li>
+        <li><code>max</code>: ຄວາມຍາວຄື້ນສູງສຸດ</li>
+        <li><code>brightness</code>: ຄວາມສະຫວ່າງທັງໝົດ</li>
+      </ul>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/RainbowPointSource-thumbnail.avif" type="image/avif">
+        <img src="../../modules/RainbowPointSource-thumbnail.jpg" alt="ແຫຼ່ງກຳເນີດຈຸດສີຮຸ້ງ" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">ແຫຼ່ງກຳເນີດຈຸດສີຮຸ້ງ (<code>RainbowPointSource</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'RainbowPointSource'},'*');this.innerText='ນຳເຂົ້າແລ້ວ';this.classList.remove('btn-primary');this.classList.add('btn-success');">ນຳເຂົ້າ</button></p>
+        <p class="module-contributor">Brad Goodman</p>
+        <span id="module-desc">
+          ແຫຼ່ງກຳເນີດແສງແບບຈຸດ &lt;360 ອົງສາ - ແຕ່ປ່ອຍແສງເປັນສະເປກຕຳສີ. ຕ້ອງເປີດໃຊ້ງານຮ່ວມກັບ &quot;ຈຳລອງສີ&quot;.
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-RainbowPointSource">
+          ຂໍ້ກຳນົດສະເພາະ
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-RainbowPointSource" class="collapse">
+      ລຳດັບຈຸດຄວບຄຸມ
+      <ol>
+        <li>ແຫຼ່ງກຳເນີດ</li>
+      </ol>
+      ພາຣາມິເຕີ
+      <ul>
+        <li><code>N</code>: ຈຳນວນລັງສີ</li>
+        <li><code>brightness</code>: ຄວາມສະຫວ່າງທັງໝົດ</li>
+        <li><code>angle</code>: ມຸມການປ່ອຍແສງ</li>
+        <li><code>lambdaMin</code>: ຄວາມຍາວຄື້ນຕ່ຳສຸດ</li>
+        <li><code>lambdaMax</code>: ຄວາມຍາວຄື້ນສູງສຸດ</li>
+      </ul>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/CoatedLens-thumbnail.avif" type="image/avif">
+        <img src="../../modules/CoatedLens-thumbnail.jpg" alt="ເລນຊົງກົມແບບເຄືອບ" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">ເລນຊົງກົມແບບເຄືອບ (<code>CoatedLens</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'CoatedLens'},'*');this.innerText='ນຳເຂົ້າແລ້ວ';this.classList.remove('btn-primary');this.classList.add('btn-success');">ນຳເຂົ້າ</button></p>
+        <p class="module-contributor">Yi-Ting Tu</p>
+        <span id="module-desc">
+          ເລນຊົງກົມທີ່ມີການເຄືອບຊັ້ນດຽວທັງສອງດ້ານ. ໂມດູນ <code>ArcCoating</code> ທີ່ຝັງຢູ່ໃນໂມດູນນີ້ສະແດງເຖິງຊັ້ນຟິມບາງໆຊັ້ນດຽວ, ເຊິ່ງເມື່ອຊ້ອນທັບກັບຜິວຂອງແກ້ວຈະກາຍເປັນການເຄືອບຂອງມັນ.
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-CoatedLens">
+          ຂໍ້ກຳນົດສະເພາະ
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-CoatedLens" class="collapse">
+      ລຳດັບຈຸດຄວບຄຸມ
+      <ol>
+        <li>ຈຸດໃຈກາງຂອງເລນ</li>
+      </ol>
+      ພາຣາມິເຕີ
+      <ul>
+        <li><code>h</code>: ຄວາມສູງຂອງເລນ</li>
+        <li><code>d</code>: ຄວາມໜາຂອງເລນ</li>
+        <li><code>R_1</code>: ລັດສະໝີຄວາມໂຄ້ງຂອງຜິວໜ້າ</li>
+        <li><code>R_2</code>: ລັດສະໝີຄວາມໂຄ້ງຂອງຜິວຫຼັງ</li>
+        <li><code>A</code>: ສຳປະສິດ ໂກຊີ (Cauchy coefficient) \(A\) ຂອງແກ້ວ</li>
+        <li><code>B</code>: ສຳປະສິດ ໂກຊີ (Cauchy coefficient) \(B\) ຂອງແກ້ວ ໃນຫົວໜ່ວຍ ໄມໂຄຣແມັດກຳລັງສອງ</li>
+        <li><code>d_c</code>: ຄວາມໜາຂອງຊັ້ນເຄືອບ ໃນຫົວໜ່ວຍ ນາໂນແມັດ</li>
+        <li><code>A_c</code>: ສຳປະສິດ ໂກຊີ (Cauchy coefficient) \(A\) ຂອງວັດສະດຸເຄືອບ</li>
+        <li><code>B_c</code>: ສຳປະສິດ ໂກຊີ (Cauchy coefficient) \(B\) ຂອງວັດສະດຸເຄືອບ ໃນຫົວໜ່ວຍ ໄມໂຄຣແມັດກຳລັງສອງ</li>
+      </ul>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/CircleSource-thumbnail.avif" type="image/avif">
+        <img src="../../modules/CircleSource-thumbnail.jpg" alt="ແຫຼ່ງກຳເນີດແສງແບບວົງມົນ" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">ແຫຼ່ງກຳເນີດແສງແບບວົງມົນ (<code>CircleSource</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'CircleSource'},'*');this.innerText='ນຳເຂົ້າແລ້ວ';this.classList.remove('btn-primary');this.classList.add('btn-success');">ນຳເຂົ້າ</button></p>
+        <p class="module-contributor">Yi-Ting Tu</p>
+        <span id="module-desc">
+          ວົງມົນທີ່ມີແຫຼ່ງກຳເນີດແສງແບບຈຸດ 180 ອົງສາ ແບບສະໝ່ຳສະເໝີ ວາງລຽງຕາມເສັ້ນຮອບວົງ.
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-CircleSource">
+          ຂໍ້ກຳນົດສະເພາະ
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-CircleSource" class="collapse">
+      ລຳດັບຈຸດຄວບຄຸມ
+      <ol>
+        <li>ຈຸດໃຈກາງຂອງວົງມົນ</li>
+      </ol>
+      ພາຣາມິເຕີ
+      <ul>
+        <li><code>r</code>: ລັດສະໝີຂອງວົງມົນ</li>
+        <li><code>N</code>: ຈຳນວນແຫຼ່ງກຳເນີດແສງແບບຈຸດ</li>
+        <li><code>brightness</code>: ຄວາມສະຫວ່າງທັງໝົດ</li>
+      </ul>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/EllipticalMirror-thumbnail.avif" type="image/avif">
+        <img src="../../modules/EllipticalMirror-thumbnail.jpg" alt="ແວ່ນຮູບວົງລີ" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">ແວ່ນຮູບວົງລີ (<code>EllipticalMirror</code>)<span class="beta-badge">Beta</span><button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'EllipticalMirror'},'*');this.innerText='ນຳເຂົ້າແລ້ວ';this.classList.remove('btn-primary');this.classList.add('btn-success');">ນຳເຂົ້າ</button></p>
+        <p class="module-contributor">Yi-Ting Tu</p>
+        <span id="module-desc">
+          ແວ່ນຮູບວົງລີທີ່ກຳນົດໂດຍຈຸດສຸມສອງຈຸດ ແລະ ຄວາມຍາວຂອງແກນເອກເຄິ່ງ (semi-major axis).
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-EllipticalMirror">
+          ຂໍ້ກຳນົດສະເພາະ
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-EllipticalMirror" class="collapse">
+      ລຳດັບຈຸດຄວບຄຸມ
+      <ol>
+        <li>ຈຸດສຸມທຳອິດ</li>
+        <li>ຈຸດສຸມທີສອງ</li>
+      </ol>
+      ພາຣາມິເຕີ
+      <ul>
+        <li><code>a</code>: ຄວາມຍາວຂອງແກນເອກເຄິ່ງ</li>
+        <li><code>tMin</code>: ມຸມຕ່ຳສຸດຂອງເສັ້ນໂຄ້ງ</li>
+        <li><code>tMax</code>: ມຸມສູງສຸດຂອງເສັ້ນໂຄ້ງ</li>
+        <li><code>tStep</code>: ໄລຍະຫ່າງຂອງມຸມເສັ້ນໂຄ້ງ</li>
+      </ul>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/Chaff-thumbnail.avif" type="image/avif">
+        <img src="../../modules/Chaff-thumbnail.jpg" alt="ແຖບສະທ້ອນ (Chaff)" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">ແຖບສະທ້ອນ (Chaff) (<code>Chaff</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'Chaff'},'*');this.innerText='ນຳເຂົ້າແລ້ວ';this.classList.remove('btn-primary');this.classList.add('btn-success');">ນຳເຂົ້າ</button></p>
+        <p class="module-contributor">Stas Fainer, Yi-Ting Tu</p>
+        <span id="module-desc">
+          ແຖບສະທ້ອນຮູບຊົງສີ່ແຈສາກທີ່ປະກອບດ້ວຍແວ່ນນ້ອຍໆແບບສຸ່ມ. ເປັນເວີຊັນໂມດູນຂອງ <a target="_blank" href="../../lo/gallery/chaff-countermeasure">ຕົວຢ່າງໃນຄັງຮູບພາບນີ້</a>.
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-Chaff">
+          ຂໍ້ກຳນົດສະເພາະ
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-Chaff" class="collapse">
+      ລຳດັບຈຸດຄວບຄຸມ
+      <ol>
+        <li>ມຸມຊ້າຍເທິງຂອງແຖບສະທ້ອນ</li>
+        <li>ມຸມຂວາລຸ່ມຂອງແຖບສະທ້ອນ</li>
+      </ol>
+      ພາຣາມິເຕີ
+      <ul>
+        <li><code>N</code>: ຈຳນວນແວ່ນໃນແຖບສະທ້ອນ</li>
+        <li><code>L</code>: ຄວາມຍາວຂອງແວ່ນ</li>
+      </ul>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/BeamExpander-thumbnail.avif" type="image/avif">
+        <img src="../../modules/BeamExpander-thumbnail.jpg" alt="ອຸປະກອນຂະຫຍາຍລຳແສງ (Beam Expander)" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">ອຸປະກອນຂະຫຍາຍລຳແສງ (Beam Expander) (<code>BeamExpander</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'BeamExpander'},'*');this.innerText='ນຳເຂົ້າແລ້ວ';this.classList.remove('btn-primary');this.classList.add('btn-success');">ນຳເຂົ້າ</button></p>
+        <p class="module-contributor">Yi-Ting Tu</p>
+        <span id="module-desc">
+          ການລວມກັນຂອງເລນໃນອຸດົມຄະຕິສອງອັນ ໂດຍທີ່ຜົນບວກຂອງໄລຍະສຸມຂອງພວກມັນເທົ່າກັບໄລຍະຫ່າງລະຫວ່າງເລນ. ພວກມັນຂະຫຍາຍ ຫຼື ຫຼຸດຂະໜາດເສັ້ນຜ່ານສູນກາງຂອງລຳແສງຂະໜານ. ເປັນເວີຊັນໂມດູນຂອງ <a target="_blank" href="../../lo/gallery/beam-expanders">ຕົວຢ່າງໃນຄັງຮູບພາບນີ້</a>.
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-BeamExpander">
+          ຂໍ້ກຳນົດສະເພາະ
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-BeamExpander" class="collapse">
+      ລຳດັບຈຸດຄວບຄຸມ
+      <ol>
+        <li>ຈຸດໃຈກາງຂອງເລນທຳອິດ</li>
+        <li>ຈຸດທີສອງຂອງເລນທີສອງ</li>
+        <li>ກຳນົດຈຸດສຸມຮ່ວມຂອງເລນ</li>
+      </ol>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/RayRelay-thumbnail.avif" type="image/avif">
+        <img src="../../modules/RayRelay-thumbnail.jpg" alt="ອຸປະກອນຖ່າຍທອດລັງສີ (Ray Relay)" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">ອຸປະກອນຖ່າຍທອດລັງສີ (Ray Relay) (<code>RayRelay</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'RayRelay'},'*');this.innerText='ນຳເຂົ້າແລ້ວ';this.classList.remove('btn-primary');this.classList.add('btn-success');">ນຳເຂົ້າ</button></p>
+        <p class="module-contributor">Stas Fainer, Yi-Ting Tu</p>
+        <span id="module-desc">
+          ຊຸດຂອງເລນໃນອຸດົມຄະຕິທີ່ຄືກັນ ທີ່ມີໄລຍະສຸມ \(f\) ແລະ ໄລຍະຫ່າງ \(d\) ລະຫວ່າງເລນ. ເສັ້ນທາງລັງສີແບບບໍ່ບານອອກຈະຖືກຮັບປະກັນກໍ່ຕໍ່ເມື່ອ \(d\leq 4f\). ເປັນເວີຊັນໂມດູນຂອງ <a target="_blank" href="../../lo/gallery/ray-relaying">ຕົວຢ່າງໃນຄັງຮູບພາບນີ້</a>.
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-RayRelay">
+          ຂໍ້ກຳນົດສະເພາະ
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-RayRelay" class="collapse">
+      ລຳດັບຈຸດຄວບຄຸມ
+      <ol>
+        <li>ຈຸດປາຍທຳອິດຂອງເລນທຳອິດ</li>
+        <li>ຈຸດປາຍທີສອງຂອງເລນທຳອິດ (ຄວນມີຄ່າ \(x\) ຄືກັນກັບຈຸດທຳອິດ)</li>
+      </ol>
+      ພາຣາມິເຕີ
+      <ul>
+        <li><code>f</code>: ໄລຍະສຸມຂອງເລນ</li>
+        <li><code>d</code>: ໄລຍະຫ່າງລະຫວ່າງເລນ</li>
+        <li><code>N</code>: ຈຳນວນເລນ</li>
+      </ul>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/OpticalFiber-thumbnail.avif" type="image/avif">
+        <img src="../../modules/OpticalFiber-thumbnail.jpg" alt="ເສັ້ນໄຍນຳແສງ (Optical Fiber)" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">ເສັ້ນໄຍນຳແສງ (Optical Fiber) (<code>OpticalFiber</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'OpticalFiber'},'*');this.innerText='ນຳເຂົ້າແລ້ວ';this.classList.remove('btn-primary');this.classList.add('btn-success');">ນຳເຂົ້າ</button></p>
+        <p class="module-contributor">josephernest, Yi-Ting Tu</p>
+        <span id="module-desc">
+          ເສັ້ນໄຍນຳແສງຮູບຊົງເສັ້ນຊື່ ທີ່ກຳນົດຄວາມໜາຂອງແກນ (core), ຊັ້ນຫຸ້ມ (cladding) ແລະ ດັດຊະນີຫັກເຫ.
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-OpticalFiber">
+          ຂໍ້ກຳນົດສະເພາະ
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-OpticalFiber" class="collapse">
+      ລຳດັບຈຸດຄວບຄຸມ
+      <ol>
+        <li>ຈຸດປາຍທຳອິດຂອງເສັ້ນໄຍນຳແສງ</li>
+        <li>ຈຸດປາຍທີສອງຂອງເສັ້ນໄຍນຳແສງ</li>
+      </ol>
+      ພາຣາມິເຕີ
+      <ul>
+        <li><code>X</code>: ຄວາມໜາຂອງແກນ (core)</li>
+        <li><code>Y</code>: ຄວາມໜາຂອງຊັ້ນຫຸ້ມ (cladding)</li>
+        <li><code>n_1</code>: ດັດຊະນີຫັກເຫຂອງແກນ</li>
+        <li><code>n_2</code>: ດັດຊະນີຫັກເຫຂອງຊັ້ນຫຸ້ມ</li>
+      </ul>
+    </div>
+    <div class="row right-caption">
+      <picture>
+        <source srcset="../../modules/CubeBeamSplitter-thumbnail.avif" type="image/avif">
+        <img src="../../modules/CubeBeamSplitter-thumbnail.jpg" alt="ອຸປະກອນແຍກລຳແສງຊົງກ້ອນສາກ (Cube Beam Splitter)" class="img-rounded module-image" loading="lazy">
+      </picture>
+      <div class="caption">
+        <p class="module-title">ອຸປະກອນແຍກລຳແສງຊົງກ້ອນສາກ (Cube Beam Splitter) (<code>CubeBeamSplitter</code>)<button class="btn btn-primary import-btn" onclick="window.parent.postMessage({rayOpticsModuleName: 'CubeBeamSplitter'},'*');this.innerText='ນຳເຂົ້າແລ້ວ';this.classList.remove('btn-primary');this.classList.add('btn-success');">ນຳເຂົ້າ</button></p>
+        <p class="module-contributor">Feng</p>
+        <span id="module-desc">
+          ຕົວແຍກລຳແສງຊົງກ້ອນສາກເປັນອຸປະກອນທັດສະນະສາດທີ່ໃຊ້ທົ່ວໄປ. ນີ້ແມ່ນໂມດູນຕົວແຍກລຳແສງຊົງກ້ອນສາກທີ່ສາມາດປັບຂະໜາດ ແລະ ມຸມໄດ້.
+        </span>
+        <button class="collapse-btn btn-link" data-toggle="collapse" data-target="#details-collapse-CubeBeamSplitter">
+          ຂໍ້ກຳນົດສະເພາະ
+          <span class="caret"></span>
+        </button>
+      </div>
+    </div>
+    <div id="details-collapse-CubeBeamSplitter" class="collapse">
+      ລຳດັບຈຸດຄວບຄຸມ
+      <ol>
+        <li>ຈຸດໃຈກາງຂອງກ້ອນສາກ (ສີ່ແຈສາກ)</li>
+      </ol>
+      ພາຣາມິເຕີ
+      <ul>
+        <li><code>size</code>: ຂະໜາດຂອງກ້ອນສາກ</li>
+        <li><code>angle</code>: ມຸມການໝູນຂອງກ້ອນສາກເປັນອົງສາ</li>
+        <li><code>refIndex</code>: ດັດຊະນີຫັກເຫຂອງກ້ອນສາກ (ຫຼື ສຳປະສິດ ໂກຊີ \(A\) ເມື່ອເປີດ &quot;ຈຳລອງສີ&quot;)</li>
+        <li><code>cauchyB</code>: ສຳປະສິດ ໂກຊີ (Cauchy coefficient) \(B\) ຂອງກ້ອນສາກ ໃນຫົວໜ່ວຍ ໄມໂຄຣແມັດກຳລັງສອງ</li>
+        <li><code>splitRatio</code>: ອັດຕາສ່ວນການສົ່ງຜ່ານຂອງຕົວແຍກລຳແສງຕາມເສັ້ນທະແຍງມຸມ</li>
+      </ul>
+    </div>
+
+    <h2>ການປັບແຕ່ງ</h2>
+    <p>ໂມດູນສາມາດສ້າງ ຫຼື ປັບແຕ່ງໄດ້ໂດຍກົງໃນແຖບດ້ານຂ້າງຂອງເວັບແອັບ (ເບິ່ງ ການຕັ້ງຄ່າ -&gt; ສະແດງແຖບດ້ານຂ້າງ). ການປັບແຕ່ງໂມດູນທີ່ນຳເຂົ້າຈະມີຜົນກັບສາກປັດຈຸບັນເທົ່ານັ້ນ. ໃຊ້ &quot;ນຳເຂົ້າຈາກໄຟລ໌&quot; ດ້ານລຸ່ມເພື່ອນຳເຂົ້າໂມດູນທີ່ປັບແຕ່ງຈາກສາກອື່ນ.</p>
+
+    <h2>ການປະກອບສ່ວນ</h2>
+    <p>ຍິນດີຕ້ອນຮັບການປະກອບສ່ວນເຂົ້າໃນລາຍຊື່ຂ້າງເທິງ. ເພື່ອປະກອບສ່ວນໂມດູນຂອງທ່ານ, ເບິ່ງ <a target="_blank" href="https://github.com/ricktu288/ray-optics/blob/master/CONTRIBUTING.md#contributing-modules">ການປະກອບສ່ວນໂມດູນ</a>.</p>
+  </div>
+
+  <script src="../../thirdparty/jquery.min.js"></script>
+  <script src="../../thirdparty/bootstrap/bootstrap.min.js"></script>
+  <script id="MathJax-script" async src="../../thirdparty/mathjax/tex-mml-chtml.js"></script>
+</body>
+
+</html>

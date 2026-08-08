@@ -1,0 +1,643 @@
+{
+  "name": "Transmission Light Microscope",
+  "version": 5,
+  "importedFromBeta": true,
+  "objs": [
+    {
+      "type": "Handle",
+      "p1": {
+        "x": 1120,
+        "y": 250
+      },
+      "p2": {
+        "x": 1262.4,
+        "y": 379.05
+      },
+      "objIndices": [
+        9,
+        26,
+        39,
+        40,
+        42,
+        41,
+        11,
+        10,
+        16,
+        25
+      ],
+      "transformation": "xTranslation"
+    },
+    {
+      "type": "Handle",
+      "p1": {
+        "x": 80,
+        "y": 257
+      },
+      "p2": {
+        "x": 75.18181818181819,
+        "y": 425.09090909090907
+      },
+      "objIndices": [
+        29,
+        20,
+        27
+      ],
+      "controlPoints": [
+        {
+          "dragContext": {
+            "part": 1
+          },
+          "targetObjIndex": 30,
+          "newPoint": {
+            "x": 63,
+            "y": 431
+          }
+        },
+        {
+          "dragContext": {
+            "part": 2
+          },
+          "targetObjIndex": 30,
+          "newPoint": {
+            "x": 90,
+            "y": 431
+          }
+        },
+        {
+          "dragContext": {
+            "part": 1
+          },
+          "targetObjIndex": 31,
+          "newPoint": {
+            "x": 63,
+            "y": 441
+          }
+        },
+        {
+          "dragContext": {
+            "part": 2
+          },
+          "targetObjIndex": 31,
+          "newPoint": {
+            "x": 90,
+            "y": 441
+          }
+        },
+        {
+          "dragContext": {
+            "part": 1
+          },
+          "targetObjIndex": 32,
+          "newPoint": {
+            "x": 63,
+            "y": 451
+          }
+        },
+        {
+          "dragContext": {
+            "part": 2
+          },
+          "targetObjIndex": 32,
+          "newPoint": {
+            "x": 90,
+            "y": 451
+          }
+        },
+        {
+          "dragContext": {
+            "part": 1
+          },
+          "targetObjIndex": 33,
+          "newPoint": {
+            "x": 63,
+            "y": 461
+          }
+        },
+        {
+          "dragContext": {
+            "part": 2
+          },
+          "targetObjIndex": 33,
+          "newPoint": {
+            "x": 90,
+            "y": 461
+          }
+        }
+      ],
+      "transformation": "xTranslation"
+    },
+    {
+      "type": "Handle",
+      "p1": {
+        "x": 865,
+        "y": 330
+      },
+      "p2": {
+        "x": 873.7,
+        "y": 472.9
+      },
+      "objIndices": [
+        7,
+        17,
+        22,
+        38,
+        37
+      ],
+      "transformation": "xTranslation"
+    },
+    {
+      "type": "Handle",
+      "p1": {
+        "x": 813,
+        "y": 490
+      },
+      "p2": {
+        "x": 808.1666666666666,
+        "y": 452
+      },
+      "objIndices": [
+        15,
+        13,
+        8,
+        12,
+        14,
+        36
+      ],
+      "transformation": "xTranslation"
+    },
+    {
+      "type": "Handle",
+      "p1": {
+        "x": 780,
+        "y": 460
+      },
+      "p2": {
+        "x": 808.1666666666666,
+        "y": 452
+      },
+      "objIndices": [
+        15,
+        13,
+        8,
+        12,
+        14,
+        36
+      ],
+      "transformation": "yTranslation"
+    },
+    {
+      "type": "Handle",
+      "p1": {
+        "x": 385,
+        "y": 257
+      },
+      "p2": {
+        "x": 366.25,
+        "y": 374.625
+      },
+      "objIndices": [
+        34,
+        35,
+        19,
+        28
+      ],
+      "transformation": "xTranslation"
+    },
+    {
+      "type": "Handle",
+      "p1": {
+        "x": 660,
+        "y": 257
+      },
+      "p2": {
+        "x": 641.25,
+        "y": 376
+      },
+      "objIndices": [
+        18,
+        21,
+        24,
+        23
+      ],
+      "transformation": "xTranslation"
+    },
+    {
+      "type": "IdealLens",
+      "p1": {
+        "x": 863,
+        "y": 386
+      },
+      "p2": {
+        "x": 863,
+        "y": 506
+      },
+      "focalLength": 50
+    },
+    {
+      "type": "PointSource",
+      "x": 813,
+      "y": 446,
+      "brightness": 0.15,
+      "wavelength": 600
+    },
+    {
+      "type": "IdealLens",
+      "p1": {
+        "x": 1125,
+        "y": 316
+      },
+      "p2": {
+        "x": 1125,
+        "y": 576
+      },
+      "focalLength": 250
+    },
+    {
+      "type": "Ruler",
+      "p1": {
+        "x": 1375,
+        "y": 446
+      },
+      "p2": {
+        "x": 1375,
+        "y": 596
+      }
+    },
+    {
+      "type": "Ruler",
+      "p1": {
+        "x": 1375,
+        "y": 446
+      },
+      "p2": {
+        "x": 1375,
+        "y": 296
+      }
+    },
+    {
+      "type": "PointSource",
+      "x": 813,
+      "y": 450,
+      "brightness": 0.15,
+      "wavelength": 600
+    },
+    {
+      "type": "PointSource",
+      "x": 813,
+      "y": 442,
+      "brightness": 0.15,
+      "wavelength": 600
+    },
+    {
+      "type": "PointSource",
+      "x": 813,
+      "y": 454,
+      "brightness": 0.15,
+      "wavelength": 600
+    },
+    {
+      "type": "PointSource",
+      "x": 813,
+      "y": 438,
+      "brightness": 0.15,
+      "wavelength": 600
+    },
+    {
+      "type": "IdealLens",
+      "p1": {
+        "x": 1435,
+        "y": 316
+      },
+      "p2": {
+        "x": 1435,
+        "y": 576
+      },
+      "focalLength": 80
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 913,
+        "y": 381
+      },
+      "p2": {
+        "x": 913,
+        "y": 511
+      },
+      "lineStyle": {
+        "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "width": 1,
+        "dash": [
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "type": "IdealLens",
+      "p1": {
+        "x": 713,
+        "y": 330
+      },
+      "p2": {
+        "x": 713,
+        "y": 562
+      }
+    },
+    {
+      "type": "Aperture",
+      "p1": {
+        "x": 313,
+        "y": 320
+      },
+      "p2": {
+        "x": 313,
+        "y": 572
+      },
+      "p3": {
+        "x": 313,
+        "y": 416
+      },
+      "p4": {
+        "x": 313,
+        "y": 476
+      }
+    },
+    {
+      "type": "IdealLens",
+      "p1": {
+        "x": 163,
+        "y": 320
+      },
+      "p2": {
+        "x": 163,
+        "y": 572
+      }
+    },
+    {
+      "type": "Aperture",
+      "p1": {
+        "x": 613,
+        "y": 320
+      },
+      "p2": {
+        "x": 613,
+        "y": 572
+      },
+      "p3": {
+        "x": 613,
+        "y": 396
+      },
+      "p4": {
+        "x": 613,
+        "y": 496
+      }
+    },
+    {
+      "type": "TextLabel",
+      "x": 862.5,
+      "y": 369.5,
+      "text": "Objective",
+      "fontSize": 16,
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 684,
+      "y": 304,
+      "text": "Condenser Lens",
+      "fontSize": 16
+    },
+    {
+      "type": "TextLabel",
+      "x": 608,
+      "y": 304,
+      "text": "Aperture",
+      "fontSize": 16,
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 1414,
+      "y": 298,
+      "text": "Eyepiece",
+      "fontSize": 16
+    },
+    {
+      "type": "TextLabel",
+      "x": 1121.5,
+      "y": 298,
+      "text": "Tube Lens",
+      "fontSize": 16,
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 162,
+      "y": 302,
+      "text": "Collector Lens",
+      "fontSize": 16,
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 312,
+      "y": 302.5,
+      "text": "Field Diaphragm",
+      "fontSize": 16,
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 39,
+      "y": 388,
+      "text": "Transmitted Light Source",
+      "fontSize": 16,
+      "alignment": "center"
+    },
+    {
+      "type": "AngleSource",
+      "p1": {
+        "x": 63,
+        "y": 431
+      },
+      "p2": {
+        "x": 90,
+        "y": 431
+      },
+      "wavelength": 600,
+      "emisAngle": 45
+    },
+    {
+      "type": "AngleSource",
+      "p1": {
+        "x": 63,
+        "y": 441
+      },
+      "p2": {
+        "x": 90,
+        "y": 441
+      },
+      "wavelength": 600,
+      "emisAngle": 45
+    },
+    {
+      "type": "AngleSource",
+      "p1": {
+        "x": 63,
+        "y": 451
+      },
+      "p2": {
+        "x": 90,
+        "y": 451
+      },
+      "wavelength": 600,
+      "emisAngle": 45
+    },
+    {
+      "type": "AngleSource",
+      "p1": {
+        "x": 63,
+        "y": 461
+      },
+      "p2": {
+        "x": 90,
+        "y": 461
+      },
+      "wavelength": 600,
+      "emisAngle": 45
+    },
+    {
+      "type": "IdealLens",
+      "p1": {
+        "x": 463,
+        "y": 320
+      },
+      "p2": {
+        "x": 463,
+        "y": 572
+      },
+      "focalLength": 150
+    },
+    {
+      "type": "TextLabel",
+      "x": 459,
+      "y": 304,
+      "text": "Field Lens",
+      "fontSize": 16,
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 810,
+      "y": 419,
+      "text": "Specimen",
+      "fontSize": 16,
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 900.5,
+      "y": 573,
+      "text": "Back Focal Plane",
+      "fontSize": 16,
+      "alignment": "center"
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 912,
+        "y": 520
+      },
+      "p2": {
+        "x": 905,
+        "y": 550
+      },
+      "arrow": true
+    },
+    {
+      "type": "Ruler",
+      "p1": {
+        "x": 1195,
+        "y": 446
+      },
+      "p2": {
+        "x": 1195,
+        "y": 240
+      }
+    },
+    {
+      "type": "Ruler",
+      "p1": {
+        "x": 1195,
+        "y": 446
+      },
+      "p2": {
+        "x": 1195,
+        "y": 652
+      }
+    },
+    {
+      "type": "TextLabel",
+      "x": 1208,
+      "y": 248,
+      "text": "Virtual Image Plane",
+      "fontSize": 16
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 1206,
+        "y": 284
+      },
+      "p2": {
+        "x": 1227,
+        "y": 257
+      },
+      "arrow": true
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": -101,
+        "y": 92.15336835760691
+      },
+      "p4": {
+        "x": 1556,
+        "y": 766.2922982108447
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 513.3830206651546,
+        "y": 172.1533683576069
+      },
+      "p4": {
+        "x": 1025.3830206651546,
+        "y": 684.153368357607
+      }
+    }
+  ],
+  "width": 2485.5,
+  "height": 1502.6389298532376,
+  "rayModeDensity": 6.694591757083984,
+  "imageModeDensity": 2.432209248300569,
+  "observer": {
+    "c": {
+      "x": 1510,
+      "y": 446
+    },
+    "r": 10
+  },
+  "origin": {
+    "x": 515.25,
+    "y": 322.0966316423931
+  },
+  "scale": 1
+}
