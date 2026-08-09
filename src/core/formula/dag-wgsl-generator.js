@@ -126,6 +126,9 @@ function createGuardProfile(dag, nodeRanges) {
       return nodeRanges[node.id].maybeInvalid ? "wrapped" : "raw";
     }
     if (node.kind === "constant" || node.kind === "parameter") return "fixed";
+    if (node.kind === "binary" && node.op === "^") {
+      return classifyPowerLowering(node, nodeRanges);
+    }
     if (node.kind !== "call") {
       return nodeRanges[node.id].maybeInvalid ? "wrapped" : "raw";
     }
@@ -165,9 +168,14 @@ function generateNode(node, parameterIndexes, states, nodeRanges) {
   if (node.kind === "unary") return raw
     ? { type: "f32", expression: generateRawUnary(node.op, node.args[0]) }
     : { type: "W", expression: generateWrappedUnary(node.op, node.args[0], states) };
-  if (node.kind === "binary") return raw
-    ? { type: "f32", expression: generateRawBinary(node.op, node.args[0], node.args[1]) }
-    : { type: "W", expression: generateWrappedBinary(node.op, node.args[0], node.args[1], states) };
+  if (node.kind === "binary") {
+    if (node.op === "^") {
+      return generatePower(node, states, nodeRanges);
+    }
+    return raw
+      ? { type: "f32", expression: generateRawBinary(node.op, node.args[0], node.args[1]) }
+      : { type: "W", expression: generateWrappedBinary(node.op, node.args[0], node.args[1], states) };
+  }
   if (node.kind === "call") return generateCall(node.name, node.args, states, nodeRanges, raw);
   throw new TypeError(`Unknown DAG node kind: ${JSON.stringify(node.kind)}`);
 }
@@ -199,7 +207,6 @@ function generateRawBinary(op, left, right) {
   if (op === "-") return `(v${left} - v${right})`;
   if (op === "*") return `(v${left} * v${right})`;
   if (op === "/") return `(v${left} / v${right})`;
-  if (op === "^") return `pow(v${left}, v${right})`;
   throw new TypeError(`Unknown binary operator: ${JSON.stringify(op)}`);
 }
 
@@ -208,8 +215,37 @@ function generateWrappedBinary(op, left, right, states) {
   if (op === "-") return `w_sub(${asW(left, states)}, ${asW(right, states)})`;
   if (op === "*") return `w_mul(${asW(left, states)}, ${asW(right, states)})`;
   if (op === "/") return `w_div(${asW(left, states)}, ${asW(right, states)})`;
-  if (op === "^") return `w_pow(${asW(left, states)}, ${asW(right, states)})`;
   throw new TypeError(`Unknown binary operator: ${JSON.stringify(op)}`);
+}
+
+function generatePower(node, states, nodeRanges) {
+  const [base, exponent] = node.args;
+  switch (classifyPowerLowering(node, nodeRanges)) {
+    case "pow-native":
+      return { type: "f32", expression: `pow(v${base}, v${exponent})` };
+    case "pow-integer":
+      return {
+        type: "f32",
+        expression: `integer_pow(v${base}, v${exponent})`,
+      };
+    case "wrapped":
+      return {
+        type: "W",
+        expression: `w_pow(${asW(base, states)}, ${asW(exponent, states)})`,
+      };
+    default:
+      throw new TypeError("Unknown WGSL power lowering");
+  }
+}
+
+function classifyPowerLowering(node, nodeRanges) {
+  if (nodeRanges[node.id].maybeInvalid) return "wrapped";
+  const [base, exponent] = node.args;
+  if (rangeIsNonNegative(nodeRanges[base])) return "pow-native";
+  if (rangeIsIntegerValued(nodeRanges[exponent])) return "pow-integer";
+  // This should normally be unreachable because the range estimator marks a
+  // negative base with a possibly nonintegral exponent as maybe-invalid.
+  return "wrapped";
 }
 
 function generateCall(name, args, states, nodeRanges, raw) {
@@ -315,6 +351,11 @@ function rangeIsNonNegative(info) {
 
 function rangeHasNoIntegers(info) {
   return info.intervals.length > 0 && !info.maybeInvalid && info.intervals.every(([lo, hi]) => Math.ceil(lo) > Math.floor(hi));
+}
+
+function rangeIsIntegerValued(info) {
+  return info.intervals.length > 0 && !info.maybeInvalid &&
+    info.intervals.every(([lo, hi]) => lo === hi && Number.isInteger(lo));
 }
 
 function generateMinMax(functionName, values) {
@@ -508,6 +549,12 @@ fn is_integer_exact(value: f32) -> bool {
 fn is_odd_integer_exact(value: f32) -> bool {
   let half = floor(abs(value) * 0.5);
   return abs(abs(value) - half * 2.0 - 1.0) == 0.0;
+}
+
+fn integer_pow(base: f32, exponent: f32) -> f32 {
+  let magnitude = pow(abs(base), exponent);
+  let negative = base < 0.0 && is_odd_integer_exact(exponent);
+  return select(magnitude, -magnitude, negative);
 }
 
 fn w_neg(a: W) -> W {

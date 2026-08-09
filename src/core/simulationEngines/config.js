@@ -55,7 +55,7 @@ export const DEFAULT_SIMULATION_ENGINE_CONFIGS = Object.freeze({
     maxReadyPointRecords: 1048576,
     // Keep submissions short while interactive updates are being evaluated.
     // Even zero-work indirect dispatches retain command/pass overhead.
-    maxPingPongsPerSubmission: 64,
+    maxPingPongsPerSubmission: 8,
   }),
   webgpuMegakernel: Object.freeze({
     ...COMMON_PRIMITIVE_ENGINE_CONFIG,
@@ -63,7 +63,7 @@ export const DEFAULT_SIMULATION_ENGINE_CONFIGS = Object.freeze({
     maxBatchRayEvents: 1048576,
     maxReadyLineRecords: 1048576,
     maxReadyPointRecords: 1048576,
-    maxLocalIterations: 1024,
+    maxLocalIterations: 64,
     maxPingPongsPerSubmission: 2,
   }),
 });

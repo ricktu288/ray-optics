@@ -193,6 +193,61 @@ function assertSameOutputs(left, right) {
 }
 
 {
+  const dag = parseFormula("x^y", ["x", "y"], { outputLabel: "value" });
+  const integerPower = generateDagWgslFunction(dag, {
+    parameters: [
+      { name: "x", range: [[-4, 4]] },
+      { name: "y", range: [[3, 3]] },
+    ],
+    labels: ["value"],
+  });
+  const nativePower = generateDagWgslFunction(dag, {
+    parameters: [
+      { name: "x", range: [[0, 4]] },
+      { name: "y", range: [[0.5, 3]] },
+    ],
+    labels: ["value"],
+  });
+  const guardedPower = generateDagWgslFunction(dag, {
+    parameters: [
+      { name: "x", range: [[-4, 4]] },
+      { name: "y", range: [[0.5, 3]] },
+    ],
+    labels: ["value"],
+  });
+  const overflowCheckedPower = generateDagWgslFunction(dag, {
+    parameters: [
+      { name: "x", range: [[1e30, 1e30]] },
+      { name: "y", range: [[2, 2]] },
+    ],
+    labels: ["value"],
+  });
+
+  assert.match(integerPower.code, /integer_pow\(v0, v1\)/);
+  assert.doesNotMatch(integerPower.code, /w_pow\(wrap\(v0\)/);
+  assert.match(nativePower.code, /pow\(v0, v1\)/);
+  assert.doesNotMatch(nativePower.code, /integer_pow\(v0, v1\)/);
+  assert.match(guardedPower.code, /w_pow\(wrap\(v0\), wrap\(v1\)\)/);
+  assert.match(
+    overflowCheckedPower.code,
+    /w_pow\(wrap\(v0\), wrap\(v1\)\)/,
+  );
+  assert.notEqual(integerPower.guardSignature, nativePower.guardSignature);
+  assert.notEqual(integerPower.guardSignature, guardedPower.guardSignature);
+}
+
+{
+  const dag = parseFormula("x^2", ["x"], { outputLabel: "value" });
+  const generated = generateDagWgslFunction(dag, {
+    parameters: [{ name: "x", range: [[-100, 100]] }],
+    labels: ["value"],
+  });
+
+  assert.match(generated.code, /integer_pow\(v0, v1\)/);
+  assert.doesNotMatch(generated.code, /\(v0 \* v0\)/);
+}
+
+{
   const dag = parseFormula("$x + 1", ["$x"], { outputLabel: "$out" });
   const compiled = generateDagWgslFunction(dag, {
     functionName: "eval_dag",
