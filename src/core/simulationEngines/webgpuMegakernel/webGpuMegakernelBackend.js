@@ -268,7 +268,7 @@ export class WebGpuMegakernelBackend {
     const bindGroupLayout = this.device.createBindGroupLayout({
       label: 'WebGPU megakernel queue collector layout',
       entries: [
-        storageLayoutEntry(0, true),
+        storageLayoutEntry(0),
         storageLayoutEntry(1),
         uniformLayoutEntry(2),
         storageLayoutEntry(3),
@@ -279,6 +279,10 @@ export class WebGpuMegakernelBackend {
       bindGroupLayouts: [bindGroupLayout],
     });
     this.collectorPipelines = {
+      weight: await createComputePipeline(this.device, {
+        label: 'WebGPU megakernel queue weights', layout: pipelineLayout,
+        compute: { module, entryPoint: 'weightMain' },
+      }),
       prefix: await createComputePipeline(this.device, {
         label: 'WebGPU megakernel queue prefix', layout: pipelineLayout,
         compute: { module, entryPoint: 'prefixMain' },
@@ -338,6 +342,14 @@ export class WebGpuMegakernelBackend {
       48,
       new Float32Array([Math.fround(options.rayPowerCutoff ?? 1e-6)])
     );
+    const rayPowerCutoff = Math.fround(options.rayPowerCutoff ?? 1e-6);
+    for (const uniformBuffer of this.collectorUniformBuffers) {
+      this.device.queue.writeBuffer(
+        uniformBuffer,
+        9 * 4,
+        new Float32Array([rayPowerCutoff])
+      );
+    }
     this.device.queue.writeBuffer(
       this.renderUniformBuffer,
       0,
@@ -534,13 +546,6 @@ export class WebGpuMegakernelBackend {
   encodeMegakernel(commandEncoder, direction) {
     const outputDirection = direction ^ 1;
     const extentOffset = rayExtentDispatchIndirectOffset(outputDirection);
-    // Tracing rebuilds generation-tagged block counts. Clearing this compact
-    // metadata replaces both the ray clear and collector count dispatches.
-    commandEncoder.clearBuffer(
-      this.queueBuffer,
-      this.queueLayout.blockOffset * 4,
-      this.queueLayout.blockCount * 4
-    );
     commandEncoder.clearBuffer(
       this.drawIndirectBuffer, extentOffset, 4
     );
@@ -563,6 +568,15 @@ export class WebGpuMegakernelBackend {
     const bindGroup = this.collectorBindGroups[outputDirection];
     const extentOffset = rayExtentDispatchIndirectOffset(outputDirection);
     let pass = commandEncoder.beginComputePass({
+      label: 'WebGPU megakernel ray sampling weights',
+    });
+    pass.setPipeline(this.collectorPipelines.weight);
+    pass.setBindGroup(0, bindGroup);
+    pass.dispatchWorkgroupsIndirect(
+      this.drawIndirectBuffer, extentOffset
+    );
+    pass.end();
+    pass = commandEncoder.beginComputePass({
       label: 'WebGPU megakernel active queue prefix',
     });
     pass.setPipeline(this.collectorPipelines.prefix);

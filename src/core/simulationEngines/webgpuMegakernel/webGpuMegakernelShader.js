@@ -135,8 +135,6 @@ fn recordOutput(slot:u32) {
   let generation=atomicLoad(&control[21])+1u;
   membershipStorage[megaUniforms.outputMembershipBase+
     slot*megaUniforms.membershipStride+megaUniforms.regionWordCount]=generation;
-  atomicAdd(&control[megaUniforms.blockOffset+
-    slot/${workgroupSize}u],1u);
   let collectorBlocks=slot/${workgroupSize}u+1u;
   atomicMax(&control[20],collectorBlocks);
   atomicMax(&drawArguments[megaUniforms.extentWord],collectorBlocks);
@@ -289,7 +287,7 @@ fn megakernelMain(@builtin(global_invocation_id) invocation:vec3u,
   let startRayCount=atomicLoad(&control[megaUniforms.inputCountWord]);${mapping}
   var ray=Ray(vec2f(0.0),vec2f(0.0),vec2f(0.0),0.0,0u);
   var rayIndex=0u;var depth=0u;var membership:Membership;
-  var isActive=false;var slotCount=0u;
+  var isActive=false;var capacityStopped=false;var slotCount=0u;
   if(valid){
     rayIndex=atomicLoad(&control[
       megaUniforms.inputActiveOffset+logicalIndex]);
@@ -305,38 +303,37 @@ fn megakernelMain(@builtin(global_invocation_id) invocation:vec3u,
     var segmentRay=ray;var front:CrossingMask;var back:CrossingMask;
     if(isActive){
       if(real){atomicAdd(&control[16],1u);}
-      let power=ray.powers.x+ray.powers.y;
-      if(power<traceUniforms.rayPowerCutoff){
-        if(real){atomicAdd(&control[17],u32(round(min(
-          power*FIXED_SCALE,4294967040.0))));}isActive=false;
-      }else{
-        hit=traceOne(ray,&membership,&front,&back);
+      hit=traceOne(ray,&membership,&front,&back);
+    }
+    var capacityStalled=false;
+    if(isActive&&hit.conflict!=3u&&depth<megaUniforms.maxRayDepth&&
+      hit.s>0.0&&hit.s<F32_MAX){
+      let required=interactionOutputCount(hit,&front,&back);
+      if(real&&slotCount+required>maximumSlots){
+        capacityStalled=true;
+        atomicMax(&control[5],(slotCount+required)*startRayCount);
+        if(iteration==0u){atomicStore(&control[8],1u);}
       }
     }
+    let renderActive=isActive&&!capacityStalled;
     ${render}
+    if(capacityStalled){isActive=false;capacityStopped=true;}
     if(isActive){
       if(hit.conflict==3u){if(real){atomicOr(&control[18],1u);}isActive=false;}
       else if(depth>=megaUniforms.maxRayDepth||
         hit.s<=0.0||hit.s>=F32_MAX){isActive=false;}
       else{
-        let required=interactionOutputCount(hit,&front,&back);
-        if(real&&slotCount+required>maximumSlots){
-          atomicStore(&control[8],1u);
-          atomicMax(&control[5],(slotCount+required)*startRayCount);
-          isActive=false;
-        }else{
-          var continuation=ray;var nextMembership:Membership;
-          let continues=processInteraction(ray,hit,&membership,&front,&back,
-            rayIndex,logicalIndex,startRayCount,depth+1u,&slotCount,isDummy,
-            &continuation,&nextMembership);
-          isActive=continues;
-          if(continues){ray=continuation;membership=nextMembership;depth+=1u;}
-        }
+        var continuation=ray;var nextMembership:Membership;
+        let continues=processInteraction(ray,hit,&membership,&front,&back,
+          rayIndex,logicalIndex,startRayCount,depth+1u,&slotCount,isDummy,
+          &continuation,&nextMembership);
+        isActive=continues;
+        if(continues){ray=continuation;membership=nextMembership;depth+=1u;}
       }
     }
   }
-  if(isActive&&real){writeSuspended(ray,&membership,logicalIndex,startRayCount,
-    depth,&slotCount);}
+  if((isActive||capacityStopped)&&real){writeSuspended(
+    ray,&membership,logicalIndex,startRayCount,depth,&slotCount);}
 }`;
 }
 
@@ -349,7 +346,8 @@ var<workgroup> sharedHits:array<Hit,${workgroupSize * 2}>;
 
 function createRenderInvocation(variant, neighborMode, workgroupSize) {
   if (!neighborMode) {
-    return `if(real&&isActive&&hit.s>0.0){renderIndependent(segmentRay,hit,depth);}`;
+    return `if(real&&renderActive&&hit.s>0.0){
+      renderIndependent(segmentRay,hit,depth);}`;
   }
   const modeCode = variant === 'images' ? `
     if(real&&local.x>=2u){renderImageNeighbor(bank+local.x);}` : `
@@ -358,7 +356,7 @@ function createRenderInvocation(variant, neighborMode, workgroupSize) {
     let bank=(iteration&1u)*${workgroupSize}u;
     sharedRays[bank+local.x]=Ray(vec2f(0.0),vec2f(0.0),vec2f(0.0),0.0,0u);
     sharedHits[bank+local.x]=Hit(0.0,0.0,vec2f(0.0),-1,0.0,0u,0xffffffffu);
-    if(isActive){sharedRays[bank+local.x]=segmentRay;
+    if(renderActive){sharedRays[bank+local.x]=segmentRay;
       sharedHits[bank+local.x]=hit;}
     workgroupBarrier();${modeCode}`;
 }

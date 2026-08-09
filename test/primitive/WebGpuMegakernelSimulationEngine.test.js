@@ -112,6 +112,16 @@ describe('WebGpuMegakernelSimulationEngine', () => {
       expect(rays.code).toContain(
         'atomicMax(&drawArguments[megaUniforms.extentWord],collectorBlocks)'
       );
+      expect(rays.code).toContain(
+        'if(capacityStalled){isActive=false;capacityStopped=true;}'
+      );
+      expect(rays.code).toContain(
+        'if(iteration==0u){atomicStore(&control[8],1u);}'
+      );
+      expect(rays.code).toContain('let renderActive=isActive&&!capacityStalled');
+      expect(rays.code).not.toContain(
+        'if(power<traceUniforms.rayPowerCutoff)'
+      );
       expect(rays.code).not.toContain('sharedRays');
       expect(rays.code).not.toContain('fn lineIntersection(');
       expect(images.code).toContain('var<workgroup> sharedRays');
@@ -122,16 +132,18 @@ describe('WebGpuMegakernelSimulationEngine', () => {
       expect(observer.code).toContain('fn observerPoint(');
     });
 
-  it('uses block prefixes for a stable physical-order queue', () => {
+  it('uses power prefixes for a stable systematically sampled queue', () => {
     const code = createMegakernelCollectorShader(64);
 
-    expect(code).not.toContain('fn countMain(');
+    expect(code).toContain('fn weightMain(');
     expect(code).toContain('fn prefixMain(');
     expect(code).toContain('fn fillMain(');
-    expect(code).toContain('generation==atomicLoad(&queue[21])');
-    expect(code).toContain('destinations[lane]=cursor');
+    expect(code).toContain('fn rayWeight(index:u32,generation:u32)->f32');
+    expect(code).toContain('power/config.rayPowerCutoff');
+    expect(code).toContain('cumulative+=weights[lane]');
+    expect(code).toContain('rays[rayIndex].powers=rays[rayIndex].powers/weight');
     expect(code).toContain(
-      'queue[config.activeOffset+destinations[local.x]]'
+      'queue[config.activeOffset+destination]'
     );
     expect(code).toContain('dispatchArguments:array<atomic<u32>>');
     expect(code).toContain(
@@ -147,7 +159,7 @@ describe('WebGpuMegakernelSimulationEngine', () => {
     const backend = new WebGpuMegakernelBackend(null, {}, {});
     backend.drawIndirectBuffer = {};
     backend.collectorBindGroups = [{}];
-    backend.collectorPipelines = { prefix: {}, fill: {} };
+    backend.collectorPipelines = { weight: {}, prefix: {}, fill: {} };
     const encodedPasses = [];
     const commandEncoder = { beginComputePass: jest.fn(() => {
       const pass = { setPipeline: jest.fn(), setBindGroup: jest.fn(),
@@ -159,17 +171,21 @@ describe('WebGpuMegakernelSimulationEngine', () => {
 
     backend.encodeCollector(commandEncoder, 0);
 
-    expect(encodedPasses[0].dispatchWorkgroups).toHaveBeenCalledWith(1);
-    expect(encodedPasses[1].dispatchWorkgroupsIndirect)
+    expect(encodedPasses[0].dispatchWorkgroupsIndirect)
+      .toHaveBeenCalledWith(backend.drawIndirectBuffer, 16);
+    expect(encodedPasses[1].dispatchWorkgroups).toHaveBeenCalledWith(1);
+    expect(encodedPasses[2].dispatchWorkgroupsIndirect)
       .toHaveBeenCalledWith(backend.drawIndirectBuffer, 16);
 
     backend.encodeCollector(commandEncoder, 1);
-    expect(encodedPasses[2].dispatchWorkgroups).toHaveBeenCalledWith(1);
     expect(encodedPasses[3].dispatchWorkgroupsIndirect)
+      .toHaveBeenCalledWith(backend.drawIndirectBuffer, 28);
+    expect(encodedPasses[4].dispatchWorkgroups).toHaveBeenCalledWith(1);
+    expect(encodedPasses[5].dispatchWorkgroupsIndirect)
       .toHaveBeenCalledWith(backend.drawIndirectBuffer, 28);
   });
 
-  it('traces with generation-tagged counts and no ray clear pass', () => {
+  it('traces with generation-tagged outputs and no ray clear pass', () => {
     const backend = new WebGpuMegakernelBackend(null, {}, {});
     backend.queueLayout = { blockOffset: 32, blockCount: 16 };
     backend.drawIndirectBuffer = {};
@@ -194,8 +210,6 @@ describe('WebGpuMegakernelSimulationEngine', () => {
     expect(commandEncoder.clearBuffer.mock.calls.some(
       ([buffer]) => buffer === backend.rayBuffer
     )).toBe(false);
-    expect(commandEncoder.clearBuffer)
-      .toHaveBeenCalledWith(backend.queueBuffer, 128, 64);
     expect(passes[0].dispatchWorkgroupsIndirect)
       .toHaveBeenCalledWith(backend.dispatchIndirectBuffer, 0);
   });
@@ -231,6 +245,36 @@ describe('WebGpuMegakernelSimulationEngine', () => {
 
     expect(writeBuffer.mock.calls[0][2]).toHaveLength(21);
   });
+
+  it('passes the configured ray-power threshold to both collectors',
+    async () => {
+      const writeBuffer = jest.fn();
+      const backend = new WebGpuMegakernelBackend({ queue: { writeBuffer } },
+        {}, { workgroupSize: 64 });
+      backend.traceUniformBuffer = {};
+      backend.renderUniformBuffer = {};
+      backend.queueBuffer = {};
+      backend.collectorUniformBuffers = [{}, {}];
+      backend.renderPreparationStage = { geometryCapacity: 1 };
+      backend.megakernelStages.set('rays', {});
+      backend.writeMegakernelUniforms = jest.fn();
+
+      await backend.configureRun({
+        rayPowerCutoff: 0.002,
+        preparedScene: {
+          parameterRanges: { wavelengthRange: [[380, 700]] }
+        },
+        rendering: { mode: 'rays' }
+      });
+
+      const collectorWrites = writeBuffer.mock.calls.filter(
+        ([buffer, offset]) =>
+          backend.collectorUniformBuffers.includes(buffer) && offset === 36
+      );
+      expect(collectorWrites).toHaveLength(2);
+      expect(Array.from(collectorWrites[0][2]))
+        .toEqual([Math.fround(0.002)]);
+    });
 
   it('alternates several ping-pongs in one command submission', () => {
     const backend = new WebGpuMegakernelBackend(null, {}, {
@@ -277,6 +321,33 @@ describe('WebGpuMegakernelSimulationEngine', () => {
     expect(engine.computeBackend.encodeStateReadback).toHaveBeenCalled();
     expect(engine.rasterizer.encodeGpuGeometryIndirect).toHaveBeenCalled();
   });
+
+  it('throws when the buffer cannot complete the first tracing step',
+    async () => {
+      const engine = new WebGpuMegakernelSimulationEngine();
+      engine.initialize = jest.fn(async () => {});
+      engine.device = {};
+      engine.ensureComputeBackend = jest.fn(async () => true);
+      engine.computeBackend = {
+        configureRun: jest.fn(async () => {}),
+        renderPreparationStage: { geometryCapacity: 1 }
+      };
+      engine.startNativeRun = jest.fn(async () => ({
+        statePromise: Promise.resolve({
+          currentRayCount: 8,
+          readyLineCount: 0,
+          resizeNeeded: true,
+          requiredRayCapacity: 16,
+        }),
+        presentationPromise: Promise.resolve(false),
+      }));
+
+      const run = await engine.createRun({ preparedScene: {} });
+
+      await expect(run.advance()).rejects.toThrow(
+        /approximately 16 rays.*Increase the ray buffer capacity/
+      );
+    });
 
   it('validates the ping-pong batch size', () => {
     expect(() => new WebGpuMegakernelSimulationEngine({

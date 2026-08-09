@@ -63,7 +63,7 @@ export const DEFAULT_SIMULATION_ENGINE_CONFIGS = Object.freeze({
     maxBatchRayEvents: 1048576,
     maxReadyLineRecords: 1048576,
     maxReadyPointRecords: 1048576,
-    maxLocalIterations: 64,
+    maxLocalIterations: 128,
     maxPingPongsPerSubmission: 2,
   }),
 });

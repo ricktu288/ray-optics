@@ -79,13 +79,25 @@ class WebGpuMegakernelSimulationRun {
     if (this.isStale()) return this.getUpdate();
     this.nativeState = state;
     this.reportOverflow(state);
+    if (state.resizeNeeded) {
+      this.isComplete = true;
+      const required = Number.isFinite(state.requiredRayCapacity)
+        ? ` The interaction requires capacity for approximately ` +
+          `${state.requiredRayCapacity} rays.`
+        : '';
+      throw new RangeError(
+        'The WebGPU ray buffer is too small to complete the first tracing ' +
+        `step.${required} Increase the ray buffer capacity or the minimum ` +
+        'ray power threshold.'
+      );
+    }
     const geometryCapacity = this.engine.computeBackend
       .renderPreparationStage.geometryCapacity;
     const recordCount = Math.min(state.readyLineCount, geometryCapacity);
     if (presented !== false) {
       this.hasPresentedRun = true;
     }
-    this.isComplete = state.currentRayCount === 0 || state.resizeNeeded;
+    this.isComplete = state.currentRayCount === 0;
     if (!this.isComplete) await this.scheduleContinuation(state);
     this.lastUpdate = this.createUpdate(
       this.isComplete ? 'complete' : 'running',
