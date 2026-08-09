@@ -97,33 +97,26 @@ export function traverseBvhForInteraction(
       continue;
     }
 
-    const leftNear = testChildBounds(
-      nodes,
-      node.left,
-      ray,
-      candidateContext.forwardDistance,
-      diagnostics
-    );
-    const rightNear = testChildBounds(
-      nodes,
-      node.right,
-      ray,
-      candidateContext.forwardDistance,
-      diagnostics
-    );
-
-    if (Number.isFinite(leftNear) && Number.isFinite(rightNear)) {
-      if (leftNear <= rightNear) {
-        stack.push(node.right, rightNear);
-        stack.push(node.left, leftNear);
-      } else {
-        stack.push(node.left, leftNear);
-        stack.push(node.right, rightNear);
+    const childStackStart = stack.length;
+    for (const childIndex of node.children) {
+      const childNear = testChildBounds(
+        nodes,
+        childIndex,
+        ray,
+        candidateContext.forwardDistance,
+        diagnostics
+      );
+      if (!Number.isFinite(childNear) || childNear > candidate.s) continue;
+      const previousEnd = stack.length;
+      stack.length = previousEnd + 2;
+      let position = previousEnd;
+      while (position > childStackStart && stack[position - 1] <= childNear) {
+        stack[position] = stack[position - 2];
+        stack[position + 1] = stack[position - 1];
+        position -= 2;
       }
-    } else if (Number.isFinite(leftNear)) {
-      stack.push(node.left, leftNear);
-    } else if (Number.isFinite(rightNear)) {
-      stack.push(node.right, rightNear);
+      stack[position] = childIndex;
+      stack[position + 1] = childNear;
     }
   }
 }

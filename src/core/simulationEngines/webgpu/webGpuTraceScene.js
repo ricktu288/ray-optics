@@ -4,7 +4,7 @@
  */
 
 const TRACE_SCENE_FIELDS = Object.freeze([
-  ['bvhNodes', 'BvhNode', 32],
+  ['bvhNodes', 'BvhNode', 80],
   ['instanceParameters', 'f32', 4],
   ['surfaceDescriptors', 'InstanceDescriptor', 16],
   ['regionDescriptors', 'RegionDescriptor', 32],
@@ -108,7 +108,9 @@ function traceSceneCounts(description) {
     cubicBezier: 16,
   };
   return {
-    bvhNodes: description.bvh.nodes.length,
+    bvhNodes: Math.max(1, description.bvh.nodes.filter(
+      node => node.count === 0
+    ).length),
     instanceParameters,
     surfaceDescriptors: description.surfaces?.length ?? 0,
     regionDescriptors: description.regions?.length ?? 0,

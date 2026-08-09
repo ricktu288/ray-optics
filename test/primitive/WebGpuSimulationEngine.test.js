@@ -68,6 +68,20 @@ async function prepare() {
 }
 
 describe('WebGpuSimulationEngine', () => {
+  it('packs the common hierarchy as 80-byte float BVH4 nodes', async () => {
+    const prepared = await prepare();
+    const packed = prepared.packedStorage;
+    const references = new Uint32Array(packed.bvhNodes, 64, 4);
+
+    expect(prepared.executionPlan.buffers.bvhNodes.stride).toBe(80);
+    expect(packed.counts.bvhNodes).toBe(1);
+    expect(packed.bvhNodes.byteLength).toBe(80);
+    expect(references[0] >>> 31).toBe(1);
+    expect(Array.from(references.slice(1))).toEqual([
+      0xffffffff, 0xffffffff, 0xffffffff
+    ]);
+  });
+
   it('requires WebGPU rather than falling back to CPU execution', async () => {
     const engine = new WebGpuSimulationEngine();
     const preparedScene = await engine.prepare(scene());
@@ -276,7 +290,7 @@ describe('WebGpuSimulationEngine', () => {
       detectorDescriptors: new ArrayBuffer(0),
       curveDescriptors: new ArrayBuffer(32),
       curveGeometry: new Float32Array(0),
-      bvhNodes: new ArrayBuffer(32),
+      bvhNodes: new ArrayBuffer(80),
       bvhCurveIds: new Uint32Array(0),
     });
     const storage = new WebGpuMegakernelStaticSceneStorage(
@@ -291,11 +305,11 @@ describe('WebGpuSimulationEngine', () => {
       ([buffer]) => buffer === storage.buffers.traceScene
     );
     const traceData = traceWrite[2];
-    // bvhNodes occupy 32 bytes and the compiled parameter array occupies 8.
-    // Removing a source must not shift the following surface descriptor to 36.
+    // bvhNodes occupy 80 bytes and the compiled parameter array occupies 8.
+    // Removing a source must not shift the following surface descriptor to 84.
     expect(new Uint32Array(
       traceData.buffer,
-      traceData.byteOffset + 40,
+      traceData.byteOffset + 88,
       4
     )).toEqual(Uint32Array.from([11, 12, 13, 14]));
   });

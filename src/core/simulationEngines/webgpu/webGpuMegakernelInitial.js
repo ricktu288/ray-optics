@@ -40,8 +40,8 @@ struct SourceDescriptor { typeId:u32,parameterOffset:u32,rayStart:u32,
 struct CurveDescriptor { kind:u32,ownerKind:u32,ownerId:u32,flags:u32,
   geometryOffset:u32,geometryCount:u32,filterWavelength:f32,
   filterBandwidth:f32 };
-struct BvhNode { bounds:vec4f,first:i32,second:i32,ownerKindMask:u32,
-  flags:u32 };
+struct BvhNode { minX:vec4f,minY:vec4f,maxX:vec4f,maxY:vec4f,
+  refs:vec4u };
 struct MembershipUniforms { rayCount:u32,rayCapacity:u32,bvhRoot:i32,
   curveCount:u32,regionCount:u32,regionWordCount:u32,
   originTolerance:f32,padding:f32 };

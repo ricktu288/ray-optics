@@ -93,16 +93,16 @@ import { validateNumericEpsilon } from './numeric.js';
  */
 
 /**
- * The BVH node array uses child node indices for branches. A leaf has
- * `count > 0`; its `[start, start + count)` range indexes `curveIds`, whose
- * values index the stable `curves` table. The BVH may therefore reorder curves
- * without changing curve or owner IDs. Every node's `ownerKindMask` is the
- * bitwise union of the surface, region, and detector kinds contained in its
- * subtree.
+ * The BVH node array uses up to four child node indices for branches. A leaf
+ * has `count > 0`; its `[start, start + count)` range indexes `curveIds`, whose
+ * values index the stable `curves` table. Branches are stored before leaves so
+ * GPU packing can omit standalone leaf records. The BVH may therefore reorder
+ * curves without changing curve or owner IDs. Every node's `ownerKindMask` is
+ * the bitwise union of the surface, region, and detector kinds in its subtree.
  *
  * @typedef {Object} ProcessedBvh
  * @property {number} root - Root node index, or -1 for an empty tree.
- * @property {Array<Object>} nodes - BVH branch and leaf nodes.
+ * @property {Array<Object>} nodes - BVH4 branch and leaf nodes.
  * @property {Uint32Array} curveIds - Curve IDs in BVH leaf order.
  */
 

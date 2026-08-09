@@ -30,7 +30,7 @@ const STATIC_STORAGE_MINIMUM_SIZES = Object.freeze({
   detectorDescriptors: 32,
   curveDescriptors: 32,
   curveGeometry: 4,
-  bvhNodes: 32,
+  bvhNodes: 80,
   bvhCurveIds: 4,
 });
 

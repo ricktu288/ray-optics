@@ -287,13 +287,82 @@ export function buildBvh(curveEntries, {
     ));
     root = buildMortonGroupHierarchy(groups, buildIndexGroup, addParent);
   }
-  assignNodeDepths(root, nodes);
+  const wideTree = collapseBinaryBvh(root, nodes);
 
   return {
-    root,
-    nodes,
+    root: wideTree.root,
+    nodes: wideTree.nodes,
     entries: orderedEntries
   };
+}
+
+/**
+ * Collapse the temporary binary construction tree into the shared BVH4
+ * representation. Branch nodes are stored before leaves so WebGPU can pack
+ * the branch prefix directly while CPU diagnostics can still address leaves.
+ */
+function collapseBinaryBvh(binaryRoot, binaryNodes) {
+  function convert(binaryIndex, depth) {
+    const source = binaryNodes[binaryIndex];
+    if (source.count > 0) {
+      return {
+        bounds: source.bounds,
+        ownerKindMask: source.ownerKindMask,
+        depth,
+        start: source.start,
+        count: source.count
+      };
+    }
+
+    const frontier = [source.left, source.right];
+    while (frontier.length < 4) {
+      let expandAt = -1;
+      let largestArea = -1;
+      for (let position = 0; position < frontier.length; position++) {
+        const candidate = binaryNodes[frontier[position]];
+        if (candidate.count > 0) continue;
+        const area =
+          (candidate.bounds.maxX - candidate.bounds.minX) *
+          (candidate.bounds.maxY - candidate.bounds.minY);
+        if (area > largestArea) {
+          largestArea = area;
+          expandAt = position;
+        }
+      }
+      if (expandAt < 0) break;
+      const expanded = binaryNodes[frontier[expandAt]];
+      frontier.splice(expandAt, 1, expanded.left, expanded.right);
+    }
+
+    return {
+      bounds: source.bounds,
+      ownerKindMask: source.ownerKindMask,
+      depth,
+      start: -1,
+      count: 0,
+      children: frontier.map(index => convert(index, depth + 1))
+    };
+  }
+
+  const treeRoot = convert(binaryRoot, 0);
+  const branches = [];
+  const leaves = [];
+  function collect(node) {
+    if (node.count > 0) {
+      leaves.push(node);
+      return;
+    }
+    branches.push(node);
+    for (const child of node.children) collect(child);
+  }
+  collect(treeRoot);
+  const nodes = [...branches, ...leaves];
+  nodes.forEach((node, index) => { node.nodeIndex = index; });
+  for (const node of branches) {
+    node.children = node.children.map(child => child.nodeIndex);
+  }
+  for (const node of nodes) delete node.nodeIndex;
+  return { root: 0, nodes };
 }
 
 function buildMortonGroupHierarchy(groups, buildGroup, addParent) {
@@ -470,19 +539,4 @@ function combineBounds(a, b) {
     maxX: Math.max(a.maxX, b.maxX),
     maxY: Math.max(a.maxY, b.maxY)
   };
-}
-
-function assignNodeDepths(root, nodes) {
-  const stack = [{ nodeIndex: root, depth: 0 }];
-  while (stack.length > 0) {
-    const { nodeIndex, depth } = stack.pop();
-    const node = nodes[nodeIndex];
-    node.depth = depth;
-    if (node.count === 0) {
-      stack.push(
-        { nodeIndex: node.right, depth: depth + 1 },
-        { nodeIndex: node.left, depth: depth + 1 }
-      );
-    }
-  }
 }

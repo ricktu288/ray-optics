@@ -68,6 +68,8 @@
     "build-integrations": "npm run build-node && node ./scripts/buildIntegrations.mjs",
     "build-integrations:release": "npm run build-node && node ./scripts/buildIntegrations.mjs --release",
     "build-docs": "jsdoc -c jsdoc.json",
+    "benchmark:cpu-bvh": "node --expose-gc ./scripts/benchmarkCpuBvh.mjs",
+    "benchmark:webgpu-bvh": "node ./scripts/serveWebGpuBvhBenchmark.mjs",
     "start": "webpack serve --open simulator/ --mode=development",
     "build": "npm run build-pages && npm run build-scenes && npm run build-node && npm run build-images && npm run build-app && npm run build-docs",
     "build:release": "npm run build-pages:release && npm run build-scenes && npm run build-node && npm run build-images && npm run build-app && npm run build-docs",

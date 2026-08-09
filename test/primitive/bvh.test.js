@@ -131,8 +131,11 @@ describe('primitive BVH', () => {
     for (const node of tree.nodes) {
       if (node.count === 0) {
         expect(node.ownerKindMask).toBe(
-          tree.nodes[node.left].ownerKindMask |
-          tree.nodes[node.right].ownerKindMask
+          node.children.reduce(
+            (mask, childIndex) =>
+              mask | tree.nodes[childIndex].ownerKindMask,
+            0
+          )
         );
         continue;
       }
@@ -265,9 +268,34 @@ describe('primitive BVH', () => {
     expect(tree.nodes[tree.root].depth).toBe(0);
     for (const node of tree.nodes) {
       if (node.count > 0) continue;
-      expect(tree.nodes[node.left].depth).toBe(node.depth + 1);
-      expect(tree.nodes[node.right].depth).toBe(node.depth + 1);
+      expect(node.children.length).toBeGreaterThanOrEqual(2);
+      expect(node.children.length).toBeLessThanOrEqual(4);
+      for (const childIndex of node.children) {
+        expect(tree.nodes[childIndex].depth).toBe(node.depth + 1);
+      }
     }
+  });
+
+  it('emits four-child branches before standalone leaf records', () => {
+    const tree = buildBvh(Array.from(
+      { length: 16 },
+      (_, index) => lineEntry(index, index * 2, 0, index * 2 + 1, 0)
+    ), {
+      lineLeafSize: 1
+    });
+    const firstLeaf = tree.nodes.findIndex(node => node.count > 0);
+    const branches = tree.nodes.slice(0, firstLeaf);
+    const leaves = tree.nodes.slice(firstLeaf);
+
+    expect(tree.root).toBe(0);
+    expect(branches.length).toBeGreaterThan(0);
+    expect(branches.some(node => node.children.length === 4)).toBe(true);
+    expect(branches.every(node =>
+      node.count === 0 &&
+      node.children.length >= 2 &&
+      node.children.length <= 4
+    )).toBe(true);
+    expect(leaves.every(node => node.count > 0)).toBe(true);
   });
 
   it('uses the Morton hierarchy above the configured direct primitive threshold', () => {

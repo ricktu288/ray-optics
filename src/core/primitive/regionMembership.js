@@ -129,20 +129,15 @@ export function traverseBvhForRegionMembership(
       continue;
     }
 
-    testAndPushRegionChild(
-      description,
-      ray,
-      node.left,
-      diagnostics,
-      stack
-    );
-    testAndPushRegionChild(
-      description,
-      ray,
-      node.right,
-      diagnostics,
-      stack
-    );
+    for (const childIndex of node.children) {
+      testAndPushRegionChild(
+        description,
+        ray,
+        childIndex,
+        diagnostics,
+        stack
+      );
+    }
   }
   if (!Number.isFinite(result.nearestForwardS)) {
     result.regionMask.fill(0);

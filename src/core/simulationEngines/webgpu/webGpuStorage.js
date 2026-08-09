@@ -11,7 +11,7 @@ export const WEBGPU_INSTANCE_DESCRIPTOR_STRIDE = 16;
 export const WEBGPU_REGION_DESCRIPTOR_STRIDE = 32;
 export const WEBGPU_DETECTOR_DESCRIPTOR_STRIDE = 32;
 export const WEBGPU_CURVE_DESCRIPTOR_STRIDE = 32;
-export const WEBGPU_BVH_NODE_STRIDE = 32;
+export const WEBGPU_BVH_NODE_STRIDE = 80;
 export const WEBGPU_RUN_CONTROL_SIZE = 80;
 
 export const WEBGPU_CURVE_KINDS = Object.freeze({
@@ -27,7 +27,11 @@ const CURVE_FLAG_MERGES_WITH_BOUNDARY = 1 << 0;
 const CURVE_FLAG_TWO_SIDED = 1 << 1;
 const CURVE_FLAG_HAS_FILTER = 1 << 2;
 const CURVE_FLAG_FILTER_INVERTED = 1 << 3;
-const BVH_FLAG_LEAF = 1 << 0;
+const BVH_LEAF_REFERENCE_BIT = 0x80000000;
+const BVH_LEAF_START_MASK = 0x00ffffff;
+const BVH_NODE_INDEX_MASK = 0x0fffffff;
+const BVH_OWNER_KIND_SHIFT = 28;
+const BVH_INVALID_REFERENCE = 0xffffffff;
 
 /**
  * Convert an engine-independent processed scene to immutable GPU table data.
@@ -67,7 +71,7 @@ export function packWebGpuScene(description) {
       detectors: description.detectors.length,
       detectorResultValues: packedDetectors.resultValueCount,
       curves: description.curves.length,
-      bvhNodes: description.bvh.nodes.length,
+      bvhNodes: bvhNodes.byteLength / WEBGPU_BVH_NODE_STRIDE,
       regionWords: Math.ceil(description.regions.length / 32),
       interactionTypes: interactionTypes.layout.types.length,
     },
@@ -341,18 +345,60 @@ function packCurves(curves, geometryValues) {
 }
 
 function packBvhNodes(nodes) {
-  const data = new ArrayBuffer(nodes.length * WEBGPU_BVH_NODE_STRIDE);
+  const branches = nodes.filter(node => node.count === 0);
+  const packedBranches = branches.length > 0
+    ? branches
+    : nodes.length > 0
+      ? [{ children: [0] }]
+      : [];
+  const data = new ArrayBuffer(
+    packedBranches.length * WEBGPU_BVH_NODE_STRIDE
+  );
   const view = new DataView(data);
-  nodes.forEach((node, index) => {
+  packedBranches.forEach((node, index) => {
     const offset = index * WEBGPU_BVH_NODE_STRIDE;
-    writeBounds(view, offset, node.bounds);
-    const isLeaf = node.count > 0;
-    view.setInt32(offset + 16, isLeaf ? node.start : node.left, true);
-    view.setInt32(offset + 20, isLeaf ? node.count : node.right, true);
-    view.setUint32(offset + 24, node.ownerKindMask, true);
-    view.setUint32(offset + 28, isLeaf ? BVH_FLAG_LEAF : 0, true);
+    for (let childOffset = 0; childOffset < 4; childOffset++) {
+      const childIndex = node.children[childOffset];
+      const child = childIndex === undefined ? null : nodes[childIndex];
+      view.setFloat32(offset + childOffset * 4,
+        Math.fround(child?.bounds.minX ?? 0), true);
+      view.setFloat32(offset + 16 + childOffset * 4,
+        Math.fround(child?.bounds.minY ?? 0), true);
+      view.setFloat32(offset + 32 + childOffset * 4,
+        Math.fround(child?.bounds.maxX ?? 0), true);
+      view.setFloat32(offset + 48 + childOffset * 4,
+        Math.fround(child?.bounds.maxY ?? 0), true);
+      view.setUint32(
+        offset + 64 + childOffset * 4,
+        child ? packBvhChildReference(child, childIndex, branches.length)
+          : BVH_INVALID_REFERENCE,
+        true
+      );
+    }
   });
   return data;
+}
+
+function packBvhChildReference(node, nodeIndex, branchCount) {
+  if (node.count > 0) {
+    if (node.start > BVH_LEAF_START_MASK || node.count > 0x7f) {
+      throw new RangeError(
+        'WebGPU BVH leaf exceeds the packed 24-bit start/7-bit count format.'
+      );
+    }
+    return (
+      BVH_LEAF_REFERENCE_BIT |
+      node.count << 24 |
+      node.start
+    ) >>> 0;
+  }
+  if (nodeIndex >= branchCount || nodeIndex > BVH_NODE_INDEX_MASK) {
+    throw new RangeError('WebGPU BVH branch index exceeds the packed format.');
+  }
+  return (
+    (node.ownerKindMask & 0x7) << BVH_OWNER_KIND_SHIFT |
+    nodeIndex
+  ) >>> 0;
 }
 
 function appendParameters(target, params, names, label) {

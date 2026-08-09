@@ -255,7 +255,7 @@ export function createWebGpuRawTraceShader(description, workgroupSize) {
   const maximumDepth = description.bvh.nodes.reduce(
     (value, node) => Math.max(value, node.depth ?? 0), 0
   );
-  const stackSize = Math.max(1, maximumDepth + 1);
+  const stackSize = Math.max(4, 4 * (maximumDepth + 1));
   const cases = [];
   if (kinds.has('lineSegment') || kinds.has('smoothLineSegment')) {
     cases.push('case 0u, 1u: { intersectLine(curve, ray, &hit); }');
@@ -271,6 +271,10 @@ export function createWebGpuRawTraceShader(description, workgroupSize) {
   }
   const code = `
 const F32_MAX: f32 = 3.402823e38;
+const BVH_INVALID_REFERENCE:u32=0xffffffffu;
+const BVH_LEAF_REFERENCE_BIT:u32=0x80000000u;
+const BVH_LEAF_START_MASK:u32=0x00ffffffu;
+const BVH_NODE_INDEX_MASK:u32=0x0fffffffu;
 const PARAMETER_TOLERANCE: f32 = ${wgslFloat(tolerance.parameter)};
 const TANGENT_TOLERANCE: f32 = ${wgslFloat(tolerance.tangent)};
 
@@ -279,8 +283,8 @@ struct Ray { origin: vec2f, direction: vec2f, powers: vec2f,
 struct CurveDescriptor { kind: u32, ownerKind: u32, ownerId: u32,
   flags: u32, geometryOffset: u32, geometryCount: u32,
   filterWavelength: f32, filterBandwidth: f32 };
-struct BvhNode { bounds: vec4f, first: i32, second: i32,
-  ownerKindMask: u32, flags: u32 };
+struct BvhNode { minX:vec4f,minY:vec4f,maxX:vec4f,maxY:vec4f,
+  refs:vec4u };
 struct RegionDescriptor { typeId:u32, parameterOffset:u32, parameterCount:u32,
   flags:u32, stepSize:f32, padding0:u32, padding1:u32, padding2:u32 };
 struct InstanceDescriptor { typeId:u32, parameterOffset:u32,
@@ -342,6 +346,31 @@ fn boundsNear(ray: Ray, bounds: vec4f, minimum: f32) -> f32 {
   }
   return select(F32_MAX,max(nearValue,minimum),
     nearValue<=farValue && farValue>minimum);
+}
+fn boundsNear4(ray:Ray,node:BvhNode,minimum:f32)->vec4f {
+  var nearValue=vec4f(-F32_MAX);var farValue=vec4f(F32_MAX);
+  if(ray.direction.x==0.0){
+    let inside=(vec4f(ray.origin.x)>=node.minX)&
+      (vec4f(ray.origin.x)<=node.maxX);
+    farValue=select(vec4f(-F32_MAX),farValue,inside);
+  }else{
+    let first=(node.minX-vec4f(ray.origin.x))/ray.direction.x;
+    let second=(node.maxX-vec4f(ray.origin.x))/ray.direction.x;
+    nearValue=max(nearValue,min(first,second));
+    farValue=min(farValue,max(first,second));
+  }
+  if(ray.direction.y==0.0){
+    let inside=(vec4f(ray.origin.y)>=node.minY)&
+      (vec4f(ray.origin.y)<=node.maxY);
+    farValue=select(vec4f(-F32_MAX),farValue,inside);
+  }else{
+    let first=(node.minY-vec4f(ray.origin.y))/ray.direction.y;
+    let second=(node.maxY-vec4f(ray.origin.y))/ray.direction.y;
+    nearValue=max(nearValue,min(first,second));
+    farValue=min(farValue,max(first,second));
+  }
+  let valid=(nearValue<=farValue)&(farValue>vec4f(minimum));
+  return select(vec4f(F32_MAX),max(nearValue,vec4f(minimum)),valid);
 }
 ${kinds.has('lineSegment') || kinds.has('smoothLineSegment') ? `
 fn intersectLine(curve: CurveDescriptor, ray: Ray, hit: ptr<function, Hit>) {
@@ -420,37 +449,42 @@ fn rawTraceMain(@builtin(global_invocation_id) invocation: vec3u) {
   if (traceUniforms.bvhRoot<0) {
     finishCandidate(rayIndex,&hit); return;
   }
-  var stack: array<i32,${stackSize}>; var stackCount=1u;
-  stack[0]=traceUniforms.bvhRoot;
+  var stackRefs:array<u32,${stackSize}>;
+  var stackNear:array<f32,${stackSize}>;var stackCount=1u;
+  stackRefs[0]=u32(traceUniforms.bvhRoot);stackNear[0]=0.0;
   loop {
     if (stackCount==0u) { break; } stackCount-=1u;
-    let nodeIndex=stack[stackCount]; let node=bvhNodes[u32(nodeIndex)];
-    if (boundsNear(ray,node.bounds,traceUniforms.forwardDistance)>hit.s) {
-      continue;
-    }
-    if ((node.flags&1u)!=0u) {
-      for (var offset=0;offset<node.second;offset++) {
-        hit=intersectPreparedCurve(bvhCurveIds[u32(node.first+offset)],ray,
+    let reference=stackRefs[stackCount];
+    if(stackNear[stackCount]>hit.s){continue;}
+    if((reference&BVH_LEAF_REFERENCE_BIT)!=0u){
+      let start=reference&BVH_LEAF_START_MASK;
+      let count=(reference>>24u)&0x7fu;
+      for(var offset=0u;offset<count;offset++){
+        hit=intersectPreparedCurve(bvhCurveIds[start+offset],ray,
           hit,maximumDistance,rayIndex);
       }
-    } else {
-      let leftNear=boundsNear(ray,bvhNodes[u32(node.first)].bounds,
-        traceUniforms.forwardDistance);
-      let rightNear=boundsNear(ray,bvhNodes[u32(node.second)].bounds,
-        traceUniforms.forwardDistance);
-      if (leftNear<=hit.s && rightNear<=hit.s &&
-          stackCount+2u<=${stackSize}u) {
-        if (leftNear<=rightNear) {
-          stack[stackCount]=node.second; stack[stackCount+1u]=node.first;
-        } else {
-          stack[stackCount]=node.first; stack[stackCount+1u]=node.second;
-        }
-        stackCount+=2u;
-      } else if (leftNear<=hit.s && stackCount<${stackSize}u) {
-        stack[stackCount]=node.first; stackCount+=1u;
-      } else if (rightNear<=hit.s && stackCount<${stackSize}u) {
-        stack[stackCount]=node.second; stackCount+=1u;
+      continue;
+    }
+    let node=bvhNodes[reference&BVH_NODE_INDEX_MASK];
+    let nearValues=boundsNear4(ray,node,traceUniforms.forwardDistance);
+    var orderedRefs:array<u32,4>;var orderedNear:array<f32,4>;
+    var orderedCount=0u;
+    for(var child=0u;child<4u;child++){
+      let childRef=node.refs[child];let childNear=nearValues[child];
+      if(childRef==BVH_INVALID_REFERENCE||childNear==F32_MAX||
+          childNear>hit.s){continue;}
+      var position=orderedCount;
+      loop{
+        if(position==0u||orderedNear[position-1u]>childNear){break;}
+        orderedNear[position]=orderedNear[position-1u];
+        orderedRefs[position]=orderedRefs[position-1u];position-=1u;
       }
+      orderedNear[position]=childNear;orderedRefs[position]=childRef;
+      orderedCount+=1u;
+    }
+    for(var child=0u;child<orderedCount;child++){
+      stackRefs[stackCount]=orderedRefs[child];
+      stackNear[stackCount]=orderedNear[child];stackCount+=1u;
     }
   }
   finishCandidate(rayIndex,&hit);

@@ -183,7 +183,7 @@ export function createWebGpuInitialMembershipShader(
   const maximumDepth = description.bvh.nodes.reduce(
     (value, node) => Math.max(value, node.depth ?? 0), 0
   );
-  const stackSize = Math.max(1, maximumDepth + 1);
+  const stackSize = Math.max(4, 4 * (maximumDepth + 1));
   const cases = [];
   if (kinds.has('lineSegment') || kinds.has('smoothLineSegment')) {
     cases.push('case 0u, 1u: { countLine(curve, ray, &crossing); }');
@@ -225,6 +225,10 @@ const F32_MAX:f32=3.402823e38;
 const PARAMETER_TOLERANCE:f32=${wgslFloat(tolerance.parameter)};
 const TANGENT_TOLERANCE:f32=${wgslFloat(tolerance.tangent)};
 const CUBIC_VALUE_TOLERANCE:f32=${wgslFloat(tolerance.cubicValue)};
+const BVH_INVALID_REFERENCE:u32=0xffffffffu;
+const BVH_LEAF_REFERENCE_BIT:u32=0x80000000u;
+const BVH_LEAF_START_MASK:u32=0x00ffffffu;
+const BVH_NODE_INDEX_MASK:u32=0x0fffffffu;
 const GOLDEN_ANGLE_COS:f32=-0.737368878;
 const GOLDEN_ANGLE_SIN:f32=0.675490294;
 
@@ -233,8 +237,8 @@ struct Ray { origin:vec2f, direction:vec2f, powers:vec2f,
 struct CurveDescriptor { kind:u32, ownerKind:u32, ownerId:u32,
   flags:u32, geometryOffset:u32, geometryCount:u32,
   filterWavelength:f32, filterBandwidth:f32 };
-struct BvhNode { bounds:vec4f, first:i32, second:i32,
-  ownerKindMask:u32, flags:u32 };
+struct BvhNode { minX:vec4f,minY:vec4f,maxX:vec4f,maxY:vec4f,
+  refs:vec4u };
 struct MembershipUniforms { rayCount:u32, rayCapacity:u32, bvhRoot:i32,
   curveCount:u32, regionCount:u32, regionWordCount:u32,
   originTolerance:f32, padding:f32 };
@@ -272,6 +276,31 @@ fn boundsNear(ray:Ray,bounds:vec4f,minimum:f32)->f32 {
   }
   return select(F32_MAX,max(nearValue,minimum),
     nearValue<=farValue && farValue>minimum);
+}
+fn boundsNear4(ray:Ray,node:BvhNode,minimum:f32)->vec4f {
+  var nearValue=vec4f(-F32_MAX);var farValue=vec4f(F32_MAX);
+  if(ray.direction.x==0.0){
+    let inside=(vec4f(ray.origin.x)>=node.minX)&
+      (vec4f(ray.origin.x)<=node.maxX);
+    farValue=select(vec4f(-F32_MAX),farValue,inside);
+  }else{
+    let first=(node.minX-vec4f(ray.origin.x))/ray.direction.x;
+    let second=(node.maxX-vec4f(ray.origin.x))/ray.direction.x;
+    nearValue=max(nearValue,min(first,second));
+    farValue=min(farValue,max(first,second));
+  }
+  if(ray.direction.y==0.0){
+    let inside=(vec4f(ray.origin.y)>=node.minY)&
+      (vec4f(ray.origin.y)<=node.maxY);
+    farValue=select(vec4f(-F32_MAX),farValue,inside);
+  }else{
+    let first=(node.minY-vec4f(ray.origin.y))/ray.direction.y;
+    let second=(node.maxY-vec4f(ray.origin.y))/ray.direction.y;
+    nearValue=max(nearValue,min(first,second));
+    farValue=min(farValue,max(first,second));
+  }
+  let valid=(nearValue<=farValue)&(farValue>vec4f(minimum));
+  return select(vec4f(F32_MAX),max(nearValue,vec4f(minimum)),valid);
 }
 fn nearTangency(direction:vec2f,normal:vec2f)->bool {
   let directionLengthSquared=dot(direction,direction);
@@ -319,20 +348,16 @@ fn membershipAttempt(ray:Ray)->Attempt {
   for (var word=0u;word<${regionWordCount}u;word++) { result.mask[word]=0u; }
   result.ambiguous=0u; result.nearest=F32_MAX;
   if (membershipUniforms.bvhRoot<0) { return result; }
-  let root=bvhNodes[u32(membershipUniforms.bvhRoot)];
-  if ((root.ownerKindMask&2u)==0u || boundsNear(ray,root.bounds,0.0)==F32_MAX) {
-    return result;
-  }
-  var stack:array<i32,${stackSize}>; var stackCount=1u;
-  stack[0]=membershipUniforms.bvhRoot;
+  var stack:array<u32,${stackSize}>;var stackCount=1u;
+  stack[0]=u32(membershipUniforms.bvhRoot);
   loop {
     if (stackCount==0u) { break; } stackCount-=1u;
-    let node=bvhNodes[u32(stack[stackCount])];
-    if ((node.ownerKindMask&2u)==0u ||
-        boundsNear(ray,node.bounds,0.0)==F32_MAX) { continue; }
-    if ((node.flags&1u)!=0u) {
-      for (var offset=0;offset<node.second;offset++) {
-        let curveId=bvhCurveIds[u32(node.first+offset)];
+    let reference=stack[stackCount];
+    if((reference&BVH_LEAF_REFERENCE_BIT)!=0u){
+      let start=reference&BVH_LEAF_START_MASK;
+      let count=(reference>>24u)&0x7fu;
+      for(var offset=0u;offset<count;offset++){
+        let curveId=bvhCurveIds[start+offset];
         let curve=curves[curveId];
         if (curve.ownerKind!=1u || curve.ownerId>=membershipUniforms.regionCount) {
           continue;
@@ -345,9 +370,16 @@ fn membershipAttempt(ray:Ray)->Attempt {
         }
         result.ambiguous|=crossing.ambiguous;
       }
-    } else if (stackCount+2u<=${stackSize}u) {
-      stack[stackCount]=node.first; stack[stackCount+1u]=node.second;
-      stackCount+=2u;
+      continue;
+    }
+    let node=bvhNodes[reference&BVH_NODE_INDEX_MASK];
+    let nearValues=boundsNear4(ray,node,0.0);
+    for(var child=0u;child<4u;child++){
+      let childRef=node.refs[child];
+      if(childRef==BVH_INVALID_REFERENCE||nearValues[child]==F32_MAX){continue;}
+      if((childRef&BVH_LEAF_REFERENCE_BIT)==0u&&
+          (((childRef>>28u)&7u)&2u)==0u){continue;}
+      stack[stackCount]=childRef;stackCount+=1u;
     }
   }
   if (result.nearest==F32_MAX) {
