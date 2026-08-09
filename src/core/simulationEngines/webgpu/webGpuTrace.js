@@ -4,6 +4,10 @@
  */
 
 import { getIntersectionTolerancePolicy } from '../../primitive/numeric.js';
+import {
+  createWebGpuTraceSceneDeclaration,
+  useWebGpuTraceScene,
+} from './webGpuTraceScene.js';
 
 const BUFFER_USAGE_COPY_SRC = 0x0004;
 const BUFFER_USAGE_COPY_DST = 0x0008;
@@ -120,18 +124,12 @@ export class WebGpuRawTraceStage {
           readOnlyStorageLayoutEntry(0),
           readOnlyStorageLayoutEntry(1),
           readOnlyStorageLayoutEntry(2),
-          readOnlyStorageLayoutEntry(3),
-          readOnlyStorageLayoutEntry(4),
-          readOnlyStorageLayoutEntry(5),
-          readOnlyStorageLayoutEntry(6),
-          readOnlyStorageLayoutEntry(7),
-          readOnlyStorageLayoutEntry(8),
-          storageLayoutEntry(9),
-          storageLayoutEntry(10),
-          storageLayoutEntry(11),
-          storageLayoutEntry(12),
-          storageLayoutEntry(13),
-          uniformLayoutEntry(14),
+          storageLayoutEntry(3),
+          storageLayoutEntry(4),
+          storageLayoutEntry(5),
+          storageLayoutEntry(6),
+          storageLayoutEntry(7),
+          uniformLayoutEntry(8),
         ],
       });
       const descriptor = {
@@ -151,26 +149,20 @@ export class WebGpuRawTraceStage {
         layout: bindGroupLayout,
         entries: [
           { binding: 0, resource: { buffer: this.rayBuffer } },
-          { binding: 1, resource: { buffer: buffers.curveDescriptors } },
-          { binding: 2, resource: { buffer: buffers.curveGeometry } },
-          { binding: 3, resource: { buffer: buffers.bvhNodes } },
-          { binding: 4, resource: { buffer: buffers.bvhCurveIds } },
-          { binding: 5, resource: { buffer: this.membershipBuffer } },
-          { binding: 6, resource: { buffer: buffers.regionDescriptors } },
-          { binding: 7, resource: { buffer: buffers.surfaceDescriptors } },
-          { binding: 8, resource: { buffer: buffers.detectorDescriptors } },
-          { binding: 9, resource: { buffer: this.hitBuffer } },
-          { binding: 10, resource: { buffer: this.crossingBuffer } },
-          { binding: 11, resource: {
+          { binding: 1, resource: { buffer: buffers.traceScene } },
+          { binding: 2, resource: { buffer: this.membershipBuffer } },
+          { binding: 3, resource: { buffer: this.hitBuffer } },
+          { binding: 4, resource: { buffer: this.crossingBuffer } },
+          { binding: 5, resource: {
             buffer: this.interactionBuffers.interactionTypeByRay
           } },
-          { binding: 12, resource: {
+          { binding: 6, resource: {
             buffer: this.interactionBuffers.interactionTypeCounts
           } },
-          { binding: 13, resource: {
+          { binding: 7, resource: {
             buffer: this.interactionBuffers.runControl
           } },
-          { binding: 14, resource: { buffer: this.uniformBuffer } },
+          { binding: 8, resource: { buffer: this.uniformBuffer } },
         ],
       });
     } finally {
@@ -186,26 +178,20 @@ export class WebGpuRawTraceStage {
       layout: this.pipeline.getBindGroupLayout(0),
       entries: [
         { binding: 0, resource: { buffer: rayBuffer } },
-        { binding: 1, resource: { buffer: buffers.curveDescriptors } },
-        { binding: 2, resource: { buffer: buffers.curveGeometry } },
-        { binding: 3, resource: { buffer: buffers.bvhNodes } },
-        { binding: 4, resource: { buffer: buffers.bvhCurveIds } },
-        { binding: 5, resource: { buffer: membershipBuffer } },
-        { binding: 6, resource: { buffer: buffers.regionDescriptors } },
-        { binding: 7, resource: { buffer: buffers.surfaceDescriptors } },
-        { binding: 8, resource: { buffer: buffers.detectorDescriptors } },
-        { binding: 9, resource: { buffer: this.hitBuffer } },
-        { binding: 10, resource: { buffer: this.crossingBuffer } },
-        { binding: 11, resource: {
+        { binding: 1, resource: { buffer: buffers.traceScene } },
+        { binding: 2, resource: { buffer: membershipBuffer } },
+        { binding: 3, resource: { buffer: this.hitBuffer } },
+        { binding: 4, resource: { buffer: this.crossingBuffer } },
+        { binding: 5, resource: {
           buffer: this.interactionBuffers.interactionTypeByRay
         } },
-        { binding: 12, resource: {
+        { binding: 6, resource: {
           buffer: this.interactionBuffers.interactionTypeCounts
         } },
-        { binding: 13, resource: {
+        { binding: 7, resource: {
           buffer: this.interactionBuffers.runControl
         } },
-        { binding: 14, resource: { buffer: this.uniformBuffer } },
+        { binding: 8, resource: { buffer: this.uniformBuffer } },
       ],
     });
   }
@@ -283,10 +269,7 @@ export function createWebGpuRawTraceShader(description, workgroupSize) {
   if (kinds.has('cubicBezier')) {
     cases.push('case 4u: { intersectCubic(curve, ray, &hit); }');
   }
-  return {
-    supported: true,
-    unsupported: [],
-    code: `
+  const code = `
 const F32_MAX: f32 = 3.402823e38;
 const PARAMETER_TOLERANCE: f32 = ${wgslFloat(tolerance.parameter)};
 const TANGENT_TOLERANCE: f32 = ${wgslFloat(tolerance.tangent)};
@@ -314,24 +297,18 @@ struct TraceUniforms { rayCount: u32, rayCapacity: u32, bvhRoot: i32,
   mergingDistanceFactor:f32,rayPowerCutoff:f32,
   padding0:u32,padding1:u32,padding2:u32 };
 
+${createWebGpuTraceSceneDeclaration(description, 1)}
 @group(0) @binding(0) var<storage, read> rays: array<Ray>;
-@group(0) @binding(1) var<storage, read> curves: array<CurveDescriptor>;
-@group(0) @binding(2) var<storage, read> geometry: array<f32>;
-@group(0) @binding(3) var<storage, read> bvhNodes: array<BvhNode>;
-@group(0) @binding(4) var<storage, read> bvhCurveIds: array<u32>;
-@group(0) @binding(5) var<storage, read> memberships:array<u32>;
-@group(0) @binding(6) var<storage, read> regions:array<RegionDescriptor>;
-@group(0) @binding(7) var<storage, read> surfaces:array<InstanceDescriptor>;
-@group(0) @binding(8) var<storage, read> detectors:array<DetectorDescriptor>;
-@group(0) @binding(9) var<storage, read_write> hits: array<Hit>;
-@group(0) @binding(10) var<storage, read_write> crossings:array<u32>;
-@group(0) @binding(11) var<storage, read_write>
+@group(0) @binding(2) var<storage, read> memberships:array<u32>;
+@group(0) @binding(3) var<storage, read_write> hits: array<Hit>;
+@group(0) @binding(4) var<storage, read_write> crossings:array<u32>;
+@group(0) @binding(5) var<storage, read_write>
   interactionTypeByRay:array<u32>;
-@group(0) @binding(12) var<storage, read_write>
+@group(0) @binding(6) var<storage, read_write>
   interactionTypeCounts:array<atomic<u32>>;
-@group(0) @binding(13) var<storage, read_write>
+@group(0) @binding(7) var<storage, read_write>
   runControl:array<atomic<u32>>;
-@group(0) @binding(14) var<uniform> traceUniforms: TraceUniforms;
+@group(0) @binding(8) var<uniform> traceUniforms: TraceUniforms;
 
 fn cross2(a: vec2f, b: vec2f) -> f32 { return a.x*b.y-a.y*b.x; }
 fn finiteValue(value: f32) -> bool {
@@ -477,7 +454,11 @@ fn rawTraceMain(@builtin(global_invocation_id) invocation: vec3u) {
     }
   }
   finishCandidate(rayIndex,&hit);
-}`
+}`;
+  return {
+    supported: true,
+    unsupported: [],
+    code: useWebGpuTraceScene(code),
   };
 }
 

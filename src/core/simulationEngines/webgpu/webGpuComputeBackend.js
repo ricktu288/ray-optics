@@ -13,6 +13,7 @@ import { WebGpuInitialMembershipStage } from './webGpuMembership.js';
 import { WebGpuOutgoingStage } from './webGpuOutgoing.js';
 import { WebGpuRenderPreparationStage } from './webGpuRenderPreparation.js';
 import { WebGpuRawTraceStage } from './webGpuTrace.js';
+import { createWebGpuTraceSceneData } from './webGpuTraceScene.js';
 
 const BUFFER_USAGE_MAP_READ = 0x0001;
 const BUFFER_USAGE_COPY_SRC = 0x0004;
@@ -74,6 +75,15 @@ export class WebGpuStaticSceneStorage {
         STATIC_STORAGE_MINIMUM_SIZES[name]
       );
     }
+    const traceScene = createWebGpuTraceSceneData(packedScene);
+    this.capacities.traceScene = traceScene.byteLength;
+    this.buffers.traceScene = createInitializedBuffer(
+      device,
+      traceScene,
+      BUFFER_USAGE_STORAGE | BUFFER_USAGE_COPY_DST,
+      'WebGPU packed trace scene',
+      16
+    );
   }
 
   canUpdate(packedScene) {
@@ -91,6 +101,11 @@ export class WebGpuStaticSceneStorage {
       if (data.byteLength === 0) continue;
       this.device.queue.writeBuffer(this.buffers[name], 0, toBytes(data));
     }
+    const traceScene = createWebGpuTraceSceneData(packedScene);
+    if (traceScene.byteLength > this.capacities.traceScene) {
+      throw new RangeError('Updated packed WebGPU trace scene does not fit.');
+    }
+    this.device.queue.writeBuffer(this.buffers.traceScene, 0, traceScene);
   }
 
   destroy() {

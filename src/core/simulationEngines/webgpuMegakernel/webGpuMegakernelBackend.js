@@ -392,13 +392,12 @@ export class WebGpuMegakernelBackend {
     const bindGroupLayout = this.device.createBindGroupLayout({
       label: `WebGPU ${renderVariant} tracing megakernel layout`,
       entries: [
-        ...Array.from({ length: 8 }, (_v, binding) =>
-          storageLayoutEntry(binding, true)),
+        storageLayoutEntry(0, true),
         ...Array.from({ length: 6 }, (_v, index) =>
-          storageLayoutEntry(index + 8)),
-        uniformLayoutEntry(14),
-        uniformLayoutEntry(15),
-        uniformLayoutEntry(16),
+          storageLayoutEntry(index + 1)),
+        uniformLayoutEntry(7),
+        uniformLayoutEntry(8),
+        uniformLayoutEntry(9),
       ],
     });
     const pipeline = await createComputePipeline(this.device, {
@@ -414,23 +413,16 @@ export class WebGpuMegakernelBackend {
         label: `WebGPU ${renderVariant} direction ${direction} bindings`,
         layout: pipeline.getBindGroupLayout(0),
         entries: [
-          entry(0, buffers.instanceParameters),
-          entry(1, buffers.surfaceDescriptors),
-          entry(2, buffers.regionDescriptors),
-          entry(3, buffers.detectorDescriptors),
-          entry(4, buffers.curveDescriptors),
-          entry(5, buffers.curveGeometry),
-          entry(6, buffers.bvhNodes),
-          entry(7, buffers.bvhCurveIds),
-          entry(8, this.rayBuffer),
-          entry(9, this.membershipBuffer),
-          entry(10, this.queueBuffer),
-          entry(11, this.detectorResultBuffer),
-          entry(12, this.geometryBuffer),
-          entry(13, this.drawIndirectBuffer),
-          entry(14, this.traceUniformBuffer),
-          entry(15, uniformBuffer),
-          entry(16, this.renderUniformBuffer),
+          entry(0, buffers.traceScene),
+          entry(1, this.rayBuffer),
+          entry(2, this.membershipBuffer),
+          entry(3, this.queueBuffer),
+          entry(4, this.detectorResultBuffer),
+          entry(5, this.geometryBuffer),
+          entry(6, this.drawIndirectBuffer),
+          entry(7, this.traceUniformBuffer),
+          entry(8, uniformBuffer),
+          entry(9, this.renderUniformBuffer),
         ],
       })
     );

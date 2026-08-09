@@ -4,6 +4,10 @@
  */
 
 import { WEBGPU_RAY_STRIDE } from './webGpuExecutionPlan.js';
+import {
+  createWebGpuTraceSceneDeclaration,
+  useWebGpuTraceScene,
+} from './webGpuTraceScene.js';
 
 const BUFFER_USAGE_COPY_SRC = 0x0004;
 const BUFFER_USAGE_COPY_DST = 0x0008;
@@ -181,13 +185,12 @@ export class WebGpuOutgoingStage {
           readOnlyStorageLayoutEntry(2),
           readOnlyStorageLayoutEntry(3),
           readOnlyStorageLayoutEntry(4),
-          readOnlyStorageLayoutEntry(5),
-          storageLayoutEntry(6),
-          readOnlyStorageLayoutEntry(7),
+          storageLayoutEntry(5),
+          readOnlyStorageLayoutEntry(6),
+          storageLayoutEntry(7),
           storageLayoutEntry(8),
           storageLayoutEntry(9),
-          storageLayoutEntry(10),
-          uniformLayoutEntry(11),
+          uniformLayoutEntry(10),
         ],
       });
       const pipelineLayout = this.device.createPipelineLayout({
@@ -226,14 +229,13 @@ export class WebGpuOutgoingStage {
           { binding: 1, resource: { buffer: this.hitBuffer } },
           { binding: 2, resource: { buffer: this.membershipBuffer } },
           { binding: 3, resource: { buffer: this.crossingBuffer } },
-          { binding: 4, resource: { buffer: staticBuffers.regionDescriptors } },
-          { binding: 5, resource: { buffer: staticBuffers.instanceParameters } },
-          { binding: 6, resource: { buffer: dynamic.interactionTypeStates } },
-          { binding: 7, resource: { buffer: dynamic.interactionRayIndices } },
-          { binding: 8, resource: { buffer: dynamic.runControl } },
-          { binding: 9, resource: { buffer: this.rayNextBuffer } },
-          { binding: 10, resource: { buffer: this.membershipNextBuffer } },
-          { binding: 11, resource: { buffer: this.uniformBuffer } },
+          { binding: 4, resource: { buffer: staticBuffers.traceScene } },
+          { binding: 5, resource: { buffer: dynamic.interactionTypeStates } },
+          { binding: 6, resource: { buffer: dynamic.interactionRayIndices } },
+          { binding: 7, resource: { buffer: dynamic.runControl } },
+          { binding: 8, resource: { buffer: this.rayNextBuffer } },
+          { binding: 9, resource: { buffer: this.membershipNextBuffer } },
+          { binding: 10, resource: { buffer: this.uniformBuffer } },
         ],
       });
     } finally {
@@ -253,17 +255,13 @@ export class WebGpuOutgoingStage {
         readOnlyStorageLayoutEntry(2),
         readOnlyStorageLayoutEntry(3),
         readOnlyStorageLayoutEntry(4),
-        readOnlyStorageLayoutEntry(5),
+        storageLayoutEntry(5),
         readOnlyStorageLayoutEntry(6),
-        readOnlyStorageLayoutEntry(7),
+        storageLayoutEntry(7),
         storageLayoutEntry(8),
-        readOnlyStorageLayoutEntry(9),
-        storageLayoutEntry(10),
-        storageLayoutEntry(11),
-        storageLayoutEntry(12),
-        uniformLayoutEntry(13),
+        storageLayoutEntry(9),
+        uniformLayoutEntry(10),
       ];
-      if (needsBulk) entries.push(readOnlyStorageLayoutEntry(14));
       const bindGroupLayout = this.device.createBindGroupLayout({
         label: `WebGPU surface outgoing ${needsBulk
           ? 'with bulk indices' : 'without bulk indices'} layout`,
@@ -321,23 +319,14 @@ export class WebGpuOutgoingStage {
           { binding: 1, resource: { buffer: this.hitBuffer } },
           { binding: 2, resource: { buffer: this.membershipBuffer } },
           { binding: 3, resource: { buffer: this.crossingBuffer } },
-          { binding: 4, resource: { buffer: staticBuffers.curveDescriptors } },
-          { binding: 5, resource: { buffer: staticBuffers.curveGeometry } },
-          { binding: 6, resource: { buffer: staticBuffers.surfaceDescriptors } },
-          { binding: 7, resource: { buffer: staticBuffers.instanceParameters } },
-          { binding: 8, resource: { buffer: dynamic.interactionTypeStates } },
-          { binding: 9, resource: { buffer: dynamic.interactionRayIndices } },
-          { binding: 10, resource: { buffer: dynamic.runControl } },
-          { binding: 11, resource: { buffer: this.rayNextBuffer } },
-          { binding: 12, resource: { buffer: this.membershipNextBuffer } },
-          { binding: 13, resource: { buffer: this.uniformBuffer } },
+          { binding: 4, resource: { buffer: staticBuffers.traceScene } },
+          { binding: 5, resource: { buffer: dynamic.interactionTypeStates } },
+          { binding: 6, resource: { buffer: dynamic.interactionRayIndices } },
+          { binding: 7, resource: { buffer: dynamic.runControl } },
+          { binding: 8, resource: { buffer: this.rayNextBuffer } },
+          { binding: 9, resource: { buffer: this.membershipNextBuffer } },
+          { binding: 10, resource: { buffer: this.uniformBuffer } },
         ];
-        if (needsBulk) {
-          entries.push({
-            binding: 14,
-            resource: { buffer: staticBuffers.regionDescriptors },
-          });
-        }
         this.surfaceBindGroups.set(needsBulk, this.device.createBindGroup({
           label: `WebGPU surface outgoing ${needsBulk
             ? 'with' : 'without'} bulk bindings`,
@@ -358,11 +347,10 @@ export class WebGpuOutgoingStage {
       entries: [
         readOnlyStorageLayoutEntry(0), readOnlyStorageLayoutEntry(1),
         readOnlyStorageLayoutEntry(2), readOnlyStorageLayoutEntry(3),
-        readOnlyStorageLayoutEntry(4), readOnlyStorageLayoutEntry(5),
-        storageLayoutEntry(6), readOnlyStorageLayoutEntry(7),
+        storageLayoutEntry(4), readOnlyStorageLayoutEntry(5),
+        storageLayoutEntry(6), storageLayoutEntry(7),
         storageLayoutEntry(8), storageLayoutEntry(9),
-        storageLayoutEntry(10), storageLayoutEntry(11),
-        uniformLayoutEntry(12),
+        uniformLayoutEntry(10),
       ],
     });
     const pipelineLayout = this.device.createPipelineLayout({
@@ -401,16 +389,14 @@ export class WebGpuOutgoingStage {
           { binding: 0, resource: { buffer: this.rayBuffer } },
           { binding: 1, resource: { buffer: this.hitBuffer } },
           { binding: 2, resource: { buffer: this.membershipBuffer } },
-          { binding: 3, resource: { buffer: staticBuffers.curveDescriptors } },
-          { binding: 4, resource: { buffer: staticBuffers.detectorDescriptors } },
-          { binding: 5, resource: { buffer: staticBuffers.instanceParameters } },
-          { binding: 6, resource: { buffer: dynamic.interactionTypeStates } },
-          { binding: 7, resource: { buffer: dynamic.interactionRayIndices } },
-          { binding: 8, resource: { buffer: dynamic.runControl } },
-          { binding: 9, resource: { buffer: this.rayNextBuffer } },
-          { binding: 10, resource: { buffer: this.membershipNextBuffer } },
-          { binding: 11, resource: { buffer: this.detectorResultBuffer } },
-          { binding: 12, resource: { buffer: this.uniformBuffer } },
+          { binding: 3, resource: { buffer: staticBuffers.traceScene } },
+          { binding: 4, resource: { buffer: dynamic.interactionTypeStates } },
+          { binding: 5, resource: { buffer: dynamic.interactionRayIndices } },
+          { binding: 6, resource: { buffer: dynamic.runControl } },
+          { binding: 7, resource: { buffer: this.rayNextBuffer } },
+          { binding: 8, resource: { buffer: this.membershipNextBuffer } },
+          { binding: 9, resource: { buffer: this.detectorResultBuffer } },
+          { binding: 10, resource: { buffer: this.uniformBuffer } },
         ],
       });
     } finally {
@@ -454,14 +440,13 @@ export class WebGpuOutgoingStage {
           { binding: 1, resource: { buffer: this.hitBuffer } },
           { binding: 2, resource: { buffer: inputMemberships } },
           { binding: 3, resource: { buffer: this.crossingBuffer } },
-          { binding: 4, resource: { buffer: staticBuffers.regionDescriptors } },
-          { binding: 5, resource: { buffer: staticBuffers.instanceParameters } },
-          { binding: 6, resource: { buffer: dynamic.interactionTypeStates } },
-          { binding: 7, resource: { buffer: dynamic.interactionRayIndices } },
-          { binding: 8, resource: { buffer: dynamic.runControl } },
-          { binding: 9, resource: { buffer: outputRays } },
-          { binding: 10, resource: { buffer: outputMemberships } },
-          { binding: 11, resource: { buffer: this.uniformBuffer } },
+          { binding: 4, resource: { buffer: staticBuffers.traceScene } },
+          { binding: 5, resource: { buffer: dynamic.interactionTypeStates } },
+          { binding: 6, resource: { buffer: dynamic.interactionRayIndices } },
+          { binding: 7, resource: { buffer: dynamic.runControl } },
+          { binding: 8, resource: { buffer: outputRays } },
+          { binding: 9, resource: { buffer: outputMemberships } },
+          { binding: 10, resource: { buffer: this.uniformBuffer } },
         ],
       });
     }
@@ -476,23 +461,14 @@ export class WebGpuOutgoingStage {
         { binding: 1, resource: { buffer: this.hitBuffer } },
         { binding: 2, resource: { buffer: inputMemberships } },
         { binding: 3, resource: { buffer: this.crossingBuffer } },
-        { binding: 4, resource: { buffer: staticBuffers.curveDescriptors } },
-        { binding: 5, resource: { buffer: staticBuffers.curveGeometry } },
-        { binding: 6, resource: { buffer: staticBuffers.surfaceDescriptors } },
-        { binding: 7, resource: { buffer: staticBuffers.instanceParameters } },
-        { binding: 8, resource: { buffer: dynamic.interactionTypeStates } },
-        { binding: 9, resource: { buffer: dynamic.interactionRayIndices } },
-        { binding: 10, resource: { buffer: dynamic.runControl } },
-        { binding: 11, resource: { buffer: outputRays } },
-        { binding: 12, resource: { buffer: outputMemberships } },
-        { binding: 13, resource: { buffer: this.uniformBuffer } },
+        { binding: 4, resource: { buffer: staticBuffers.traceScene } },
+        { binding: 5, resource: { buffer: dynamic.interactionTypeStates } },
+        { binding: 6, resource: { buffer: dynamic.interactionRayIndices } },
+        { binding: 7, resource: { buffer: dynamic.runControl } },
+        { binding: 8, resource: { buffer: outputRays } },
+        { binding: 9, resource: { buffer: outputMemberships } },
+        { binding: 10, resource: { buffer: this.uniformBuffer } },
       ];
-      if (needsBulk) {
-        entries.push({
-          binding: 14,
-          resource: { buffer: staticBuffers.regionDescriptors },
-        });
-      }
       this.surfaceReverseBindGroups.set(needsBulk,
         this.device.createBindGroup({
           label: `WebGPU surface outgoing reverse ${needsBulk
@@ -510,16 +486,14 @@ export class WebGpuOutgoingStage {
           { binding: 0, resource: { buffer: inputRays } },
           { binding: 1, resource: { buffer: this.hitBuffer } },
           { binding: 2, resource: { buffer: inputMemberships } },
-          { binding: 3, resource: { buffer: staticBuffers.curveDescriptors } },
-          { binding: 4, resource: { buffer: staticBuffers.detectorDescriptors } },
-          { binding: 5, resource: { buffer: staticBuffers.instanceParameters } },
-          { binding: 6, resource: { buffer: dynamic.interactionTypeStates } },
-          { binding: 7, resource: { buffer: dynamic.interactionRayIndices } },
-          { binding: 8, resource: { buffer: dynamic.runControl } },
-          { binding: 9, resource: { buffer: outputRays } },
-          { binding: 10, resource: { buffer: outputMemberships } },
-          { binding: 11, resource: { buffer: this.detectorResultBuffer } },
-          { binding: 12, resource: { buffer: this.uniformBuffer } },
+          { binding: 3, resource: { buffer: staticBuffers.traceScene } },
+          { binding: 4, resource: { buffer: dynamic.interactionTypeStates } },
+          { binding: 5, resource: { buffer: dynamic.interactionRayIndices } },
+          { binding: 6, resource: { buffer: dynamic.runControl } },
+          { binding: 7, resource: { buffer: outputRays } },
+          { binding: 8, resource: { buffer: outputMemberships } },
+          { binding: 9, resource: { buffer: this.detectorResultBuffer } },
+          { binding: 10, resource: { buffer: this.uniformBuffer } },
         ],
       });
     }
@@ -775,32 +749,40 @@ export function createWebGpuRegionBoundaryOutgoingShader({
   });
   const programCode = programs.map(program => program.code).join('\n');
 
-  return `${dagPrograms.runtimeCode}\n${programCode}\n
+  const code = `${dagPrograms.runtimeCode}\n${programCode}\n
 struct Ray { origin:vec2f, direction:vec2f, powers:vec2f,
   wavelength:f32, flags:u32 };
 struct Hit { s:f32, u:f32, normal:vec2f, curveId:i32, sigma:f32,
   conflict:u32, interactionType:u32 };
 struct RegionDescriptor { typeId:u32, parameterOffset:u32, parameterCount:u32,
   flags:u32, stepSize:f32, padding0:u32, padding1:u32, padding2:u32 };
+struct CurveDescriptor { kind:u32,ownerKind:u32,ownerId:u32,flags:u32,
+  geometryOffset:u32,geometryCount:u32,filterWavelength:f32,
+  filterBandwidth:f32 };
+struct InstanceDescriptor { typeId:u32,parameterOffset:u32,
+  parameterCount:u32,extra:u32 };
+struct DetectorDescriptor { typeId:u32,parameterOffset:u32,parameterCount:u32,
+  resultId:u32,resultSize:u32,resultOffset:u32,padding0:u32,padding1:u32 };
+struct BvhNode { bounds:vec4f,first:i32,second:i32,ownerKindMask:u32,
+  flags:u32 };
 struct InteractionTypeState { interactionCount:u32, sourceIndexStart:u32,
   destinationRayStart:u32, reserved:u32 };
 struct OutgoingUniforms { rayCapacity:u32, regionCount:u32,
   regionWordCount:u32, padding:u32 };
 struct IndexResult { n:f32, invalid:bool };
 
+${createWebGpuTraceSceneDeclaration(description, 4)}
 @group(0) @binding(0) var<storage,read> rays:array<Ray>;
 @group(0) @binding(1) var<storage,read> hits:array<Hit>;
 @group(0) @binding(2) var<storage,read> memberships:array<u32>;
 @group(0) @binding(3) var<storage,read> crossings:array<u32>;
-@group(0) @binding(4) var<storage,read> regions:array<RegionDescriptor>;
-@group(0) @binding(5) var<storage,read> instanceParameters:array<f32>;
-@group(0) @binding(6) var<storage,read_write>
+@group(0) @binding(5) var<storage,read_write>
   typeStates:array<InteractionTypeState>;
-@group(0) @binding(7) var<storage,read> interactionRayIndices:array<u32>;
-@group(0) @binding(8) var<storage,read_write> runControl:array<atomic<u32>>;
-@group(0) @binding(9) var<storage,read_write> raysNext:array<Ray>;
-@group(0) @binding(10) var<storage,read_write> membershipsNext:array<u32>;
-@group(0) @binding(11) var<uniform> outgoingUniforms:OutgoingUniforms;
+@group(0) @binding(6) var<storage,read> interactionRayIndices:array<u32>;
+@group(0) @binding(7) var<storage,read_write> runControl:array<atomic<u32>>;
+@group(0) @binding(8) var<storage,read_write> raysNext:array<Ray>;
+@group(0) @binding(9) var<storage,read_write> membershipsNext:array<u32>;
+@group(0) @binding(10) var<uniform> outgoingUniforms:OutgoingUniforms;
 
 fn finiteNumber(value:f32)->bool {
   return value==value && abs(value)<=F32_MAX;
@@ -961,6 +943,7 @@ fn regionBoundaryPartialReflectionMain(
   @builtin(global_invocation_id) invocation:vec3u
 ) { processRegionBoundary(invocation.x,2u,true); }
 `;
+  return useWebGpuTraceScene(code);
 }
 
 export function createWebGpuSurfaceOutgoingShader({
@@ -1027,9 +1010,7 @@ export function createWebGpuSurfaceOutgoingShader({
       'var incidentIndex=IndexResult(1.0,false);\n' +
       '  var transmittedIndex=IndexResult(1.0,false);' };
 
-  return {
-    needsBulk,
-    code: `${dagPrograms.runtimeCode}\n${program.code}\n${bulk.programs}\n
+  const code = `${dagPrograms.runtimeCode}\n${program.code}\n${bulk.programs}\n
 struct Ray { origin:vec2f,direction:vec2f,powers:vec2f,
   wavelength:f32,flags:u32 };
 struct Hit { s:f32,u:f32,normal:vec2f,curveId:i32,sigma:f32,
@@ -1039,28 +1020,29 @@ struct CurveDescriptor { kind:u32,ownerKind:u32,ownerId:u32,flags:u32,
   filterBandwidth:f32 };
 struct InstanceDescriptor { typeId:u32,parameterOffset:u32,
   parameterCount:u32,extra:u32 };
+struct RegionDescriptor { typeId:u32,parameterOffset:u32,parameterCount:u32,
+  flags:u32,stepSize:f32,padding0:u32,padding1:u32,padding2:u32 };
+struct DetectorDescriptor { typeId:u32,parameterOffset:u32,parameterCount:u32,
+  resultId:u32,resultSize:u32,resultOffset:u32,padding0:u32,padding1:u32 };
+struct BvhNode { bounds:vec4f,first:i32,second:i32,ownerKindMask:u32,
+  flags:u32 };
 struct InteractionTypeState { interactionCount:u32,sourceIndexStart:u32,
   destinationRayStart:u32,reserved:u32 };
 struct OutgoingUniforms { rayCapacity:u32,regionCount:u32,
   regionWordCount:u32,padding:u32 };
 struct IndexResult { n:f32,invalid:bool };
-${bulk.declarations}
+${createWebGpuTraceSceneDeclaration(description, 4)}
 @group(0) @binding(0) var<storage,read> rays:array<Ray>;
 @group(0) @binding(1) var<storage,read> hits:array<Hit>;
 @group(0) @binding(2) var<storage,read> memberships:array<u32>;
 @group(0) @binding(3) var<storage,read> crossings:array<u32>;
-@group(0) @binding(4) var<storage,read> curves:array<CurveDescriptor>;
-@group(0) @binding(5) var<storage,read> geometry:array<f32>;
-@group(0) @binding(6) var<storage,read> surfaces:array<InstanceDescriptor>;
-@group(0) @binding(7) var<storage,read> instanceParameters:array<f32>;
-@group(0) @binding(8) var<storage,read_write>
+@group(0) @binding(5) var<storage,read_write>
   typeStates:array<InteractionTypeState>;
-@group(0) @binding(9) var<storage,read> interactionRayIndices:array<u32>;
-@group(0) @binding(10) var<storage,read_write> runControl:array<atomic<u32>>;
-@group(0) @binding(11) var<storage,read_write> raysNext:array<Ray>;
-@group(0) @binding(12) var<storage,read_write> membershipsNext:array<u32>;
-@group(0) @binding(13) var<uniform> outgoingUniforms:OutgoingUniforms;
-${needsBulk ? '@group(0) @binding(14) var<storage,read> regions:array<RegionDescriptor>;' : ''}
+@group(0) @binding(6) var<storage,read> interactionRayIndices:array<u32>;
+@group(0) @binding(7) var<storage,read_write> runControl:array<atomic<u32>>;
+@group(0) @binding(8) var<storage,read_write> raysNext:array<Ray>;
+@group(0) @binding(9) var<storage,read_write> membershipsNext:array<u32>;
+@group(0) @binding(10) var<uniform> outgoingUniforms:OutgoingUniforms;
 fn finiteNumber(value:f32)->bool {
   return value==value&&abs(value)<=F32_MAX;
 }
@@ -1126,7 +1108,10 @@ fn surfaceOutgoingMain(@builtin(global_invocation_id) invocation:vec3u) {
   let mediumInvalid=incidentIndex.invalid||transmittedIndex.invalid;
   let evaluated=${call};
   ${outputBlocks}
-}`,
+}`;
+  return {
+    needsBulk,
+    code: useWebGpuTraceScene(code),
   };
 }
 
@@ -1210,7 +1195,7 @@ export function createWebGpuDetectorOutgoingShader({
     const value = indexes.get(`v_${index + 1}`);
     return `accumulateDetector(detector,evaluated[${key}],evaluated[${value}]);`;
   }).join('\n  ');
-  return `${dagPrograms.runtimeCode}\n${program.code}\n
+  const code = `${dagPrograms.runtimeCode}\n${program.code}\n
 const FIXED_SCALE:f32=1048576.0;
 const I32_MAX_VALUE:i32=2147483647;
 const I32_MIN_VALUE:i32=-2147483647-1;
@@ -1225,25 +1210,29 @@ struct CurveDescriptor { kind:u32,ownerKind:u32,ownerId:u32,flags:u32,
   filterBandwidth:f32 };
 struct DetectorDescriptor { typeId:u32,parameterOffset:u32,parameterCount:u32,
   resultId:u32,resultSize:u32,resultOffset:u32,padding0:u32,padding1:u32 };
+struct InstanceDescriptor { typeId:u32,parameterOffset:u32,
+  parameterCount:u32,extra:u32 };
+struct RegionDescriptor { typeId:u32,parameterOffset:u32,parameterCount:u32,
+  flags:u32,stepSize:f32,padding0:u32,padding1:u32,padding2:u32 };
+struct BvhNode { bounds:vec4f,first:i32,second:i32,ownerKindMask:u32,
+  flags:u32 };
 struct InteractionTypeState { interactionCount:u32,sourceIndexStart:u32,
   destinationRayStart:u32,reserved:u32 };
 struct DetectorResultCell { value:atomic<i32>,overflow:atomic<u32> };
 struct OutgoingUniforms { rayCapacity:u32,regionCount:u32,
   regionWordCount:u32,padding:u32 };
+${createWebGpuTraceSceneDeclaration(description, 3)}
 @group(0) @binding(0) var<storage,read> rays:array<Ray>;
 @group(0) @binding(1) var<storage,read> hits:array<Hit>;
 @group(0) @binding(2) var<storage,read> memberships:array<u32>;
-@group(0) @binding(3) var<storage,read> curves:array<CurveDescriptor>;
-@group(0) @binding(4) var<storage,read> detectors:array<DetectorDescriptor>;
-@group(0) @binding(5) var<storage,read> instanceParameters:array<f32>;
-@group(0) @binding(6) var<storage,read_write> typeStates:array<InteractionTypeState>;
-@group(0) @binding(7) var<storage,read> interactionRayIndices:array<u32>;
-@group(0) @binding(8) var<storage,read_write> runControl:array<atomic<u32>>;
-@group(0) @binding(9) var<storage,read_write> raysNext:array<Ray>;
-@group(0) @binding(10) var<storage,read_write> membershipsNext:array<u32>;
-@group(0) @binding(11) var<storage,read_write>
+@group(0) @binding(4) var<storage,read_write> typeStates:array<InteractionTypeState>;
+@group(0) @binding(5) var<storage,read> interactionRayIndices:array<u32>;
+@group(0) @binding(6) var<storage,read_write> runControl:array<atomic<u32>>;
+@group(0) @binding(7) var<storage,read_write> raysNext:array<Ray>;
+@group(0) @binding(8) var<storage,read_write> membershipsNext:array<u32>;
+@group(0) @binding(9) var<storage,read_write>
   detectorResults:array<DetectorResultCell>;
-@group(0) @binding(12) var<uniform> outgoingUniforms:OutgoingUniforms;
+@group(0) @binding(10) var<uniform> outgoingUniforms:OutgoingUniforms;
 fn finiteNumber(value:f32)->bool{return value==value&&abs(value)<=F32_MAX;}
 fn accumulateDetector(detector:DetectorDescriptor,key:W,value:W) {
   if(key.invalid||value.invalid||!finiteNumber(key.value)||
@@ -1293,6 +1282,7 @@ fn detectorOutgoingMain(@builtin(global_invocation_id) invocation:vec3u){
     select(source.powers,vec2f(0.0),invalid),source.wavelength,
     select(source.flags&1u,2u,invalid)|select(0u,4u,localIndex==0u));
 }`;
+  return useWebGpuTraceScene(code);
 }
 
 function detectorResultValueCount(description) {

@@ -51,7 +51,7 @@ async function getWebGpuDevice() {
       if (!adapter) throw new Error('No native WebGPU adapter is available.');
       return adapter.requestDevice({
         requiredLimits: {
-          maxStorageBuffersPerShaderStage: 14,
+          maxStorageBuffersPerShaderStage: 10,
           maxStorageBufferBindingSize:
             adapter.limits.maxStorageBufferBindingSize,
           maxBufferSize: adapter.limits.maxBufferSize,

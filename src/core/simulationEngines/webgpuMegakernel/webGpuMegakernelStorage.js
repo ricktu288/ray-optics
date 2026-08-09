@@ -4,6 +4,8 @@
  */
 
 import { WEBGPU_RUN_CONTROL_SIZE } from './webGpuStorage.js';
+import { createWebGpuTraceSceneData } from
+  '../webgpu/webGpuTraceScene.js';
 
 const BUFFER_USAGE_COPY_DST = 0x0008;
 const BUFFER_USAGE_STORAGE = 0x0080;
@@ -52,6 +54,14 @@ export class WebGpuMegakernelStaticSceneStorage {
         STATIC_STORAGE_MINIMUM_SIZES[name]
       );
     }
+    const traceScene = createWebGpuTraceSceneData(packedScene);
+    this.capacities.traceScene = traceScene.byteLength;
+    this.buffers.traceScene = createInitializedBuffer(
+      device,
+      traceScene,
+      'WebGPU megakernel packed trace scene',
+      16
+    );
   }
 
   canUpdate(packedScene) {
@@ -70,6 +80,13 @@ export class WebGpuMegakernelStaticSceneStorage {
         this.device.queue.writeBuffer(this.buffers[name], 0, toBytes(data));
       }
     }
+    const traceScene = createWebGpuTraceSceneData(packedScene);
+    if (traceScene.byteLength > this.capacities.traceScene) {
+      throw new RangeError(
+        'Updated packed WebGPU megakernel trace scene does not fit.'
+      );
+    }
+    this.device.queue.writeBuffer(this.buffers.traceScene, 0, traceScene);
   }
 
   destroy() {

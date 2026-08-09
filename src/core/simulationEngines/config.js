@@ -16,10 +16,11 @@
 
 import { DEFAULT_BVH_OPTIONS } from '../primitive/bvh.js';
 
-// Native trace uses 13 storage bindings and an n_0/n_1 surface pipeline uses
-// 14. The WebGPU guaranteed default is only 8, so browser device creation must
-// explicitly request this supported adapter limit.
-export const WEBGPU_MIN_STORAGE_BUFFERS_PER_SHADER_STAGE = 14;
+// Read-only trace tables share one packed scene binding. The staged outgoing
+// pipelines are now the largest users at 10 storage bindings (native trace
+// uses 8 and the megakernel uses 7). The WebGPU guaranteed default is only 8,
+// so browser device creation must explicitly request this adapter limit.
+export const WEBGPU_MIN_STORAGE_BUFFERS_PER_SHADER_STAGE = 10;
 
 const COMMON_BVH_CONFIG = Object.freeze({
   lineLeafSize: DEFAULT_BVH_OPTIONS.lineLeafSize,

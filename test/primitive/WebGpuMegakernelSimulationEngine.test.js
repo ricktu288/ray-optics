@@ -109,6 +109,9 @@ describe('WebGpuMegakernelSimulationEngine', () => {
       expect(rays.code).toContain('fn megakernelMain(');
       expect(rays.code).toContain('fn surface_0(');
       expect(rays.code).toContain('fn recordOutput(slot:u32)');
+      expect(rays.code.match(/var<storage/g)).toHaveLength(7);
+      expect(rays.code).toContain('var<storage,read> traceScene:TraceScene');
+      expect(rays.code).not.toContain('traceScene.traceScene');
       expect(rays.code).toContain(
         'atomicMax(&drawArguments[megaUniforms.extentWord],collectorBlocks)'
       );

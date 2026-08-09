@@ -489,7 +489,8 @@ describe('WebGpuSimulationEngine staged execution', () => {
       expect(generated.needsBulk).toBe(true);
       expect(generated.code).toContain('fn bulk_n_0(');
       expect(generated.code).toContain('fn evaluateSurfaceIndex(');
-      expect(generated.code).toContain('@binding(14)');
+      expect(generated.code).toContain('var<storage,read> traceScene:TraceScene');
+      expect(generated.code).not.toContain('@binding(14)');
     });
 
   it('uses signed fixed-point detector accumulation with overflow flags',
@@ -558,7 +559,7 @@ describe('WebGpuSimulationEngine staged execution', () => {
       expect(descriptors.getUint32(32, true)).toBe(0);
       expect(trace.code).toContain('struct DetectorDescriptor');
       expect(trace.code).toContain(
-        'detectors:array<DetectorDescriptor>'
+        'detectors:array<DetectorDescriptor,2>'
       );
       expect(trace.code).toContain(
         'resultSize:u32, resultOffset:u32,\n  padding0:u32, padding1:u32'
@@ -587,6 +588,8 @@ describe('WebGpuSimulationEngine staged execution', () => {
     );
     expect(trace.code).toContain('rayIndex>=atomicLoad(&runControl[0])');
     expect(trace.code).toContain('frontSideOnly=curve.ownerKind!=1u');
+    expect(trace.code.match(/var<storage/g)).toHaveLength(8);
+    expect(trace.code).not.toContain('traceScene.traceScene');
     expect(trace.code).not.toContain('fn intersectArc(');
     expect(trace.code).toContain('@compute @workgroup_size(64)');
 

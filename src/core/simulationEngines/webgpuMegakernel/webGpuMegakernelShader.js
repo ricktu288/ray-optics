@@ -4,7 +4,11 @@
  */
 
 import { getIntersectionTolerancePolicy } from '../../primitive/numeric.js';
-import { createWebGpuRawTraceShader } from './webGpuTrace.js';
+import { createWebGpuRawTraceShader } from '../webgpu/webGpuTrace.js';
+import {
+  createWebGpuTraceSceneDeclaration,
+  useWebGpuTraceScene,
+} from '../webgpu/webGpuTraceScene.js';
 import {
   createWebGpuRenderPreparationShader
 } from './webGpuRenderPreparation.js';
@@ -48,11 +52,7 @@ export function createWebGpuMegakernelShader({
   );
   const neighborMode = renderVariant === 'images' ||
     renderVariant === 'observer';
-  return {
-    supported: true,
-    unsupported: [],
-    maximumOutputs,
-    code: `${dagPrograms.runtimeCode}\n${programCode}\n
+  const code = `${dagPrograms.runtimeCode}\n${programCode}\n
 const PARAMETER_TOLERANCE:f32=${wgslFloat(
   getIntersectionTolerancePolicy(description.numericEpsilon).parameter
 )};
@@ -102,26 +102,19 @@ struct BulkResult { n:f32,nX:f32,nY:f32,alpha:f32,invalid:bool };
 alias Membership=array<u32,${regionWords}>;
 alias CrossingMask=array<u32,${regionWords}>;
 
-@group(0) @binding(0) var<storage,read> instanceParameters:array<f32>;
-@group(0) @binding(1) var<storage,read> surfaces:array<InstanceDescriptor>;
-@group(0) @binding(2) var<storage,read> regions:array<RegionDescriptor>;
-@group(0) @binding(3) var<storage,read> detectors:array<DetectorDescriptor>;
-@group(0) @binding(4) var<storage,read> curves:array<CurveDescriptor>;
-@group(0) @binding(5) var<storage,read> geometry:array<f32>;
-@group(0) @binding(6) var<storage,read> bvhNodes:array<BvhNode>;
-@group(0) @binding(7) var<storage,read> bvhCurveIds:array<u32>;
-@group(0) @binding(8) var<storage,read_write> rayStorage:array<Ray>;
-@group(0) @binding(9) var<storage,read_write> membershipStorage:array<u32>;
-@group(0) @binding(10) var<storage,read_write> control:array<atomic<u32>>;
-@group(0) @binding(11) var<storage,read_write>
+${createWebGpuTraceSceneDeclaration(description, 0)}
+@group(0) @binding(1) var<storage,read_write> rayStorage:array<Ray>;
+@group(0) @binding(2) var<storage,read_write> membershipStorage:array<u32>;
+@group(0) @binding(3) var<storage,read_write> control:array<atomic<u32>>;
+@group(0) @binding(4) var<storage,read_write>
   detectorResults:array<DetectorResultCell>;
-@group(0) @binding(12) var<storage,read_write> readyGeometry:
+@group(0) @binding(5) var<storage,read_write> readyGeometry:
   array<ReadyGeometry>;
-@group(0) @binding(13) var<storage,read_write>
+@group(0) @binding(6) var<storage,read_write>
   drawArguments:array<atomic<u32>>;
-@group(0) @binding(14) var<uniform> traceUniforms:TraceUniforms;
-@group(0) @binding(15) var<uniform> megaUniforms:MegaUniforms;
-@group(0) @binding(16) var<uniform> config:Config;
+@group(0) @binding(7) var<uniform> traceUniforms:TraceUniforms;
+@group(0) @binding(8) var<uniform> megaUniforms:MegaUniforms;
+@group(0) @binding(9) var<uniform> config:Config;
 
 ${traceGeometry}
 ${createTraceStateCode(description, regionWords, stackSize)}
@@ -260,7 +253,12 @@ ${createMegakernelMain({
   regionWords,
   stackSize,
 })}
-`,
+`;
+  return {
+    supported: true,
+    unsupported: [],
+    maximumOutputs,
+    code: useWebGpuTraceScene(code),
   };
 }
 
