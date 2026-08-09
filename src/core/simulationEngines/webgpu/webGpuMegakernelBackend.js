@@ -30,6 +30,10 @@ import { createWebGpuMegakernelShader } from './webGpuMegakernelShader.js';
 import {
   createRenderUniformData
 } from './webGpuRenderPreparation.js';
+import {
+  cooperativeRayPayload,
+  selectWebGpuRayCooperationStrategy,
+} from './webGpuRayCooperation.js';
 
 const BUFFER_USAGE_MAP_READ = 0x0001;
 const BUFFER_USAGE_COPY_SRC = 0x0004;
@@ -177,7 +181,8 @@ export class WebGpuMegakernelBackend {
       this.device,
       createTraceUniformData(this.preparedScene.runtimeDescription,
         this.preparedScene.packedStorage.interactionTypeLayout,
-        this.rayCapacity),
+        this.rayCapacity,
+        this.preparedScene.packedStorage.counts.bvhPartitionRoots),
       'WebGPU megakernel trace uniforms'
     );
     this.megaUniformBuffers = Array.from({ length: 2 }, (_value, direction) =>
@@ -333,13 +338,6 @@ export class WebGpuMegakernelBackend {
     this.currentRenderVariant = normalizeRenderVariant(
       options.rendering?.mode
     );
-    this.currentPayloadSize = this.currentRenderVariant === 'images' ||
-      this.currentRenderVariant === 'observer'
-      ? this.config.workgroupSize - 2
-      : this.config.workgroupSize;
-    if (this.currentPayloadSize <= 0) {
-      throw new RangeError('Neighbor rendering requires workgroupSize >= 3.');
-    }
     this.maxRayDepth = normalizeDepth(options.maxRayDepth);
     const rayPowerCutoffMode = normalizeRayPowerCutoffMode(
       options.rayPowerCutoffMode
@@ -377,34 +375,99 @@ export class WebGpuMegakernelBackend {
         this.renderPreparationStage.geometryCapacity
       )
     );
+    if (!this.preparedScene.packedStorage) {
+      this.currentPayloadSize = this.config.workgroupSize;
+      this.currentStage = this.megakernelStages.get(this.currentRenderVariant);
+      this.device.queue.writeBuffer(
+        this.queueBuffer,
+        15 * 4,
+        new Uint32Array([this.currentPayloadSize])
+      );
+      this.writeMegakernelUniforms();
+      return;
+    }
+    await this.prepareBatch(
+      Math.min(
+        this.preparedScene.packedStorage.counts.sourceRays,
+        this.rayCapacity
+      ),
+      0
+    );
+  }
+
+  async prepareBatch(activeRayCount, direction = 0) {
+    const neighborMode = this.currentRenderVariant === 'images' ||
+      this.currentRenderVariant === 'observer';
+    let strategy = selectWebGpuRayCooperationStrategy({
+      activeRayCount,
+      primitiveCount: this.preparedScene.packedStorage.counts.curves,
+      workgroupSize: this.config.workgroupSize,
+      neighborMode,
+      config: this.config,
+    });
+    if (strategy.lanesPerRay > 1 &&
+        estimateCooperativeWorkgroupBytes(
+          this.config.workgroupSize,
+          strategy.lanesPerRay,
+          this.regionWordCount,
+          neighborMode
+        ) > (this.device.limits?.maxComputeWorkgroupStorageSize ?? 16384)) {
+      strategy = Object.freeze({
+        acceleration: strategy.acceleration,
+        lanesPerRay: 1,
+      });
+    }
+    this.currentPayloadSize = cooperativeRayPayload(
+      this.config.workgroupSize,
+      strategy.lanesPerRay,
+      neighborMode
+    );
+    if (this.currentPayloadSize <= 0) {
+      throw new RangeError('The tracing strategy has no productive ray slot.');
+    }
+    const stageKey = `${this.currentRenderVariant}:${strategy.acceleration}:` +
+      `${strategy.lanesPerRay}`;
+    let stage = this.megakernelStages.get(stageKey);
+    if (!stage) {
+      stage = await this.createMegakernelStage(
+        this.currentRenderVariant,
+        strategy
+      );
+      this.megakernelStages.set(stageKey, stage);
+    }
+    this.currentStage = stage;
     this.device.queue.writeBuffer(
       this.queueBuffer,
       15 * 4,
       new Uint32Array([this.currentPayloadSize])
     );
-    let stage = this.megakernelStages.get(this.currentRenderVariant);
-    if (!stage) {
-      stage = await this.createMegakernelStage(this.currentRenderVariant);
-      this.megakernelStages.set(this.currentRenderVariant, stage);
-    }
-    this.currentStage = stage;
+    this.device.queue.writeBuffer(
+      this.dispatchIndirectBuffer,
+      direction * INDIRECT_ARGUMENT_WORDS * 4,
+      new Uint32Array([
+        Math.ceil(activeRayCount / this.currentPayloadSize), 1, 1
+      ])
+    );
     this.writeMegakernelUniforms();
   }
 
-  async createMegakernelStage(renderVariant) {
+  async createMegakernelStage(renderVariant, strategy) {
     const generated = createWebGpuMegakernelShader({
       description: this.preparedScene.runtimeDescription,
       dagPrograms: this.preparedScene.dagPrograms,
       workgroupSize: this.config.workgroupSize,
       maxLocalIterations: this.config.maxLocalIterations,
       renderVariant,
+      acceleration: strategy.acceleration,
+      lanesPerRay: strategy.lanesPerRay,
     });
     if (!generated.supported) {
       throw new TypeError('Unsupported megakernel trace geometry: ' +
         generated.unsupported.join(', '));
     }
     const module = this.device.createShaderModule({
-      label: `WebGPU ${renderVariant} tracing megakernel`,
+      label: `WebGPU ${renderVariant} ${strategy.acceleration} ` +
+        `${strategy.lanesPerRay}-lane tracing megakernel`,
       code: generated.code,
     });
     await validateShaderModule(module, `${renderVariant} tracing megakernel`);
@@ -450,6 +513,7 @@ export class WebGpuMegakernelBackend {
       bindGroups,
       code: generated.code,
       maximumOutputs: generated.maximumOutputs,
+      strategy,
     };
   }
 
@@ -665,7 +729,8 @@ export class WebGpuMegakernelBackend {
       createTraceUniformData(
         next.runtimeDescription,
         next.packedStorage.interactionTypeLayout,
-        this.rayCapacity
+        this.rayCapacity,
+        next.packedStorage.counts.bvhPartitionRoots
       )
     );
     this.device.queue.writeBuffer(
@@ -712,7 +777,12 @@ export class WebGpuMegakernelBackend {
   }
 }
 
-function createTraceUniformData(description, layout, rayCapacity) {
+function createTraceUniformData(
+  description,
+  layout,
+  rayCapacity,
+  bvhPartitionRootCount = 0
+) {
   const tolerance = getIntersectionTolerancePolicy(description.numericEpsilon);
   const data = new ArrayBuffer(64);
   const view = new DataView(data);
@@ -738,6 +808,7 @@ function createTraceUniformData(description, layout, rayCapacity) {
   ));
   view.setFloat32(40, Math.fround(4 * Math.sin(normal * 0.5) ** 2), true);
   view.setFloat32(44, Math.fround(tolerance.mergingDistance), true);
+  view.setUint32(56, bvhPartitionRootCount, true);
   return data;
 }
 
@@ -753,6 +824,21 @@ function renderVariantId(mode) {
   if (mode === 'images') return 2;
   if (mode === 'observer') return 3;
   return 0;
+}
+
+function estimateCooperativeWorkgroupBytes(
+  workgroupSize,
+  lanesPerRay,
+  regionWordCount,
+  neighborMode
+) {
+  const raySlots = workgroupSize / lanesPerRay;
+  const hits = workgroupSize * 32;
+  const rayState = raySlots * (32 + 16);
+  const membershipAndCrossings = raySlots * regionWordCount * 12;
+  const conflicts = raySlots * 4;
+  const neighborState = neighborMode ? raySlots * 2 * (32 + 32) : 0;
+  return hits + rayState + membershipAndCrossings + conflicts + neighborState;
 }
 
 function normalizeDepth(value) {

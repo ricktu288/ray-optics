@@ -19,6 +19,7 @@ const STATIC_STORAGE_FIELDS = Object.freeze([
   'curveDescriptors',
   'curveGeometry',
   'bvhNodes',
+  'bvhPartitionRoots',
   'bvhCurveIds',
 ]);
 
@@ -31,6 +32,7 @@ const STATIC_STORAGE_MINIMUM_SIZES = Object.freeze({
   curveDescriptors: 32,
   curveGeometry: 4,
   bvhNodes: 80,
+  bvhPartitionRoots: 32,
   bvhCurveIds: 4,
 });
 
@@ -41,14 +43,15 @@ export class WebGpuMegakernelStaticSceneStorage {
     this.buffers = Object.create(null);
     this.capacities = Object.create(null);
     for (const name of STATIC_STORAGE_FIELDS) {
-      const byteLength = packedScene[name].byteLength;
+      const data = packedScene[name] ?? new Uint8Array(0);
+      const byteLength = data.byteLength;
       this.capacities[name] = Math.max(
         STATIC_STORAGE_MINIMUM_SIZES[name],
         alignTo4(byteLength)
       );
       this.buffers[name] = createInitializedBuffer(
         device,
-        packedScene[name],
+        data,
         `WebGPU megakernel scene ${name}`,
         STATIC_STORAGE_MINIMUM_SIZES[name]
       );
@@ -68,7 +71,7 @@ export class WebGpuMegakernelStaticSceneStorage {
 
   canUpdate(packedScene) {
     return STATIC_STORAGE_FIELDS.every(name =>
-      packedScene[name].byteLength <= this.capacities[name]
+      (packedScene[name]?.byteLength ?? 0) <= this.capacities[name]
     );
   }
 
@@ -77,7 +80,7 @@ export class WebGpuMegakernelStaticSceneStorage {
       throw new RangeError('Updated megakernel static scene storage does not fit.');
     }
     for (const name of STATIC_STORAGE_FIELDS) {
-      const data = packedScene[name];
+      const data = packedScene[name] ?? new Uint8Array(0);
       if (data.byteLength > 0) {
         this.device.queue.writeBuffer(this.buffers[name], 0, toBytes(data));
       }

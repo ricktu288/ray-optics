@@ -54,4 +54,15 @@ describe('simulation engine configuration', () => {
     expect(resolved.bvh.directPrimitiveThreshold).toBe(0);
     expect(resolved.bvh.lineLeafSize).toBe(4);
   });
+
+  it('exposes the provisional WebGPU cooperation calibration as defaults',
+    () => {
+      const config = DEFAULT_SIMULATION_ENGINE_CONFIGS.webgpu;
+      expect(config.rayCooperationSaturationRayCount).toBe(8192);
+      expect(config.rayCooperationDirectMaxTestsPerLane).toBe(1024);
+      expect(config.rayCooperationBvhMinTestsPerLane).toBe(4096);
+      expect(config.rayCooperationMaximumDirectLanesPerRay).toBe(16);
+      expect(config.rayCooperationMaximumBvhLanesPerRay).toBe(32);
+      expect(config.rayCooperationMaximumHaloFraction).toBe(0.5);
+    });
 });

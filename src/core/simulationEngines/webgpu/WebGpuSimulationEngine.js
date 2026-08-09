@@ -29,11 +29,13 @@ import {
   WebGpuAtomicRayRasterizer
 } from './webGpuRayRenderer.js';
 import {
-  WEBGPU_MIN_STORAGE_BUFFERS_PER_SHADER_STAGE
+  DEFAULT_WEBGPU_RAY_COOPERATION_CONFIG,
+  WEBGPU_MIN_STORAGE_BUFFERS_PER_SHADER_STAGE,
 } from '../config.js';
 
 const DEFAULT_WEBGPU_RUN_CONFIG = Object.freeze({
   workgroupSize: 64,
+  ...DEFAULT_WEBGPU_RAY_COOPERATION_CONFIG,
   maxItemsPerAdvance: 262144,
   maxBatchRayEvents: 262144,
   maxReadyLineRecords: 262144,
@@ -126,6 +128,9 @@ class WebGpuSimulationRun {
   async scheduleContinuation(state) {
     const backend = this.engine.computeBackend;
     const isCancelled = () => this.isStale();
+    const direction = state.pingPongIndex & 1;
+    await backend.prepareBatch(state.currentRayCount, direction);
+    if (isCancelled()) return;
     const preparedPresentation = await this.engine.prepareNativeGeometry(
       this.options,
       { isCancelled }
@@ -135,7 +140,7 @@ class WebGpuSimulationRun {
       label: 'WebGPU continued megakernel tracing',
     });
     backend.encodeReadyGeometryReset(encoder);
-    backend.encodeContinuation(encoder, state.pingPongIndex & 1);
+    backend.encodeContinuation(encoder, direction);
     const consumeState = backend.encodeStateReadback(encoder);
     this.engine.encodeNativeGeometry(
       encoder,
@@ -567,11 +572,32 @@ function resolveWebGpuRunConfig(config) {
     'maxReadyLineRecords',
     'maxReadyPointRecords',
     'maxLocalIterations',
-    'maxPingPongsPerSubmission'
+    'maxPingPongsPerSubmission',
+    'rayCooperationSaturationRayCount',
+    'rayCooperationMaximumDirectLanesPerRay',
+    'rayCooperationMaximumBvhLanesPerRay',
   ]) {
     if (!Number.isSafeInteger(resolved[name]) || resolved[name] <= 0) {
       throw new RangeError(`${name} must be a positive safe integer.`);
     }
+  }
+  for (const name of [
+    'rayCooperationDirectMaxTestsPerLane',
+    'rayCooperationBvhMinTestsPerLane',
+  ]) {
+    if (!Number.isFinite(resolved[name]) || resolved[name] < 0) {
+      throw new RangeError(`${name} must be finite and nonnegative.`);
+    }
+  }
+  if (!Number.isFinite(resolved.rayCooperationMaximumHaloFraction) ||
+      resolved.rayCooperationMaximumHaloFraction < 0 ||
+      resolved.rayCooperationMaximumHaloFraction >= 1) {
+    throw new RangeError(
+      'rayCooperationMaximumHaloFraction must be in [0, 1).'
+    );
+  }
+  if (typeof resolved.rayCooperationEnabled !== 'boolean') {
+    throw new TypeError('rayCooperationEnabled must be boolean.');
   }
   return Object.freeze(resolved);
 }

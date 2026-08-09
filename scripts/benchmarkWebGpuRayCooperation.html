@@ -1,0 +1,1342 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WebGPU cooperative-ray benchmark</title>
+  <style>
+    :root { color-scheme: light dark; font-family: system-ui, sans-serif; }
+    body { max-width: 86rem; margin: 2rem auto; padding: 0 1rem 3rem; }
+    h1 { font-size: 1.5rem; }
+    button { padding: .55rem .85rem; margin: 0 .5rem .75rem 0; }
+    a.preset { display: inline-block; padding: .45rem .65rem; margin: 0 .5rem .75rem 0;
+      border: 1px solid #8886; border-radius: .25rem; text-decoration: none; }
+    button:disabled { opacity: .55; }
+    table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+    th, td { border: 1px solid #8886; padding: .42rem; text-align: right; }
+    th:first-child, td:first-child { text-align: left; }
+    pre { white-space: pre-wrap; overflow-wrap: anywhere; padding: 1rem;
+      border: 1px solid #8886; background: #8881; }
+    .error { color: #d33; white-space: pre-wrap; }
+    code { background: #8882; padding: .08rem .25rem; }
+  </style>
+</head>
+<body>
+  <h1>WebGPU cooperative-ray benchmark</h1>
+  <p>
+    This runs a small multi-bounce 2D ray simulation. It compares one invocation
+    per ray with multiple workgroup lanes or one hardware subgroup per ray. The
+    cooperative paths include closest-hit reduction, synchronization, hit
+    broadcast, reflection, and the next traversal.
+  </p>
+  <p>
+    Direct variants scan every curve without a BVH. BVH4 cooperative variants
+    divide disjoint BVH subtrees between lanes. All variants execute the same
+    exact ray/segment intersection and reflection code.
+  </p>
+  <p>
+    Targeted sweeps:
+    <a class="preset" id="curve-sweep" href="#">Large curve crossover</a>
+    <a class="preset" id="ray-sweep" href="#">Large ray crossover (BVH4)</a>
+    The curve sweep increases scene size while ray parallelism is scarce. The
+    ray sweep reaches 262,144 active rays and omits direct scanning so that very
+    large, predictably slow Cartesian products do not obscure the BVH crossover.
+  </p>
+  <p id="status">Preparing benchmark…</p>
+  <button id="copy" disabled>Copy JSON report</button>
+  <button id="rerun" disabled>Run again</button>
+  <div id="summary"></div>
+  <pre id="report"></pre>
+
+<script type="module">
+const SCALAR_WORKGROUP_SIZE = 64;
+const COOPERATIVE_WORKGROUP_SIZE = 64;
+const SUBGROUP_WORKGROUP_SIZE = 256;
+const INVALID_REF = 0xffffffff;
+const LEAF_REF_BIT = 0x80000000;
+const LEAF_START_MASK = 0x00ffffff;
+const LEAF_SIZE = 4;
+const NODE_BYTES = 80;
+const F32_MAX = 3.402823e38;
+const parameters = new URLSearchParams(location.search);
+const CURVE_COUNTS = listParameter('curves', [16, 64, 256], 4, 1048576);
+const RAY_COUNTS = listParameter('rays', [1024, 8192], 64, 262144);
+const CASES = caseParameter('cases', CURVE_COUNTS, RAY_COUNTS);
+const BOUNCES = integerParameter('bounces', 8, 1, 64);
+const REPETITIONS = integerParameter('repetitions', 3, 1, 20);
+const SAMPLE_COUNT = integerParameter('samples', 5, 1, 15);
+const SATURATION_RAY_COUNT = integerParameter('rsat', 8192, 64, 1048576);
+const DIRECT_TESTS_PER_LANE = integerParameter('directthreshold', 32, 1, 4096);
+const WORKGROUP_LANES = listParameter('lanes', [4, 8, 16, 32], 2, 64)
+  .filter(value => (value & (value - 1)) === 0 && 64 % value === 0);
+const COHERENCES = choiceListParameter(
+  'coherences', ['coherent', 'incoherent'], ['coherent', 'incoherent']
+);
+const METHOD_SELECTION = parameters.get('methods') ?? 'all';
+
+const statusElement = document.querySelector('#status');
+const summaryElement = document.querySelector('#summary');
+const reportElement = document.querySelector('#report');
+const copyButton = document.querySelector('#copy');
+const rerunButton = document.querySelector('#rerun');
+document.querySelector('#curve-sweep').href = presetUrl({
+  cases: [
+    '256x64', '1024x64', '4096x64', '16384x64', '65536x64',
+    '256x1024', '1024x1024', '4096x1024'
+  ].join(','),
+  repetitions: 1, samples: 3, lanes: '4,8,16', coherences: 'coherent,incoherent'
+});
+document.querySelector('#ray-sweep').href = presetUrl({
+  cases: [
+    '4096x256', '4096x1024', '4096x4096', '4096x16384',
+    '4096x65536', '4096x262144'
+  ].join(','),
+  methods: 'bvh4', repetitions: 1, samples: 3,
+  lanes: '2,4,8,16,32', coherences: 'coherent,incoherent'
+});
+let reportText = '';
+let running = false;
+
+copyButton.addEventListener('click', async () => {
+  await navigator.clipboard.writeText(reportText);
+  copyButton.textContent = 'Copied';
+  setTimeout(() => { copyButton.textContent = 'Copy JSON report'; }, 1200);
+});
+rerunButton.addEventListener('click', runBenchmark);
+runBenchmark();
+
+function integerParameter(name, fallback, minimum, maximum) {
+  const value = Number(parameters.get(name) ?? fallback);
+  if (!Number.isInteger(value) || value < minimum || value > maximum) {
+    throw new RangeError(`${name} must be an integer from ${minimum} to ${maximum}.`);
+  }
+  return value;
+}
+
+function listParameter(name, fallback, minimum, maximum) {
+  const text = parameters.get(name);
+  if (!text) return fallback;
+  const values = [...new Set(text.split(',').map(Number))];
+  if (!values.length || values.some(value =>
+    !Number.isInteger(value) || value < minimum || value > maximum)) {
+    throw new RangeError(
+      `${name} must be a comma-separated list from ${minimum} to ${maximum}.`
+    );
+  }
+  return values.sort((a, b) => a - b);
+}
+
+function choiceListParameter(name, fallback, choices) {
+  const text = parameters.get(name);
+  if (!text) return fallback;
+  const values = [...new Set(text.split(',').filter(Boolean))];
+  if (!values.length || values.some(value => !choices.includes(value))) {
+    throw new RangeError(`${name} must contain only: ${choices.join(', ')}.`);
+  }
+  return values;
+}
+
+function caseParameter(name, curveCounts, rayCounts) {
+  const text = parameters.get(name);
+  if (!text) {
+    return curveCounts.flatMap(curveCount =>
+      rayCounts.map(rayCount => ({ curveCount, rayCount }))
+    );
+  }
+  const unique = new Map();
+  for (const item of text.split(',')) {
+    const match = /^(\d+)x(\d+)$/.exec(item);
+    if (!match) {
+      throw new RangeError(`${name} must use curveCountxrayCount pairs.`);
+    }
+    const curveCount = Number(match[1]);
+    const rayCount = Number(match[2]);
+    if (curveCount < 4 || curveCount > 1048576 ||
+        rayCount < 1 || rayCount > 262144) {
+      throw new RangeError(
+        `${name} pairs require 4..1048576 curves and 1..262144 rays.`
+      );
+    }
+    unique.set(`${curveCount}x${rayCount}`, { curveCount, rayCount });
+  }
+  if (!unique.size) throw new RangeError(`${name} must not be empty.`);
+  return [...unique.values()];
+}
+
+function presetUrl(values) {
+  const url = new URL(location.href);
+  url.search = '';
+  for (const [name, value] of Object.entries(values)) {
+    url.searchParams.set(name, String(value));
+  }
+  return url;
+}
+
+function groupCasesByCurve(cases) {
+  const groups = new Map();
+  for (const item of cases) {
+    if (!groups.has(item.curveCount)) groups.set(item.curveCount, []);
+    groups.get(item.curveCount).push(item);
+  }
+  return groups;
+}
+
+function powerOfTwoFloor(value) {
+  if (value < 1) return 0;
+  return 2 ** Math.floor(Math.log2(value));
+}
+
+function recommendStrategy(curveCount, rayCount, subgroup) {
+  const maximumLanes = subgroup?.size ?? 8;
+  const occupancyLanes = Math.floor(SATURATION_RAY_COUNT / rayCount);
+  const desiredLanes = powerOfTwoFloor(Math.min(
+    maximumLanes, curveCount, occupancyLanes
+  ));
+  const lanes = Math.max(1, desiredLanes);
+  const acceleration = curveCount / lanes <= DIRECT_TESTS_PER_LANE
+    ? 'direct' : 'bvh4';
+  if (lanes === 1) return `scalar_${acceleration}`;
+  if (subgroup && lanes >= subgroup.size) return `subgroup_${acceleration}`;
+  const workgroupLanes = WORKGROUP_LANES
+    .filter(value => value <= lanes)
+    .at(-1);
+  return workgroupLanes
+    ? `workgroup${workgroupLanes}_${acceleration}`
+    : `scalar_${acceleration}`;
+}
+
+async function runBenchmark() {
+  if (running) return;
+  running = true;
+  copyButton.disabled = true;
+  rerunButton.disabled = true;
+  summaryElement.replaceChildren();
+  reportElement.textContent = '';
+  statusElement.className = '';
+  let device;
+  const ownedBuffers = [];
+  try {
+    if (!navigator.gpu) {
+      throw new Error('WebGPU is unavailable. Open this page from localhost.');
+    }
+    statusElement.textContent = 'Requesting the high-performance WebGPU adapter…';
+    const adapter = await navigator.gpu.requestAdapter({
+      powerPreference: 'high-performance'
+    });
+    if (!adapter) throw new Error('No WebGPU adapter is available.');
+
+    const hasTimestamps = adapter.features.has('timestamp-query');
+    const hasSubgroups = adapter.features.has('subgroups');
+    const hasSubgroupIds =
+      navigator.gpu.wgslLanguageFeatures?.has('subgroup_id') ?? false;
+    const subgroupRequested = hasSubgroups && hasSubgroupIds;
+    const requiredFeatures = [];
+    if (hasTimestamps) requiredFeatures.push('timestamp-query');
+    if (subgroupRequested) requiredFeatures.push('subgroups');
+    device = await adapter.requestDevice({ requiredFeatures });
+    device.addEventListener('uncapturederror', event => {
+      console.error('Uncaptured WebGPU error:', event.error);
+    });
+
+    let subgroup = null;
+    if (subgroupRequested) {
+      subgroup = await probeSubgroups(device, ownedBuffers);
+    }
+    const strategyBindGroupLayout = device.createBindGroupLayout({
+      label: 'Cooperative-ray shared bind group layout',
+      entries: [
+        { binding: 0, visibility: GPUShaderStage.COMPUTE,
+          buffer: { type: 'read-only-storage' } },
+        { binding: 1, visibility: GPUShaderStage.COMPUTE,
+          buffer: { type: 'read-only-storage' } },
+        { binding: 2, visibility: GPUShaderStage.COMPUTE,
+          buffer: { type: 'read-only-storage' } },
+        { binding: 3, visibility: GPUShaderStage.COMPUTE,
+          buffer: { type: 'read-only-storage' } },
+        { binding: 4, visibility: GPUShaderStage.COMPUTE,
+          buffer: { type: 'read-only-storage' } },
+        { binding: 5, visibility: GPUShaderStage.COMPUTE,
+          buffer: { type: 'storage' } },
+        { binding: 6, visibility: GPUShaderStage.COMPUTE,
+          buffer: { type: 'uniform' } }
+      ]
+    });
+    const strategyPipelineLayout = device.createPipelineLayout({
+      label: 'Cooperative-ray shared pipeline layout',
+      bindGroupLayouts: [strategyBindGroupLayout]
+    });
+    const strategySpecs = selectStrategySpecs(makeStrategySpecs(subgroup));
+    if (!strategySpecs.length) {
+      throw new Error(`No available methods matched "${METHOD_SELECTION}".`);
+    }
+    statusElement.textContent = 'Compiling scalar and cooperative shaders…';
+    for (const strategy of strategySpecs) {
+      const code = strategyShader(strategy, subgroup);
+      const module = device.createShaderModule({
+        label: `${strategy.label} shader`, code
+      });
+      const compilation = await module.getCompilationInfo();
+      const errors = compilation.messages.filter(message => message.type === 'error');
+      if (errors.length) {
+        throw new Error(`${strategy.label} WGSL:\n` + errors.map(message =>
+          `${message.lineNum}:${message.linePos} ${message.message}`
+        ).join('\n'));
+      }
+      strategy.pipeline = await device.createComputePipelineAsync({
+        label: `${strategy.label} pipeline`,
+        layout: strategyPipelineLayout,
+        compute: { module, entryPoint: 'simulateMain' }
+      });
+    }
+
+    const report = {
+      benchmark: 'webgpu-ray-cooperation-v4',
+      generatedAt: new Date().toISOString(),
+      browser: navigator.userAgent,
+      adapter: adapterReport(adapter),
+      features: {
+        timestampQuery: hasTimestamps,
+        subgroups: hasSubgroups,
+        subgroupIdLanguageFeature: hasSubgroupIds,
+        subgroupTested: Boolean(subgroup),
+        subgroupSize: subgroup?.size ?? null,
+        subgroupsPerWorkgroup: subgroup?.count ?? null,
+        adapterSubgroupMinSize: adapter.info?.subgroupMinSize ?? null,
+        adapterSubgroupMaxSize: adapter.info?.subgroupMaxSize ?? null,
+        maxComputeWorkgroupsPerDimension:
+          device.limits.maxComputeWorkgroupsPerDimension
+      },
+      config: {
+        cases: CASES.map(({ curveCount, rayCount }) =>
+          `${curveCount}x${rayCount}`),
+        curveCounts: [...new Set(CASES.map(item => item.curveCount))],
+        rayCounts: [...new Set(CASES.map(item => item.rayCount))],
+        coherences: COHERENCES,
+        bounces: BOUNCES,
+        repetitions: REPETITIONS,
+        sampleCount: SAMPLE_COUNT,
+        workgroupLanesPerRay: WORKGROUP_LANES,
+        leafSize: LEAF_SIZE,
+        methodSelection: METHOD_SELECTION,
+        heuristic: {
+          saturationRayCount: SATURATION_RAY_COUNT,
+          directTestsPerLane: DIRECT_TESTS_PER_LANE,
+          portableMaximumLanesPerRay: 8
+        }
+      },
+      methods: Object.fromEntries(strategySpecs.map(strategy => [
+        strategy.id,
+        {
+          label: strategy.label,
+          acceleration: strategy.acceleration,
+          cooperation: strategy.cooperation,
+          lanesPerRay: strategy.lanes ?? subgroup?.size ?? 1
+        }
+      ])),
+      scenes: {},
+      results: {},
+      primaryTiming: hasTimestamps ? 'gpu' : 'wall',
+      scope: 'Multi-bounce synthetic 2D ray/segment simulation including traversal, exact intersection, closest-hit reduction, synchronization, reflection, and next-step dependency.'
+    };
+
+    const casesByCurve = groupCasesByCurve(CASES);
+    for (const [curveCount, curveCases] of casesByCurve) {
+      statusElement.textContent = `Building ${curveCount}-curve BVH4…`;
+      const scene = buildScene(curveCount);
+      report.scenes[curveCount] = {
+        curveCount,
+        bvh4NodeCount: scene.nodes.length,
+        bvh4HierarchyKiB: scene.nodes.length * NODE_BYTES / 1024,
+        primitiveIndexKiB: scene.primitiveOrder.byteLength / 1024
+      };
+      const curveBuffer = track(ownedBuffers, createBufferWithData(
+        device, scene.curves,
+        GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+        `${curveCount} curves`
+      ));
+      const primitiveIndexBuffer = track(ownedBuffers, createBufferWithData(
+        device, scene.primitiveOrder,
+        GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+        `${curveCount} BVH primitive indices`
+      ));
+      const nodeBuffer = track(ownedBuffers, createBufferWithData(
+        device, packNodes(scene.nodes),
+        GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+        `${curveCount} BVH4 nodes`
+      ));
+      const rootBuffers = new Map();
+      for (const laneCount of new Set([
+        1, ...WORKGROUP_LANES, ...(subgroup ? [subgroup.size] : [])
+      ])) {
+        const roots = partitionBvh(scene, laneCount);
+        rootBuffers.set(laneCount, {
+          count: roots.count,
+          buffer: track(ownedBuffers, createBufferWithData(
+            device, roots.data,
+            GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+            `${curveCount} curves / ${laneCount} BVH partitions`
+          ))
+        });
+      }
+
+      for (const { rayCount } of curveCases) {
+        for (const coherence of COHERENCES) {
+          const configId = `${curveCount}c_${rayCount}r_${coherence}`;
+          statusElement.textContent =
+            `${curveCount} curves, ${rayCount} ${coherence} rays…`;
+          const rayData = coherence === 'coherent'
+            ? createCoherentRays(rayCount)
+            : createIncoherentRays(rayCount);
+          const rayBuffer = track(ownedBuffers, createBufferWithData(
+            device, rayData,
+            GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+            `${configId} rays`
+          ));
+          const outputBytes = rayCount * 16;
+          const outputBuffer = track(ownedBuffers, device.createBuffer({
+            label: `${configId} output`,
+            size: outputBytes,
+            usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC
+          }));
+          const readBuffer = track(ownedBuffers, device.createBuffer({
+            label: `${configId} readback`,
+            size: outputBytes,
+            usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.MAP_READ
+          }));
+
+          const configResult = {
+            curveCount, rayCount, coherence, bounces: BOUNCES,
+            heuristicRecommendation:
+              recommendStrategy(curveCount, rayCount, subgroup),
+            methods: {}
+          };
+          let referenceOutput = null;
+          for (const strategy of strategySpecs) {
+            const laneCount = strategy.cooperation === 'subgroup'
+              ? subgroup.size
+              : strategy.lanes;
+            const rootSet = rootBuffers.get(laneCount);
+            const dispatch = strategyDispatch(
+              strategy, rayCount, subgroup,
+              device.limits.maxComputeWorkgroupsPerDimension
+            );
+            const uniformBuffer = track(ownedBuffers, createBufferWithData(
+              device,
+              new Uint32Array([
+                rayCount, curveCount, rootSet.count, BOUNCES,
+                dispatch.width, 0, 0, 0
+              ]),
+              GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+              `${configId} / ${strategy.id} parameters`
+            ));
+            device.pushErrorScope('validation');
+            const bindGroup = device.createBindGroup({
+              label: `${configId} / ${strategy.id}`,
+              layout: strategyBindGroupLayout,
+              entries: [
+                { binding: 0, resource: { buffer: rayBuffer } },
+                { binding: 1, resource: { buffer: curveBuffer } },
+                { binding: 2, resource: { buffer: primitiveIndexBuffer } },
+                { binding: 3, resource: { buffer: nodeBuffer } },
+                { binding: 4, resource: { buffer: rootSet.buffer } },
+                { binding: 5, resource: { buffer: outputBuffer } },
+                { binding: 6, resource: { buffer: uniformBuffer } }
+              ]
+            });
+            const bindGroupError = await device.popErrorScope();
+            if (bindGroupError) {
+              throw new Error(
+                `${configId} / ${strategy.id} bind group: ${bindGroupError.message}`
+              );
+            }
+            const timing = await measureStrategy(
+              device, strategy.pipeline, bindGroup, dispatch,
+              hasTimestamps, REPETITIONS, SAMPLE_COUNT, ownedBuffers
+            );
+            const output = await readOutput(
+              device, outputBuffer, readBuffer, outputBytes
+            );
+            if (!referenceOutput) referenceOutput = output.slice();
+            const validation = compareOutputs(output, referenceOutput);
+            configResult.methods[strategy.id] = {
+              ...timing,
+              millionRayStepsPerSecond:
+                rayCount * BOUNCES / timing.medianMs / 1000,
+              nanosecondsPerRayStep:
+                timing.medianMs * 1e6 / (rayCount * BOUNCES),
+              checksum: checksumFloat32(output),
+              mismatchRayCount: validation.mismatchRayCount,
+              maximumAbsoluteError: validation.maximumAbsoluteError
+            };
+            await animationFrame();
+          }
+          addSpeedups(configResult.methods);
+          const validMethods = Object.entries(configResult.methods)
+            .filter(([, result]) => result.mismatchRayCount === 0)
+            .sort((a, b) => a[1].medianMs - b[1].medianMs);
+          configResult.fastestMethod = validMethods[0]?.[0] ?? null;
+          configResult.heuristicWasMeasured =
+            configResult.heuristicRecommendation in configResult.methods;
+          configResult.heuristicMatchedFastest =
+            configResult.heuristicRecommendation === configResult.fastestMethod;
+          report.results[configId] = configResult;
+        }
+      }
+    }
+
+    reportText = JSON.stringify(report, null, 2);
+    reportElement.textContent = reportText;
+    renderSummary(report);
+    statusElement.textContent = subgroup
+      ? `Done. Hardware subgroup size: ${subgroup.size}.`
+      : 'Done. Subgroups were unavailable; portable workgroup variants were tested.';
+    copyButton.disabled = false;
+  } catch (error) {
+    console.error(error);
+    statusElement.className = 'error';
+    statusElement.textContent = error?.stack ?? String(error);
+  } finally {
+    rerunButton.disabled = false;
+    running = false;
+    for (const buffer of ownedBuffers) {
+      if (buffer.mapState === 'unmapped') buffer.destroy();
+    }
+    device?.destroy();
+  }
+}
+
+function makeStrategySpecs(subgroup) {
+  const specs = [
+    {
+      id: 'scalar_direct', label: 'Scalar direct', acceleration: 'direct',
+      cooperation: 'scalar', lanes: 1
+    },
+    {
+      id: 'scalar_bvh4', label: 'Scalar BVH4', acceleration: 'bvh4',
+      cooperation: 'scalar', lanes: 1
+    }
+  ];
+  for (const lanes of WORKGROUP_LANES) {
+    specs.push({
+      id: `workgroup${lanes}_direct`,
+      label: `Workgroup ${lanes}-lane direct`,
+      acceleration: 'direct', cooperation: 'workgroup', lanes
+    });
+    specs.push({
+      id: `workgroup${lanes}_bvh4`,
+      label: `Workgroup ${lanes}-lane BVH4`,
+      acceleration: 'bvh4', cooperation: 'workgroup', lanes
+    });
+  }
+  if (subgroup) {
+    specs.push({
+      id: 'subgroup_direct', label: 'Subgroup direct', acceleration: 'direct',
+      cooperation: 'subgroup'
+    });
+    specs.push({
+      id: 'subgroup_bvh4', label: 'Subgroup BVH4', acceleration: 'bvh4',
+      cooperation: 'subgroup'
+    });
+  }
+  return specs;
+}
+
+function selectStrategySpecs(specs) {
+  if (METHOD_SELECTION === 'all') return specs;
+  if (METHOD_SELECTION === 'direct' || METHOD_SELECTION === 'bvh4') {
+    return specs.filter(strategy => strategy.acceleration === METHOD_SELECTION);
+  }
+  const ids = new Set(METHOD_SELECTION.split(',').filter(Boolean));
+  const knownIds = new Set(specs.map(strategy => strategy.id));
+  const unavailable = [...ids].filter(id => !knownIds.has(id));
+  if (unavailable.length) {
+    throw new RangeError(
+      `Unavailable methods: ${unavailable.join(', ')}. Available methods: ` +
+      [...knownIds].join(', ')
+    );
+  }
+  return specs.filter(strategy => ids.has(strategy.id));
+}
+
+function strategyDispatch(strategy, rayCount, subgroup, maximumDimension) {
+  let workgroupCount;
+  if (strategy.cooperation === 'scalar') {
+    workgroupCount = Math.ceil(rayCount / SCALAR_WORKGROUP_SIZE);
+  } else if (strategy.cooperation === 'workgroup') {
+    workgroupCount = Math.ceil(
+      rayCount / (COOPERATIVE_WORKGROUP_SIZE / strategy.lanes)
+    );
+  } else {
+    workgroupCount = Math.ceil(rayCount / subgroup.count);
+  }
+  const height = Math.ceil(workgroupCount / maximumDimension);
+  const width = Math.ceil(workgroupCount / height);
+  if (height > maximumDimension) {
+    throw new RangeError(
+      `${workgroupCount} workgroups exceed the device's 2D dispatch capacity.`
+    );
+  }
+  return { width, height, workgroupCount };
+}
+
+async function probeSubgroups(device, ownedBuffers) {
+  const output = track(ownedBuffers, device.createBuffer({
+    label: 'Subgroup probe output', size: 8,
+    usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC
+  }));
+  const read = track(ownedBuffers, device.createBuffer({
+    label: 'Subgroup probe readback', size: 8,
+    usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.MAP_READ
+  }));
+  const module = device.createShaderModule({ code: `
+enable subgroups;
+requires subgroup_id;
+@group(0) @binding(0) var<storage, read_write> output: array<u32>;
+@compute @workgroup_size(${SUBGROUP_WORKGROUP_SIZE})
+fn probe(@builtin(local_invocation_index) localIndex: u32,
+         @builtin(subgroup_size) subgroupSize: u32,
+         @builtin(num_subgroups) subgroupCount: u32) {
+  if (localIndex == 0u) {
+    output[0] = subgroupSize;
+    output[1] = subgroupCount;
+  }
+}` });
+  const info = await module.getCompilationInfo();
+  const errors = info.messages.filter(message => message.type === 'error');
+  if (errors.length) throw new Error(errors.map(message => message.message).join('\n'));
+  const pipeline = await device.createComputePipelineAsync({
+    layout: 'auto', compute: { module, entryPoint: 'probe' }
+  });
+  const bindGroup = device.createBindGroup({
+    layout: pipeline.getBindGroupLayout(0),
+    entries: [{ binding: 0, resource: { buffer: output } }]
+  });
+  const encoder = device.createCommandEncoder();
+  const pass = encoder.beginComputePass();
+  pass.setPipeline(pipeline);
+  pass.setBindGroup(0, bindGroup);
+  pass.dispatchWorkgroups(1);
+  pass.end();
+  encoder.copyBufferToBuffer(output, 0, read, 0, 8);
+  device.queue.submit([encoder.finish()]);
+  await read.mapAsync(GPUMapMode.READ);
+  const values = new Uint32Array(read.getMappedRange()).slice();
+  read.unmap();
+  if (!values[0] || !values[1]) throw new Error('Invalid subgroup probe result.');
+  return { size: values[0], count: values[1] };
+}
+
+function adapterReport(adapter) {
+  const info = adapter.info ?? {};
+  return {
+    vendor: info.vendor ?? '', architecture: info.architecture ?? '',
+    device: info.device ?? '', description: info.description ?? '',
+    isFallbackAdapter: info.isFallbackAdapter ?? null
+  };
+}
+
+function buildScene(curveCount) {
+  const curves = new Float32Array(curveCount * 4);
+  const fixed = [
+    [-1, -1, 1, -1], [1, -1, 1, 1],
+    [1, 1, -1, 1], [-1, 1, -1, -1]
+  ];
+  for (let index = 0; index < curveCount; index++) {
+    let segment;
+    if (index < 4) {
+      segment = fixed[index];
+    } else {
+      const u = radicalInverse(index - 3, 2);
+      const v = radicalInverse(index - 3, 3);
+      const angle = 6.28318530718 * radicalInverse(index - 3, 5);
+      const length = 0.045 + 0.11 * radicalInverse(index - 3, 7);
+      const cx = -0.84 + 1.68 * u;
+      const cy = -0.84 + 1.68 * v;
+      const dx = Math.cos(angle) * length;
+      const dy = Math.sin(angle) * length;
+      segment = [cx - dx, cy - dy, cx + dx, cy + dy];
+    }
+    curves.set(segment, index * 4);
+  }
+  const items = Array.from({ length: curveCount }, (_, index) => {
+    const offset = index * 4;
+    const ax = curves[offset];
+    const ay = curves[offset + 1];
+    const bx = curves[offset + 2];
+    const by = curves[offset + 3];
+    return {
+      index,
+      bounds: [
+        Math.min(ax, bx) - 1e-5, Math.min(ay, by) - 1e-5,
+        Math.max(ax, bx) + 1e-5, Math.max(ay, by) + 1e-5
+      ],
+      cx: (ax + bx) * 0.5,
+      cy: (ay + by) * 0.5
+    };
+  });
+  const binaryRoot = buildBinary(items);
+  const nodes = [];
+  const primitiveOrder = [];
+  const rootRef = emitWideRef(binaryRoot, nodes, primitiveOrder);
+  return {
+    curves, nodes, rootRef,
+    rootBounds: binaryRoot.bounds,
+    primitiveOrder: new Uint32Array(primitiveOrder)
+  };
+}
+
+function radicalInverse(value, base) {
+  let result = 0;
+  let scale = 1 / base;
+  while (value > 0) {
+    result += (value % base) * scale;
+    value = Math.floor(value / base);
+    scale /= base;
+  }
+  return result;
+}
+
+function buildBinary(items) {
+  const bounds = unionBounds(items.map(item => item.bounds));
+  if (items.length <= LEAF_SIZE) return { bounds, items };
+  const width = bounds[2] - bounds[0];
+  const height = bounds[3] - bounds[1];
+  const axis = width >= height ? 'cx' : 'cy';
+  const sorted = items.slice().sort((a, b) => a[axis] - b[axis] || a.index - b.index);
+  const middle = Math.floor(sorted.length / 2);
+  return {
+    bounds,
+    left: buildBinary(sorted.slice(0, middle)),
+    right: buildBinary(sorted.slice(middle))
+  };
+}
+
+function unionBounds(boundsList) {
+  const result = [Infinity, Infinity, -Infinity, -Infinity];
+  for (const bounds of boundsList) {
+    result[0] = Math.min(result[0], bounds[0]);
+    result[1] = Math.min(result[1], bounds[1]);
+    result[2] = Math.max(result[2], bounds[2]);
+    result[3] = Math.max(result[3], bounds[3]);
+  }
+  return result;
+}
+
+function emitWideRef(binary, nodes, primitiveOrder) {
+  if (binary.items) {
+    const start = primitiveOrder.length;
+    for (const item of binary.items) primitiveOrder.push(item.index);
+    return (LEAF_REF_BIT | (binary.items.length << 24) | start) >>> 0;
+  }
+  const frontier = [binary.left, binary.right];
+  while (frontier.length < 4) {
+    let splitIndex = -1;
+    let splitArea = -1;
+    for (let index = 0; index < frontier.length; index++) {
+      const child = frontier[index];
+      if (child.items) continue;
+      const area = (child.bounds[2] - child.bounds[0]) *
+        (child.bounds[3] - child.bounds[1]);
+      if (area > splitArea) {
+        splitArea = area;
+        splitIndex = index;
+      }
+    }
+    if (splitIndex < 0) break;
+    const child = frontier[splitIndex];
+    frontier.splice(splitIndex, 1, child.left, child.right);
+  }
+  const nodeIndex = nodes.length;
+  const node = { bounds: binary.bounds, children: [], childBounds: [] };
+  nodes.push(node);
+  for (const child of frontier) {
+    node.childBounds.push(child.bounds);
+    node.children.push(emitWideRef(child, nodes, primitiveOrder));
+  }
+  return nodeIndex;
+}
+
+function partitionBvh(scene, laneCount) {
+  const frontier = [{ ref: scene.rootRef, bounds: scene.rootBounds }];
+  while (frontier.length < laneCount) {
+    let splitIndex = -1;
+    let splitArea = -1;
+    for (let index = 0; index < frontier.length; index++) {
+      const item = frontier[index];
+      if ((item.ref & LEAF_REF_BIT) !== 0) continue;
+      const area = (item.bounds[2] - item.bounds[0]) *
+        (item.bounds[3] - item.bounds[1]);
+      if (area > splitArea) {
+        splitArea = area;
+        splitIndex = index;
+      }
+    }
+    if (splitIndex < 0) break;
+    const item = frontier[splitIndex];
+    const node = scene.nodes[item.ref];
+    const replacements = node.children.map((ref, index) => ({
+      ref, bounds: node.childBounds[index]
+    }));
+    frontier.splice(splitIndex, 1, ...replacements);
+  }
+  const data = new ArrayBuffer(Math.max(1, frontier.length) * 32);
+  const view = new DataView(data);
+  frontier.forEach((item, index) => {
+    const base = index * 32;
+    view.setFloat32(base, item.bounds[0], true);
+    view.setFloat32(base + 4, item.bounds[1], true);
+    view.setFloat32(base + 8, item.bounds[2], true);
+    view.setFloat32(base + 12, item.bounds[3], true);
+    view.setUint32(base + 16, item.ref, true);
+  });
+  return { data: new Uint8Array(data), count: frontier.length };
+}
+
+function packNodes(nodes) {
+  const buffer = new ArrayBuffer(Math.max(1, nodes.length) * NODE_BYTES);
+  const view = new DataView(buffer);
+  for (let nodeIndex = 0; nodeIndex < nodes.length; nodeIndex++) {
+    const node = nodes[nodeIndex];
+    const base = nodeIndex * NODE_BYTES;
+    for (let child = 0; child < 4; child++) {
+      const bounds = node.childBounds[child] ?? [F32_MAX, F32_MAX, -F32_MAX, -F32_MAX];
+      view.setFloat32(base + child * 4, bounds[0], true);
+      view.setFloat32(base + 16 + child * 4, bounds[1], true);
+      view.setFloat32(base + 32 + child * 4, bounds[2], true);
+      view.setFloat32(base + 48 + child * 4, bounds[3], true);
+      view.setUint32(base + 64 + child * 4, node.children[child] ?? INVALID_REF, true);
+    }
+  }
+  return new Uint8Array(buffer);
+}
+
+function createCoherentRays(rayCount) {
+  const rays = new Float32Array(rayCount * 4);
+  for (let index = 0; index < rayCount; index++) {
+    const fraction = (index + 0.5) / rayCount - 0.5;
+    const angle = Math.PI * 0.5 + fraction * 0.12;
+    rays[index * 4] = fraction * 0.08;
+    rays[index * 4 + 1] = -0.82 + fraction * 0.03;
+    rays[index * 4 + 2] = Math.cos(angle);
+    rays[index * 4 + 3] = Math.sin(angle);
+  }
+  return rays;
+}
+
+function createIncoherentRays(rayCount) {
+  const rays = new Float32Array(rayCount * 4);
+  for (let index = 0; index < rayCount; index++) {
+    const x = radicalInverse(index + 1, 2);
+    const y = radicalInverse(index + 1, 3);
+    const angle = 6.28318530718 * radicalInverse(index + 1, 5);
+    rays[index * 4] = -0.8 + 1.6 * x;
+    rays[index * 4 + 1] = -0.8 + 1.6 * y;
+    rays[index * 4 + 2] = Math.cos(angle);
+    rays[index * 4 + 3] = Math.sin(angle);
+  }
+  return rays;
+}
+
+function createBufferWithData(device, data, usage, label) {
+  const size = Math.max(4, Math.ceil(data.byteLength / 4) * 4);
+  const buffer = device.createBuffer({ label, size, usage, mappedAtCreation: true });
+  new Uint8Array(buffer.getMappedRange()).set(
+    new Uint8Array(data.buffer, data.byteOffset, data.byteLength)
+  );
+  buffer.unmap();
+  return buffer;
+}
+
+function track(buffers, buffer) {
+  buffers.push(buffer);
+  return buffer;
+}
+
+async function measureStrategy(device, pipeline, bindGroup, dispatch,
+    hasTimestamps, repetitions, sampleCount, ownedBuffers) {
+  device.pushErrorScope('validation');
+  const warmup = device.createCommandEncoder();
+  const warmupPass = warmup.beginComputePass();
+  warmupPass.setPipeline(pipeline);
+  warmupPass.setBindGroup(0, bindGroup);
+  warmupPass.dispatchWorkgroups(dispatch.width, dispatch.height);
+  warmupPass.end();
+  device.queue.submit([warmup.finish()]);
+  await device.queue.onSubmittedWorkDone();
+  const warmupError = await device.popErrorScope();
+  if (warmupError) {
+    throw new Error(`Compute dispatch validation failed: ${warmupError.message}`);
+  }
+
+  const gpuSamples = [];
+  const wallSamples = [];
+  let querySet;
+  let resolveBuffer;
+  let queryReadBuffer;
+  if (hasTimestamps) {
+    querySet = device.createQuerySet({ type: 'timestamp', count: 2 });
+    resolveBuffer = track(ownedBuffers, device.createBuffer({
+      size: 16,
+      usage: GPUBufferUsage.QUERY_RESOLVE | GPUBufferUsage.COPY_SRC
+    }));
+    queryReadBuffer = track(ownedBuffers, device.createBuffer({
+      size: 16,
+      usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.MAP_READ
+    }));
+  }
+  let effectiveRepetitions = repetitions;
+  for (let sample = 0; sample < sampleCount; sample++) {
+    for (;;) {
+      const encoder = device.createCommandEncoder();
+      const descriptor = hasTimestamps ? {
+        timestampWrites: {
+          querySet, beginningOfPassWriteIndex: 0, endOfPassWriteIndex: 1
+        }
+      } : undefined;
+      const pass = encoder.beginComputePass(descriptor);
+      pass.setPipeline(pipeline);
+      pass.setBindGroup(0, bindGroup);
+      for (let repetition = 0; repetition < effectiveRepetitions; repetition++) {
+        pass.dispatchWorkgroups(dispatch.width, dispatch.height);
+      }
+      pass.end();
+      if (hasTimestamps) {
+        encoder.resolveQuerySet(querySet, 0, 2, resolveBuffer, 0);
+        encoder.copyBufferToBuffer(resolveBuffer, 0, queryReadBuffer, 0, 16);
+      }
+      const started = performance.now();
+      device.queue.submit([encoder.finish()]);
+      let elapsedGpuMs = null;
+      if (hasTimestamps) {
+        await queryReadBuffer.mapAsync(GPUMapMode.READ);
+        const stamps = new BigUint64Array(queryReadBuffer.getMappedRange()).slice();
+        queryReadBuffer.unmap();
+        elapsedGpuMs = Number(stamps[1] - stamps[0]) / 1e6;
+      } else {
+        await device.queue.onSubmittedWorkDone();
+      }
+      const elapsedWallMs = performance.now() - started;
+      if (hasTimestamps && elapsedGpuMs === 0 && effectiveRepetitions < 4096) {
+        effectiveRepetitions = Math.min(4096, effectiveRepetitions * 8);
+        continue;
+      }
+      if (hasTimestamps && elapsedGpuMs === 0) {
+        throw new Error('GPU timestamps remained zero after 4096 repetitions.');
+      }
+      if (hasTimestamps) gpuSamples.push(elapsedGpuMs / effectiveRepetitions);
+      wallSamples.push(elapsedWallMs / effectiveRepetitions);
+      break;
+    }
+  }
+  querySet?.destroy();
+  const primary = hasTimestamps ? gpuSamples : wallSamples;
+  primary.sort((a, b) => a - b);
+  wallSamples.sort((a, b) => a - b);
+  return {
+    medianMs: median(primary),
+    minimumMs: primary[0],
+    maximumMs: primary[primary.length - 1],
+    samplesMs: primary,
+    wallMedianMs: median(wallSamples),
+    effectiveRepetitions
+  };
+}
+
+async function readOutput(device, output, read, byteLength) {
+  const encoder = device.createCommandEncoder();
+  encoder.copyBufferToBuffer(output, 0, read, 0, byteLength);
+  device.queue.submit([encoder.finish()]);
+  await read.mapAsync(GPUMapMode.READ);
+  const result = new Float32Array(read.getMappedRange()).slice();
+  read.unmap();
+  return result;
+}
+
+function median(values) {
+  return values[Math.floor(values.length / 2)];
+}
+
+function compareOutputs(actual, expected) {
+  if (!expected) return { mismatchRayCount: 0, maximumAbsoluteError: 0 };
+  let mismatchRayCount = 0;
+  let maximumAbsoluteError = 0;
+  for (let ray = 0; ray < actual.length / 4; ray++) {
+    let mismatch = false;
+    for (let component = 0; component < 4; component++) {
+      const index = ray * 4 + component;
+      const error = Math.abs(actual[index] - expected[index]);
+      maximumAbsoluteError = Math.max(maximumAbsoluteError, error);
+      if (!Number.isFinite(actual[index]) || error > 2e-4) mismatch = true;
+    }
+    if (mismatch) mismatchRayCount++;
+  }
+  return { mismatchRayCount, maximumAbsoluteError };
+}
+
+function checksumFloat32(values) {
+  const words = new Uint32Array(values.buffer, values.byteOffset, values.length);
+  let hash = 0x811c9dc5;
+  for (const word of words) {
+    hash ^= word;
+    hash = Math.imul(hash, 0x01000193) >>> 0;
+  }
+  return hash.toString(16).padStart(8, '0');
+}
+
+function addSpeedups(methods) {
+  const scalarBvh = methods.scalar_bvh4?.medianMs ?? null;
+  const scalarDirect = methods.scalar_direct?.medianMs ?? null;
+  for (const [id, result] of Object.entries(methods)) {
+    result.speedupVsScalarBvh4 = scalarBvh === null
+      ? null : scalarBvh / result.medianMs;
+    result.speedupVsScalarDirect = scalarDirect === null
+      ? null : scalarDirect / result.medianMs;
+    if (id.includes('direct')) result.speedupVsScalarSameAcceleration =
+      scalarDirect === null ? null : scalarDirect / result.medianMs;
+    if (id.includes('bvh4')) result.speedupVsScalarSameAcceleration =
+      scalarBvh === null ? null : scalarBvh / result.medianMs;
+  }
+}
+
+function renderSummary(report) {
+  const table = document.createElement('table');
+  table.innerHTML = '<thead><tr><th>Case</th><th>Scalar direct</th>' +
+    '<th>Scalar BVH4</th><th>Subgroup direct</th><th>Subgroup BVH4</th>' +
+    '<th>Heuristic</th><th>Matched?</th>' +
+    '<th>Fastest valid method</th><th>ms</th></tr></thead>';
+  const body = document.createElement('tbody');
+  for (const [id, config] of Object.entries(report.results)) {
+    const valid = Object.entries(config.methods)
+      .filter(([, result]) => result.mismatchRayCount === 0)
+      .sort((a, b) => a[1].medianMs - b[1].medianMs);
+    const cells = [
+      id,
+      formatMs(config.methods.scalar_direct),
+      formatMs(config.methods.scalar_bvh4),
+      formatMs(config.methods.subgroup_direct),
+      formatMs(config.methods.subgroup_bvh4),
+      report.methods[config.heuristicRecommendation]?.label ??
+        config.heuristicRecommendation,
+      config.heuristicWasMeasured
+        ? (config.heuristicMatchedFastest ? 'yes' : 'no')
+        : 'not measured',
+      valid.length ? report.methods[valid[0][0]].label : 'none',
+      valid.length ? valid[0][1].medianMs.toFixed(3) : '—'
+    ];
+    const row = document.createElement('tr');
+    for (const value of cells) {
+      const cell = document.createElement('td');
+      cell.textContent = value;
+      row.append(cell);
+    }
+    body.append(row);
+  }
+  table.append(body);
+  summaryElement.replaceChildren(table);
+}
+
+function formatMs(result) {
+  return result ? result.medianMs.toFixed(3) : 'not supported';
+}
+
+function animationFrame() {
+  return new Promise(resolve => requestAnimationFrame(resolve));
+}
+
+function strategyShader(strategy, subgroup) {
+  const prefix = strategy.cooperation === 'subgroup'
+    ? 'enable subgroups;\nrequires subgroup_id;\n'
+    : '';
+  return prefix + commonShader() + entryPointShader(strategy, subgroup);
+}
+
+function commonShader() {
+  return `
+const INVALID_REF: u32 = 0xffffffffu;
+const LEAF_REF_BIT: u32 = 0x80000000u;
+const LEAF_START_MASK: u32 = 0x00ffffffu;
+const F32_MAX: f32 = 3.402823e38;
+
+struct BvhNode {
+  minX: vec4f,
+  minY: vec4f,
+  maxX: vec4f,
+  maxY: vec4f,
+  refs: vec4u,
+}
+struct PartitionRoot {
+  minimum: vec2f,
+  maximum: vec2f,
+  reference: u32,
+  padding0: u32,
+  padding1: u32,
+  padding2: u32,
+}
+struct Params {
+  rayCount: u32,
+  curveCount: u32,
+  rootCount: u32,
+  bounceCount: u32,
+  dispatchWidth: u32,
+  padding0: u32,
+  padding1: u32,
+  padding2: u32,
+}
+struct Hit { distance: f32, primitive: u32 }
+
+@group(0) @binding(0) var<storage, read> inputRays: array<vec4f>;
+@group(0) @binding(1) var<storage, read> curves: array<vec4f>;
+@group(0) @binding(2) var<storage, read> primitiveIndices: array<u32>;
+@group(0) @binding(3) var<storage, read> bvhNodes: array<BvhNode>;
+@group(0) @binding(4) var<storage, read> partitionRoots: array<PartitionRoot>;
+@group(0) @binding(5) var<storage, read_write> outputRays: array<vec4f>;
+@group(0) @binding(6) var<uniform> params: Params;
+
+fn flatWorkgroupIndex(workgroupId: vec3u) -> u32 {
+  return workgroupId.x + workgroupId.y * params.dispatchWidth;
+}
+
+fn betterHit(candidate: Hit, current: Hit) -> Hit {
+  if (candidate.distance < current.distance ||
+      (candidate.distance == current.distance && candidate.primitive < current.primitive)) {
+    return candidate;
+  }
+  return current;
+}
+
+fn intersectCurve(origin: vec2f, direction: vec2f, primitive: u32) -> Hit {
+  let curve = curves[primitive];
+  let a = curve.xy;
+  let segment = curve.zw - a;
+  let relative = a - origin;
+  let denominator = direction.x * segment.y - direction.y * segment.x;
+  if (abs(denominator) < 1e-9) { return Hit(F32_MAX, INVALID_REF); }
+  let distance = (relative.x * segment.y - relative.y * segment.x) / denominator;
+  let fraction = (relative.x * direction.y - relative.y * direction.x) / denominator;
+  if (distance <= 1e-4 || fraction < -1e-6 || fraction > 1.000001) {
+    return Hit(F32_MAX, INVALID_REF);
+  }
+  return Hit(distance, primitive);
+}
+
+fn boundsNear(origin: vec2f, direction: vec2f, minimum: vec2f,
+              maximum: vec2f, limit: f32) -> f32 {
+  let safeX = select(select(-1e-12, 1e-12, direction.x >= 0.0),
+                     direction.x, abs(direction.x) >= 1e-12);
+  let safeY = select(select(-1e-12, 1e-12, direction.y >= 0.0),
+                     direction.y, abs(direction.y) >= 1e-12);
+  let tx0 = (minimum.x - origin.x) / safeX;
+  let tx1 = (maximum.x - origin.x) / safeX;
+  let ty0 = (minimum.y - origin.y) / safeY;
+  let ty1 = (maximum.y - origin.y) / safeY;
+  let near = max(max(min(tx0, tx1), min(ty0, ty1)), 0.0);
+  let far = min(max(tx0, tx1), max(ty0, ty1));
+  return select(F32_MAX, near, far >= near && near <= limit);
+}
+
+fn traceDirectPartition(origin: vec2f, direction: vec2f,
+                        lane: u32, laneCount: u32) -> Hit {
+  var best = Hit(F32_MAX, INVALID_REF);
+  var primitive = lane;
+  loop {
+    if (primitive >= params.curveCount) { break; }
+    best = betterHit(intersectCurve(origin, direction, primitive), best);
+    primitive += laneCount;
+  }
+  return best;
+}
+
+fn traceBvhPartition(origin: vec2f, direction: vec2f,
+                     rootRef: u32, distanceLimit: f32) -> Hit {
+  var best = Hit(distanceLimit, INVALID_REF);
+  var stack: array<u32, 64>;
+  var stackSize = 0u;
+  if (rootRef != INVALID_REF) {
+    stack[0] = rootRef;
+    stackSize = 1u;
+  }
+  loop {
+    if (stackSize == 0u) { break; }
+    stackSize--;
+    let reference = stack[stackSize];
+    if ((reference & LEAF_REF_BIT) != 0u) {
+      let start = reference & LEAF_START_MASK;
+      let count = (reference >> 24u) & 0x7fu;
+      for (var offset = 0u; offset < count; offset++) {
+        let primitive = primitiveIndices[start + offset];
+        best = betterHit(intersectCurve(origin, direction, primitive), best);
+      }
+      continue;
+    }
+    let node = bvhNodes[reference];
+    for (var child = 0u; child < 4u; child++) {
+      let childRef = node.refs[child];
+      if (childRef == INVALID_REF) { continue; }
+      let near = boundsNear(
+        origin, direction,
+        vec2f(node.minX[child], node.minY[child]),
+        vec2f(node.maxX[child], node.maxY[child]), best.distance
+      );
+      if (near < F32_MAX && stackSize < 64u) {
+        stack[stackSize] = childRef;
+        stackSize++;
+      }
+    }
+  }
+  return best;
+}
+
+fn traceBvhPartitions(origin: vec2f, direction: vec2f,
+                      lane: u32, laneCount: u32) -> Hit {
+  var best = Hit(F32_MAX, INVALID_REF);
+  var partitionIndex = lane;
+  loop {
+    if (partitionIndex >= params.rootCount) { break; }
+    let root = partitionRoots[partitionIndex];
+    let near = boundsNear(
+      origin, direction, root.minimum, root.maximum, best.distance
+    );
+    if (near < F32_MAX) {
+      best = betterHit(
+        traceBvhPartition(origin, direction, root.reference, best.distance), best
+      );
+    }
+    partitionIndex += laneCount;
+  }
+  return best;
+}
+
+fn advanceRay(origin: ptr<function, vec2f>, direction: ptr<function, vec2f>,
+              hit: Hit) {
+  if (hit.primitive == INVALID_REF) {
+    let oldDirection = *direction;
+    *direction = normalize(vec2f(
+      oldDirection.x * 0.9998 - oldDirection.y * 0.02,
+      oldDirection.x * 0.02 + oldDirection.y * 0.9998
+    ));
+    return;
+  }
+  let curve = curves[hit.primitive];
+  let segment = curve.zw - curve.xy;
+  var normal = normalize(vec2f(-segment.y, segment.x));
+  if (dot(*direction, normal) > 0.0) { normal = -normal; }
+  let hitPoint = *origin + *direction * hit.distance;
+  *direction = normalize(*direction - 2.0 * dot(*direction, normal) * normal);
+  *origin = hitPoint + *direction * 2e-4;
+}
+`;
+}
+
+function entryPointShader(strategy, subgroup) {
+  const useBvh = strategy.acceleration === 'bvh4';
+  if (strategy.cooperation === 'scalar') {
+    const trace = useBvh
+      ? 'traceBvhPartitions(origin, direction, 0u, 1u)'
+      : 'traceDirectPartition(origin, direction, 0u, 1u)';
+    return `
+@compute @workgroup_size(${SCALAR_WORKGROUP_SIZE})
+fn simulateMain(@builtin(workgroup_id) workgroupId: vec3u,
+                @builtin(local_invocation_index) localIndex: u32) {
+  let rayIndex = flatWorkgroupIndex(workgroupId) *
+    ${SCALAR_WORKGROUP_SIZE}u + localIndex;
+  if (rayIndex >= params.rayCount) { return; }
+  let input = inputRays[rayIndex];
+  var origin = input.xy;
+  var direction = input.zw;
+  for (var bounce = 0u; bounce < params.bounceCount; bounce++) {
+    let hit = ${trace};
+    advanceRay(&origin, &direction, hit);
+  }
+  outputRays[rayIndex] = vec4f(origin, direction);
+}`;
+  }
+
+  if (strategy.cooperation === 'workgroup') {
+    const lanes = strategy.lanes;
+    const raysPerWorkgroup = COOPERATIVE_WORKGROUP_SIZE / lanes;
+    const trace = useBvh
+      ? `traceBvhPartitions(origin, direction, lane, ${lanes}u)`
+      : `traceDirectPartition(origin, direction, lane, ${lanes}u)`;
+    return `
+var<workgroup> sharedDistance: array<f32, ${COOPERATIVE_WORKGROUP_SIZE}>;
+var<workgroup> sharedPrimitive: array<u32, ${COOPERATIVE_WORKGROUP_SIZE}>;
+
+@compute @workgroup_size(${COOPERATIVE_WORKGROUP_SIZE})
+fn simulateMain(@builtin(workgroup_id) workgroupId: vec3u,
+                @builtin(local_invocation_index) localIndex: u32) {
+  let lane = localIndex % ${lanes}u;
+  let rayInWorkgroup = localIndex / ${lanes}u;
+  let rayIndex = flatWorkgroupIndex(workgroupId) *
+    ${raysPerWorkgroup}u + rayInWorkgroup;
+  let rayIsActive = rayIndex < params.rayCount;
+  let safeRayIndex = min(rayIndex, params.rayCount - 1u);
+  let input = select(
+    vec4f(0.0, 0.0, 1.0, 0.0), inputRays[safeRayIndex], rayIsActive
+  );
+  var origin = input.xy;
+  var direction = input.zw;
+  for (var bounce = 0u; bounce < params.bounceCount; bounce++) {
+    let localHit = ${trace};
+    sharedDistance[localIndex] = localHit.distance;
+    sharedPrimitive[localIndex] = localHit.primitive;
+    workgroupBarrier();
+    var stride = ${lanes / 2}u;
+    loop {
+      if (lane < stride) {
+        let other = localIndex + stride;
+        let candidate = Hit(sharedDistance[other], sharedPrimitive[other]);
+        let current = Hit(sharedDistance[localIndex], sharedPrimitive[localIndex]);
+        let selected = betterHit(candidate, current);
+        sharedDistance[localIndex] = selected.distance;
+        sharedPrimitive[localIndex] = selected.primitive;
+      }
+      workgroupBarrier();
+      if (stride == 1u) { break; }
+      stride /= 2u;
+    }
+    let winnerIndex = localIndex - lane;
+    let hit = Hit(sharedDistance[winnerIndex], sharedPrimitive[winnerIndex]);
+    advanceRay(&origin, &direction, hit);
+    workgroupBarrier();
+  }
+  if (lane == 0u && rayIsActive) {
+    outputRays[rayIndex] = vec4f(origin, direction);
+  }
+}`;
+  }
+
+  const trace = useBvh
+    ? 'traceBvhPartitions(origin, direction, subgroupLane, subgroupSize)'
+    : 'traceDirectPartition(origin, direction, subgroupLane, subgroupSize)';
+  return `
+@compute @workgroup_size(${SUBGROUP_WORKGROUP_SIZE})
+fn simulateMain(@builtin(workgroup_id) workgroupId: vec3u,
+                @builtin(subgroup_invocation_id) subgroupLane: u32,
+                @builtin(subgroup_size) subgroupSize: u32,
+                @builtin(subgroup_id) subgroupId: u32,
+                @builtin(num_subgroups) subgroupCount: u32) {
+  let rayIndex = flatWorkgroupIndex(workgroupId) * subgroupCount + subgroupId;
+  let rayIsActive = rayIndex < params.rayCount;
+  let safeRayIndex = min(rayIndex, params.rayCount - 1u);
+  let input = select(
+    vec4f(0.0, 0.0, 1.0, 0.0), inputRays[safeRayIndex], rayIsActive
+  );
+  var origin = input.xy;
+  var direction = input.zw;
+  for (var bounce = 0u; bounce < params.bounceCount; bounce++) {
+    let localHit = ${trace};
+    let winningDistance = subgroupMin(localHit.distance);
+    let candidatePrimitive = select(
+      INVALID_REF, localHit.primitive, localHit.distance == winningDistance
+    );
+    let winningPrimitive = subgroupMin(candidatePrimitive);
+    advanceRay(&origin, &direction, Hit(winningDistance, winningPrimitive));
+  }
+  if (subgroupLane == 0u && rayIsActive) {
+    outputRays[rayIndex] = vec4f(origin, direction);
+  }
+}`;
+}
+</script>
+</body>
+</html>

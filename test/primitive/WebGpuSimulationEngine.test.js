@@ -21,6 +21,10 @@ import { WebGpuMegakernelBackend } from
   '../../src/core/simulationEngines/webgpu/webGpuMegakernelBackend.js';
 import { WebGpuMegakernelStaticSceneStorage } from
   '../../src/core/simulationEngines/webgpu/webGpuMegakernelStorage.js';
+import { selectWebGpuRayCooperationStrategy } from
+  '../../src/core/simulationEngines/webgpu/webGpuRayCooperation.js';
+import { DEFAULT_SIMULATION_ENGINE_CONFIGS } from
+  '../../src/core/simulationEngines/config.js';
 
 const sourceType = {
   name: 'Megakernel test source',
@@ -157,6 +161,69 @@ describe('WebGpuSimulationEngine', () => {
       expect(observer.code).toContain('fn renderObserverNeighbor(');
       expect(observer.code).toContain('fn observerPoint(');
     });
+
+  it('generates cooperative direct and partitioned-BVH megakernels', async () => {
+    const prepared = await prepare();
+    const generate = (renderVariant, acceleration, lanesPerRay) =>
+      createWebGpuMegakernelShader({
+        description: prepared.runtimeDescription,
+        dagPrograms: prepared.dagPrograms,
+        workgroupSize: 64,
+        maxLocalIterations: 8,
+        renderVariant,
+        acceleration,
+        lanesPerRay,
+      }).code;
+    const direct = generate('rays', 'direct', 16);
+    const scalarDirect = generate('rays', 'direct', 1);
+    const bvh = generate('rays', 'bvh4', 4);
+    const images = generate('images', 'direct', 16);
+
+    expect(direct).toContain('traceDirectLane(ray,&membership,lane,16u');
+    expect(scalarDirect).toContain(
+      'traceDirectLane(ray,&membership,0u,1u,&front,&back)'
+    );
+    expect(bvh).toContain('traceBvhLane(ray,&membership,lane,4u');
+    expect(bvh).toContain('bvhPartitionRoots[rootIndex]');
+    expect(direct).toContain('var<workgroup> cooperativeHits');
+    expect(images).toContain('let rayBase=workgroup.x*2u');
+    expect(images).toContain('if(leader&&real&&raySlot>=2u)');
+  });
+
+  it('selects measured lane widths and accounts for image halos', () => {
+    const config = DEFAULT_SIMULATION_ENGINE_CONFIGS.webgpu;
+    const select = (activeRayCount, primitiveCount, neighborMode = false) =>
+      selectWebGpuRayCooperationStrategy({
+        activeRayCount,
+        primitiveCount,
+        workgroupSize: 64,
+        neighborMode,
+        config,
+      });
+
+    expect(select(16384, 4096)).toEqual({
+      acceleration: 'bvh4', lanesPerRay: 1
+    });
+    expect(select(1024, 4096)).toEqual({
+      acceleration: 'direct', lanesPerRay: 8
+    });
+    expect(select(256, 65536)).toEqual({
+      acceleration: 'bvh4', lanesPerRay: 32
+    });
+    expect(select(256, 65536, true)).toEqual({
+      acceleration: 'bvh4', lanesPerRay: 16
+    });
+
+    expect(selectWebGpuRayCooperationStrategy({
+      activeRayCount: 256,
+      primitiveCount: 65536,
+      workgroupSize: 64,
+      config: {
+        ...config,
+        rayCooperationMaximumBvhLanesPerRay: 24,
+      },
+    })).toEqual({ acceleration: 'bvh4', lanesPerRay: 16 });
+  });
 
   it('uses power prefixes for a stable systematically sampled queue', () => {
     const code = createMegakernelCollectorShader(64);

@@ -24,6 +24,8 @@ export function createWebGpuMegakernelShader({
   workgroupSize,
   maxLocalIterations,
   renderVariant,
+  acceleration = 'bvh4',
+  lanesPerRay = 1,
 }) {
   const trace = createWebGpuRawTraceShader(description, workgroupSize);
   if (!trace.supported) return trace;
@@ -78,6 +80,8 @@ struct CurveDescriptor { kind:u32,ownerKind:u32,ownerId:u32,flags:u32,
   filterBandwidth:f32 };
 struct BvhNode { minX:vec4f,minY:vec4f,maxX:vec4f,maxY:vec4f,
   refs:vec4u };
+struct BvhPartitionRoot { minimum:vec2f,maximum:vec2f,reference:u32,
+  padding0:u32,padding1:u32,padding2:u32 };
 struct RegionDescriptor { typeId:u32,parameterOffset:u32,parameterCount:u32,
   flags:u32,stepSize:f32,padding0:u32,padding1:u32,padding2:u32 };
 struct InstanceDescriptor { typeId:u32,parameterOffset:u32,
@@ -93,7 +97,7 @@ struct TraceUniforms { rayCount:u32,rayCapacity:u32,bvhRoot:i32,
   surfaceTypeOffset:u32,detectorTypeOffset:u32,forwardDistance:f32,
   interactionMerging:f32,maximumNormalChordDistanceSquared:f32,
   mergingDistanceFactor:f32,rayPowerCutoff:f32,
-  truncateWeakRays:u32,padding1:u32,padding2:u32 };
+  truncateWeakRays:u32,bvhPartitionCount:u32,padding2:u32 };
 struct MegaUniforms { rayCapacity:u32,inputActiveOffset:u32,
   inputCountWord:u32,maxRayDepth:u32,maximumOutputs:u32,regionCount:u32,
   regionWordCount:u32,membershipStride:u32,renderVariant:u32,payloadSize:u32,
@@ -125,7 +129,9 @@ ${createTraceStateCode(description, regionWords, stackSize)}
 ${createOutgoingCommonCode(regionWords, bulkIndexCases, bulkGrinCases,
   surfaceOutputCountCases)}
 ${renderHelpers}
-${neighborMode ? createNeighborDeclarations(workgroupSize) : ''}
+${createWorkgroupDeclarations({
+  workgroupSize, lanesPerRay, regionWords, neighborMode
+})}
 ${createRenderFunctions(renderVariant)}
 
 fn recordOutput(slot:u32) {
@@ -261,6 +267,8 @@ ${createMegakernelMain({
   neighborMode,
   regionWords,
   stackSize,
+  acceleration,
+  lanesPerRay,
 })}
 `;
   return {
@@ -271,8 +279,20 @@ ${createMegakernelMain({
   };
 }
 
-function createMegakernelMain({ workgroupSize, maxLocalIterations,
-  renderVariant, neighborMode, regionWords, stackSize }) {
+function createMegakernelMain(options) {
+  if (options.lanesPerRay > 1) {
+    return createCooperativeMegakernelMain(options);
+  }
+  const {
+    workgroupSize,
+    maxLocalIterations,
+    renderVariant,
+    neighborMode,
+    acceleration,
+  } = options;
+  const trace = acceleration === 'direct'
+    ? 'traceDirectLane(ray,&membership,0u,1u,&front,&back)'
+    : 'traceOne(ray,&membership,&front,&back)';
   const mapping = neighborMode ? `
   let base=workgroup.x*${workgroupSize - 2}u;
   let haloValid=workgroup.x>0u||local.x>=2u;
@@ -315,7 +335,7 @@ fn megakernelMain(@builtin(global_invocation_id) invocation:vec3u,
     var segmentRay=ray;var front:CrossingMask;var back:CrossingMask;
     if(isActive){
       if(real){atomicAdd(&control[16],1u);}
-      hit=traceOne(ray,&membership,&front,&back);
+      hit=${trace};
     }
     var capacityStalled=false;
     if(isActive&&hit.conflict!=3u&&depth<megaUniforms.maxRayDepth&&
@@ -350,10 +370,223 @@ fn megakernelMain(@builtin(global_invocation_id) invocation:vec3u,
 }`;
 }
 
-function createNeighborDeclarations(workgroupSize) {
+function createCooperativeMegakernelMain({
+  workgroupSize,
+  maxLocalIterations,
+  renderVariant,
+  neighborMode,
+  regionWords,
+  acceleration,
+  lanesPerRay,
+}) {
+  if (workgroupSize % lanesPerRay !== 0) {
+    throw new RangeError('Cooperative lanes must divide the workgroup size.');
+  }
+  const raySlots = workgroupSize / lanesPerRay;
+  const payload = raySlots - (neighborMode ? 2 : 0);
+  if (payload <= 0) {
+    throw new RangeError('Cooperative image tracing needs a productive ray slot.');
+  }
+  const trace = acceleration === 'direct'
+    ? `traceDirectLane(ray,&membership,lane,${lanesPerRay}u,&localFront,
+        &localBack)`
+    : `traceBvhLane(ray,&membership,lane,${lanesPerRay}u,&localFront,
+        &localBack)`;
+  const mapping = neighborMode ? `
+  let rayBase=workgroup.x*${payload}u;
+  let haloValid=workgroup.x>0u||raySlot>=2u;
+  let logicalIndex=rayBase+raySlot-2u;
+  let real=raySlot>=2u&&logicalIndex<startRayCount;
+  let valid=haloValid&&logicalIndex<startRayCount;
+  let isDummy=valid&&!real;` : `
+  let logicalIndex=workgroup.x*${raySlots}u+raySlot;
+  let real=logicalIndex<startRayCount;
+  let valid=real;
+  let isDummy=false;`;
+  const render = createCooperativeRenderInvocation({
+    renderVariant,
+    neighborMode,
+    raySlots,
+  });
   return `
+@compute @workgroup_size(${workgroupSize})
+fn megakernelMain(@builtin(workgroup_id) workgroup:vec3u,
+  @builtin(local_invocation_id) local:vec3u) {
+  let startRayCount=atomicLoad(&control[megaUniforms.inputCountWord]);
+  let lane=local.x%${lanesPerRay}u;
+  let raySlot=local.x/${lanesPerRay}u;
+  let leader=lane==0u;${mapping}
+  var ray=Ray(vec2f(0.0),vec2f(0.0),vec2f(0.0),0.0,0u);
+  var rayIndex=0u;var depth=0u;var membership:Membership;
+  var isActive=false;var capacityStopped=false;var slotCount=0u;
+  for(var word=0u;word<REGION_WORDS;word++){membership[word]=0u;}
+  if(valid){
+    rayIndex=atomicLoad(&control[
+      megaUniforms.inputActiveOffset+logicalIndex]);
+    if(rayIndex<megaUniforms.rayCapacity){
+      ray=rayStorage[megaUniforms.inputRayBase+rayIndex];depth=ray.flags>>3u;
+      loadMembership(rayIndex,&membership);isActive=(ray.flags&1u)!=0u;
+    }
+  }
+  let maximumSlots=select(0u,
+    1u+(megaUniforms.rayCapacity-1u-logicalIndex)/max(1u,startRayCount),real);
+  for(var iteration=0u;iteration<${maxLocalIterations}u;iteration++){
+    if(isActive&&traceUniforms.truncateWeakRays!=0u&&
+      traceUniforms.rayPowerCutoff>0.0&&
+      ray.powers.x+ray.powers.y<traceUniforms.rayPowerCutoff){
+      if(leader&&real){recordTruncation(ray.powers.x+ray.powers.y);}
+      isActive=false;
+    }
+    var localFront:CrossingMask;var localBack:CrossingMask;
+    clearCrossings(&localFront,&localBack);
+    var localHit=Hit(0.0,0.0,vec2f(0.0),-1,0.0,0u,0xffffffffu);
+    let segmentRay=ray;
+    if(isActive){localHit=${trace};}
+    cooperativeHits[local.x]=localHit;
+    workgroupBarrier();
+    let firstLane=local.x-lane;
+    if(leader){
+      var merged=Hit(maximumDistance(&membership),0.0,vec2f(0.0),-1,
+        0.0,0u,0xffffffffu);
+      if(isActive){
+        for(var other=0u;other<${lanesPerRay}u;other++){
+          merged=mergeRepresentative(merged,cooperativeHits[firstLane+other],ray);
+        }
+      }
+      cooperativeHits[firstLane]=merged;
+      atomicStore(&cooperativeConflict[raySlot],merged.conflict);
+      for(var word=0u;word<REGION_WORDS;word++){
+        let sharedIndex=raySlot*REGION_WORDS+word;
+        atomicStore(&cooperativeFront[sharedIndex],0u);
+        atomicStore(&cooperativeBack[sharedIndex],0u);
+      }
+    }
+    workgroupBarrier();
+    var hit=cooperativeHits[firstLane];
+    if(isActive&&belongsToRepresentative(localHit,hit)){
+      for(var word=0u;word<REGION_WORDS;word++){
+        let sharedIndex=raySlot*REGION_WORDS+word;
+        let oldFront=atomicOr(&cooperativeFront[sharedIndex],localFront[word]);
+        let oldBack=atomicOr(&cooperativeBack[sharedIndex],localBack[word]);
+        if((oldFront&localFront[word])!=0u||(oldBack&localBack[word])!=0u){
+          atomicMax(&cooperativeConflict[raySlot],2u);
+        }
+      }
+    }
+    workgroupBarrier();
+    var front:CrossingMask;var back:CrossingMask;
+    clearCrossings(&front,&back);
+    if(leader){
+      hit.conflict=max(hit.conflict,atomicLoad(&cooperativeConflict[raySlot]));
+      for(var word=0u;word<REGION_WORDS;word++){
+        let sharedIndex=raySlot*REGION_WORDS+word;
+        front[word]=atomicLoad(&cooperativeFront[sharedIndex]);
+        back[word]=atomicLoad(&cooperativeBack[sharedIndex]);
+      }
+      cooperativeHits[firstLane]=hit;
+      if(real&&isActive){atomicAdd(&control[16],1u);}
+    }
+    var capacityStalled=false;
+    if(leader&&isActive&&hit.conflict!=3u&&depth<megaUniforms.maxRayDepth&&
+      hit.s>0.0&&hit.s<F32_MAX){
+      let required=interactionOutputCount(hit,&front,&back);
+      if(real&&slotCount+required>maximumSlots){
+        capacityStalled=true;
+        atomicMax(&control[5],(slotCount+required)*startRayCount);
+        if(iteration==0u){atomicStore(&control[8],1u);}
+      }
+    }
+    let renderActive=isActive&&!capacityStalled;
+    ${render}
+    if(leader){
+      if(capacityStalled){isActive=false;capacityStopped=true;}
+      if(isActive){
+        if(hit.conflict==3u){if(real){atomicOr(&control[18],1u);}isActive=false;}
+        else if(depth>=megaUniforms.maxRayDepth){
+          if(real){recordTruncation(ray.powers.x+ray.powers.y);}isActive=false;}
+        else if(hit.s<=0.0||hit.s>=F32_MAX){isActive=false;}
+        else{
+          var continuation=ray;var nextMembership:Membership;
+          let continues=processInteraction(ray,hit,&membership,&front,&back,
+            rayIndex,logicalIndex,startRayCount,depth+1u,&slotCount,isDummy,
+            &continuation,&nextMembership);
+          isActive=continues;
+          if(continues){ray=continuation;membership=nextMembership;depth+=1u;}
+        }
+      }
+      cooperativeRays[raySlot]=ray;
+      cooperativeState[raySlot]=vec4u(
+        select(0u,1u,isActive),select(0u,1u,capacityStopped),slotCount,depth);
+      for(var word=0u;word<REGION_WORDS;word++){
+        cooperativeMembership[raySlot*REGION_WORDS+word]=membership[word];
+      }
+    }
+    workgroupBarrier();
+    ray=cooperativeRays[raySlot];
+    let state=cooperativeState[raySlot];
+    isActive=state.x!=0u;capacityStopped=state.y!=0u;
+    slotCount=state.z;depth=state.w;
+    for(var word=0u;word<REGION_WORDS;word++){
+      membership[word]=cooperativeMembership[raySlot*REGION_WORDS+word];
+    }
+    workgroupBarrier();
+  }
+  if(leader&&(isActive||capacityStopped)&&real){writeSuspended(
+    ray,&membership,logicalIndex,startRayCount,depth,&slotCount);}
+}`;
+}
+
+function createCooperativeRenderInvocation({
+  renderVariant,
+  neighborMode,
+  raySlots,
+}) {
+  if (!neighborMode) {
+    return `if(leader&&real&&renderActive&&hit.s>0.0){
+      renderIndependent(segmentRay,hit,depth);}`;
+  }
+  const modeCode = renderVariant === 'images'
+    ? `renderImageNeighbor(bank+raySlot);`
+    : `renderObserverNeighbor(bank+raySlot,logicalIndex);`;
+  return `
+    let bank=(iteration&1u)*${raySlots}u;
+    if(leader){
+      sharedRays[bank+raySlot]=Ray(
+        vec2f(0.0),vec2f(0.0),vec2f(0.0),0.0,0u);
+      sharedHits[bank+raySlot]=Hit(
+        0.0,0.0,vec2f(0.0),-1,0.0,0u,0xffffffffu);
+      if(renderActive){sharedRays[bank+raySlot]=segmentRay;
+        sharedHits[bank+raySlot]=hit;}
+    }
+    workgroupBarrier();
+    if(leader&&real&&raySlot>=2u){${modeCode}}
+    workgroupBarrier();`;
+}
+
+function createWorkgroupDeclarations({
+  workgroupSize,
+  lanesPerRay,
+  regionWords,
+  neighborMode,
+}) {
+  if (lanesPerRay === 1) {
+    return neighborMode ? `
 var<workgroup> sharedRays:array<Ray,${workgroupSize * 2}>;
 var<workgroup> sharedHits:array<Hit,${workgroupSize * 2}>;
+` : '';
+  }
+  const raySlots = workgroupSize / lanesPerRay;
+  return `
+var<workgroup> cooperativeHits:array<Hit,${workgroupSize}>;
+var<workgroup> cooperativeRays:array<Ray,${raySlots}>;
+var<workgroup> cooperativeState:array<vec4u,${raySlots}>;
+var<workgroup> cooperativeMembership:array<u32,${raySlots * regionWords}>;
+var<workgroup> cooperativeFront:array<atomic<u32>,${raySlots * regionWords}>;
+var<workgroup> cooperativeBack:array<atomic<u32>,${raySlots * regionWords}>;
+var<workgroup> cooperativeConflict:array<atomic<u32>,${raySlots}>;
+${neighborMode ? `
+var<workgroup> sharedRays:array<Ray,${raySlots * 2}>;
+var<workgroup> sharedHits:array<Hit,${raySlots * 2}>;` : ''}
 `;
 }
 
@@ -550,6 +783,93 @@ fn traceOne(ray:Ray,membership:ptr<function,Membership>,
     }
   }
   return hit;
+}
+fn traceDirectLane(ray:Ray,membership:ptr<function,Membership>,lane:u32,
+  laneCount:u32,front:ptr<function,CrossingMask>,
+  back:ptr<function,CrossingMask>)->Hit{
+  clearCrossings(front,back);let maximum=maximumDistance(membership);
+  var hit=Hit(maximum,0.0,vec2f(0.0),-1,0.0,0u,0xffffffffu);
+  for(var curveId=lane;curveId<traceUniforms.curveCount;curveId+=laneCount){
+    hit=intersectLocal(curveId,ray,hit,maximum,front,back);
+  }
+  return hit;
+}
+fn traceBvhReference(ray:Ray,reference0:u32,maximum:f32,hit0:Hit,
+  front:ptr<function,CrossingMask>,back:ptr<function,CrossingMask>)->Hit{
+  var hit=hit0;var stackRefs:array<u32,${stackSize}>;
+  var stackNear:array<f32,${stackSize}>;var stackCount=1u;
+  stackRefs[0]=reference0;stackNear[0]=0.0;
+  loop{
+    if(stackCount==0u){break;}stackCount-=1u;
+    let reference=stackRefs[stackCount];
+    if(stackNear[stackCount]>hit.s){continue;}
+    if((reference&BVH_LEAF_REFERENCE_BIT)!=0u){
+      let start=reference&BVH_LEAF_START_MASK;
+      let count=(reference>>24u)&0x7fu;
+      for(var offset=0u;offset<count;offset++){
+        hit=intersectLocal(bvhCurveIds[start+offset],ray,hit,
+          maximum,front,back);
+      }
+      continue;
+    }
+    let node=bvhNodes[reference&BVH_NODE_INDEX_MASK];
+    let nearValues=boundsNear4(ray,node,traceUniforms.forwardDistance);
+    for(var child=0u;child<4u;child++){
+      let childRef=node.refs[child];let childNear=nearValues[child];
+      if(childRef!=BVH_INVALID_REFERENCE&&childNear!=F32_MAX&&
+          childNear<=hit.s){
+        stackRefs[stackCount]=childRef;stackNear[stackCount]=childNear;
+        stackCount+=1u;
+      }
+    }
+  }
+  return hit;
+}
+fn traceBvhLane(ray:Ray,membership:ptr<function,Membership>,lane:u32,
+  laneCount:u32,front:ptr<function,CrossingMask>,
+  back:ptr<function,CrossingMask>)->Hit{
+  clearCrossings(front,back);let maximum=maximumDistance(membership);
+  var hit=Hit(maximum,0.0,vec2f(0.0),-1,0.0,0u,0xffffffffu);
+  for(var rootIndex=lane;rootIndex<traceUniforms.bvhPartitionCount;
+      rootIndex+=laneCount){
+    let root=bvhPartitionRoots[rootIndex];
+    let near=boundsNear(ray,vec4f(root.minimum,root.maximum),
+      traceUniforms.forwardDistance);
+    if(near!=F32_MAX&&near<=hit.s){
+      hit=traceBvhReference(ray,root.reference,maximum,hit,front,back);
+    }
+  }
+  return hit;
+}
+fn mergeRepresentative(candidate0:Hit,hit:Hit,ray:Ray)->Hit{
+  var candidate=candidate0;
+  if(hit.curveId<0){return candidate;}
+  if(candidate.curveId<0){return hit;}
+  let curve=curves[u32(hit.curveId)];
+  let tolerance=mergingTolerance(candidate,hit,curve);
+  if(hit.s<candidate.s-tolerance){return hit;}
+  if(hit.s>candidate.s+tolerance||candidate.conflict==3u){return candidate;}
+  candidate.conflict=max(candidate.conflict,hit.conflict);
+  let difference=candidate.normal-hit.normal;
+  if(dot(difference,difference)>
+      traceUniforms.maximumNormalChordDistanceSquared){
+    candidate.conflict=3u;return candidate;
+  }
+  let oldCurve=curves[u32(candidate.curveId)];
+  if(!hitsCompatible(candidate,oldCurve,hit,curve,ray)){
+    candidate.conflict=max(candidate.conflict,1u);
+  }
+  let replace=ownerPriority(curve.ownerKind)>ownerPriority(oldCurve.ownerKind)||
+    (ownerPriority(curve.ownerKind)==ownerPriority(oldCurve.ownerKind)&&
+      u32(hit.curveId)<u32(candidate.curveId));
+  if(replace){candidate.s=hit.s;candidate.u=hit.u;
+    candidate.curveId=hit.curveId;candidate.sigma=hit.sigma;}
+  return candidate;
+}
+fn belongsToRepresentative(hit:Hit,representative:Hit)->bool{
+  if(hit.curveId<0||representative.curveId<0){return false;}
+  return abs(hit.s-representative.s)<=mergingTolerance(
+    representative,hit,curves[u32(hit.curveId)]);
 }
 `;
 }

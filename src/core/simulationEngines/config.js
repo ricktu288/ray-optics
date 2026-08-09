@@ -36,6 +36,19 @@ const COMMON_PRIMITIVE_ENGINE_CONFIG = Object.freeze({
   bvh: COMMON_BVH_CONFIG,
 });
 
+// Provisional Intel Xe-LPG calibration from the standalone multi-bounce
+// ray-cooperation benchmark. These remain hidden tuning values until a
+// per-adapter calibration path is available.
+export const DEFAULT_WEBGPU_RAY_COOPERATION_CONFIG = Object.freeze({
+  rayCooperationEnabled: true,
+  rayCooperationSaturationRayCount: 8192,
+  rayCooperationDirectMaxTestsPerLane: 1024,
+  rayCooperationBvhMinTestsPerLane: 4096,
+  rayCooperationMaximumDirectLanesPerRay: 16,
+  rayCooperationMaximumBvhLanesPerRay: 32,
+  rayCooperationMaximumHaloFraction: 0.5,
+});
+
 /**
  * Default global tuning values for each primitive-based simulation engine.
  * Stored user preferences contain only values which override these defaults.
@@ -48,6 +61,7 @@ export const DEFAULT_SIMULATION_ENGINE_CONFIGS = Object.freeze({
   webgpu: Object.freeze({
     ...COMMON_PRIMITIVE_ENGINE_CONFIG,
     workgroupSize: 64,
+    ...DEFAULT_WEBGPU_RAY_COOPERATION_CONFIG,
     maxBatchRayEvents: 1048576,
     maxReadyLineRecords: 1048576,
     maxReadyPointRecords: 1048576,

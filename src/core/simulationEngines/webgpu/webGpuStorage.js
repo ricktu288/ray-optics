@@ -12,6 +12,8 @@ export const WEBGPU_REGION_DESCRIPTOR_STRIDE = 32;
 export const WEBGPU_DETECTOR_DESCRIPTOR_STRIDE = 32;
 export const WEBGPU_CURVE_DESCRIPTOR_STRIDE = 32;
 export const WEBGPU_BVH_NODE_STRIDE = 80;
+export const WEBGPU_BVH_PARTITION_ROOT_STRIDE = 32;
+export const WEBGPU_BVH_PARTITION_TARGET = 32;
 export const WEBGPU_RUN_CONTROL_SIZE = 80;
 
 export const WEBGPU_CURVE_KINDS = Object.freeze({
@@ -54,6 +56,7 @@ export function packWebGpuScene(description) {
   const geometryValues = [];
   const curveDescriptors = packCurves(description.curves, geometryValues);
   const bvhNodes = packBvhNodes(description.bvh.nodes);
+  const bvhPartitionRoots = packBvhPartitionRoots(description.bvh);
 
   const sourceDispatch = createSourceDispatchData(
     description,
@@ -72,6 +75,8 @@ export function packWebGpuScene(description) {
       detectorResultValues: packedDetectors.resultValueCount,
       curves: description.curves.length,
       bvhNodes: bvhNodes.byteLength / WEBGPU_BVH_NODE_STRIDE,
+      bvhPartitionRoots: bvhPartitionRoots.byteLength /
+        WEBGPU_BVH_PARTITION_ROOT_STRIDE,
       regionWords: Math.ceil(description.regions.length / 32),
       interactionTypes: interactionTypes.layout.types.length,
     },
@@ -87,6 +92,7 @@ export function packWebGpuScene(description) {
     curveDescriptors,
     curveGeometry: Float32Array.from(geometryValues),
     bvhNodes,
+    bvhPartitionRoots,
     bvhCurveIds: new Uint32Array(description.bvh.curveIds),
     bvhRoot: description.bvh.root,
   };
@@ -377,6 +383,55 @@ function packBvhNodes(nodes) {
     }
   });
   return data;
+}
+
+/**
+ * Expand the full BVH into a small logical frontier. Cooperative lanes share
+ * this immutable list; the hierarchy and primitive ordering remain singular.
+ */
+function packBvhPartitionRoots(bvh) {
+  const frontier = createWebGpuBvhPartitionRootIndices(bvh);
+  if (frontier.length === 0) return new ArrayBuffer(0);
+  const branchCount = bvh.nodes.filter(node => node.count === 0).length;
+  const data = new ArrayBuffer(
+    frontier.length * WEBGPU_BVH_PARTITION_ROOT_STRIDE
+  );
+  const view = new DataView(data);
+  frontier.forEach((nodeIndex, index) => {
+    const node = bvh.nodes[nodeIndex];
+    const offset = index * WEBGPU_BVH_PARTITION_ROOT_STRIDE;
+    writeBounds(view, offset, node.bounds);
+    view.setUint32(
+      offset + 16,
+      packBvhChildReference(node, nodeIndex, branchCount),
+      true
+    );
+  });
+  return data;
+}
+
+export function createWebGpuBvhPartitionRootIndices(bvh) {
+  if (bvh.root < 0 || bvh.nodes.length === 0) return [];
+  const frontier = [bvh.root];
+  while (frontier.length < WEBGPU_BVH_PARTITION_TARGET) {
+    let splitPosition = -1;
+    let splitArea = -1;
+    for (let position = 0; position < frontier.length; position++) {
+      const node = bvh.nodes[frontier[position]];
+      if (!node || node.count > 0) continue;
+      const width = node.bounds.maxX - node.bounds.minX;
+      const height = node.bounds.maxY - node.bounds.minY;
+      const area = width * height;
+      if (area > splitArea) {
+        splitArea = area;
+        splitPosition = position;
+      }
+    }
+    if (splitPosition < 0) break;
+    const node = bvh.nodes[frontier[splitPosition]];
+    frontier.splice(splitPosition, 1, ...node.children);
+  }
+  return frontier;
 }
 
 function packBvhChildReference(node, nodeIndex, branchCount) {

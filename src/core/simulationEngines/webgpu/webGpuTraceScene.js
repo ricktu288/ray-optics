@@ -3,6 +3,10 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 
+import {
+  createWebGpuBvhPartitionRootIndices
+} from './webGpuStorage.js';
+
 const TRACE_SCENE_FIELDS = Object.freeze([
   ['bvhNodes', 'BvhNode', 80],
   ['instanceParameters', 'f32', 4],
@@ -12,6 +16,7 @@ const TRACE_SCENE_FIELDS = Object.freeze([
   ['curveDescriptors', 'CurveDescriptor', 32],
   ['curveGeometry', 'f32', 4],
   ['bvhCurveIds', 'u32', 4],
+  ['bvhPartitionRoots', 'BvhPartitionRoot', 32],
 ]);
 
 /**
@@ -21,7 +26,10 @@ const TRACE_SCENE_FIELDS = Object.freeze([
  */
 export function createWebGpuTraceSceneData(packedScene, fieldCapacities = null) {
   const byteLengths = TRACE_SCENE_FIELDS.map(([name, _type, minimumSize]) => {
-    const byteLength = Math.max(minimumSize, packedScene[name].byteLength);
+    const byteLength = Math.max(
+      minimumSize,
+      packedScene[name]?.byteLength ?? 0
+    );
     const capacity = fieldCapacities?.[name] ?? byteLength;
     if (byteLength > capacity) {
       throw new RangeError(
@@ -34,7 +42,7 @@ export function createWebGpuTraceSceneData(packedScene, fieldCapacities = null) 
   const data = new Uint8Array(byteLength);
   let offset = 0;
   TRACE_SCENE_FIELDS.forEach(([name], index) => {
-    const value = packedScene[name];
+    const value = packedScene[name] ?? new Uint8Array(0);
     const bytes = value instanceof ArrayBuffer
       ? new Uint8Array(value)
       : new Uint8Array(value.buffer, value.byteOffset, value.byteLength);
@@ -59,7 +67,7 @@ export function createWebGpuTraceSceneDeclaration(description, binding) {
 export function useWebGpuTraceScene(code) {
   const names = [
     'bvhNodes', 'instanceParameters', 'surfaces', 'regions', 'detectors',
-    'curves', 'geometry', 'bvhCurveIds',
+    'curves', 'geometry', 'bvhCurveIds', 'bvhPartitionRoots',
   ];
   let result = code;
   for (const name of names) {
@@ -111,6 +119,10 @@ function traceSceneCounts(description) {
     bvhNodes: Math.max(1, description.bvh.nodes.filter(
       node => node.count === 0
     ).length),
+    bvhPartitionRoots: Math.max(
+      1,
+      createWebGpuBvhPartitionRootIndices(description.bvh).length
+    ),
     instanceParameters,
     surfaceDescriptors: description.surfaces?.length ?? 0,
     regionDescriptors: description.regions?.length ?? 0,

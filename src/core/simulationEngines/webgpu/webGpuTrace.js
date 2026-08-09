@@ -285,6 +285,8 @@ struct CurveDescriptor { kind: u32, ownerKind: u32, ownerId: u32,
   filterWavelength: f32, filterBandwidth: f32 };
 struct BvhNode { minX:vec4f,minY:vec4f,maxX:vec4f,maxY:vec4f,
   refs:vec4u };
+struct BvhPartitionRoot { minimum:vec2f,maximum:vec2f,reference:u32,
+  padding0:u32,padding1:u32,padding2:u32 };
 struct RegionDescriptor { typeId:u32, parameterOffset:u32, parameterCount:u32,
   flags:u32, stepSize:f32, padding0:u32, padding1:u32, padding2:u32 };
 struct InstanceDescriptor { typeId:u32, parameterOffset:u32,
