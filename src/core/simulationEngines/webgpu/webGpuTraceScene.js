@@ -19,10 +19,17 @@ const TRACE_SCENE_FIELDS = Object.freeze([
  * BvhNode is first because its vec4 member gives it 16-byte alignment; every
  * following table has four-byte alignment and every table has a fixed stride.
  */
-export function createWebGpuTraceSceneData(packedScene) {
-  const byteLengths = TRACE_SCENE_FIELDS.map(([name, _type, minimumSize]) =>
-    Math.max(minimumSize, packedScene[name].byteLength)
-  );
+export function createWebGpuTraceSceneData(packedScene, fieldCapacities = null) {
+  const byteLengths = TRACE_SCENE_FIELDS.map(([name, _type, minimumSize]) => {
+    const byteLength = Math.max(minimumSize, packedScene[name].byteLength);
+    const capacity = fieldCapacities?.[name] ?? byteLength;
+    if (byteLength > capacity) {
+      throw new RangeError(
+        `Packed WebGPU trace-scene field ${name} does not fit its layout.`
+      );
+    }
+    return capacity;
+  });
   const byteLength = alignTo16(byteLengths.reduce((sum, size) => sum + size, 0));
   const data = new Uint8Array(byteLength);
   let offset = 0;

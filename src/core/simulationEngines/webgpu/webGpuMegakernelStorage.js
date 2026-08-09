@@ -53,7 +53,10 @@ export class WebGpuMegakernelStaticSceneStorage {
         STATIC_STORAGE_MINIMUM_SIZES[name]
       );
     }
-    const traceScene = createWebGpuTraceSceneData(packedScene);
+    const traceScene = createWebGpuTraceSceneData(
+      packedScene,
+      this.capacities
+    );
     this.capacities.traceScene = traceScene.byteLength;
     this.buffers.traceScene = createInitializedBuffer(
       device,
@@ -79,7 +82,14 @@ export class WebGpuMegakernelStaticSceneStorage {
         this.device.queue.writeBuffer(this.buffers[name], 0, toBytes(data));
       }
     }
-    const traceScene = createWebGpuTraceSceneData(packedScene);
+    // The WGSL TraceScene struct was compiled with the original array sizes.
+    // Keep those field offsets when a smaller compatible scene is uploaded;
+    // compacting the replacement data would make every later field shift
+    // while the shader continued reading the original offsets.
+    const traceScene = createWebGpuTraceSceneData(
+      packedScene,
+      this.capacities
+    );
     if (traceScene.byteLength > this.capacities.traceScene) {
       throw new RangeError(
         'Updated packed WebGPU megakernel trace scene does not fit.'

@@ -19,6 +19,8 @@ import {
   '../../src/core/simulationEngines/webgpu/webGpuMegakernelQueue.js';
 import { WebGpuMegakernelBackend } from
   '../../src/core/simulationEngines/webgpu/webGpuMegakernelBackend.js';
+import { WebGpuMegakernelStaticSceneStorage } from
+  '../../src/core/simulationEngines/webgpu/webGpuMegakernelStorage.js';
 
 const sourceType = {
   name: 'Megakernel test source',
@@ -258,6 +260,44 @@ describe('WebGpuSimulationEngine', () => {
     backend.resetRunControl();
 
     expect(writeBuffer.mock.calls[0][2]).toHaveLength(21);
+  });
+
+  it('preserves packed trace-scene offsets when a source is removed', () => {
+    const writeBuffer = jest.fn();
+    const device = {
+      createBuffer: jest.fn(options => ({ ...options })),
+      queue: { writeBuffer },
+    };
+    const packedScene = instanceParameters => ({
+      instanceParameters: Float32Array.from(instanceParameters),
+      sourceDescriptors: new ArrayBuffer(16),
+      surfaceDescriptors: Uint32Array.from([11, 12, 13, 14]),
+      regionDescriptors: new ArrayBuffer(0),
+      detectorDescriptors: new ArrayBuffer(0),
+      curveDescriptors: new ArrayBuffer(32),
+      curveGeometry: new Float32Array(0),
+      bvhNodes: new ArrayBuffer(32),
+      bvhCurveIds: new Uint32Array(0),
+    });
+    const storage = new WebGpuMegakernelStaticSceneStorage(
+      device,
+      packedScene([1, 2])
+    );
+    writeBuffer.mockClear();
+
+    storage.update(packedScene([1]));
+
+    const traceWrite = writeBuffer.mock.calls.find(
+      ([buffer]) => buffer === storage.buffers.traceScene
+    );
+    const traceData = traceWrite[2];
+    // bvhNodes occupy 32 bytes and the compiled parameter array occupies 8.
+    // Removing a source must not shift the following surface descriptor to 36.
+    expect(new Uint32Array(
+      traceData.buffer,
+      traceData.byteOffset + 40,
+      4
+    )).toEqual(Uint32Array.from([11, 12, 13, 14]));
   });
 
   it('passes the configured ray-power policy to tracing and both collectors',
