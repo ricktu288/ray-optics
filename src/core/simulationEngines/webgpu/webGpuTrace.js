@@ -412,7 +412,7 @@ fn rawTraceMain(@builtin(global_invocation_id) invocation: vec3u) {
   if(power<traceUniforms.rayPowerCutoff){
     hit.s=0.0;hits[rayIndex]=hit;
     interactionTypeByRay[rayIndex]=0xffffffffu;
-    atomicAdd(&runControl[17],u32(round(min(
+    atomicAdd(&runControl[17],u32(ceil(min(
       power*1048576.0,4294967040.0))));
     return;
   }

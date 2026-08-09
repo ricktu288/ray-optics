@@ -22,7 +22,10 @@ import Detector from '../../src/core/sceneObjs/other/Detector.js';
 function createScene() {
   return {
     lengthScale: 1,
-    numericalTolerances: { rayPowerCutoff: 1e-6 },
+    numericalTolerances: {
+      rayPowerCutoff: 1e-6,
+      rayPowerCutoffMode: 'truncate'
+    },
     colorMode: 'default',
     simulateColors: false,
     opticalObjs: []
@@ -105,7 +108,10 @@ describe('PrimitiveBasedSimulator BVH diagnostics', () => {
     await simulator.runEngine(0);
 
     expect(simulator.engine.createRun).toHaveBeenCalledWith(
-      expect.objectContaining({ rayPowerCutoff: 1e-6 })
+      expect.objectContaining({
+        rayPowerCutoff: 1e-6,
+        rayPowerCutoffMode: 'truncate'
+      })
     );
     expect(result.values).toEqual(Float64Array.of(2, 3));
     expect(simulator.updateSimulation).toHaveBeenCalledWith(true, true);

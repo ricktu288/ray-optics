@@ -73,6 +73,34 @@
               v-text="$t(`simulator:numericalToleranceModal.fields.${field}.description`)"
             ></div>
           </div>
+
+          <div class="numerical-tolerance-field mb-3">
+            <div class="d-flex align-items-center justify-content-between gap-3">
+              <label
+                class="form-label fw-semibold text-body mb-0"
+                for="numericalTolerance_rayPowerCutoffMode"
+                v-text="$t('simulator:numericalToleranceModal.fields.rayPowerCutoffMode.title')"
+              ></label>
+              <select
+                id="numericalTolerance_rayPowerCutoffMode"
+                class="form-select form-select-sm numerical-tolerance-mode-input"
+                :value="numericalTolerances.rayPowerCutoffMode"
+                @change="setCutoffMode"
+                @keydown.stop
+              >
+                <option
+                  v-for="mode in CUTOFF_MODES"
+                  :key="mode"
+                  :value="mode"
+                  v-text="$t(`simulator:numericalToleranceModal.fields.rayPowerCutoffMode.options.${mode}`)"
+                ></option>
+              </select>
+            </div>
+            <div
+              class="form-text"
+              v-text="$t('simulator:numericalToleranceModal.fields.rayPowerCutoffMode.description')"
+            ></div>
+          </div>
         </div>
         <div class="modal-footer">
           <button
@@ -113,6 +141,7 @@ const TOLERANCE_FIELDS = [
 ]
 
 const DEFAULT_TOLERANCES = Scene.serializableDefaults.numericalTolerances
+const CUTOFF_MODES = ['stableSampling', 'truncate']
 
 export default {
   name: 'NumericalToleranceModal',
@@ -123,7 +152,8 @@ export default {
     const isDefault = computed(() =>
       TOLERANCE_FIELDS.every(
         field => numericalTolerances.value[field] === DEFAULT_TOLERANCES[field]
-      )
+      ) && numericalTolerances.value.rayPowerCutoffMode ===
+        DEFAULT_TOLERANCES.rayPowerCutoffMode
     )
 
     onMounted(() => {
@@ -164,13 +194,23 @@ export default {
       numericalTolerances.value = { ...DEFAULT_TOLERANCES }
     }
 
+    const setCutoffMode = (event) => {
+      if (!CUTOFF_MODES.includes(event.target.value)) return
+      numericalTolerances.value = {
+        ...numericalTolerances.value,
+        rayPowerCutoffMode: event.target.value
+      }
+    }
+
     return {
       TOLERANCE_FIELDS,
+      CUTOFF_MODES,
       numericalTolerances,
       isDefault,
       isModalOpen,
       closeModal,
       setTolerance,
+      setCutoffMode,
       resetToDefaults
     }
   }
@@ -198,6 +238,11 @@ export default {
 
 .numerical-tolerance-input {
   width: 8rem;
+  flex-shrink: 0;
+}
+
+.numerical-tolerance-mode-input {
+  width: 15rem;
   flex-shrink: 0;
 }
 </style>

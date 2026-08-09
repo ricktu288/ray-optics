@@ -4,6 +4,10 @@
  */
 
 import { getIntersectionTolerancePolicy } from '../../primitive/numeric.js';
+import {
+  normalizeRayPowerCutoffMode,
+  RAY_POWER_CUTOFF_MODE_TRUNCATE
+} from '../stableRayPowerSampling.js';
 import { WEBGPU_RAY_STRIDE } from './webGpuExecutionPlan.js';
 import {
   WebGpuMegakernelStaticSceneStorage,
@@ -337,17 +341,32 @@ export class WebGpuMegakernelBackend {
       throw new RangeError('Neighbor rendering requires workgroupSize >= 3.');
     }
     this.maxRayDepth = normalizeDepth(options.maxRayDepth);
+    const rayPowerCutoffMode = normalizeRayPowerCutoffMode(
+      options.rayPowerCutoffMode
+    );
     this.device.queue.writeBuffer(
       this.traceUniformBuffer,
       48,
       new Float32Array([Math.fround(options.rayPowerCutoff ?? 1e-6)])
     );
     const rayPowerCutoff = Math.fround(options.rayPowerCutoff ?? 1e-6);
+    const truncateWeakRays = rayPowerCutoffMode ===
+      RAY_POWER_CUTOFF_MODE_TRUNCATE ? 1 : 0;
+    this.device.queue.writeBuffer(
+      this.traceUniformBuffer,
+      13 * 4,
+      new Uint32Array([truncateWeakRays])
+    );
     for (const uniformBuffer of this.collectorUniformBuffers) {
       this.device.queue.writeBuffer(
         uniformBuffer,
         9 * 4,
         new Float32Array([rayPowerCutoff])
+      );
+      this.device.queue.writeBuffer(
+        uniformBuffer,
+        10 * 4,
+        new Uint32Array([truncateWeakRays])
       );
     }
     this.device.queue.writeBuffer(

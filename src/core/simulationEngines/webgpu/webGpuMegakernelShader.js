@@ -89,7 +89,7 @@ struct TraceUniforms { rayCount:u32,rayCapacity:u32,bvhRoot:i32,
   surfaceTypeOffset:u32,detectorTypeOffset:u32,forwardDistance:f32,
   interactionMerging:f32,maximumNormalChordDistanceSquared:f32,
   mergingDistanceFactor:f32,rayPowerCutoff:f32,
-  padding0:u32,padding1:u32,padding2:u32 };
+  truncateWeakRays:u32,padding1:u32,padding2:u32 };
 struct MegaUniforms { rayCapacity:u32,inputActiveOffset:u32,
   inputCountWord:u32,maxRayDepth:u32,maximumOutputs:u32,regionCount:u32,
   regionWordCount:u32,membershipStride:u32,renderVariant:u32,payloadSize:u32,
@@ -131,6 +131,11 @@ fn recordOutput(slot:u32) {
   let collectorBlocks=slot/${workgroupSize}u+1u;
   atomicMax(&control[20],collectorBlocks);
   atomicMax(&drawArguments[megaUniforms.extentWord],collectorBlocks);
+}
+
+fn recordTruncation(power:f32) {
+  atomicAdd(&control[17],u32(ceil(min(
+    power*FIXED_SCALE,4294967040.0))));
 }
 
 fn acceptChild(child:Ray,toggle:bool,incident:ptr<function,Membership>,
@@ -297,6 +302,11 @@ fn megakernelMain(@builtin(global_invocation_id) invocation:vec3u,
   let maximumSlots=select(0u,
     1u+(megaUniforms.rayCapacity-1u-logicalIndex)/max(1u,startRayCount),real);
   for(var iteration=0u;iteration<${maxLocalIterations}u;iteration++){
+    if(isActive&&traceUniforms.truncateWeakRays!=0u&&
+      traceUniforms.rayPowerCutoff>0.0&&
+      ray.powers.x+ray.powers.y<traceUniforms.rayPowerCutoff){
+      if(real){recordTruncation(ray.powers.x+ray.powers.y);}isActive=false;
+    }
     var hit=Hit(0.0,0.0,vec2f(0.0),-1,0.0,0u,0xffffffffu);
     var segmentRay=ray;var front:CrossingMask;var back:CrossingMask;
     if(isActive){
@@ -318,8 +328,9 @@ fn megakernelMain(@builtin(global_invocation_id) invocation:vec3u,
     if(capacityStalled){isActive=false;capacityStopped=true;}
     if(isActive){
       if(hit.conflict==3u){if(real){atomicOr(&control[18],1u);}isActive=false;}
-      else if(depth>=megaUniforms.maxRayDepth||
-        hit.s<=0.0||hit.s>=F32_MAX){isActive=false;}
+      else if(depth>=megaUniforms.maxRayDepth){
+        if(real){recordTruncation(ray.powers.x+ray.powers.y);}isActive=false;}
+      else if(hit.s<=0.0||hit.s>=F32_MAX){isActive=false;}
       else{
         var continuation=ray;var nextMembership:Membership;
         let continues=processInteraction(ray,hit,&membership,&front,&back,

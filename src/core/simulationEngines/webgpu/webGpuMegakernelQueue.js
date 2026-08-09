@@ -86,7 +86,7 @@ struct Ray { origin:vec2f,direction:vec2f,powers:vec2f,
 struct QueueConfig { rayCapacity:u32,activeOffset:u32,blockOffset:u32,
   blockCount:u32,rayBase:u32,membershipBase:u32,membershipStride:u32,
   countWord:u32,dispatchWord:u32,rayPowerCutoff:f32,
-  padding1:u32,padding2:u32 };
+  truncateWeakRays:u32,padding2:u32 };
 @group(0) @binding(0) var<storage,read_write> rays:array<Ray>;
 @group(0) @binding(1) var<storage,read_write> queue:array<atomic<u32>>;
 @group(0) @binding(2) var<uniform> config:QueueConfig;
@@ -95,6 +95,7 @@ struct QueueConfig { rayCapacity:u32,activeOffset:u32,blockOffset:u32,
 @group(0) @binding(4) var<storage,read> memberships:array<u32>;
 var<workgroup> weights:array<f32,${workgroupSize}>;
 var<workgroup> destinations:array<u32,${workgroupSize}>;
+const FIXED_SCALE:f32=1048576.0;
 
 fn outputGeneration()->u32 { return atomicLoad(&queue[21])+1u; }
 fn samplingPhase(generation:u32)->f32 {
@@ -103,25 +104,36 @@ fn samplingPhase(generation:u32)->f32 {
   value=(value>>22u)^value;
   return f32(value>>8u)*(1.0/16777216.0);
 }
-fn rayWeight(index:u32,generation:u32)->f32 {
-  if(index>=config.rayCapacity){return 0.0;}
+fn activeRayPower(index:u32,generation:u32)->f32 {
+  if(index>=config.rayCapacity){return -1.0;}
   let storedGeneration=memberships[config.membershipBase+
     index*config.membershipStride+config.membershipStride-1u];
   if(storedGeneration!=generation||(rays[config.rayBase+index].flags&1u)==0u){
-    return 0.0;
+    return -1.0;
   }
-  if(!(config.rayPowerCutoff>0.0)){return 1.0;}
-  let power=rays[config.rayBase+index].powers.x+
+  return rays[config.rayBase+index].powers.x+
     rays[config.rayBase+index].powers.y;
+}
+fn rayWeight(power:f32)->f32 {
+  if(power<0.0){return 0.0;}
+  if(!(config.rayPowerCutoff>0.0)){return 1.0;}
   if(!(power>0.0)){return 0.0;}
+  if(config.truncateWeakRays!=0u&&power<config.rayPowerCutoff){return 0.0;}
   return min(1.0,power/config.rayPowerCutoff);
+}
+fn recordTruncation(power:f32) {
+  atomicAdd(&queue[17],u32(ceil(min(
+    power*FIXED_SCALE,4294967040.0))));
 }
 
 @compute @workgroup_size(${workgroupSize})
 fn weightMain(@builtin(workgroup_id) group:vec3u,
   @builtin(local_invocation_id) local:vec3u) {
   let index=group.x*${workgroupSize}u+local.x;
-  weights[local.x]=rayWeight(index,outputGeneration());
+  let power=activeRayPower(index,outputGeneration());
+  if(power>=0.0&&config.rayPowerCutoff>0.0&&
+    power<config.rayPowerCutoff){recordTruncation(power);}
+  weights[local.x]=rayWeight(power);
   workgroupBarrier();
   if(local.x==0u&&group.x<config.blockCount){
     var total=0.0;
@@ -156,7 +168,7 @@ fn fillMain(@builtin(workgroup_id) group:vec3u,
   @builtin(local_invocation_id) local:vec3u) {
   let index=group.x*${workgroupSize}u+local.x;
   let generation=atomicLoad(&queue[21]);
-  let weight=rayWeight(index,generation);
+  let weight=rayWeight(activeRayPower(index,generation));
   weights[local.x]=weight;workgroupBarrier();
   if(local.x==0u&&group.x<config.blockCount){
     var cumulative=bitcast<f32>(

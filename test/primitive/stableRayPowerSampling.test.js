@@ -6,7 +6,7 @@
 
 import {
   stableRaySamplingPhase,
-  stableSampleRayQueue
+  collectRayPowerQueue
 } from '../../src/core/simulationEngines/stableRayPowerSampling.js';
 
 describe('stable ray-power prefix sampling', () => {
@@ -21,7 +21,7 @@ describe('stable ray-power prefix sampling', () => {
       powerP: 0.001
     }));
 
-    const sampled = stableSampleRayQueue(rays, 0.01, 1);
+    const sampled = collectRayPowerQueue(rays, 0.01, 1);
 
     expect(sampled.rays).toEqual([rays[1]]);
     expect(sampled.rays[0]).toMatchObject({
@@ -29,11 +29,31 @@ describe('stable ray-power prefix sampling', () => {
       powerP: 0.005
     });
     expect(sampled.weakRayCount).toBe(3);
+    expect(sampled.weakRayPower).toBeCloseTo(0.006);
+  });
+
+  it('deterministically truncates weak rays without amplifying them', () => {
+    const weak = { powerS: 0.001, powerP: 0.002 };
+    const strong = { powerS: 0.006, powerP: 0.005 };
+
+    const sampled = collectRayPowerQueue(
+      [weak, strong], 0.01, 1, 'truncate'
+    );
+
+    expect(sampled.rays).toEqual([strong]);
+    expect(weak).toEqual({ powerS: 0.001, powerP: 0.002 });
+    expect(sampled.weakRayCount).toBe(1);
+    expect(sampled.weakRayPower).toBeCloseTo(0.003);
+  });
+
+  it('rejects unknown cutoff modes', () => {
+    expect(() => collectRayPowerQueue([], 0.01, 1, 'randomSampling'))
+      .toThrow('rayPowerCutoffMode');
   });
 
   it('stably compacts active full-weight rays and inactive holes', () => {
     const active = { powerS: 0.4, powerP: 0.1 };
-    const sampled = stableSampleRayQueue([
+    const sampled = collectRayPowerQueue([
       { powerS: 0, powerP: 0 },
       active,
       { powerS: 0, powerP: 0 }
@@ -41,5 +61,6 @@ describe('stable ray-power prefix sampling', () => {
 
     expect(sampled.rays).toEqual([active]);
     expect(sampled.weakRayCount).toBe(0);
+    expect(sampled.weakRayPower).toBe(0);
   });
 });

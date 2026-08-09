@@ -88,6 +88,20 @@ const splitterSurfaceType = {
   )
 };
 
+const weakSurfaceType = {
+  name: 'Test weak output',
+  paramNames: [],
+  outRayCount: 1,
+  mergesWithBoundary: false,
+  dag: parseFormula(
+    `
+      d_1x = d_0x; d_1y = d_0y;
+      P_1s = P_0s * 0.001; P_1p = P_0p * 0.001;
+    `,
+    ['d_0x', 'd_0y', 'P_0s', 'P_0p']
+  )
+};
+
 function source({
   x = 5,
   y = 5,
@@ -464,6 +478,85 @@ describe('CpuSimulationEngine initial ray buffers', () => {
     log.mockRestore();
   });
 
+  it('immediately truncates a weak working ray in truncate mode', async () => {
+    const processedScene = createProcessedScene(rectangleCurves(), [
+      source({ power: 0.004 })
+    ]);
+    const engine = new CpuSimulationEngine({
+      numericEpsilon: FLOAT32_EPSILON
+    });
+    engine.beginRenderer = jest.fn();
+    engine.logExecutionDebugInfo = false;
+    const preparedScene = await engine.prepare(processedScene);
+    const run = await engine.createRun({
+      preparedScene,
+      colorMode: 'default',
+      rayPowerCutoff: 1e-6,
+      rayPowerCutoffMode: 'truncate'
+    });
+
+    const update = await advanceUntil(run, current => current.isComplete);
+
+    expect(run.rayPowerCutoff).toBe(0.01);
+    expect(run.rayPowerCutoffMode).toBe('truncate');
+    expect(run.processedRayCount).toBe(0);
+    expect(run.summary.weakRayCount).toBe(1);
+    expect(update.result.totalTruncation).toBeCloseTo(0.008);
+  });
+
+  it.each(['stableSampling', 'truncate'])(
+    'accounts for weak collector outputs in %s mode',
+    async rayPowerCutoffMode => {
+      const processedScene = preprocessPrimitives([
+        source({ x: 0, y: 0 }),
+        {
+          kind: 'surface',
+          curve: {
+            kind: 'lineSegment',
+            params: {
+              start: { x: 1, y: -1 },
+              end: { x: 1, y: 1 }
+            }
+          },
+          twoSided: true,
+          surfaceType: weakSurfaceType,
+          params: {}
+        }
+      ], { numericEpsilon: FLOAT32_EPSILON }).processedScene;
+      const engine = new CpuSimulationEngine({
+        numericEpsilon: FLOAT32_EPSILON,
+        config: { maxLocalIterations: 1 }
+      });
+      engine.beginRenderer = jest.fn();
+      engine.logExecutionDebugInfo = false;
+      const preparedScene = await engine.prepare(processedScene);
+      const run = await engine.createRun({
+        preparedScene,
+        colorMode: 'linear',
+        rayPowerCutoff: 0.01,
+        rayPowerCutoffMode
+      });
+
+      const update = await advanceUntilPass(run, 1);
+
+      expect(run.currentRayBuffer).toEqual([]);
+      expect(run.summary.weakRayCount).toBe(1);
+      expect(update.result.totalTruncation).toBeCloseTo(0.001);
+    }
+  );
+
+  it('rejects an unknown ray-power cutoff mode', async () => {
+    const processedScene = createProcessedScene([], [source()]);
+    const engine = new CpuSimulationEngine();
+    engine.beginRenderer = jest.fn();
+    const preparedScene = await engine.prepare(processedScene);
+
+    await expect(engine.createRun({
+      preparedScene,
+      rayPowerCutoffMode: 'randomSampling'
+    })).rejects.toThrow('rayPowerCutoffMode');
+  });
+
   it.each([
     ['default', 1e-6, 0.01],
     ['default', 0.02, 0.02],
@@ -553,7 +646,7 @@ describe('CpuSimulationEngine initial ray buffers', () => {
       expect(powers[1]).toBeCloseTo(0.005);
     }
     expect(run.summary.weakRayCount).toBe(4);
-    expect(update.result.totalTruncation).toBe(0);
+    expect(update.result.totalTruncation).toBeGreaterThan(0);
     log.mockRestore();
   });
 

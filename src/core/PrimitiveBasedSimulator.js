@@ -293,6 +293,8 @@ class PrimitiveBasedSimulator {
       viewport,
       colorMode: this.scene.colorMode,
       rayPowerCutoff: this.scene.numericalTolerances.rayPowerCutoff,
+      rayPowerCutoffMode:
+        this.scene.numericalTolerances.rayPowerCutoffMode,
       rayCountLimit: this.rayCountLimit,
       maxRayDepth: this.scene.maxRayDepth,
       rendering: {

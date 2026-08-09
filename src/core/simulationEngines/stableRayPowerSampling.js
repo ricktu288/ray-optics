@@ -20,20 +20,46 @@ export function stableRaySamplingPhase(generation) {
   return (value >>> 8) / 16777216;
 }
 
+export const RAY_POWER_CUTOFF_MODE_STABLE_SAMPLING = 'stableSampling';
+export const RAY_POWER_CUTOFF_MODE_TRUNCATE = 'truncate';
+
+/** Validate and default the scene-level weak-ray handling policy. */
+export function normalizeRayPowerCutoffMode(mode) {
+  const resolved = mode ?? RAY_POWER_CUTOFF_MODE_STABLE_SAMPLING;
+  if (
+    resolved !== RAY_POWER_CUTOFF_MODE_STABLE_SAMPLING &&
+    resolved !== RAY_POWER_CUTOFF_MODE_TRUNCATE
+  ) {
+    throw new RangeError(
+      'rayPowerCutoffMode must be "stableSampling" or "truncate".'
+    );
+  }
+  return resolved;
+}
+
 /**
- * Stable systematic sampling equivalent to the WebGPU weight/prefix/fill
- * collector. Inactive slots have zero weight. Rays below `targetPower`
- * contribute a fractional weight; a retained representative is amplified so
- * that its expected power equals the power of the sampled interval.
+ * Apply the selected weak-ray policy while compacting an outgoing queue.
+ * Stable sampling matches the WebGPU weight/prefix/fill collector: weak rays
+ * contribute fractional weight and retained representatives are amplified.
+ * Truncation instead omits every weak ray. Both policies return the original
+ * weak power for conservative error accounting.
  *
  * @param {Object[]} rays
  * @param {number} targetPower
  * @param {number} generation
- * @returns {{rays:Object[], weakRayCount:number}}
+ * @param {'stableSampling'|'truncate'} [mode='stableSampling']
+ * @returns {{rays:Object[], weakRayCount:number,weakRayPower:number}}
  */
-export function stableSampleRayQueue(rays, targetPower, generation) {
+export function collectRayPowerQueue(
+  rays,
+  targetPower,
+  generation,
+  mode = RAY_POWER_CUTOFF_MODE_STABLE_SAMPLING
+) {
+  const cutoffMode = normalizeRayPowerCutoffMode(mode);
   const selected = [];
   let weakRayCount = 0;
+  let weakRayPower = 0;
   let cumulative = 0;
   const phase = stableRaySamplingPhase(generation);
 
@@ -43,7 +69,11 @@ export function stableSampleRayQueue(rays, targetPower, generation) {
     const weight = targetPower > 0
       ? Math.min(1, power / targetPower)
       : 1;
-    if (weight < 1) weakRayCount++;
+    if (weight < 1) {
+      weakRayCount++;
+      weakRayPower += power;
+      if (cutoffMode === RAY_POWER_CUTOFF_MODE_TRUNCATE) continue;
+    }
     const before = Math.floor(cumulative + phase);
     cumulative += weight;
     const after = Math.floor(cumulative + phase);
@@ -55,5 +85,5 @@ export function stableSampleRayQueue(rays, targetPower, generation) {
     selected.push(ray);
   }
 
-  return { rays: selected, weakRayCount };
+  return { rays: selected, weakRayCount, weakRayPower };
 }

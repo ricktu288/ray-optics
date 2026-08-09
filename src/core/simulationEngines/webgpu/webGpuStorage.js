@@ -196,7 +196,7 @@ export function createWebGpuRunControlData({
   // 4 nextRayCount, 5 requiredRayCapacity, 6 readyLineCount,
   // 7 readyPointCount, 8 resizeNeeded, 9 cancelRequested,
   // 10 phase, 11 pingPongIndex, 12-15 indirect arguments/scratch,
-  // 16 processedRayCount, 17 totalTruncation as atomic f32 bits,
+  // 16 processedRayCount, 17 totalTruncation with 20 fractional bits,
   // 18 warning flags, 19 ready-geometry overflow.
   data[12] = Math.ceil(currentRayCount / workgroupSize);
   data[13] = 1;

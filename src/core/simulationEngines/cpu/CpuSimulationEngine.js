@@ -54,7 +54,9 @@ import {
   writeCpuOutgoingRays
 } from './cpuOutgoingRays.js';
 import {
-  stableSampleRayQueue
+  normalizeRayPowerCutoffMode,
+  RAY_POWER_CUTOFF_MODE_TRUNCATE,
+  collectRayPowerQueue
 } from '../stableRayPowerSampling.js';
 import {
   deriveWebGpuWavelengthRange
@@ -95,6 +97,9 @@ export class CpuSimulationRun {
     this.rayPowerCutoff = (options.colorMode ?? 'default') === 'default'
       ? Math.max(DEFAULT_COLOR_MINIMUM_RAY_POWER, rayPowerCutoff)
       : rayPowerCutoff;
+    this.rayPowerCutoffMode = normalizeRayPowerCutoffMode(
+      options.rayPowerCutoffMode
+    );
     this.maxRayDepth = normalizeMaxRayDepth(options.maxRayDepth);
     this.isCancelled = false;
     this.isComplete = false;
@@ -327,6 +332,20 @@ export class CpuSimulationRun {
       return;
     }
 
+    const power = lane.ray.powerS + lane.ray.powerP;
+    if (
+      this.rayPowerCutoffMode === RAY_POWER_CUTOFF_MODE_TRUNCATE &&
+      this.rayPowerCutoff > 0 &&
+      power < this.rayPowerCutoff
+    ) {
+      this.totalTruncation += power;
+      this.summary.weakRayCount++;
+      lane.active = false;
+      this.renderState.lastRay = null;
+      this.renderState.lastIntersection = null;
+      return;
+    }
+
     const hit = this.traceRay(lane.ray, rayIndex);
     this.hitBuffer[rayIndex] = hit;
     this.hasRenderedOutput = renderCpuRay({
@@ -483,12 +502,14 @@ export class CpuSimulationRun {
         if (outputs[slot]) outputSlots.push(outputs[slot]);
       }
     }
-    const sampled = stableSampleRayQueue(
+    const sampled = collectRayPowerQueue(
       outputSlots,
       this.rayPowerCutoff,
-      ++this.samplingGeneration
+      ++this.samplingGeneration,
+      this.rayPowerCutoffMode
     );
     this.summary.weakRayCount += sampled.weakRayCount;
+    this.totalTruncation += sampled.weakRayPower;
     const destination = this.nextRayBuffer;
     destination.length = 0;
     for (const ray of sampled.rays) destination.push(ray);

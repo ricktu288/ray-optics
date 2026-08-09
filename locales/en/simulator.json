@@ -683,7 +683,7 @@
   },
   "numericalToleranceModal": {
     "title": "Numerical tolerances",
-    "description": "These numerical thresholds are stored with the scene. Distance values are relative to the scene length scale, the interaction normal tolerance is an angle in radians, and minimum ray power is dimensionless. Primitive-based engines may automatically use larger geometry tolerances when required by numerical precision. For geometry tolerances, 0 uses only the automatically derived value; for minimum ray power, 0 disables the cutoff.",
+    "description": "These numerical thresholds are stored with the scene. Distance values are relative to the scene length scale, the interaction normal tolerance is an angle in radians, and minimum ray power is dimensionless. Primitive-based engines may automatically use larger geometry tolerances when required by numerical precision. For geometry tolerances, 0 uses only the automatically derived value; for minimum ray power, 0 disables weak-ray handling.",
     "thresholdWarning": "Geometry or ray power close to one of these thresholds may produce unexpected behavior.",
     "backToDefaults": "Back to defaults",
     "fields": {
@@ -705,7 +705,15 @@
       },
       "rayPowerCutoff": {
         "title": "Minimum ray power",
-        "description": "Primitive-based engines use this as the target power for stable power-weighted ray sampling. Set it to 0 to disable sampling. In the default color mode, the primitive-based CPU engine uses at least 0.01 because it renders to an 8-bit canvas."
+        "description": "Primitive-based engines use this as the weak-ray threshold. Set it to 0 to disable weak-ray handling. In the default color mode, the primitive-based CPU engine uses at least 0.01 because it renders to an 8-bit canvas."
+      },
+      "rayPowerCutoffMode": {
+        "title": "Weak-ray handling",
+        "description": "Stable sampling preserves weak-ray power in expectation and records it as a conservative error estimate when queues are collected. Deterministic truncation immediately discards working rays below the threshold and also discards weak queued rays.",
+        "options": {
+          "stableSampling": "Stable power-weighted sampling",
+          "truncate": "Deterministic truncation"
+        }
       }
     }
   },

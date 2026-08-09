@@ -126,6 +126,12 @@ describe('WebGpuSimulationEngine', () => {
       expect(rays.code).not.toContain(
         'if(power<traceUniforms.rayPowerCutoff)'
       );
+      expect(rays.code).toContain(
+        'traceUniforms.truncateWeakRays!=0u'
+      );
+      expect(rays.code).toContain(
+        'recordTruncation(ray.powers.x+ray.powers.y)'
+      );
       expect(rays.code).not.toContain('sharedRays');
       expect(rays.code).not.toContain('fn lineIntersection(');
       expect(images.code).toContain('var<workgroup> sharedRays');
@@ -142,8 +148,12 @@ describe('WebGpuSimulationEngine', () => {
     expect(code).toContain('fn weightMain(');
     expect(code).toContain('fn prefixMain(');
     expect(code).toContain('fn fillMain(');
-    expect(code).toContain('fn rayWeight(index:u32,generation:u32)->f32');
+    expect(code).toContain('fn rayWeight(power:f32)->f32');
     expect(code).toContain('power/config.rayPowerCutoff');
+    expect(code).toContain(
+      'config.truncateWeakRays!=0u&&power<config.rayPowerCutoff'
+    );
+    expect(code).toContain('atomicAdd(&queue[17]');
     expect(code).toContain('cumulative+=weights[lane]');
     expect(code).toContain('rays[rayIndex].powers=rays[rayIndex].powers/weight');
     expect(code).toContain(
@@ -250,7 +260,7 @@ describe('WebGpuSimulationEngine', () => {
     expect(writeBuffer.mock.calls[0][2]).toHaveLength(21);
   });
 
-  it('passes the configured ray-power threshold to both collectors',
+  it('passes the configured ray-power policy to tracing and both collectors',
     async () => {
       const writeBuffer = jest.fn();
       const backend = new WebGpuMegakernelBackend({ queue: { writeBuffer } },
@@ -265,6 +275,7 @@ describe('WebGpuSimulationEngine', () => {
 
       await backend.configureRun({
         rayPowerCutoff: 0.002,
+        rayPowerCutoffMode: 'truncate',
         preparedScene: {
           parameterRanges: { wavelengthRange: [[380, 700]] }
         },
@@ -278,6 +289,17 @@ describe('WebGpuSimulationEngine', () => {
       expect(collectorWrites).toHaveLength(2);
       expect(Array.from(collectorWrites[0][2]))
         .toEqual([Math.fround(0.002)]);
+      const collectorModeWrites = writeBuffer.mock.calls.filter(
+        ([buffer, offset]) =>
+          backend.collectorUniformBuffers.includes(buffer) && offset === 40
+      );
+      expect(collectorModeWrites).toHaveLength(2);
+      expect(Array.from(collectorModeWrites[0][2])).toEqual([1]);
+      expect(writeBuffer).toHaveBeenCalledWith(
+        backend.traceUniformBuffer,
+        52,
+        expect.any(Uint32Array)
+      );
     });
 
   it('alternates several ping-pongs in one command submission', () => {
