@@ -4,8 +4,7 @@
  */
 
 import { WEBGPU_RUN_CONTROL_SIZE } from './webGpuStorage.js';
-import { createWebGpuTraceSceneData } from
-  '../webgpu/webGpuTraceScene.js';
+import { createWebGpuTraceSceneData } from './webGpuTraceScene.js';
 
 const BUFFER_USAGE_COPY_DST = 0x0008;
 const BUFFER_USAGE_STORAGE = 0x0080;

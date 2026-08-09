@@ -16,11 +16,10 @@
 
 import { DEFAULT_BVH_OPTIONS } from '../primitive/bvh.js';
 
-// Read-only trace tables share one packed scene binding. The staged outgoing
-// pipelines are now the largest users at 10 storage bindings (native trace
-// uses 8 and the megakernel uses 7). The WebGPU guaranteed default is only 8,
-// so browser device creation must explicitly request this adapter limit.
-export const WEBGPU_MIN_STORAGE_BUFFERS_PER_SHADER_STAGE = 10;
+// Read-only trace tables share one packed scene binding. The tracing
+// megakernel uses seven storage bindings, while its combined source-emission
+// and initial-membership pipeline uses eight: the WebGPU guaranteed default.
+export const WEBGPU_MIN_STORAGE_BUFFERS_PER_SHADER_STAGE = 8;
 
 const COMMON_BVH_CONFIG = Object.freeze({
   lineLeafSize: DEFAULT_BVH_OPTIONS.lineLeafSize,
@@ -44,21 +43,9 @@ const COMMON_PRIMITIVE_ENGINE_CONFIG = Object.freeze({
 export const DEFAULT_SIMULATION_ENGINE_CONFIGS = Object.freeze({
   primitiveCpu: Object.freeze({
     ...COMMON_PRIMITIVE_ENGINE_CONFIG,
+    maxLocalIterations: 128,
   }),
   webgpu: Object.freeze({
-    ...COMMON_PRIMITIVE_ENGINE_CONFIG,
-    workgroupSize: 64,
-    // These are implementation tuning values, intentionally not exposed by
-    // the configuration modal until representative scenes have been profiled.
-    maxItemsPerAdvance: 1048576,
-    maxBatchRayEvents: 1048576,
-    maxReadyLineRecords: 1048576,
-    maxReadyPointRecords: 1048576,
-    // Keep submissions short while interactive updates are being evaluated.
-    // Even zero-work indirect dispatches retain command/pass overhead.
-    maxPingPongsPerSubmission: 8,
-  }),
-  webgpuMegakernel: Object.freeze({
     ...COMMON_PRIMITIVE_ENGINE_CONFIG,
     workgroupSize: 64,
     maxBatchRayEvents: 1048576,

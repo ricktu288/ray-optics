@@ -32,9 +32,8 @@ export function beginCpuRayRendering(ctxMain, rendering) {
 
 /**
  * Render one ray from an immutable ray-buffer entry and its completed hit.
- * Inactive rays and zero-distance hits draw nothing. They are skipped without
- * resetting nearby-ray state so CPU-only power subsampling does not
- * break image and observer pairing.
+ * Inactive rays break nearby-ray adjacency, matching inactive WebGPU source
+ * slots. Prefix-sampled outgoing queues are compact and contain no such gaps.
  */
 export function renderCpuRay({
   ray,
@@ -46,7 +45,12 @@ export function renderCpuRay({
   state,
   firstPass = false
 }) {
-  if (!isRayActive(ray) || !(hit.s > 0)) {
+  if (!isRayActive(ray)) {
+    state.lastRay = null;
+    state.lastIntersection = null;
+    return false;
+  }
+  if (!(hit.s > 0)) {
     return false;
   }
   if (!renderer) return false;

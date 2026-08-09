@@ -45,22 +45,25 @@ import {
   renderCpuRay
 } from './cpuRayRenderer.js';
 import {
-  allocateInteractionIndexBuffers,
-  createInteractionIndexBuffers,
   createInteractionTypeLayout,
-  getInteractionTypeIndex,
-  resetInteractionIndexBuffers
+  getInteractionTypeIndex
 } from '../interactionIndexBuffers.js';
 import {
   createCpuDetectorResults,
   prepareCpuOutgoingRayData,
   writeCpuOutgoingRays
 } from './cpuOutgoingRays.js';
+import {
+  stableSampleRayQueue
+} from '../stableRayPowerSampling.js';
+import {
+  deriveWebGpuWavelengthRange
+} from '../webgpu/webGpuParameterRanges.js';
 
 const MAX_MEMBERSHIP_ATTEMPTS = 4;
 const GOLDEN_ANGLE_COS = -0.737368878;
 const GOLDEN_ANGLE_SIN = 0.675490294;
-const LEGACY_MINIMUM_RAY_POWER = 0.01;
+const DEFAULT_COLOR_MINIMUM_RAY_POWER = 0.01;
 const DEFAULT_RAY_POWER_CUTOFF = 1e-6;
 export const NO_HIT_CURVE_ID = -1;
 export const TERMINATE_HIT_CURVE_ID = -2;
@@ -89,7 +92,9 @@ export class CpuSimulationRun {
         'rayPowerCutoff must be a nonnegative number.'
       );
     }
-    this.rayPowerCutoff = rayPowerCutoff;
+    this.rayPowerCutoff = (options.colorMode ?? 'default') === 'default'
+      ? Math.max(DEFAULT_COLOR_MINIMUM_RAY_POWER, rayPowerCutoff)
+      : rayPowerCutoff;
     this.maxRayDepth = normalizeMaxRayDepth(options.maxRayDepth);
     this.isCancelled = false;
     this.isComplete = false;
@@ -101,21 +106,8 @@ export class CpuSimulationRun {
     this.sourceRayIndex = 0;
     this.sourceInputs = null;
     this.membershipRayIndex = 0;
-    this.intersectionRayIndex = 0;
-    this.interactionIndexRayIndex = 0;
-    this.interactionIndexWriteOffsets = null;
-    this.interactionIndexBuffers = createInteractionIndexBuffers(
-      options.preparedScene.interactionTypeLayout
-    );
-    this.destinationRayCount = 0;
-    this.outgoingTypeIndex = 0;
-    this.outgoingInteractionIndex = 0;
-    this.outgoingActiveRayCount = 0;
-    this.legacySubsamplingIndex = 0;
-    this.renderRayIndex = 0;
+    this.samplingGeneration = 0;
     this.passIndex = 0;
-    this.renderGroupStarts = [0];
-    this.renderGroupStartIndex = 0;
     this.processedRayCount = 0;
     this.totalTruncation = 0;
     this.hasRenderedOutput = false;
@@ -193,7 +185,7 @@ export class CpuSimulationRun {
     );
     if (
       !this.isComplete &&
-      this.phase === 'render' &&
+      this.phase === 'megakernel' &&
       this.options.colorMode !== 'default'
     ) {
       this.engine.canvasRenderer?.flush?.();
@@ -209,20 +201,8 @@ export class CpuSimulationRun {
       case 'membership':
         this.populateNextMembership();
         break;
-      case 'intersection':
-        this.populateNextHit();
-        break;
-      case 'interactionIndexCount':
-        this.countNextInteractionIndex();
-        break;
-      case 'interactionIndexFill':
-        this.fillNextInteractionIndex();
-        break;
-      case 'render':
-        this.renderNextRay();
-        break;
-      case 'outgoing':
-        this.writeNextOutgoingInteraction();
+      case 'megakernel':
+        this.advanceMegakernel();
         break;
       default:
         throw new Error(`Unknown CPU simulation phase: ${this.phase}`);
@@ -251,7 +231,8 @@ export class CpuSimulationRun {
         sourceEvaluators[source.sourceTypeId](this.sourceInputs);
       const { ray, invalid } = createInitialRay(
         output,
-        this.summary.regionCount
+        this.summary.regionCount,
+        this.options.preparedScene.wavelengthRange
       );
       const active = isRayActive(ray);
       this.currentRayBuffer.push(ray);
@@ -277,7 +258,7 @@ export class CpuSimulationRun {
       if (this.engine.logExecutionDebugInfo !== false) {
         logInitialRayBuffer(this.currentRayBuffer, this.summary);
       }
-      this.phase = 'intersection';
+      this.beginMegakernelCycle();
       return;
     }
 
@@ -300,35 +281,102 @@ export class CpuSimulationRun {
     ray.membership.set(this.membershipScratch.regionMask);
   }
 
-  populateNextHit() {
-    if (this.intersectionRayIndex >= this.currentRayBuffer.length) {
-      this.phase = 'interactionIndexCount';
+  beginMegakernelCycle() {
+    this.phase = 'megakernel';
+    this.megakernelIteration = 0;
+    this.megakernelRayIndex = 0;
+    this.megakernelLanes = this.currentRayBuffer.map(ray => ({
+      ray,
+      depth: ray.depth ?? 0,
+      active: isRayActive(ray)
+    }));
+    this.megakernelOutputs = this.currentRayBuffer.map(() => []);
+    this.hitBuffer = new Array(this.currentRayBuffer.length);
+    this.renderState = createCpuRayRenderState();
+  }
+
+  advanceMegakernel() {
+    if (this.megakernelRayIndex >= this.megakernelLanes.length) {
+      const hasContinuation = this.megakernelLanes.some(lane => lane.active);
+      if (
+        hasContinuation &&
+        this.megakernelIteration + 1 < this.engine.maxLocalIterations
+      ) {
+        this.megakernelIteration++;
+        this.megakernelRayIndex = 0;
+        this.renderState = createCpuRayRenderState();
+        return;
+      }
+      this.finishMegakernelCycle();
       return;
     }
 
-    const ray = this.currentRayBuffer[this.intersectionRayIndex++];
-    const regionCount = this.summary.regionCount;
-    if (!isRayActive(ray)) {
-      this.hitBuffer.push(createInteractionCandidate(regionCount, 0));
+    const rayIndex = this.megakernelRayIndex++;
+    const lane = this.megakernelLanes[rayIndex];
+    if (!lane.active) {
+      renderCpuRay({
+        ray: lane.ray,
+        hit: createInteractionCandidate(this.summary.regionCount, 0),
+        renderer: this.engine.canvasRenderer,
+        ctxMain: this.engine.ctxMain,
+        rendering: this.rendering,
+        lengthScale: this.options.viewport?.lengthScale ?? 1,
+        state: this.renderState,
+        firstPass: lane.depth === 0
+      });
       return;
     }
 
-    const power = ray.powerS + ray.powerP;
-    const minimumPower =
-      (this.options.colorMode ?? 'default') === 'default' &&
-      this.engine.applyRayPowerCutoffInDefaultMode !== true
-        ? 0
-        : this.rayPowerCutoff;
-    if (power < minimumPower) {
-      this.hitBuffer.push(createInteractionCandidate(regionCount, 0));
-      this.totalTruncation += power;
-      this.summary.weakRayCount++;
-      this.processedRayCount++;
-      return;
-    }
+    const hit = this.traceRay(lane.ray, rayIndex);
+    this.hitBuffer[rayIndex] = hit;
+    this.hasRenderedOutput = renderCpuRay({
+      ray: lane.ray,
+      hit,
+      renderer: this.engine.canvasRenderer,
+      ctxMain: this.engine.ctxMain,
+      rendering: this.rendering,
+      lengthScale: this.options.viewport?.lengthScale ?? 1,
+      state: this.renderState,
+      firstPass: lane.depth === 0
+    }) || this.hasRenderedOutput;
 
-    const maximumDistance = getSmallestPositiveStepSize(
+    const typeIndex = getInteractionTypeIndex(
       this.options.preparedScene.description,
+      this.options.preparedScene.interactionTypeLayout,
+      hit
+    );
+    if (typeIndex < 0) {
+      lane.active = false;
+      return;
+    }
+    if (lane.depth >= this.maxRayDepth) {
+      this.totalTruncation += lane.ray.powerS + lane.ray.powerP;
+      lane.active = false;
+      return;
+    }
+
+    const outputs = this.createLocalOutgoingRays(
+      typeIndex,
+      lane.ray,
+      hit,
+      lane.depth + 1
+    );
+    const continuation = outputs.shift();
+    if (continuation) {
+      lane.ray = continuation;
+      lane.depth++;
+      lane.active = true;
+    } else {
+      lane.active = false;
+    }
+    this.megakernelOutputs[rayIndex].push(...outputs);
+  }
+
+  traceRay(ray, rayIndex) {
+    const description = this.options.preparedScene.description;
+    const regionCount = this.summary.regionCount;
+    const maximumDistance = getSmallestPositiveStepSize(
+      description,
       ray.membership
     );
     const candidate = createInteractionCandidate(
@@ -337,12 +385,11 @@ export class CpuSimulationRun {
     );
     this.interactionContext.maximumDistance = maximumDistance;
     traverseBvhForInteraction(
-      this.options.preparedScene.description,
+      description,
       ray,
       candidate,
       this.interactionContext,
-      this.options.preparedScene.description
-        .cpuBvhTraversalDiagnostics
+      description.cpuBvhTraversalDiagnostics
     );
     const finalizedCandidate = finalizeInteractionCandidate(
       candidate,
@@ -372,8 +419,9 @@ export class CpuSimulationRun {
         warningType,
         candidate.curveId,
         candidate.conflictCurveId,
-        power,
-        tolerance
+        ray.powerS + ray.powerP,
+        tolerance,
+        rayIndex
       );
     }
     if (
@@ -389,243 +437,92 @@ export class CpuSimulationRun {
     } else {
       this.summary.escapingRayCount++;
     }
-    this.hitBuffer.push(candidate);
     this.processedRayCount++;
+    return candidate;
   }
 
-  countNextInteractionIndex() {
-    if (
-      this.interactionIndexRayIndex >=
-      this.hitBuffer.length
-    ) {
-      this.destinationRayCount =
-        allocateInteractionIndexBuffers(
-          this.interactionIndexBuffers
-        );
-      this.interactionIndexWriteOffsets =
-        new Uint32Array(this.interactionIndexBuffers.length);
-      this.interactionIndexRayIndex = 0;
-      this.phase = 'interactionIndexFill';
-      return;
-    }
-
-    const typeIndex = getInteractionTypeIndex(
-      this.options.preparedScene.description,
-      this.options.preparedScene.interactionTypeLayout,
-      this.hitBuffer[this.interactionIndexRayIndex++]
-    );
-    if (typeIndex >= 0) {
-      this.interactionIndexBuffers[typeIndex]
-        .interactionCount++;
-    }
-  }
-
-  fillNextInteractionIndex() {
-    if (
-      this.interactionIndexRayIndex >=
-      this.hitBuffer.length
-    ) {
-      if (this.engine.logExecutionDebugInfo !== false) {
-        logInteractionIndexBuffers(
-          this.interactionIndexBuffers,
-          this.destinationRayCount
-        );
-      }
-      this.phase = 'render';
-      return;
-    }
-
-    const sourceRayIndex = this.interactionIndexRayIndex++;
-    const typeIndex = getInteractionTypeIndex(
-      this.options.preparedScene.description,
-      this.options.preparedScene.interactionTypeLayout,
-      this.hitBuffer[sourceRayIndex]
-    );
-    if (typeIndex < 0) return;
-    const writeIndex =
-      this.interactionIndexWriteOffsets[typeIndex]++;
-    this.interactionIndexBuffers[typeIndex]
-      .sourceRayIndices[writeIndex] = sourceRayIndex;
-  }
-
-  recordWarning(type, curveId, conflictingCurveId, power, tolerance) {
-    this.warningState.totalPower += power;
-    if (this.warningState.first) return;
-    this.warningState.first = {
-      type,
-      rayIndex: this.intersectionRayIndex - 1,
-      curveId,
-      conflictingCurveId,
-      tolerance: serializeWarningTolerance(tolerance)
+  createLocalOutgoingRays(typeIndex, sourceRay, hit, depth) {
+    const baseType =
+      this.options.preparedScene.interactionTypeLayout.types[typeIndex];
+    const type = {
+      ...baseType,
+      interactionCount: 1,
+      destinationRayStart: 0
     };
+    const outputs = new Array(type.outRayCount);
+    writeCpuOutgoingRays({
+      description: this.options.preparedScene.description,
+      prepared: this.options.preparedScene.outgoingRayData,
+      type,
+      localInteractionIndex: 0,
+      sourceRay,
+      hit,
+      destinationRayBuffer: outputs,
+      detectorResults: this.detectorResults
+    });
+    return outputs.filter(isRayActive).map(ray => {
+      ray.depth = depth;
+      return ray;
+    });
   }
 
-  renderNextRay() {
-    if (this.renderRayIndex >= this.currentRayBuffer.length) {
-      if (this.destinationRayCount === 0) {
-        this.completeSimulation();
-        return;
-      }
-      // Match the legacy simulator's depth rule. Source rays start at depth
-      // zero. Their segment to the next interaction is rendered, but an
-      // interaction beyond maxRayDepth is discarded before any surface,
-      // detector, or GRIN outgoing logic runs.
-      if (this.passIndex >= this.maxRayDepth) {
-        this.recordDepthTruncation();
-        this.completeSimulation();
-        return;
-      }
-      const destination = this.nextRayBuffer;
-      destination.length = 0;
-      destination.length = this.destinationRayCount;
-      this.outgoingTypeIndex = 0;
-      this.outgoingInteractionIndex = 0;
-      this.outgoingActiveRayCount = 0;
-      this.phase = 'outgoing';
-      return;
+  finishMegakernelCycle() {
+    for (let rayIndex = 0;
+      rayIndex < this.megakernelLanes.length;
+      rayIndex++) {
+      const lane = this.megakernelLanes[rayIndex];
+      if (lane.active) this.megakernelOutputs[rayIndex].push(lane.ray);
     }
+    const outputSlots = [];
+    const maximumSlotCount = this.megakernelOutputs.reduce(
+      (maximum, outputs) => Math.max(maximum, outputs.length),
+      0
+    );
+    for (let slot = 0; slot < maximumSlotCount; slot++) {
+      for (const outputs of this.megakernelOutputs) {
+        if (outputs[slot]) outputSlots.push(outputs[slot]);
+      }
+    }
+    const sampled = stableSampleRayQueue(
+      outputSlots,
+      this.rayPowerCutoff,
+      ++this.samplingGeneration
+    );
+    this.summary.weakRayCount += sampled.weakRayCount;
+    const destination = this.nextRayBuffer;
+    destination.length = 0;
+    for (const ray of sampled.rays) destination.push(ray);
+    this.currentRayBufferIndex = 1 - this.currentRayBufferIndex;
+    this.nextRayBuffer.length = 0;
+    this.passIndex++;
 
-    const rayIndex = this.renderRayIndex++;
     if (
-      this.renderGroupStartIndex < this.renderGroupStarts.length &&
-      rayIndex === this.renderGroupStarts[this.renderGroupStartIndex]
-    ) {
-      if (rayIndex > 0) {
-        this.renderState = createCpuRayRenderState();
-      }
-      this.renderGroupStartIndex++;
-    }
-    this.hasRenderedOutput = renderCpuRay({
-      ray: this.currentRayBuffer[rayIndex],
-      hit: this.hitBuffer[rayIndex],
-      renderer: this.engine.canvasRenderer,
-      ctxMain: this.engine.ctxMain,
-      rendering: this.rendering,
-      lengthScale: this.options.viewport?.lengthScale ?? 1,
-      state: this.renderState,
-      firstPass: this.passIndex === 0
-    }) || this.hasRenderedOutput;
-  }
-
-  recordDepthTruncation() {
-    for (const type of this.interactionIndexBuffers) {
-      for (const sourceRayIndex of type.sourceRayIndices) {
-        const ray = this.currentRayBuffer[sourceRayIndex];
-        this.totalTruncation += ray.powerS + ray.powerP;
-      }
-    }
-  }
-
-  writeNextOutgoingInteraction() {
-    while (
-      this.outgoingTypeIndex <
-      this.interactionIndexBuffers.length
-    ) {
-      const type =
-        this.interactionIndexBuffers[this.outgoingTypeIndex];
-      if (
-        this.outgoingInteractionIndex >=
-        type.interactionCount
-      ) {
-        this.outgoingTypeIndex++;
-        this.outgoingInteractionIndex = 0;
-        continue;
-      }
-
-      const localInteractionIndex =
-        this.outgoingInteractionIndex++;
-      const sourceRayIndex =
-        type.sourceRayIndices[localInteractionIndex];
-      const activeCount = writeCpuOutgoingRays({
-        description: this.options.preparedScene.description,
-        prepared: this.options.preparedScene.outgoingRayData,
-        type,
-        localInteractionIndex,
-        sourceRay: this.currentRayBuffer[sourceRayIndex],
-        hit: this.hitBuffer[sourceRayIndex],
-        destinationRayBuffer: this.nextRayBuffer,
-        detectorResults: this.detectorResults
-      });
-      this.outgoingActiveRayCount +=
-        this.engine.applyLegacyPowerSubsampling !== false &&
-        (this.options.colorMode ?? 'default') === 'default' &&
-        type.outRayCount >= 2
-          ? this.applyLegacyOutgoingSubsampling(
-            type,
-            localInteractionIndex,
-            this.legacySubsamplingIndex++
-          )
-          : activeCount;
-      return;
-    }
-
-    this.finishOutgoingPass();
-  }
-
-  applyLegacyOutgoingSubsampling(
-    type,
-    localInteractionIndex,
-    samplingIndex
-  ) {
-    let activeCount = 0;
-    for (let outRayIndex = 0;
-      outRayIndex < type.outRayCount;
-      outRayIndex++) {
-      const ray = this.nextRayBuffer[
-        type.destinationRayStart +
-        outRayIndex * type.interactionCount +
-        localInteractionIndex
-      ];
-      if (!isRayActive(ray)) continue;
-      const power = ray.powerS + ray.powerP;
-      if (power <= LEGACY_MINIMUM_RAY_POWER) {
-        this.totalTruncation += power;
-        const amplification = Math.floor(
-          LEGACY_MINIMUM_RAY_POWER / power
-        ) + 1;
-        if (samplingIndex % amplification !== 0) {
-          ray.powerS = 0;
-          ray.powerP = 0;
-          continue;
-        }
-        ray.powerS *= amplification;
-        ray.powerP *= amplification;
-      }
-      activeCount++;
-    }
-    return activeCount;
-  }
-
-  finishOutgoingPass() {
-    if (
-      this.outgoingActiveRayCount === 0 ||
-      this.processedRayCount >=
-        (this.options.rayCountLimit ?? Infinity)
+      this.currentRayBuffer.length === 0 ||
+      this.processedRayCount >= (this.options.rayCountLimit ?? Infinity)
     ) {
       this.completeSimulation();
       return;
     }
+    this.beginMegakernelCycle();
+  }
 
-    this.renderGroupStarts =
-      getDestinationRayGroupStarts(
-        this.interactionIndexBuffers
-      );
-    this.currentRayBufferIndex =
-      1 - this.currentRayBufferIndex;
-    this.nextRayBuffer.length = 0;
-    this.hitBuffer = [];
-    this.intersectionRayIndex = 0;
-    this.interactionIndexRayIndex = 0;
-    this.interactionIndexWriteOffsets = null;
-    resetInteractionIndexBuffers(
-      this.interactionIndexBuffers
-    );
-    this.destinationRayCount = 0;
-    this.renderRayIndex = 0;
-    this.renderGroupStartIndex = 0;
-    this.renderState = createCpuRayRenderState();
-    this.passIndex++;
-    this.phase = 'intersection';
+  recordWarning(
+    type,
+    curveId,
+    conflictingCurveId,
+    power,
+    tolerance,
+    rayIndex = 0
+  ) {
+    this.warningState.totalPower += power;
+    if (this.warningState.first) return;
+    this.warningState.first = {
+      type,
+      rayIndex,
+      curveId,
+      conflictingCurveId,
+      tolerance: serializeWarningTolerance(tolerance)
+    };
   }
 
   completeSimulation() {
@@ -702,8 +599,8 @@ function serializeWarningTolerance(tolerance) {
 }
 
 /**
- * CPU primitive simulation engine using the same staged, typed interaction
- * layout intended for the WebGPU implementation.
+ * CPU primitive simulation engine using the same stable outgoing-ray queue
+ * semantics as the WebGPU megakernel implementation.
  */
 class CpuSimulationEngine {
   constructor({
@@ -713,7 +610,8 @@ class CpuSimulationEngine {
     numericEpsilon = Number.EPSILON,
     ctxMain = null,
     glMain = null,
-    ctxVirtual = null
+    ctxVirtual = null,
+    config = {}
   } = {}) {
     this.kind = 'primitiveCpu';
     this.numericEpsilon = validateNumericEpsilon(numericEpsilon);
@@ -721,17 +619,35 @@ class CpuSimulationEngine {
     this.glMain = glMain;
     this.ctxVirtual = ctxVirtual;
     this.canvasRenderer = null;
-    // The weak-ray sampling rule is a compatibility behavior of the legacy
-    // canvas/CPU path.  Backends which reuse the primitive event loop but use
-    // additive accumulation (notably WebGPU) deliberately disable it.
-    this.applyLegacyPowerSubsampling = true;
-    this.applyRayPowerCutoffInDefaultMode = false;
+    this.configure(config);
     this.logExecutionDebugInfo = true;
   }
 
-  async prepare(description, { logDebugInfo = false } = {}) {
+  configure(config = {}) {
+    const maxLocalIterations = config.maxLocalIterations ?? 128;
+    if (
+      !Number.isSafeInteger(maxLocalIterations) ||
+      maxLocalIterations <= 0
+    ) {
+      throw new RangeError(
+        'maxLocalIterations must be a positive safe integer.'
+      );
+    }
+    this.maxLocalIterations = maxLocalIterations;
+  }
+
+  async prepare(description, {
+    violetWavelength,
+    redWavelength,
+    logDebugInfo = false
+  } = {}) {
+    const [wavelengthRange] = deriveWebGpuWavelengthRange({
+      violetWavelength,
+      redWavelength
+    });
     return {
       description,
+      wavelengthRange,
       logDebugInfo: Boolean(logDebugInfo),
       interactionTypeLayout:
         createInteractionTypeLayout(description),
@@ -802,7 +718,7 @@ class CpuSimulationEngine {
   }
 }
 
-function createInitialRay(output, regionCount) {
+function createInitialRay(output, regionCount, wavelengthRange) {
   const directionLengthSquared =
     output.d_x * output.d_x + output.d_y * output.d_y;
   const valid =
@@ -814,7 +730,9 @@ function createInitialRay(output, regionCount) {
     output.P_s >= 0 &&
     Number.isFinite(output.P_p) &&
     output.P_p >= 0 &&
-    Number.isFinite(output.lambda);
+    Number.isFinite(output.lambda) &&
+    output.lambda >= wavelengthRange[0] &&
+    output.lambda <= wavelengthRange[1];
   const powerS = valid ? output.P_s : 0;
   const powerP = valid ? output.P_p : 0;
   return {
@@ -826,7 +744,8 @@ function createInitialRay(output, regionCount) {
       powerS,
       powerP,
       wavelength: output.lambda,
-      membership: new Uint8Array(regionCount)
+      membership: new Uint8Array(regionCount),
+      depth: 0
     },
     invalid: !valid
   };
@@ -980,101 +899,6 @@ function formatCompactRay(ray, rayIndex) {
     `lambda=${formatNumber(ray.wavelength)} ` +
     `regions=[${regionIds.join(',')}]`
   );
-}
-
-function logInteractionIndexBuffers(
-  buffers,
-  destinationRayCount
-) {
-  const interactionCount = buffers.reduce(
-    (count, buffer) => count + buffer.interactionCount,
-    0
-  );
-  const activeTypeCount = buffers.reduce(
-    (count, buffer) =>
-      count + (buffer.interactionCount > 0 ? 1 : 0),
-    0
-  );
-  const lines = [
-    '[Primitive CPU interaction indices] ' +
-    `types=${buffers.length} activeTypes=${activeTypeCount} ` +
-    `interactions=${interactionCount} ` +
-    `destinationSlots=${destinationRayCount}`
-  ];
-  for (const buffer of buffers) {
-    const label = formatInteractionTypeLabel(buffer);
-    if (buffer.interactionCount === 0) {
-      lines.push(
-        `  ${label} hits=0 out=${buffer.outRayCount}`
-      );
-      continue;
-    }
-    for (let outRayIndex = 0;
-      outRayIndex < buffer.outRayCount;
-      outRayIndex++) {
-      lines.push(
-        `  ${label} out#${outRayIndex} ` +
-        formatCompactInteractionIndices(buffer, outRayIndex)
-      );
-    }
-  }
-  console.log(lines.join('\n'));
-}
-
-function formatInteractionTypeLabel(buffer) {
-  switch (buffer.kind) {
-    case 'grinStep':
-      return 'grinStep';
-    case 'regionBoundary':
-      return buffer.partialReflect
-        ? 'regionBoundary[partialReflect]'
-        : 'regionBoundary[noPartialReflect]';
-    case 'surface':
-      return `surface[${buffer.typeId}] ${JSON.stringify(buffer.name)}`;
-    case 'detector':
-      return `detector[${buffer.typeId}] ${JSON.stringify(buffer.name)}`;
-    default:
-      throw new TypeError(
-        `Unsupported interaction kind: ${JSON.stringify(buffer.kind)}`
-      );
-  }
-}
-
-function formatCompactInteractionIndices(buffer, outRayIndex) {
-  const sourceIndices = buffer.sourceRayIndices;
-  const count = sourceIndices.length;
-  const localIndices = [];
-  const firstEnd = Math.min(5, count);
-  for (let index = 0; index < firstEnd; index++) {
-    localIndices.push(index);
-  }
-  const lastStart = Math.max(firstEnd, count - 5);
-  for (let index = lastStart; index < count; index++) {
-    localIndices.push(index);
-  }
-  const pairs = localIndices.map(index =>
-    `${sourceIndices[index]}->` +
-    `${buffer.destinationRayStart +
-      outRayIndex * buffer.interactionCount + index}`
-  );
-  if (lastStart > firstEnd) pairs.splice(5, 0, '...');
-  return `hits=${count} [${pairs.join(' ')}]`;
-}
-
-function getDestinationRayGroupStarts(buffers) {
-  const starts = [];
-  for (const buffer of buffers) {
-    if (buffer.interactionCount === 0) continue;
-    for (let outRayIndex = 0;
-      outRayIndex < buffer.outRayCount;
-      outRayIndex++) {
-      starts.push(
-        buffer.destinationRayStart +
-        outRayIndex * buffer.interactionCount
-      );
-    }
-  }
-  return starts;
 }
 
 function formatNumber(value) {

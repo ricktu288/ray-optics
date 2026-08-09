@@ -24,7 +24,7 @@ import {
 import {
   packWebGpuScene
 } from './webGpuStorage.js';
-import { WebGpuComputeBackend } from './webGpuComputeBackend.js';
+import { WebGpuMegakernelBackend } from './webGpuMegakernelBackend.js';
 import {
   WebGpuAtomicRayRasterizer
 } from './webGpuRayRenderer.js';
@@ -38,18 +38,15 @@ const DEFAULT_WEBGPU_RUN_CONFIG = Object.freeze({
   maxBatchRayEvents: 262144,
   maxReadyLineRecords: 262144,
   maxReadyPointRecords: 65536,
-  // Keep submissions short while interactive updates are being evaluated.
-  // Even after the ray count reaches zero, pre-encoded ping-pongs retain their
-  // compute-pass and clear-command overhead.
-  maxPingPongsPerSubmission: 1,
+  maxLocalIterations: 8,
+  maxPingPongsPerSubmission: 4,
 });
 
 /**
- * A resumable WebGPU run.  Optical event staging deliberately follows the
- * primitive CPU implementation: one source population, membership pass, one
- * trace event, typed interaction indexing, render preparation and typed
- * outgoing writes per ping/pong.  The ready geometry is consumed by the
- * raster-atomic WebGPU renderer when a device is available.
+ * A resumable megakernel WebGPU run. Source generation and membership are one
+ * dispatch. Each trace invocation then keeps its current ray in local state
+ * for several interactions, appends extra branches to a slot-major output
+ * half, and resumes from a stable-compacted queue in the other half.
  *
  * A WebGPU run is GPU-authoritative. Environments without WebGPU must select
  * CpuSimulationEngine explicitly rather than silently executing another
@@ -65,7 +62,6 @@ class WebGpuSimulationRun {
     this.presentationPromise = null;
     this.trackNativeBatch(options.nativeBatch);
     this.nativeState = null;
-    this.maxRayDepth = normalizeMaxRayDepth(options.maxRayDepth);
     this.detectorOverflowWarned = false;
     this.geometryOverflowWarned = false;
     this.hasPresentedRun = false;
@@ -83,15 +79,26 @@ class WebGpuSimulationRun {
     if (this.isStale()) return this.getUpdate();
     this.nativeState = state;
     this.reportOverflow(state);
+    if (state.resizeNeeded) {
+      this.isComplete = true;
+      const required = Number.isFinite(state.requiredRayCapacity)
+        ? ` The interaction requires capacity for approximately ` +
+          `${state.requiredRayCapacity} rays.`
+        : '';
+      throw new RangeError(
+        'The WebGPU ray buffer is too small to complete the first tracing ' +
+        `step.${required} Increase the ray buffer capacity or the minimum ` +
+        'ray power threshold.'
+      );
+    }
     const geometryCapacity = this.engine.computeBackend
       .renderPreparationStage.geometryCapacity;
     const recordCount = Math.min(state.readyLineCount, geometryCapacity);
     if (presented !== false) {
       this.hasPresentedRun = true;
     }
-    this.isComplete = state.currentRayCount === 0 || state.resizeNeeded ||
-      state.pingPongIndex >= this.maxRayDepth;
-    if (!this.isComplete) this.scheduleContinuation(state);
+    this.isComplete = state.currentRayCount === 0;
+    if (!this.isComplete) await this.scheduleContinuation(state);
     this.lastUpdate = this.createUpdate(
       this.isComplete ? 'complete' : 'running',
       recordCount > 0 || this.hasPresentedRun
@@ -116,37 +123,30 @@ class WebGpuSimulationRun {
     }
   }
 
-  scheduleContinuation(state) {
+  async scheduleContinuation(state) {
     const backend = this.engine.computeBackend;
-    const remainingDepth = this.maxRayDepth - state.pingPongIndex;
-    const pingPongCount = Math.min(
-      backend.getPingPongCount(
-        state.currentRayCount,
-        maximumRecordsPerRay(this.options)
-      ),
-      remainingDepth
+    const isCancelled = () => this.isStale();
+    const preparedPresentation = await this.engine.prepareNativeGeometry(
+      this.options,
+      { isCancelled }
     );
+    if (!preparedPresentation || isCancelled()) return;
     const encoder = this.engine.device.createCommandEncoder({
-      label: 'WebGPU continued ray interactions',
+      label: 'WebGPU continued megakernel tracing',
     });
     backend.encodeReadyGeometryReset(encoder);
-    backend.encodeContinuation(encoder, {
-      pingPongCount,
-      startDirection: state.pingPongIndex & 1,
-      terminalTrace: Number.isFinite(this.maxRayDepth) &&
-        pingPongCount === remainingDepth,
-    });
+    backend.encodeContinuation(encoder, state.pingPongIndex & 1);
     const consumeState = backend.encodeStateReadback(encoder);
+    this.engine.encodeNativeGeometry(
+      encoder,
+      preparedPresentation,
+      { resetAccumulation: false }
+    );
     this.engine.device.queue.submit([encoder.finish()]);
+    const completion = this.engine.rasterizer.waitForSubmittedWork();
     this.trackNativeBatch({
       statePromise: consumeState(),
-      presentationPromise: this.engine.presentNativeGeometry(
-        this.options,
-        {
-          isCancelled: () => this.isStale(),
-          resetAccumulation: false,
-        }
-      ),
+      presentationPromise: completion.then(() => !isCancelled()),
     });
   }
 
@@ -199,7 +199,7 @@ class WebGpuSimulationRun {
 }
 
 /**
- * Primitive WebGPU engine.
+ * Primitive megakernel WebGPU engine.
  *
  * `device` may be a GPUDevice, a promise, or a lazy function. A device and an
  * output are required; CPU execution belongs to CpuSimulationEngine.
@@ -227,12 +227,10 @@ class WebGpuSimulationEngine {
     this.executionPlan = null;
     this.computeBackend = null;
     this.computePreparedScene = null;
-    this.stagedComputeBackend = null;
-    this.stagedComputePreparedScene = null;
+    this.pendingComputeBackend = null;
+    this.pendingComputePreparedScene = null;
     this.computeBackendRequestToken = 0;
     this.executionMode = 'uninitialized';
-    this.applyLegacyPowerSubsampling = false;
-    this.applyRayPowerCutoffInDefaultMode = true;
     this.deferSimulationStartUntilPause = true;
     this.logExecutionDebugInfo = false;
   }
@@ -298,12 +296,12 @@ class WebGpuSimulationEngine {
         run.cancel();
         return run;
       }
-      this.computeBackend.configureRun(options);
+      await this.computeBackend.configureRun(options);
       if (!isCurrent()) {
         run.cancel();
         return run;
       }
-      const nativeBatch = this.startNativeRun(options, {
+      const nativeBatch = await this.startNativeRun(options, {
         isCancelled: () => run.isStale(),
       });
       if (!nativeBatch) {
@@ -377,34 +375,34 @@ class WebGpuSimulationEngine {
     if (!isCurrent()) return false;
     const requestToken = ++this.computeBackendRequestToken;
     if (this.computePreparedScene === preparedScene && this.computeBackend) {
-      this.discardStagedComputeBackend();
+      this.discardPendingComputeBackend();
       return true;
     }
     if (this.computeBackend?.canUpdatePreparedScene(preparedScene)) {
-      this.discardStagedComputeBackend();
+      this.discardPendingComputeBackend();
       this.computeBackend.updatePreparedScene(preparedScene);
       this.computePreparedScene = preparedScene;
       return true;
     }
-    if (this.stagedComputeBackend) {
+    if (this.pendingComputeBackend) {
       if (
-        this.stagedComputePreparedScene === preparedScene ||
-        this.stagedComputeBackend.canUpdatePreparedScene(preparedScene)
+        this.pendingComputePreparedScene === preparedScene ||
+        this.pendingComputeBackend.canUpdatePreparedScene(preparedScene)
       ) {
-        if (this.stagedComputePreparedScene !== preparedScene) {
-          this.stagedComputeBackend.updatePreparedScene(preparedScene);
+        if (this.pendingComputePreparedScene !== preparedScene) {
+          this.pendingComputeBackend.updatePreparedScene(preparedScene);
         }
         const previousBackend = this.computeBackend;
-        this.computeBackend = this.stagedComputeBackend;
+        this.computeBackend = this.pendingComputeBackend;
         this.computePreparedScene = preparedScene;
-        this.stagedComputeBackend = null;
-        this.stagedComputePreparedScene = null;
+        this.pendingComputeBackend = null;
+        this.pendingComputePreparedScene = null;
         previousBackend?.destroy();
         return true;
       }
-      this.discardStagedComputeBackend();
+      this.discardPendingComputeBackend();
     }
-    const backend = new WebGpuComputeBackend(
+    const backend = new WebGpuMegakernelBackend(
       this.device,
       preparedScene,
       this.runConfig
@@ -426,9 +424,9 @@ class WebGpuSimulationEngine {
       return false;
     }
     if (!isCurrent()) {
-      this.discardStagedComputeBackend();
-      this.stagedComputeBackend = backend;
-      this.stagedComputePreparedScene = preparedScene;
+      this.discardPendingComputeBackend();
+      this.pendingComputeBackend = backend;
+      this.pendingComputePreparedScene = preparedScene;
       return false;
     }
     const previousBackend = this.computeBackend;
@@ -438,76 +436,75 @@ class WebGpuSimulationEngine {
     return true;
   }
 
-  discardStagedComputeBackend() {
-    this.stagedComputeBackend?.destroy();
-    this.stagedComputeBackend = null;
-    this.stagedComputePreparedScene = null;
+  discardPendingComputeBackend() {
+    this.pendingComputeBackend?.destroy();
+    this.pendingComputeBackend = null;
+    this.pendingComputePreparedScene = null;
   }
 
-  startNativeRun(options, { isCancelled = null } = {}) {
+  async startNativeRun(options, { isCancelled = null } = {}) {
     if (isCancelled?.()) return null;
     if (!this.computeBackend?.canEmitAllSources) {
       throw new RangeError(
         'Source population exceeds the native WebGPU ray capacity.'
       );
     }
-    const maxRayDepth = normalizeMaxRayDepth(options.maxRayDepth);
+    const preparedPresentation = await this.prepareNativeGeometry(
+      options,
+      { isCancelled }
+    );
+    if (!preparedPresentation || isCancelled?.()) return null;
     this.computeBackend.resetRunControl();
     const encoder = this.device.createCommandEncoder({
       label: 'WebGPU initial source emission and interactions',
     });
     this.computeBackend.encodeReadyGeometryReset(encoder);
-    if (maxRayDepth === 0) {
-      this.computeBackend.encodeInitialTerminalTrace(encoder);
-    } else {
-      const sourceRayCount = options.preparedScene.packedStorage
-        .counts.sourceRays;
-      const pingPongCount = Math.min(
-        this.computeBackend.getPingPongCount(
-          Math.max(1, sourceRayCount), maximumRecordsPerRay(options)
-        ),
-        maxRayDepth
-      );
-      this.computeBackend.encodeInitialTrace(encoder, {
-        pingPongCount,
-        terminalTrace: Number.isFinite(maxRayDepth) &&
-          pingPongCount === maxRayDepth,
-      });
-    }
+    this.computeBackend.encodeInitial(encoder);
     if (isCancelled?.()) return null;
     const consumeState = this.computeBackend.encodeStateReadback(encoder);
+    this.encodeNativeGeometry(
+      encoder,
+      preparedPresentation,
+      { resetAccumulation: true }
+    );
     this.device.queue.submit([encoder.finish()]);
+    const completion = this.rasterizer.waitForSubmittedWork();
     return {
       statePromise: consumeState(),
-      presentationPromise: this.presentNativeGeometry(options, {
-        isCancelled,
-        resetAccumulation: true,
-      }),
+      presentationPromise: completion.then(() => !isCancelled?.()),
     };
   }
 
-  presentNativeGeometry(options, {
-    isCancelled = null,
-    resetAccumulation = false,
-  } = {}) {
+  prepareNativeGeometry(options, { isCancelled = null } = {}) {
     const stage = this.computeBackend.renderPreparationStage;
-    return this.rasterizer.drawGpuGeometryIndirect(
+    return this.rasterizer.prepareGpuGeometryIndirect(
       stage.geometryBuffer,
-      stage.drawIndirectBuffer,
       {
         origin: options.viewport?.origin ?? { x: 0, y: 0 },
         scale: options.viewport?.scale ?? 1,
         colorMode: options.colorMode ?? 'default',
         simulateColors: options.rendering?.simulateColors ?? false,
       },
-      { isCancelled, resetAccumulation }
+      { isCancelled }
+    );
+  }
+
+  encodeNativeGeometry(encoder, preparedPresentation, {
+    resetAccumulation = false,
+  } = {}) {
+    const stage = this.computeBackend.renderPreparationStage;
+    this.rasterizer.encodeGpuGeometryIndirect(
+      encoder,
+      stage.drawIndirectBuffer,
+      preparedPresentation,
+      { resetAccumulation }
     );
   }
 
   dispose() {
     this.isDisposed = true;
     this.computeBackendRequestToken++;
-    this.discardStagedComputeBackend();
+    this.discardPendingComputeBackend();
     this.computeBackend?.destroy();
     this.rasterizer?.destroy?.();
     this.output?.dispose?.();
@@ -558,20 +555,6 @@ function formatExecutionPlanSummary(plan) {
     `regionWords=${plan.regionWordCount} passes=${plan.passes.length}`;
 }
 
-function normalizeMaxRayDepth(value) {
-  if (!Number.isFinite(value)) return Infinity;
-  return Math.max(0, Math.floor(value));
-}
-
-function maximumRecordsPerRay(options) {
-  switch (options.rendering?.mode) {
-    case 'extended': return options.rendering?.showRayArrows ? 5 : 3;
-    case 'observer': return 2;
-    case 'images': return 1;
-    default: return options.rendering?.showRayArrows ? 3 : 1;
-  }
-}
-
 function resolveWebGpuRunConfig(config) {
   const resolved = { ...DEFAULT_WEBGPU_RUN_CONFIG };
   for (const name of Object.keys(DEFAULT_WEBGPU_RUN_CONFIG)) {
@@ -583,6 +566,7 @@ function resolveWebGpuRunConfig(config) {
     'maxBatchRayEvents',
     'maxReadyLineRecords',
     'maxReadyPointRecords',
+    'maxLocalIterations',
     'maxPingPongsPerSubmission'
   ]) {
     if (!Number.isSafeInteger(resolved[name]) || resolved[name] <= 0) {

@@ -27,7 +27,6 @@ import {
   PrimitiveBasedSimulator,
   CpuSimulationEngine,
   WebGpuSimulationEngine,
-  WebGpuMegakernelSimulationEngine,
   FLOAT32_EPSILON,
   Editor,
   geometry,
@@ -59,7 +58,7 @@ function initScene() {
 }
 
 const SIMULATION_ENGINES = [
-  'default', 'webgpu', 'webgpuMegakernel', 'primitiveCpu'
+  'default', 'webgpu', 'primitiveCpu'
 ];
 
 function normalizeSimulationEngine(value) {
@@ -161,11 +160,8 @@ function createSimulator(engine) {
     engine,
     app.simulationEngineConfigs
   );
-  const simulationEngine = engine === 'webgpu' ||
-    engine === 'webgpuMegakernel'
-    ? new (engine === 'webgpu'
-      ? WebGpuSimulationEngine
-      : WebGpuMegakernelSimulationEngine)({
+  const simulationEngine = engine === 'webgpu'
+    ? new WebGpuSimulationEngine({
       device: requestWebGpuDevice,
       output: createBrowserWebGpuOutput(canvasLightWebGPU),
       numericEpsilon: FLOAT32_EPSILON,
@@ -176,6 +172,7 @@ function createSimulator(engine) {
       ctxMain: canvasLight.getContext('2d'),
       glMain: gl,
       ctxVirtual: document.createElement('canvas').getContext('2d'),
+      config: engineConfig,
     });
 
   return new PrimitiveBasedSimulator({
@@ -303,6 +300,7 @@ function setSimulationEngineConfigs(value) {
   simulator.logDebugInfo = Boolean(engineConfig.logDebugInfo);
   simulator.drawBvh = Boolean(engineConfig.bvh.drawBounds);
   simulator.bvhOptions = getBvhOptions(engineConfig);
+  simulator.engine.configure?.(engineConfig);
   simulator.updateSimulation(false, true);
 }
 

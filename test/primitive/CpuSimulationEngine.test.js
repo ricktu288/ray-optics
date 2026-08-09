@@ -36,7 +36,8 @@ const sourceType = {
     'delta_x',
     'd_x_0',
     'd_y_0',
-    'P'
+    'P',
+    'lambda_0'
   ],
   dag: parseFormula(
     `
@@ -46,9 +47,12 @@ const sourceType = {
       d_y = d_y_0;
       P_s = P;
       P_p = P;
-      lambda = 540;
+      lambda = lambda_0;
     `,
-    ['i', 'N', 'x_0', 'y_0', 'delta_x', 'd_x_0', 'd_y_0', 'P']
+    [
+      'i', 'N', 'x_0', 'y_0', 'delta_x', 'd_x_0', 'd_y_0', 'P',
+      'lambda_0'
+    ]
   )
 };
 
@@ -68,6 +72,22 @@ const mirrorSurfaceType = {
   )
 };
 
+const splitterSurfaceType = {
+  name: 'Test splitter',
+  paramNames: [],
+  outRayCount: 2,
+  mergesWithBoundary: false,
+  dag: parseFormula(
+    `
+      d_1x = 0; d_1y = -1;
+      P_1s = P_0s * 0.5; P_1p = P_0p * 0.5;
+      d_2x = 0; d_2y = 1;
+      P_2s = P_0s * 0.5; P_2p = P_0p * 0.5;
+    `,
+    ['P_0s', 'P_0p']
+  )
+};
+
 function source({
   x = 5,
   y = 5,
@@ -75,6 +95,7 @@ function source({
   directionX = 1,
   directionY = 0,
   power = 0.5,
+  wavelength = 540,
   rayCount = 1
 } = {}) {
   return {
@@ -86,7 +107,8 @@ function source({
       delta_x: deltaX,
       d_x_0: directionX,
       d_y_0: directionY,
-      P: power
+      P: power,
+      lambda_0: wavelength
     },
     rayCount
   };
@@ -161,11 +183,33 @@ async function advanceUntilPass(run, passIndex) {
   return update;
 }
 
+async function advanceUntil(run, predicate) {
+  let update;
+  while (!predicate(run) && !run.isComplete) {
+    update = await run.advance({ timeBudgetMs: 0 });
+  }
+  return update;
+}
+
 describe('CpuSimulationEngine initial ray buffers', () => {
   it('uses binary64 numerical tolerances by default', () => {
     const engine = new CpuSimulationEngine();
 
     expect(engine.numericEpsilon).toBe(Number.EPSILON);
+    expect(engine.maxLocalIterations).toBe(128);
+  });
+
+  it('validates and updates the local interaction limit', () => {
+    expect(() => new CpuSimulationEngine({
+      config: { maxLocalIterations: 0 }
+    })).toThrow(/maxLocalIterations/);
+    const engine = new CpuSimulationEngine({
+      config: { maxLocalIterations: 4 }
+    });
+
+    engine.configure({ maxLocalIterations: 12 });
+
+    expect(engine.maxLocalIterations).toBe(12);
   });
 
   it('populates every source ray and stores each initial membership', async () => {
@@ -182,47 +226,13 @@ describe('CpuSimulationEngine initial ray buffers', () => {
     const preparedScene = await engine.prepare(processedScene);
 
     const run = await engine.createRun({ preparedScene });
-    const update = await advanceUntilPhase(run, 'render');
+    const update = await advanceUntilPhase(run, 'megakernel');
 
     expect(preparedScene.description).toBe(processedScene);
     expect(update.status).toBe('running');
     expect(update.outputUpdated).toBe(false);
     expect(run.rayBuffers[0]).toHaveLength(3);
     expect(run.rayBuffers[1]).toEqual([]);
-    expect(run.hitBuffer).toHaveLength(3);
-    expect(run.hitBuffer).toEqual([
-      expect.objectContaining({
-        s: 1,
-        curveId: -1
-      }),
-      expect.objectContaining({
-        s: Infinity,
-        curveId: -1
-      }),
-      expect.objectContaining({
-        s: 1,
-        curveId: -1
-      })
-    ]);
-    expect(run.destinationRayCount).toBe(2);
-    expect(run.interactionIndexBuffers).toEqual([
-      expect.objectContaining({
-        kind: 'grinStep',
-        interactionCount: 2,
-        sourceRayIndices: Uint32Array.of(0, 2),
-        destinationRayStart: 0
-      }),
-      expect.objectContaining({
-        kind: 'regionBoundary',
-        partialReflect: false,
-        interactionCount: 0
-      }),
-      expect.objectContaining({
-        kind: 'regionBoundary',
-        partialReflect: true,
-        interactionCount: 0
-      })
-    ]);
     expect(run.rayBuffers[0]).toEqual([
       expect.objectContaining({
         originX: 5,
@@ -267,15 +277,42 @@ describe('CpuSimulationEngine initial ray buffers', () => {
       '    #1 o=(15,5) d=(1,0) P=(0.5,0.5) lambda=540 regions=[]\n' +
       '    #2 o=(2,2) d=(1,0) P=(0.5,0.5) lambda=540 regions=[0]'
     ]);
-    expect(log.mock.calls[2]).toEqual([
-      '[Primitive CPU interaction indices] ' +
-      'types=3 activeTypes=1 interactions=2 destinationSlots=2\n' +
-      '  grinStep out#0 hits=2 [0->0 2->1]\n' +
-      '  regionBoundary[noPartialReflect] hits=0 out=1\n' +
-      '  regionBoundary[partialReflect] hits=0 out=2'
-    ]);
+    expect(run.megakernelLanes).toHaveLength(3);
     log.mockRestore();
   });
+
+  it('rejects source wavelengths outside the WebGPU UV-to-IR range',
+    async () => {
+      const processedScene = createProcessedScene([], [
+        source({ wavelength: 470 }),
+        source({ wavelength: 500 })
+      ]);
+      const engine = new CpuSimulationEngine({
+        numericEpsilon: FLOAT32_EPSILON
+      });
+      engine.beginRenderer = jest.fn();
+      const preparedScene = await engine.prepare(processedScene, {
+        violetWavelength: 500,
+        redWavelength: 600
+      });
+      const run = await engine.createRun({ preparedScene });
+
+      await advanceUntilPhase(run, 'membership');
+
+      expect(preparedScene.wavelengthRange[0]).toBeCloseTo(480);
+      expect(preparedScene.wavelengthRange[1]).toBeCloseTo(640);
+      expect(run.currentRayBuffer[0]).toMatchObject({
+        powerS: 0,
+        powerP: 0,
+        wavelength: 470
+      });
+      expect(run.currentRayBuffer[1]).toMatchObject({
+        powerS: 0.5,
+        powerP: 0.5,
+        wavelength: 500
+      });
+      expect(run.summary.invalidSourceRayCount).toBe(1);
+    });
 
   it('retries an ambiguous cast from half the nearest distance', async () => {
     const processedScene = createProcessedScene(rectangleCurves(), [
@@ -289,7 +326,7 @@ describe('CpuSimulationEngine initial ray buffers', () => {
     const preparedScene = await engine.prepare(processedScene);
 
     const run = await engine.createRun({ preparedScene });
-    await run.advance();
+    await advanceUntilPhase(run, 'megakernel');
 
     expect(run.summary.membershipRetryCount).toBe(1);
     expect(run.summary.membershipDiscardedRayCount).toBe(0);
@@ -327,16 +364,12 @@ describe('CpuSimulationEngine initial ray buffers', () => {
     expect(visitedPhases).toEqual(new Set([
       'populate',
       'membership',
-      'intersection',
-      'interactionIndexCount',
-      'interactionIndexFill',
-      'render',
-      'outgoing',
+      'megakernel',
       'complete'
     ]));
     expect(run.passIndex).toBeGreaterThan(0);
     expect(run.processedRayCount).toBeGreaterThanOrEqual(2);
-    expect(log.mock.calls.length).toBeGreaterThanOrEqual(3);
+    expect(log.mock.calls.length).toBeGreaterThanOrEqual(2);
     log.mockRestore();
   });
 
@@ -354,7 +387,7 @@ describe('CpuSimulationEngine initial ray buffers', () => {
     const preparedScene = await engine.prepare(processedScene);
     const run = await engine.createRun({ preparedScene });
 
-    await advanceUntilPhase(run, 'render');
+    await advanceUntil(run, current => current.processedRayCount >= 1);
 
     expect(run.hitBuffer).toHaveLength(1);
     expect(run.hitBuffer[0]).toMatchObject({
@@ -368,12 +401,6 @@ describe('CpuSimulationEngine initial ray buffers', () => {
     expect(run.hitBuffer[0].curveId).toBeGreaterThanOrEqual(0);
     expect(run.summary.finiteHitCount).toBe(1);
     expect(run.summary.grinStepCount).toBe(0);
-    expect(run.destinationRayCount).toBe(2);
-    expect(run.interactionIndexBuffers[2]).toMatchObject({
-      interactionCount: 1,
-      sourceRayIndices: Uint32Array.of(0),
-      destinationRayStart: 0
-    });
     log.mockRestore();
   });
 
@@ -391,7 +418,7 @@ describe('CpuSimulationEngine initial ray buffers', () => {
     const preparedScene = await engine.prepare(processedScene);
     const run = await engine.createRun({ preparedScene });
 
-    await advanceUntilPhase(run, 'render');
+    await advanceUntil(run, current => current.processedRayCount >= 1);
 
     expect(run.hitBuffer[0]).toMatchObject({
       s: 5,
@@ -403,7 +430,7 @@ describe('CpuSimulationEngine initial ray buffers', () => {
     log.mockRestore();
   });
 
-  it('uses the scene cutoff for a weak Correct Brightness source ray', async () => {
+  it('traces a weak source ray before outgoing queue sampling', async () => {
     const processedScene = createProcessedScene(rectangleCurves(), [
       source({ power: 2e-7 })
     ]);
@@ -419,39 +446,15 @@ describe('CpuSimulationEngine initial ray buffers', () => {
       rayPowerCutoff: 1e-6
     });
 
-    const update = await advanceUntilPhase(run, 'render');
+    const update = await advanceUntil(
+      run,
+      current => current.processedRayCount >= 1
+    );
 
     expect(run.currentRayBuffer[0]).toMatchObject({
       powerS: 2e-7,
       powerP: 2e-7
     });
-    expect(run.hitBuffer[0]).toMatchObject({
-      s: 0,
-      curveId: -1
-    });
-    expect(update.result.totalTruncation).toBeCloseTo(4e-7);
-    expect(run.summary.weakRayCount).toBe(1);
-    log.mockRestore();
-  });
-
-  it('overrides the scene cutoff when Correct Brightness is off', async () => {
-    const processedScene = createProcessedScene(rectangleCurves(), [
-      source({ power: 2e-7 })
-    ]);
-    const engine = new CpuSimulationEngine({
-      numericEpsilon: FLOAT32_EPSILON
-    });
-    engine.beginRenderer = jest.fn();
-    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
-    const preparedScene = await engine.prepare(processedScene);
-    const run = await engine.createRun({
-      preparedScene,
-      colorMode: 'default',
-      rayPowerCutoff: 1e-6
-    });
-
-    const update = await advanceUntilPhase(run, 'render');
-
     expect(run.hitBuffer[0]).toMatchObject({
       s: 1,
       curveId: -1
@@ -461,7 +464,32 @@ describe('CpuSimulationEngine initial ray buffers', () => {
     log.mockRestore();
   });
 
-  it('does not apply the legacy cutoff while producing source rays', async () => {
+  it.each([
+    ['default', 1e-6, 0.01],
+    ['default', 0.02, 0.02],
+    ['linear', 1e-6, 1e-6],
+    ['colorizedIntensity', 0, 0]
+  ])('uses an effective %s cutoff of %s as %s', async (
+    colorMode,
+    configuredCutoff,
+    effectiveCutoff
+  ) => {
+    const processedScene = createProcessedScene([], [source()]);
+    const engine = new CpuSimulationEngine({
+      numericEpsilon: FLOAT32_EPSILON
+    });
+    engine.beginRenderer = jest.fn();
+    const preparedScene = await engine.prepare(processedScene);
+    const run = await engine.createRun({
+      preparedScene,
+      colorMode,
+      rayPowerCutoff: configuredCutoff
+    });
+
+    expect(run.rayPowerCutoff).toBe(effectiveCutoff);
+  });
+
+  it('does not sample while producing the initial source queue', async () => {
     const processedScene = createProcessedScene(rectangleCurves(), [
       source({ power: 0.004, rayCount: 3 })
     ]);
@@ -476,7 +504,7 @@ describe('CpuSimulationEngine initial ray buffers', () => {
       colorMode: 'default'
     });
 
-    const update = await advanceUntilPhase(run, 'render');
+    const update = await advanceUntilPhase(run, 'megakernel');
 
     expect(run.currentRayBuffer.map(ray => [
       ray.powerS,
@@ -486,26 +514,31 @@ describe('CpuSimulationEngine initial ray buffers', () => {
       [0.004, 0.004],
       [0.004, 0.004]
     ]);
-    expect(run.hitBuffer[0].s).toBe(1);
+    expect(run.processedRayCount).toBe(0);
     expect(update.result.totalTruncation).toBe(0);
     log.mockRestore();
   });
 
-  it('legacy-subsamples every output of a nominally branching interaction', async () => {
+  it.each(['default', 'linear'])(
+    'prefix-samples the stable outgoing queue in %s mode',
+    async colorMode => {
     const processedScene = createProcessedScene(
       rectangleCurves(),
       [source({ power: 0.004, rayCount: 2 })],
       0
     );
     const engine = new CpuSimulationEngine({
-      numericEpsilon: FLOAT32_EPSILON
+      numericEpsilon: FLOAT32_EPSILON,
+      config: { maxLocalIterations: 1 }
     });
     engine.beginRenderer = jest.fn();
+    engine.logExecutionDebugInfo = false;
     const log = jest.spyOn(console, 'log').mockImplementation(() => {});
     const preparedScene = await engine.prepare(processedScene);
     const run = await engine.createRun({
       preparedScene,
-      colorMode: 'default'
+      colorMode,
+      rayPowerCutoff: 0.01
     });
 
     const update = await advanceUntilPass(run, 1);
@@ -514,14 +547,61 @@ describe('CpuSimulationEngine initial ray buffers', () => {
       ray.powerS,
       ray.powerP
     ]);
-    expect(outgoingBrightness[0][0]).toBeCloseTo(0.00768);
-    expect(outgoingBrightness[0][1]).toBeCloseTo(0.00768);
-    expect(outgoingBrightness[1]).toEqual([0, 0]);
-    expect(outgoingBrightness[2][0]).toBeCloseTo(0.00512);
-    expect(outgoingBrightness[2][1]).toBeCloseTo(0.00512);
-    expect(outgoingBrightness[3]).toEqual([0, 0]);
-    expect(update.result.totalTruncation).toBeCloseTo(0.016);
+    expect(outgoingBrightness).toHaveLength(2);
+    for (const powers of outgoingBrightness) {
+      expect(powers[0]).toBeCloseTo(0.005);
+      expect(powers[1]).toBeCloseTo(0.005);
+    }
+    expect(run.summary.weakRayCount).toBe(4);
+    expect(update.result.totalTruncation).toBe(0);
     log.mockRestore();
+  });
+
+  it('queues branches before the locally retained continuation', async () => {
+    const processedScene = preprocessPrimitives([
+      source({ x: 0, y: 0 }),
+      {
+        kind: 'surface',
+        curve: {
+          kind: 'lineSegment',
+          params: {
+            start: { x: 1, y: -1 },
+            end: { x: 1, y: 1 }
+          }
+        },
+        twoSided: true,
+        surfaceType: splitterSurfaceType,
+        params: {}
+      }
+    ], {
+      numericEpsilon: FLOAT32_EPSILON
+    }).processedScene;
+    const engine = new CpuSimulationEngine({
+      numericEpsilon: FLOAT32_EPSILON,
+      config: { maxLocalIterations: 1 }
+    });
+    engine.beginRenderer = jest.fn();
+    engine.logExecutionDebugInfo = false;
+    const preparedScene = await engine.prepare(processedScene);
+    const run = await engine.createRun({
+      preparedScene,
+      colorMode: 'linear',
+      rayPowerCutoff: 0
+    });
+
+    await advanceUntilPass(run, 1);
+
+    expect(run.currentRayBuffer).toHaveLength(2);
+    expect(run.currentRayBuffer[0]).toMatchObject({
+      directionX: -1,
+      directionY: 0,
+      depth: 1
+    });
+    expect(run.currentRayBuffer[1]).toMatchObject({
+      directionX: 1,
+      directionY: 0,
+      depth: 1
+    });
   });
 
   it('renders the initial finite ray from the ray and hit buffers', async () => {
@@ -559,7 +639,10 @@ describe('CpuSimulationEngine initial ray buffers', () => {
       }
     });
 
-    const update = await advanceUntilPhase(run, 'outgoing');
+    const update = await advanceUntil(
+      run,
+      current => current.processedRayCount >= 1
+    );
 
     expect(renderer.drawSegment).toHaveBeenCalledWith({
       p1: { x: 5, y: 5 },
@@ -570,7 +653,7 @@ describe('CpuSimulationEngine initial ray buffers', () => {
     log.mockRestore();
   });
 
-  it('traces surface outputs through the completed ping-pong loop', async () => {
+  it('traces the first active child locally through escape', async () => {
     const processedScene = preprocessPrimitives([
       source({ x: 5, y: 5, power: 0.004 }),
       {
@@ -602,17 +685,7 @@ describe('CpuSimulationEngine initial ray buffers', () => {
     expect(update.status).toBe('complete');
     expect(run.passIndex).toBe(1);
     expect(run.processedRayCount).toBe(2);
-    expect(run.currentRayBuffer).toEqual([
-      expect.objectContaining({
-        originX: 10,
-        originY: 5,
-        directionX: -1,
-        directionY: 0,
-        powerS: 0.004,
-        powerP: 0.004,
-        membership: new Uint8Array(0)
-      })
-    ]);
+    expect(run.currentRayBuffer).toEqual([]);
     expect(run.hitBuffer[0]).toMatchObject({
       s: Infinity,
       curveId: -1
@@ -658,12 +731,7 @@ describe('CpuSimulationEngine initial ray buffers', () => {
       expect(update.status).toBe('complete');
       expect(run.passIndex).toBe(1);
       expect(run.processedRayCount).toBe(2);
-      expect(run.currentRayBuffer[0]).toMatchObject({
-        originX: 1,
-        originY: 0,
-        directionX: -1,
-        directionY: 0
-      });
+      expect(run.currentRayBuffer).toEqual([]);
       expect(run.hitBuffer[0]).toMatchObject({
         s: 2,
         curveId: expect.any(Number)
@@ -704,7 +772,10 @@ describe('CpuSimulationEngine initial ray buffers', () => {
     const preparedScene = await engine.prepare(processedScene);
     const run = await engine.createRun({ preparedScene });
 
-    const update = await advanceUntilPhase(run, 'render');
+    const update = await advanceUntil(
+      run,
+      current => current.processedRayCount >= 1
+    );
 
     expect(update.result.warning).toMatchObject({
       rayIndex: 0,
@@ -762,12 +833,7 @@ describe('CpuSimulationEngine initial ray buffers', () => {
 
     expect(update.status).toBe('complete');
     expect(Array.from(update.result.detectors[0])).toEqual([1]);
-    expect(run.currentRayBuffer[0]).toMatchObject({
-      originX: 10,
-      originY: 5,
-      directionX: 1,
-      directionY: 0
-    });
+    expect(run.currentRayBuffer).toEqual([]);
     expect(run.hitBuffer[0]).toMatchObject({
       s: Infinity,
       curveId: -1

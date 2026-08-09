@@ -64,8 +64,7 @@ export default {
     const sceneStore = useSceneStore()
     const preferences = usePreferencesStore()
     const isWebGpuEngine = computed(() =>
-      preferences.simulationEngine.value === 'webgpu' ||
-      preferences.simulationEngine.value === 'webgpuMegakernel'
+      preferences.simulationEngine.value === 'webgpu'
     )
     const showCanvasLight = computed(() =>
       !isWebGpuEngine.value && sceneStore.colorMode.value === 'default'

@@ -4,11 +4,11 @@
  */
 
 import { getIntersectionTolerancePolicy } from '../../primitive/numeric.js';
-import { createWebGpuRawTraceShader } from '../webgpu/webGpuTrace.js';
+import { createWebGpuRawTraceShader } from './webGpuTrace.js';
 import {
   createWebGpuTraceSceneDeclaration,
   useWebGpuTraceScene,
-} from '../webgpu/webGpuTraceScene.js';
+} from './webGpuTraceScene.js';
 import {
   createWebGpuRenderPreparationShader
 } from './webGpuRenderPreparation.js';

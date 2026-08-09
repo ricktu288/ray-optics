@@ -124,7 +124,7 @@ export class WebGpuRenderPreparationStage {
   }
 }
 
-function createRenderUniformData(options, geometryCapacity) {
+export function createRenderUniformData(options, geometryCapacity) {
   const rendering = options.rendering ?? {};
   const data = new Float32Array(16 * 4);
   const set = (slot, values) => data.set(values, slot * 4);

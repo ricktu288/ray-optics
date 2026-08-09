@@ -189,7 +189,6 @@ import InfoPopoverIcon from './InfoPopoverIcon.vue'
 const SIMULATION_ENGINES = [
   'default',
   'webgpu',
-  'webgpuMegakernel',
   'primitiveCpu'
 ]
 
@@ -214,17 +213,16 @@ const COMMON_CONFIG_SECTIONS = [
 ]
 
 const ENGINE_CONFIG_SECTIONS = {
-  primitiveCpu: COMMON_CONFIG_SECTIONS,
-  webgpu: [
+  primitiveCpu: [
     ...COMMON_CONFIG_SECTIONS,
     {
-      key: 'webgpu',
+      key: 'megakernel',
       fields: [
-        { key: 'workgroupSize', path: ['workgroupSize'], min: 1, step: 1, integer: true, hasInfo: true }
+        { key: 'maxLocalIterations', path: ['maxLocalIterations'], min: 1, step: 1, integer: true, hasInfo: true }
       ]
     }
   ],
-  webgpuMegakernel: [
+  webgpu: [
     ...COMMON_CONFIG_SECTIONS,
     {
       key: 'webgpu',

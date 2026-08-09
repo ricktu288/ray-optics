@@ -387,7 +387,7 @@ async function createWorkerRuntime(engineName) {
     }
     webGpuDevice = await adapter.requestDevice({
       requiredLimits: {
-        maxStorageBuffersPerShaderStage: 14,
+        maxStorageBuffersPerShaderStage: 8,
         maxStorageBufferBindingSize: adapter.limits.maxStorageBufferBindingSize,
         maxBufferSize: adapter.limits.maxBufferSize,
       },

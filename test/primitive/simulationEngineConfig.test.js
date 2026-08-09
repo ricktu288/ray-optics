@@ -16,10 +16,22 @@
 
 import {
   DEFAULT_SIMULATION_ENGINE_CONFIGS,
+  WEBGPU_MIN_STORAGE_BUFFERS_PER_SHADER_STAGE,
   resolveSimulationEngineConfig
 } from '../../src/core/simulationEngines/config';
 
 describe('simulation engine configuration', () => {
+  it('uses the megakernel WebGPU storage-buffer requirement', () => {
+    expect(WEBGPU_MIN_STORAGE_BUFFERS_PER_SHADER_STAGE).toBe(8);
+  });
+
+  it('uses the same default local interaction batch on CPU and WebGPU', () => {
+    expect(DEFAULT_SIMULATION_ENGINE_CONFIGS.primitiveCpu.maxLocalIterations)
+      .toBe(128);
+    expect(DEFAULT_SIMULATION_ENGINE_CONFIGS.webgpu.maxLocalIterations)
+      .toBe(128);
+  });
+
   it.each(['primitiveCpu', 'webgpu'])(
     'provides the direct primitive threshold to %s',
     engineKind => {

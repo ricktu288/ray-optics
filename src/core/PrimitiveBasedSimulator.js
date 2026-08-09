@@ -825,7 +825,7 @@ class PrimitiveBasedSimulator {
 }
 
 function isWebGpuEngine(engine) {
-  return engine?.kind === 'webgpu' || engine?.kind === 'webgpuMegakernel';
+  return engine?.kind === 'webgpu';
 }
 
 function formatChangeStatus(changed) {

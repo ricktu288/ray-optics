@@ -84,7 +84,7 @@ describe('CPU primitive ray rendering', () => {
     expect(renderer.drawRay).not.toHaveBeenCalled();
   });
 
-  it('pairs nearest active rays across inactive subsampling slots', () => {
+  it('breaks nearby-ray adjacency at inactive source slots', () => {
     const renderer = createRenderer();
     const rendering = createRendering({ mode: 'images' });
     const state = createCpuRayRenderState();
@@ -136,7 +136,7 @@ describe('CPU primitive ray rendering', () => {
       state: stateWithGap
     });
 
-    expect(renderer.drawPoint).toHaveBeenCalledTimes(1);
+    expect(renderer.drawPoint).not.toHaveBeenCalled();
     expect(stateWithGap.lastRay).toMatchObject({
       p1: { x: 0, y: 1 },
       p2: { x: 10, y: 0 }

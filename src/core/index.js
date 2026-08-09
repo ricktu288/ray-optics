@@ -35,7 +35,6 @@ import Simulator from './Simulator.js';
 import PrimitiveBasedSimulator from './PrimitiveBasedSimulator.js';
 import CpuSimulationEngine from './simulationEngines/cpu/CpuSimulationEngine.js';
 import WebGpuSimulationEngine from './simulationEngines/webgpu/WebGpuSimulationEngine.js';
-import WebGpuMegakernelSimulationEngine from './simulationEngines/webgpuMegakernel/WebGpuMegakernelSimulationEngine.js';
 import { FLOAT32_EPSILON } from './primitive/numeric.js';
 import Editor from './Editor.js';
 import * as sceneObjs from './sceneObjs.js';
@@ -68,7 +67,6 @@ export {
   PrimitiveBasedSimulator,
   CpuSimulationEngine,
   WebGpuSimulationEngine,
-  WebGpuMegakernelSimulationEngine,
   FLOAT32_EPSILON,
   Editor,
   sceneObjs,

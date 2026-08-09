@@ -10,9 +10,9 @@ export const WEBGPU_HIT_STRIDE = 32;
 export const WEBGPU_PIXEL_STRIDE = 16;
 
 /**
- * Describe the concrete buffers and ordered passes used by a prepared WebGPU
- * scene.  Keeping this as plain data makes the same decisions inspectable in
- * Node and keeps pipeline-cache keys independent of runtime instance values.
+ * Describe the concrete buffers and ordered passes used by a prepared
+ * WebGPU megakernel scene. Keeping this as plain data also provides a cache
+ * key independent of runtime instance values and rendering uniforms.
  */
 export function createWebGpuExecutionPlan(description, parameterRanges) {
   const regionWordCount = Math.ceil(description.regions.length / 32);
@@ -40,74 +40,29 @@ export function createWebGpuExecutionPlan(description, parameterRanges) {
   });
 
   const passes = [
-    pass('clear', [], ['runControl', 'detectorResults', 'pixelAccumulation']),
-    pass('sourceEmission', ['sourceDescriptors', 'instanceParameters'],
-      ['rayPing'], ['source']),
-  ];
-  if (description.regions.length > 0) {
-    passes.push(pass('initialMembership',
-      ['rayPing', 'bvhNodes', 'bvhCurveIds', 'curveGeometry'],
-      ['membershipPing']));
-  }
-  passes.push(
-    pass('trace', [
-      'rayCurrent', 'membershipCurrent', 'bvhNodes', 'bvhCurveIds',
-      'curveGeometry', 'regionDescriptors'
-    ], ['hits', 'crossingScratch', 'interactionTypeByRay']),
-    pass('prepareRenderGeometry', ['rayCurrent', 'hits'],
-      ['readyLines', 'readyPoints']),
-    pass('interactionBlockCount', ['interactionTypeByRay'],
-      ['interactionBlockOffsets']),
-    pass('interactionBlockPrefix', ['interactionBlockOffsets'],
-      ['interactionBlockOffsets', 'interactionTypeCounts']),
-    pass('interactionPrefixScan', ['interactionTypeCounts'],
-      ['interactionTypeStates', 'runControl']),
-    pass('stableInteractionIndexFill', [
-      'interactionTypeByRay', 'interactionBlockOffsets',
-      'interactionTypeStates'
-    ],
-      ['interactionRayIndices']),
-  );
-  if (description.regions.length > 0) {
-    passes.push(pass('grinOutgoing', [
-      'interactionRayIndices', 'rayCurrent', 'hits', 'membershipCurrent',
-      'regionDescriptors', 'instanceParameters'
-    ], ['rayNext', 'membershipNext'], ['all-present-bulk-grin']));
-    for (const partialReflect of [false, true]) {
-      if (!description.regions.some(
-        region => region.partialReflect === partialReflect
-      )) continue;
-      passes.push(pass(
-        `regionBoundaryOutgoing:${partialReflect
-          ? 'partialReflect' : 'noPartialReflect'}`,
-        [
-        'interactionRayIndices', 'rayCurrent', 'hits', 'membershipCurrent',
-        'regionDescriptors', 'instanceParameters'
-        ],
-        ['rayNext', 'membershipNext'],
-        ['all-present-bulk-n-only']
-      ));
-    }
-  }
-  for (const dependency of surfaceDependencies) {
-    passes.push(pass(`surfaceOutgoing:${dependency.typeId}`, [
-      'interactionRayIndices', 'rayCurrent', 'hits', 'membershipCurrent',
-      'surfaceDescriptors', 'regionDescriptors', 'instanceParameters'
-    ], ['rayNext', 'membershipNext'], dependency.compiledDags));
-  }
-  for (let typeId = 0;
-    typeId < description.types.detectors.length;
-    typeId++) {
-    passes.push(pass(`detectorOutgoing:${typeId}`, [
-      'interactionRayIndices', 'rayCurrent', 'hits', 'membershipCurrent',
-      'detectorDescriptors', 'instanceParameters'
-    ], ['rayNext', 'membershipNext', 'detectorResults'], ['detector']));
-  }
-  passes.push(
-    pass('rasterAtomic', ['readyLines', 'readyPoints'],
-      ['pixelAccumulation']),
+    pass('clear', [], ['queueControl', 'detectorResults', 'readyGeometry']),
+    pass('sourceAndMembershipMegakernel', [
+      'sourceDescriptors', 'instanceParameters', 'bvhNodes', 'bvhCurveIds',
+      'curveDescriptors', 'curveGeometry'
+    ], ['rayPing', 'membershipPing'], ['all-present-sources']),
+    pass('tracingMegakernel', [
+      'activeRayIndices', 'rayCurrent', 'membershipCurrent',
+      'instanceParameters', 'surfaceDescriptors', 'regionDescriptors',
+      'detectorDescriptors', 'curveDescriptors', 'curveGeometry',
+      'bvhNodes', 'bvhCurveIds'
+    ], [
+      'rayNext', 'membershipNext', 'detectorResults', 'readyGeometry'
+    ], ['all-present-interaction-dags', 'selected-render-mode']),
+    pass('stableRayBlockCount', ['rayNext'], ['rayBlockOffsets']),
+    pass('stableRayBlockPrefix', ['rayBlockOffsets'], [
+      'rayBlockOffsets', 'queueControl', 'dispatchArguments'
+    ]),
+    pass('stableRayIndexFill', ['rayNext', 'rayBlockOffsets'], [
+      'activeRayIndices'
+    ]),
+    pass('rasterAtomic', ['readyGeometry'], ['pixelAccumulation']),
     pass('toneMap', ['pixelAccumulation'], ['outputTexture'])
-  );
+  ];
 
   return {
     typeSignature: description.typeSignature,
@@ -118,8 +73,6 @@ export function createWebGpuExecutionPlan(description, parameterRanges) {
     buffers: {
       instanceParameters: { stride: 4, static: true },
       sourceDescriptors: { stride: 16, static: true },
-      sourceDispatchEntries: { stride: 8, static: true },
-      interactionTypeDescriptors: { stride: 16, static: true },
       surfaceDescriptors: { stride: 16, static: true },
       regionDescriptors: { stride: 32, static: true },
       detectorDescriptors: { stride: 32, static: true },
@@ -127,24 +80,15 @@ export function createWebGpuExecutionPlan(description, parameterRanges) {
       curveGeometry: { stride: 4, static: true },
       bvhNodes: { stride: 32, static: true },
       bvhCurveIds: { stride: 4, static: true },
-      runControl: { stride: 64, dynamic: true },
+      queueControl: { stride: 4, dynamic: true },
+      activeRayIndices: { stride: 4, dynamic: true, order: 'stable' },
+      rayBlockOffsets: { stride: 4, dynamic: true },
+      dispatchArguments: { stride: 4, dynamic: true },
       rayPing: { stride: WEBGPU_RAY_STRIDE, dynamic: true },
       rayPong: { stride: WEBGPU_RAY_STRIDE, dynamic: true },
       membershipPing: { stride: regionWordCount * 4, dynamic: true },
       membershipPong: { stride: regionWordCount * 4, dynamic: true },
-      hits: { stride: WEBGPU_HIT_STRIDE, dynamic: true },
-      interactionTypeByRay: { stride: 4, dynamic: true },
-      interactionTypeCounts: { stride: 4, dynamic: true },
-      interactionTypeStates: { stride: 16, dynamic: true },
-      interactionRayIndices: { stride: 4, dynamic: true },
-      interactionBlockOffsets: {
-        stride: 4,
-        dynamic: true,
-        shape: 'rayBlockByInteractionType'
-      },
-      crossingScratch: { stride: regionWordCount * 8, dynamic: true },
-      readyLines: { stride: 64, dynamic: true, batching: 'submission' },
-      readyPoints: { stride: 32, dynamic: true, batching: 'submission' },
+      readyGeometry: { stride: 64, dynamic: true, order: 'atomic' },
       pixelAccumulation: {
         stride: WEBGPU_PIXEL_STRIDE,
         fields: ['atomic<u32> r', 'atomic<u32> g', 'atomic<u32> b',
@@ -161,6 +105,24 @@ export function createWebGpuExecutionPlan(description, parameterRanges) {
       guards: collectGuardSignatures(parameterRanges),
       surfaceDependencies: surfaceDependencies.map(value =>
         value.consumesRefractiveIndices),
+    }),
+    // Every interaction type is embedded in one tracing module. A
+    // guard/topology change in any included DAG therefore
+    // invalidates every lazily compiled render-mode variant of that module.
+    megakernelSignature: JSON.stringify({
+      typeSignature: description.typeSignature,
+      curveKindMask,
+      maximumBvhDepth,
+      regionWordCount,
+      regionBoundaryVariants,
+      guards: collectGuardSignatures(parameterRanges),
+      sourceOutputCount: 1,
+      surfaceOutputCounts: description.types.surfaces.map(
+        type => type.definition.outRayCount
+      ),
+      detectorWriteCounts: description.types.detectors.map(
+        type => type.definition.writeCount
+      ),
     }),
   };
 }

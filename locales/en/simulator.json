@@ -705,7 +705,7 @@
       },
       "rayPowerCutoff": {
         "title": "Minimum ray power",
-        "description": "Primitive-based engines stop tracing a ray when its combined s- and p-polarized power is below this value, which can affect detector results. Set it to 0 to disable this cutoff. The primitive-based CPU engine overrides it with legacy low-power ray subsampling when \"Correct Brightness\" is off."
+        "description": "Primitive-based engines use this as the target power for stable power-weighted ray sampling. Set it to 0 to disable sampling. In the default color mode, the primitive-based CPU engine uses at least 0.01 because it renders to an 8-bit canvas."
       }
     }
   },
@@ -716,13 +716,8 @@
     },
     "webgpu": {
       "title": "WebGPU",
-      "description": "Use the experimental primitive-based staged WebGPU engine.",
-      "unavailable": "WebGPU could not be initialized: {{message}}"
-    },
-    "webgpuMegakernel": {
-      "title": "WebGPU megakernel",
       "description": "Use the experimental primitive-based WebGPU engine that traces several interactions locally and stably compacts branched rays between dispatches.",
-      "unavailable": "The WebGPU megakernel engine could not be initialized: {{message}}"
+      "unavailable": "WebGPU could not be initialized: {{message}}"
     },
     "primitiveCpu": {
       "title": "Primitive-based CPU",
@@ -747,6 +742,9 @@
         },
         "webgpu": {
           "title": "WebGPU"
+        },
+        "megakernel": {
+          "title": "Local tracing"
         }
       },
       "fields": {
@@ -784,7 +782,7 @@
         },
         "maxLocalIterations": {
           "title": "Maximum local interactions",
-          "description": "Maximum number of ray interactions traced locally by one megakernel invocation before its continuation is returned to the stable queue."
+          "description": "Maximum number of interactions traced locally for each ray before its continuation is returned to the stable queue."
         },
         "maxPingPongsPerSubmission": {
           "title": "Ping-pongs per submission",

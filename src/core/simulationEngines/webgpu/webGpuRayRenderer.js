@@ -718,7 +718,32 @@ export class WebGpuAtomicRayRasterizer {
     { origin, scale, colorMode, simulateColors = false },
     { isCancelled = null, resetAccumulation = false } = {}
   ) {
-    if (isCancelled?.()) return false;
+    const prepared = await this.prepareGpuGeometryIndirect(
+      geometryBuffer,
+      { origin, scale, colorMode, simulateColors },
+      { isCancelled }
+    );
+    if (!prepared) return false;
+    const encoder = this.device.createCommandEncoder({
+      label: 'WebGPU raster native ready geometry indirect',
+    });
+    this.encodeGpuGeometryIndirect(
+      encoder,
+      drawIndirectBuffer,
+      prepared,
+      { resetAccumulation }
+    );
+    this.device.queue.submit([encoder.finish()]);
+    await waitForSubmittedWork(this.device);
+    return !isCancelled?.();
+  }
+
+  async prepareGpuGeometryIndirect(
+    geometryBuffer,
+    { origin, scale, colorMode, simulateColors = false },
+    { isCancelled = null } = {}
+  ) {
+    if (isCancelled?.()) return null;
     const size = this.output.getSize?.() ?? this.output.size;
     this.ensureSize(size?.width ?? 1, size?.height ?? 1);
     this.device.queue.writeBuffer(this.uniformBuffer, 0, new Float32Array([
@@ -735,10 +760,16 @@ export class WebGpuAtomicRayRasterizer {
       ],
     });
     const view = await this.output.acquireView(this.device);
-    if (isCancelled?.()) return false;
-    const encoder = this.device.createCommandEncoder({
-      label: 'WebGPU raster native ready geometry indirect',
-    });
+    if (isCancelled?.()) return null;
+    return { geometryBindGroup, view };
+  }
+
+  encodeGpuGeometryIndirect(
+    encoder,
+    drawIndirectBuffer,
+    { geometryBindGroup, view },
+    { resetAccumulation = false } = {}
+  ) {
     if (resetAccumulation) encoder.clearBuffer(this.pixelBuffer);
     const raster = encoder.beginRenderPass({
       colorAttachments: [{
@@ -764,9 +795,10 @@ export class WebGpuAtomicRayRasterizer {
     present.setBindGroup(0, this.presentBindGroup);
     present.draw(3);
     present.end();
-    this.device.queue.submit([encoder.finish()]);
-    await waitForSubmittedWork(this.device);
-    return !isCancelled?.();
+  }
+
+  waitForSubmittedWork() {
+    return waitForSubmittedWork(this.device);
   }
 
   async clear({
