@@ -19,6 +19,10 @@ import {
   WEBGPU_MIN_STORAGE_BUFFERS_PER_SHADER_STAGE,
   resolveSimulationEngineConfig
 } from '../../src/core/simulationEngines/config';
+import {
+  estimateAmbiguousRayWarningPowerThreshold
+} from '../../src/core/simulationEngines/ambiguousRayWarning';
+import { FLOAT32_EPSILON } from '../../src/core/primitive/numeric';
 
 describe('simulation engine configuration', () => {
   it('uses the megakernel WebGPU storage-buffer requirement', () => {
@@ -30,6 +34,31 @@ describe('simulation engine configuration', () => {
       .toBe(128);
     expect(DEFAULT_SIMULATION_ENGINE_CONFIGS.webgpu.maxLocalIterations)
       .toBe(128);
+  });
+
+  it('keeps ambiguous-power warning calibration hidden and shared', () => {
+    expect(
+      DEFAULT_SIMULATION_ENGINE_CONFIGS.primitiveCpu
+        .ambiguousRayWarningSafetyFactor
+    ).toBe(32);
+    expect(
+      DEFAULT_SIMULATION_ENGINE_CONFIGS.webgpu
+        .ambiguousRayWarningSafetyFactor
+    ).toBe(32);
+  });
+
+  it('estimates precision-dependent box-corner ambiguity power', () => {
+    const description = { sources: [{ rayCount: 1000000 }] };
+    const estimate = numericEpsilon =>
+      estimateAmbiguousRayWarningPowerThreshold({
+        numericEpsilon,
+        processedRayCount: 8000000,
+        description,
+        safetyFactor: 32
+      });
+
+    expect(estimate(FLOAT32_EPSILON)).toBeCloseTo(0.000976566, 8);
+    expect(estimate(Number.EPSILON)).toBeCloseTo(1.818989e-12, 17);
   });
 
   it.each(['primitiveCpu', 'webgpu'])(

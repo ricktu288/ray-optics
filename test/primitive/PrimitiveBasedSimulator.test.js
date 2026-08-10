@@ -318,6 +318,45 @@ describe('PrimitiveBasedSimulator engine warnings', () => {
       i18next.t = originalTranslate;
     }
   });
+
+  it('shows the accumulated ambiguous power', () => {
+    const simulator = createSimulator('primitiveCpu', false);
+    const originalTranslate = i18next.t;
+    i18next.t = (key, options = {}) => {
+      if (key === 'simulator:generalWarnings.primitiveInteractionConflict') {
+        return 'ambiguous interaction';
+      }
+      if (key === 'simulator:generalWarnings.primitiveAmbiguousPower') {
+        return `ambiguous power ${options.power}`;
+      }
+      return `{{${key}}}`;
+    };
+
+    try {
+      simulator.publishRunUpdate({
+        progress: {},
+        result: {
+          warning: {
+            rayIndex: 3,
+            curveId: 4,
+            conflictingCurveId: 7,
+            ambiguousPower: 0.00125,
+            tolerance: {
+              kind: 'interactionMerging',
+              unit: 'sceneUnits',
+              value: 2e-4
+            }
+          }
+        }
+      });
+
+      expect(simulator.warning).toBe(
+        'ambiguous interaction ambiguous power 1.250000e-3'
+      );
+    } finally {
+      i18next.t = originalTranslate;
+    }
+  });
 });
 
 function createMappedObject(type, brightnessScale) {

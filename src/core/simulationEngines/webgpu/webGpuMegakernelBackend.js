@@ -10,6 +10,7 @@ import {
 } from '../stableRayPowerSampling.js';
 import { WEBGPU_RAY_STRIDE } from './webGpuExecutionPlan.js';
 import {
+  WEBGPU_MEGAKERNEL_RUN_CONTROL_SIZE,
   WebGpuMegakernelStaticSceneStorage,
   decodeWebGpuMegakernelRunState
 } from './webGpuMegakernelStorage.js';
@@ -565,6 +566,11 @@ export class WebGpuMegakernelBackend {
     data[15] = this.currentPayloadSize;
     this.device.queue.writeBuffer(this.queueBuffer, 0, data);
     this.device.queue.writeBuffer(
+      this.queueBuffer,
+      22 * 4,
+      new Uint32Array(5)
+    );
+    this.device.queue.writeBuffer(
       this.dispatchIndirectBuffer,
       0,
       new Uint32Array([
@@ -679,7 +685,7 @@ export class WebGpuMegakernelBackend {
     const detectorValues =
       this.preparedScene.packedStorage.counts.detectorResultValues;
     const detectorBytes = detectorValues * 8;
-    const controlBytes = 80;
+    const controlBytes = WEBGPU_MEGAKERNEL_RUN_CONTROL_SIZE;
     const readback = this.device.createBuffer({
       label: 'WebGPU megakernel state readback',
       size: Math.max(4, controlBytes + detectorBytes),
@@ -833,11 +839,11 @@ function estimateCooperativeWorkgroupBytes(
   neighborMode
 ) {
   const raySlots = workgroupSize / lanesPerRay;
-  const hits = workgroupSize * 32;
+  const hits = workgroupSize * 40;
   const rayState = raySlots * (32 + 16);
   const membershipAndCrossings = raySlots * regionWordCount * 12;
   const conflicts = raySlots * 4;
-  const neighborState = neighborMode ? raySlots * 2 * (32 + 32) : 0;
+  const neighborState = neighborMode ? raySlots * 2 * (32 + 40) : 0;
   return hits + rayState + membershipAndCrossings + conflicts + neighborState;
 }
 

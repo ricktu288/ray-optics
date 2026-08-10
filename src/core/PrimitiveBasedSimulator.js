@@ -56,14 +56,24 @@ function formatPrimitiveEngineWarning(warning) {
   const unit = i18next.t(
     `simulator:generalWarnings.primitiveToleranceUnits.${tolerance.unit}`
   );
-  return i18next.t('simulator:generalWarnings.primitiveInteractionConflict', {
-    rayIndex: warning.rayIndex,
-    curveId: formatWarningCurveId(warning.curveId),
-    conflictingCurveId: formatWarningCurveId(warning.conflictingCurveId),
-    toleranceKind: kind,
-    tolerance: formatToleranceValue(tolerance.value),
-    toleranceUnit: unit
-  });
+  const conflict = i18next.t(
+    'simulator:generalWarnings.primitiveInteractionConflict', {
+      rayIndex: warning.rayIndex,
+      curveId: formatWarningCurveId(warning.curveId),
+      conflictingCurveId: formatWarningCurveId(
+        warning.conflictingCurveId
+      ),
+      toleranceKind: kind,
+      tolerance: formatToleranceValue(tolerance.value),
+      toleranceUnit: unit
+    }
+  );
+  if (!Number.isFinite(warning.ambiguousPower)) return conflict;
+  return conflict + ' ' + i18next.t(
+    'simulator:generalWarnings.primitiveAmbiguousPower', {
+      power: formatToleranceValue(warning.ambiguousPower)
+    }
+  );
 }
 
 function formatWarningCurveId(curveId) {

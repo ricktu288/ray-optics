@@ -61,6 +61,10 @@ import {
 import {
   deriveWebGpuWavelengthRange
 } from '../webgpu/webGpuParameterRanges.js';
+import {
+  DEFAULT_AMBIGUOUS_RAY_WARNING_SAFETY_FACTOR,
+  estimateAmbiguousRayWarningPowerThreshold
+} from '../ambiguousRayWarning.js';
 
 const MAX_MEMBERSHIP_ATTEMPTS = 4;
 const GOLDEN_ANGLE_COS = -0.737368878;
@@ -365,6 +369,9 @@ export class CpuSimulationRun {
       hit
     );
     if (typeIndex < 0) {
+      if (hit.curveId === TERMINATE_HIT_CURVE_ID) {
+        this.totalTruncation += power;
+      }
       lane.active = false;
       return;
     }
@@ -558,6 +565,20 @@ export class CpuSimulationRun {
   }
 
   getUpdate() {
+    const warningPower = this.warningState.totalPower;
+    const warningThreshold = estimateAmbiguousRayWarningPowerThreshold({
+      numericEpsilon: this.engine.numericEpsilon,
+      processedRayCount: this.processedRayCount,
+      description: this.options.preparedScene.description,
+      safetyFactor: this.engine.ambiguousRayWarningSafetyFactor
+    });
+    const warning = this.warningState.first &&
+      warningPower > warningThreshold
+      ? {
+        ...this.warningState.first,
+        ambiguousPower: warningPower
+      }
+      : null;
     return {
       status:
         this.isCancelled || this.isComplete
@@ -572,8 +593,8 @@ export class CpuSimulationRun {
         detectors: this.detectorResults,
         processedRayCount: this.processedRayCount,
         totalTruncation: this.totalTruncation,
-        warning: this.warningState.first,
-        warningPower: this.warningState.totalPower,
+        warning,
+        warningPower,
       },
     };
   }
@@ -655,6 +676,17 @@ class CpuSimulationEngine {
       );
     }
     this.maxLocalIterations = maxLocalIterations;
+    const ambiguousRayWarningSafetyFactor =
+      config.ambiguousRayWarningSafetyFactor ??
+      DEFAULT_AMBIGUOUS_RAY_WARNING_SAFETY_FACTOR;
+    if (!Number.isFinite(ambiguousRayWarningSafetyFactor) ||
+        ambiguousRayWarningSafetyFactor < 0) {
+      throw new RangeError(
+        'ambiguousRayWarningSafetyFactor must be finite and nonnegative.'
+      );
+    }
+    this.ambiguousRayWarningSafetyFactor =
+      ambiguousRayWarningSafetyFactor;
   }
 
   async prepare(description, {

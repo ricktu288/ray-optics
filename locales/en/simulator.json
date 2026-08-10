@@ -805,6 +805,7 @@
     "identicalObjects": "There are two identical optical elements in the scene that overlap completely. This may cause unexpected behavior.",
     "brightnessInconsistent": "The brightnesses of two or more light sources saturate with inconsistent ratios. This may lead to wrong detector readings and color rendering. Please increase the ray density or reduce the brightnesses of the light sources.",
     "primitiveInteractionConflict": "Numerically ambiguous primitive interaction at ray {{rayIndex}} (curves {{curveId}} and {{conflictingCurveId}}). The effective {{toleranceKind}} tolerance was {{tolerance}} {{toleranceUnit}}.",
+    "primitiveAmbiguousPower": "Total ambiguous power: {{power}}.",
     "primitiveToleranceKinds": {
       "interactionMerging": "interaction-merging",
       "interactionNormal": "interaction-normal",

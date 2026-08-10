@@ -15,6 +15,9 @@
  */
 
 import { DEFAULT_BVH_OPTIONS } from '../primitive/bvh.js';
+import {
+  DEFAULT_AMBIGUOUS_RAY_WARNING_SAFETY_FACTOR
+} from './ambiguousRayWarning.js';
 
 // Read-only trace tables share one packed scene binding. The tracing
 // megakernel uses seven storage bindings, while its combined source-emission
@@ -33,6 +36,8 @@ const COMMON_BVH_CONFIG = Object.freeze({
 
 const COMMON_PRIMITIVE_ENGINE_CONFIG = Object.freeze({
   logDebugInfo: false,
+  ambiguousRayWarningSafetyFactor:
+    DEFAULT_AMBIGUOUS_RAY_WARNING_SAFETY_FACTOR,
   bvh: COMMON_BVH_CONFIG,
 });
 

@@ -874,12 +874,48 @@ describe('CpuSimulationEngine initial ray buffers', () => {
       rayIndex: 0,
       curveId: 0,
       conflictingCurveId: 1,
+      ambiguousPower: 1,
       tolerance: {
         kind: 'interactionMerging',
         unit: 'sceneUnits',
         value: 0.001
       }
     });
+    expect(update.result.warningPower).toBe(1);
+    log.mockRestore();
+  });
+
+  it('counts a normal-conflict discarded ray as truncation', async () => {
+    const surface = (start, end) => ({
+      kind: 'surface',
+      curve: { kind: 'lineSegment', params: { start, end } },
+      twoSided: true,
+      surfaceType: mirrorSurfaceType,
+      params: {}
+    });
+    const processedScene = preprocessPrimitives([
+      source({ x: 5, y: 5 }),
+      surface({ x: 10, y: 0 }, { x: 10, y: 10 }),
+      surface({ x: 9, y: 4 }, { x: 11, y: 6 })
+    ], { numericEpsilon: FLOAT32_EPSILON }).processedScene;
+    const engine = new CpuSimulationEngine({
+      numericEpsilon: FLOAT32_EPSILON,
+      config: { ambiguousRayWarningSafetyFactor: 0 }
+    });
+    engine.beginRenderer = jest.fn();
+    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
+    const preparedScene = await engine.prepare(processedScene);
+    const run = await engine.createRun({ preparedScene });
+
+    const update = await advanceUntil(
+      run,
+      current => current.status === 'complete'
+    );
+
+    expect(run.hitBuffer[0].curveId).toBe(-2);
+    expect(update.result.warningPower).toBe(1);
+    expect(update.result.warning?.ambiguousPower).toBe(1);
+    expect(update.result.totalTruncation).toBe(1);
     log.mockRestore();
   });
 

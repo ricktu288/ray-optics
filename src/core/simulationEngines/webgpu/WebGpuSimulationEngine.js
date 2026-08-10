@@ -8,7 +8,14 @@
  *     http://www.apache.org/licenses/LICENSE-2.0
  */
 
-import { FLOAT32_EPSILON, validateNumericEpsilon } from '../../primitive/numeric.js';
+import {
+  FLOAT32_EPSILON,
+  getIntersectionTolerancePolicy,
+  validateNumericEpsilon,
+} from '../../primitive/numeric.js';
+import {
+  INTERSECTION_CONFLICT_NORMAL
+} from '../../primitive/interactionCandidate.js';
 import {
   clampWebGpuParameterToF32,
   estimateWebGpuParameterRanges,
@@ -32,10 +39,16 @@ import {
   DEFAULT_WEBGPU_RAY_COOPERATION_CONFIG,
   WEBGPU_MIN_STORAGE_BUFFERS_PER_SHADER_STAGE,
 } from '../config.js';
+import {
+  DEFAULT_AMBIGUOUS_RAY_WARNING_SAFETY_FACTOR,
+  estimateAmbiguousRayWarningPowerThreshold
+} from '../ambiguousRayWarning.js';
 
 const DEFAULT_WEBGPU_RUN_CONFIG = Object.freeze({
   workgroupSize: 64,
   ...DEFAULT_WEBGPU_RAY_COOPERATION_CONFIG,
+  ambiguousRayWarningSafetyFactor:
+    DEFAULT_AMBIGUOUS_RAY_WARNING_SAFETY_FACTOR,
   maxItemsPerAdvance: 262144,
   maxBatchRayEvents: 262144,
   maxReadyLineRecords: 262144,
@@ -184,8 +197,13 @@ class WebGpuSimulationRun {
         detectors: state?.detectors ?? [],
         processedRayCount: state?.processedRayCount ?? 0,
         totalTruncation: state?.totalTruncation ?? 0,
-        warning: null,
-        warningPower: 0,
+        warning: createNormalConflictWarning(
+          state,
+          this.options.preparedScene?.runtimeDescription,
+          this.engine.numericEpsilon,
+          this.engine.runConfig.ambiguousRayWarningSafetyFactor
+        ),
+        warningPower: state?.ambiguousPower ?? 0,
       },
     };
   }
@@ -201,6 +219,47 @@ class WebGpuSimulationRun {
   dispose() {
     this.cancel();
   }
+}
+
+export function createNormalConflictWarning(
+  state,
+  description,
+  numericEpsilon,
+  safetyFactor = DEFAULT_AMBIGUOUS_RAY_WARNING_SAFETY_FACTOR
+) {
+  if (!state || (state.warningFlags & 1) === 0) return null;
+  const ambiguousPower = state.ambiguousPower ?? 0;
+  const threshold = estimateAmbiguousRayWarningPowerThreshold({
+    numericEpsilon,
+    processedRayCount: state.processedRayCount,
+    description,
+    safetyFactor
+  });
+  if (!(ambiguousPower > threshold)) return null;
+  const policy = getIntersectionTolerancePolicy(numericEpsilon);
+  const configured = description?.numericalTolerances
+    ?.interactionNormal ?? 0;
+  return {
+    type: INTERSECTION_CONFLICT_NORMAL,
+    rayIndex: state.warningRayIndex,
+    curveId: toSignedInt32(state.warningCurveId),
+    conflictingCurveId: toSignedInt32(
+      state.warningConflictingCurveId
+    ),
+    ambiguousPower,
+    tolerance: {
+      kind: 'interactionNormal',
+      unit: 'radians',
+      value: Math.min(
+        Math.PI,
+        Math.max(configured, policy.interactionNormal)
+      ),
+    },
+  };
+}
+
+function toSignedInt32(value) {
+  return Number.isFinite(value) ? value | 0 : -1;
 }
 
 /**
@@ -580,6 +639,12 @@ function resolveWebGpuRunConfig(config) {
     if (!Number.isSafeInteger(resolved[name]) || resolved[name] <= 0) {
       throw new RangeError(`${name} must be a positive safe integer.`);
     }
+  }
+  if (!Number.isFinite(resolved.ambiguousRayWarningSafetyFactor) ||
+      resolved.ambiguousRayWarningSafetyFactor < 0) {
+    throw new RangeError(
+      'ambiguousRayWarningSafetyFactor must be finite and nonnegative.'
+    );
   }
   for (const name of [
     'rayCooperationDirectMaxTestsPerLane',

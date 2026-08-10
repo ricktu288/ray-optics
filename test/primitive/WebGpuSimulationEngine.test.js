@@ -6,7 +6,7 @@
 import { parseFormula } from '../../src/core/formula/formula-parser.js';
 import { FLOAT32_EPSILON } from '../../src/core/primitive/numeric.js';
 import { preprocessPrimitives } from '../../src/core/primitive/preprocess.js';
-import WebGpuSimulationEngine from
+import WebGpuSimulationEngine, { createNormalConflictWarning } from
   '../../src/core/simulationEngines/webgpu/WebGpuSimulationEngine.js';
 import { createWebGpuMegakernelShader } from
   '../../src/core/simulationEngines/webgpu/webGpuMegakernelShader.js';
@@ -19,8 +19,11 @@ import {
   '../../src/core/simulationEngines/webgpu/webGpuMegakernelQueue.js';
 import { WebGpuMegakernelBackend } from
   '../../src/core/simulationEngines/webgpu/webGpuMegakernelBackend.js';
-import { WebGpuMegakernelStaticSceneStorage } from
-  '../../src/core/simulationEngines/webgpu/webGpuMegakernelStorage.js';
+import {
+  WEBGPU_MEGAKERNEL_RUN_CONTROL_SIZE,
+  WebGpuMegakernelStaticSceneStorage,
+  decodeWebGpuMegakernelRunState,
+} from '../../src/core/simulationEngines/webgpu/webGpuMegakernelStorage.js';
 import { selectWebGpuRayCooperationStrategy } from
   '../../src/core/simulationEngines/webgpu/webGpuRayCooperation.js';
 import { DEFAULT_SIMULATION_ENGINE_CONFIGS } from
@@ -152,6 +155,10 @@ describe('WebGpuSimulationEngine', () => {
       expect(rays.code).toContain(
         'recordTruncation(ray.powers.x+ray.powers.y)'
       );
+      expect(rays.code).toContain(
+        'recordNormalConflict(\n        rayIndex,hit,ray.powers.x+ray.powers.y)'
+      );
+      expect(rays.code).toContain('recordTruncation(power)');
       expect(rays.code).not.toContain('sharedRays');
       expect(rays.code).not.toContain('fn lineIntersection(');
       expect(images.code).toContain('var<workgroup> sharedRays');
@@ -223,6 +230,47 @@ describe('WebGpuSimulationEngine', () => {
         rayCooperationMaximumBvhLanesPerRay: 24,
       },
     })).toEqual({ acceleration: 'bvh4', lanesPerRay: 16 });
+  });
+
+  it('decodes the first WebGPU normal-conflict diagnostic', () => {
+    const data = new ArrayBuffer(WEBGPU_MEGAKERNEL_RUN_CONTROL_SIZE);
+    const control = new Uint32Array(data);
+    control[18] = 1;
+    control[22] = 3;
+    control[23] = 7;
+    control[24] = 4;
+    control[25] = 9;
+    control[26] = Math.round(0.25 * 1048576);
+
+    const decoded = decodeWebGpuMegakernelRunState(data, scene());
+
+    expect(decoded).toEqual(expect.objectContaining({
+      warningFlags: 1,
+      warningConflictCount: 3,
+      warningRayIndex: 7,
+      warningCurveId: 4,
+      warningConflictingCurveId: 9,
+      ambiguousPower: 0.25,
+    }));
+    expect(createNormalConflictWarning(
+      decoded,
+      scene(),
+      FLOAT32_EPSILON
+    )).toEqual(expect.objectContaining({
+      rayIndex: 7,
+      curveId: 4,
+      conflictingCurveId: 9,
+      ambiguousPower: 0.25,
+      tolerance: expect.objectContaining({
+        kind: 'interactionNormal',
+        unit: 'radians',
+      }),
+    }));
+    expect(createNormalConflictWarning(
+      { ...decoded, ambiguousPower: 1e-8 },
+      scene(),
+      FLOAT32_EPSILON
+    )).toBeNull();
   });
 
   it('uses power prefixes for a stable systematically sampled queue', () => {

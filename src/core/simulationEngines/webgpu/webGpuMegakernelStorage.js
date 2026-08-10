@@ -3,12 +3,12 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 
-import { WEBGPU_RUN_CONTROL_SIZE } from './webGpuStorage.js';
 import { createWebGpuTraceSceneData } from './webGpuTraceScene.js';
 
 const BUFFER_USAGE_COPY_DST = 0x0008;
 const BUFFER_USAGE_STORAGE = 0x0080;
 const DETECTOR_FIXED_POINT_SCALE = 1048576;
+export const WEBGPU_MEGAKERNEL_RUN_CONTROL_SIZE = 108;
 
 const STATIC_STORAGE_FIELDS = Object.freeze([
   'instanceParameters',
@@ -112,15 +112,19 @@ export function decodeWebGpuMegakernelRunState(data, description) {
   const bytes = data instanceof ArrayBuffer
     ? data
     : data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength);
-  if (bytes.byteLength < WEBGPU_RUN_CONTROL_SIZE) {
+  if (bytes.byteLength < WEBGPU_MEGAKERNEL_RUN_CONTROL_SIZE) {
     throw new RangeError('WebGPU megakernel run-state readback is truncated.');
   }
-  const control = new Uint32Array(bytes, 0, WEBGPU_RUN_CONTROL_SIZE / 4);
+  const control = new Uint32Array(
+    bytes,
+    0,
+    WEBGPU_MEGAKERNEL_RUN_CONTROL_SIZE / 4
+  );
   const currentDirection = control[11] & 1;
   const currentCountWord = currentDirection === 0 ? 0 : 4;
   const nextCountWord = currentDirection === 0 ? 4 : 0;
   const detectorLayout = createDetectorResultLayout(description);
-  const requiredByteLength = WEBGPU_RUN_CONTROL_SIZE +
+  const requiredByteLength = WEBGPU_MEGAKERNEL_RUN_CONTROL_SIZE +
     detectorLayout.valueCount * 8;
   if (bytes.byteLength < requiredByteLength) {
     throw new RangeError('WebGPU megakernel detector readback is truncated.');
@@ -130,7 +134,8 @@ export function decodeWebGpuMegakernelRunState(data, description) {
     const values = new Float64Array(size);
     const overflow = new Uint8Array(size);
     for (let index = 0; index < size; index++) {
-      const byteOffset = WEBGPU_RUN_CONTROL_SIZE + (offset + index) * 8;
+      const byteOffset = WEBGPU_MEGAKERNEL_RUN_CONTROL_SIZE +
+        (offset + index) * 8;
       values[index] = view.getInt32(byteOffset, true) /
         DETECTOR_FIXED_POINT_SCALE;
       overflow[index] = view.getUint32(byteOffset + 4, true) !== 0 ? 1 : 0;
@@ -153,6 +158,11 @@ export function decodeWebGpuMegakernelRunState(data, description) {
     processedRayCount: control[16],
     totalTruncation: control[17] / DETECTOR_FIXED_POINT_SCALE,
     warningFlags: control[18],
+    warningConflictCount: control[22],
+    warningRayIndex: control[23],
+    warningCurveId: control[24],
+    warningConflictingCurveId: control[25],
+    ambiguousPower: control[26] / DETECTOR_FIXED_POINT_SCALE,
     readyGeometryOverflow: control[19] !== 0,
     detectors: decodedDetectors.map(result => result.values),
     detectorOverflow: decodedDetectors.some(result =>
