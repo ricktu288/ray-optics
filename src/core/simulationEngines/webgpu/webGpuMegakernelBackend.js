@@ -418,6 +418,14 @@ export class WebGpuMegakernelBackend {
         lanesPerRay: 1,
       });
     }
+    if (this.preparedScene.logDebugInfo) {
+      console.log(
+        '[WebGPU ray cooperation] activeRays=%d lanesPerRay=%d acceleration=%s',
+        activeRayCount,
+        strategy.lanesPerRay,
+        strategy.acceleration
+      );
+    }
     this.currentPayloadSize = cooperativeRayPayload(
       this.config.workgroupSize,
       strategy.lanesPerRay,

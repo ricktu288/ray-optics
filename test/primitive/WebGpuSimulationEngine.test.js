@@ -232,6 +232,38 @@ describe('WebGpuSimulationEngine', () => {
     })).toEqual({ acceleration: 'bvh4', lanesPerRay: 16 });
   });
 
+  it('logs the selected ray cooperation in debug mode', async () => {
+    const writeBuffer = jest.fn();
+    const preparedScene = {
+      logDebugInfo: true,
+      packedStorage: { counts: { curves: 4096 } }
+    };
+    const config = DEFAULT_SIMULATION_ENGINE_CONFIGS.webgpu;
+    const backend = new WebGpuMegakernelBackend({
+      limits: { maxComputeWorkgroupStorageSize: 16384 },
+      queue: { writeBuffer }
+    }, preparedScene, config);
+    backend.queueBuffer = {};
+    backend.dispatchIndirectBuffer = {};
+    backend.regionWordCount = 1;
+    backend.megakernelStages.set('rays:direct:8', {});
+    backend.writeMegakernelUniforms = jest.fn();
+    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
+
+    try {
+      await backend.prepareBatch(1024);
+
+      expect(log).toHaveBeenCalledWith(
+        '[WebGPU ray cooperation] activeRays=%d lanesPerRay=%d acceleration=%s',
+        1024,
+        8,
+        'direct'
+      );
+    } finally {
+      log.mockRestore();
+    }
+  });
+
   it('decodes the first WebGPU normal-conflict diagnostic', () => {
     const data = new ArrayBuffer(WEBGPU_MEGAKERNEL_RUN_CONTROL_SIZE);
     const control = new Uint32Array(data);

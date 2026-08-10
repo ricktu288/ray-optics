@@ -76,6 +76,10 @@ export default (env, argv) => {
           { from: 'src/img', to: 'img', noErrorOnMissing: true },
           { from: 'src/app/manifest', to: 'simulator/manifest', noErrorOnMissing: true },
           { from: 'locales', to: 'locales', noErrorOnMissing: true },
+          {
+            from: 'scripts/benchmarkWebGpuRayCooperation.html',
+            to: 'experiments/webgpu-ray-cooperation.html'
+          },
           { from: 'LICENSE', to: '', noErrorOnMissing: true },
         ],
       }),

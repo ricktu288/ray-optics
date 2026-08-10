@@ -331,6 +331,7 @@ class WebGpuSimulationEngine {
       executionPlan: this.executionPlan,
       dagPrograms,
       packedStorage,
+      logDebugInfo: Boolean(rangeOptions.logDebugInfo),
       violetWavelength: rangeOptions.violetWavelength,
       redWavelength: rangeOptions.redWavelength,
       originalDescription: description,

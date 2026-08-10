@@ -3,14 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>WebGPU cooperative-ray benchmark</title>
+  <title>WebGPU cooperative-ray and CPU benchmark</title>
   <style>
     :root { color-scheme: light dark; font-family: system-ui, sans-serif; }
     body { max-width: 86rem; margin: 2rem auto; padding: 0 1rem 3rem; }
     h1 { font-size: 1.5rem; }
     button { padding: .55rem .85rem; margin: 0 .5rem .75rem 0; }
-    a.preset { display: inline-block; padding: .45rem .65rem; margin: 0 .5rem .75rem 0;
-      border: 1px solid #8886; border-radius: .25rem; text-decoration: none; }
     button:disabled { opacity: .55; }
     table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
     th, td { border: 1px solid #8886; padding: .42rem; text-align: right; }
@@ -19,10 +17,25 @@
       border: 1px solid #8886; background: #8881; }
     .error { color: #d33; white-space: pre-wrap; }
     code { background: #8882; padding: .08rem .25rem; }
+    .performance-grid { table-layout: fixed; min-width: 70rem; margin-bottom: 2rem; }
+    .grid-scroll { overflow-x: auto; }
+    .performance-grid th, .performance-grid td { text-align: center; padding: .3rem; }
+    .performance-grid th:first-child { width: 4.5rem; }
+    .performance-cell { height: 6.5rem; min-width: 8.5rem; vertical-align: bottom; }
+    .method-bars { height: 4.5rem; display: flex; align-items: end; gap: 2px; }
+    .method-bar { flex: 1 1 0; min-width: 2px; border: 1px solid #0005;
+      box-sizing: border-box; }
+    .method-bar.experimental { outline: 1px dashed currentColor; outline-offset: 1px; }
+    .winner-summary { min-height: 1.2rem; font-size: .78rem; text-align: left; }
+    .pending-cell { opacity: .5; vertical-align: middle; }
+    .method-legend { display: flex; flex-wrap: wrap; gap: .35rem .8rem;
+      margin: .5rem 0 1rem; font-size: .82rem; }
+    .legend-swatch { display: inline-block; width: .75rem; height: .75rem;
+      margin-right: .2rem; vertical-align: -.08rem; border: 1px solid #0005; }
   </style>
 </head>
 <body>
-  <h1>WebGPU cooperative-ray benchmark</h1>
+  <h1>WebGPU cooperative-ray and CPU benchmark</h1>
   <p>
     This runs a small multi-bounce 2D ray simulation. It compares one invocation
     per ray with multiple workgroup lanes or one hardware subgroup per ray. The
@@ -32,15 +45,31 @@
   <p>
     Direct variants scan every curve without a BVH. BVH4 cooperative variants
     divide disjoint BVH subtrees between lanes. All variants execute the same
-    exact ray/segment intersection and reflection code.
+    exact ray/segment intersection and reflection code. Every measured bounce
+    also includes production-shaped active-queue weight, prefix, and fill
+    collector passes. Scene and BVH building are excluded from timings for both
+    CPU and GPU.
   </p>
   <p>
-    Targeted sweeps:
-    <a class="preset" id="curve-sweep" href="#">Large curve crossover</a>
-    <a class="preset" id="ray-sweep" href="#">Large ray crossover (BVH4)</a>
-    The curve sweep increases scene size while ray parallelism is scarce. The
-    ray sweep reaches 262,144 active rays and omits direct scanning so that very
-    large, predictably slow Cartesian products do not obscure the BVH crossover.
+    Coherent rays start close together with similar directions; incoherent rays
+    spread their origins and directions across the scene. Both are measured
+    because scalar BVH traversal benefits from neighboring rays taking similar
+    paths, while cooperative BVH lanes deliberately traverse different
+    partitions of the same ray.
+  </p>
+  <p>
+    Scalar and workgroup methods match the cooperation mechanisms available in
+    production. Hardware-subgroup methods are experimental and are reported
+    when the adapter and browser expose the required features. A JavaScript CPU
+    BVH4 implementation is included as a wall-clock baseline. This page only
+    measures and exports results; it does not modify engine tuning.
+  </p>
+  <p>
+    The default experiment is one matrix containing every power-of-four
+    combination from 1 through 4,096 curves and from 1 through 16,384 rays.
+    Direct and BVH4 strategies are compared at scalar and 2, 4, 8, 16, and 32
+    workgroup lanes per ray. Experimental subgroup strategies are added when
+    supported.
   </p>
   <p id="status">Preparing benchmark…</p>
   <button id="copy" disabled>Copy JSON report</button>
@@ -58,16 +87,23 @@ const LEAF_START_MASK = 0x00ffffff;
 const LEAF_SIZE = 4;
 const NODE_BYTES = 80;
 const F32_MAX = 3.402823e38;
+const CPU_METHOD_ID = 'cpu_bvh4';
 const parameters = new URLSearchParams(location.search);
-const CURVE_COUNTS = listParameter('curves', [16, 64, 256], 4, 1048576);
-const RAY_COUNTS = listParameter('rays', [1024, 8192], 64, 262144);
+const CURVE_COUNTS = listParameter(
+  'curves', [1, 4, 16, 64, 256, 1024, 4096], 1, 1048576
+);
+const RAY_COUNTS = listParameter(
+  'rays', [1, 4, 16, 64, 256, 1024, 4096, 16384], 1, 262144
+);
 const CASES = caseParameter('cases', CURVE_COUNTS, RAY_COUNTS);
-const BOUNCES = integerParameter('bounces', 8, 1, 64);
-const REPETITIONS = integerParameter('repetitions', 3, 1, 20);
-const SAMPLE_COUNT = integerParameter('samples', 5, 1, 15);
+const BOUNCES = integerParameter('bounces', 16, 1, 64);
+const REPETITIONS = integerParameter('repetitions', 1, 1, 20);
+const SAMPLE_COUNT = integerParameter('samples', 3, 1, 15);
+const MIN_MEASUREMENT_MS = numberParameter('mintime', 100, 10, 5000);
+const TARGET_SAMPLE_MS = numberParameter('sampletime', 10, 1, 1000);
 const SATURATION_RAY_COUNT = integerParameter('rsat', 8192, 64, 1048576);
 const DIRECT_TESTS_PER_LANE = integerParameter('directthreshold', 32, 1, 4096);
-const WORKGROUP_LANES = listParameter('lanes', [4, 8, 16, 32], 2, 64)
+const WORKGROUP_LANES = listParameter('lanes', [2, 4, 8, 16, 32], 2, 64)
   .filter(value => (value & (value - 1)) === 0 && 64 % value === 0);
 const COHERENCES = choiceListParameter(
   'coherences', ['coherent', 'incoherent'], ['coherent', 'incoherent']
@@ -79,26 +115,15 @@ const summaryElement = document.querySelector('#summary');
 const reportElement = document.querySelector('#report');
 const copyButton = document.querySelector('#copy');
 const rerunButton = document.querySelector('#rerun');
-document.querySelector('#curve-sweep').href = presetUrl({
-  cases: [
-    '256x64', '1024x64', '4096x64', '16384x64', '65536x64',
-    '256x1024', '1024x1024', '4096x1024'
-  ].join(','),
-  repetitions: 1, samples: 3, lanes: '4,8,16', coherences: 'coherent,incoherent'
-});
-document.querySelector('#ray-sweep').href = presetUrl({
-  cases: [
-    '4096x256', '4096x1024', '4096x4096', '4096x16384',
-    '4096x65536', '4096x262144'
-  ].join(','),
-  methods: 'bvh4', repetitions: 1, samples: 3,
-  lanes: '2,4,8,16,32', coherences: 'coherent,incoherent'
-});
 let reportText = '';
+let currentReport = null;
 let running = false;
 
 copyButton.addEventListener('click', async () => {
-  await navigator.clipboard.writeText(reportText);
+  const text = currentReport
+    ? JSON.stringify(currentReport, null, 2)
+    : reportText;
+  await navigator.clipboard.writeText(text);
   copyButton.textContent = 'Copied';
   setTimeout(() => { copyButton.textContent = 'Copy JSON report'; }, 1200);
 });
@@ -109,6 +134,14 @@ function integerParameter(name, fallback, minimum, maximum) {
   const value = Number(parameters.get(name) ?? fallback);
   if (!Number.isInteger(value) || value < minimum || value > maximum) {
     throw new RangeError(`${name} must be an integer from ${minimum} to ${maximum}.`);
+  }
+  return value;
+}
+
+function numberParameter(name, fallback, minimum, maximum) {
+  const value = Number(parameters.get(name) ?? fallback);
+  if (!Number.isFinite(value) || value < minimum || value > maximum) {
+    throw new RangeError(`${name} must be a number from ${minimum} to ${maximum}.`);
   }
   return value;
 }
@@ -151,34 +184,16 @@ function caseParameter(name, curveCounts, rayCounts) {
     }
     const curveCount = Number(match[1]);
     const rayCount = Number(match[2]);
-    if (curveCount < 4 || curveCount > 1048576 ||
+    if (curveCount < 1 || curveCount > 1048576 ||
         rayCount < 1 || rayCount > 262144) {
       throw new RangeError(
-        `${name} pairs require 4..1048576 curves and 1..262144 rays.`
+        `${name} pairs require 1..1048576 curves and 1..262144 rays.`
       );
     }
     unique.set(`${curveCount}x${rayCount}`, { curveCount, rayCount });
   }
   if (!unique.size) throw new RangeError(`${name} must not be empty.`);
   return [...unique.values()];
-}
-
-function presetUrl(values) {
-  const url = new URL(location.href);
-  url.search = '';
-  for (const [name, value] of Object.entries(values)) {
-    url.searchParams.set(name, String(value));
-  }
-  return url;
-}
-
-function groupCasesByCurve(cases) {
-  const groups = new Map();
-  for (const item of cases) {
-    if (!groups.has(item.curveCount)) groups.set(item.curveCount, []);
-    groups.get(item.curveCount).push(item);
-  }
-  return groups;
 }
 
 function powerOfTwoFloor(value) {
@@ -208,7 +223,9 @@ function recommendStrategy(curveCount, rayCount, subgroup) {
 async function runBenchmark() {
   if (running) return;
   running = true;
+  const benchmarkStartedAt = performance.now();
   copyButton.disabled = true;
+  currentReport = null;
   rerunButton.disabled = true;
   summaryElement.replaceChildren();
   reportElement.textContent = '';
@@ -246,7 +263,7 @@ async function runBenchmark() {
       label: 'Cooperative-ray shared bind group layout',
       entries: [
         { binding: 0, visibility: GPUShaderStage.COMPUTE,
-          buffer: { type: 'read-only-storage' } },
+          buffer: { type: 'storage' } },
         { binding: 1, visibility: GPUShaderStage.COMPUTE,
           buffer: { type: 'read-only-storage' } },
         { binding: 2, visibility: GPUShaderStage.COMPUTE,
@@ -288,9 +305,12 @@ async function runBenchmark() {
         compute: { module, entryPoint: 'simulateMain' }
       });
     }
+    const collectorPipelines = await createCollectorPipelines(device);
 
     const report = {
-      benchmark: 'webgpu-ray-cooperation-v4',
+      benchmark: 'webgpu-ray-cooperation-v7',
+      experimental: true,
+      appliesEngineTuning: false,
       generatedAt: new Date().toISOString(),
       browser: navigator.userAgent,
       adapter: adapterReport(adapter),
@@ -312,35 +332,83 @@ async function runBenchmark() {
         curveCounts: [...new Set(CASES.map(item => item.curveCount))],
         rayCounts: [...new Set(CASES.map(item => item.rayCount))],
         coherences: COHERENCES,
+        rayDistributions: {
+          coherent: 'Nearby origins with directions spanning 0.12 radians',
+          incoherent: 'Scene-wide low-discrepancy origins and directions'
+        },
         bounces: BOUNCES,
         repetitions: REPETITIONS,
-        sampleCount: SAMPLE_COUNT,
+        minimumSampleCount: SAMPLE_COUNT,
+        minimumMeasurementMs: MIN_MEASUREMENT_MS,
+        targetSampleMs: TARGET_SAMPLE_MS,
         workgroupLanesPerRay: WORKGROUP_LANES,
         leafSize: LEAF_SIZE,
         methodSelection: METHOD_SELECTION,
+        cpuBaseline: 'Single-threaded JavaScript BVH4',
+        collector: {
+          included: true,
+          passesPerBounce: ['weight', 'prefix', 'fill'],
+          syntheticActiveFraction: 1,
+          note: 'Models steady-state active-queue compaction; all synthetic rays remain active.'
+        },
         heuristic: {
           saturationRayCount: SATURATION_RAY_COUNT,
           directTestsPerLane: DIRECT_TESTS_PER_LANE,
           portableMaximumLanesPerRay: 8
         }
       },
-      methods: Object.fromEntries(strategySpecs.map(strategy => [
-        strategy.id,
-        {
-          label: strategy.label,
-          acceleration: strategy.acceleration,
-          cooperation: strategy.cooperation,
-          lanesPerRay: strategy.lanes ?? subgroup?.size ?? 1
+      methods: {
+        ...Object.fromEntries(strategySpecs.map(strategy => [
+          strategy.id,
+          {
+            label: strategy.label,
+            acceleration: strategy.acceleration,
+            cooperation: strategy.cooperation,
+            lanesPerRay: strategy.lanes ?? subgroup?.size ?? 1,
+            platform: 'gpu',
+            webGpuStrategy: true,
+            productionSupported: strategy.cooperation !== 'subgroup',
+            experimental: strategy.cooperation === 'subgroup'
+          }
+        ])),
+        [CPU_METHOD_ID]: {
+          label: 'CPU BVH4',
+          acceleration: 'bvh4',
+          cooperation: 'cpu',
+          lanesPerRay: 1,
+          platform: 'cpu',
+          webGpuStrategy: false,
+          productionSupported: true,
+          experimental: false
         }
-      ])),
+      },
       scenes: {},
       results: {},
+      accelerationCrossovers: [],
       primaryTiming: hasTimestamps ? 'gpu' : 'wall',
+      timingAggregation: 'arithmetic-mean',
+      visualComparisonTiming: 'wall',
+      timingBoundary: {
+        includes: [
+          'command encoding', 'trace dispatches', 'dependent bounces',
+          'active-queue weight/prefix/fill collectors',
+          'queue submission and completion wait'
+        ],
+        excludes: [
+          'adapter/device initialization', 'shader and pipeline compilation',
+          'scene and BVH construction', 'buffer allocation and upload',
+          'warm-up', 'final output readback', 'rendering'
+        ]
+      },
       scope: 'Multi-bounce synthetic 2D ray/segment simulation including traversal, exact intersection, closest-hit reduction, synchronization, reflection, and next-step dependency.'
     };
+    currentReport = report;
+    copyButton.disabled = false;
 
-    const casesByCurve = groupCasesByCurve(CASES);
-    for (const [curveCount, curveCases] of casesByCurve) {
+    const sceneResources = new Map();
+    const curveCounts = [...new Set(CASES.map(item => item.curveCount))]
+      .sort((a, b) => a - b);
+    for (const curveCount of curveCounts) {
       statusElement.textContent = `Building ${curveCount}-curve BVH4…`;
       const scene = buildScene(curveCount);
       report.scenes[curveCount] = {
@@ -349,21 +417,6 @@ async function runBenchmark() {
         bvh4HierarchyKiB: scene.nodes.length * NODE_BYTES / 1024,
         primitiveIndexKiB: scene.primitiveOrder.byteLength / 1024
       };
-      const curveBuffer = track(ownedBuffers, createBufferWithData(
-        device, scene.curves,
-        GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
-        `${curveCount} curves`
-      ));
-      const primitiveIndexBuffer = track(ownedBuffers, createBufferWithData(
-        device, scene.primitiveOrder,
-        GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
-        `${curveCount} BVH primitive indices`
-      ));
-      const nodeBuffer = track(ownedBuffers, createBufferWithData(
-        device, packNodes(scene.nodes),
-        GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
-        `${curveCount} BVH4 nodes`
-      ));
       const rootBuffers = new Map();
       for (const laneCount of new Set([
         1, ...WORKGROUP_LANES, ...(subgroup ? [subgroup.size] : [])
@@ -378,18 +431,61 @@ async function runBenchmark() {
           ))
         });
       }
+      sceneResources.set(curveCount, {
+        scene,
+        curveBuffer: track(ownedBuffers, createBufferWithData(
+          device, scene.curves,
+          GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+          `${curveCount} curves`
+        )),
+        primitiveIndexBuffer: track(ownedBuffers, createBufferWithData(
+          device, scene.primitiveOrder,
+          GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+          `${curveCount} BVH primitive indices`
+        )),
+        nodeBuffer: track(ownedBuffers, createBufferWithData(
+          device, packNodes(scene.nodes),
+          GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+          `${curveCount} BVH4 nodes`
+        )),
+        rootBuffers
+      });
+    }
 
-      for (const { rayCount } of curveCases) {
-        for (const coherence of COHERENCES) {
+    const scheduledConfigurations = CASES.flatMap(item =>
+      COHERENCES.map(coherence => ({ ...item, coherence }))
+    ).sort((a, b) =>
+      a.curveCount * a.rayCount - b.curveCount * b.rayCount ||
+      a.curveCount - b.curveCount ||
+      a.rayCount - b.rayCount ||
+      a.coherence.localeCompare(b.coherence)
+    );
+    const warmedStrategies = new Set();
+    let cpuWarmed = false;
+    renderSummary(report);
+    for (let configurationIndex = 0;
+      configurationIndex < scheduledConfigurations.length;
+      configurationIndex++) {
+          const { curveCount, rayCount, coherence } =
+            scheduledConfigurations[configurationIndex];
+          const {
+            scene,
+            curveBuffer,
+            primitiveIndexBuffer,
+            nodeBuffer,
+            rootBuffers
+          } = sceneResources.get(curveCount);
           const configId = `${curveCount}c_${rayCount}r_${coherence}`;
           statusElement.textContent =
+            `${configurationIndex + 1}/${scheduledConfigurations.length}: ` +
             `${curveCount} curves, ${rayCount} ${coherence} rays…`;
           const rayData = coherence === 'coherent'
             ? createCoherentRays(rayCount)
             : createIncoherentRays(rayCount);
           const rayBuffer = track(ownedBuffers, createBufferWithData(
             device, rayData,
-            GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+            GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST |
+              GPUBufferUsage.COPY_SRC,
             `${configId} rays`
           ));
           const outputBytes = rayCount * 16;
@@ -403,6 +499,9 @@ async function runBenchmark() {
             size: outputBytes,
             usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.MAP_READ
           }));
+          const collector = createCollectorResources(
+            device, rayBuffer, rayCount, collectorPipelines, ownedBuffers
+          );
 
           const configResult = {
             curveCount, rayCount, coherence, bounces: BOUNCES,
@@ -423,7 +522,7 @@ async function runBenchmark() {
             const uniformBuffer = track(ownedBuffers, createBufferWithData(
               device,
               new Uint32Array([
-                rayCount, curveCount, rootSet.count, BOUNCES,
+                rayCount, curveCount, rootSet.count, 1,
                 dispatch.width, 0, 0, 0
               ]),
               GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
@@ -449,41 +548,117 @@ async function runBenchmark() {
                 `${configId} / ${strategy.id} bind group: ${bindGroupError.message}`
               );
             }
+            device.queue.writeBuffer(rayBuffer, 0, rayData);
             const timing = await measureStrategy(
-              device, strategy.pipeline, bindGroup, dispatch,
-              hasTimestamps, REPETITIONS, SAMPLE_COUNT, ownedBuffers
+              device, strategy.pipeline, bindGroup, dispatch, collector,
+              hasTimestamps, REPETITIONS, SAMPLE_COUNT,
+              MIN_MEASUREMENT_MS, TARGET_SAMPLE_MS, ownedBuffers,
+              !warmedStrategies.has(strategy.id)
             );
+            warmedStrategies.add(strategy.id);
+            device.queue.writeBuffer(rayBuffer, 0, rayData);
+            const validationEncoder = device.createCommandEncoder({
+              label: `${configId} / ${strategy.id} validation sequence`
+            });
+            encodeStrategySequence(
+              validationEncoder, strategy.pipeline, bindGroup, dispatch,
+              collector
+            );
+            device.queue.submit([validationEncoder.finish()]);
+            await device.queue.onSubmittedWorkDone();
             const output = await readOutput(
-              device, outputBuffer, readBuffer, outputBytes
+              device, rayBuffer, readBuffer, outputBytes
             );
             if (!referenceOutput) referenceOutput = output.slice();
             const validation = compareOutputs(output, referenceOutput);
             configResult.methods[strategy.id] = {
               ...timing,
               millionRayStepsPerSecond:
-                rayCount * BOUNCES / timing.medianMs / 1000,
+                rayCount * BOUNCES / timing.averageMs / 1000,
+              wallMillionRayStepsPerSecond:
+                rayCount * BOUNCES / timing.wallAverageMs / 1000,
               nanosecondsPerRayStep:
-                timing.medianMs * 1e6 / (rayCount * BOUNCES),
+                timing.averageMs * 1e6 / (rayCount * BOUNCES),
               checksum: checksumFloat32(output),
               mismatchRayCount: validation.mismatchRayCount,
               maximumAbsoluteError: validation.maximumAbsoluteError
             };
             await animationFrame();
           }
+          const cpuTiming = measureCpuBvh4(
+            scene, rayData, BOUNCES, REPETITIONS, SAMPLE_COUNT,
+            MIN_MEASUREMENT_MS, TARGET_SAMPLE_MS, !cpuWarmed
+          );
+          cpuWarmed = true;
+          const cpuValidation = compareOutputs(
+            cpuTiming.output, referenceOutput
+          );
+          configResult.methods[CPU_METHOD_ID] = {
+            medianMs: cpuTiming.medianMs,
+            averageMs: cpuTiming.averageMs,
+            minimumMs: cpuTiming.minimumMs,
+            maximumMs: cpuTiming.maximumMs,
+            standardDeviationMs: cpuTiming.standardDeviationMs,
+            samplesMs: cpuTiming.samplesMs,
+            wallMedianMs: cpuTiming.wallMedianMs,
+            wallAverageMs: cpuTiming.wallAverageMs,
+            wallStandardDeviationMs: cpuTiming.wallStandardDeviationMs,
+            effectiveRepetitions: cpuTiming.effectiveRepetitions,
+            measuredWallMs: cpuTiming.measuredWallMs,
+            sampleCount: cpuTiming.sampleCount,
+            millionRayStepsPerSecond:
+              rayCount * BOUNCES / cpuTiming.averageMs / 1000,
+            wallMillionRayStepsPerSecond:
+              rayCount * BOUNCES / cpuTiming.wallAverageMs / 1000,
+            nanosecondsPerRayStep:
+              cpuTiming.averageMs * 1e6 / (rayCount * BOUNCES),
+            checksum: checksumFloat32(cpuTiming.output),
+            mismatchRayCount: cpuValidation.mismatchRayCount,
+            maximumAbsoluteError: cpuValidation.maximumAbsoluteError
+          };
           addSpeedups(configResult.methods);
-          const validMethods = Object.entries(configResult.methods)
+          configResult.accelerationComparisons = compareAccelerationPairs(
+            configResult.methods,
+            report.methods
+          );
+          const comparableMethods = Object.entries(configResult.methods)
             .filter(([, result]) => result.mismatchRayCount === 0)
-            .sort((a, b) => a[1].medianMs - b[1].medianMs);
-          configResult.fastestMethod = validMethods[0]?.[0] ?? null;
+            .sort((a, b) => comparisonTime(a[1]) - comparisonTime(b[1]));
+          configResult.fastestWallClockMethod =
+            comparableMethods[0]?.[0] ?? null;
+          const validMethods = comparableMethods
+            .filter(([methodId]) => report.methods[methodId].webGpuStrategy)
+            .sort((a, b) => primaryTime(a[1]) - primaryTime(b[1]));
+          const productionMethods = validMethods.filter(([methodId]) =>
+            report.methods[methodId].productionSupported
+          );
+          const subgroupMethods = validMethods.filter(([methodId]) =>
+            report.methods[methodId].cooperation === 'subgroup'
+          );
+          configResult.fastestProductionMethod =
+            productionMethods[0]?.[0] ?? null;
+          configResult.fastestSubgroupMethod =
+            subgroupMethods[0]?.[0] ?? null;
+          configResult.fastestOverallMethod =
+            comparableMethods[0]?.[0] ?? null;
+          configResult.fastestWebGpuMethod = validMethods[0]?.[0] ?? null;
           configResult.heuristicWasMeasured =
             configResult.heuristicRecommendation in configResult.methods;
           configResult.heuristicMatchedFastest =
-            configResult.heuristicRecommendation === configResult.fastestMethod;
+            configResult.heuristicRecommendation ===
+              configResult.fastestWebGpuMethod;
           report.results[configId] = configResult;
-        }
-      }
+          report.accelerationCrossovers = summarizeAccelerationCrossovers(
+            report.results
+          );
+          renderSummary(report);
+          await animationFrame();
     }
 
+    report.accelerationCrossovers = summarizeAccelerationCrossovers(
+      report.results
+    );
+    report.elapsedSeconds = (performance.now() - benchmarkStartedAt) / 1000;
     reportText = JSON.stringify(report, null, 2);
     reportElement.textContent = reportText;
     renderSummary(report);
@@ -545,6 +720,13 @@ function selectStrategySpecs(specs) {
   if (METHOD_SELECTION === 'all') return specs;
   if (METHOD_SELECTION === 'direct' || METHOD_SELECTION === 'bvh4') {
     return specs.filter(strategy => strategy.acceleration === METHOD_SELECTION);
+  }
+  if (METHOD_SELECTION === 'scalar' || METHOD_SELECTION === 'workgroup' ||
+      METHOD_SELECTION === 'subgroup') {
+    return specs.filter(strategy => strategy.cooperation === METHOD_SELECTION);
+  }
+  if (METHOD_SELECTION === 'cooperative') {
+    return specs.filter(strategy => strategy.cooperation !== 'scalar');
   }
   const ids = new Set(METHOD_SELECTION.split(',').filter(Boolean));
   const knownIds = new Set(specs.map(strategy => strategy.id));
@@ -837,6 +1019,402 @@ function createIncoherentRays(rayCount) {
   return rays;
 }
 
+function measureCpuBvh4(scene, rayData, bounceCount, repetitions,
+    minimumSampleCount, minimumMeasurementMs, targetSampleMs,
+    shouldWarmup = true) {
+  const output = new Float32Array(rayData.length);
+  const scratch = {
+    stack: new Uint32Array(64),
+    hit: new Float64Array(2),
+    activeQueue: new Uint32Array(rayData.length / 4)
+  };
+  output.set(rayData);
+  if (shouldWarmup) {
+    traceCpuBvh4(scene, bounceCount, output, scratch);
+  }
+  const samples = [];
+  let effectiveRepetitions = repetitions;
+  let measuredWallMs = 0;
+  while (samples.length < minimumSampleCount ||
+      measuredWallMs < minimumMeasurementMs) {
+    for (;;) {
+      const started = performance.now();
+      for (let repetition = 0;
+        repetition < effectiveRepetitions;
+        repetition++) {
+          traceCpuBvh4(scene, bounceCount, output, scratch);
+      }
+      const elapsedMs = performance.now() - started;
+      if (elapsedMs < targetSampleMs && effectiveRepetitions < 65536) {
+        effectiveRepetitions = scaledRepetitionCount(
+          effectiveRepetitions, elapsedMs, targetSampleMs
+        );
+        continue;
+      }
+      samples.push(elapsedMs / effectiveRepetitions);
+      measuredWallMs += elapsedMs;
+      break;
+    }
+  }
+  samples.sort((a, b) => a - b);
+  const averageMs = mean(samples);
+  output.set(rayData);
+  traceCpuBvh4(scene, bounceCount, output, scratch);
+  return {
+    output,
+    averageMs,
+    medianMs: median(samples),
+    minimumMs: samples[0],
+    maximumMs: samples[samples.length - 1],
+    standardDeviationMs: standardDeviation(samples, averageMs),
+    samplesMs: samples,
+    wallAverageMs: averageMs,
+    wallMedianMs: median(samples),
+    wallStandardDeviationMs: standardDeviation(samples, averageMs),
+    effectiveRepetitions,
+    measuredWallMs,
+    sampleCount: samples.length
+  };
+}
+
+function traceCpuBvh4(scene, bounceCount, output, scratch) {
+  for (let bounce = 0; bounce < bounceCount; bounce++) {
+    for (let rayIndex = 0; rayIndex < output.length / 4; rayIndex++) {
+      const base = rayIndex * 4;
+      let originX = output[base];
+      let originY = output[base + 1];
+      let directionX = output[base + 2];
+      let directionY = output[base + 3];
+      traceCpuBvh4Ray(
+        scene, originX, originY, directionX, directionY,
+        scratch.stack, scratch.hit
+      );
+      const distance = scratch.hit[0];
+      const primitive = scratch.hit[1];
+      if (primitive === INVALID_REF) {
+        const rotatedX = directionX * 0.9998 - directionY * 0.02;
+        const rotatedY = directionX * 0.02 + directionY * 0.9998;
+        const length = Math.hypot(rotatedX, rotatedY);
+        directionX = Math.fround(rotatedX / length);
+        directionY = Math.fround(rotatedY / length);
+      } else {
+        const curveBase = primitive * 4;
+        const segmentX = scene.curves[curveBase + 2] -
+          scene.curves[curveBase];
+        const segmentY = scene.curves[curveBase + 3] -
+          scene.curves[curveBase + 1];
+        const normalLength = Math.hypot(segmentX, segmentY);
+        let normalX = -segmentY / normalLength;
+        let normalY = segmentX / normalLength;
+        if (directionX * normalX + directionY * normalY > 0) {
+          normalX = -normalX;
+          normalY = -normalY;
+        }
+        const hitX = originX + directionX * distance;
+        const hitY = originY + directionY * distance;
+        const projection = directionX * normalX + directionY * normalY;
+        const reflectedX = directionX - 2 * projection * normalX;
+        const reflectedY = directionY - 2 * projection * normalY;
+        const reflectedLength = Math.hypot(reflectedX, reflectedY);
+        directionX = Math.fround(reflectedX / reflectedLength);
+        directionY = Math.fround(reflectedY / reflectedLength);
+        originX = Math.fround(hitX + directionX * 2e-4);
+        originY = Math.fround(hitY + directionY * 2e-4);
+      }
+      output[base] = originX;
+      output[base + 1] = originY;
+      output[base + 2] = directionX;
+      output[base + 3] = directionY;
+    }
+    collectCpuActiveQueue(output, scratch.activeQueue);
+  }
+}
+
+function collectCpuActiveQueue(rays, activeQueue) {
+  let count = 0;
+  for (let rayIndex = 0; rayIndex < rays.length / 4; rayIndex++) {
+    const base = rayIndex * 4;
+    if (Number.isFinite(rays[base]) && Number.isFinite(rays[base + 1]) &&
+        Number.isFinite(rays[base + 2]) && Number.isFinite(rays[base + 3])) {
+      activeQueue[count++] = rayIndex;
+    }
+  }
+  return count;
+}
+
+function traceCpuBvh4Ray(scene, originX, originY, directionX, directionY,
+    stack, hit) {
+  let bestDistance = F32_MAX;
+  let bestPrimitive = INVALID_REF;
+  let stackSize = 0;
+  if (boundsNearCpu(
+    originX, originY, directionX, directionY,
+    scene.rootBounds, bestDistance
+  ) < F32_MAX) {
+    stack[stackSize++] = scene.rootRef;
+  }
+  while (stackSize > 0) {
+    const reference = stack[--stackSize];
+    if ((reference & LEAF_REF_BIT) !== 0) {
+      const start = reference & LEAF_START_MASK;
+      const count = (reference >>> 24) & 0x7f;
+      for (let offset = 0; offset < count; offset++) {
+        const primitive = scene.primitiveOrder[start + offset];
+        const distance = intersectCpuCurve(
+          scene.curves, primitive,
+          originX, originY, directionX, directionY
+        );
+        if (distance < bestDistance ||
+            (distance === bestDistance && primitive < bestPrimitive)) {
+          bestDistance = distance;
+          bestPrimitive = primitive;
+        }
+      }
+      continue;
+    }
+    const node = scene.nodes[reference];
+    for (let child = 0; child < node.children.length; child++) {
+      if (boundsNearCpu(
+        originX, originY, directionX, directionY,
+        node.childBounds[child], bestDistance
+      ) < F32_MAX && stackSize < stack.length) {
+        stack[stackSize++] = node.children[child];
+      }
+    }
+  }
+  hit[0] = bestDistance;
+  hit[1] = bestPrimitive;
+}
+
+function intersectCpuCurve(curves, primitive,
+    originX, originY, directionX, directionY) {
+  const base = primitive * 4;
+  const ax = curves[base];
+  const ay = curves[base + 1];
+  const segmentX = curves[base + 2] - ax;
+  const segmentY = curves[base + 3] - ay;
+  const relativeX = ax - originX;
+  const relativeY = ay - originY;
+  const denominator = directionX * segmentY - directionY * segmentX;
+  if (Math.abs(denominator) < 1e-9) return F32_MAX;
+  const distance =
+    (relativeX * segmentY - relativeY * segmentX) / denominator;
+  const fraction =
+    (relativeX * directionY - relativeY * directionX) / denominator;
+  if (distance <= 1e-4 || fraction < -1e-6 || fraction > 1.000001) {
+    return F32_MAX;
+  }
+  return distance;
+}
+
+function boundsNearCpu(originX, originY, directionX, directionY,
+    bounds, limit) {
+  const safeX = Math.abs(directionX) >= 1e-12
+    ? directionX : directionX >= 0 ? 1e-12 : -1e-12;
+  const safeY = Math.abs(directionY) >= 1e-12
+    ? directionY : directionY >= 0 ? 1e-12 : -1e-12;
+  const tx0 = (bounds[0] - originX) / safeX;
+  const tx1 = (bounds[2] - originX) / safeX;
+  const ty0 = (bounds[1] - originY) / safeY;
+  const ty1 = (bounds[3] - originY) / safeY;
+  const near = Math.max(
+    Math.max(Math.min(tx0, tx1), Math.min(ty0, ty1)), 0
+  );
+  const far = Math.min(Math.max(tx0, tx1), Math.max(ty0, ty1));
+  return far >= near && near <= limit ? near : F32_MAX;
+}
+
+async function createCollectorPipelines(device) {
+  const bindGroupLayout = device.createBindGroupLayout({
+    label: 'Benchmark active-queue collector layout',
+    entries: [
+      { binding: 0, visibility: GPUShaderStage.COMPUTE,
+        buffer: { type: 'storage' } },
+      { binding: 1, visibility: GPUShaderStage.COMPUTE,
+        buffer: { type: 'storage' } },
+      { binding: 2, visibility: GPUShaderStage.COMPUTE,
+        buffer: { type: 'uniform' } },
+      { binding: 3, visibility: GPUShaderStage.COMPUTE,
+        buffer: { type: 'read-only-storage' } }
+    ]
+  });
+  const layout = device.createPipelineLayout({ bindGroupLayouts: [bindGroupLayout] });
+  const module = device.createShaderModule({
+    label: 'Benchmark active-queue collector',
+    code: `
+struct CollectorParams {
+  rayCount: u32,
+  blockCount: u32,
+  padding0: u32,
+  padding1: u32,
+}
+@group(0) @binding(0) var<storage, read_write>
+  blocks: array<atomic<u32>>;
+@group(0) @binding(1) var<storage, read_write>
+  activeQueue: array<atomic<u32>>;
+@group(0) @binding(2) var<uniform> params: CollectorParams;
+@group(0) @binding(3) var<storage, read> rays: array<vec4f>;
+var<workgroup> weights: array<u32, ${SCALAR_WORKGROUP_SIZE}>;
+var<workgroup> destinations: array<u32, ${SCALAR_WORKGROUP_SIZE}>;
+
+@compute @workgroup_size(${SCALAR_WORKGROUP_SIZE})
+fn weightMain(@builtin(workgroup_id) group: vec3u,
+              @builtin(local_invocation_id) local: vec3u) {
+  let index = group.x * ${SCALAR_WORKGROUP_SIZE}u + local.x;
+  var isActive = 0u;
+  if (index < params.rayCount) {
+    let ray = rays[index];
+    isActive = select(0u, 1u, ray.x == ray.x && ray.y == ray.y &&
+      ray.z == ray.z && ray.w == ray.w);
+  }
+  weights[local.x] = isActive;
+  workgroupBarrier();
+  if (local.x == 0u) {
+    var total = 0u;
+    for (var lane = 0u; lane < ${SCALAR_WORKGROUP_SIZE}u; lane++) {
+      total += weights[lane];
+    }
+    atomicStore(&blocks[group.x], total);
+  }
+}
+
+@compute @workgroup_size(1)
+fn prefixMain() {
+  var cumulative = 0u;
+  for (var block = 0u; block < params.blockCount; block++) {
+    let count = atomicLoad(&blocks[block]);
+    atomicStore(&blocks[block], cumulative);
+    cumulative += count;
+  }
+  atomicStore(&activeQueue[0], cumulative);
+}
+
+@compute @workgroup_size(${SCALAR_WORKGROUP_SIZE})
+fn fillMain(@builtin(workgroup_id) group: vec3u,
+            @builtin(local_invocation_id) local: vec3u) {
+  let index = group.x * ${SCALAR_WORKGROUP_SIZE}u + local.x;
+  weights[local.x] = select(0u, 1u, index < params.rayCount);
+  workgroupBarrier();
+  if (local.x == 0u) {
+    var destination = atomicLoad(&blocks[group.x]);
+    for (var lane = 0u; lane < ${SCALAR_WORKGROUP_SIZE}u; lane++) {
+      destinations[lane] = select(0xffffffffu, destination,
+        weights[lane] != 0u);
+      destination += weights[lane];
+    }
+  }
+  workgroupBarrier();
+  let destination = destinations[local.x];
+  if (destination != 0xffffffffu) {
+    atomicStore(&activeQueue[destination], index);
+  }
+}`
+  });
+  const compilation = await module.getCompilationInfo();
+  const errors = compilation.messages.filter(message => message.type === 'error');
+  if (errors.length) {
+    throw new Error('Collector WGSL:\n' + errors.map(message =>
+      `${message.lineNum}:${message.linePos} ${message.message}`
+    ).join('\n'));
+  }
+  return {
+    bindGroupLayout,
+    weight: await device.createComputePipelineAsync({
+      label: 'Benchmark collector weight', layout,
+      compute: { module, entryPoint: 'weightMain' }
+    }),
+    prefix: await device.createComputePipelineAsync({
+      label: 'Benchmark collector prefix', layout,
+      compute: { module, entryPoint: 'prefixMain' }
+    }),
+    fill: await device.createComputePipelineAsync({
+      label: 'Benchmark collector fill', layout,
+      compute: { module, entryPoint: 'fillMain' }
+    })
+  };
+}
+
+function createCollectorResources(device, rayBuffer, rayCount, pipelines,
+    ownedBuffers) {
+  const blockCount = Math.ceil(rayCount / SCALAR_WORKGROUP_SIZE);
+  const blocks = track(ownedBuffers, device.createBuffer({
+    label: `${rayCount}-ray collector blocks`,
+    size: Math.max(4, blockCount * 4),
+    usage: GPUBufferUsage.STORAGE
+  }));
+  const activeQueue = track(ownedBuffers, device.createBuffer({
+    label: `${rayCount}-ray collector active queue`,
+    size: Math.max(4, rayCount * 4),
+    usage: GPUBufferUsage.STORAGE
+  }));
+  const params = track(ownedBuffers, createBufferWithData(
+    device, new Uint32Array([rayCount, blockCount, 0, 0]),
+    GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+    `${rayCount}-ray collector parameters`
+  ));
+  return {
+    pipelines,
+    dispatchCount: blockCount,
+    bindGroup: device.createBindGroup({
+      label: `${rayCount}-ray collector bindings`,
+      layout: pipelines.bindGroupLayout,
+      entries: [
+        { binding: 0, resource: { buffer: blocks } },
+        { binding: 1, resource: { buffer: activeQueue } },
+        { binding: 2, resource: { buffer: params } },
+        { binding: 3, resource: { buffer: rayBuffer } }
+      ]
+    })
+  };
+}
+
+function encodeStrategySequence(encoder, pipeline, bindGroup, dispatch,
+    collector, timestampOptions = {}) {
+  for (let bounce = 0; bounce < BOUNCES; bounce++) {
+    let pass = encoder.beginComputePass(computePassDescriptor(
+      timestampOptions.querySet,
+      timestampOptions.writeBeginning && bounce === 0,
+      false,
+      'Benchmark one-bounce ray trace'
+    ));
+    pass.setPipeline(pipeline);
+    pass.setBindGroup(0, bindGroup);
+    pass.dispatchWorkgroups(dispatch.width, dispatch.height);
+    pass.end();
+    pass = encoder.beginComputePass({
+      label: 'Benchmark active-queue collector weights'
+    });
+    pass.setPipeline(collector.pipelines.weight);
+    pass.setBindGroup(0, collector.bindGroup);
+    pass.dispatchWorkgroups(collector.dispatchCount);
+    pass.end();
+    pass = encoder.beginComputePass({
+      label: 'Benchmark active-queue collector prefix'
+    });
+    pass.setPipeline(collector.pipelines.prefix);
+    pass.setBindGroup(0, collector.bindGroup);
+    pass.dispatchWorkgroups(1);
+    pass.end();
+    pass = encoder.beginComputePass(computePassDescriptor(
+      timestampOptions.querySet, false,
+      timestampOptions.writeEnd && bounce === BOUNCES - 1,
+      'Benchmark active-queue collector fill'
+    ));
+    pass.setPipeline(collector.pipelines.fill);
+    pass.setBindGroup(0, collector.bindGroup);
+    pass.dispatchWorkgroups(collector.dispatchCount);
+    pass.end();
+  }
+}
+
+function computePassDescriptor(querySet, writeBeginning, writeEnd, label) {
+  if (!querySet || (!writeBeginning && !writeEnd)) return { label };
+  const timestampWrites = { querySet };
+  if (writeBeginning) timestampWrites.beginningOfPassWriteIndex = 0;
+  if (writeEnd) timestampWrites.endOfPassWriteIndex = 1;
+  return { label, timestampWrites };
+}
+
 function createBufferWithData(device, data, usage, label) {
   const size = Math.max(4, Math.ceil(data.byteLength / 4) * 4);
   const buffer = device.createBuffer({ label, size, usage, mappedAtCreation: true });
@@ -852,20 +1430,24 @@ function track(buffers, buffer) {
   return buffer;
 }
 
-async function measureStrategy(device, pipeline, bindGroup, dispatch,
-    hasTimestamps, repetitions, sampleCount, ownedBuffers) {
-  device.pushErrorScope('validation');
-  const warmup = device.createCommandEncoder();
-  const warmupPass = warmup.beginComputePass();
-  warmupPass.setPipeline(pipeline);
-  warmupPass.setBindGroup(0, bindGroup);
-  warmupPass.dispatchWorkgroups(dispatch.width, dispatch.height);
-  warmupPass.end();
-  device.queue.submit([warmup.finish()]);
-  await device.queue.onSubmittedWorkDone();
-  const warmupError = await device.popErrorScope();
-  if (warmupError) {
-    throw new Error(`Compute dispatch validation failed: ${warmupError.message}`);
+async function measureStrategy(device, pipeline, bindGroup, dispatch, collector,
+    hasTimestamps, repetitions, minimumSampleCount, minimumMeasurementMs,
+    targetSampleMs, ownedBuffers,
+    shouldWarmup = true) {
+  if (shouldWarmup) {
+    device.pushErrorScope('validation');
+    const warmup = device.createCommandEncoder();
+    encodeStrategySequence(
+      warmup, pipeline, bindGroup, dispatch, collector
+    );
+    device.queue.submit([warmup.finish()]);
+    await device.queue.onSubmittedWorkDone();
+    const warmupError = await device.popErrorScope();
+    if (warmupError) {
+      throw new Error(
+        `Compute dispatch validation failed: ${warmupError.message}`
+      );
+    }
   }
 
   const gpuSamples = [];
@@ -885,46 +1467,57 @@ async function measureStrategy(device, pipeline, bindGroup, dispatch,
     }));
   }
   let effectiveRepetitions = repetitions;
-  for (let sample = 0; sample < sampleCount; sample++) {
+  let measuredWallMs = 0;
+  while (wallSamples.length < minimumSampleCount ||
+      measuredWallMs < minimumMeasurementMs) {
     for (;;) {
+      const started = performance.now();
       const encoder = device.createCommandEncoder();
-      const descriptor = hasTimestamps ? {
-        timestampWrites: {
-          querySet, beginningOfPassWriteIndex: 0, endOfPassWriteIndex: 1
-        }
-      } : undefined;
-      const pass = encoder.beginComputePass(descriptor);
-      pass.setPipeline(pipeline);
-      pass.setBindGroup(0, bindGroup);
       for (let repetition = 0; repetition < effectiveRepetitions; repetition++) {
-        pass.dispatchWorkgroups(dispatch.width, dispatch.height);
+        encodeStrategySequence(
+          encoder, pipeline, bindGroup, dispatch, collector,
+          {
+            querySet,
+            writeBeginning: hasTimestamps && repetition === 0,
+            writeEnd: hasTimestamps &&
+              repetition === effectiveRepetitions - 1
+          }
+        );
       }
-      pass.end();
       if (hasTimestamps) {
         encoder.resolveQuerySet(querySet, 0, 2, resolveBuffer, 0);
         encoder.copyBufferToBuffer(resolveBuffer, 0, queryReadBuffer, 0, 16);
       }
-      const started = performance.now();
       device.queue.submit([encoder.finish()]);
+      await device.queue.onSubmittedWorkDone();
+      const elapsedWallMs = performance.now() - started;
       let elapsedGpuMs = null;
       if (hasTimestamps) {
         await queryReadBuffer.mapAsync(GPUMapMode.READ);
         const stamps = new BigUint64Array(queryReadBuffer.getMappedRange()).slice();
         queryReadBuffer.unmap();
         elapsedGpuMs = Number(stamps[1] - stamps[0]) / 1e6;
-      } else {
-        await device.queue.onSubmittedWorkDone();
-      }
-      const elapsedWallMs = performance.now() - started;
-      if (hasTimestamps && elapsedGpuMs === 0 && effectiveRepetitions < 4096) {
-        effectiveRepetitions = Math.min(4096, effectiveRepetitions * 8);
-        continue;
       }
       if (hasTimestamps && elapsedGpuMs === 0) {
-        throw new Error('GPU timestamps remained zero after 4096 repetitions.');
+        if (effectiveRepetitions >= 65536) {
+          throw new Error(
+            'GPU timestamps remained zero after 65536 repetitions.'
+          );
+        }
+        effectiveRepetitions = Math.min(65536, effectiveRepetitions * 8);
+        continue;
+      }
+      const elapsedPrimaryMs = hasTimestamps ? elapsedGpuMs : elapsedWallMs;
+      if (elapsedPrimaryMs < targetSampleMs &&
+          effectiveRepetitions < 65536) {
+        effectiveRepetitions = scaledRepetitionCount(
+          effectiveRepetitions, elapsedPrimaryMs, targetSampleMs
+        );
+        continue;
       }
       if (hasTimestamps) gpuSamples.push(elapsedGpuMs / effectiveRepetitions);
       wallSamples.push(elapsedWallMs / effectiveRepetitions);
+      measuredWallMs += elapsedWallMs;
       break;
     }
   }
@@ -932,13 +1525,21 @@ async function measureStrategy(device, pipeline, bindGroup, dispatch,
   const primary = hasTimestamps ? gpuSamples : wallSamples;
   primary.sort((a, b) => a - b);
   wallSamples.sort((a, b) => a - b);
+  const averageMs = mean(primary);
+  const wallAverageMs = mean(wallSamples);
   return {
+    averageMs,
     medianMs: median(primary),
     minimumMs: primary[0],
     maximumMs: primary[primary.length - 1],
+    standardDeviationMs: standardDeviation(primary, averageMs),
     samplesMs: primary,
+    wallAverageMs,
     wallMedianMs: median(wallSamples),
-    effectiveRepetitions
+    wallStandardDeviationMs: standardDeviation(wallSamples, wallAverageMs),
+    effectiveRepetitions,
+    measuredWallMs,
+    sampleCount: wallSamples.length
   };
 }
 
@@ -954,6 +1555,32 @@ async function readOutput(device, output, read, byteLength) {
 
 function median(values) {
   return values[Math.floor(values.length / 2)];
+}
+
+function mean(values) {
+  return values.reduce((sum, value) => sum + value, 0) / values.length;
+}
+
+function standardDeviation(values, average = mean(values)) {
+  const variance = values.reduce(
+    (sum, value) => sum + (value - average) ** 2, 0
+  ) / values.length;
+  return Math.sqrt(variance);
+}
+
+function scaledRepetitionCount(current, elapsedMs, targetSampleMs) {
+  const scale = elapsedMs > 0
+    ? Math.max(2, Math.ceil(targetSampleMs / elapsedMs * 1.1))
+    : 8;
+  return Math.min(65536, current * scale);
+}
+
+function primaryTime(result) {
+  return result.averageMs ?? result.medianMs;
+}
+
+function comparisonTime(result) {
+  return result.wallAverageMs ?? result.wallMedianMs ?? primaryTime(result);
 }
 
 function compareOutputs(actual, expected) {
@@ -984,59 +1611,259 @@ function checksumFloat32(values) {
 }
 
 function addSpeedups(methods) {
-  const scalarBvh = methods.scalar_bvh4?.medianMs ?? null;
-  const scalarDirect = methods.scalar_direct?.medianMs ?? null;
+  const scalarBvh = methods.scalar_bvh4
+    ? primaryTime(methods.scalar_bvh4) : null;
+  const scalarDirect = methods.scalar_direct
+    ? primaryTime(methods.scalar_direct) : null;
+  const scalarBvhWall = methods.scalar_bvh4
+    ? comparisonTime(methods.scalar_bvh4) : null;
+  const scalarDirectWall = methods.scalar_direct
+    ? comparisonTime(methods.scalar_direct) : null;
   for (const [id, result] of Object.entries(methods)) {
-    result.speedupVsScalarBvh4 = scalarBvh === null
-      ? null : scalarBvh / result.medianMs;
-    result.speedupVsScalarDirect = scalarDirect === null
-      ? null : scalarDirect / result.medianMs;
-    if (id.includes('direct')) result.speedupVsScalarSameAcceleration =
-      scalarDirect === null ? null : scalarDirect / result.medianMs;
-    if (id.includes('bvh4')) result.speedupVsScalarSameAcceleration =
-      scalarBvh === null ? null : scalarBvh / result.medianMs;
+    const isWebGpuMethod = id !== CPU_METHOD_ID;
+    result.speedupVsScalarBvh4 = !isWebGpuMethod || scalarBvh === null
+      ? null : scalarBvh / primaryTime(result);
+    result.speedupVsScalarDirect = !isWebGpuMethod || scalarDirect === null
+      ? null : scalarDirect / primaryTime(result);
+    result.wallSpeedupVsScalarBvh4 = scalarBvhWall === null
+      ? null : scalarBvhWall / comparisonTime(result);
+    result.wallSpeedupVsScalarDirect = scalarDirectWall === null
+      ? null : scalarDirectWall / comparisonTime(result);
+    if (isWebGpuMethod && id.includes('direct')) {
+      result.speedupVsScalarSameAcceleration =
+      scalarDirect === null ? null : scalarDirect / primaryTime(result);
+    }
+    if (isWebGpuMethod && id.includes('bvh4')) {
+      result.speedupVsScalarSameAcceleration =
+      scalarBvh === null ? null : scalarBvh / primaryTime(result);
+    }
   }
 }
 
-function renderSummary(report) {
+function compareAccelerationPairs(results, methods) {
+  const pairs = {};
+  for (const [methodId, method] of Object.entries(methods)) {
+    if (!method.webGpuStrategy) continue;
+    const result = results[methodId];
+    if (!result) continue;
+    const pairId = method.cooperation === 'workgroup'
+      ? `workgroup${method.lanesPerRay}`
+      : method.cooperation;
+    const pair = pairs[pairId] ?? {
+      cooperation: method.cooperation,
+      lanesPerRay: method.lanesPerRay,
+      directMethod: null,
+      bvh4Method: null
+    };
+    pair[`${method.acceleration}Method`] = methodId;
+    pairs[pairId] = pair;
+  }
+  for (const [pairId, pair] of Object.entries(pairs)) {
+    const direct = results[pair.directMethod];
+    const bvh4 = results[pair.bvh4Method];
+    if (!direct || !bvh4 || direct.mismatchRayCount !== 0 ||
+        bvh4.mismatchRayCount !== 0) {
+      delete pairs[pairId];
+      continue;
+    }
+    pair.directMs = primaryTime(direct);
+    pair.bvh4Ms = primaryTime(bvh4);
+    pair.winner = pair.directMs <= pair.bvh4Ms ? 'direct' : 'bvh4';
+    pair.winnerSpeedup = Math.max(pair.directMs, pair.bvh4Ms) /
+      Math.min(pair.directMs, pair.bvh4Ms);
+  }
+  return pairs;
+}
+
+function summarizeAccelerationCrossovers(results) {
+  const groups = new Map();
+  for (const config of Object.values(results)) {
+    for (const [pairId, comparison] of
+      Object.entries(config.accelerationComparisons)) {
+      const key = `${config.rayCount}:${config.coherence}:${pairId}`;
+      if (!groups.has(key)) {
+        groups.set(key, {
+          rayCount: config.rayCount,
+          coherence: config.coherence,
+          cooperation: comparison.cooperation,
+          lanesPerRay: comparison.lanesPerRay,
+          measurements: []
+        });
+      }
+      groups.get(key).measurements.push({
+        curveCount: config.curveCount,
+        winner: comparison.winner,
+        winnerSpeedup: comparison.winnerSpeedup
+      });
+    }
+  }
+  return [...groups.values()].map(group => {
+    group.measurements.sort((a, b) => a.curveCount - b.curveCount);
+    group.firstMeasuredBvh4WinCurveCount =
+      group.measurements.find(item => item.winner === 'bvh4')
+        ?.curveCount ?? null;
+    return group;
+  }).sort((a, b) =>
+    a.rayCount - b.rayCount ||
+    a.coherence.localeCompare(b.coherence) ||
+    a.lanesPerRay - b.lanesPerRay
+  );
+}
+
+function renderPerformanceGrids(report) {
+  const section = document.createElement('section');
+  const heading = document.createElement('h2');
+  heading.textContent = 'Relative method performance';
+  const note = document.createElement('p');
+  note.textContent = 'Each cell is one curve-count/ray-count workload. Bar ' +
+    'height is average wall-clock throughput relative to that cell\'s winner. ' +
+    `Each method is sampled for at least ${report.config.minimumMeasurementMs} ` +
+    'ms, so short workloads receive more repetitions. A nearly level set of ' +
+    'bars means the choice matters little. The summary shows the winning ' +
+    'method and its speedup over the runner-up. CPU BVH4 is green; ' +
+    'experimental subgroup methods are marked with *.';
+  section.append(heading, note, createMethodLegend(report));
+  for (const coherence of report.config.coherences) {
+    const distributionHeading = document.createElement('h3');
+    distributionHeading.textContent = `${coherence} rays`;
+    section.append(distributionHeading, createPerformanceGrid(report, coherence));
+  }
+  return section;
+}
+
+function createMethodLegend(report) {
+  const legend = document.createElement('div');
+  legend.className = 'method-legend';
+  for (const [methodId, method] of Object.entries(report.methods)) {
+    const item = document.createElement('span');
+    const swatch = document.createElement('span');
+    swatch.className = 'legend-swatch';
+    swatch.style.background = methodColor(method);
+    if (method.experimental) {
+      swatch.style.outline = '1px dashed currentColor';
+    }
+    item.append(swatch,
+      `${formatMethodCode(method)} = ${method.label}`);
+    item.title = methodId;
+    legend.append(item);
+  }
+  return legend;
+}
+
+function createPerformanceGrid(report, coherence) {
+  const curveCounts = [...report.config.curveCounts].sort((a, b) => a - b);
+  const rayCounts = [...report.config.rayCounts].sort((a, b) => b - a);
   const table = document.createElement('table');
-  table.innerHTML = '<thead><tr><th>Case</th><th>Scalar direct</th>' +
-    '<th>Scalar BVH4</th><th>Subgroup direct</th><th>Subgroup BVH4</th>' +
-    '<th>Heuristic</th><th>Matched?</th>' +
-    '<th>Fastest valid method</th><th>ms</th></tr></thead>';
+  table.className = 'performance-grid';
+  const header = document.createElement('thead');
+  const headerRow = document.createElement('tr');
+  const axis = document.createElement('th');
+  axis.textContent = 'rays \\ curves';
+  headerRow.append(axis);
+  for (const curveCount of curveCounts) {
+    const cell = document.createElement('th');
+    cell.textContent = formatCount(curveCount);
+    headerRow.append(cell);
+  }
+  header.append(headerRow);
   const body = document.createElement('tbody');
-  for (const [id, config] of Object.entries(report.results)) {
-    const valid = Object.entries(config.methods)
-      .filter(([, result]) => result.mismatchRayCount === 0)
-      .sort((a, b) => a[1].medianMs - b[1].medianMs);
-    const cells = [
-      id,
-      formatMs(config.methods.scalar_direct),
-      formatMs(config.methods.scalar_bvh4),
-      formatMs(config.methods.subgroup_direct),
-      formatMs(config.methods.subgroup_bvh4),
-      report.methods[config.heuristicRecommendation]?.label ??
-        config.heuristicRecommendation,
-      config.heuristicWasMeasured
-        ? (config.heuristicMatchedFastest ? 'yes' : 'no')
-        : 'not measured',
-      valid.length ? report.methods[valid[0][0]].label : 'none',
-      valid.length ? valid[0][1].medianMs.toFixed(3) : '—'
-    ];
+  for (const rayCount of rayCounts) {
     const row = document.createElement('tr');
-    for (const value of cells) {
-      const cell = document.createElement('td');
-      cell.textContent = value;
-      row.append(cell);
+    const label = document.createElement('th');
+    label.textContent = formatCount(rayCount);
+    row.append(label);
+    for (const curveCount of curveCounts) {
+      const configId = `${curveCount}c_${rayCount}r_${coherence}`;
+      row.append(createPerformanceCell(report, report.results[configId]));
     }
     body.append(row);
   }
-  table.append(body);
-  summaryElement.replaceChildren(table);
+  table.append(header, body);
+  const scroll = document.createElement('div');
+  scroll.className = 'grid-scroll';
+  scroll.append(table);
+  return scroll;
 }
 
-function formatMs(result) {
-  return result ? result.medianMs.toFixed(3) : 'not supported';
+function createPerformanceCell(report, config) {
+  const cell = document.createElement('td');
+  cell.className = 'performance-cell';
+  if (!config) {
+    cell.classList.add('pending-cell');
+    cell.textContent = 'pending';
+    return cell;
+  }
+  const validMethods = Object.entries(config.methods)
+    .filter(([, result]) => result.mismatchRayCount === 0)
+    .sort((a, b) => comparisonTime(a[1]) - comparisonTime(b[1]));
+  if (!validMethods.length) {
+    cell.textContent = 'invalid';
+    return cell;
+  }
+  const fastestMs = comparisonTime(validMethods[0][1]);
+  const runnerUpSpeedup = validMethods.length > 1
+    ? comparisonTime(validMethods[1][1]) / fastestMs
+    : null;
+  const winnerMethod = report.methods[validMethods[0][0]];
+  const summary = document.createElement('div');
+  summary.className = 'winner-summary';
+  summary.textContent = `${formatMethodCode(winnerMethod)} winner` +
+    (runnerUpSpeedup === null ? '' : ` · ${runnerUpSpeedup.toFixed(2)}×`);
+  summary.title = runnerUpSpeedup === null
+    ? winnerMethod.label
+    : `${winnerMethod.label}; ${runnerUpSpeedup.toFixed(3)}× the throughput ` +
+      `of ${report.methods[validMethods[1][0]].label}`;
+  const bars = document.createElement('div');
+  bars.className = 'method-bars';
+  for (const [methodId, method] of Object.entries(report.methods)) {
+    const result = config.methods[methodId];
+    const bar = document.createElement('span');
+    bar.className = 'method-bar';
+    if (method.experimental) bar.classList.add('experimental');
+    if (!result || result.mismatchRayCount !== 0) {
+      bar.style.height = '2%';
+      bar.style.background = '#8885';
+      bar.title = `${method.label}: not valid`;
+    } else {
+      const elapsedMs = comparisonTime(result);
+      const relativeThroughput = fastestMs / elapsedMs;
+      bar.style.height = `${Math.max(2, relativeThroughput * 100)}%`;
+      bar.style.background = methodColor(method);
+      const deviation = result.wallStandardDeviationMs ?? 0;
+      const gpuTiming = method.platform === 'gpu' &&
+        Math.abs(primaryTime(result) - elapsedMs) > 1e-6
+        ? `; ${primaryTime(result).toFixed(3)} ms average GPU kernel` : '';
+      bar.title = `${method.label}: ${elapsedMs.toFixed(3)} ± ` +
+        `${deviation.toFixed(3)} ms average wall (${result.sampleCount} samples)` +
+        `${gpuTiming}, ` +
+        `${relativeThroughput.toFixed(3)}× winner throughput`;
+    }
+    bars.append(bar);
+  }
+  cell.append(summary, bars);
+  return cell;
+}
+
+function methodColor(method) {
+  if (method.platform === 'cpu') return '#2ca25f';
+  return method.acceleration === 'direct' ? '#e66101' : '#2c7bb6';
+}
+
+function formatMethodCode(method) {
+  if (method.platform === 'cpu') return 'CPU';
+  const acceleration = method.acceleration === 'direct' ? 'D' : 'B';
+  const experimental = method.experimental ? '*' : '';
+  return `${acceleration}${method.lanesPerRay}${experimental}`;
+}
+
+function formatCount(value) {
+  if (value >= 1048576) return `${value / 1048576}M`;
+  if (value >= 1024) return `${value / 1024}k`;
+  return String(value);
+}
+
+function renderSummary(report) {
+  summaryElement.replaceChildren(renderPerformanceGrids(report));
 }
 
 function animationFrame() {
@@ -1084,7 +1911,7 @@ struct Params {
 }
 struct Hit { distance: f32, primitive: u32 }
 
-@group(0) @binding(0) var<storage, read> inputRays: array<vec4f>;
+@group(0) @binding(0) var<storage, read_write> rays: array<vec4f>;
 @group(0) @binding(1) var<storage, read> curves: array<vec4f>;
 @group(0) @binding(2) var<storage, read> primitiveIndices: array<u32>;
 @group(0) @binding(3) var<storage, read> bvhNodes: array<BvhNode>;
@@ -1240,14 +2067,14 @@ fn simulateMain(@builtin(workgroup_id) workgroupId: vec3u,
   let rayIndex = flatWorkgroupIndex(workgroupId) *
     ${SCALAR_WORKGROUP_SIZE}u + localIndex;
   if (rayIndex >= params.rayCount) { return; }
-  let input = inputRays[rayIndex];
+  let input = rays[rayIndex];
   var origin = input.xy;
   var direction = input.zw;
   for (var bounce = 0u; bounce < params.bounceCount; bounce++) {
     let hit = ${trace};
     advanceRay(&origin, &direction, hit);
   }
-  outputRays[rayIndex] = vec4f(origin, direction);
+  rays[rayIndex] = vec4f(origin, direction);
 }`;
   }
 
@@ -1271,7 +2098,7 @@ fn simulateMain(@builtin(workgroup_id) workgroupId: vec3u,
   let rayIsActive = rayIndex < params.rayCount;
   let safeRayIndex = min(rayIndex, params.rayCount - 1u);
   let input = select(
-    vec4f(0.0, 0.0, 1.0, 0.0), inputRays[safeRayIndex], rayIsActive
+    vec4f(0.0, 0.0, 1.0, 0.0), rays[safeRayIndex], rayIsActive
   );
   var origin = input.xy;
   var direction = input.zw;
@@ -1300,7 +2127,7 @@ fn simulateMain(@builtin(workgroup_id) workgroupId: vec3u,
     workgroupBarrier();
   }
   if (lane == 0u && rayIsActive) {
-    outputRays[rayIndex] = vec4f(origin, direction);
+    rays[rayIndex] = vec4f(origin, direction);
   }
 }`;
   }
@@ -1319,7 +2146,7 @@ fn simulateMain(@builtin(workgroup_id) workgroupId: vec3u,
   let rayIsActive = rayIndex < params.rayCount;
   let safeRayIndex = min(rayIndex, params.rayCount - 1u);
   let input = select(
-    vec4f(0.0, 0.0, 1.0, 0.0), inputRays[safeRayIndex], rayIsActive
+    vec4f(0.0, 0.0, 1.0, 0.0), rays[safeRayIndex], rayIsActive
   );
   var origin = input.xy;
   var direction = input.zw;
@@ -1333,7 +2160,7 @@ fn simulateMain(@builtin(workgroup_id) workgroupId: vec3u,
     advanceRay(&origin, &direction, Hit(winningDistance, winningPrimitive));
   }
   if (subgroupLane == 0u && rayIsActive) {
-    outputRays[rayIndex] = vec4f(origin, direction);
+    rays[rayIndex] = vec4f(origin, direction);
   }
 }`;
 }
