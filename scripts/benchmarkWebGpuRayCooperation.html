@@ -13,8 +13,6 @@
     table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
     th, td { border: 1px solid #8886; padding: .42rem; text-align: right; }
     th:first-child, td:first-child { text-align: left; }
-    pre { white-space: pre-wrap; overflow-wrap: anywhere; padding: 1rem;
-      border: 1px solid #8886; background: #8881; }
     .error { color: #d33; white-space: pre-wrap; }
     code { background: #8882; padding: .08rem .25rem; }
     .performance-grid { table-layout: fixed; min-width: 70rem; margin-bottom: 2rem; }
@@ -72,10 +70,9 @@
     supported.
   </p>
   <p id="status">Preparing benchmark…</p>
-  <button id="copy" disabled>Copy JSON report</button>
+  <button id="download" disabled>Download JSON report</button>
   <button id="rerun" disabled>Run again</button>
   <div id="summary"></div>
-  <pre id="report"></pre>
 
 <script type="module">
 const SCALAR_WORKGROUP_SIZE = 64;
@@ -112,20 +109,31 @@ const METHOD_SELECTION = parameters.get('methods') ?? 'all';
 
 const statusElement = document.querySelector('#status');
 const summaryElement = document.querySelector('#summary');
-const reportElement = document.querySelector('#report');
-const copyButton = document.querySelector('#copy');
+const downloadButton = document.querySelector('#download');
 const rerunButton = document.querySelector('#rerun');
-let reportText = '';
 let currentReport = null;
 let running = false;
 
-copyButton.addEventListener('click', async () => {
-  const text = currentReport
-    ? JSON.stringify(currentReport, null, 2)
-    : reportText;
-  await navigator.clipboard.writeText(text);
-  copyButton.textContent = 'Copied';
-  setTimeout(() => { copyButton.textContent = 'Copy JSON report'; }, 1200);
+downloadButton.addEventListener('click', () => {
+  if (!currentReport) return;
+  const blob = new Blob(
+    [JSON.stringify(currentReport, null, 2)],
+    { type: 'application/json' }
+  );
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  const timestamp = (currentReport.generatedAt ?? new Date().toISOString())
+    .replace(/[:.]/g, '-');
+  link.href = url;
+  link.download = `webgpu-ray-cooperation-${timestamp}.json`;
+  document.body.append(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  downloadButton.textContent = 'Downloaded';
+  setTimeout(() => {
+    downloadButton.textContent = 'Download JSON report';
+  }, 1200);
 });
 rerunButton.addEventListener('click', runBenchmark);
 runBenchmark();
@@ -224,11 +232,10 @@ async function runBenchmark() {
   if (running) return;
   running = true;
   const benchmarkStartedAt = performance.now();
-  copyButton.disabled = true;
+  downloadButton.disabled = true;
   currentReport = null;
   rerunButton.disabled = true;
   summaryElement.replaceChildren();
-  reportElement.textContent = '';
   statusElement.className = '';
   let device;
   const ownedBuffers = [];
@@ -309,6 +316,7 @@ async function runBenchmark() {
 
     const report = {
       benchmark: 'webgpu-ray-cooperation-v7',
+      runStatus: 'running',
       experimental: true,
       appliesEngineTuning: false,
       generatedAt: new Date().toISOString(),
@@ -403,7 +411,7 @@ async function runBenchmark() {
       scope: 'Multi-bounce synthetic 2D ray/segment simulation including traversal, exact intersection, closest-hit reduction, synchronization, reflection, and next-step dependency.'
     };
     currentReport = report;
-    copyButton.disabled = false;
+    downloadButton.disabled = false;
 
     const sceneResources = new Map();
     const curveCounts = [...new Set(CASES.map(item => item.curveCount))]
@@ -659,15 +667,21 @@ async function runBenchmark() {
       report.results
     );
     report.elapsedSeconds = (performance.now() - benchmarkStartedAt) / 1000;
-    reportText = JSON.stringify(report, null, 2);
-    reportElement.textContent = reportText;
+    report.runStatus = 'complete';
     renderSummary(report);
     statusElement.textContent = subgroup
       ? `Done. Hardware subgroup size: ${subgroup.size}.`
       : 'Done. Subgroups were unavailable; portable workgroup variants were tested.';
-    copyButton.disabled = false;
+    downloadButton.disabled = false;
   } catch (error) {
     console.error(error);
+    if (currentReport) {
+      currentReport.runStatus = 'failed';
+      currentReport.elapsedSeconds =
+        (performance.now() - benchmarkStartedAt) / 1000;
+      currentReport.error = error?.stack ?? String(error);
+      downloadButton.disabled = false;
+    }
     statusElement.className = 'error';
     statusElement.textContent = error?.stack ?? String(error);
   } finally {
