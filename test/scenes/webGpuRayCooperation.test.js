@@ -101,4 +101,39 @@ describeWebGpuCooperation('WebGPU cooperative ray regression', () => {
       }
     );
   }, 30000);
+
+  test('partitioned BVH preserves detector power after an odd curve count',
+    async () => {
+      const scenePath = path.join(
+        __dirname,
+        'glass/CustomGlass/equiv_circle.json'
+      );
+      const scalar = await runScene(scenePath, false, {
+        engine: 'webgpu',
+        engineSettings: scalarSettings,
+      });
+      const cooperative = await runScene(scenePath, false, {
+        engine: 'webgpu',
+        engineSettings: {
+          ...cooperativeSettings,
+          rayCooperationDirectMaxTestsPerLane: 0,
+        },
+      });
+      const detectorValues = output => output.detectorData
+        .trim()
+        .split('\n')
+        .slice(1)
+        .map(line => Number(line.split(',')[1]));
+      const scalarValues = detectorValues(scalar);
+      const cooperativeValues = detectorValues(cooperative);
+      const sum = values => values.reduce(
+        (total, value) => total + value,
+        0
+      );
+
+      expect(cooperativeValues.filter(value => value !== 0)).toHaveLength(
+        scalarValues.filter(value => value !== 0).length
+      );
+      expect(sum(cooperativeValues)).toBeCloseTo(sum(scalarValues), 3);
+    }, 30000);
 });

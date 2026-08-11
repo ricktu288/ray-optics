@@ -26,6 +26,12 @@ import {
 } from '../../src/core/simulationEngines/webgpu/webGpuMegakernelStorage.js';
 import { selectWebGpuRayCooperationStrategy } from
   '../../src/core/simulationEngines/webgpu/webGpuRayCooperation.js';
+import { createWebGpuTraceSceneData } from
+  '../../src/core/simulationEngines/webgpu/webGpuTraceScene.js';
+import { toneMapWebGpuColorContribution } from
+  '../../src/core/simulationEngines/webgpu/webGpuRayRenderer.js';
+import { createRenderUniformData } from
+  '../../src/core/simulationEngines/webgpu/webGpuRenderPreparation.js';
 import { DEFAULT_SIMULATION_ENGINE_CONFIGS } from
   '../../src/core/simulationEngines/config.js';
 
@@ -75,6 +81,27 @@ async function prepare() {
 }
 
 describe('WebGpuSimulationEngine', () => {
+  it('presents simulated colors with density-normalized hue and opacity', () => {
+    expect(toneMapWebGpuColorContribution(
+      [0.25, 0.5, 0.125], 'default', true
+    )).toEqual([0.25, 0.5, 0.125, 0.5]);
+    expect(toneMapWebGpuColorContribution(
+      [1, 2, 0.5], 'default', true
+    )).toEqual([0.5, 1, 0.25, 1]);
+  });
+
+  it('uses the same 580 nm yellow boundary as canvas color simulation', () => {
+    const uniforms = createRenderUniformData({
+      preparedScene: {
+        parameterRanges: { wavelengthRange: [[800, 1400]] },
+        violetWavelength: 900,
+        redWavelength: 1300
+      },
+      rendering: {}
+    }, 1);
+    expect(uniforms[17]).toBeCloseTo(1220);
+  });
+
   it('packs the common hierarchy as 80-byte float BVH4 nodes', async () => {
     const prepared = await prepare();
     const packed = prepared.packedStorage;
@@ -486,6 +513,36 @@ describe('WebGpuSimulationEngine', () => {
       traceData.byteOffset + 88,
       4
     )).toEqual(Uint32Array.from([11, 12, 13, 14]));
+  });
+
+  it('aligns BVH partition roots after an odd curve-index count', () => {
+    const partitionRoot = new ArrayBuffer(32);
+    const rootView = new DataView(partitionRoot);
+    rootView.setFloat32(0, 10, true);
+    rootView.setFloat32(4, 20, true);
+    rootView.setFloat32(8, 30, true);
+    rootView.setFloat32(12, 40, true);
+    rootView.setUint32(16, 0x81234567, true);
+    const data = createWebGpuTraceSceneData({
+      bvhNodes: new ArrayBuffer(80),
+      instanceParameters: new Float32Array(0),
+      surfaceDescriptors: new ArrayBuffer(0),
+      regionDescriptors: new ArrayBuffer(0),
+      detectorDescriptors: new ArrayBuffer(0),
+      curveDescriptors: new ArrayBuffer(0),
+      curveGeometry: new Float32Array(0),
+      bvhCurveIds: Uint32Array.from([7]),
+      bvhPartitionRoots: partitionRoot,
+    });
+    const view = new DataView(data.buffer, data.byteOffset, data.byteLength);
+
+    // The preceding fields end at byte 204. BvhPartitionRoot starts with
+    // vec2f, so WGSL inserts four bytes and reads this field at byte 208.
+    expect(view.getFloat32(208, true)).toBe(10);
+    expect(view.getFloat32(212, true)).toBe(20);
+    expect(view.getFloat32(216, true)).toBe(30);
+    expect(view.getFloat32(220, true)).toBe(40);
+    expect(view.getUint32(224, true)).toBe(0x81234567);
   });
 
   it('passes the configured ray-power policy to tracing and both collectors',

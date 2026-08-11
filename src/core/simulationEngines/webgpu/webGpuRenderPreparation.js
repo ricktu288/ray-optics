@@ -153,7 +153,7 @@ export function createRenderUniformData(options, geometryCapacity) {
   const scale = (red - violet) / (620 - 420);
   const scaled = value => violet + (value - 420) * scale;
   set(3, [scaled(350), violet, scaled(450), scaled(500)]);
-  set(4, [scaled(540), scaled(590), red, scaled(700)]);
+  set(4, [scaled(540), scaled(580), red, scaled(700)]);
   set(5, color(rendering.getThemeRayColor, 'ray'));
   set(6, color(rendering.getThemeRayColor, 'extendedRay'));
   set(7, color(rendering.getThemeRayColor, 'forwardExtendedRay'));
@@ -232,7 +232,7 @@ struct Config { values:array<vec4f,16> };
 @group(0) @binding(5) var<storage,read_write> drawArguments:array<atomic<u32>>;
 
 fn finite2(value:vec2f)->bool {
-  return all(value==value)&&all(abs(value)<=vec2f(F32_MAX));
+  return all(value==value)&&all(abs(value)<vec2f(F32_MAX*0.5));
 }
 fn spectralColor(wavelength:f32)->vec3f {
   let a=config.values[3]; let b=config.values[4]; var rgb=vec3f(0.0);
@@ -286,9 +286,18 @@ fn pushLine(p0:vec2f,p1:vec2f,color:vec4f,dash:vec2f){
     dash*(config.values[1].y*config.values[1].x),0.0,0.0,
     config.values[1].y*config.values[1].x);
 }
-fn pushRay(p0:vec2f,direction:vec2f,color:vec4f,dash:vec2f){
+fn pushRay(p0:vec2f,direction:vec2f,color:vec4f,dash:vec2f,arrows:bool){
   let unit=normalize(direction);
-  pushLine(p0,p0+unit*(2e6/max(config.values[1].x,1e-12)),color,dash);
+  let end=p0+unit*(2e6/max(config.values[1].x,1e-12));
+  let arrowSize=5.0*config.values[1].y;
+  let baseWidth=config.values[1].y;
+  if(!arrows||arrowSize<baseWidth*1.2){pushLine(p0,end,color,dash);return;}
+  let front=p0+unit*(150.0*config.values[1].y);
+  let back=front+unit*arrowSize;
+  pushLine(p0,front,color,dash);
+  pushRecord(front,back,color,arrowSize*config.values[1].x,vec2f(0.0),
+    2.0,0.0,baseWidth*config.values[1].x);
+  pushLine(back,end,color,dash);
 }
 fn pushVisibleSegment(p0:vec2f,p1:vec2f,color:vec4f,dash:vec2f,
                       arrows:bool){
@@ -354,12 +363,13 @@ fn prepareMain(@builtin(global_invocation_id) invocation:vec3u){
     let dash=config.values[12].xy;
     if(finiteEnd){pushVisibleSegment(ray.origin,end,color,dash,
       config.values[0].z>0.5);}
-    else{pushRay(ray.origin,ray.direction,color,dash);}
+    else{pushRay(ray.origin,ray.direction,color,dash,
+      config.values[0].z>0.5);}
     if(mode==1u&&atomicLoad(&control[11])>0u){
       pushRay(ray.origin,-ray.direction,encodeColor(config.values[6],ray,1.0),
-        config.values[12].zw);
+        config.values[12].zw,false);
       if(finiteEnd){pushRay(end,ray.direction,
-        encodeColor(config.values[7],ray,1.0),config.values[13].xy);}
+        encodeColor(config.values[7],ray,1.0),config.values[13].xy,false);}
     }
     return;
   }
@@ -367,28 +377,30 @@ fn prepareMain(@builtin(global_invocation_id) invocation:vec3u){
       (rays[rayIndex-1u].flags&1u)==0u){return;}
   let previous=rays[rayIndex-1u];
   let intersection=lineIntersection(ray,previous);
-  if(!finite2(intersection)){return;}
   var nearby=false;
   if(rayIndex>=2u&&(previous.flags&4u)==0u&&
       (rays[rayIndex-2u].flags&1u)!=0u){
     let previousIntersection=lineIntersection(previous,rays[rayIndex-2u]);
-    nearby=finite2(previousIntersection)&&
+    nearby=finite2(intersection)&&finite2(previousIntersection)&&
       dot(previousIntersection-intersection,previousIntersection-intersection)<
       25.0*config.values[1].y*config.values[1].y;
   }
   if(mode==2u){if(nearby){imagePoint(ray,previous,hit,intersection,true);}return;}
   if(config.values[2].w<0.5){return;}
   let observed=observerPoint(ray,hit);if(observed.z<0.5){return;}
-  let observedColor=encodeColor(config.values[8],ray,0.5);
+  let extensionColor=encodeColor(config.values[8],ray,1.0);
   if(!nearby){
-    if(rayIndex>=2u){pushRay(observed.xy,ray.origin-observed.xy,observedColor,
-      config.values[13].zw);} return;
+    if(rayIndex>=2u){pushRay(observed.xy,ray.origin-observed.xy,extensionColor,
+      config.values[13].zw,false);} return;
   }
+  let rayPower=max(ray.powers.x+ray.powers.y,1e-30);
+  let nearbyPower=0.5*(rayPower+previous.powers.x+previous.powers.y);
+  let observedColor=encodeColor(config.values[8],ray,nearbyPower/rayPower);
   let toward=dot(intersection-observed.xy,ray.origin-observed.xy)>=0.0;
   let away=dot(observed.xy-ray.origin,observed.xy-ray.origin)>
     1e-5*config.values[1].y*config.values[1].y;
   if(!toward||!away){pushRay(observed.xy,ray.origin-observed.xy,observedColor,
-    config.values[13].zw);return;}
+    config.values[13].zw,false);return;}
   imagePoint(ray,previous,hit,intersection,false);
   pushLine(observed.xy,intersection,observedColor,config.values[13].zw);
 }`;

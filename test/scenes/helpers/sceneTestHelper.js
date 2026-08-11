@@ -101,10 +101,26 @@ function createNodeWebGpuOutput(ctx) {
       const source = new Uint8Array(readback.getMappedRange());
       const image = ctx.createImageData(width, height);
       for (let row = 0; row < height; row++) {
-        image.data.set(
-          source.subarray(row * bytesPerRow, row * bytesPerRow + width * 4),
-          row * width * 4
-        );
+        for (let column = 0; column < width; column++) {
+          const sourceOffset = row * bytesPerRow + column * 4;
+          const destinationOffset = (row * width + column) * 4;
+          const alpha = source[sourceOffset + 3];
+          if (alpha > 0) {
+            image.data[destinationOffset] = Math.min(
+              255,
+              Math.round(source[sourceOffset] * 255 / alpha)
+            );
+            image.data[destinationOffset + 1] = Math.min(
+              255,
+              Math.round(source[sourceOffset + 1] * 255 / alpha)
+            );
+            image.data[destinationOffset + 2] = Math.min(
+              255,
+              Math.round(source[sourceOffset + 2] * 255 / alpha)
+            );
+          }
+          image.data[destinationOffset + 3] = alpha;
+        }
       }
       ctx.putImageData(image, 0, 0);
       readback.unmap();

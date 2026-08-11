@@ -1017,12 +1017,13 @@ fn renderIndependent(ray:Ray,hit:Hit,depth:u32){
   let finiteEnd=hit.s<F32_MAX*0.5;let end=ray.origin+hit.s*ray.direction;
   let color=encodeColor(config.values[5],ray,1.0);let dash=config.values[12].xy;
   if(finiteEnd){pushVisibleSegment(ray.origin,end,color,dash,
-    config.values[0].z>0.5);}else{pushRay(ray.origin,ray.direction,color,dash);}
+    config.values[0].z>0.5);}else{pushRay(ray.origin,ray.direction,color,dash,
+      config.values[0].z>0.5);}
   ${extended ? `if(depth>0u){
     pushRay(ray.origin,-ray.direction,encodeColor(config.values[6],ray,1.0),
-      config.values[12].zw);
+      config.values[12].zw,false);
     if(finiteEnd){pushRay(end,ray.direction,encodeColor(config.values[7],ray,1.0),
-      config.values[13].xy);}
+      config.values[13].xy,false);}
   }` : ''}
 }`;
   }
@@ -1044,19 +1045,23 @@ fn renderObserverNeighbor(index:u32,logicalIndex:u32){
   let ray=sharedRays[index];let hit=sharedHits[index];
   if((ray.flags&1u)==0u||(sharedRays[index-1u].flags&1u)==0u){return;}
   let previous=sharedRays[index-1u];let intersection=lineIntersection(ray,previous);
-  if(!finite2(intersection)){return;}let observed=observerPoint(ray,hit);
-  if(observed.z<0.5){return;}let color=encodeColor(config.values[8],ray,0.5);
+  let observed=observerPoint(ray,hit);if(observed.z<0.5){return;}
   var nearby=false;
   if((sharedRays[index-2u].flags&1u)!=0u){
     let old=lineIntersection(previous,sharedRays[index-2u]);
-    nearby=finite2(old)&&distance(old,intersection)<5.0*config.values[1].y;}
+    nearby=finite2(intersection)&&finite2(old)&&
+      distance(old,intersection)<5.0*config.values[1].y;}
+  let extensionColor=encodeColor(config.values[8],ray,1.0);
   if(!nearby){if(logicalIndex>=2u){pushRay(observed.xy,
-      ray.origin-observed.xy,color,config.values[13].zw);}
+      ray.origin-observed.xy,extensionColor,config.values[13].zw,false);}
     return;}
+  let rayPower=max(ray.powers.x+ray.powers.y,1e-30);
+  let nearbyPower=0.5*(rayPower+previous.powers.x+previous.powers.y);
+  let color=encodeColor(config.values[8],ray,nearbyPower/rayPower);
   let toward=dot(intersection-observed.xy,ray.origin-observed.xy)>=0.0;
   let away=distance(observed.xy,ray.origin)>sqrt(1e-5)*config.values[1].y;
   if(!toward||!away){pushRay(observed.xy,ray.origin-observed.xy,color,
-    config.values[13].zw);return;}
+    config.values[13].zw,false);return;}
   pushLine(observed.xy,intersection,color,config.values[13].zw);
   imagePoint(ray,previous,hit,intersection,false);
 }`;

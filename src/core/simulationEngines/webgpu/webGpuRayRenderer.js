@@ -276,9 +276,14 @@ fn toneMapAdditive(color: vec3f, mode: u32) -> vec4f {
     return vec4f(mapped, clamp(opacity, 0.0, 1.0));
   }
   if (mode == 5u) {
-    // Simulated wavelengths already carry per-channel screen contributions.
-    let mapped = vec3f(1.0) - exp(-color);
-    return vec4f(mapped, clamp(max(max(mapped.r, mapped.g), mapped.b), 0.0, 1.0));
+    // Simulated wavelengths accumulate optical density per channel.  The
+    // legacy canvas color transform normalizes that density into the hue and
+    // stores its magnitude in alpha.  Return the equivalent premultiplied
+    // color; the canvas path quantizes between those two operations.
+    let factor = max(max(color.r, color.g), color.b);
+    let opacity = clamp(factor, 0.0, 1.0);
+    let mapped = select(vec3f(0.0), color / factor * opacity, factor > 0.0);
+    return vec4f(mapped, opacity);
   }
   if (mode == 3u) {
     let luminance = dot(color, vec3f(0.2126, 0.7152, 0.0722));
@@ -1216,8 +1221,12 @@ export function toneMapWebGpuColorContribution(
 ) {
   if (mode === 'default') {
     if (simulateColors) {
-      const rgb = color.map(value => 1 - Math.exp(-value));
-      return [...rgb, Math.max(...rgb)];
+      const factor = Math.max(...color);
+      const opacity = Math.min(Math.max(factor, 0), 1);
+      const rgb = factor > 0
+        ? color.map(value => value / factor * opacity)
+        : [0, 0, 0];
+      return [...rgb, opacity];
     }
     const density = Math.max(...color);
     const opacity = 1 - Math.exp(-density);

@@ -8,24 +8,30 @@ import {
 } from './webGpuStorage.js';
 
 const TRACE_SCENE_FIELDS = Object.freeze([
-  ['bvhNodes', 'BvhNode', 80],
-  ['instanceParameters', 'f32', 4],
-  ['surfaceDescriptors', 'InstanceDescriptor', 16],
-  ['regionDescriptors', 'RegionDescriptor', 32],
-  ['detectorDescriptors', 'DetectorDescriptor', 32],
-  ['curveDescriptors', 'CurveDescriptor', 32],
-  ['curveGeometry', 'f32', 4],
-  ['bvhCurveIds', 'u32', 4],
-  ['bvhPartitionRoots', 'BvhPartitionRoot', 32],
+  ['bvhNodes', 'BvhNode', 80, 16],
+  ['instanceParameters', 'f32', 4, 4],
+  ['surfaceDescriptors', 'InstanceDescriptor', 16, 4],
+  ['regionDescriptors', 'RegionDescriptor', 32, 4],
+  ['detectorDescriptors', 'DetectorDescriptor', 32, 4],
+  ['curveDescriptors', 'CurveDescriptor', 32, 4],
+  ['curveGeometry', 'f32', 4, 4],
+  ['bvhCurveIds', 'u32', 4, 4],
+  ['bvhPartitionRoots', 'BvhPartitionRoot', 32, 8],
 ]);
 
 /**
  * Pack the immutable tables needed while tracing into one storage binding.
- * BvhNode is first because its vec4 member gives it 16-byte alignment; every
- * following table has four-byte alignment and every table has a fixed stride.
+ * Each table begins at the alignment required by its WGSL element type and
+ * has a fixed stride.
  */
 export function createWebGpuTraceSceneData(packedScene, fieldCapacities = null) {
-  const byteLengths = TRACE_SCENE_FIELDS.map(([name, _type, minimumSize]) => {
+  let nextOffset = 0;
+  const layouts = TRACE_SCENE_FIELDS.map(([
+    name,
+    _type,
+    minimumSize,
+    alignment,
+  ]) => {
     const byteLength = Math.max(
       minimumSize,
       packedScene[name]?.byteLength ?? 0
@@ -36,18 +42,18 @@ export function createWebGpuTraceSceneData(packedScene, fieldCapacities = null) 
         `Packed WebGPU trace-scene field ${name} does not fit its layout.`
       );
     }
-    return capacity;
+    const offset = alignTo(nextOffset, alignment);
+    nextOffset = offset + capacity;
+    return { byteLength, capacity, offset };
   });
-  const byteLength = alignTo16(byteLengths.reduce((sum, size) => sum + size, 0));
+  const byteLength = alignTo(nextOffset, 16);
   const data = new Uint8Array(byteLength);
-  let offset = 0;
   TRACE_SCENE_FIELDS.forEach(([name], index) => {
     const value = packedScene[name] ?? new Uint8Array(0);
     const bytes = value instanceof ArrayBuffer
       ? new Uint8Array(value)
       : new Uint8Array(value.buffer, value.byteOffset, value.byteLength);
-    data.set(bytes, offset);
-    offset += byteLengths[index];
+    data.set(bytes, layouts[index].offset);
   });
   return data;
 }
@@ -134,6 +140,6 @@ function traceSceneCounts(description) {
   };
 }
 
-function alignTo16(value) {
-  return Math.ceil(value / 16) * 16;
+function alignTo(value, alignment) {
+  return Math.ceil(value / alignment) * alignment;
 }
