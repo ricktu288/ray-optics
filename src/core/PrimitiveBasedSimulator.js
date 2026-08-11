@@ -33,6 +33,10 @@ import {
 import {
   formatPrimitiveCurveReference
 } from './primitive/diagnosticReference.js';
+import {
+  selectPrimitiveEngineKind,
+  summarizePrimitiveWorkload
+} from './simulationEngines/primitiveEngineSelection.js';
 
 const UV_WAVELENGTH = 380;
 const VIOLET_WAVELENGTH = 420;
@@ -87,14 +91,17 @@ function formatToleranceValue(value) {
 }
 
 /**
- * Temporary simulator shell used to exercise the new constructor and backend
- * switching before the primitive-based simulation is implemented.
+ * Primitive simulator coordinating shared preprocessing, rendering, and a
+ * lazily instantiated registry of execution engines.
  */
 class PrimitiveBasedSimulator {
   /**
    * @param {Object} options
    * @param {Scene} options.scene
-   * @param {CpuSimulationEngine|WebGpuSimulationEngine} options.engine
+   * @param {CpuSimulationEngine|WebGpuSimulationEngine} [options.engine]
+   * @param {Object<string, Function|Object>} [options.engineProviders]
+   * @param {'automatic'|'primitiveCpu'|'webgpu'|string} [options.enginePreference]
+   * @param {Function} [options.engineSelector]
    * @param {CanvasRenderingContext2D|null} [options.ctxBelowLight]
    * @param {CanvasRenderingContext2D|null} [options.ctxAboveLight]
    * @param {CanvasRenderingContext2D|null} [options.ctxGrid]
@@ -108,7 +115,10 @@ class PrimitiveBasedSimulator {
    */
   constructor({
     scene,
-    engine,
+    engine = null,
+    engineProviders = null,
+    enginePreference = 'automatic',
+    engineSelector = selectPrimitiveEngineKind,
     ctxBelowLight = null,
     ctxAboveLight = null,
     ctxGrid = null,
@@ -121,7 +131,6 @@ class PrimitiveBasedSimulator {
     bvhOptions = {},
   }) {
     this.scene = scene;
-    this.engine = engine;
     this.ctxBelowLight = ctxBelowLight;
     this.ctxAboveLight = ctxAboveLight;
     this.ctxGrid = ctxGrid;
@@ -145,7 +154,32 @@ class PrimitiveBasedSimulator {
     this.warning = null;
     this.preprocessingWarning = null;
     this.engineWarning = null;
+    this.engineFallbackWarning = null;
     this.eventListeners = {};
+
+    this.engineProviders = normalizeEngineProviders(engineProviders);
+    if (typeof engineSelector !== 'function') {
+      throw new TypeError('engineSelector must be a function.');
+    }
+    this.engineSelector = engineSelector;
+    this.engines = new Map();
+    if (engine) {
+      this.engineProviders.set(engine.kind, {
+        create: () => engine,
+        isSupported: () => true
+      });
+      this.engines.set(engine.kind, engine);
+      this.enginePreference = engine.kind;
+    } else {
+      this.enginePreference = enginePreference;
+    }
+    if (this.engineProviders.size === 0) {
+      throw new TypeError('At least one primitive simulation engine is required.');
+    }
+    this.workload = summarizePrimitiveWorkload([]);
+    const initialEngineKind = this.selectEngineKind(this.workload);
+    this.engine = this.getEngine(initialEngineKind);
+    this.engineFallbackActive = false;
 
     this.canvasRendererBelowLight = null;
     this.canvasRendererAboveLight = null;
@@ -167,6 +201,65 @@ class PrimitiveBasedSimulator {
     this.processedScene = initialPreprocessing.processedScene;
     this.detectorResultBindings = initialPreprocessing.detectorResultBindings;
     this.primitiveBvh = this.processedScene.bvh;
+  }
+
+  setEnginePreference(preference) {
+    if (preference !== 'automatic' && !this.engineProviders.has(preference)) {
+      throw new RangeError(`Unknown primitive engine preference: ${preference}`);
+    }
+    this.enginePreference = preference;
+  }
+
+  selectEngineKind(workload) {
+    const selected = this.engineSelector({
+      preference: this.enginePreference,
+      workload,
+      isAvailable: kind => this.isEngineAvailable(kind)
+    });
+    if (this.engineProviders.has(selected)) return selected;
+    if (this.engineProviders.has('primitiveCpu')) return 'primitiveCpu';
+    return this.engineProviders.keys().next().value;
+  }
+
+  isEngineAvailable(kind) {
+    const provider = this.engineProviders.get(kind);
+    if (!provider) return false;
+    try {
+      return provider.isSupported?.() !== false;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  getEngine(kind) {
+    let engine = this.engines.get(kind);
+    if (engine) return engine;
+    const provider = this.engineProviders.get(kind);
+    if (!provider) throw new RangeError(`No primitive engine provider for ${kind}.`);
+    engine = provider.create();
+    if (!engine || typeof engine.then === 'function' || engine.kind !== kind) {
+      throw new TypeError(
+        `Primitive engine provider ${kind} must synchronously create that engine.`
+      );
+    }
+    this.engines.set(kind, engine);
+    return engine;
+  }
+
+  activateEngine(kind, { fallback = false } = {}) {
+    const previousKind = this.engine?.kind ?? null;
+    const previousFallback = this.engineFallbackActive;
+    this.engine = this.getEngine(kind);
+    this.engineFallbackActive = fallback;
+    if (previousKind !== kind || previousFallback !== fallback) {
+      this.emit('engineChange', {
+        kind,
+        previousKind,
+        fallback,
+        preference: this.enginePreference,
+        workload: this.workload
+      });
+    }
   }
 
   on(eventName, callback) {
@@ -247,8 +340,8 @@ class PrimitiveBasedSimulator {
         this.pendingWebGpuRunGeneration = null;
         if (generation !== this.runGeneration) continue;
         // Do not overlap backend construction or presentation between scene
-        // generations. Updates arriving while this awaits replace the single
-        // pending generation above and are processed next.
+        // update revisions. Updates arriving while this awaits replace the
+        // single pending revision above and are processed next.
         await this.startEngineRun(generation);
       }
     } finally {
@@ -259,21 +352,50 @@ class PrimitiveBasedSimulator {
     }
   }
 
-  startEngineRun(generation) {
-    return this.runEngine(generation)
-      .then(() => this.completeRun(generation))
-      .catch(err => {
-        if (generation !== this.runGeneration) return;
+  async startEngineRun(generation) {
+    try {
+      await this.runEngine(generation);
+    } catch (error) {
+      if (generation !== this.runGeneration) return;
+      if (isWebGpuEngine(this.engine) &&
+          this.engineProviders.has('primitiveCpu')) {
+        try {
+          await this.fallbackToCpu(generation, error);
+        } catch (fallbackError) {
+          if (generation !== this.runGeneration) return;
+          this.activeRun?.dispose?.();
+          this.activeRun = null;
+          this.error = fallbackError.message ||
+            i18next.t('simulator:settings.correctBrightness.error');
+        }
+      } else {
         this.activeRun?.dispose?.();
         this.activeRun = null;
-        this.error = isWebGpuEngine(this.engine)
-          ? i18next.t(
-            `simulator:simulationEngineModal.${this.engine.kind}.unavailable`,
-            { message: err.message }
-          )
-          : i18next.t('simulator:settings.correctBrightness.error');
-        this.completeRun(generation);
-      });
+        this.error = error.message ||
+          i18next.t('simulator:settings.correctBrightness.error');
+      }
+    }
+    this.completeRun(generation);
+  }
+
+  async fallbackToCpu(generation, webGpuError) {
+    // Restart the complete simulation for this scene-update revision. Engine
+    // selection never changes within a bounce or megakernel ping-pong.
+    this.activeRun?.cancel?.();
+    this.activeRun?.dispose?.();
+    this.activeRun = null;
+    this.engineFallbackWarning = i18next.t(
+      'simulator:simulationEngineModal.webgpu.fallback',
+      { message: webGpuError.message }
+    );
+    this.activateEngine('primitiveCpu', { fallback: true });
+    this.preprocessCollectedPrimitives(null);
+    this.refreshWarning();
+    if (this.simulationStartPending) {
+      this.simulationStartPending = false;
+      this.emit('simulationStart', null);
+    }
+    await this.runEngine(generation);
   }
 
   async runEngine(generation) {
@@ -471,6 +593,7 @@ class PrimitiveBasedSimulator {
       ? i18next.t('simulator:generalWarnings.brightnessInconsistent')
       : null;
     this.engineWarning = null;
+    this.engineFallbackWarning = null;
     this.refreshWarning();
     const collectionTime = this.logDebugInfo
       ? (
@@ -480,11 +603,24 @@ class PrimitiveBasedSimulator {
       ) - collectionStartTime
       : null;
 
+    this.primitives = primitives;
+    this.workload = summarizePrimitiveWorkload(primitives);
+    this.activateEngine(this.selectEngineKind(this.workload), { fallback: false });
+    this.preprocessCollectedPrimitives(
+      collectionTime,
+      previousProcessedScene
+    );
+  }
+
+  preprocessCollectedPrimitives(
+    collectionTime,
+    previousProcessedScene = this.processedScene
+  ) {
     const {
       processedScene,
       detectorResultBindings,
       timings
-    } = preprocessPrimitives(primitives, {
+    } = preprocessPrimitives(this.primitives, {
       lengthScale: this.scene.lengthScale,
       numericalTolerances: this.scene.numericalTolerances,
       numericEpsilon: this.engine.numericEpsilon,
@@ -532,7 +668,6 @@ class PrimitiveBasedSimulator {
         formatRegisteredTypes(summary.types.detectors)
       );
     }
-    this.primitives = primitives;
     this.processedScene = processedScene;
     if (this.drawBvh && this.engine.kind === 'primitiveCpu') {
       attachCpuBvhTraversalDiagnostics(processedScene);
@@ -543,6 +678,9 @@ class PrimitiveBasedSimulator {
 
   refreshWarning() {
     const warnings = [this.preprocessingWarning];
+    if (this.engineFallbackWarning) {
+      warnings.push(this.engineFallbackWarning);
+    }
     if (this.engineWarning) {
       warnings.push(formatPrimitiveEngineWarning(this.engineWarning));
     }
@@ -703,7 +841,10 @@ class PrimitiveBasedSimulator {
 
   destroy() {
     this.stopSimulation();
-    this.engine.dispose?.();
+    for (const engine of new Set(this.engines.values())) {
+      engine.dispose?.();
+    }
+    this.engines.clear();
     this.eventListeners = {};
   }
 
@@ -840,13 +981,32 @@ function isWebGpuEngine(engine) {
   return engine?.kind === 'webgpu';
 }
 
+function normalizeEngineProviders(providers) {
+  const result = new Map();
+  const entries = providers instanceof Map
+    ? providers.entries()
+    : Object.entries(providers ?? {});
+  for (const [kind, provider] of entries) {
+    if (typeof provider === 'function') {
+      result.set(kind, { create: provider, isSupported: () => true });
+      continue;
+    }
+    if (provider && typeof provider.create === 'function') {
+      result.set(kind, provider);
+      continue;
+    }
+    throw new TypeError(`Primitive engine provider ${kind} requires create().`);
+  }
+  return result;
+}
+
 function formatChangeStatus(changed) {
   if (changed === null) return 'not compared';
   return changed ? 'yes' : 'no';
 }
 
 function formatMilliseconds(duration) {
-  return duration.toFixed(3);
+  return Number.isFinite(duration) ? duration.toFixed(3) : 'n/a';
 }
 
 function formatRegisteredTypes(categorySummary) {

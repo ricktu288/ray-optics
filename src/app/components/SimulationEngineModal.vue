@@ -24,12 +24,48 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <div class="form-check" v-for="engine in SIMULATION_ENGINES" :key="engine">
-            <input class="form-check-input" type="radio" name="simulationEngine" :id="'simulationEngine_' + engine" :value="engine" v-model="simulationEngine">
-            <label class="form-check-label fw-semibold text-body" :for="'simulationEngine_' + engine" v-html="$t(`simulator:simulationEngineModal.${engine}.title`)"></label>
-            <div class="form-text" v-html="$t(`simulator:simulationEngineModal.${engine}.description`)"></div>
+          <div class="form-check form-switch">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              role="switch"
+              id="usePrimitiveSimulationEngine"
+              v-model="usePrimitiveEngine"
+            >
+            <label
+              class="form-check-label fw-semibold text-body"
+              for="usePrimitiveSimulationEngine"
+              v-text="$t('simulator:simulationEngineModal.accelerated.title')"
+            ></label>
+            <div
+              class="form-text"
+              v-text="$t('simulator:simulationEngineModal.accelerated.description')"
+            ></div>
           </div>
-          <template v-if="engineConfigSections.length">
+          <template v-if="isPrimitiveEngine">
+            <div class="mt-3">
+              <label
+                class="form-label fw-semibold text-body"
+                for="primitiveEnginePreference"
+                v-text="$t('simulator:simulationEngineModal.enginePreference.title')"
+              ></label>
+              <select
+                id="primitiveEnginePreference"
+                class="form-select"
+                v-model="primitiveEnginePreference"
+              >
+                <option
+                  v-for="engine in PRIMITIVE_ENGINE_PREFERENCES"
+                  :key="engine"
+                  :value="engine"
+                  v-text="$t(`simulator:simulationEngineModal.${engine}.title`)"
+                ></option>
+              </select>
+              <div
+                class="form-text"
+                v-text="$t(`simulator:simulationEngineModal.${primitiveEnginePreference}.description`)"
+              ></div>
+            </div>
             <hr>
             <button
               type="button"
@@ -99,7 +135,7 @@
                     <div class="d-flex align-items-center gap-1 flex-grow-1">
                       <label
                         class="form-label fw-semibold text-body mb-0"
-                        :for="'simulationEngineConfig_' + field.key"
+                        :for="'simulationEngineConfig_' + section.key + '_' + field.key"
                         v-text="$t(`simulator:simulationEngineModal.configuration.fields.${field.key}.title`)"
                       ></label>
                       <InfoPopoverIcon
@@ -112,25 +148,25 @@
                     <input
                       type="number"
                       class="form-control form-control-sm engine-config-input"
-                      :id="'simulationEngineConfig_' + field.key"
-                      :value="getEngineConfigValue(field.path)"
+                      :id="'simulationEngineConfig_' + section.key + '_' + field.key"
+                      :value="getEngineConfigValue(section.configKey, field.path)"
                       :min="field.min"
                       :step="field.step"
-                      @change="setEngineConfigValue(field, $event)"
+                      @change="setEngineConfigValue(section.configKey, field, $event)"
                       @keydown.stop
                     >
                   </div>
                 </div>
                 <div
-                  v-if="section.key === 'bvh' && simulationEngine === 'primitiveCpu'"
+                  v-if="section.key === 'bvh'"
                   class="form-check mt-2 mb-2"
                 >
                   <input
                     class="form-check-input"
                     type="checkbox"
                     id="simulationEngineDrawBvh"
-                    :checked="getEngineConfigValue(['bvh', 'drawBounds'])"
-                    @change="setEngineConfigOverride(['bvh', 'drawBounds'], $event.target.checked)"
+                    :checked="getEngineConfigValue('primitive', ['bvh', 'drawBounds'])"
+                    @change="setEngineConfigOverride('primitive', ['bvh', 'drawBounds'], $event.target.checked)"
                   >
                   <div class="d-flex align-items-center gap-1">
                     <label
@@ -152,8 +188,8 @@
                   class="form-check-input"
                   type="checkbox"
                   id="simulationEngineLogDebugInfo"
-                  :checked="getEngineConfigValue('logDebugInfo')"
-                  @change="setEngineConfigOverride('logDebugInfo', $event.target.checked)"
+                  :checked="getEngineConfigValue('primitive', 'logDebugInfo')"
+                  @change="setEngineConfigOverride('primitive', 'logDebugInfo', $event.target.checked)"
                 >
                 <label
                   class="form-check-label fw-semibold text-body"
@@ -181,15 +217,18 @@
  * @module SimulationEngineModal
  * @description The Vue component for the pop-up modal for Settings -> Simulation Engine.
  */
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { usePreferencesStore } from '../store/preferences'
-import { DEFAULT_SIMULATION_ENGINE_CONFIGS } from '../../core/simulationEngines/config.js'
+import {
+  DEFAULT_PRIMITIVE_SIMULATOR_CONFIG,
+  DEFAULT_SIMULATION_ENGINE_CONFIGS
+} from '../../core/simulationEngines/config.js'
 import InfoPopoverIcon from './InfoPopoverIcon.vue'
 
-const SIMULATION_ENGINES = [
-  'default',
-  'webgpu',
-  'primitiveCpu'
+const PRIMITIVE_ENGINE_PREFERENCES = [
+  'automatic',
+  'primitiveCpu',
+  'webgpu'
 ]
 
 const getPathValue = (object, path) => {
@@ -197,9 +236,10 @@ const getPathValue = (object, path) => {
   return keys.reduce((value, key) => value?.[key], object)
 }
 
-const COMMON_CONFIG_SECTIONS = [
+const ENGINE_CONFIG_SECTIONS = [
   {
     key: 'bvh',
+    configKey: 'primitive',
     hasDescription: true,
     fields: [
       { key: 'lineLeafSize', path: ['bvh', 'lineLeafSize'], min: 1, step: 1, integer: true, hasInfo: true },
@@ -209,31 +249,28 @@ const COMMON_CONFIG_SECTIONS = [
       { key: 'consecutiveLocalityFactor', path: ['bvh', 'consecutiveLocalityFactor'], min: 0, step: 'any', hasInfo: true },
       { key: 'maxGroupExtent', path: ['bvh', 'maxGroupExtent'], min: 0, step: 'any', positive: true, hasInfo: true }
     ]
+  },
+  {
+    key: 'primitiveCpu',
+    configKey: 'primitiveCpu',
+    fields: [
+      { key: 'maxLocalIterations', path: ['maxLocalIterations'], min: 1, step: 1, integer: true, hasInfo: true }
+    ]
+  },
+  {
+    key: 'webgpu',
+    configKey: 'webgpu',
+    fields: [
+      { key: 'workgroupSize', path: ['workgroupSize'], min: 3, step: 1, integer: true, hasInfo: true },
+      { key: 'maxLocalIterations', path: ['maxLocalIterations'], min: 1, step: 1, integer: true, hasInfo: true },
+      { key: 'maxPingPongsPerSubmission', path: ['maxPingPongsPerSubmission'], min: 1, step: 1, integer: true, hasInfo: true }
+    ]
   }
 ]
 
-const ENGINE_CONFIG_SECTIONS = {
-  primitiveCpu: [
-    ...COMMON_CONFIG_SECTIONS,
-    {
-      key: 'megakernel',
-      fields: [
-        { key: 'maxLocalIterations', path: ['maxLocalIterations'], min: 1, step: 1, integer: true, hasInfo: true }
-      ]
-    }
-  ],
-  webgpu: [
-    ...COMMON_CONFIG_SECTIONS,
-    {
-      key: 'webgpu',
-      fields: [
-        { key: 'workgroupSize', path: ['workgroupSize'], min: 3, step: 1, integer: true, hasInfo: true },
-        { key: 'maxLocalIterations', path: ['maxLocalIterations'], min: 1, step: 1, integer: true, hasInfo: true },
-        { key: 'maxPingPongsPerSubmission', path: ['maxPingPongsPerSubmission'], min: 1, step: 1, integer: true, hasInfo: true }
-      ]
-    }
-  ]
-}
+const defaultConfigFor = configKey => configKey === 'primitive'
+  ? DEFAULT_PRIMITIVE_SIMULATOR_CONFIG
+  : DEFAULT_SIMULATION_ENGINE_CONFIGS[configKey]
 
 export default {
   name: 'SimulationEngineModal',
@@ -247,13 +284,30 @@ export default {
     const isPrimitiveEngine = computed(
       () => preferences.simulationEngine.value !== 'default'
     )
-    const engineConfigSections = computed(
-      () => ENGINE_CONFIG_SECTIONS[preferences.simulationEngine.value] ?? []
-    )
+    const usePrimitiveEngine = computed({
+      get: () => isPrimitiveEngine.value,
+      set: enabled => {
+        preferences.simulationEngine.value = enabled
+          ? 'automatic'
+          : 'default'
+      }
+    })
+    const primitiveEnginePreference = computed({
+      get: () => isPrimitiveEngine.value
+        ? preferences.simulationEngine.value
+        : 'automatic',
+      set: value => {
+        if (PRIMITIVE_ENGINE_PREFERENCES.includes(value)) {
+          preferences.simulationEngine.value = value
+        }
+      }
+    })
     const isEngineConfigDefault = computed(() => {
       const configs = preferences.simulationEngineConfigs.value
-      const overrides = configs?.[preferences.simulationEngine.value]
-      return !overrides || Object.keys(overrides).length === 0
+      return ['primitive', 'primitiveCpu', 'webgpu'].every(configKey => {
+        const overrides = configs?.[configKey]
+        return !overrides || Object.keys(overrides).length === 0
+      })
     })
 
     onMounted(() => {
@@ -267,10 +321,6 @@ export default {
       })
     })
 
-    watch(preferences.simulationEngine, () => {
-      isEngineSettingsOpen.value = false
-    })
-
     const closeModal = () => {
       const modal = document.getElementById('simulationEngineModal')
       modal.classList.remove('show')
@@ -279,25 +329,23 @@ export default {
       isModalOpen.value = false
     }
 
-    const getEngineConfigValue = (path) => {
-      const engine = preferences.simulationEngine.value
-      const overrides = preferences.simulationEngineConfigs.value?.[engine]
+    const getEngineConfigValue = (configKey, path) => {
+      const overrides = preferences.simulationEngineConfigs.value?.[configKey]
       return getPathValue(overrides, path) ??
-        getPathValue(DEFAULT_SIMULATION_ENGINE_CONFIGS[engine], path)
+        getPathValue(defaultConfigFor(configKey), path)
     }
 
-    const setEngineConfigOverride = (path, value) => {
+    const setEngineConfigOverride = (configKey, path, value) => {
       const keys = Array.isArray(path) ? path : [path]
-      const engine = preferences.simulationEngine.value
       const defaultValue = getPathValue(
-        DEFAULT_SIMULATION_ENGINE_CONFIGS[engine],
+        defaultConfigFor(configKey),
         keys
       )
       const configs = preferences.simulationEngineConfigs.value
       const nextConfigs = configs && typeof configs === 'object'
         ? { ...configs }
         : {}
-      const currentOverrides = nextConfigs[engine]
+      const currentOverrides = nextConfigs[configKey]
       const nextOverrides = currentOverrides && typeof currentOverrides === 'object'
         ? { ...currentOverrides }
         : {}
@@ -327,14 +375,14 @@ export default {
       }
 
       if (Object.keys(nextOverrides).length === 0) {
-        delete nextConfigs[engine]
+        delete nextConfigs[configKey]
       } else {
-        nextConfigs[engine] = nextOverrides
+        nextConfigs[configKey] = nextOverrides
       }
       preferences.simulationEngineConfigs.value = nextConfigs
     }
 
-    const setEngineConfigValue = (field, event) => {
+    const setEngineConfigValue = (configKey, field, event) => {
       const parsedValue = Number(event.target.value)
       const isValid =
         event.target.value.trim() !== '' &&
@@ -344,29 +392,31 @@ export default {
         (field.min === undefined || parsedValue >= field.min)
 
       if (!isValid) {
-        event.target.value = getEngineConfigValue(field.path)
+        event.target.value = getEngineConfigValue(configKey, field.path)
         return
       }
 
-      setEngineConfigOverride(field.path, parsedValue)
+      setEngineConfigOverride(configKey, field.path, parsedValue)
     }
 
     const resetEngineConfig = () => {
-      const engine = preferences.simulationEngine.value
       const configs = preferences.simulationEngineConfigs.value
-      if (!configs || typeof configs !== 'object' || !(engine in configs)) return
+      if (!configs || typeof configs !== 'object') return
 
       const nextConfigs = { ...configs }
-      delete nextConfigs[engine]
+      delete nextConfigs.primitive
+      delete nextConfigs.primitiveCpu
+      delete nextConfigs.webgpu
       preferences.simulationEngineConfigs.value = nextConfigs
     }
 
     return {
-      simulationEngine: preferences.simulationEngine,
+      usePrimitiveEngine,
+      primitiveEnginePreference,
       isPrimitiveEngine,
-      SIMULATION_ENGINES,
+      PRIMITIVE_ENGINE_PREFERENCES,
       isEngineSettingsOpen,
-      engineConfigSections,
+      engineConfigSections: ENGINE_CONFIG_SECTIONS,
       isEngineConfigDefault,
       getEngineConfigValue,
       setEngineConfigOverride,

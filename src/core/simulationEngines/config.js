@@ -34,11 +34,14 @@ const COMMON_BVH_CONFIG = Object.freeze({
   drawBounds: false,
 });
 
-const COMMON_PRIMITIVE_ENGINE_CONFIG = Object.freeze({
+export const DEFAULT_PRIMITIVE_SIMULATOR_CONFIG = Object.freeze({
   logDebugInfo: false,
+  bvh: COMMON_BVH_CONFIG,
+});
+
+const COMMON_PRIMITIVE_ENGINE_CONFIG = Object.freeze({
   ambiguousRayWarningSafetyFactor:
     DEFAULT_AMBIGUOUS_RAY_WARNING_SAFETY_FACTOR,
-  bvh: COMMON_BVH_CONFIG,
 });
 
 // Provisional Intel Xe-LPG calibration from the standalone multi-bounce
@@ -86,15 +89,33 @@ export function resolveSimulationEngineConfig(engineKind, storedConfigs = {}) {
   const overrides = storedConfigs?.[engineKind];
   const resolvedOverrides =
     overrides && typeof overrides === 'object' ? overrides : {};
+  const engineOverrides = { ...resolvedOverrides };
+  delete engineOverrides.bvh;
+  delete engineOverrides.logDebugInfo;
+  return {
+    ...defaults,
+    ...engineOverrides,
+  };
+}
+
+/**
+ * Resolve preprocessing and diagnostic settings shared by all primitive
+ * engines. They live outside engine-specific configuration so automatic
+ * selection never changes the BVH construction policy.
+ */
+export function resolvePrimitiveSimulatorConfig(storedConfigs = {}) {
+  const overrides = storedConfigs?.primitive;
+  const resolvedOverrides =
+    overrides && typeof overrides === 'object' ? overrides : {};
   const bvhOverrides =
     resolvedOverrides.bvh && typeof resolvedOverrides.bvh === 'object'
       ? resolvedOverrides.bvh
       : {};
   return {
-    ...defaults,
+    ...DEFAULT_PRIMITIVE_SIMULATOR_CONFIG,
     ...resolvedOverrides,
     bvh: {
-      ...(defaults.bvh ?? {}),
+      ...DEFAULT_PRIMITIVE_SIMULATOR_CONFIG.bvh,
       ...bvhOverrides,
     },
   };

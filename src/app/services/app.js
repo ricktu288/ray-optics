@@ -38,6 +38,8 @@ import { saveAs } from 'file-saver';
 import i18next, { t, use } from 'i18next';
 import { jsonEditorService } from '../services/jsonEditor.js';
 import { statusEmitter, STATUS_EVENT_NAMES } from '../composables/useStatus.js';
+import { setActiveEngineKind } from
+  '../composables/useSimulationEngineState.js';
 import { mapURL, parseLinks } from '../utils/links.js';
 import { parseShapesFile } from '../utils/svgImport.js';
 import {
@@ -49,6 +51,7 @@ import {
 } from '../utils/shapeImport.js';
 import {
   WEBGPU_MIN_STORAGE_BUFFERS_PER_SHADER_STAGE,
+  resolvePrimitiveSimulatorConfig,
   resolveSimulationEngineConfig
 } from '../../core/simulationEngines/config.js';
 
@@ -58,7 +61,7 @@ function initScene() {
 }
 
 const SIMULATION_ENGINES = [
-  'default', 'webgpu', 'primitiveCpu'
+  'default', 'automatic', 'primitiveCpu', 'webgpu'
 ];
 
 function normalizeSimulationEngine(value) {
@@ -129,19 +132,20 @@ function createBrowserWebGpuOutput(canvas) {
   };
 }
 
-function getBvhOptions(engineConfig) {
+function getBvhOptions(primitiveConfig) {
   return {
-    lineLeafSize: engineConfig.bvh.lineLeafSize,
-    arcLeafSize: engineConfig.bvh.arcLeafSize,
-    cubicBezierLeafSize: engineConfig.bvh.cubicBezierLeafSize,
-    directPrimitiveThreshold: engineConfig.bvh.directPrimitiveThreshold,
-    consecutiveLocalityFactor: engineConfig.bvh.consecutiveLocalityFactor,
-    maxGroupExtent: engineConfig.bvh.maxGroupExtent,
+    lineLeafSize: primitiveConfig.bvh.lineLeafSize,
+    arcLeafSize: primitiveConfig.bvh.arcLeafSize,
+    cubicBezierLeafSize: primitiveConfig.bvh.cubicBezierLeafSize,
+    directPrimitiveThreshold: primitiveConfig.bvh.directPrimitiveThreshold,
+    consecutiveLocalityFactor: primitiveConfig.bvh.consecutiveLocalityFactor,
+    maxGroupExtent: primitiveConfig.bvh.maxGroupExtent,
   };
 }
 
 function createSimulator(engine) {
   if (engine === 'default') {
+    setActiveEngineKind('default');
     return new Simulator(scene,
       canvasLight.getContext('2d'),
       canvasBelowLight.getContext('2d'),
@@ -156,28 +160,40 @@ function createSimulator(engine) {
     );
   }
 
-  const engineConfig = resolveSimulationEngineConfig(
-    engine,
+  const primitiveConfig = resolvePrimitiveSimulatorConfig(
     app.simulationEngineConfigs
   );
-  const simulationEngine = engine === 'webgpu'
-    ? new WebGpuSimulationEngine({
-      device: requestWebGpuDevice,
-      output: createBrowserWebGpuOutput(canvasLightWebGPU),
-      numericEpsilon: FLOAT32_EPSILON,
-      ownsDevice: true,
-      config: engineConfig,
-    })
-    : new CpuSimulationEngine({
-      ctxMain: canvasLight.getContext('2d'),
-      glMain: gl,
-      ctxVirtual: document.createElement('canvas').getContext('2d'),
-      config: engineConfig,
-    });
+  const cpuConfig = resolveSimulationEngineConfig(
+    'primitiveCpu', app.simulationEngineConfigs
+  );
+  const webGpuConfig = resolveSimulationEngineConfig(
+    'webgpu', app.simulationEngineConfigs
+  );
 
-  return new PrimitiveBasedSimulator({
+  const primitiveSimulator = new PrimitiveBasedSimulator({
     scene,
-    engine: simulationEngine,
+    enginePreference: engine,
+    engineProviders: {
+      primitiveCpu: {
+        isSupported: () => true,
+        create: () => new CpuSimulationEngine({
+          ctxMain: canvasLight.getContext('2d'),
+          glMain: gl,
+          ctxVirtual: document.createElement('canvas').getContext('2d'),
+          config: cpuConfig,
+        })
+      },
+      webgpu: {
+        isSupported: () => Boolean(navigator.gpu),
+        create: () => new WebGpuSimulationEngine({
+          device: requestWebGpuDevice,
+          output: createBrowserWebGpuOutput(canvasLightWebGPU),
+          numericEpsilon: FLOAT32_EPSILON,
+          ownsDevice: true,
+          config: webGpuConfig,
+        })
+      }
+    },
     ctxBelowLight: canvasBelowLight.getContext('2d'),
     ctxAboveLight: canvasAboveLight.getContext('2d'),
     ctxGrid: canvasGrid.getContext('2d'),
@@ -185,10 +201,14 @@ function createSimulator(engine) {
     enableTimer: true,
     rayCountLimit: Infinity,
     tempCanvasFactory: createTempCanvas,
-    logDebugInfo: Boolean(engineConfig.logDebugInfo),
-    drawBvh: Boolean(engineConfig.bvh.drawBounds),
-    bvhOptions: getBvhOptions(engineConfig),
+    logDebugInfo: Boolean(primitiveConfig.logDebugInfo),
+    drawBvh: Boolean(primitiveConfig.bvh.drawBounds),
+    bvhOptions: getBvhOptions(primitiveConfig),
   });
+  setActiveEngineKind(primitiveSimulator.engine.kind, {
+    fallback: primitiveSimulator.engineFallbackActive
+  });
+  return primitiveSimulator;
 }
 
 function bindSimulatorEventListeners(targetSimulator) {
@@ -256,24 +276,20 @@ function bindSimulatorEventListeners(targetSimulator) {
     canvasLightWebGL.style.display = 'none';
     canvasLight.style.display = '';
   });
+
+  targetSimulator.on('engineChange', function (event) {
+    setActiveEngineKind(event.kind, { fallback: event.fallback });
+  });
 }
 
-function setSimulationEngine(value) {
-  const nextEngine = normalizeSimulationEngine(value);
-  simulationEngine = nextEngine;
-  app.simulationEngine = nextEngine;
-
-  if (!scene || !canvasLight || !canvasLightWebGPU || !simulator) return;
-  if ((nextEngine === 'default' && simulator instanceof Simulator) ||
-      (nextEngine !== 'default' && simulator instanceof PrimitiveBasedSimulator && simulator.engine.kind === nextEngine)) {
-    return;
-  }
-
+function replaceSimulator(nextEngine) {
   const manualLightRedraw = simulator.manualLightRedraw;
   if (simulator.destroy) {
     simulator.destroy();
   } else {
-    if (simulator.simulationTimerId !== -1) clearTimeout(simulator.simulationTimerId);
+    if (simulator.simulationTimerId !== -1) {
+      clearTimeout(simulator.simulationTimerId);
+    }
     simulator.canvasRendererMain?.destroy?.();
     simulator.eventListeners = {};
   }
@@ -288,20 +304,32 @@ function setSimulationEngine(value) {
   simulator.updateSimulation(false, false);
 }
 
-function setSimulationEngineConfigs(value) {
-  app.simulationEngineConfigs =
-    value && typeof value === 'object' ? value : {};
-  if (!(simulator instanceof PrimitiveBasedSimulator)) return;
+function setSimulationEngine(value) {
+  const nextEngine = normalizeSimulationEngine(value);
+  simulationEngine = nextEngine;
+  app.simulationEngine = nextEngine;
 
-  const engineConfig = resolveSimulationEngineConfig(
-    simulator.engine.kind,
-    app.simulationEngineConfigs
-  );
-  simulator.logDebugInfo = Boolean(engineConfig.logDebugInfo);
-  simulator.drawBvh = Boolean(engineConfig.bvh.drawBounds);
-  simulator.bvhOptions = getBvhOptions(engineConfig);
-  simulator.engine.configure?.(engineConfig);
-  simulator.updateSimulation(false, true);
+  if (!scene || !canvasLight || !canvasLightWebGPU || !simulator) return;
+  if (nextEngine === 'default' && simulator instanceof Simulator) {
+    return;
+  }
+  if (nextEngine !== 'default' &&
+      simulator instanceof PrimitiveBasedSimulator) {
+    if (simulator.enginePreference === nextEngine) return;
+    simulator.setEnginePreference(nextEngine);
+    simulator.updateSimulation(false, false);
+    return;
+  }
+  replaceSimulator(nextEngine);
+}
+
+function setSimulationEngineConfigs(value) {
+  const nextConfigs = value && typeof value === 'object' ? value : {};
+  if (JSON.stringify(nextConfigs) ===
+      JSON.stringify(app.simulationEngineConfigs ?? {})) return;
+  app.simulationEngineConfigs = nextConfigs;
+  if (!(simulator instanceof PrimitiveBasedSimulator)) return;
+  replaceSimulator(simulationEngine);
 }
 
 function initAppService() {

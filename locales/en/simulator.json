@@ -719,17 +719,29 @@
   },
   "simulationEngineModal": {
     "default": {
-      "title": "Default",
-      "description": "Use the current simulation engine."
+      "title": "Legacy",
+      "description": "Use the original simulation engine for compatibility."
+    },
+    "accelerated": {
+      "title": "Use high-performance simulator",
+      "description": "Use the newer primitive-based simulator, which is substantially faster for complex scenes."
+    },
+    "enginePreference": {
+      "title": "Compute engine"
+    },
+    "automatic": {
+      "title": "Automatic (recommended)",
+      "description": "Automatically select CPU or WebGPU from the number of primitive curves and initial rays."
     },
     "webgpu": {
-      "title": "WebGPU",
-      "description": "Use the experimental primitive-based WebGPU engine that traces several interactions locally and stably compacts branched rays between dispatches.",
-      "unavailable": "WebGPU could not be initialized: {{message}}"
+      "title": "GPU (WebGPU)",
+      "description": "Prefer the WebGPU engine. If WebGPU cannot run the scene, the simulator falls back to CPU.",
+      "unavailable": "WebGPU could not be initialized: {{message}}",
+      "fallback": "WebGPU could not run this scene, so the simulation was restarted on CPU: {{message}}"
     },
     "primitiveCpu": {
-      "title": "Primitive-based CPU",
-      "description": "Use the experimental primitive-based CPU engine as a double-precision reference, with complete ray tracing including surfaces, refractive regions, GRIN stepping, and detectors."
+      "title": "CPU",
+      "description": "Always use the double-precision primitive CPU engine."
     },
     "numericalTolerances": {
       "description": "Numerical thresholds that affect geometry and ray termination are configured separately and stored with the scene.",
@@ -737,7 +749,7 @@
     },
     "configuration": {
       "title": "Advanced engine settings",
-      "description": "Global tuning settings for the selected engine. These settings are not stored in scene files.",
+      "description": "Shared preprocessing settings and tuning for every available compute engine. These settings are not stored in scene files.",
       "backToDefaults": "Back to defaults",
       "logDebugInfo": {
         "title": "Log debug information",
@@ -750,6 +762,9 @@
         },
         "webgpu": {
           "title": "WebGPU"
+        },
+        "primitiveCpu": {
+          "title": "CPU"
         },
         "megakernel": {
           "title": "Local tracing"
@@ -940,6 +955,13 @@
     }
   },
   "statusBox": {
+    "engine": "Engine",
+    "engines": {
+      "default": "Legacy",
+      "primitiveCpu": "CPU",
+      "webgpu": "GPU",
+      "cpuFallback": "CPU (fallback)"
+    },
     "rayCount": "Number of ray segments",
     "totalTruncation": "Truncated brightness",
     "brightnessScale": "Brightness Scale",

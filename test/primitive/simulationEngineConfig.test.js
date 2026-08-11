@@ -15,8 +15,10 @@
  */
 
 import {
+  DEFAULT_PRIMITIVE_SIMULATOR_CONFIG,
   DEFAULT_SIMULATION_ENGINE_CONFIGS,
   WEBGPU_MIN_STORAGE_BUFFERS_PER_SHADER_STAGE,
+  resolvePrimitiveSimulatorConfig,
   resolveSimulationEngineConfig
 } from '../../src/core/simulationEngines/config';
 import {
@@ -61,19 +63,16 @@ describe('simulation engine configuration', () => {
     expect(estimate(Number.EPSILON)).toBeCloseTo(1.818989e-12, 17);
   });
 
-  it.each(['primitiveCpu', 'webgpu'])(
-    'provides the direct primitive threshold to %s',
-    engineKind => {
-      expect(
-        DEFAULT_SIMULATION_ENGINE_CONFIGS[engineKind].bvh
-          .directPrimitiveThreshold
-      ).toBe(32);
-    }
-  );
+  it('provides one shared BVH construction policy', () => {
+    expect(DEFAULT_PRIMITIVE_SIMULATOR_CONFIG.bvh.directPrimitiveThreshold)
+      .toBe(32);
+    expect(DEFAULT_SIMULATION_ENGINE_CONFIGS.primitiveCpu.bvh).toBeUndefined();
+    expect(DEFAULT_SIMULATION_ENGINE_CONFIGS.webgpu.bvh).toBeUndefined();
+  });
 
   it('resolves a stored direct primitive threshold override', () => {
-    const resolved = resolveSimulationEngineConfig('primitiveCpu', {
-      primitiveCpu: {
+    const resolved = resolvePrimitiveSimulatorConfig({
+      primitive: {
         bvh: {
           directPrimitiveThreshold: 0
         }
@@ -82,6 +81,14 @@ describe('simulation engine configuration', () => {
 
     expect(resolved.bvh.directPrimitiveThreshold).toBe(0);
     expect(resolved.bvh.lineLeafSize).toBe(4);
+  });
+
+  it('resolves engine tuning independently of shared preprocessing', () => {
+    const resolved = resolveSimulationEngineConfig('primitiveCpu', {
+      primitiveCpu: { maxLocalIterations: 7 }
+    });
+    expect(resolved.maxLocalIterations).toBe(7);
+    expect(resolved.bvh).toBeUndefined();
   });
 
   it('exposes the provisional WebGPU cooperation calibration as defaults',

@@ -43,6 +43,77 @@ function createSimulator(engineKind, drawBvh) {
   });
 }
 
+function createProviderEngine(kind) {
+  return {
+    kind,
+    numericEpsilon: kind === 'webgpu' ? FLOAT32_EPSILON : Number.EPSILON,
+    dispose: jest.fn()
+  };
+}
+
+describe('PrimitiveBasedSimulator engine registry', () => {
+  it('lazily creates and retains engines when selection changes', () => {
+    const cpu = createProviderEngine('primitiveCpu');
+    const gpu = createProviderEngine('webgpu');
+    const createCpu = jest.fn(() => cpu);
+    const createGpu = jest.fn(() => gpu);
+    const simulator = new PrimitiveBasedSimulator({
+      scene: createScene(),
+      enginePreference: 'automatic',
+      engineProviders: {
+        primitiveCpu: createCpu,
+        webgpu: createGpu
+      }
+    });
+
+    expect(simulator.engine).toBe(cpu);
+    expect(createCpu).toHaveBeenCalledTimes(1);
+    expect(createGpu).not.toHaveBeenCalled();
+
+    simulator.activateEngine('webgpu');
+    simulator.activateEngine('primitiveCpu');
+    simulator.activateEngine('webgpu');
+
+    expect(createCpu).toHaveBeenCalledTimes(1);
+    expect(createGpu).toHaveBeenCalledTimes(1);
+    expect(cpu.dispose).not.toHaveBeenCalled();
+    simulator.destroy();
+    expect(cpu.dispose).toHaveBeenCalledTimes(1);
+    expect(gpu.dispose).toHaveBeenCalledTimes(1);
+  });
+
+  it('restarts a failed WebGPU scene revision on CPU', async () => {
+    const cpu = createProviderEngine('primitiveCpu');
+    const gpu = createProviderEngine('webgpu');
+    const engineChanges = [];
+    const simulator = new PrimitiveBasedSimulator({
+      scene: createScene(),
+      enginePreference: 'webgpu',
+      engineProviders: {
+        primitiveCpu: () => cpu,
+        webgpu: () => gpu
+      }
+    });
+    simulator.on('engineChange', event => engineChanges.push(event));
+    simulator.runEngine = jest.fn()
+      .mockRejectedValueOnce(new Error('storage limit'))
+      .mockResolvedValueOnce(undefined);
+
+    await simulator.startEngineRun(0);
+
+    expect(simulator.runEngine).toHaveBeenCalledTimes(2);
+    expect(simulator.engine).toBe(cpu);
+    expect(simulator.engineFallbackActive).toBe(true);
+    expect(engineChanges.at(-1)).toMatchObject({
+      kind: 'primitiveCpu',
+      previousKind: 'webgpu',
+      fallback: true
+    });
+    expect(simulator.engineFallbackWarning).toBeTruthy();
+    expect(gpu.dispose).not.toHaveBeenCalled();
+  });
+});
+
 describe('PrimitiveBasedSimulator BVH diagnostics', () => {
   it('attaches diagnostics to the CPU scene object when visualization is enabled', () => {
     const simulator = createSimulator('primitiveCpu', true);

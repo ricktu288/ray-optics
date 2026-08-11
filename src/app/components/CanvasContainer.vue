@@ -53,6 +53,7 @@
 import { computed, onMounted } from 'vue'
 import { useSceneStore } from '../store/scene'
 import { usePreferencesStore } from '../store/preferences'
+import { useSimulationEngineState } from '../composables/useSimulationEngineState'
 import { vTooltipPopover } from '../directives/tooltip-popover'
 
 export default {
@@ -63,8 +64,9 @@ export default {
   setup() {
     const sceneStore = useSceneStore()
     const preferences = usePreferencesStore()
+    const engineState = useSimulationEngineState()
     const isWebGpuEngine = computed(() =>
-      preferences.simulationEngine.value === 'webgpu'
+      engineState.activeEngineKind.value === 'webgpu'
     )
     const showCanvasLight = computed(() =>
       !isWebGpuEngine.value && sceneStore.colorMode.value === 'default'
