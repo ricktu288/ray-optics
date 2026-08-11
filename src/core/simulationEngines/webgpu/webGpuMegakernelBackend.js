@@ -827,6 +827,7 @@ function createTraceUniformData(
 }
 
 function normalizeRenderVariant(mode) {
+  if (mode === 'none') return mode;
   if (mode === 'extended' || mode === 'images' || mode === 'observer') {
     return mode;
   }
@@ -834,6 +835,7 @@ function normalizeRenderVariant(mode) {
 }
 
 function renderVariantId(mode) {
+  if (mode === 'none') return 4;
   if (mode === 'extended') return 1;
   if (mode === 'images') return 2;
   if (mode === 'observer') return 3;

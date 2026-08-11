@@ -32,18 +32,21 @@ const { create: createWebGpu, globals: webGpuGlobals } = require(path.join(
   `${process.platform}-${webGpuArchitecture}.dawn.node`
 ));
 Object.assign(globalThis, webGpuGlobals);
-const nodeGpu = createWebGpu([]);
+let nodeGpu = null;
 let webGpuDevicePromise = null;
 
 export async function disposeWebGpuTestDevice() {
   if (!webGpuDevicePromise) return;
   const device = await webGpuDevicePromise;
+  await device.queue.onSubmittedWorkDone?.();
   device.destroy();
   webGpuDevicePromise = null;
+  nodeGpu = null;
 }
 
 async function getWebGpuDevice() {
   if (!webGpuDevicePromise) {
+    nodeGpu = createWebGpu([]);
     webGpuDevicePromise = (async () => {
       const adapter = await nodeGpu.requestAdapter({
         powerPreference: 'high-performance'
@@ -160,7 +163,7 @@ function createSimulator({
   const engine = engineKind === 'webgpu'
     ? new rayOptics.WebGpuSimulationEngine({
       device: getWebGpuDevice,
-      output: createNodeWebGpuOutput(ctxLight),
+      output: ctxLight ? createNodeWebGpuOutput(ctxLight) : null,
       numericEpsilon:
         engineSettings.numericEpsilon ?? rayOptics.FLOAT32_EPSILON,
       ctxMain: ctxLight,
@@ -444,7 +447,7 @@ export async function runScene(
     simulator.updateSimulation(false, false);
   });
   if (engineKind === 'webgpu') {
-    await simulator.engine.output.readIntoCanvas();
+    await simulator.engine.output?.readIntoCanvas?.();
   }
 
   // Generate detector data

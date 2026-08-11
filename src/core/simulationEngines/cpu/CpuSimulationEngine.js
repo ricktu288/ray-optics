@@ -719,6 +719,12 @@ class CpuSimulationEngine {
   }
 
   beginRenderer({ origin, scale, lengthScale, colorMode }) {
+    if (!this.ctxMain && !this.glMain) {
+      this.canvasRenderer?.destroy?.();
+      this.canvasRenderer = null;
+      return null;
+    }
+
     if (colorMode === 'default') {
       this.canvasRenderer?.destroy?.();
       this.canvasRenderer = null;

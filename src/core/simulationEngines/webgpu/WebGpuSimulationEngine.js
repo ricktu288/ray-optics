@@ -108,7 +108,9 @@ class WebGpuSimulationRun {
     }
     const geometryCapacity = this.engine.computeBackend
       .renderPreparationStage.geometryCapacity;
-    const recordCount = Math.min(state.readyLineCount, geometryCapacity);
+    const recordCount = this.engine.rasterizer
+      ? Math.min(state.readyLineCount, geometryCapacity)
+      : 0;
     if (presented !== false) {
       this.hasPresentedRun = true;
     }
@@ -129,7 +131,11 @@ class WebGpuSimulationRun {
       );
       this.detectorOverflowWarned = true;
     }
-    if (state.readyGeometryOverflow && !this.geometryOverflowWarned) {
+    if (
+      this.engine.rasterizer &&
+      state.readyGeometryOverflow &&
+      !this.geometryOverflowWarned
+    ) {
       console.warn(
         '[WebGPU ready geometry] The submission exceeded its render-record ' +
         'capacity; some light geometry was omitted.'
@@ -144,27 +150,36 @@ class WebGpuSimulationRun {
     const direction = state.pingPongIndex & 1;
     await backend.prepareBatch(state.currentRayCount, direction);
     if (isCancelled()) return;
-    const preparedPresentation = await this.engine.prepareNativeGeometry(
-      this.options,
-      { isCancelled }
-    );
-    if (!preparedPresentation || isCancelled()) return;
+    const preparedPresentation = this.engine.rasterizer
+      ? await this.engine.prepareNativeGeometry(
+        this.options,
+        { isCancelled }
+      )
+      : null;
+    if ((this.engine.rasterizer && !preparedPresentation) || isCancelled()) {
+      return;
+    }
     const encoder = this.engine.device.createCommandEncoder({
       label: 'WebGPU continued megakernel tracing',
     });
     backend.encodeReadyGeometryReset(encoder);
     backend.encodeContinuation(encoder, direction);
     const consumeState = backend.encodeStateReadback(encoder);
-    this.engine.encodeNativeGeometry(
-      encoder,
-      preparedPresentation,
-      { resetAccumulation: false }
-    );
+    if (this.engine.rasterizer) {
+      this.engine.encodeNativeGeometry(
+        encoder,
+        preparedPresentation,
+        { resetAccumulation: false }
+      );
+    }
     this.engine.device.queue.submit([encoder.finish()]);
-    const completion = this.engine.rasterizer.waitForSubmittedWork();
+    const presentationPromise = this.engine.rasterizer
+      ? this.engine.rasterizer.waitForSubmittedWork()
+        .then(() => !isCancelled())
+      : Promise.resolve(false);
     this.trackNativeBatch({
       statePromise: consumeState(),
-      presentationPromise: completion.then(() => !isCancelled()),
+      presentationPromise,
     });
   }
 
@@ -265,8 +280,9 @@ function toSignedInt32(value) {
 /**
  * Primitive megakernel WebGPU engine.
  *
- * `device` may be a GPUDevice, a promise, or a lazy function. A device and an
- * output are required; CPU execution belongs to CpuSimulationEngine.
+ * `device` may be a GPUDevice, a promise, or a lazy function. When `output` is
+ * omitted, the engine runs compute and detector accumulation without creating
+ * raster pipelines or presentation passes.
  */
 class WebGpuSimulationEngine {
   constructor({
@@ -361,7 +377,13 @@ class WebGpuSimulationEngine {
         run.cancel();
         return run;
       }
-      await this.computeBackend.configureRun(options);
+      await this.computeBackend.configureRun({
+        ...options,
+        rendering: {
+          ...options.rendering,
+          mode: this.rasterizer ? options.rendering?.mode : 'none',
+        },
+      });
       if (!isCurrent()) {
         run.cancel();
         return run;
@@ -386,9 +408,9 @@ class WebGpuSimulationEngine {
     if (this.isInitialized) return;
     if (this.isDisposed) return;
 
-    if (!this.deviceSource || !this.output) {
+    if (!this.deviceSource) {
       throw new Error(
-        'WebGpuSimulationEngine requires a WebGPU device and output. ' +
+        'WebGpuSimulationEngine requires a WebGPU device. ' +
         'Use CpuSimulationEngine when WebGPU is unavailable.'
       );
     }
@@ -419,20 +441,24 @@ class WebGpuSimulationEngine {
         'through GPUDeviceDescriptor.requiredLimits.'
       );
     }
-    if (!this.output.format) {
-      throw new Error('The WebGPU output format is unavailable.');
-    }
     this.device = device;
-    await this.output.initialize?.(device);
-    if (this.isDisposed) return;
-    this.rasterizer = new WebGpuAtomicRayRasterizer(device, this.output);
-    await this.rasterizer.initialize();
-    if (this.isDisposed) {
-      this.rasterizer.destroy();
-      this.rasterizer = null;
-      return;
+    if (this.output) {
+      if (!this.output.format) {
+        throw new Error('The WebGPU output format is unavailable.');
+      }
+      await this.output.initialize?.(device);
+      if (this.isDisposed) return;
+      this.rasterizer = new WebGpuAtomicRayRasterizer(device, this.output);
+      await this.rasterizer.initialize();
+      if (this.isDisposed) {
+        this.rasterizer.destroy();
+        this.rasterizer = null;
+        return;
+      }
     }
-    this.executionMode = 'webgpu-raster-atomic';
+    this.executionMode = this.rasterizer
+      ? 'webgpu-raster-atomic'
+      : 'webgpu-headless';
     this.isInitialized = true;
   }
 
@@ -514,11 +540,12 @@ class WebGpuSimulationEngine {
         'Source population exceeds the native WebGPU ray capacity.'
       );
     }
-    const preparedPresentation = await this.prepareNativeGeometry(
-      options,
-      { isCancelled }
-    );
-    if (!preparedPresentation || isCancelled?.()) return null;
+    const preparedPresentation = this.rasterizer
+      ? await this.prepareNativeGeometry(options, { isCancelled })
+      : null;
+    if ((this.rasterizer && !preparedPresentation) || isCancelled?.()) {
+      return null;
+    }
     this.computeBackend.resetRunControl();
     const encoder = this.device.createCommandEncoder({
       label: 'WebGPU initial source emission and interactions',
@@ -527,16 +554,21 @@ class WebGpuSimulationEngine {
     this.computeBackend.encodeInitial(encoder);
     if (isCancelled?.()) return null;
     const consumeState = this.computeBackend.encodeStateReadback(encoder);
-    this.encodeNativeGeometry(
-      encoder,
-      preparedPresentation,
-      { resetAccumulation: true }
-    );
+    if (this.rasterizer) {
+      this.encodeNativeGeometry(
+        encoder,
+        preparedPresentation,
+        { resetAccumulation: true }
+      );
+    }
     this.device.queue.submit([encoder.finish()]);
-    const completion = this.rasterizer.waitForSubmittedWork();
+    const presentationPromise = this.rasterizer
+      ? this.rasterizer.waitForSubmittedWork()
+        .then(() => !isCancelled?.())
+      : Promise.resolve(false);
     return {
       statePromise: consumeState(),
-      presentationPromise: completion.then(() => !isCancelled?.()),
+      presentationPromise,
     };
   }
 

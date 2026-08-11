@@ -90,8 +90,11 @@
       ]
     }
   ],
-  "width": 1300,
+  "width": 1500,
   "height": 800,
   "colorMode": "linear",
+  "numericalTolerances": {
+    "rayPowerCutoffMode": "truncate"
+  },
   "randomSeed": "0"
 }

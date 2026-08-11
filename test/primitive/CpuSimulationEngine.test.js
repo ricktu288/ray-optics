@@ -213,6 +213,20 @@ describe('CpuSimulationEngine initial ray buffers', () => {
     expect(engine.maxLocalIterations).toBe(128);
   });
 
+  it('does not require a renderer for headless color simulations', () => {
+    const engine = new CpuSimulationEngine();
+
+    expect(engine.beginRenderer({ colorMode: 'linear' })).toBeNull();
+    expect(engine.canvasRenderer).toBeNull();
+  });
+
+  it('still requires WebGL when a non-default color output is requested', () => {
+    const engine = new CpuSimulationEngine({ ctxMain: {} });
+
+    expect(() => engine.beginRenderer({ colorMode: 'linear' }))
+      .toThrow(/WebGL is unavailable/);
+  });
+
   it('validates and updates the local interaction limit', () => {
     expect(() => new CpuSimulationEngine({
       config: { maxLocalIterations: 0 }

@@ -560,6 +560,7 @@ function createCooperativeRenderInvocation({
   neighborMode,
   raySlots,
 }) {
+  if (renderVariant === 'none') return '';
   if (!neighborMode) {
     return `if(leader&&real&&renderActive&&hit.s>0.0){
       renderIndependent(segmentRay,hit,depth);}`;
@@ -610,6 +611,7 @@ var<workgroup> sharedHits:array<Hit,${raySlots * 2}>;` : ''}
 }
 
 function createRenderInvocation(variant, neighborMode, workgroupSize) {
+  if (variant === 'none') return '';
   if (!neighborMode) {
     return `if(real&&renderActive&&hit.s>0.0){
       renderIndependent(segmentRay,hit,depth);}`;
@@ -1007,6 +1009,7 @@ fn writeSuspended(ray:Ray,membership:ptr<function,Membership>,logical:u32,
 }
 
 function createRenderFunctions(variant) {
+  if (variant === 'none') return '';
   if (variant === 'rays' || variant === 'extended') {
     const extended = variant === 'extended';
     return `
@@ -1073,6 +1076,7 @@ function extractTraceCurveHelpers(code) {
 }
 
 function extractRenderHelpers(code, variant) {
+  if (variant === 'none') return '';
   const start = code.indexOf('fn finite2');
   const lineStart = code.indexOf('fn lineIntersection');
   const observerStart = code.indexOf('fn observerPoint');

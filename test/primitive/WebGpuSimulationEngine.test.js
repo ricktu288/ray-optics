@@ -93,8 +93,21 @@ describe('WebGpuSimulationEngine', () => {
     const engine = new WebGpuSimulationEngine();
     const preparedScene = await engine.prepare(scene());
     await expect(engine.createRun({ preparedScene })).rejects.toThrow(
-      /requires a WebGPU device and output/
+      /requires a WebGPU device/
     );
+  });
+
+  it('initializes without a rasterizer when no output is requested', async () => {
+    const device = {
+      limits: { maxStorageBuffersPerShaderStage: 8 }
+    };
+    const engine = new WebGpuSimulationEngine({ device });
+
+    await engine.initialize();
+
+    expect(engine.device).toBe(device);
+    expect(engine.rasterizer).toBeNull();
+    expect(engine.executionMode).toBe('webgpu-headless');
   });
 
   it('combines every source type with initial membership in one shader',
@@ -127,6 +140,7 @@ describe('WebGpuSimulationEngine', () => {
       const rays = generate('rays');
       const images = generate('images');
       const observer = generate('observer');
+      const headless = generate('none');
 
       expect(rays.supported).toBe(true);
       expect(rays.maximumOutputs).toBe(2);
@@ -167,6 +181,10 @@ describe('WebGpuSimulationEngine', () => {
       expect(images.code).not.toContain('fn observerPoint(');
       expect(observer.code).toContain('fn renderObserverNeighbor(');
       expect(observer.code).toContain('fn observerPoint(');
+      expect(headless.supported).toBe(true);
+      expect(headless.code).not.toContain('fn renderIndependent(');
+      expect(headless.code).not.toContain('fn renderImageNeighbor(');
+      expect(headless.code).not.toContain('fn renderObserverNeighbor(');
     });
 
   it('generates cooperative direct and partitioned-BVH megakernels', async () => {
@@ -557,6 +575,35 @@ describe('WebGpuSimulationEngine', () => {
     expect(engine.computeBackend.encodeStateReadback).toHaveBeenCalled();
     expect(engine.rasterizer.encodeGpuGeometryIndirect).toHaveBeenCalled();
   });
+
+  it('submits compute and readback without a raster pass when headless',
+    async () => {
+      const submit = jest.fn();
+      const encoder = { finish: jest.fn(() => ({})) };
+      const engine = new WebGpuSimulationEngine();
+      engine.device = {
+        createCommandEncoder: jest.fn(() => encoder),
+        queue: { submit },
+      };
+      engine.computeBackend = {
+        canEmitAllSources: true,
+        resetRunControl: jest.fn(),
+        encodeReadyGeometryReset: jest.fn(),
+        encodeInitial: jest.fn(),
+        encodeStateReadback: jest.fn(() => async () => ({})),
+      };
+
+      const batch = await engine.startNativeRun({ rendering: {} });
+      const [state, presented] = await Promise.all([
+        batch.statePromise,
+        batch.presentationPromise,
+      ]);
+
+      expect(state).toEqual({});
+      expect(presented).toBe(false);
+      expect(submit).toHaveBeenCalledTimes(1);
+      expect(engine.computeBackend.encodeStateReadback).toHaveBeenCalled();
+    });
 
   it('throws when the buffer cannot complete the first tracing step',
     async () => {
