@@ -361,6 +361,7 @@ async function createWorkerRuntime(engineName) {
   const { createCanvas } = require('canvas');
   let sharedEngine = null;
   let webGpuDevice = null;
+  let webGpuOwner = null;
   let adapterInfo = null;
 
   async function ensureEngine(webGpuConfig) {
@@ -376,8 +377,12 @@ async function createWorkerRuntime(engineName) {
 
     const webGpu = await import('webgpu');
     Object.assign(globalThis, webGpu.globals);
-    const gpu = webGpu.create([]);
-    const adapter = await gpu.requestAdapter({ powerPreference: 'high-performance' });
+    // The object returned by create() owns Dawn's Node binding instance and
+    // must outlive all adapters, devices, and scheduled ProcessEvents calls.
+    webGpuOwner = webGpu.create([]);
+    const adapter = await webGpuOwner.requestAdapter({
+      powerPreference: 'high-performance',
+    });
     if (!adapter) throw new Error('No WebGPU adapter is available.');
     adapterInfo = normalizeAdapterInfo(adapter.info);
     if (adapterInfo.isFallbackAdapter || adapterInfo.architecture === 'software') {
@@ -525,6 +530,7 @@ async function createWorkerRuntime(engineName) {
       webGpuDevice?.destroy?.();
       sharedEngine = null;
       webGpuDevice = null;
+      webGpuOwner = null;
     },
   };
 }
