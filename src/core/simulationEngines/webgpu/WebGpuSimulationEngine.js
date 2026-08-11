@@ -634,8 +634,7 @@ function resolveWebGpuRunConfig(config) {
     'maxLocalIterations',
     'maxPingPongsPerSubmission',
     'rayCooperationSaturationRayCount',
-    'rayCooperationMaximumDirectLanesPerRay',
-    'rayCooperationMaximumBvhLanesPerRay',
+    'rayCooperationMaximumLanesPerRay',
   ]) {
     if (!Number.isSafeInteger(resolved[name]) || resolved[name] <= 0) {
       throw new RangeError(`${name} must be a positive safe integer.`);
@@ -647,10 +646,7 @@ function resolveWebGpuRunConfig(config) {
       'ambiguousRayWarningSafetyFactor must be finite and nonnegative.'
     );
   }
-  for (const name of [
-    'rayCooperationDirectMaxTestsPerLane',
-    'rayCooperationBvhMinTestsPerLane',
-  ]) {
+  for (const name of ['rayCooperationDirectMaxTestsPerLane']) {
     if (!Number.isFinite(resolved[name]) || resolved[name] < 0) {
       throw new RangeError(`${name} must be finite and nonnegative.`);
     }

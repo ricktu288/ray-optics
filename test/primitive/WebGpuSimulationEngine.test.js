@@ -214,6 +214,15 @@ describe('WebGpuSimulationEngine', () => {
     expect(select(1024, 4096)).toEqual({
       acceleration: 'direct', lanesPerRay: 8
     });
+    expect(select(4096, 4096)).toEqual({
+      acceleration: 'bvh4', lanesPerRay: 2
+    });
+    expect(select(1, 1)).toEqual({
+      acceleration: 'direct', lanesPerRay: 1
+    });
+    expect(select(3000, 16)).toEqual({
+      acceleration: 'direct', lanesPerRay: 2
+    });
     expect(select(256, 65536)).toEqual({
       acceleration: 'bvh4', lanesPerRay: 32
     });
@@ -227,7 +236,7 @@ describe('WebGpuSimulationEngine', () => {
       workgroupSize: 64,
       config: {
         ...config,
-        rayCooperationMaximumBvhLanesPerRay: 24,
+        rayCooperationMaximumLanesPerRay: 24,
       },
     })).toEqual({ acceleration: 'bvh4', lanesPerRay: 16 });
   });

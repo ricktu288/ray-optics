@@ -33,8 +33,7 @@ const scalarSettings = {
 const cooperativeSettings = {
   rayCooperationEnabled: true,
   rayCooperationSaturationRayCount: 1_000_000_000,
-  rayCooperationMaximumDirectLanesPerRay: 4,
-  rayCooperationMaximumBvhLanesPerRay: 4,
+  rayCooperationMaximumLanesPerRay: 4,
 };
 
 async function expectEquivalent(scenePath, settings) {
@@ -81,7 +80,6 @@ describeWebGpuCooperation('WebGPU cooperative ray regression', () => {
       path.join(__dirname, 'general/maxRayDepth.json'),
       {
         rayCooperationDirectMaxTestsPerLane: 1_000_000_000,
-        rayCooperationBvhMinTestsPerLane: 1_000_000_000,
       }
     );
   }, 30000);
@@ -91,7 +89,6 @@ describeWebGpuCooperation('WebGPU cooperative ray regression', () => {
       path.join(__dirname, 'glass/Glass/partialReflect_off.json'),
       {
         rayCooperationDirectMaxTestsPerLane: 0,
-        rayCooperationBvhMinTestsPerLane: 0,
       }
     );
   }, 30000);
@@ -101,7 +98,6 @@ describeWebGpuCooperation('WebGPU cooperative ray regression', () => {
       path.join(__dirname, 'mirror/Mirror/img.json'),
       {
         rayCooperationDirectMaxTestsPerLane: 1_000_000_000,
-        rayCooperationBvhMinTestsPerLane: 1_000_000_000,
       }
     );
   }, 30000);

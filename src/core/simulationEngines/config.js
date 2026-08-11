@@ -42,15 +42,14 @@ const COMMON_PRIMITIVE_ENGINE_CONFIG = Object.freeze({
 });
 
 // Provisional Intel Xe-LPG calibration from the standalone multi-bounce
-// ray-cooperation benchmark. These remain hidden tuning values until a
-// per-adapter calibration path is available.
+// ray-cooperation benchmark's production-supported scalar/workgroup methods.
+// Experimental subgroup results are excluded. These remain hidden tuning
+// values until a per-adapter calibration path is available.
 export const DEFAULT_WEBGPU_RAY_COOPERATION_CONFIG = Object.freeze({
   rayCooperationEnabled: true,
   rayCooperationSaturationRayCount: 8192,
-  rayCooperationDirectMaxTestsPerLane: 1024,
-  rayCooperationBvhMinTestsPerLane: 4096,
-  rayCooperationMaximumDirectLanesPerRay: 16,
-  rayCooperationMaximumBvhLanesPerRay: 32,
+  rayCooperationDirectMaxTestsPerLane: 512,
+  rayCooperationMaximumLanesPerRay: 32,
   rayCooperationMaximumHaloFraction: 0.5,
 });
 

@@ -5,8 +5,9 @@
 
 /**
  * Select a scene-specialized tracing strategy from the current active-ray
- * count. The constants are deliberately supplied by the engine config: the
- * useful saturation point and direct/BVH crossover are adapter-dependent.
+ * count and primitive count. The constants are deliberately supplied by the
+ * engine config: the useful saturation point and direct/BVH crossover are
+ * adapter-dependent.
  */
 export function selectWebGpuRayCooperationStrategy({
   activeRayCount,
@@ -19,13 +20,11 @@ export function selectWebGpuRayCooperationStrategy({
     return Object.freeze({ acceleration: 'bvh4', lanesPerRay: 1 });
   }
   const saturation = config.rayCooperationSaturationRayCount;
-  let desiredLanes = activeRayCount >= saturation
-    ? 1
-    : nextPowerOfTwo(Math.ceil(saturation / activeRayCount));
-  desiredLanes = Math.min(
-    desiredLanes,
+  let desiredLanes = Math.min(
+    largestPowerOfTwoAtMost(Math.floor(saturation / activeRayCount)),
+    largestPowerOfTwoAtMost(primitiveCount),
     largestPowerOfTwoAtMost(
-      config.rayCooperationMaximumBvhLanesPerRay
+      config.rayCooperationMaximumLanesPerRay
     ),
     largestPowerOfTwoDivisor(workgroupSize)
   );
@@ -39,22 +38,12 @@ export function selectWebGpuRayCooperationStrategy({
     }
   }
 
-  const directLanes = Math.min(
-    desiredLanes,
-    largestPowerOfTwoAtMost(
-      config.rayCooperationMaximumDirectLanesPerRay
-    )
-  );
-  const directTestsPerLane = primitiveCount / directLanes;
-  // The measured middle band was device- and coherence-sensitive. Prefer
-  // direct traversal there on the calibrated device, switching only at the
-  // conservative BVH boundary.
+  const directTestsPerLane = primitiveCount / desiredLanes;
   const useDirect = directTestsPerLane <=
-    config.rayCooperationDirectMaxTestsPerLane ||
-    directTestsPerLane < config.rayCooperationBvhMinTestsPerLane;
+    config.rayCooperationDirectMaxTestsPerLane;
   return Object.freeze({
     acceleration: useDirect ? 'direct' : 'bvh4',
-    lanesPerRay: useDirect ? directLanes : desiredLanes,
+    lanesPerRay: desiredLanes,
   });
 }
 
@@ -69,12 +58,6 @@ export function cooperativeRayPayload(
 
 function haloFraction(workgroupSize, lanesPerRay) {
   return 2 / Math.floor(workgroupSize / lanesPerRay);
-}
-
-function nextPowerOfTwo(value) {
-  let result = 1;
-  while (result < value) result *= 2;
-  return result;
 }
 
 function largestPowerOfTwoDivisor(value) {
