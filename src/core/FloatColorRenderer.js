@@ -255,11 +255,9 @@ class FloatColorRenderer {
             // Calculate luminance
             float Lold = getLuminance(color.rgb);
 
-            // Apply Reinhard tone mapping to luminance
-            float Lnew = Lold / (1.0 + Lold);
-
-            // Scale RGB by ratio of new to old luminance
-            vec3 toneMapped = color.rgb * (Lnew / Lold);
+            // Lnew / Lold simplifies to 1 / (1 + Lold).  Use the simplified
+            // form so a black pixel does not evaluate the undefined 0 / 0.
+            vec3 toneMapped = color.rgb / (1.0 + Lold);
 
             // Apply gamma correction
             vec3 gammaCorrected = pow(toneMapped, vec3(1.0 / 2.2));

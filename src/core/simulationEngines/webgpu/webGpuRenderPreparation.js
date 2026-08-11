@@ -277,7 +277,7 @@ fn pushRecord(p0:vec2f,p1:vec2f,color:vec4f,width:f32,dash:vec2f,
   let capacity=u32(config.values[1].z);
   if(index>=capacity){atomicStore(&control[19],1u);return;}
   geometry[index]=ReadyGeometry(vec4f(p0,p1),color,
-    vec4f(max(1.0,width),dash,max(1.0,endWidth)),
+    vec4f(max(0.0,width),dash,max(0.0,endWidth)),
     vec4f(kind,pointSize,0.0,0.0));
   atomicAdd(&drawArguments[1],1u);
 }

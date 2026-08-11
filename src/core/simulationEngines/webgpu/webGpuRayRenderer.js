@@ -84,7 +84,10 @@ fn vertexMain(
       vec2f(-1.0, -1.0), vec2f(1.0, -1.0), vec2f(-1.0, 1.0),
       vec2f(-1.0, 1.0), vec2f(1.0, -1.0), vec2f(1.0, 1.0)
     )[vertexIndex];
-    position = p0 + corner * (0.5 * item.extra.y);
+    // Keep a half-pixel fringe around subpixel points so the fragment shader
+    // can integrate their fractional coverage instead of center-sampling them
+    // into either zero or one whole pixel.
+    position = p0 + corner * (0.5 * (item.extra.y + 1.0));
   } else {
     let delta = p1 - p0;
     let length = max(length(delta), 1e-20);
@@ -122,7 +125,24 @@ fn fragmentMain(input: FragmentInput,
   var coverage = 1.0;
   let colorMode = u32(uniforms.sizeAndCount.w);
   let geometryKind = input.extra.x;
-  if (!(geometryKind > 0.5 && geometryKind < 1.5)) {
+  if (geometryKind > 0.5 && geometryKind < 1.5) {
+    let pointSize = max(input.extra.y, 0.0);
+    let relative = frag.xy - input.screenP0;
+    if (colorMode == 4u) {
+      coverage = select(0.0, 1.0,
+        abs(relative.x) <= 0.5 * pointSize &&
+        abs(relative.y) <= 0.5 * pointSize);
+    } else {
+      let maximumCoverage = min(1.0, pointSize);
+      let xCoverage = clamp(
+        0.5 * pointSize + 0.5 - abs(relative.x),
+        0.0, maximumCoverage);
+      let yCoverage = clamp(
+        0.5 * pointSize + 0.5 - abs(relative.y),
+        0.0, maximumCoverage);
+      coverage = xCoverage * yCoverage;
+    }
+  } else {
     let delta = input.screenP1 - input.screenP0;
     let lineLength = max(length(delta), 1e-20);
     let direction = delta / lineLength;
@@ -137,12 +157,17 @@ fn fragmentMain(input: FragmentInput,
       let halfWidth = 0.5 * mix(
         input.style.x, input.style.w, along / lineLength
       );
-      let signedDistance = (abs(signedSide) - halfWidth) /
-        sqrt(1.0 + sideSlope * sideSlope);
-      coverage = clamp(0.5 - signedDistance, 0.0, 1.0);
-    } else {
+      let sideExpansion = sqrt(1.0 + sideSlope * sideSlope);
+      let signedDistance = (abs(signedSide) - halfWidth) / sideExpansion;
+      let maximumCoverage = min(
+        1.0, max(0.0, 2.0 * halfWidth / sideExpansion));
       coverage = clamp(
-        0.5 * input.style.x + 0.5 - abs(signedSide), 0.0, 1.0
+        0.5 - signedDistance, 0.0, maximumCoverage);
+    } else {
+      let maximumCoverage = min(1.0, max(input.style.x, 0.0));
+      coverage = clamp(
+        0.5 * input.style.x + 0.5 - abs(signedSide),
+        0.0, maximumCoverage
       );
     }
     if (colorMode == 4u) {
@@ -156,7 +181,20 @@ fn fragmentMain(input: FragmentInput,
       let along = clamp(dot(relative, direction), 0.0, lineLength);
       let period = dashOn + dashOff;
       let withinDash = along - floor(along / period) * period;
-      if (withinDash >= dashOn) { discard; }
+      if (colorMode == 4u) {
+        if (withinDash >= dashOn) { discard; }
+      } else {
+        var signedDashDistance: f32;
+        if (withinDash <= dashOn) {
+          signedDashDistance = -min(withinDash, dashOn - withinDash);
+        } else {
+          signedDashDistance = min(
+            withinDash - dashOn, period - withinDash);
+        }
+        let maximumDashCoverage = min(1.0, dashOn);
+        coverage *= clamp(
+          0.5 - signedDashDistance, 0.0, maximumDashCoverage);
+      }
     }
   }
   if (coverage <= 0.0) { discard; }
@@ -172,8 +210,11 @@ fn fragmentMain(input: FragmentInput,
     let hue = select(vec3f(0.0), input.color.rgb / density, density > 0.0);
     value = hue * coveredDensity;
   } else if (colorMode == 5u) {
-    let alpha = vec3f(1.0) - exp(-input.color.rgb);
-    value = -log(max(vec3f(1.0) - alpha * coverage, vec3f(1e-7)));
+    // Canvas rasterization stores geometric coverage in pixel alpha.  Its
+    // simulated-color post-pass then multiplies the recovered linear
+    // wavelength intensity by that alpha.  Apply coverage in linear space to
+    // match an isolated Canvas ray, including subpixel-width rays.
+    value = input.color.rgb * coverage;
   } else {
     value = input.color.rgb * coverage;
   }
@@ -287,9 +328,9 @@ fn toneMapAdditive(color: vec3f, mode: u32) -> vec4f {
   }
   if (mode == 3u) {
     let luminance = dot(color, vec3f(0.2126, 0.7152, 0.0722));
-    let mapped = luminance / (1.0 + luminance);
-    let rgb = pow(color * select(0.0, mapped / luminance, luminance > 0.0),
-                  vec3f(1.0 / 2.2));
+    // This is algebraically the Reinhard luminance ratio, but unlike
+    // (luminance / (1 + luminance)) / luminance it is defined at black.
+    let rgb = pow(color / (1.0 + luminance), vec3f(1.0 / 2.2));
     let maximum = max(max(color.r, color.g), color.b);
     return vec4f(rgb, pow(maximum, 1.0 / 2.2));
   }
@@ -948,12 +989,22 @@ export class WebGpuCanvasRayRasterizer {
       y: record.p0.y * scale + origin.y,
     };
     if (record.isPoint) {
-      const half = 0.5 * record.pointSize;
+      const half = 0.5 * (record.pointSize + 1);
       this.visitBounds(
         p0.x - half, p0.y - half, p0.x + half, p0.y + half,
-        (_x, _y, pixel) => this.add(
-          pixel, contribution, 1, colorMode, simulateColors
-        )
+        (x, y, pixel) => {
+          const coverage = calculateWebGpuPointCoverage(
+            x + 0.5 - p0.x,
+            y + 0.5 - p0.y,
+            record.pointSize,
+            colorMode
+          );
+          if (coverage > 0) {
+            this.add(
+              pixel, contribution, coverage, colorMode, simulateColors
+            );
+          }
+        }
       );
       return;
     }
@@ -978,17 +1029,8 @@ export class WebGpuCanvasRayRasterizer {
         const relativeY = y + 0.5 - p0.y;
         const along = relativeX * ux + relativeY * uy;
         if (along < 0 || along > length) return;
-        if (
-          record.kind !== 'arrow' &&
-          record.dashOn > 0 && record.dashOff > 0
-        ) {
-          const period = record.dashOn + record.dashOff;
-          if (along - Math.floor(along / period) * period >= record.dashOn) {
-            return;
-          }
-        }
         const signedSide = relativeX * -uy + relativeY * ux;
-        const coverage = record.kind === 'arrow'
+        let coverage = record.kind === 'arrow'
           ? calculateWebGpuArrowCoverage(
             signedSide,
             along,
@@ -1000,6 +1042,14 @@ export class WebGpuCanvasRayRasterizer {
           : calculateWebGpuLineCoverage(
             signedSide, record.width, colorMode
           );
+        if (
+          record.kind !== 'arrow' &&
+          record.dashOn > 0 && record.dashOff > 0
+        ) {
+          coverage *= calculateWebGpuDashCoverage(
+            along, record.dashOn, record.dashOff, colorMode
+          );
+        }
         if (coverage > 0) {
           this.add(
             pixel, contribution, coverage, colorMode, simulateColors
@@ -1057,8 +1107,8 @@ function createRecord(
   return {
     p0, p1,
     color: normalizeColor(color),
-    width: Math.max(1, width || 1),
-    endWidth: Math.max(1, endWidth || 1),
+    width: Math.max(0, width ?? 1),
+    endWidth: Math.max(0, endWidth ?? 1),
     dashOn: dash?.[0] ?? 0,
     dashOff: dash?.[1] ?? 0,
     kind,
@@ -1141,7 +1191,8 @@ export function calculateWebGpuLineCoverage(
   if (colorMode === 'colorizedIntensity') {
     return Math.abs(signedSide) <= 0.5 * width ? 1 : 0;
   }
-  return Math.min(1, Math.max(
+  const maximumCoverage = Math.min(1, Math.max(0, width));
+  return Math.min(maximumCoverage, Math.max(
     0, 0.5 * width + 0.5 - Math.abs(signedSide)
   ));
 }
@@ -1159,13 +1210,61 @@ export function calculateWebGpuArrowCoverage(
   const halfWidth = 0.5 * (
     frontWidth + (backWidth - frontWidth) * along / length
   );
+  const sideExpansion = Math.hypot(1, sideSlope);
   const signedDistance = (
     Math.abs(signedSide) - halfWidth
-  ) / Math.hypot(1, sideSlope);
+  ) / sideExpansion;
   if (colorMode === 'colorizedIntensity') {
     return signedDistance <= 0 ? 1 : 0;
   }
-  return Math.min(1, Math.max(0, 0.5 - signedDistance));
+  const maximumCoverage = Math.min(
+    1, Math.max(0, 2 * halfWidth / sideExpansion)
+  );
+  return Math.min(
+    maximumCoverage, Math.max(0, 0.5 - signedDistance)
+  );
+}
+
+export function calculateWebGpuPointCoverage(
+  relativeX,
+  relativeY,
+  size,
+  colorMode
+) {
+  const resolvedSize = Math.max(0, size);
+  if (colorMode === 'colorizedIntensity') {
+    return Math.abs(relativeX) <= 0.5 * resolvedSize &&
+      Math.abs(relativeY) <= 0.5 * resolvedSize ? 1 : 0;
+  }
+  const maximumCoverage = Math.min(1, resolvedSize);
+  const xCoverage = Math.min(maximumCoverage, Math.max(
+    0, 0.5 * resolvedSize + 0.5 - Math.abs(relativeX)
+  ));
+  const yCoverage = Math.min(maximumCoverage, Math.max(
+    0, 0.5 * resolvedSize + 0.5 - Math.abs(relativeY)
+  ));
+  return xCoverage * yCoverage;
+}
+
+export function calculateWebGpuDashCoverage(
+  along,
+  dashOn,
+  dashOff,
+  colorMode
+) {
+  if (!(dashOn > 0) || !(dashOff > 0)) return 1;
+  const period = dashOn + dashOff;
+  const withinDash = along - Math.floor(along / period) * period;
+  if (colorMode === 'colorizedIntensity') {
+    return withinDash < dashOn ? 1 : 0;
+  }
+  const signedDistance = withinDash <= dashOn
+    ? -Math.min(withinDash, dashOn - withinDash)
+    : Math.min(withinDash - dashOn, period - withinDash);
+  const maximumCoverage = Math.min(1, dashOn);
+  return Math.min(maximumCoverage, Math.max(
+    0, 0.5 - signedDistance
+  ));
 }
 
 export function applyWebGpuAnalyticCoverage(
@@ -1188,9 +1287,9 @@ export function applyWebGpuAnalyticCoverage(
   }
   if (colorMode === 'default' && simulateColors) {
     return [
-      -Math.log1p(-(1 - Math.exp(-contribution[0])) * coverage),
-      -Math.log1p(-(1 - Math.exp(-contribution[1])) * coverage),
-      -Math.log1p(-(1 - Math.exp(-contribution[2])) * coverage),
+      contribution[0] * coverage,
+      contribution[1] * coverage,
+      contribution[2] * coverage,
       contribution[3]
     ];
   }
@@ -1243,7 +1342,7 @@ export function toneMapWebGpuColorContribution(
   if (mode === 'reinhard') {
     const luminance =
       color[0] * 0.2126 + color[1] * 0.7152 + color[2] * 0.0722;
-    const scale = luminance > 0 ? 1 / (1 + luminance) : 0;
+    const scale = 1 / (1 + luminance);
     return [
       (color[0] * scale) ** (1 / 2.2),
       (color[1] * scale) ** (1 / 2.2),

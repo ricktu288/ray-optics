@@ -28,9 +28,20 @@ import { selectWebGpuRayCooperationStrategy } from
   '../../src/core/simulationEngines/webgpu/webGpuRayCooperation.js';
 import { createWebGpuTraceSceneData } from
   '../../src/core/simulationEngines/webgpu/webGpuTraceScene.js';
-import { toneMapWebGpuColorContribution } from
+import {
+  WebGpuReadyRayRenderer,
+  calculateWebGpuArrowCoverage,
+  calculateWebGpuDashCoverage,
+  calculateWebGpuLineCoverage,
+  calculateWebGpuPointCoverage,
+  applyWebGpuAnalyticCoverage,
+  toneMapWebGpuColorContribution,
+} from
   '../../src/core/simulationEngines/webgpu/webGpuRayRenderer.js';
-import { createRenderUniformData } from
+import {
+  createRenderUniformData,
+  createWebGpuRenderPreparationShader,
+} from
   '../../src/core/simulationEngines/webgpu/webGpuRenderPreparation.js';
 import { DEFAULT_SIMULATION_ENGINE_CONFIGS } from
   '../../src/core/simulationEngines/config.js';
@@ -81,6 +92,47 @@ async function prepare() {
 }
 
 describe('WebGpuSimulationEngine', () => {
+  it('preserves subpixel ready-geometry widths before triangle generation',
+    () => {
+      const renderer = new WebGpuReadyRayRenderer({
+        ctx: null,
+        origin: { x: 0, y: 0 },
+        scale: 0.25,
+        lengthScale: 1,
+      });
+      renderer.drawSegment(
+        { p1: { x: 0, y: 0 }, p2: { x: 10, y: 0 } },
+        [1, 1, 1, 0.5],
+        false,
+        [],
+        1
+      );
+
+      expect(renderer.takeNewRecords()[0].width).toBe(0.25);
+      expect(createWebGpuRenderPreparationShader(64))
+        .toContain('vec4f(max(0.0,width),dash,max(0.0,endWidth))');
+    });
+
+  it('caps analytic coverage for subpixel lines, arrows, points, and dashes',
+    () => {
+      expect(calculateWebGpuLineCoverage(0, 0.25, 'default'))
+        .toBeCloseTo(0.25);
+      expect(calculateWebGpuLineCoverage(0.5, 0.25, 'default'))
+        .toBeCloseTo(0.125);
+      expect(calculateWebGpuArrowCoverage(
+        0, 0.5, 1, 0.25, 0.25, 'default'
+      )).toBeCloseTo(0.25);
+      expect(calculateWebGpuPointCoverage(
+        0, 0, 0.25, 'default'
+      )).toBeCloseTo(0.25 * 0.25);
+      expect(calculateWebGpuDashCoverage(
+        0.125, 0.25, 1, 'default'
+      )).toBeCloseTo(0.25);
+      expect(calculateWebGpuDashCoverage(
+        0.75, 0.25, 1, 'default'
+      )).toBeCloseTo(0);
+    });
+
   it('presents simulated colors with density-normalized hue and opacity', () => {
     expect(toneMapWebGpuColorContribution(
       [0.25, 0.5, 0.125], 'default', true
@@ -88,6 +140,19 @@ describe('WebGpuSimulationEngine', () => {
     expect(toneMapWebGpuColorContribution(
       [1, 2, 0.5], 'default', true
     )).toEqual([0.5, 1, 0.25, 1]);
+  });
+
+  it('applies simulated-color antialiasing in linear intensity space', () => {
+    const contribution = [0.25, 0.5, 0.125, 1];
+    expect(applyWebGpuAnalyticCoverage(
+      contribution, 0.25, 'default', true
+    )).toEqual([0.0625, 0.125, 0.03125, 1]);
+  });
+
+  it('tone maps black with the Reinhard mode without a zero division', () => {
+    expect(toneMapWebGpuColorContribution(
+      [0, 0, 0], 'reinhard', false
+    )).toEqual([0, 0, 0, 0]);
   });
 
   it('uses the same 580 nm yellow boundary as canvas color simulation', () => {
