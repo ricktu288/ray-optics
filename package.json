@@ -64,7 +64,7 @@
     "build-node": "webpack --config webpack.node.config.mjs",
     "build-scene-benchmark": "webpack --config webpack.scene-benchmark.config.mjs --mode=production",
     "build-images": "node ./scripts/buildImages.mjs",
-    "build-app": "webpack --mode=production && npm run build-scene-benchmark",
+    "build-app": "webpack --mode=production",
     "build-simulator": "webpack --mode=development",
     "build-integrations": "npm run build-node && node ./scripts/buildIntegrations.mjs",
     "build-integrations:release": "npm run build-node && node ./scripts/buildIntegrations.mjs --release",

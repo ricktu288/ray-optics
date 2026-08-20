@@ -19,15 +19,57 @@ import fs from 'fs';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import buildInlineLocaleData from './scripts/buildInlineLocaleData.mjs';
+import {
+  buildSceneEngineBenchmarkManifest
+} from './scripts/sceneEngineBenchmarkManifest.mjs';
 import { VueLoaderPlugin } from 'vue-loader';
+
+const sceneEngineBenchmarkManifest = buildSceneEngineBenchmarkManifest(
+  path.resolve('.')
+);
+const publicSceneEngineBenchmarkManifest = sceneEngineBenchmarkManifest.map(
+  ({ filePath: _filePath, ...scene }) => ({
+    ...scene,
+    url: `./scene-engine-scenes/${scene.index}.json`,
+  })
+);
+
+class SceneEngineBenchmarkManifestPlugin {
+  apply(compiler) {
+    compiler.hooks.thisCompilation.tap(
+      'SceneEngineBenchmarkManifestPlugin',
+      compilation => {
+        compilation.hooks.processAssets.tap(
+          {
+            name: 'SceneEngineBenchmarkManifestPlugin',
+            stage: compiler.webpack.Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL,
+          },
+          () => {
+            compilation.emitAsset(
+              'experiments/scene-engine-benchmark-manifest.json',
+              new compiler.webpack.sources.RawSource(
+                JSON.stringify(publicSceneEngineBenchmarkManifest)
+              )
+            );
+          }
+        );
+      }
+    );
+  }
+}
 
 export default (env, argv) => {
   const isProduction = argv.mode === 'production';
 
   return {
-    entry: './src/app/main.js',
+    entry: {
+      simulator: './src/app/main.js',
+      sceneEngineBenchmark: './scripts/benchmarkSceneEngines.js',
+    },
     output: {
-      filename: 'simulator/main.js',
+      filename: pathData => pathData.chunk.name === 'simulator'
+        ? 'simulator/main.js'
+        : 'experiments/scene-engine-benchmark.js',
       path: path.resolve('dist'),
       assetModuleFilename: (pathData) => {
         const filepath = path.dirname(pathData.filename).split('/').slice(1).join('/');
@@ -65,6 +107,7 @@ export default (env, argv) => {
       new HtmlWebpackPlugin({
         template: './src/app/index.html',
         filename: 'simulator/index.html',
+        chunks: ['simulator'],
         templateContent: () => {
           const templateContent = fs.readFileSync('./src/app/index.html', 'utf-8');
           const localeData = buildInlineLocaleData();
@@ -80,9 +123,18 @@ export default (env, argv) => {
             from: 'scripts/benchmarkWebGpuRayCooperation.html',
             to: 'experiments/webgpu-ray-cooperation.html'
           },
+          {
+            from: 'scripts/benchmarkSceneEngines.html',
+            to: 'experiments/scene-engine-benchmark.html'
+          },
+          ...sceneEngineBenchmarkManifest.map(scene => ({
+            from: scene.filePath,
+            to: `experiments/scene-engine-scenes/${scene.index}.json`,
+          })),
           { from: 'LICENSE', to: '', noErrorOnMissing: true },
         ],
       }),
+      new SceneEngineBenchmarkManifestPlugin(),
       new VueLoaderPlugin(),
     ],
     cache: { type: 'filesystem' },
