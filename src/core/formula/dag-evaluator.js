@@ -19,6 +19,39 @@ import {
   collectReachableNodeIds,
   validateDagShape,
 } from "./dag-util.js";
+import { generateDagJsEvaluator } from "./dag-js-generator.js";
+
+/**
+ * Compile a DAG to native JavaScript when dynamic function construction is
+ * available, falling back once at scene-preparation time when it is blocked
+ * (for example by a browser Content Security Policy).
+ *
+ * The returned evaluator has no runtime fallback branch or exception wrapper.
+ *
+ * @param {{nodes: Array<object>}} dag - DAG to evaluate.
+ * @param {Object} [options={}] - Evaluator options.
+ * @param {string[]} [options.labels] - Optional ordered output labels.
+ * @param {Function} [options.functionConstructor] - Test/host override.
+ * @returns {Function} Compiled or closure-based evaluator.
+ */
+export function createDagEvaluator(dag, options = {}) {
+  const {
+    functionConstructor = Function,
+    ...generatorOptions
+  } = options;
+  const generated = generateDagJsEvaluator(dag, generatorOptions);
+  let evaluator;
+  try {
+    evaluator = functionConstructor(
+      `${generated.code}\nreturn ${generated.functionName};`
+    )();
+    setEvaluatorMode(evaluator, 'compiled');
+  } catch (compilationError) {
+    evaluator = createDagClosureEvaluator(dag, generatorOptions);
+    setEvaluatorMode(evaluator, 'closure', compilationError);
+  }
+  return evaluator;
+}
 
 /**
  * Build a closure-based DAG evaluator.
@@ -50,6 +83,23 @@ export function createDagClosureEvaluator(dag, options = {}) {
     for (const [label, id] of labels) output[label] = values[id];
     return output;
   };
+}
+
+function setEvaluatorMode(evaluator, mode, compilationError = null) {
+  Object.defineProperty(evaluator, 'evaluationMode', {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: mode,
+  });
+  if (compilationError) {
+    Object.defineProperty(evaluator, 'compilationError', {
+      configurable: false,
+      enumerable: false,
+      writable: false,
+      value: compilationError,
+    });
+  }
 }
 
 function finiteOrNaN(value) {

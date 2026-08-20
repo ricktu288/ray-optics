@@ -474,6 +474,12 @@ fn countLine(curve:CurveDescriptor,ray:Ray,result:ptr<function,Crossing>) {
 
 function membershipCircleCode() {
   return `
+fn refineCircleRoot(origin:vec2f,direction:vec2f,root:f32)->f32 {
+  let point=origin+root*direction;
+  let derivative=2.0*dot(point,direction);
+  if (!finiteValue(root)||abs(derivative)<=1e-20) { return root; }
+  return root-(dot(point,point)-1.0)/derivative;
+}
 fn countCircle(curve:CurveDescriptor,ray:Ray,result:ptr<function,Crossing>) {
   let o=curve.geometryOffset; let inverseRadius=abs(geometry[o+2u]);
   let origin=(ray.origin-vec2f(geometry[o],geometry[o+1u]))*inverseRadius;
@@ -482,7 +488,8 @@ fn countCircle(curve:CurveDescriptor,ray:Ray,result:ptr<function,Crossing>) {
     dot(origin,origin)-1.0);
   let originTolerance=max(geometry[o+3u],membershipUniforms.originTolerance);
   for (var rootIndex=0u;rootIndex<u32(roots.z);rootIndex++) {
-    let s=select(roots.x,roots.y,rootIndex==1u);
+    let provisional=select(roots.x,roots.y,rootIndex==1u);
+    let s=refineCircleRoot(origin,direction,provisional);
     let normal=origin+s*direction;
     recordCrossing(s,0.5,false,originTolerance,direction,normal,result);
   }
@@ -491,6 +498,18 @@ fn countCircle(curve:CurveDescriptor,ray:Ray,result:ptr<function,Crossing>) {
 
 function membershipArcCode() {
   return `
+fn refineArcRoot(origin:vec2f,direction:vec2f,bulge:f32,factor:f32,
+  root:f32)->f32 {
+  var refined=root;
+  for (var step=0u;step<1u;step++) {
+    let point=origin+refined*direction;
+    let derivative=4.0*bulge*dot(point,direction)-factor*direction.y;
+    if (!finiteValue(refined)||abs(derivative)<=1e-20) { return refined; }
+    let residual=2.0*bulge*(dot(point,point)-0.25)-factor*point.y;
+    refined-=residual/derivative;
+  }
+  return refined;
+}
 fn countArc(curve:CurveDescriptor,ray:Ray,result:ptr<function,Crossing>) {
   let o=curve.geometryOffset; let curveOrigin=vec2f(geometry[o],geometry[o+1u]);
   let tangent=vec2f(geometry[o+2u],geometry[o+3u]);
@@ -501,15 +520,17 @@ fn countArc(curve:CurveDescriptor,ray:Ray,result:ptr<function,Crossing>) {
   let direction=vec2f(dot(ray.direction,tangent),
     dot(ray.direction,transverse))*inverseLength;
   let factor=(1.0-bulge)*(1.0+bulge);
-  let roots=quadratic(2.0*bulge*dot(direction,direction),
-    4.0*bulge*dot(origin,direction)-factor*direction.y,
-    2.0*bulge*(dot(origin,origin)-0.25)-factor*origin.y);
+  let a=2.0*bulge*dot(direction,direction);
+  let b=4.0*bulge*dot(origin,direction)-factor*direction.y;
+  let c=2.0*bulge*(dot(origin,origin)-0.25)-factor*origin.y;
+  let roots=quadratic(a,b,c);
   let parameterTolerance=max(PARAMETER_TOLERANCE,
     max(positionTolerance,endpointTolerance)*inverseLength);
   let originTolerance=max(positionTolerance,
     membershipUniforms.originTolerance);
   for (var rootIndex=0u;rootIndex<u32(roots.z);rootIndex++) {
-    let s=select(roots.x,roots.y,rootIndex==1u);
+    let provisional=select(roots.x,roots.y,rootIndex==1u);
+    let s=refineArcRoot(origin,direction,bulge,factor,provisional);
     let point=origin+s*direction; let denominator=1.0-2.0*bulge*point.y;
     if (!(denominator>0.0)) { continue; }
     let rawU=0.5+point.x/denominator;

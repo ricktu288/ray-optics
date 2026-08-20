@@ -317,10 +317,10 @@ fn toneMapAdditive(color: vec3f, mode: u32) -> vec4f {
     return vec4f(mapped, clamp(opacity, 0.0, 1.0));
   }
   if (mode == 5u) {
-    // Simulated wavelengths accumulate optical density per channel.  The
-    // legacy canvas color transform normalizes that density into the hue and
-    // stores its magnitude in alpha.  Return the equivalent premultiplied
-    // color; the canvas path quantizes between those two operations.
+    // Simulated wavelengths accumulate optical density per channel.  Match
+    // CanvasRenderer.applyColorTransformation by storing the normalized hue
+    // in RGB and the largest channel density in alpha.  Unlike Canvas, this
+    // path avoids the intermediate u8 quantization.
     let factor = max(max(color.r, color.g), color.b);
     let opacity = clamp(factor, 0.0, 1.0);
     let mapped = select(vec3f(0.0), color / factor * opacity, factor > 0.0);

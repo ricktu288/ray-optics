@@ -16,7 +16,10 @@
 
 import assert from "node:assert/strict";
 import { appendPartialDerivatives } from "../../../src/core/formula/derivative.js";
-import { createDagClosureEvaluator } from "../../../src/core/formula/dag-evaluator.js";
+import {
+  createDagClosureEvaluator,
+  createDagEvaluator,
+} from "../../../src/core/formula/dag-evaluator.js";
 import { generateDagJsEvaluator } from "../../../src/core/formula/dag-js-generator.js";
 import {
   createDagWgslSpecialization,
@@ -111,6 +114,22 @@ function assertSameOutputs(left, right) {
   assert.equal(compiled().b, 2);
   assert.match(compiledResult.code, /output\["b"\] = v\d+;/);
   assert.doesNotMatch(compiledResult.code, /output\["a"\]/);
+}
+
+{
+  const dag = parseFormula("value = x + 1", ["x"]);
+  const compiled = createDagEvaluator(dag);
+  const blocked = createDagEvaluator(dag, {
+    functionConstructor() {
+      throw new EvalError("dynamic code generation is blocked");
+    },
+  });
+
+  assert.equal(compiled.evaluationMode, "compiled");
+  assert.equal(compiled({ x: 2 }).value, 3);
+  assert.equal(blocked.evaluationMode, "closure");
+  assert.match(blocked.compilationError.message, /blocked/);
+  assert.equal(blocked({ x: 2 }).value, 3);
 }
 
 {
@@ -452,8 +471,13 @@ function assertSameOutputs(left, right) {
     dag,
     { labels: ["selected"] },
   );
+  const compiled = createDagEvaluator(
+    dag,
+    { labels: ["selected"] },
+  );
 
   assert.equal(interpreted(params).selected, 3);
+  assert.equal(compiled(params).selected, 3);
 }
 
 console.log("dag evaluator tests passed");

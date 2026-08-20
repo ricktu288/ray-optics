@@ -849,11 +849,11 @@ function estimateCooperativeWorkgroupBytes(
   neighborMode
 ) {
   const raySlots = workgroupSize / lanesPerRay;
-  const hits = workgroupSize * 40;
+  const hits = workgroupSize * 48;
   const rayState = raySlots * (32 + 16);
   const membershipAndCrossings = raySlots * regionWordCount * 12;
   const conflicts = raySlots * 4;
-  const neighborState = neighborMode ? raySlots * 2 * (32 + 40) : 0;
+  const neighborState = neighborMode ? raySlots * 2 * (32 + 48) : 0;
   return hits + rayState + membershipAndCrossings + conflicts + neighborState;
 }
 

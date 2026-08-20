@@ -90,7 +90,7 @@ struct DetectorDescriptor { typeId:u32,parameterOffset:u32,
   parameterCount:u32,resultId:u32,resultSize:u32,resultOffset:u32,
   padding0:u32,padding1:u32 };
 struct DetectorResultCell { value:atomic<i32>,overflow:atomic<u32> };
-struct Hit { s:f32,u:f32,normal:vec2f,curveId:i32,sigma:f32,
+struct Hit { s:f32,u:f32,point:vec2f,normal:vec2f,curveId:i32,sigma:f32,
   conflict:u32,interactionType:u32,conflictCurveId:i32,
   conflictingCurveId:i32 };
 struct TraceUniforms { rayCount:u32,rayCapacity:u32,bvhRoot:i32,
@@ -190,8 +190,9 @@ fn processInteraction(source:Ray,hit:Hit,incident:ptr<function,Membership>,
   slotCount:ptr<function,u32>,isDummy:bool,
   continuation:ptr<function,Ray>,nextMembership:ptr<function,Membership>)->bool {
   var hasContinuation=false;
-  let point=source.origin+hit.s*source.direction;
+  var point=hit.point;
   if(hit.curveId==-1){
+    point=source.origin+hit.s*source.direction;
     let medium=evaluateEffectiveGrin(incident,point,source.wavelength);
     let product=source.direction.x*source.direction.y;
     let stepped=source.direction+hit.s*vec2f(
@@ -345,7 +346,8 @@ fn megakernelMain(@builtin(global_invocation_id) invocation:vec3u,
       ray.powers.x+ray.powers.y<traceUniforms.rayPowerCutoff){
       if(real){recordTruncation(ray.powers.x+ray.powers.y);}isActive=false;
     }
-    var hit=Hit(0.0,0.0,vec2f(0.0),-1,0.0,0u,0xffffffffu,-1,-1);
+    var hit=Hit(0.0,0.0,vec2f(0.0),vec2f(0.0),
+      -1,0.0,0u,0xffffffffu,-1,-1);
     var segmentRay=ray;var front:CrossingMask;var back:CrossingMask;
     if(isActive){
       if(real){atomicAdd(&control[16],1u);}
@@ -455,16 +457,16 @@ fn megakernelMain(@builtin(workgroup_id) workgroup:vec3u,
     }
     var localFront:CrossingMask;var localBack:CrossingMask;
     clearCrossings(&localFront,&localBack);
-    var localHit=Hit(
-      0.0,0.0,vec2f(0.0),-1,0.0,0u,0xffffffffu,-1,-1);
+    var localHit=Hit(0.0,0.0,vec2f(0.0),vec2f(0.0),
+      -1,0.0,0u,0xffffffffu,-1,-1);
     let segmentRay=ray;
     if(isActive){localHit=${trace};}
     cooperativeHits[local.x]=localHit;
     workgroupBarrier();
     let firstLane=local.x-lane;
     if(leader){
-      var merged=Hit(maximumDistance(&membership),0.0,vec2f(0.0),-1,
-        0.0,0u,0xffffffffu,-1,-1);
+      var merged=Hit(maximumDistance(&membership),0.0,
+        vec2f(0.0),vec2f(0.0),-1,0.0,0u,0xffffffffu,-1,-1);
       if(isActive){
         for(var other=0u;other<${lanesPerRay}u;other++){
           merged=mergeRepresentative(merged,cooperativeHits[firstLane+other],ray);
@@ -573,8 +575,8 @@ function createCooperativeRenderInvocation({
     if(leader){
       sharedRays[bank+raySlot]=Ray(
         vec2f(0.0),vec2f(0.0),vec2f(0.0),0.0,0u);
-      sharedHits[bank+raySlot]=Hit(
-        0.0,0.0,vec2f(0.0),-1,0.0,0u,0xffffffffu,-1,-1);
+      sharedHits[bank+raySlot]=Hit(0.0,0.0,vec2f(0.0),vec2f(0.0),
+        -1,0.0,0u,0xffffffffu,-1,-1);
       if(renderActive){sharedRays[bank+raySlot]=segmentRay;
         sharedHits[bank+raySlot]=hit;}
     }
@@ -622,8 +624,8 @@ function createRenderInvocation(variant, neighborMode, workgroupSize) {
   return `
     let bank=(iteration&1u)*${workgroupSize}u;
     sharedRays[bank+local.x]=Ray(vec2f(0.0),vec2f(0.0),vec2f(0.0),0.0,0u);
-    sharedHits[bank+local.x]=Hit(
-      0.0,0.0,vec2f(0.0),-1,0.0,0u,0xffffffffu,-1,-1);
+    sharedHits[bank+local.x]=Hit(0.0,0.0,vec2f(0.0),vec2f(0.0),
+      -1,0.0,0u,0xffffffffu,-1,-1);
     if(renderActive){sharedRays[bank+local.x]=segmentRay;
       sharedHits[bank+local.x]=hit;}
     workgroupBarrier();${modeCode}`;
@@ -737,7 +739,7 @@ fn mergeLocal(candidate0:Hit,hit:Hit,curveId:u32,ray:Ray,
       curveId<u32(candidate.curveId));
   if(!hitsCompatible(candidate,oldCurve,hit,curve,ray)){
     candidate.conflict=max(candidate.conflict,1u);}
-  if(replace){candidate.s=hit.s;candidate.u=hit.u;
+  if(replace){candidate.s=hit.s;candidate.u=hit.u;candidate.point=hit.point;
     candidate.curveId=i32(curveId);candidate.sigma=hit.sigma;}
   return candidate;
 }
@@ -753,7 +755,8 @@ fn maximumDistance(membership:ptr<function,Membership>)->f32{
 fn intersectLocal(curveId:u32,ray:Ray,candidate:Hit,maximum:f32,
   front:ptr<function,CrossingMask>,back:ptr<function,CrossingMask>)->Hit{
   let curve=curves[curveId];if(!passesFilter(curve,ray.wavelength)){return candidate;}
-  var hit=Hit(F32_MAX,0.0,vec2f(0.0),-1,0.0,0u,0xffffffffu,-1,-1);
+  var hit=Hit(F32_MAX,0.0,vec2f(0.0),vec2f(0.0),
+    -1,0.0,0u,0xffffffffu,-1,-1);
   switch curve.kind { ${cases.join('\n')} default:{} }
   if(hit.s==F32_MAX){return candidate;}
   let normal=curveNormal(curve,ray,hit);if(normal.w==0.0){return candidate;}
@@ -765,7 +768,8 @@ fn intersectLocal(curveId:u32,ray:Ray,candidate:Hit,maximum:f32,
 fn traceOne(ray:Ray,membership:ptr<function,Membership>,
   front:ptr<function,CrossingMask>,back:ptr<function,CrossingMask>)->Hit{
   clearCrossings(front,back);let maximum=maximumDistance(membership);
-  var hit=Hit(maximum,0.0,vec2f(0.0),-1,0.0,0u,0xffffffffu,-1,-1);
+  var hit=Hit(maximum,0.0,vec2f(0.0),vec2f(0.0),
+    -1,0.0,0u,0xffffffffu,-1,-1);
   if(traceUniforms.bvhRoot<0){return hit;}
   var stackRefs:array<u32,${stackSize}>;
   var stackNear:array<f32,${stackSize}>;var stackCount=1u;
@@ -811,7 +815,8 @@ fn traceDirectLane(ray:Ray,membership:ptr<function,Membership>,lane:u32,
   laneCount:u32,front:ptr<function,CrossingMask>,
   back:ptr<function,CrossingMask>)->Hit{
   clearCrossings(front,back);let maximum=maximumDistance(membership);
-  var hit=Hit(maximum,0.0,vec2f(0.0),-1,0.0,0u,0xffffffffu,-1,-1);
+  var hit=Hit(maximum,0.0,vec2f(0.0),vec2f(0.0),
+    -1,0.0,0u,0xffffffffu,-1,-1);
   for(var curveId=lane;curveId<traceUniforms.curveCount;curveId+=laneCount){
     hit=intersectLocal(curveId,ray,hit,maximum,front,back);
   }
@@ -852,7 +857,8 @@ fn traceBvhLane(ray:Ray,membership:ptr<function,Membership>,lane:u32,
   laneCount:u32,front:ptr<function,CrossingMask>,
   back:ptr<function,CrossingMask>)->Hit{
   clearCrossings(front,back);let maximum=maximumDistance(membership);
-  var hit=Hit(maximum,0.0,vec2f(0.0),-1,0.0,0u,0xffffffffu,-1,-1);
+  var hit=Hit(maximum,0.0,vec2f(0.0),vec2f(0.0),
+    -1,0.0,0u,0xffffffffu,-1,-1);
   for(var rootIndex=lane;rootIndex<traceUniforms.bvhPartitionCount;
       rootIndex+=laneCount){
     let root=bvhPartitionRoots[rootIndex];
@@ -890,7 +896,7 @@ fn mergeRepresentative(candidate0:Hit,hit:Hit,ray:Ray)->Hit{
   let replace=ownerPriority(curve.ownerKind)>ownerPriority(oldCurve.ownerKind)||
     (ownerPriority(curve.ownerKind)==ownerPriority(oldCurve.ownerKind)&&
       u32(hit.curveId)<u32(candidate.curveId));
-  if(replace){candidate.s=hit.s;candidate.u=hit.u;
+  if(replace){candidate.s=hit.s;candidate.u=hit.u;candidate.point=hit.point;
     candidate.curveId=hit.curveId;candidate.sigma=hit.sigma;}
   return candidate;
 }
@@ -1014,7 +1020,8 @@ function createRenderFunctions(variant) {
     const extended = variant === 'extended';
     return `
 fn renderIndependent(ray:Ray,hit:Hit,depth:u32){
-  let finiteEnd=hit.s<F32_MAX*0.5;let end=ray.origin+hit.s*ray.direction;
+  let finiteEnd=hit.s<F32_MAX*0.5;var end=hit.point;
+  if(hit.curveId<0){end=ray.origin+hit.s*ray.direction;}
   let color=encodeColor(config.values[5],ray,1.0);let dash=config.values[12].xy;
   if(finiteEnd){pushVisibleSegment(ray.origin,end,color,dash,
     config.values[0].z>0.5);}else{pushRay(ray.origin,ray.direction,color,dash,

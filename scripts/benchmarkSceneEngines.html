@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ray Optics real-scene engine benchmark</title>
+  <style>
+    :root { color-scheme: light dark; font-family: system-ui, sans-serif; }
+    body { max-width: 90rem; margin: 2rem auto; padding: 0 1rem 3rem; }
+    h1 { font-size: 1.55rem; }
+    button { padding: .55rem .85rem; margin: 0 .45rem .65rem 0; }
+    button:disabled { opacity: .55; }
+    code { background: #8882; padding: .08rem .25rem; }
+    .error { color: #e44; white-space: pre-wrap; }
+    .muted { opacity: .72; }
+    .controls { margin: 1rem 0; }
+    .grid-scroll { overflow-x: auto; }
+    table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+    th, td { border: 1px solid #8886; padding: .38rem .48rem; text-align: right; }
+    th:first-child, td:first-child, th:nth-child(2), td:nth-child(2) {
+      text-align: left;
+    }
+    #canvasStage { position: relative; width: 360px; height: 216px;
+      overflow: hidden; border: 1px solid #8886; background: #000; }
+    #canvasStage canvas { position: absolute; inset: 0; width: 360px;
+      height: 216px; object-fit: fill; }
+    #canvasLightWebGL, #canvasLightWebGPU { pointer-events: none; }
+  </style>
+</head>
+<body>
+  <h1>Real-scene engine benchmark</h1>
+  <p>
+    This benchmarks every gallery scene, every module scene, and the spherical
+    lens scene variants. A second <code>5× density + linear color</code> case is
+    added when a scene contains a Beam, Point Source, or Angle Source (including
+    sources inside modules).
+  </p>
+  <p>
+    Runs are configuration-major: all legacy cases, all primitive CPU cases,
+    then every scene under each WebGPU setting. Each measurement is the second
+    full <code>updateSimulation</code> on the same scene and engine, after an
+    untimed update has compiled and warmed it. Timings include preprocessing,
+    tracing, every rendering pass, Canvas 2D synchronization, WebGL
+    <code>finish()</code>, and WebGPU queue completion.
+  </p>
+  <p class="muted">
+    Defaults use one measured sample and a 28-minute deadline. Query parameters:
+    <code>scene=id,id</code>, <code>group=gallery,module,sphericalLens</code>,
+    <code>setting=legacy,primitiveCpu,webgpu-production,...</code>,
+    <code>repeats=1</code>, <code>timeoutSeconds=30</code>,
+    <code>deadlineMinutes=28</code>, and <code>autorun=1</code>.
+  </p>
+  <p id="status">Loading the scene inventory…</p>
+  <div class="controls">
+    <button id="start" disabled>Start benchmark</button>
+    <button id="stop" disabled>Stop after current update</button>
+    <button id="downloadJson" disabled>Download JSON (partial is OK)</button>
+    <button id="downloadCsv" disabled>Download CSV (partial is OK)</button>
+  </div>
+  <div id="summary"></div>
+  <details>
+    <summary>Rendering preview</summary>
+    <div id="canvasStage" aria-label="Benchmark rendering canvases">
+      <canvas id="canvasBelowLight"></canvas>
+      <canvas id="canvasLight"></canvas>
+      <canvas id="canvasLightWebGL"></canvas>
+      <canvas id="canvasLightWebGPU"></canvas>
+      <canvas id="canvasAboveLight"></canvas>
+      <canvas id="canvasGrid"></canvas>
+    </div>
+  </details>
+  <div class="grid-scroll"><table id="results"></table></div>
+  <script type="module" src="./scene-engine-benchmark.js"></script>
+</body>
+</html>

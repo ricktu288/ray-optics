@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { createDagClosureEvaluator } from '../../formula/dag-evaluator.js';
+import { createDagEvaluator } from '../../formula/dag-evaluator.js';
 import {
   collectNodeLabels,
   collectReferencedParameterNames
@@ -34,11 +34,11 @@ export function prepareCpuOutgoingRayData(description) {
     if (labels.has('n_x')) grinLabels.push('n_x');
     if (labels.has('n_y')) grinLabels.push('n_y');
     return {
-      evaluateIndex: createDagClosureEvaluator(
+      evaluateIndex: createDagEvaluator(
         type.definition.dag,
         { labels: ['n'] }
       ),
-      evaluateGrin: createDagClosureEvaluator(
+      evaluateGrin: createDagEvaluator(
         type.definition.dag,
         { labels: grinLabels }
       )
@@ -53,7 +53,7 @@ export function prepareCpuOutgoingRayData(description) {
       outputLabels
     );
     return {
-      evaluate: createDagClosureEvaluator(
+      evaluate: createDagEvaluator(
         definition.dag,
         { labels: outputLabels }
       ),
@@ -66,7 +66,7 @@ export function prepareCpuOutgoingRayData(description) {
     const outputLabels =
       createDetectorOutputLabels(definition.writeCount);
     return {
-      evaluate: createDagClosureEvaluator(
+      evaluate: createDagEvaluator(
         definition.dag,
         { labels: outputLabels }
       ),

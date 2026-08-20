@@ -28,6 +28,8 @@ import { selectWebGpuRayCooperationStrategy } from
   '../../src/core/simulationEngines/webgpu/webGpuRayCooperation.js';
 import { createWebGpuTraceSceneData } from
   '../../src/core/simulationEngines/webgpu/webGpuTraceScene.js';
+import { createWebGpuInitialMembershipShader } from
+  '../../src/core/simulationEngines/webgpu/webGpuMembership.js';
 import {
   WebGpuReadyRayRenderer,
   calculateWebGpuArrowCoverage,
@@ -64,6 +66,12 @@ const splitterType = {
     d_1x=d_0x;d_1y=-d_0y;P_1s=P_0s*0.5;P_1p=P_0p*0.5;
     d_2x=d_0x;d_2y=d_0y;P_2s=P_0s*0.5;P_2p=P_0p*0.5;
   `, ['d_0x', 'd_0y', 'P_0s', 'P_0p'])
+};
+
+const bulkType = {
+  name: 'Megakernel test bulk',
+  paramNames: [],
+  dag: parseFormula('n=1.5;alpha=0;', ['x', 'y', 'lambda'])
 };
 
 function process(primitives) {
@@ -155,7 +163,22 @@ describe('WebGpuSimulationEngine', () => {
     )).toEqual([0, 0, 0, 0]);
   });
 
-  it('uses the same 580 nm yellow boundary as canvas color simulation', () => {
+  it('uses the same spectral boundaries as canvas color simulation', () => {
+    expect(createWebGpuRenderPreparationShader(64)).toContain(
+      'if(mode==5u){return vec4f(raw,1.0);}'
+    );
+    const defaults = createRenderUniformData({
+      preparedScene: {
+        parameterRanges: { wavelengthRange: [[380, 700]] },
+        violetWavelength: 420,
+        redWavelength: 620
+      },
+      rendering: {}
+    }, 1);
+    expect(Array.from(defaults.slice(12, 20))).toEqual([
+      380, 420, 460, 500, 540, 580, 620, 700
+    ]);
+
     const uniforms = createRenderUniformData({
       preparedScene: {
         parameterRanges: { wavelengthRange: [[800, 1400]] },
@@ -217,6 +240,106 @@ describe('WebGpuSimulationEngine', () => {
       expect(generated.code).toContain('fn initialMain(');
       expect(generated.code).toContain('switch source.typeId');
       expect(generated.code.match(/var<storage/g)).toHaveLength(8);
+    });
+
+  it('reconstructs line hits from the nearby ray frame', async () => {
+    const prepared = await prepare();
+    const generated = createWebGpuMegakernelShader({
+      description: prepared.runtimeDescription,
+      dagPrograms: prepared.dagPrograms,
+      workgroupSize: 64,
+      maxLocalIterations: 8,
+      renderVariant: 'rays'
+    });
+
+    expect(generated.supported).toBe(true);
+    expect(generated.code).toContain(
+      'let point=ray.origin+s*ray.direction;'
+    );
+  });
+
+  it('constructs circle hits in the local ray frame',
+    async () => {
+      const prepared = process([
+        {
+          kind: 'source', sourceType, params: { position: 59.5 }, rayCount: 1
+        },
+        {
+          kind: 'surface', surfaceType: splitterType, params: {},
+          twoSided: true,
+          curve: {
+            kind: 'circle',
+            params: { center: { x: 642, y: 280 }, radius: 20 }
+          }
+        }
+      ]);
+      const generated = createWebGpuMegakernelShader({
+        description: prepared,
+        dagPrograms: (await new WebGpuSimulationEngine().prepare(prepared))
+          .dagPrograms,
+        workgroupSize: 64,
+        maxLocalIterations: 8,
+        renderVariant: 'rays'
+      });
+
+      expect(generated.supported).toBe(true);
+      expect(generated.code).toContain(
+        'let localPoint=surfaceOffset*transverse+alongDistance*unitDirection;'
+      );
+      expect(generated.code).not.toContain('fn refineCircleRoot(');
+      expect(generated.code).toContain('candidate.point=hit.point;');
+    });
+
+  it('refines circular-arc roots in tracing and initial membership',
+    async () => {
+      const curve = {
+        kind: 'circularArc',
+        params: {
+          start: { x: 642, y: 260 },
+          end: { x: 642, y: 300 },
+          bulge: 1
+        }
+      };
+      const traced = process([
+        {
+          kind: 'source', sourceType, params: { position: 59.5 }, rayCount: 1
+        },
+        {
+          kind: 'surface', surfaceType: splitterType, params: {},
+          twoSided: true, curve
+        }
+      ]);
+      const prepared = await new WebGpuSimulationEngine().prepare(traced);
+      const traceShader = createWebGpuMegakernelShader({
+        description: traced,
+        dagPrograms: prepared.dagPrograms,
+        workgroupSize: 64,
+        maxLocalIterations: 8,
+        renderVariant: 'rays'
+      });
+      const membershipScene = process([{
+        kind: 'region', curves: [curve], bulkType, params: {}, stepSize: 1,
+        partialReflect: true
+      }]);
+      const membershipShader = createWebGpuInitialMembershipShader(
+        membershipScene,
+        64
+      );
+
+      expect(traceShader.supported).toBe(true);
+      expect(traceShader.code).toContain('fn refineArcRoot(');
+      expect(traceShader.code).toContain(
+        'let root=refineArcRoot(localOrigin,localDirection,bulge,factor,provisional);'
+      );
+      expect(traceShader.code).toContain(
+        'let surfaceLocal=projectArcLocalPoint(point,bulge);'
+      );
+      expect(traceShader.code).toContain('var point=hit.point;');
+      expect(membershipShader.supported).toBe(true);
+      expect(membershipShader.code).toContain('fn refineArcRoot(');
+      expect(membershipShader.code).toContain(
+        'let s=refineArcRoot(origin,direction,bulge,factor,provisional);'
+      );
     });
 
   it('compiles only the requested rendering-mode family into a megakernel',

@@ -14,7 +14,11 @@
  * limitations under the License.
  */
 
-import { collectNodeLabels, validateDagShape } from "./dag-util.js";
+import {
+  collectNodeLabels,
+  collectReachableNodeIds,
+  validateDagShape,
+} from "./dag-util.js";
 
 export const JS_RUNTIME_CODE = `
 function finiteOrNaN(value) {
@@ -62,6 +66,10 @@ export function generateDagJsEvaluator(dag, options = {}) {
   validateDagShape(dag);
   const functionName = validateJsIdentifier(options.functionName ?? "evaluateDag", "functionName");
   const labels = selectOutputLabels(dag, options.labels);
+  const reachableNodes = collectReachableNodeIds(
+    dag,
+    labels.map(([_label, id]) => id),
+  );
 
   const body = [
     "  params = params ?? Object.create(null);",
@@ -69,6 +77,7 @@ export function generateDagJsEvaluator(dag, options = {}) {
   ];
 
   for (const node of dag.nodes) {
+    if (!reachableNodes.has(node.id)) continue;
     body.push(`  const v${node.id} = finiteOrNaN(${generatedNodeExpression(node)});`);
   }
   for (const [label, id] of labels) {

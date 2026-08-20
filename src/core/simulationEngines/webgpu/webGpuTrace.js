@@ -54,7 +54,7 @@ export class WebGpuRawTraceStage {
     }
     this.hitBuffer = this.device.createBuffer({
       label: 'WebGPU provisional hits',
-      size: this.rayCapacity * 32,
+      size: this.rayCapacity * 40,
       usage: BUFFER_USAGE_STORAGE | BUFFER_USAGE_COPY_SRC |
         BUFFER_USAGE_COPY_DST,
     });
@@ -294,7 +294,8 @@ struct InstanceDescriptor { typeId:u32, parameterOffset:u32,
 struct DetectorDescriptor { typeId:u32, parameterOffset:u32,
   parameterCount:u32, resultId:u32, resultSize:u32, resultOffset:u32,
   padding0:u32, padding1:u32 };
-struct Hit { s: f32, u: f32, normal: vec2f, curveId: i32, sigma: f32,
+struct Hit { s: f32, u: f32, point: vec2f, normal: vec2f,
+  curveId: i32, sigma: f32,
   conflict: u32, interactionType: u32 };
 struct TraceUniforms { rayCount: u32, rayCapacity: u32, bvhRoot: i32,
   curveCount: u32, regionCount:u32, regionWordCount:u32,
@@ -320,9 +321,11 @@ fn cross2(a: vec2f, b: vec2f) -> f32 { return a.x*b.y-a.y*b.x; }
 fn finiteValue(value: f32) -> bool {
   return value == value && abs(value) <= F32_MAX;
 }
-fn updateHit(s: f32, u: f32, minimum: f32, hit: ptr<function, Hit>) {
+fn updateHit(
+  s:f32,u:f32,point:vec2f,minimum:f32,hit:ptr<function,Hit>
+) {
   if (finiteValue(s) && s > minimum && s < (*hit).s) {
-    (*hit).s = s; (*hit).u = u;
+    (*hit).s=s;(*hit).u=u;(*hit).point=point;
   }
 }
 fn passesFilter(curve: CurveDescriptor, wavelength: f32) -> bool {
@@ -386,7 +389,11 @@ fn intersectLine(curve: CurveDescriptor, ray: Ray, hit: ptr<function, Hit>) {
   let parameterTolerance=max(PARAMETER_TOLERANCE,
     max(positionTolerance,endpointTolerance)*inverseLength);
   if (rawU < -parameterTolerance || rawU > 1.0+parameterTolerance) { return; }
-  updateHit(cross2(offset,tangent)/denominator,rawU,
+  let s=cross2(offset,tangent)/denominator;
+  // Reconstruct near the ray.  Evaluating endpoint+u*length loses the low
+  // coordinate bits for artificial, extremely long half-plane boundaries.
+  let point=ray.origin+s*ray.direction;
+  updateHit(s,rawU,point,
     max(positionTolerance,traceUniforms.forwardDistance),hit);
 }` : ''}
 ${quadraticCode(tolerance.parameter)}
@@ -397,10 +404,31 @@ fn intersectCircle(curve: CurveDescriptor, ray: Ray, hit: ptr<function, Hit>) {
   let minimum=max(geometry[o+3u],traceUniforms.forwardDistance);
   let origin=(ray.origin-center)*inverseRadius;
   let direction=ray.direction*inverseRadius;
-  let roots=quadratic(dot(direction,direction),2.0*dot(origin,direction),
-    dot(origin,origin)-1.0);
-  if (roots.z>0.5) { updateHit(roots.x,0.5,minimum,hit); }
-  if (roots.z>1.5) { updateHit(roots.y,0.5,minimum,hit); }
+  let directionLengthSquared=dot(direction,direction);
+  if (!(directionLengthSquared>0.0)) { return; }
+  let inverseDirectionLength=inverseSqrt(directionLengthSquared);
+  let unitDirection=direction*inverseDirectionLength;
+  let transverse=vec2f(-unitDirection.y,unitDirection.x);
+  let signedOffset=dot(origin,transverse);
+  let signedOffsetSquared=signedOffset*signedOffset;
+  var radicand=1.0-signedOffsetSquared;
+  let tangentTolerance=PARAMETER_TOLERANCE*(signedOffsetSquared+1.0);
+  if (radicand < -tangentTolerance) { return; }
+  radicand=max(0.0,radicand);
+  let radialDistance=sqrt(radicand);
+  let closestRoot=-dot(origin,unitDirection)*inverseDirectionLength;
+  let rootCount=select(2u,1u,radialDistance==0.0);
+  for(var rootIndex=0u;rootIndex<rootCount;rootIndex++) {
+    let alongDistance=select(-radialDistance,radialDistance,rootIndex==1u);
+    let root=closestRoot+alongDistance*inverseDirectionLength;
+    // Build the point from the perpendicular and parallel line components.
+    // This avoids both origin+s*direction cancellation and radial projection,
+    // which puts the stored point off the incident ray near tangency.
+    let surfaceOffset=clamp(signedOffset,-1.0,1.0);
+    let localPoint=surfaceOffset*transverse+alongDistance*unitDirection;
+    let point=center+localPoint/inverseRadius;
+    updateHit(root,0.5,point,minimum,hit);
+  }
 }` : ''}
 ${kinds.has('circularArc') ? arcCode() : ''}
 ${kinds.has('cubicBezier')
@@ -414,7 +442,8 @@ fn intersectPreparedCurve(
 )->Hit {
   let curve=curves[curveId];
   if (!passesFilter(curve,ray.wavelength)) { return candidate; }
-  var hit=Hit(F32_MAX,0.0,vec2f(0.0),-1,0.0,0u,0xffffffffu);
+  var hit=Hit(F32_MAX,0.0,vec2f(0.0),vec2f(0.0),
+    -1,0.0,0u,0xffffffffu);
   switch curve.kind { ${cases.join('\n')} default: {} }
   if (hit.s==F32_MAX) { return candidate; }
   let normalResult=curveNormal(curve,ray,hit);
@@ -434,7 +463,8 @@ fn rawTraceMain(@builtin(global_invocation_id) invocation: vec3u) {
   if (rayIndex>=atomicLoad(&runControl[0]) ||
       rayIndex>=traceUniforms.rayCapacity) { return; }
   let ray=rays[rayIndex]; clearCrossings(rayIndex);
-  var hit=Hit(F32_MAX,0.0,vec2f(0.0),-1,0.0,0u,0xffffffffu);
+  var hit=Hit(F32_MAX,0.0,vec2f(0.0),vec2f(0.0),
+    -1,0.0,0u,0xffffffffu);
   if ((ray.flags&1u)==0u) {
     hits[rayIndex]=hit; interactionTypeByRay[rayIndex]=0xffffffffu; return;
   }
@@ -517,6 +547,38 @@ function quadraticCode(rootTolerance) {
 
 function arcCode() {
   return `
+fn projectArcLocalPoint(point:vec2f,bulge:f32)->vec2f {
+  // Do not evaluate the rational u-parameterization here.  Its midpoint
+  // weight approaches zero as a major arc approaches a complete circle.
+  // Radial projection onto the underlying circle stays well-conditioned.
+  let absoluteBulge=abs(bulge);
+  var centerY:f32;var radius:f32;
+  if(absoluteBulge<=1.0){
+    let bulgeSquared=bulge*bulge;
+    centerY=(1.0-bulgeSquared)/(4.0*bulge);
+    radius=(1.0+bulgeSquared)/(4.0*absoluteBulge);
+  }else{
+    let inverseBulge=1.0/bulge;
+    centerY=0.25*(inverseBulge-bulge);
+    radius=0.25*absoluteBulge*(1.0+inverseBulge*inverseBulge);
+  }
+  let center=vec2f(0.0,centerY);let radial=point-center;
+  let radialLength=length(radial);
+  if(!(radialLength>0.0)){return point;}
+  return center+radial*(radius/radialLength);
+}
+fn refineArcRoot(origin:vec2f,direction:vec2f,bulge:f32,factor:f32,
+  root:f32)->f32 {
+  var refined=root;
+  for (var step=0u;step<1u;step++) {
+    let point=origin+refined*direction;
+    let derivative=4.0*bulge*dot(point,direction)-factor*direction.y;
+    if (!finiteValue(refined)||abs(derivative)<=1e-20) { return refined; }
+    let residual=2.0*bulge*(dot(point,point)-0.25)-factor*point.y;
+    refined-=residual/derivative;
+  }
+  return refined;
+}
 fn intersectArc(curve: CurveDescriptor, ray: Ray, hit: ptr<function, Hit>) {
   let o=curve.geometryOffset; let curveOrigin=vec2f(geometry[o],geometry[o+1u]);
   let tangent=vec2f(geometry[o+2u],geometry[o+3u]);
@@ -526,22 +588,25 @@ fn intersectArc(curve: CurveDescriptor, ray: Ray, hit: ptr<function, Hit>) {
   let localOrigin=vec2f(dot(relative,tangent),dot(relative,normal))*inverseLength;
   let localDirection=vec2f(dot(ray.direction,tangent),dot(ray.direction,normal))*inverseLength;
   let factor=(1.0-bulge)*(1.0+bulge);
-  let roots=quadratic(
-    2.0*bulge*dot(localDirection,localDirection),
-    4.0*bulge*dot(localOrigin,localDirection)-factor*localDirection.y,
-    2.0*bulge*(dot(localOrigin,localOrigin)-0.25)-factor*localOrigin.y
-  );
+  let a=2.0*bulge*dot(localDirection,localDirection);
+  let b=4.0*bulge*dot(localOrigin,localDirection)-factor*localDirection.y;
+  let c=2.0*bulge*(dot(localOrigin,localOrigin)-0.25)-factor*localOrigin.y;
+  let roots=quadratic(a,b,c);
   let parameterTolerance=max(PARAMETER_TOLERANCE,
     max(positionTolerance,endpointTolerance)*inverseLength);
   for (var rootIndex=0u;rootIndex<u32(roots.z);rootIndex++) {
-    let root=select(roots.x,roots.y,rootIndex==1u);
+    let provisional=select(roots.x,roots.y,rootIndex==1u);
+    let root=refineArcRoot(localOrigin,localDirection,bulge,factor,provisional);
     let point=localOrigin+root*localDirection;
     let denominator=1.0-2.0*bulge*point.y;
     if (!(denominator>0.0)) { continue; }
     let rawU=0.5+point.x/denominator;
     if (rawU>=-parameterTolerance && rawU<=1.0+parameterTolerance) {
-      updateHit(root,rawU,max(positionTolerance,traceUniforms.forwardDistance),
-        hit);
+      let surfaceLocal=projectArcLocalPoint(point,bulge);
+      let surfacePoint=curveOrigin+
+        (surfaceLocal.x*tangent+surfaceLocal.y*normal)/inverseLength;
+      updateHit(root,rawU,surfacePoint,
+        max(positionTolerance,traceUniforms.forwardDistance),hit);
     }
   }
 }`;
@@ -590,15 +655,16 @@ fn refineCubicRoot(
 fn updateCubicHit(
   points:array<vec2f,4>, u:f32, originShift:f32,
   nearOrigin:vec2f, direction:vec2f, directionLengthSquared:f32,
-  minimum:f32, hit:ptr<function,Hit>
+  curveOrigin:vec2f,inverseScale:f32,minimum:f32,hit:ptr<function,Hit>
 ) {
   let point=cubicPoint(points,u);
   let s=originShift+dot(point-nearOrigin,direction)/directionLengthSquared;
-  updateHit(s,u,minimum,hit);
+  updateHit(s,u,curveOrigin+point/inverseScale,minimum,hit);
 }
 fn intersectCubic(curve:CurveDescriptor,ray:Ray,hit:ptr<function,Hit>) {
-  let o=curve.geometryOffset; let inverseScale=geometry[o+2u];
-  let origin=(ray.origin-vec2f(geometry[o],geometry[o+1u]))*inverseScale;
+  let o=curve.geometryOffset;let curveOrigin=vec2f(geometry[o],geometry[o+1u]);
+  let inverseScale=geometry[o+2u];
+  let origin=(ray.origin-curveOrigin)*inverseScale;
   let direction=ray.direction*inverseScale;
   let directionLengthSquared=dot(direction,direction);
   if (!(directionLengthSquared>0.0) || !finiteValue(directionLengthSquared)) { return; }
@@ -654,7 +720,7 @@ fn intersectCubic(curve:CurveDescriptor,ray:Ray,hit:ptr<function,Hit>) {
     let u=partitions[partitionIndex]; let value=scalarCubic(values,u);
     if (abs(value)<=valueTolerance) {
       updateCubicHit(points,u,originShift,nearOrigin,direction,
-        directionLengthSquared,max(positionTolerance,
+        directionLengthSquared,curveOrigin,inverseScale,max(positionTolerance,
           traceUniforms.forwardDistance),hit);
     }
     if (partitionIndex+1u>=partitionCount) { continue; }
@@ -662,7 +728,7 @@ fn intersectCubic(curve:CurveDescriptor,ray:Ray,hit:ptr<function,Hit>) {
     if ((value<0.0)!=(endValue<0.0)) {
       let root=refineCubicRoot(values,u,end,value);
       updateCubicHit(points,root,originShift,nearOrigin,direction,
-        directionLengthSquared,max(positionTolerance,
+        directionLengthSquared,curveOrigin,inverseScale,max(positionTolerance,
           traceUniforms.forwardDistance),hit);
     }
   }
@@ -687,8 +753,7 @@ function normalCode(kinds) {
     cases.push(`case 3u: {
       let inverseRadius=abs(geometry[o+2u]);
       let orientation=sign(geometry[o+2u]);
-      let point=ray.origin+hit.s*ray.direction-
-        vec2f(geometry[o],geometry[o+1u]);
+      let point=hit.point-vec2f(geometry[o],geometry[o+1u]);
       frontNormal=orientation*point*inverseRadius;
     }`);
   }
@@ -696,18 +761,10 @@ function normalCode(kinds) {
     cases.push(`case 2u: {
       let tangent=vec2f(geometry[o+2u],geometry[o+3u]);
       let transverse=vec2f(-tangent.y,tangent.x); let bulge=geometry[o+5u];
-      var curvature:f32; var height:f32;
-      if (abs(bulge)<=1.0) {
-        let denominator=1.0+bulge*bulge;
-        curvature=4.0*bulge*bulge/denominator;
-        height=-bulge/denominator;
-      } else {
-        let inverseBulge=1.0/bulge;
-        let denominator=1.0+inverseBulge*inverseBulge;
-        curvature=4.0/denominator; height=-inverseBulge/denominator;
-      }
-      let product=hit.u*(1.0-hit.u); let weight=1.0-curvature*product;
-      let localPoint=vec2f((hit.u-0.5)/weight,2.0*height*product/weight);
+      let relative=hit.point-vec2f(geometry[o],geometry[o+1u]);
+      let inverseLength=geometry[o+4u];
+      let localPoint=vec2f(dot(relative,tangent),dot(relative,transverse))*
+        inverseLength;
       let factor=(1.0-bulge)*(1.0+bulge);
       let localNormal=vec2f(-4.0*bulge*localPoint.x,
         -(4.0*bulge*localPoint.y-factor));
@@ -790,10 +847,9 @@ fn curveEndpoint(curve:CurveDescriptor,endIndex:u32)->vec2f {
 fn hitAtEndpoint(curve:CurveDescriptor,hit:Hit,ray:Ray)->bool {
   if (curve.kind==3u) { return false; }
   if (hit.u==0.0 || hit.u==1.0) { return true; }
-  let point=ray.origin+hit.s*ray.direction;
   let tolerance=curveEndpointTolerance(curve);
-  return distance(point,curveEndpoint(curve,0u))<=tolerance ||
-    distance(point,curveEndpoint(curve,1u))<=tolerance;
+  return distance(hit.point,curveEndpoint(curve,0u))<=tolerance ||
+    distance(hit.point,curveEndpoint(curve,1u))<=tolerance;
 }
 fn crossingBase(rayIndex:u32)->u32 {
   return rayIndex*traceUniforms.regionWordCount*2u;
@@ -888,8 +944,8 @@ fn mergeCandidate(
     candidate.conflict=max(candidate.conflict,1u);
   }
   if (shouldReplace) {
-    candidate.s=hit.s; candidate.u=hit.u; candidate.curveId=i32(curveId);
-    candidate.sigma=hit.sigma;
+    candidate.s=hit.s;candidate.u=hit.u;candidate.point=hit.point;
+    candidate.curveId=i32(curveId);candidate.sigma=hit.sigma;
   }
   return candidate;
 }

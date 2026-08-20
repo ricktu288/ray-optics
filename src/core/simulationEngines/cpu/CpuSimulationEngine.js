@@ -16,7 +16,7 @@
 
 import CanvasRenderer from '../../CanvasRenderer.js';
 import FloatColorRenderer from '../../FloatColorRenderer.js';
-import { createDagClosureEvaluator } from '../../formula/dag-evaluator.js';
+import { createDagEvaluator } from '../../formula/dag-evaluator.js';
 import {
   createInteractionCandidate,
   createInteractionCandidateContext,
@@ -707,7 +707,7 @@ class CpuSimulationEngine {
       outgoingRayData:
         prepareCpuOutgoingRayData(description),
       sourceEvaluators: description.types.sources.map(type =>
-        createDagClosureEvaluator(type.definition.dag, {
+        createDagEvaluator(type.definition.dag, {
           labels: SOURCE_OUTPUT_LABELS
         })
       )

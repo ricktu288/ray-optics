@@ -240,6 +240,26 @@ describe('CpuSimulationEngine initial ray buffers', () => {
     expect(engine.maxLocalIterations).toBe(12);
   });
 
+  it('compiles prepared CPU DAG evaluators to native JavaScript', async () => {
+    const processedScene = createProcessedScene(rectangleCurves());
+    const prepared = await new CpuSimulationEngine().prepare(processedScene);
+    const outgoing = prepared.outgoingRayData;
+    const evaluators = [
+      ...prepared.sourceEvaluators,
+      ...outgoing.bulkTypes.flatMap(type => [
+        type.evaluateIndex,
+        type.evaluateGrin
+      ]),
+      ...outgoing.surfaceTypes.map(type => type.evaluate),
+      ...outgoing.detectorTypes.map(type => type.evaluate),
+    ];
+
+    expect(evaluators.length).toBeGreaterThan(2);
+    expect(evaluators.every(
+      evaluator => evaluator.evaluationMode === 'compiled'
+    )).toBe(true);
+  });
+
   it('populates every source ray and stores each initial membership', async () => {
     const processedScene = createProcessedScene(rectangleCurves(), [
       source({ rayCount: 2, deltaX: 10 }),

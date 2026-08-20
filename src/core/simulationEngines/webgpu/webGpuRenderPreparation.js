@@ -152,7 +152,7 @@ export function createRenderUniformData(options, geometryCapacity) {
   const red = options.preparedScene.redWavelength ?? wavelength[1];
   const scale = (red - violet) / (620 - 420);
   const scaled = value => violet + (value - 420) * scale;
-  set(3, [scaled(350), violet, scaled(450), scaled(500)]);
+  set(3, [scaled(380), violet, scaled(460), scaled(500)]);
   set(4, [scaled(540), scaled(580), red, scaled(700)]);
   set(5, color(rendering.getThemeRayColor, 'ray'));
   set(6, color(rendering.getThemeRayColor, 'extendedRay'));
@@ -220,7 +220,7 @@ export function createWebGpuRenderPreparationShader(workgroupSize) {
 const F32_MAX:f32=3.402823e38;
 struct Ray { origin:vec2f,direction:vec2f,powers:vec2f,
   wavelength:f32,flags:u32 };
-struct Hit { s:f32,u:f32,normal:vec2f,curveId:i32,sigma:f32,
+struct Hit { s:f32,u:f32,point:vec2f,normal:vec2f,curveId:i32,sigma:f32,
   conflict:u32,interactionType:u32 };
 struct ReadyGeometry { p0p1:vec4f,color:vec4f,style:vec4f,extra:vec4f };
 struct Config { values:array<vec4f,16> };
@@ -259,8 +259,8 @@ fn encodeColor(theme:vec4f,ray:Ray,powerScale:f32)->vec4f {
   let simulate=config.values[0].y>0.5;
   let mode=u32(config.values[0].w);
   let raw=select(theme.rgb,spectralColor(ray.wavelength),simulate)*power;
+  if(mode==5u){return vec4f(raw,1.0);}
   if(mode==0u){
-    if(simulate){return vec4f(raw,1.0);}
     let alpha=clamp(power,0.0,1.0-1e-7);
     let density=-log(1.0-alpha);
     return vec4f(theme.rgb*density,density);
@@ -328,13 +328,18 @@ fn observerPoint(ray:Ray,hit:Hit)->vec3f {
   if(inside<0.0){return vec3f(0.0);}
   let t=projected-sqrt(inside);
   let finiteEnd=hit.s<F32_MAX*0.5;
-  let onRay=t>=0.0&&(!finiteEnd||t<=hit.s*length(ray.direction));
+  var segmentLength=hit.s*length(ray.direction);
+  if(hit.curveId>=0){segmentLength=distance(ray.origin,hit.point);}
+  let onRay=t>=0.0&&(!finiteEnd||t<=segmentLength);
   return vec3f(ray.origin+d*t,select(0.0,1.0,onRay));
 }
 fn imagePoint(ray:Ray,previous:Ray,hit:Hit,intersection:vec2f,
               includeVirtualObject:bool){
   let imageVector=intersection-ray.origin;
-  let endVector=select(ray.direction,hit.s*ray.direction,hit.s<F32_MAX*0.5);
+  var endVector=ray.direction;
+  if(hit.s<F32_MAX*0.5){
+    endVector=select(hit.s*ray.direction,hit.point-ray.origin,hit.curveId>=0);
+  }
   let position=dot(imageVector,endVector);
   let segmentLengthSquared=select(F32_MAX,dot(endVector,endVector),
     hit.s<F32_MAX*0.5);
@@ -357,7 +362,7 @@ fn prepareMain(@builtin(global_invocation_id) invocation:vec3u){
   if(rayIndex>=count){return;} let ray=rays[rayIndex];let hit=hits[rayIndex];
   if((ray.flags&1u)==0u||!(hit.s>0.0)){return;}
   let mode=u32(config.values[0].x);let finiteEnd=hit.s<F32_MAX*0.5;
-  let end=ray.origin+hit.s*ray.direction;
+  var end=hit.point;if(hit.curveId<0){end=ray.origin+hit.s*ray.direction;}
   if(mode<=1u){
     let color=encodeColor(config.values[5],ray,1.0);
     let dash=config.values[12].xy;
