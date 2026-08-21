@@ -14,14 +14,13 @@ import {
   WEBGPU_MIN_STORAGE_BUFFERS_PER_SHADER_STAGE,
 } from '../src/core/simulationEngines/config.js';
 
-const REPORT_VERSION = 'real-scene-engine-benchmark-v1';
+const REPORT_VERSION = 'real-scene-engine-benchmark-v2';
 const STORAGE_KEY = 'rayOpticsRealSceneEngineBenchmarkReport';
 const DEFAULT_MAX_RAY_DEPTH = 256;
 const DEFAULT_RAY_COUNT_LIMIT = 10_000_000;
 const params = new URLSearchParams(location.search);
 const repeats = integerParameter('repeats', 1, 1, 9);
 const timeoutMs = numberParameter('timeoutSeconds', 30, 1, 300) * 1000;
-const deadlineMs = numberParameter('deadlineMinutes', 28, 1, 240) * 60_000;
 const randomSeed = params.get('seed') ?? 'real-scene-engine-benchmark-v1';
 const selectedSceneIds = stringSetParameter('scene');
 const selectedGroups = stringSetParameter('group');
@@ -160,7 +159,6 @@ async function runBenchmark() {
   stopButton.disabled = false;
   statusElement.className = '';
   const startedAt = performance.now();
-  const deadlineAt = startedAt + deadlineMs;
   currentReport = createReport();
   window.__sceneEngineBenchmarkReport = currentReport;
   enableDownloads();
@@ -170,7 +168,7 @@ async function runBenchmark() {
   try {
     for (let settingIndex = 0; settingIndex < settings.length; settingIndex++) {
       const setting = settings[settingIndex];
-      if (shouldEnd(deadlineAt)) break;
+      if (stopRequested) break;
       currentReport.currentSetting = setting.id;
       persistReport();
       let environment;
@@ -183,7 +181,7 @@ async function runBenchmark() {
 
       try {
         for (let caseIndex = 0; caseIndex < cases.length; caseIndex++) {
-          if (shouldEnd(deadlineAt)) break;
+          if (stopRequested) break;
           const benchmarkCase = cases[caseIndex];
           const completed = currentReport.results.length;
           const total = cases.length * settings.length;
@@ -218,10 +216,6 @@ async function runBenchmark() {
     if (stopRequested) {
       currentReport.runStatus = 'stopped';
       statusElement.textContent = 'Stopped. The partial report is ready to download.';
-    } else if (performance.now() >= deadlineAt) {
-      currentReport.runStatus = 'time-limit';
-      statusElement.textContent =
-        'Stopped at the run-time deadline. The partial report is ready to download.';
     } else {
       currentReport.runStatus = 'complete';
       statusElement.textContent =
@@ -259,7 +253,6 @@ function createReport() {
       warmupsPerCase: 1,
       measuredRepeatsPerCase: repeats,
       timeoutSeconds: timeoutMs / 1000,
-      deadlineMinutes: deadlineMs / 60_000,
       boundary: {
         starts: 'Immediately before updateSimulation(false, true, true)',
         ends: 'After simulation completion and explicit output synchronization',
@@ -288,6 +281,7 @@ function createReport() {
       densityPropertyRule:
         'rayModeDensity for rays/extended; imageModeDensity for images/observer',
       randomSeed,
+      backgroundImages: 'disabled; presentation-only and not timed',
       unauthoredMaxRayDepth: DEFAULT_MAX_RAY_DEPTH,
       rayCountLimit: DEFAULT_RAY_COUNT_LIMIT,
       cases: cases.map(({ url: _url, ...item }) => item),
@@ -375,6 +369,10 @@ async function benchmarkCaseWithSetting(benchmarkCase, setting, environment) {
 
 function prepareSceneJson(authoredJson, variant) {
   const sceneJson = structuredClone(authoredJson);
+  // Background bitmaps are presentation-only and intentionally excluded from
+  // engine timing. Removing the reference also avoids waiting for image I/O
+  // before Scene.loadJSON reports completion.
+  delete sceneJson.backgroundImage;
   sceneJson.randomSeed = randomSeed;
   if (!Number.isFinite(sceneJson.maxRayDepth)) {
     sceneJson.maxRayDepth = DEFAULT_MAX_RAY_DEPTH;
@@ -836,10 +834,6 @@ function restoreReport() {
 function enableDownloads() {
   downloadJsonButton.disabled = false;
   downloadCsvButton.disabled = false;
-}
-
-function shouldEnd(deadlineAt) {
-  return stopRequested || performance.now() >= deadlineAt;
 }
 
 function estimateRemainingSeconds(report, total) {
