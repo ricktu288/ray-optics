@@ -33,9 +33,19 @@ describe('simulation engine configuration', () => {
 
   it('uses the same default local interaction batch on CPU and WebGPU', () => {
     expect(DEFAULT_SIMULATION_ENGINE_CONFIGS.primitiveCpu.maxLocalIterations)
-      .toBe(128);
+      .toBe(256);
     expect(DEFAULT_SIMULATION_ENGINE_CONFIGS.webgpu.maxLocalIterations)
-      .toBe(128);
+      .toBe(256);
+  });
+
+  it('provides configurable scheduling, capacity, and atomic defaults', () => {
+    expect(DEFAULT_SIMULATION_ENGINE_CONFIGS.primitiveCpu.timeBudgetMs)
+      .toBe(200);
+    const webgpu = DEFAULT_SIMULATION_ENGINE_CONFIGS.webgpu;
+    expect(webgpu.maxBatchRayEvents).toBe(1048576);
+    expect(webgpu.maxReadyLineRecords).toBe(1048576);
+    expect(webgpu.maxReadyPointRecords).toBe(1048576);
+    expect(webgpu.atomicFixedPointScale).toBe(1048576);
   });
 
   it('keeps ambiguous-power warning calibration hidden and shared', () => {
@@ -70,6 +80,16 @@ describe('simulation engine configuration', () => {
     expect(DEFAULT_SIMULATION_ENGINE_CONFIGS.webgpu.bvh).toBeUndefined();
   });
 
+  it('provides shared automatic engine-selection corrections', () => {
+    expect(DEFAULT_PRIMITIVE_SIMULATOR_CONFIG.engineSelection).toEqual({
+      webGpuWorkloadThreshold: 1024,
+      outgoingCoefficient: 0,
+      defaultRenderCoefficient: 0.25,
+      nonDefaultRenderCoefficient: 0.25,
+      grinStepCoefficient: 0.05
+    });
+  });
+
   it('resolves a stored direct primitive threshold override', () => {
     const resolved = resolvePrimitiveSimulatorConfig({
       primitive: {
@@ -81,6 +101,16 @@ describe('simulation engine configuration', () => {
 
     expect(resolved.bvh.directPrimitiveThreshold).toBe(0);
     expect(resolved.bvh.lineLeafSize).toBe(4);
+  });
+
+  it('resolves stored automatic engine-selection overrides', () => {
+    const resolved = resolvePrimitiveSimulatorConfig({
+      primitive: {
+        engineSelection: { outgoingCoefficient: 1.5 }
+      }
+    });
+    expect(resolved.engineSelection.outgoingCoefficient).toBe(1.5);
+    expect(resolved.engineSelection.webGpuWorkloadThreshold).toBe(1024);
   });
 
   it('resolves engine tuning independently of shared preprocessing', () => {

@@ -11,28 +11,97 @@ import {
 
 describe('primitive engine selection', () => {
   it('counts source rays and every primitive curve in regions', () => {
-    expect(summarizePrimitiveWorkload([
+    const workload = summarizePrimitiveWorkload([
       { kind: 'source', rayCount: 64 },
-      { kind: 'surface' },
+      { kind: 'surface', surfaceType: { outRayCount: 3 } },
       { kind: 'detector' },
-      { kind: 'region', curves: [{}, {}, {}] }
-    ])).toEqual({
+      {
+        kind: 'region', curves: [{
+          kind: 'circle',
+          params: { center: { x: 0, y: 0 }, radius: 100 }
+        }, {}, {}], partialReflect: true,
+        stepSize: 0.5
+      }
+    ], { lengthScale: 2 });
+    expect(workload).toMatchObject({
       initialRayCount: 64,
-      primitiveCurveCount: 5
+      primitiveCurveCount: 5,
+      additionalOutgoingRaySlotCount: 5
     });
+    expect(workload.grinStepFactor).toBeCloseTo(400);
+  });
+
+  it('uses one virtual curve for source-only workloads', () => {
+    const choose = initialRayCount => selectPrimitiveEngineKind({
+      workload: {
+        primitiveCurveCount: 0,
+        initialRayCount,
+        additionalOutgoingRaySlotCount: 0,
+        grinStepFactor: 0
+      },
+      isAvailable: () => true,
+      outgoingCoefficient: 0,
+      defaultRenderCoefficient: 0,
+      nonDefaultRenderCoefficient: 0,
+      grinStepCoefficient: 0
+    });
+    expect(choose(1023)).toBe('primitiveCpu');
+    expect(choose(1024)).toBe('webgpu');
+  });
+
+  it('applies the static GRIN inverse-step correction', () => {
+    expect(selectPrimitiveEngineKind({
+      workload: {
+        primitiveCurveCount: 21,
+        initialRayCount: 42,
+        additionalOutgoingRaySlotCount: 0,
+        grinStepFactor: 400
+      },
+      isAvailable: () => true,
+      outgoingCoefficient: 0,
+      defaultRenderCoefficient: 0,
+      nonDefaultRenderCoefficient: 0,
+      grinStepCoefficient: 0.05
+    })).toBe('webgpu');
+  });
+
+  it('applies outgoing and color-mode rendering corrections', () => {
+    const workload = {
+      primitiveCurveCount: 1,
+      initialRayCount: 512,
+      additionalOutgoingRaySlotCount: 1
+    };
+    expect(selectPrimitiveEngineKind({
+      workload,
+      isAvailable: () => true,
+      outgoingCoefficient: 1,
+      defaultRenderCoefficient: 0,
+      nonDefaultRenderCoefficient: 0
+    })).toBe('webgpu');
+    expect(selectPrimitiveEngineKind({
+      workload: { ...workload, additionalOutgoingRaySlotCount: 0 },
+      isAvailable: () => true,
+      outgoingCoefficient: 0,
+      defaultRenderCoefficient: 0,
+      nonDefaultRenderCoefficient: 1,
+      colorMode: 'linear'
+    })).toBe('webgpu');
   });
 
   it('uses the calibrated ray-count times square-root-curve-count rule', () => {
     const choose = (primitiveCurveCount, initialRayCount) =>
       selectPrimitiveEngineKind({
         workload: { primitiveCurveCount, initialRayCount },
-        isAvailable: () => true
+        isAvailable: () => true,
+        defaultRenderCoefficient: 0,
+        nonDefaultRenderCoefficient: 0
       });
     expect(choose(1, 1023)).toBe('primitiveCpu');
     expect(choose(1, 1024)).toBe('webgpu');
     expect(choose(16, 255)).toBe('primitiveCpu');
     expect(choose(16, 256)).toBe('webgpu');
-    expect(choose(0, 1000000)).toBe('primitiveCpu');
+    expect(choose(0, 1023)).toBe('primitiveCpu');
+    expect(choose(0, 1024)).toBe('webgpu');
   });
 
   it('honors forced engines and avoids unavailable WebGPU automatically', () => {

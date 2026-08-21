@@ -26,6 +26,7 @@ export function createWebGpuMegakernelShader({
   renderVariant,
   acceleration = 'bvh4',
   lanesPerRay = 1,
+  atomicFixedPointScale = 1048576,
 }) {
   const trace = createWebGpuRawTraceShader(description, workgroupSize);
   if (!trace.supported) return trace;
@@ -61,7 +62,7 @@ const PARAMETER_TOLERANCE:f32=${wgslFloat(
 const TANGENT_TOLERANCE:f32=${wgslFloat(
   getIntersectionTolerancePolicy(description.numericEpsilon).tangent
 )};
-const FIXED_SCALE:f32=1048576.0;
+const FIXED_SCALE:f32=${atomicFixedPointScale}.0;
 const I32_MAX_VALUE:i32=2147483647;
 const I32_MIN_VALUE:i32=-2147483647-1;
 const I32_MAX_F32:f32=2147483520.0;

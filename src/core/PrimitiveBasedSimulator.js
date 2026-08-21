@@ -112,6 +112,7 @@ class PrimitiveBasedSimulator {
    * @param {boolean} [options.logDebugInfo=false]
    * @param {boolean} [options.drawBvh=false]
    * @param {Object} [options.bvhOptions]
+   * @param {Object} [options.engineSelectionConfig]
    */
   constructor({
     scene,
@@ -129,6 +130,7 @@ class PrimitiveBasedSimulator {
     logDebugInfo = false,
     drawBvh = false,
     bvhOptions = {},
+    engineSelectionConfig = {},
   }) {
     this.scene = scene;
     this.ctxBelowLight = ctxBelowLight;
@@ -141,6 +143,7 @@ class PrimitiveBasedSimulator {
     this.logDebugInfo = logDebugInfo;
     this.drawBvh = drawBvh;
     this.bvhOptions = bvhOptions;
+    this.engineSelectionConfig = engineSelectionConfig;
 
     this.scene.simulator = this;
     this.dpr = 1;
@@ -176,7 +179,9 @@ class PrimitiveBasedSimulator {
     if (this.engineProviders.size === 0) {
       throw new TypeError('At least one primitive simulation engine is required.');
     }
-    this.workload = summarizePrimitiveWorkload([]);
+    this.workload = summarizePrimitiveWorkload([], {
+      lengthScale: this.scene.lengthScale,
+    });
     const initialEngineKind = this.selectEngineKind(this.workload);
     this.engine = this.getEngine(initialEngineKind);
     this.engineFallbackActive = false;
@@ -214,7 +219,9 @@ class PrimitiveBasedSimulator {
     const selected = this.engineSelector({
       preference: this.enginePreference,
       workload,
-      isAvailable: kind => this.isEngineAvailable(kind)
+      isAvailable: kind => this.isEngineAvailable(kind),
+      colorMode: this.scene.colorMode,
+      ...this.engineSelectionConfig,
     });
     if (this.engineProviders.has(selected)) return selected;
     if (this.engineProviders.has('primitiveCpu')) return 'primitiveCpu';
@@ -455,7 +462,9 @@ class PrimitiveBasedSimulator {
     let update;
     do {
       update = await run.advance({
-        timeBudgetMs: this.enableTimer ? 200 : Infinity,
+        timeBudgetMs: this.enableTimer
+          ? (this.engine.timeBudgetMs ?? 200)
+          : Infinity,
       });
       if (generation !== this.runGeneration) {
         run.cancel?.();
@@ -604,7 +613,9 @@ class PrimitiveBasedSimulator {
       : null;
 
     this.primitives = primitives;
-    this.workload = summarizePrimitiveWorkload(primitives);
+    this.workload = summarizePrimitiveWorkload(primitives, {
+      lengthScale: this.scene.lengthScale,
+    });
     this.activateEngine(this.selectEngineKind(this.workload), { fallback: false });
     this.preprocessCollectedPrimitives(
       collectionTime,

@@ -79,7 +79,10 @@ export function createMegakernelQueueUniformData(
  * below the configured target power contributes its power divided by that
  * target. The retained representative is amplified before the next trace.
  */
-export function createMegakernelCollectorShader(workgroupSize) {
+export function createMegakernelCollectorShader(
+  workgroupSize,
+  atomicFixedPointScale = 1048576
+) {
   return `
 struct Ray { origin:vec2f,direction:vec2f,powers:vec2f,
   wavelength:f32,flags:u32 };
@@ -95,7 +98,7 @@ struct QueueConfig { rayCapacity:u32,activeOffset:u32,blockOffset:u32,
 @group(0) @binding(4) var<storage,read> memberships:array<u32>;
 var<workgroup> weights:array<f32,${workgroupSize}>;
 var<workgroup> destinations:array<u32,${workgroupSize}>;
-const FIXED_SCALE:f32=1048576.0;
+const FIXED_SCALE:f32=${atomicFixedPointScale}.0;
 
 fn outputGeneration()->u32 { return atomicLoad(&queue[21])+1u; }
 fn samplingPhase(generation:u32)->f32 {

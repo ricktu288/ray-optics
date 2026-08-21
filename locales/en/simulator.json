@@ -756,12 +756,28 @@
         "description": "Write diagnostic and performance information from the selected engine to the browser console."
       },
       "sections": {
+        "engineSelection": {
+          "title": "Automatic engine selection",
+          "description": "These device-dependent values choose between CPU and WebGPU from the expanded primitive list and scene color mode. They can be entered manually now; automatic calibration will be added separately."
+        },
         "bvh": {
           "title": "Bounding volume hierarchy (BVH)",
           "description": "Before tracing rays, the simulator builds a BVH by grouping nearby shapes into boxes, allowing each ray to skip shapes it cannot reach."
         },
-        "webgpu": {
-          "title": "WebGPU"
+        "webgpuCooperation": {
+          "title": "WebGPU ray cooperation",
+          "description": "Controls how WebGPU lanes cooperate on a ray and when direct curve testing is used instead of BVH traversal. These values are intended to be calibrated for the GPU adapter, but can be set manually."
+        },
+        "webgpuScheduling": {
+          "title": "WebGPU scheduling"
+        },
+        "webgpuMemory": {
+          "title": "WebGPU memory limits",
+          "description": "Capacity limits bound the persistent ray and ready-geometry buffers. Increasing them may allow larger batches but consumes more GPU memory."
+        },
+        "webgpuNumerics": {
+          "title": "WebGPU atomic accumulation",
+          "description": "Controls the fixed-point representation used by WebGPU atomic accumulation. This is a numerical accuracy and overflow tradeoff, not a performance calibration value."
         },
         "primitiveCpu": {
           "title": "CPU"
@@ -771,6 +787,26 @@
         }
       },
       "fields": {
+        "webGpuWorkloadThreshold": {
+          "title": "CPU/WebGPU crossover score",
+          "description": "Select WebGPU in automatic mode when the corrected static workload score reaches this value. This base intersection crossover is determined by the ray-cooperation benchmark."
+        },
+        "outgoingCoefficient": {
+          "title": "Outgoing-ray coefficient",
+          "description": "Additional static workload assigned to each possible extra outgoing-ray slot. This corrects the intersection-only estimate for branching work."
+        },
+        "defaultRenderCoefficient": {
+          "title": "Default-render coefficient",
+          "description": "Per-initial-ray rendering correction used for the default color mode."
+        },
+        "nonDefaultRenderCoefficient": {
+          "title": "Non-default-render coefficient",
+          "description": "Per-initial-ray rendering correction used for linear and other non-default color modes, including the CPU-to-WebGL transfer cost."
+        },
+        "grinStepCoefficient": {
+          "title": "GRIN stepping coefficient",
+          "description": "Static correction for numerical stepping inside GRIN regions. It multiplies the sum of each expanded GRIN region's smaller bounding-box extent divided by its step size."
+        },
         "lineLeafSize": {
           "title": "Line segments per leaf",
           "description": "Target maximum number of line segments in a BVH leaf when it contains only line segments. Larger values build faster and use fewer boxes, but may require each ray to test more segments."
@@ -810,6 +846,46 @@
         "maxPingPongsPerSubmission": {
           "title": "Ping-pongs per submission",
           "description": "Number of alternating megakernel and stable-compaction cycles encoded into one GPU submission before reading back control and detector state. Render geometry accumulates across all cycles."
+        },
+        "timeBudgetMs": {
+          "title": "CPU update time budget (ms)",
+          "description": "Maximum CPU tracing time in one simulator update before yielding to the browser and flushing pending non-default-color rendering. This controls responsiveness and is not automatically calibrated."
+        },
+        "rayCooperationEnabled": {
+          "title": "Enable ray cooperation",
+          "description": "Allow multiple WebGPU lanes to cooperate on intersection tests for one ray."
+        },
+        "rayCooperationSaturationRayCount": {
+          "title": "Cooperation saturation ray count",
+          "description": "Target number of occupied WebGPU lanes. Fewer active rays cause more lanes to cooperate on each ray."
+        },
+        "rayCooperationDirectMaxTestsPerLane": {
+          "title": "Direct tests per lane threshold",
+          "description": "Use direct primitive testing when the number of curves assigned to each cooperating lane does not exceed this value; otherwise use BVH traversal."
+        },
+        "rayCooperationMaximumLanesPerRay": {
+          "title": "Maximum lanes per ray",
+          "description": "Maximum number of WebGPU lanes that may cooperate on one ray."
+        },
+        "rayCooperationMaximumHaloFraction": {
+          "title": "Maximum neighbor halo fraction",
+          "description": "Maximum fraction of ray slots that may be consumed by neighbor halos in image and observer rendering modes. Must be less than 1."
+        },
+        "maxBatchRayEvents": {
+          "title": "Maximum batch ray events",
+          "description": "Maximum ray-event capacity used to size the WebGPU ping-pong ray and membership buffers and to bound one submission batch."
+        },
+        "maxReadyLineRecords": {
+          "title": "Maximum ready line records",
+          "description": "Maximum number of line-rendering records that may accumulate before a WebGPU batch is submitted."
+        },
+        "maxReadyPointRecords": {
+          "title": "Maximum ready point records",
+          "description": "Maximum number of point-rendering records that may accumulate before a WebGPU batch is submitted."
+        },
+        "atomicFixedPointScale": {
+          "title": "Atomic fixed-point scale",
+          "description": "Number of integer units per unit value in WebGPU raster, detector, truncation, and ambiguity accumulators. Larger values improve resolution but reduce the range before integer overflow. The maximum is 16777216."
         }
       }
     }

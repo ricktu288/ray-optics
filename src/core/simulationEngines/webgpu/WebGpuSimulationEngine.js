@@ -53,7 +53,8 @@ const DEFAULT_WEBGPU_RUN_CONFIG = Object.freeze({
   maxBatchRayEvents: 262144,
   maxReadyLineRecords: 262144,
   maxReadyPointRecords: 65536,
-  maxLocalIterations: 8,
+  atomicFixedPointScale: 1048576,
+  maxLocalIterations: 256,
   maxPingPongsPerSubmission: 4,
 });
 
@@ -448,7 +449,11 @@ class WebGpuSimulationEngine {
       }
       await this.output.initialize?.(device);
       if (this.isDisposed) return;
-      this.rasterizer = new WebGpuAtomicRayRasterizer(device, this.output);
+      this.rasterizer = new WebGpuAtomicRayRasterizer(
+        device,
+        this.output,
+        this.runConfig.atomicFixedPointScale
+      );
       await this.rasterizer.initialize();
       if (this.isDisposed) {
         this.rasterizer.destroy();
@@ -663,6 +668,7 @@ function resolveWebGpuRunConfig(config) {
     'maxBatchRayEvents',
     'maxReadyLineRecords',
     'maxReadyPointRecords',
+    'atomicFixedPointScale',
     'maxLocalIterations',
     'maxPingPongsPerSubmission',
     'rayCooperationSaturationRayCount',
@@ -671,6 +677,11 @@ function resolveWebGpuRunConfig(config) {
     if (!Number.isSafeInteger(resolved[name]) || resolved[name] <= 0) {
       throw new RangeError(`${name} must be a positive safe integer.`);
     }
+  }
+  if (resolved.atomicFixedPointScale > 16777216) {
+    throw new RangeError(
+      'atomicFixedPointScale must not exceed 16777216.'
+    );
   }
   if (!Number.isFinite(resolved.ambiguousRayWarningSafetyFactor) ||
       resolved.ambiguousRayWarningSafetyFactor < 0) {

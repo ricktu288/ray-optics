@@ -146,11 +146,21 @@
                       />
                     </div>
                     <input
+                      v-if="field.type === 'boolean'"
+                      type="checkbox"
+                      class="form-check-input"
+                      :id="'simulationEngineConfig_' + section.key + '_' + field.key"
+                      :checked="getEngineConfigValue(section.configKey, field.path)"
+                      @change="setEngineConfigOverride(section.configKey, field.path, $event.target.checked)"
+                    >
+                    <input
+                      v-else
                       type="number"
                       class="form-control form-control-sm engine-config-input"
                       :id="'simulationEngineConfig_' + section.key + '_' + field.key"
                       :value="getEngineConfigValue(section.configKey, field.path)"
                       :min="field.min"
+                      :max="field.max"
                       :step="field.step"
                       @change="setEngineConfigValue(section.configKey, field, $event)"
                       @keydown.stop
@@ -238,6 +248,18 @@ const getPathValue = (object, path) => {
 
 const ENGINE_CONFIG_SECTIONS = [
   {
+    key: 'engineSelection',
+    configKey: 'primitive',
+    hasDescription: true,
+    fields: [
+      { key: 'webGpuWorkloadThreshold', path: ['engineSelection', 'webGpuWorkloadThreshold'], min: 1, step: 1, integer: true, hasInfo: true },
+      { key: 'outgoingCoefficient', path: ['engineSelection', 'outgoingCoefficient'], min: 0, step: 0.01, hasInfo: true },
+      { key: 'defaultRenderCoefficient', path: ['engineSelection', 'defaultRenderCoefficient'], min: 0, step: 0.01, hasInfo: true },
+      { key: 'nonDefaultRenderCoefficient', path: ['engineSelection', 'nonDefaultRenderCoefficient'], min: 0, step: 0.01, hasInfo: true },
+      { key: 'grinStepCoefficient', path: ['engineSelection', 'grinStepCoefficient'], min: 0, step: 0.001, hasInfo: true }
+    ]
+  },
+  {
     key: 'bvh',
     configKey: 'primitive',
     hasDescription: true,
@@ -254,16 +276,47 @@ const ENGINE_CONFIG_SECTIONS = [
     key: 'primitiveCpu',
     configKey: 'primitiveCpu',
     fields: [
+      { key: 'timeBudgetMs', path: ['timeBudgetMs'], min: 1, step: 1, hasInfo: true },
       { key: 'maxLocalIterations', path: ['maxLocalIterations'], min: 1, step: 1, integer: true, hasInfo: true }
     ]
   },
   {
-    key: 'webgpu',
+    key: 'webgpuCooperation',
+    configKey: 'webgpu',
+    hasDescription: true,
+    fields: [
+      { key: 'rayCooperationEnabled', path: ['rayCooperationEnabled'], type: 'boolean', hasInfo: true },
+      { key: 'rayCooperationSaturationRayCount', path: ['rayCooperationSaturationRayCount'], min: 1, step: 1, integer: true, hasInfo: true },
+      { key: 'rayCooperationDirectMaxTestsPerLane', path: ['rayCooperationDirectMaxTestsPerLane'], min: 0, step: 1, hasInfo: true },
+      { key: 'rayCooperationMaximumLanesPerRay', path: ['rayCooperationMaximumLanesPerRay'], min: 1, step: 1, integer: true, hasInfo: true },
+      { key: 'rayCooperationMaximumHaloFraction', path: ['rayCooperationMaximumHaloFraction'], min: 0, max: 0.999, step: 0.01, hasInfo: true }
+    ]
+  },
+  {
+    key: 'webgpuScheduling',
     configKey: 'webgpu',
     fields: [
       { key: 'workgroupSize', path: ['workgroupSize'], min: 3, step: 1, integer: true, hasInfo: true },
       { key: 'maxLocalIterations', path: ['maxLocalIterations'], min: 1, step: 1, integer: true, hasInfo: true },
       { key: 'maxPingPongsPerSubmission', path: ['maxPingPongsPerSubmission'], min: 1, step: 1, integer: true, hasInfo: true }
+    ]
+  },
+  {
+    key: 'webgpuMemory',
+    configKey: 'webgpu',
+    hasDescription: true,
+    fields: [
+      { key: 'maxBatchRayEvents', path: ['maxBatchRayEvents'], min: 1, step: 1, integer: true, hasInfo: true },
+      { key: 'maxReadyLineRecords', path: ['maxReadyLineRecords'], min: 1, step: 1, integer: true, hasInfo: true },
+      { key: 'maxReadyPointRecords', path: ['maxReadyPointRecords'], min: 1, step: 1, integer: true, hasInfo: true }
+    ]
+  },
+  {
+    key: 'webgpuNumerics',
+    configKey: 'webgpu',
+    hasDescription: true,
+    fields: [
+      { key: 'atomicFixedPointScale', path: ['atomicFixedPointScale'], min: 1, max: 16777216, step: 1, integer: true, hasInfo: true }
     ]
   }
 ]
@@ -389,7 +442,8 @@ export default {
         Number.isFinite(parsedValue) &&
         (!field.integer || Number.isInteger(parsedValue)) &&
         (!field.positive || parsedValue > 0) &&
-        (field.min === undefined || parsedValue >= field.min)
+        (field.min === undefined || parsedValue >= field.min) &&
+        (field.max === undefined || parsedValue <= field.max)
 
       if (!isValid) {
         event.target.value = getEngineConfigValue(configKey, field.path)

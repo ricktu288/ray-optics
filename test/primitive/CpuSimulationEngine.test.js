@@ -210,7 +210,8 @@ describe('CpuSimulationEngine initial ray buffers', () => {
     const engine = new CpuSimulationEngine();
 
     expect(engine.numericEpsilon).toBe(Number.EPSILON);
-    expect(engine.maxLocalIterations).toBe(128);
+    expect(engine.maxLocalIterations).toBe(256);
+    expect(engine.timeBudgetMs).toBe(200);
   });
 
   it('does not require a renderer for headless color simulations', () => {

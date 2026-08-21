@@ -666,7 +666,12 @@ class CpuSimulationEngine {
   }
 
   configure(config = {}) {
-    const maxLocalIterations = config.maxLocalIterations ?? 128;
+    const timeBudgetMs = config.timeBudgetMs ?? 200;
+    if (!Number.isFinite(timeBudgetMs) || timeBudgetMs <= 0) {
+      throw new RangeError('timeBudgetMs must be positive and finite.');
+    }
+    this.timeBudgetMs = timeBudgetMs;
+    const maxLocalIterations = config.maxLocalIterations ?? 256;
     if (
       !Number.isSafeInteger(maxLocalIterations) ||
       maxLocalIterations <= 0

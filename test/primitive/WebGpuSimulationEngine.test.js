@@ -883,6 +883,29 @@ describe('WebGpuSimulationEngine', () => {
     })).toThrow(/maxPingPongsPerSubmission/);
   });
 
+  it('accepts and validates the atomic fixed-point scale', () => {
+    const engine = new WebGpuSimulationEngine({
+      config: { atomicFixedPointScale: 4096 }
+    });
+    expect(engine.runConfig.atomicFixedPointScale).toBe(4096);
+    expect(() => new WebGpuSimulationEngine({
+      config: { atomicFixedPointScale: 0 }
+    })).toThrow(/atomicFixedPointScale/);
+    expect(() => new WebGpuSimulationEngine({
+      config: { atomicFixedPointScale: 16777217 }
+    })).toThrow(/atomicFixedPointScale/);
+  });
+
+  it('decodes fixed-point diagnostics with the configured scale', () => {
+    const data = new ArrayBuffer(WEBGPU_MEGAKERNEL_RUN_CONTROL_SIZE);
+    const control = new Uint32Array(data);
+    control[17] = 2048;
+    control[26] = 1024;
+    const decoded = decodeWebGpuMegakernelRunState(data, scene(), 4096);
+    expect(decoded.totalTruncation).toBe(0.5);
+    expect(decoded.ambiguousPower).toBe(0.25);
+  });
+
   it('keys recompilation on the whole embedded scene specialization',
     async () => {
       const prepared = await prepare();

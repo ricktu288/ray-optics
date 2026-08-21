@@ -272,7 +272,10 @@ export class WebGpuMegakernelBackend {
   async initializeCollector() {
     const module = this.device.createShaderModule({
       label: 'WebGPU megakernel stable queue collector',
-      code: createMegakernelCollectorShader(this.config.workgroupSize),
+      code: createMegakernelCollectorShader(
+        this.config.workgroupSize,
+        this.config.atomicFixedPointScale
+      ),
     });
     await validateShaderModule(module, 'megakernel queue collector');
     const bindGroupLayout = this.device.createBindGroupLayout({
@@ -466,6 +469,7 @@ export class WebGpuMegakernelBackend {
       dagPrograms: this.preparedScene.dagPrograms,
       workgroupSize: this.config.workgroupSize,
       maxLocalIterations: this.config.maxLocalIterations,
+      atomicFixedPointScale: this.config.atomicFixedPointScale,
       renderVariant,
       acceleration: strategy.acceleration,
       lanesPerRay: strategy.lanesPerRay,
@@ -718,7 +722,8 @@ export class WebGpuMegakernelBackend {
       readback.destroy?.();
       return decodeWebGpuMegakernelRunState(
         data,
-        this.preparedScene.runtimeDescription
+        this.preparedScene.runtimeDescription,
+        this.config.atomicFixedPointScale
       );
     };
   }

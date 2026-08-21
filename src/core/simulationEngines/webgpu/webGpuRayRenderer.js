@@ -14,10 +14,10 @@ const BUFFER_USAGE_COPY_DST = 0x0008;
 const BUFFER_USAGE_UNIFORM = 0x0040;
 const BUFFER_USAGE_STORAGE = 0x0080;
 const TEXTURE_USAGE_RENDER_ATTACHMENT = 0x0010;
-const FIXED_POINT_SCALE = 1048576;
 const FLOATS_PER_RECORD = 16;
 
-const RASTER_WGSL = `
+function createRasterWgsl(fixedPointScale) {
+  return `
 struct Uniforms {
   viewport: vec4f,
   sizeAndCount: vec4f,
@@ -219,7 +219,7 @@ fn fragmentMain(input: FragmentInput,
     value = input.color.rgb * coverage;
   }
   value = max(value, vec3f(0.0));
-  let amountf = round(min(value * ${FIXED_POINT_SCALE}.0,
+  let amountf = round(min(value * ${fixedPointScale}.0,
                           vec3f(4294967040.0)));
   let amounts = vec3u(u32(amountf.r), u32(amountf.g), u32(amountf.b));
   let index = pixelCoord.y * size.x + pixelCoord.x;
@@ -244,8 +244,10 @@ fn fragmentMain(input: FragmentInput,
   return vec4f(0.0);
 }
 `;
+}
 
-const PRESENT_WGSL = `
+function createPresentWgsl(fixedPointScale) {
+  return `
 struct Uniforms {
   viewport: vec4f,
   sizeAndCount: vec4f,
@@ -361,11 +363,12 @@ fn fragmentMain(input: PresentOutput) -> @location(0) vec4f {
   }
   let raw = vec3u(pixelWords[base], pixelWords[base + 1u],
                   pixelWords[base + 2u]);
-  let color = vec3f(raw) / ${FIXED_POINT_SCALE}.0;
+  let color = vec3f(raw) / ${fixedPointScale}.0;
   let mode = u32(uniforms.sizeAndCount.w);
   return toneMapAdditive(color, mode);
 }
 `;
+}
 
 /**
  * Backend-neutral ready-geometry sink.  The CPU primitive event loop writes
@@ -526,9 +529,10 @@ export class WebGpuReadyRayRenderer {
 }
 
 export class WebGpuAtomicRayRasterizer {
-  constructor(device, output) {
+  constructor(device, output, fixedPointScale = 1048576) {
     this.device = device;
     this.output = output;
+    this.fixedPointScale = fixedPointScale;
     this.width = 0;
     this.height = 0;
     this.pixelBuffer = null;
@@ -545,8 +549,12 @@ export class WebGpuAtomicRayRasterizer {
 
   async initialize() {
     this.device.pushErrorScope?.('validation');
-    const rasterModule = this.device.createShaderModule({ code: RASTER_WGSL });
-    const presentModule = this.device.createShaderModule({ code: PRESENT_WGSL });
+    const rasterModule = this.device.createShaderModule({
+      code: createRasterWgsl(this.fixedPointScale)
+    });
+    const presentModule = this.device.createShaderModule({
+      code: createPresentWgsl(this.fixedPointScale)
+    });
     try {
       await validateShaderModule(rasterModule, 'raster-atomic');
       await validateShaderModule(presentModule, 'tone-map');
@@ -906,8 +914,9 @@ async function waitForSubmittedWork(device) {
  * deterministic smoke tests, not as a high-throughput replacement backend.
  */
 export class WebGpuCanvasRayRasterizer {
-  constructor(ctx) {
+  constructor(ctx, fixedPointScale = 1048576) {
     this.ctx = ctx;
+    this.fixedPointScale = fixedPointScale;
     this.width = 0;
     this.height = 0;
     this.accumulation = null;
@@ -1079,7 +1088,7 @@ export class WebGpuCanvasRayRasterizer {
     for (let channel = 0; channel < 3; channel++) {
       const next = this.accumulation[offset + channel] +
         covered[channel];
-      if (next * FIXED_POINT_SCALE > 0xffffffff) {
+      if (next * this.fixedPointScale > 0xffffffff) {
         this.overflow[pixel] = 1;
       } else {
         this.accumulation[offset + channel] = next;

@@ -204,6 +204,7 @@ function createSimulator(engine) {
     logDebugInfo: Boolean(primitiveConfig.logDebugInfo),
     drawBvh: Boolean(primitiveConfig.bvh.drawBounds),
     bvhOptions: getBvhOptions(primitiveConfig),
+    engineSelectionConfig: primitiveConfig.engineSelection,
   });
   setActiveEngineKind(primitiveSimulator.engine.kind, {
     fallback: primitiveSimulator.engineFallbackActive

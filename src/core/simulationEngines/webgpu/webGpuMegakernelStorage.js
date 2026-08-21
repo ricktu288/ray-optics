@@ -7,7 +7,6 @@ import { createWebGpuTraceSceneData } from './webGpuTraceScene.js';
 
 const BUFFER_USAGE_COPY_DST = 0x0008;
 const BUFFER_USAGE_STORAGE = 0x0080;
-const DETECTOR_FIXED_POINT_SCALE = 1048576;
 export const WEBGPU_MEGAKERNEL_RUN_CONTROL_SIZE = 108;
 
 const STATIC_STORAGE_FIELDS = Object.freeze([
@@ -108,7 +107,11 @@ export class WebGpuMegakernelStaticSceneStorage {
   }
 }
 
-export function decodeWebGpuMegakernelRunState(data, description) {
+export function decodeWebGpuMegakernelRunState(
+  data,
+  description,
+  atomicFixedPointScale = 1048576
+) {
   const bytes = data instanceof ArrayBuffer
     ? data
     : data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength);
@@ -137,7 +140,7 @@ export function decodeWebGpuMegakernelRunState(data, description) {
       const byteOffset = WEBGPU_MEGAKERNEL_RUN_CONTROL_SIZE +
         (offset + index) * 8;
       values[index] = view.getInt32(byteOffset, true) /
-        DETECTOR_FIXED_POINT_SCALE;
+        atomicFixedPointScale;
       overflow[index] = view.getUint32(byteOffset + 4, true) !== 0 ? 1 : 0;
     }
     return { values, overflow };
@@ -156,13 +159,13 @@ export function decodeWebGpuMegakernelRunState(data, description) {
     phase: control[10],
     pingPongIndex: control[11],
     processedRayCount: control[16],
-    totalTruncation: control[17] / DETECTOR_FIXED_POINT_SCALE,
+    totalTruncation: control[17] / atomicFixedPointScale,
     warningFlags: control[18],
     warningConflictCount: control[22],
     warningRayIndex: control[23],
     warningCurveId: control[24],
     warningConflictingCurveId: control[25],
-    ambiguousPower: control[26] / DETECTOR_FIXED_POINT_SCALE,
+    ambiguousPower: control[26] / atomicFixedPointScale,
     readyGeometryOverflow: control[19] !== 0,
     detectors: decodedDetectors.map(result => result.values),
     detectorOverflow: decodedDetectors.some(result =>
