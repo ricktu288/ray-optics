@@ -19,42 +19,29 @@ import fs from 'fs';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import buildInlineLocaleData from './scripts/buildInlineLocaleData.mjs';
-import {
-  buildSceneEngineBenchmarkManifest
-} from './scripts/sceneEngineBenchmarkManifest.mjs';
 import { VueLoaderPlugin } from 'vue-loader';
 
-const sceneEngineBenchmarkManifest = buildSceneEngineBenchmarkManifest(
-  path.resolve('.')
-);
-const publicSceneEngineBenchmarkManifest = sceneEngineBenchmarkManifest.map(
-  ({ filePath: _filePath, ...scene }) => ({
-    ...scene,
-    url: `./scene-engine-scenes/${scene.index}.json`,
-  })
-);
-
-class SceneEngineBenchmarkManifestPlugin {
+class RemoveObsoleteBenchmarkAssetsPlugin {
   apply(compiler) {
-    compiler.hooks.thisCompilation.tap(
-      'SceneEngineBenchmarkManifestPlugin',
-      compilation => {
-        compilation.hooks.processAssets.tap(
-          {
-            name: 'SceneEngineBenchmarkManifestPlugin',
-            stage: compiler.webpack.Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL,
-          },
-          () => {
-            compilation.emitAsset(
-              'experiments/scene-engine-benchmark-manifest.json',
-              new compiler.webpack.sources.RawSource(
-                JSON.stringify(publicSceneEngineBenchmarkManifest)
-              )
-            );
-          }
-        );
+    const remove = () => {
+      const obsoletePaths = [
+        'experiments/scene-engine-benchmark-manifest.json',
+        'experiments/scene-engine-benchmark.html',
+        'experiments/scene-engine-benchmark.js',
+        'experiments/scene-engine-benchmark.js.LICENSE.txt',
+        'experiments/scene-engine-benchmark.js.map',
+        'experiments/scene-engine-scenes',
+        'experiments/webgpu-ray-cooperation.html',
+      ];
+      for (const relativePath of obsoletePaths) {
+        fs.rmSync(path.resolve('dist', relativePath), {
+          recursive: true,
+          force: true,
+        });
       }
-    );
+    };
+    compiler.hooks.beforeRun.tap('RemoveObsoleteBenchmarkAssetsPlugin', remove);
+    compiler.hooks.watchRun.tap('RemoveObsoleteBenchmarkAssetsPlugin', remove);
   }
 }
 
@@ -64,12 +51,9 @@ export default (env, argv) => {
   return {
     entry: {
       simulator: './src/app/main.js',
-      sceneEngineBenchmark: './scripts/benchmarkSceneEngines.js',
     },
     output: {
-      filename: pathData => pathData.chunk.name === 'simulator'
-        ? 'simulator/main.js'
-        : 'experiments/scene-engine-benchmark.js',
+      filename: 'simulator/main.js',
       path: path.resolve('dist'),
       assetModuleFilename: (pathData) => {
         const filepath = path.dirname(pathData.filename).split('/').slice(1).join('/');
@@ -104,6 +88,7 @@ export default (env, argv) => {
       ],
     },
     plugins: [
+      new RemoveObsoleteBenchmarkAssetsPlugin(),
       new HtmlWebpackPlugin({
         template: './src/app/index.html',
         filename: 'simulator/index.html',
@@ -119,22 +104,9 @@ export default (env, argv) => {
           { from: 'src/img', to: 'img', noErrorOnMissing: true },
           { from: 'src/app/manifest', to: 'simulator/manifest', noErrorOnMissing: true },
           { from: 'locales', to: 'locales', noErrorOnMissing: true },
-          {
-            from: 'scripts/benchmarkWebGpuRayCooperation.html',
-            to: 'experiments/webgpu-ray-cooperation.html'
-          },
-          {
-            from: 'scripts/benchmarkSceneEngines.html',
-            to: 'experiments/scene-engine-benchmark.html'
-          },
-          ...sceneEngineBenchmarkManifest.map(scene => ({
-            from: scene.filePath,
-            to: `experiments/scene-engine-scenes/${scene.index}.json`,
-          })),
           { from: 'LICENSE', to: '', noErrorOnMissing: true },
         ],
       }),
-      new SceneEngineBenchmarkManifestPlugin(),
       new VueLoaderPlugin(),
     ],
     cache: { type: 'filesystem' },

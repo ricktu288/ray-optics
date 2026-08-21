@@ -747,6 +747,35 @@
       "description": "Numerical thresholds that affect geometry and ray termination are configured separately and stored with the scene.",
       "open": "Configure numerical tolerances"
     },
+    "calibration": {
+      "title": "Calibrate for this device",
+      "description": "Run a short set of embedded optical scenes to tune automatic CPU/WebGPU selection and WebGPU ray cooperation. Only the derived parameters are applied; a compact report is retained for later troubleshooting.",
+      "start": "Start calibration",
+      "cancel": "Cancel calibration",
+      "cancelled": "Calibration was cancelled.",
+      "download": "Download calibration report",
+      "lastRun": "Last completed calibration: {{date}}",
+      "warning": "Keep this tab and window visible until calibration finishes. Avoid switching tabs, minimizing the browser, or running other heavy work, because it can distort the timing results.",
+      "returnToSettings": "Return to settings",
+      "running": {
+        "title": "Calibrating simulation engines"
+      },
+      "complete": {
+        "title": "Calibration complete",
+        "description": "The derived settings have been applied to this browser. The report includes the device information, one warm-up time, measured samples, static workloads, and fitted parameters."
+      },
+      "failed": {
+        "title": "Calibration stopped"
+      },
+      "phases": {
+        "preparing": "Preparing WebGL and WebGPU…",
+        "cpu": "CPU probes: {{completed}} of {{total}} complete {{probe}}",
+        "rayCooperation": "WebGPU ray cooperation ({{configuration}}): {{completed}} of {{total}} complete {{probe}}",
+        "endToEndWebGpu": "WebGPU end-to-end probes: {{completed}} of {{total}} complete {{probe}}",
+        "fitting": "Fitting device parameters…",
+        "complete": "Calibration complete."
+      }
+    },
     "configuration": {
       "title": "Advanced engine settings",
       "description": "Shared preprocessing settings and tuning for every available compute engine. These settings are not stored in scene files.",
@@ -758,7 +787,7 @@
       "sections": {
         "engineSelection": {
           "title": "Automatic engine selection",
-          "description": "These device-dependent values choose between CPU and WebGPU from the expanded primitive list and scene color mode. They can be entered manually now; automatic calibration will be added separately."
+          "description": "These device-dependent values choose between CPU and WebGPU from the expanded primitive list and scene color mode. They can be calibrated automatically or entered manually."
         },
         "bvh": {
           "title": "Bounding volume hierarchy (BVH)",
@@ -766,7 +795,7 @@
         },
         "webgpuCooperation": {
           "title": "WebGPU ray cooperation",
-          "description": "Controls how WebGPU lanes cooperate on a ray and when direct curve testing is used instead of BVH traversal. These values are intended to be calibrated for the GPU adapter, but can be set manually."
+          "description": "Controls how WebGPU lanes cooperate on a ray and when direct curve testing is used instead of BVH traversal. Calibration tunes the enable switch, saturation point, direct-test crossover, and maximum lanes. The neighbor-halo limit remains a manual rendering preference."
         },
         "webgpuScheduling": {
           "title": "WebGPU scheduling"
@@ -869,7 +898,7 @@
         },
         "rayCooperationMaximumHaloFraction": {
           "title": "Maximum neighbor halo fraction",
-          "description": "Maximum fraction of ray slots that may be consumed by neighbor halos in image and observer rendering modes. Must be less than 1."
+          "description": "Maximum fraction of ray slots that may be consumed by neighbor halos in image and observer rendering modes. Must be less than 1. This value is not changed by automatic calibration."
         },
         "maxBatchRayEvents": {
           "title": "Maximum batch ray events",
