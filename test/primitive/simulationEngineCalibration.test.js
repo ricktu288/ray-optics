@@ -54,6 +54,38 @@ describe('simulation engine calibration fitting', () => {
     })).toBe(1024);
   });
 
+  it('does not constrain the fitted crossover to a power of two', () => {
+    const cpuResults = [
+      result('low', 10, 100, 3),
+      result('high', 40, 700, 5),
+    ];
+    const gpuResults = [
+      result('low', 20, 100, 3),
+      result('high', 20, 700, 5),
+    ];
+    expect(estimateIntersectionCrossover({
+      cpuResults,
+      gpuResults,
+      defaultThreshold: 1024,
+    })).toBe(521);
+  });
+
+  it('moves the crossover below the probes when WebGPU wins throughout', () => {
+    const cpuResults = [
+      result('low', 30, 128, 4),
+      result('high', 60, 512, 4),
+    ];
+    const gpuResults = [
+      result('low', 10, 128, 4),
+      result('high', 10, 512, 4),
+    ];
+    expect(estimateIntersectionCrossover({
+      cpuResults,
+      gpuResults,
+      defaultThreshold: 1024,
+    })).toBe(128);
+  });
+
   it('fits an outgoing correction when branching makes WebGPU faster', () => {
     const cpuResults = [{
       ...result('branching', 240, 100, 1),
@@ -88,10 +120,14 @@ describe('embedded calibration probes', () => {
     const ids = [...cooperation, ...endToEnd].map(probe => probe.id);
     expect(new Set(ids).size).toBe(ids.length);
     expect(cooperation).toHaveLength(4);
-    expect(endToEnd).toHaveLength(7);
-    expect(endToEnd.some(probe => probe.id === 'grin')).toBe(true);
-    expect(endToEnd.some(probe => probe.id === 'branching')).toBe(true);
-    expect(endToEnd.some(probe => probe.id === 'source-default')).toBe(true);
+    expect(endToEnd).toHaveLength(8);
+    expect(endToEnd.some(probe =>
+      probe.id === 'branched-flow-authored'
+    )).toBe(true);
+    expect(endToEnd.some(probe =>
+      probe.id === 'circle-source-authored'
+    )).toBe(true);
+    expect(endToEnd.every(probe => probe.source && probe.variant)).toBe(true);
   });
 
   it('returns fresh scene data for every calibration run', () => {

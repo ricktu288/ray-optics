@@ -53,38 +53,62 @@ export function estimateIntersectionCrossover({
   const gpuByProbe = new Map(gpuResults.map(result => [result.probeId, result]));
   const points = cpuResults.flatMap(cpu => {
     const gpu = gpuByProbe.get(cpu.probeId);
-    const baseScore = cpu.workload?.initialRayCount * Math.sqrt(
+    const score = cpu.workload?.initialRayCount * Math.sqrt(
       Math.max(1, cpu.workload?.primitiveCurveCount ?? 0)
     );
-    if (!(cpu.medianMs > 0) || !(gpu?.medianMs > 0) || !(baseScore > 0)) {
+    if (!(cpu.medianMs > 0) || !(gpu?.medianMs > 0) || !(score > 0)) {
       return [];
     }
-    return [{
-      x: Math.log(baseScore),
-      y: Math.log(cpu.medianMs / gpu.medianMs),
-    }];
+    return [{ score, cpuMs: cpu.medianMs, gpuMs: gpu.medianMs }];
   });
   if (points.length < 2) return defaultThreshold;
 
-  const meanX = points.reduce((sum, point) => sum + point.x, 0) / points.length;
-  const meanY = points.reduce((sum, point) => sum + point.y, 0) / points.length;
-  const variance = points.reduce(
-    (sum, point) => sum + (point.x - meanX) ** 2,
-    0
-  );
-  const covariance = points.reduce(
-    (sum, point) => sum + (point.x - meanX) * (point.y - meanY),
-    0
-  );
-  const slope = variance > 0 ? covariance / variance : 0;
-  if (!(slope > 0.03)) return defaultThreshold;
+  const scores = [...new Set(points.map(point => point.score))]
+    .sort((a, b) => a - b);
+  const candidates = [Math.max(1, scores[0] * 0.5)];
+  for (let index = 1; index < scores.length; index++) {
+    // Workload is multiplicative, so a geometric midpoint is the neutral
+    // boundary between adjacent measured scores. It need not be a power of 2.
+    candidates.push(Math.sqrt(scores[index - 1] * scores[index]));
+  }
+  candidates.push(scores[scores.length - 1] * 2);
 
-  const intercept = meanY - slope * meanX;
-  const estimated = Math.exp(-intercept / slope);
-  if (!Number.isFinite(estimated) || estimated <= 0) return defaultThreshold;
-  const lowerBound = Math.max(1, defaultThreshold / 16);
-  const upperBound = defaultThreshold * 16;
-  return Math.round(Math.min(upperBound, Math.max(lowerBound, estimated)));
+  let best = null;
+  for (const threshold of candidates) {
+    let regret = 0;
+    let disagreementCount = 0;
+    for (const point of points) {
+      const gpuSelected = point.score >= threshold;
+      const selectedMs = gpuSelected ? point.gpuMs : point.cpuMs;
+      const bestMs = Math.min(point.cpuMs, point.gpuMs);
+      if (selectedMs > bestMs) {
+        regret += Math.log(selectedMs / bestMs) ** 2;
+        disagreementCount++;
+      }
+    }
+    const distanceFromDefault = Math.abs(Math.log(
+      threshold / Math.max(1, defaultThreshold)
+    ));
+    const candidate = {
+      threshold,
+      regret,
+      disagreementCount,
+      distanceFromDefault,
+    };
+    if (!best || compareCrossoverCandidates(candidate, best) < 0) {
+      best = candidate;
+    }
+  }
+  return Math.max(1, Math.round(best.threshold));
+}
+
+function compareCrossoverCandidates(left, right) {
+  const regretDifference = left.regret - right.regret;
+  if (Math.abs(regretDifference) > 1e-12) return regretDifference;
+  if (left.disagreementCount !== right.disagreementCount) {
+    return left.disagreementCount - right.disagreementCount;
+  }
+  return left.distanceFromDefault - right.distanceFromDefault;
 }
 
 export function fitEngineSelectionCorrections({

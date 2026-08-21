@@ -33,12 +33,12 @@ import {
   selectRayCooperationProfile,
 } from './fitCalibration.js';
 import {
-  CALIBRATION_VIEWPORT,
+  CALIBRATION_HEADLESS_VIEWPORT,
   getEndToEndCalibrationProbes,
   getRayCooperationCalibrationProbes,
 } from './probeScenes.js';
 
-const REPORT_VERSION = 'simulation-engine-calibration-v1';
+const REPORT_VERSION = 'simulation-engine-calibration-v2';
 const REPORT_STORAGE_KEY = 'rayOpticsSimulationEngineCalibrationReport';
 const DEFAULT_MEASURED_REPEATS = 2;
 const CALIBRATION_RAY_COUNT_LIMIT = 10_000_000;
@@ -60,6 +60,7 @@ export class SimulationEngineCalibrationError extends Error {
 export async function calibrateSimulationEngines({
   currentConfigs = {},
   measuredRepeats = DEFAULT_MEASURED_REPEATS,
+  viewport = null,
   onProgress = () => {},
   signal = null,
 } = {}) {
@@ -67,6 +68,7 @@ export async function calibrateSimulationEngines({
     throw new RangeError('measuredRepeats must be a positive safe integer.');
   }
   requireVisibleDocument();
+  const calibrationViewport = resolveCalibrationViewport(viewport);
   const controller = new AbortController();
   const forwardAbort = () => controller.abort(signal?.reason);
   signal?.addEventListener('abort', forwardAbort, { once: true });
@@ -100,6 +102,7 @@ export async function calibrateSimulationEngines({
     primitiveConfig,
     cpuConfig,
     webGpuConfig,
+    viewport: calibrationViewport,
   });
 
   const progress = (phase, detail = {}) => onProgress({
@@ -114,7 +117,7 @@ export async function calibrateSimulationEngines({
   try {
     progress('preparing');
     const preparationStart = performance.now();
-    canvasSet = createCanvasSet(CALIBRATION_VIEWPORT);
+    canvasSet = createCanvasSet(CALIBRATION_HEADLESS_VIEWPORT);
     const deviceRequestStart = performance.now();
     const { adapter, device: requestedDevice } = await requestCalibrationDevice();
     device = requestedDevice;
@@ -133,6 +136,7 @@ export async function calibrateSimulationEngines({
         rendered: false,
         primitiveConfig,
         canvasSet,
+        viewport: calibrationViewport,
         measuredRepeats,
         signal: controller.signal,
         onSimulator: simulator => { activeSimulator = simulator; },
@@ -155,6 +159,7 @@ export async function calibrateSimulationEngines({
         rendered: true,
         primitiveConfig,
         canvasSet,
+        viewport: calibrationViewport,
         measuredRepeats,
         signal: controller.signal,
         onSimulator: simulator => { activeSimulator = simulator; },
@@ -192,6 +197,7 @@ export async function calibrateSimulationEngines({
           configurationId: profile.id,
           primitiveConfig,
           canvasSet,
+          viewport: calibrationViewport,
           device,
           measuredRepeats,
           signal: controller.signal,
@@ -237,6 +243,7 @@ export async function calibrateSimulationEngines({
         configurationId: selectedProfile.id,
         primitiveConfig,
         canvasSet,
+        viewport: calibrationViewport,
         device,
         measuredRepeats,
         signal: controller.signal,
@@ -351,6 +358,7 @@ function createReport({
   primitiveConfig,
   cpuConfig,
   webGpuConfig,
+  viewport,
 }) {
   return {
     benchmark: REPORT_VERSION,
@@ -364,6 +372,7 @@ function createReport({
       deviceMemoryGiB: navigator.deviceMemory ?? null,
       platform: navigator.userAgentData?.platform ?? navigator.platform ?? null,
     },
+    viewport,
     timing: {
       measuredRepeats,
       warmupsPerProbeAndConfiguration: 1,
@@ -375,7 +384,11 @@ function createReport({
     },
     probes: {
       rayCooperation: cooperationProbes.map(probe => probe.id),
-      endToEnd: endToEndProbes.map(probe => probe.id),
+      endToEnd: endToEndProbes.map(probe => ({
+        id: probe.id,
+        source: probe.source,
+        variant: probe.variant,
+      })),
     },
     executionOrder:
       'CPU for every probe; each WebGPU ray-cooperation profile for every ray-cooperation probe; selected WebGPU profile for every end-to-end probe',
@@ -450,6 +463,7 @@ async function benchmarkProbePass({
   configurationId = engineKind,
   primitiveConfig,
   canvasSet,
+  viewport,
   device = null,
   measuredRepeats,
   signal,
@@ -461,14 +475,28 @@ async function benchmarkProbePass({
   for (const probe of probes) {
     throwIfAborted(signal);
     onProbeStart(probe);
-    const scene = await loadProbeScene(probe.scene);
-    resizeCanvases(canvasSet, scene.width, scene.height);
+    const renderViewport = rendered
+      ? viewport
+      : {
+          cssWidth: CALIBRATION_HEADLESS_VIEWPORT.width,
+          cssHeight: CALIBRATION_HEADLESS_VIEWPORT.height,
+          devicePixelRatio: 1,
+          pixelWidth: CALIBRATION_HEADLESS_VIEWPORT.width,
+          pixelHeight: CALIBRATION_HEADLESS_VIEWPORT.height,
+        };
+    const scene = await loadProbeScene(probe.scene, renderViewport);
+    resizeCanvases(
+      canvasSet,
+      renderViewport.pixelWidth,
+      renderViewport.pixelHeight
+    );
     const simulator = createSimulator({
       scene,
       engine,
       primitiveConfig,
       canvasSet,
       rendered,
+      dpr: renderViewport.devicePixelRatio,
     });
     onSimulator(simulator);
     const warmupMs = await runSimulatorUpdate({
@@ -497,6 +525,13 @@ async function benchmarkProbePass({
       timingScope: rendered ? 'end-to-end-rendering' : 'headless-tracing',
       colorMode: scene.colorMode,
       mode: scene.mode,
+      viewport: {
+        cssWidth: renderViewport.cssWidth,
+        cssHeight: renderViewport.cssHeight,
+        devicePixelRatio: renderViewport.devicePixelRatio,
+        pixelWidth: renderViewport.pixelWidth,
+        pixelHeight: renderViewport.pixelHeight,
+      },
       warmupMs,
       samplesMs,
       medianMs: median(samplesMs),
@@ -510,11 +545,9 @@ async function benchmarkProbePass({
   return results;
 }
 
-async function loadProbeScene(sceneJson) {
+async function loadProbeScene(sceneJson, viewport) {
   const scene = new Scene();
-  const width = Math.max(1, Math.round(sceneJson.width));
-  const height = Math.max(1, Math.round(sceneJson.height));
-  scene.setViewportSize(width, height);
+  scene.setViewportSize(viewport.cssWidth, viewport.cssHeight);
   await new Promise(resolve => {
     scene.loadJSON(JSON.stringify(sceneJson), (_needFullUpdate, completed) => {
       if (completed) resolve();
@@ -530,8 +563,9 @@ function createSimulator({
   primitiveConfig,
   canvasSet,
   rendered,
+  dpr,
 }) {
-  return new PrimitiveBasedSimulator({
+  const simulator = new PrimitiveBasedSimulator({
     scene,
     engine,
     ctxBelowLight: rendered ? canvasSet.below : null,
@@ -552,6 +586,8 @@ function createSimulator({
       maxGroupExtent: primitiveConfig.bvh.maxGroupExtent,
     },
   });
+  simulator.dpr = dpr;
+  return simulator;
 }
 
 function runSimulatorUpdate({
@@ -793,6 +829,34 @@ function geometricMean(values) {
   return Math.exp(
     usable.reduce((sum, value) => sum + Math.log(value), 0) / usable.length
   );
+}
+
+function resolveCalibrationViewport(override) {
+  const cssWidth = positiveFinite(
+    override?.cssWidth ?? override?.width ?? window.innerWidth,
+    1
+  );
+  const cssHeight = positiveFinite(
+    override?.cssHeight ?? override?.height ?? window.innerHeight,
+    1
+  );
+  const devicePixelRatio = positiveFinite(
+    override?.devicePixelRatio ?? override?.dpr ?? window.devicePixelRatio,
+    1
+  );
+  return Object.freeze({
+    source: override ? 'caller-supplied' : 'current-browser-viewport',
+    cssWidth,
+    cssHeight,
+    devicePixelRatio,
+    pixelWidth: Math.max(1, Math.round(cssWidth * devicePixelRatio)),
+    pixelHeight: Math.max(1, Math.round(cssHeight * devicePixelRatio)),
+  });
+}
+
+function positiveFinite(value, fallback) {
+  const numeric = Number(value);
+  return Number.isFinite(numeric) && numeric > 0 ? numeric : fallback;
 }
 
 function requireVisibleDocument() {
