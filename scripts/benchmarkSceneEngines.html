@@ -30,26 +30,32 @@
 <body>
   <h1>Real-scene engine benchmark</h1>
   <p>
-    This benchmarks every gallery scene, every module scene, and the spherical
-    lens scene variants. A second <code>5× density + linear color</code> case is
+    This benchmarks every gallery scene and every module scene. A second
+    <code>5× density + linear color</code> case is
     added when a scene contains a Beam, Point Source, or Angle Source (including
-    sources inside modules).
+    sources inside modules). Default-color cases explicitly use a
+    <code>0.01</code> ray-power cutoff for identical CPU and WebGPU workloads.
   </p>
   <p>
-    Runs are configuration-major: all legacy cases, all primitive CPU cases,
-    then every scene under each WebGPU setting. Each measurement is the second
-    full <code>updateSimulation</code> on the same scene and engine, after an
-    untimed update has compiled and warmed it. Timings include preprocessing,
+    Runs are configuration-major: all primitive CPU cases, then all production
+    WebGPU cases. Each case has one untimed update followed by consecutive
+    measured <code>updateSimulation</code> calls on the same simulator, with no
+    re-warmup between samples. Timings include preprocessing,
     tracing, every rendering pass, Canvas 2D synchronization, WebGL
     <code>finish()</code>, and WebGPU queue completion.
   </p>
   <p class="muted">
-    The default uses one measured sample and runs until every case finishes.
+    The default uses three measured samples and runs until every case finishes.
+    Five production WebGPU calibration cases are selected from static expanded-
+    primitive features to target the fitted coefficients and run first within
+    the WebGPU pass. The resulting
+    outgoing-ray and color-mode-specific render corrections are fitted only on
+    those cases, then evaluated on the remaining cases.
     Query parameters:
-    <code>scene=id,id</code>, <code>group=gallery,module,sphericalLens</code>,
-    <code>setting=legacy,primitiveCpu,webgpu-production,...</code>,
-    <code>repeats=1</code>, <code>timeoutSeconds=30</code>, and
-    <code>autorun=1</code>.
+    <code>scene=id,id</code>, <code>group=gallery,module</code>,
+    <code>setting=primitiveCpu,webgpu-production,webgpu-no-cooperation</code>,
+    <code>repeats=3</code>, <code>calibrationCases=5</code>,
+    <code>timeoutSeconds=30</code>, and <code>autorun=1</code>.
   </p>
   <p id="status">Loading the scene inventory…</p>
   <div class="controls">

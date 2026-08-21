@@ -15,9 +15,6 @@ const DENSITY_RESPONSIVE_SOURCE_TYPES = new Set([
 export function buildSceneEngineBenchmarkManifest(repoRoot) {
   const galleryDirectory = path.join(repoRoot, 'data/galleryScenes');
   const moduleDirectory = path.join(repoRoot, 'data/moduleScenes');
-  const sphericalLensDirectory = path.join(
-    repoRoot, 'test/scenes/glass/SphericalLens'
-  );
   const galleryList = readJson(path.join(repoRoot, 'data/galleryList.json'));
   const galleryCategories = new Map(galleryList.flatMap(category =>
     category.content.map(item => [item.id, category.id])
@@ -39,12 +36,6 @@ export function buildSceneEngineBenchmarkManifest(repoRoot) {
       group: 'module',
       category: 'module',
       filePath: path.join(moduleDirectory, `${id}.json`),
-    })),
-    ...listJsonIds(sphericalLensDirectory).map(id => ({
-      id,
-      group: 'sphericalLens',
-      category: 'SphericalLens',
-      filePath: path.join(sphericalLensDirectory, `${id}.json`),
     })),
   ];
 
@@ -95,4 +86,3 @@ function readJson(filePath) {
 function finitePositiveOr(value, fallback) {
   return Number.isFinite(value) && value > 0 ? value : fallback;
 }
-

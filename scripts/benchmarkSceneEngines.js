@@ -4,23 +4,60 @@ import {
   FLOAT32_EPSILON,
   PrimitiveBasedSimulator,
   Scene,
-  Simulator,
   WebGpuSimulationEngine,
 } from '../src/core/index.js';
 import {
-  DEFAULT_WEBGPU_RAY_COOPERATION_CONFIG,
   resolvePrimitiveSimulatorConfig,
   resolveSimulationEngineConfig,
   WEBGPU_MIN_STORAGE_BUFFERS_PER_SHADER_STAGE,
 } from '../src/core/simulationEngines/config.js';
+import { DEFAULT_WEBGPU_WORKLOAD_THRESHOLD } from
+  '../src/core/simulationEngines/primitiveEngineSelection.js';
 
-const REPORT_VERSION = 'real-scene-engine-benchmark-v2';
+const REPORT_VERSION = 'real-scene-engine-benchmark-v4';
 const STORAGE_KEY = 'rayOpticsRealSceneEngineBenchmarkReport';
 const DEFAULT_MAX_RAY_DEPTH = 256;
 const DEFAULT_RAY_COUNT_LIMIT = 10_000_000;
+const ENGINE_SELECTION_THRESHOLD = DEFAULT_WEBGPU_WORKLOAD_THRESHOLD;
+const SIGNIFICANT_RUNTIME_MS = 150;
+const COEFFICIENT_GRID_MAX = 8;
+const COEFFICIENT_GRID_STEP = 0.25;
+const CALIBRATION_PROBE_TARGETS = [
+  {
+    id: 'non-default-outgoing',
+    colorClass: 'non-default',
+    term: 'outgoing',
+    requiredCoefficient: 2,
+  },
+  {
+    id: 'default-outgoing-and-render',
+    colorClass: 'default',
+    term: 'outgoing',
+    requiredCoefficient: 5.5,
+  },
+  {
+    id: 'non-default-render',
+    colorClass: 'non-default',
+    term: 'render',
+    requiredCoefficient: 1,
+  },
+  {
+    id: 'default-render-low',
+    colorClass: 'default',
+    term: 'render',
+    requiredCoefficient: 0.75,
+  },
+  {
+    id: 'default-render-high',
+    colorClass: 'default',
+    term: 'render',
+    requiredCoefficient: 4,
+  },
+];
 const params = new URLSearchParams(location.search);
-const repeats = integerParameter('repeats', 1, 1, 9);
+const repeats = integerParameter('repeats', 3, 1, 9);
 const timeoutMs = numberParameter('timeoutSeconds', 30, 1, 300) * 1000;
+const calibrationCaseCount = integerParameter('calibrationCases', 5, 3, 64);
 const randomSeed = params.get('seed') ?? 'real-scene-engine-benchmark-v1';
 const selectedSceneIds = stringSetParameter('scene');
 const selectedGroups = stringSetParameter('group');
@@ -47,13 +84,8 @@ let activeSimulator = null;
 let sharedGpu = null;
 
 const webGpuBaseConfig = resolveSimulationEngineConfig('webgpu');
-const settings = [
-  {
-    id: 'legacy',
-    label: 'Legacy',
-    kind: 'legacy',
-    purpose: 'Existing object-oriented simulator baseline',
-  },
+const defaultSettingIds = new Set(['primitiveCpu', 'webgpu-production']);
+const availableSettings = [
   {
     id: 'primitiveCpu',
     label: 'Primitive CPU',
@@ -74,22 +106,10 @@ const settings = [
     purpose: 'Isolates whether end-to-end rendering justifies ray cooperation',
     config: { ...webGpuBaseConfig, rayCooperationEnabled: false },
   },
-  {
-    id: 'webgpu-bvh-biased',
-    label: 'WebGPU BVH-biased formula',
-    kind: 'webgpu',
-    purpose: 'Tests a 0.5× correction to the direct-intersection threshold',
-    config: {
-      ...webGpuBaseConfig,
-      rayCooperationDirectMaxTestsPerLane: Math.max(
-        0,
-        DEFAULT_WEBGPU_RAY_COOPERATION_CONFIG
-          .rayCooperationDirectMaxTestsPerLane / 2
-      ),
-    },
-  },
-].filter(setting =>
-  !selectedSettingIds || selectedSettingIds.has(setting.id)
+];
+const settings = availableSettings.filter(setting => selectedSettingIds
+  ? selectedSettingIds.has(setting.id)
+  : defaultSettingIds.has(setting.id)
 );
 
 startButton.addEventListener('click', runBenchmark);
@@ -169,6 +189,9 @@ async function runBenchmark() {
     for (let settingIndex = 0; settingIndex < settings.length; settingIndex++) {
       const setting = settings[settingIndex];
       if (stopRequested) break;
+      if (setting.id === 'webgpu-production') {
+        initializeCalibrationSelection(currentReport);
+      }
       currentReport.currentSetting = setting.id;
       persistReport();
       let environment;
@@ -180,9 +203,10 @@ async function runBenchmark() {
       }
 
       try {
-        for (let caseIndex = 0; caseIndex < cases.length; caseIndex++) {
+        const settingCases = orderCasesForSetting(setting, cases, currentReport);
+        for (let caseIndex = 0; caseIndex < settingCases.length; caseIndex++) {
           if (stopRequested) break;
-          const benchmarkCase = cases[caseIndex];
+          const benchmarkCase = settingCases[caseIndex];
           const completed = currentReport.results.length;
           const total = cases.length * settings.length;
           statusElement.textContent =
@@ -195,6 +219,7 @@ async function runBenchmark() {
             environment
           );
           currentReport.results.push(result);
+          updateEngineSelectionAnalysis(currentReport);
           currentReport.elapsedSeconds = (performance.now() - startedAt) / 1000;
           currentReport.completedResultCount = currentReport.results.length;
           currentReport.remainingEstimateSeconds = estimateRemainingSeconds(
@@ -280,6 +305,7 @@ function createReport() {
         'Add a 5x density, linear-color case for scenes containing AngleSource, Beam, or PointSource, including module definitions.',
       densityPropertyRule:
         'rayModeDensity for rays/extended; imageModeDensity for images/observer',
+      defaultColorRayPowerCutoff: 0.01,
       randomSeed,
       backgroundImages: 'disabled; presentation-only and not timed',
       unauthoredMaxRayDepth: DEFAULT_MAX_RAY_DEPTH,
@@ -294,6 +320,17 @@ function createReport() {
       config: setting.config ?? null,
     }])),
     adapter: null,
+    calibration: {
+      requestedCaseCount: calibrationCaseCount,
+      caseKeys: [],
+      status: 'awaiting-primitive-cpu-pass',
+      selectionUsesTimingData: false,
+      selectedCasesRunFirstInProductionWebGpuPass: true,
+      probeTargets: CALIBRATION_PROBE_TARGETS,
+      selectionRule:
+        'Choose coefficient-targeted probes from static expanded-primitive workloads; use farthest-point sampling only for extra requested cases.',
+    },
+    engineSelectionModel: null,
     results: [],
     completedResultCount: 0,
     totalResultCount: cases.length * settings.length,
@@ -359,11 +396,6 @@ async function benchmarkCaseWithSetting(benchmarkCase, setting, environment) {
     });
   } finally {
     activeSimulator = null;
-    if (setting.kind === 'legacy') {
-      simulator?.canvasRendererMain?.destroy?.();
-      simulator?.canvasRendererBelowLight?.destroy?.();
-      simulator?.canvasRendererAboveLight?.destroy?.();
-    }
   }
 }
 
@@ -389,13 +421,21 @@ function prepareSceneJson(authoredJson, variant) {
     sceneJson[densityProperty] = baseDensity * 5;
     sceneJson.colorMode = 'linear';
   }
+  const colorMode = sceneJson.colorMode ?? 'default';
+  if (colorMode === 'default') {
+    sceneJson.numericalTolerances = {
+      ...(sceneJson.numericalTolerances ?? {}),
+      rayPowerCutoff: 0.01,
+    };
+  }
   return {
     sceneJson,
     mode,
     densityProperty,
     baseDensity,
     effectiveDensity: variant === '5x-linear' ? baseDensity * 5 : baseDensity,
-    colorMode: sceneJson.colorMode ?? 'default',
+    colorMode,
+    rayPowerCutoff: sceneJson.numericalTolerances?.rayPowerCutoff ?? 1e-6,
     maxRayDepth: sceneJson.maxRayDepth,
     width: positiveIntegerOr(authoredJson.width, 1500),
     height: positiveIntegerOr(authoredJson.height, 900),
@@ -420,28 +460,6 @@ async function loadScene(sceneJson, width, height) {
 async function createEnvironment(setting) {
   const contexts = canvasContexts();
   const primitiveConfig = resolvePrimitiveSimulatorConfig();
-  if (setting.kind === 'legacy') {
-    requireWebGl(contexts.gl);
-    return {
-      kind: setting.kind,
-      ...contexts,
-      createSimulator: scene => new Simulator(
-        scene,
-        contexts.main,
-        contexts.below,
-        contexts.above,
-        contexts.grid,
-        contexts.virtual,
-        true,
-        DEFAULT_RAY_COUNT_LIMIT,
-        contexts.gl,
-        null,
-        createTempCanvas
-      ),
-      dispose: async () => {},
-    };
-  }
-
   if (setting.kind === 'primitiveCpu') {
     requireWebGl(contexts.gl);
     const engine = new CpuSimulationEngine({
@@ -546,11 +564,17 @@ function runSimulatorUpdate(simulator, environment, caseTimeoutMs) {
 async function synchronizeRendering(environment) {
   // Canvas 2D has no explicit flush in ordinary HTML canvases. A one-pixel
   // read synchronizes the command stream without copying the full viewport.
-  for (const context of [environment.below, environment.above]) {
+  const canvas2dContexts = [
+    environment.below,
+    environment.above,
+    environment.grid,
+    environment.virtual,
+    ...(environment.kind === 'webgpu' ? [] : [environment.main]),
+  ];
+  for (const context of canvas2dContexts) {
     context?.getImageData?.(0, 0, 1, 1);
   }
   if (environment.kind !== 'webgpu') {
-    if (environment.main) environment.main.getImageData(0, 0, 1, 1);
     environment.gl?.finish?.();
   }
   await environment.device?.queue?.onSubmittedWorkDone?.();
@@ -568,6 +592,7 @@ function resultRow({
   medianMs = null,
   elapsedWallMs = null,
 }) {
+  const staticWorkload = summarizeSimulatorWorkload(simulator);
   return {
     setting: setting.id,
     engine: setting.kind,
@@ -581,6 +606,7 @@ function resultRow({
     baseDensity: prepared?.baseDensity ?? null,
     effectiveDensity: prepared?.effectiveDensity ?? null,
     colorMode: prepared?.colorMode ?? null,
+    rayPowerCutoff: prepared?.rayPowerCutoff ?? null,
     maxRayDepth: prepared?.maxRayDepth ?? null,
     viewportWidth: prepared?.width ?? null,
     viewportHeight: prepared?.height ?? null,
@@ -589,11 +615,507 @@ function resultRow({
     samplesMs,
     medianMs,
     processedRayCount: simulator?.processedRayCount ?? null,
+    staticWorkload,
+    initialRayCount: staticWorkload?.initialRayCount ?? null,
+    primitiveCurveCount: staticWorkload?.primitiveCurveCount ?? null,
+    additionalOutgoingRaySlotCount:
+      staticWorkload?.additionalOutgoingRaySlotCount ?? null,
+    currentSelectionScore: staticWorkload?.intersectionScore ?? null,
     totalTruncation: simulator?.totalTruncation ?? null,
     elapsedWallMs,
     error: error ? String(error).slice(0, 4000) : null,
     completedAt: new Date().toISOString(),
   };
+}
+
+function summarizeSimulatorWorkload(simulator) {
+  const workload = simulator?.workload;
+  const primitives = simulator?.primitives;
+  if (
+    !workload ||
+    !Number.isFinite(workload.initialRayCount) ||
+    !Number.isFinite(workload.primitiveCurveCount) ||
+    !Array.isArray(primitives)
+  ) {
+    return null;
+  }
+
+  let additionalOutgoingRaySlotCount = 0;
+  const primitiveKindCounts = {
+    source: 0,
+    surface: 0,
+    region: 0,
+    detector: 0,
+  };
+  for (const primitive of primitives) {
+    if (primitiveKindCounts[primitive?.kind] !== undefined) {
+      primitiveKindCounts[primitive.kind]++;
+    }
+    if (primitive?.kind === 'surface') {
+      additionalOutgoingRaySlotCount += Math.max(
+        0,
+        finiteNonnegativeOr(primitive.surfaceType?.outRayCount, 1) - 1
+      );
+    } else if (primitive?.kind === 'region' && primitive.partialReflect) {
+      additionalOutgoingRaySlotCount += Array.isArray(primitive.curves)
+        ? primitive.curves.length
+        : 0;
+    }
+  }
+
+  const initialRayCount = workload.initialRayCount;
+  const primitiveCurveCount = workload.primitiveCurveCount;
+  return {
+    source: 'expanded primitive object list after module expansion',
+    primitiveCount: primitives.length,
+    primitiveKindCounts,
+    initialRayCount,
+    primitiveCurveCount,
+    additionalOutgoingRaySlotCount,
+    intersectionScore: primitiveCurveCount > 0
+      ? initialRayCount * Math.sqrt(primitiveCurveCount)
+      : 0,
+    outgoingScoreBase: initialRayCount * additionalOutgoingRaySlotCount,
+    renderScoreBase: initialRayCount,
+  };
+}
+
+function initializeCalibrationSelection(report) {
+  if (report.calibration?.caseKeys?.length) return;
+  const candidates = report.results.filter(result =>
+    result.setting === 'primitiveCpu' &&
+    result.staticWorkload
+  );
+  const selected = selectCalibrationRows(candidates, calibrationCaseCount);
+  report.calibration = {
+    ...report.calibration,
+    status: selected.length ? 'awaiting-webgpu-calibration-cases' : 'unavailable',
+    availableCandidateCount: candidates.length,
+    actualCaseCount: selected.length,
+    caseKeys: selected.map(result => result.case),
+  };
+}
+
+function orderCasesForSetting(setting, unorderedCases, report) {
+  if (setting.id !== 'webgpu-production') return unorderedCases;
+  const calibrationKeys = new Set(report.calibration?.caseKeys ?? []);
+  if (!calibrationKeys.size) return unorderedCases;
+  return [
+    ...unorderedCases.filter(item => calibrationKeys.has(item.key)),
+    ...unorderedCases.filter(item => !calibrationKeys.has(item.key)),
+  ];
+}
+
+function selectCalibrationRows(rows, requestedCount) {
+  if (rows.length <= requestedCount) return [...rows];
+  const ordered = [...rows].sort((a, b) => a.case.localeCompare(b.case));
+  const vectors = standardizeVectors(ordered.map(calibrationFeatureVector));
+  const selectedIndices = [];
+  const addIndex = index => {
+    if (index >= 0 && !selectedIndices.includes(index)) selectedIndices.push(index);
+  };
+
+  for (const target of CALIBRATION_PROBE_TARGETS) {
+    if (selectedIndices.length >= requestedCount) break;
+    const targetIndex = closestProbeIndex(
+      ordered,
+      selectedIndices,
+      target
+    );
+    addIndex(targetIndex);
+  }
+
+  while (selectedIndices.length < requestedCount) {
+    let bestIndex = -1;
+    let bestDistance = -1;
+    for (let index = 0; index < ordered.length; index++) {
+      if (selectedIndices.includes(index)) continue;
+      const distance = Math.min(...selectedIndices.map(selectedIndex =>
+        squaredDistance(vectors[index], vectors[selectedIndex])
+      ));
+      if (distance > bestDistance) {
+        bestDistance = distance;
+        bestIndex = index;
+      }
+    }
+    if (bestIndex < 0) break;
+    selectedIndices.push(bestIndex);
+  }
+  return selectedIndices.map(index => ordered[index]);
+}
+
+function closestProbeIndex(rows, selectedIndices, target) {
+  let bestIndex = -1;
+  let bestDistance = Infinity;
+  for (let index = 0; index < rows.length; index++) {
+    if (selectedIndices.includes(index)) continue;
+    const row = rows[index];
+    if ((row.colorMode === 'default' ? 'default' : 'non-default') !==
+      target.colorClass) continue;
+    const workload = row.staticWorkload;
+    if (workload.intersectionScore >= ENGINE_SELECTION_THRESHOLD) continue;
+    const correctionBase = target.term === 'outgoing'
+      ? workload.outgoingScoreBase
+      : workload.renderScoreBase;
+    if (
+      correctionBase <= 0 ||
+      (target.term === 'render' && workload.outgoingScoreBase !== 0)
+    ) continue;
+    const requiredCoefficient =
+      (ENGINE_SELECTION_THRESHOLD - workload.intersectionScore) /
+      correctionBase;
+    if (!Number.isFinite(requiredCoefficient) || requiredCoefficient <= 0) {
+      continue;
+    }
+    const distance = Math.abs(Math.log(
+      requiredCoefficient / target.requiredCoefficient
+    ));
+    if (distance < bestDistance) {
+      bestDistance = distance;
+      bestIndex = index;
+    }
+  }
+  return bestIndex;
+}
+
+function calibrationFeatureVector(row) {
+  const workload = row.staticWorkload;
+  return [
+    Math.log1p(workload.intersectionScore),
+    Math.log1p(workload.outgoingScoreBase),
+    Math.log1p(workload.initialRayCount),
+    row.colorMode === 'default' ? 0 : 1,
+  ];
+}
+
+function standardizeVectors(vectors) {
+  if (!vectors.length) return [];
+  const means = vectors[0].map((_, column) =>
+    vectors.reduce((sum, vector) => sum + vector[column], 0) / vectors.length
+  );
+  const scales = means.map((mean, column) => Math.sqrt(
+    vectors.reduce((sum, vector) =>
+      sum + (vector[column] - mean) ** 2, 0
+    ) / vectors.length
+  ) || 1);
+  return vectors.map(vector => vector.map((value, column) =>
+    (value - means[column]) / scales[column]
+  ));
+}
+
+function squaredDistance(first, second) {
+  return first.reduce((sum, value, index) =>
+    sum + (value - second[index]) ** 2, 0
+  );
+}
+
+function updateEngineSelectionAnalysis(report) {
+  const calibrationKeys = report.calibration?.caseKeys ?? [];
+  if (!calibrationKeys.length) return;
+  const productionRows = new Map(report.results
+    .filter(result => result.setting === 'webgpu-production')
+    .map(result => [result.case, result]));
+  const settledCalibrationCount = calibrationKeys.filter(caseKey =>
+    productionRows.has(caseKey)
+  ).length;
+  report.calibration.completedWebGpuCaseCount = settledCalibrationCount;
+  if (settledCalibrationCount < calibrationKeys.length) return;
+  const calibrationSet = new Set(calibrationKeys);
+  report.calibration.totalElapsedWallMs = report.results
+    .filter(result =>
+      calibrationSet.has(result.case) &&
+      (result.setting === 'primitiveCpu' ||
+        result.setting === 'webgpu-production')
+    )
+    .reduce((sum, result) => sum + (result.elapsedWallMs ?? 0), 0);
+
+  const comparison = collectEngineComparisonPairs(report.results);
+  const calibrationPairs = comparison.pairs.filter(pair =>
+    calibrationSet.has(pair.case)
+  );
+  if (calibrationPairs.length < Math.min(6, calibrationKeys.length)) {
+    report.calibration.status = 'insufficient-valid-pairs';
+    report.calibration.validPairCount = calibrationPairs.length;
+    return;
+  }
+
+  let coefficients = report.engineSelectionModel?.coefficients;
+  if (!coefficients) {
+    coefficients = fitCorrectionCoefficients(calibrationPairs);
+  }
+  const ratioSlope = report.engineSelectionModel?.ratioModel?.slope ??
+    fitRatioSlope(calibrationPairs, coefficients);
+  const heldOutPairs = comparison.pairs.filter(pair =>
+    !calibrationSet.has(pair.case)
+  );
+  report.calibration.status = comparison.exclusions.some(exclusion =>
+    calibrationSet.has(exclusion.case)
+  ) ? 'ready-with-exclusions' : 'ready';
+  report.calibration.validPairCount = calibrationPairs.length;
+  report.engineSelectionModel = {
+    status: 'ready',
+    fittedAt: report.engineSelectionModel?.fittedAt ?? new Date().toISOString(),
+    threshold: ENGINE_SELECTION_THRESHOLD,
+    intersectionTermCalibration: {
+      source: 'current hardcoded production selector',
+      calibratedByThisRun: false,
+      note:
+        'The small end-to-end calibration fits only outgoing and render corrections.',
+    },
+    significantRuntimeMs: SIGNIFICANT_RUNTIME_MS,
+    wrongChoiceDefinition:
+      `Predicted engine is slower and its measured median runtime is greater than ${SIGNIFICANT_RUNTIME_MS} ms.`,
+    predictorData:
+      'Expanded primitive list and scene color mode only; execution counts are validation-only.',
+    formula:
+      'N * (sqrt(C) + outgoingCoefficient * B + renderCoefficient(colorMode))',
+    variables: {
+      N: 'initialRayCount',
+      C: 'primitiveCurveCount',
+      B: 'additionalOutgoingRaySlotCount',
+    },
+    coefficients,
+    coefficientFit: {
+      source: 'calibration cases only',
+      gridMinimum: 0,
+      gridMaximum: COEFFICIENT_GRID_MAX,
+      gridStep: COEFFICIENT_GRID_STEP,
+      objective:
+        `Lexicographically minimize >${SIGNIFICANT_RUNTIME_MS} ms wrong choices, regret, all winner disagreements, then coefficient sum.`,
+    },
+    ratioModel: {
+      formula: 'predicted CPU/WebGPU time ratio = exp(slope * ln(score / threshold))',
+      slope: ratioSlope,
+      source: 'calibration cases only',
+    },
+    validation: {
+      processedRayCountRelativeTolerance: 0.03,
+      exclusionCount: comparison.exclusions.length,
+      exclusions: comparison.exclusions,
+    },
+    evaluation: {
+      calibration: evaluateModelSubset(calibrationPairs, coefficients, ratioSlope),
+      heldOut: evaluateModelSubset(heldOutPairs, coefficients, ratioSlope),
+      allCompleted: evaluateModelSubset(comparison.pairs, coefficients, ratioSlope),
+    },
+  };
+}
+
+function collectEngineComparisonPairs(results) {
+  const cpuRows = new Map(results
+    .filter(result => result.setting === 'primitiveCpu')
+    .map(result => [result.case, result]));
+  const gpuRows = new Map(results
+    .filter(result => result.setting === 'webgpu-production')
+    .map(result => [result.case, result]));
+  const pairs = [];
+  const exclusions = [];
+  for (const [caseKey, cpu] of cpuRows) {
+    const gpu = gpuRows.get(caseKey);
+    if (!gpu) continue;
+    let reason = null;
+    if (
+      cpu.status !== 'ok' || gpu.status !== 'ok' ||
+      !Number.isFinite(cpu.medianMs) || !Number.isFinite(gpu.medianMs)
+    ) {
+      reason = `status: primitiveCpu=${cpu.status}, webgpu=${gpu.status}`;
+    } else if (
+      cpu.colorMode !== gpu.colorMode ||
+      cpu.rayPowerCutoff !== gpu.rayPowerCutoff
+    ) {
+      reason = 'color mode or ray-power cutoff differs between engines';
+    } else if (!equivalentStaticWorkloads(cpu.staticWorkload, gpu.staticWorkload)) {
+      reason = 'expanded primitive workload differs between engines';
+    } else if (processedRayCountRelativeDifference(cpu, gpu) > 0.03) {
+      reason = 'processed ray counts differ by more than 3%';
+    }
+    if (reason) {
+      exclusions.push({ case: caseKey, reason });
+      continue;
+    }
+    pairs.push({
+      case: caseKey,
+      colorMode: cpu.colorMode,
+      cpuMs: cpu.medianMs,
+      gpuMs: gpu.medianMs,
+      workload: cpu.staticWorkload,
+    });
+  }
+  return { pairs, exclusions };
+}
+
+function equivalentStaticWorkloads(first, second) {
+  return first && second && [
+    'initialRayCount',
+    'primitiveCurveCount',
+    'additionalOutgoingRaySlotCount',
+  ].every(key => first[key] === second[key]);
+}
+
+function processedRayCountRelativeDifference(first, second) {
+  if (
+    !Number.isFinite(first.processedRayCount) ||
+    !Number.isFinite(second.processedRayCount)
+  ) return Infinity;
+  return Math.abs(first.processedRayCount - second.processedRayCount) /
+    Math.max(1, first.processedRayCount, second.processedRayCount);
+}
+
+function fitCorrectionCoefficients(pairs) {
+  let best = null;
+  const stepCount = Math.round(COEFFICIENT_GRID_MAX / COEFFICIENT_GRID_STEP);
+  for (let outgoingIndex = 0; outgoingIndex <= stepCount; outgoingIndex++) {
+    const outgoingCoefficient = outgoingIndex * COEFFICIENT_GRID_STEP;
+    for (let defaultIndex = 0; defaultIndex <= stepCount; defaultIndex++) {
+      const defaultRenderCoefficient = defaultIndex * COEFFICIENT_GRID_STEP;
+      for (let nonDefaultIndex = 0; nonDefaultIndex <= stepCount; nonDefaultIndex++) {
+        const nonDefaultRenderCoefficient =
+          nonDefaultIndex * COEFFICIENT_GRID_STEP;
+        const coefficients = {
+          outgoingCoefficient,
+          defaultRenderCoefficient,
+          nonDefaultRenderCoefficient,
+        };
+        const metrics = selectionMetrics(pairs, coefficients);
+        const objective = [
+          metrics.wrongChoiceCount,
+          metrics.totalRegretMs,
+          metrics.winnerDisagreementCount,
+          outgoingCoefficient + defaultRenderCoefficient +
+            nonDefaultRenderCoefficient,
+        ];
+        if (!best || lexicographicallyLess(objective, best.objective)) {
+          best = { coefficients, objective };
+        }
+      }
+    }
+  }
+  return best.coefficients;
+}
+
+function correctedSelectionScore(pair, coefficients) {
+  const workload = pair.workload;
+  const renderCoefficient = pair.colorMode === 'default'
+    ? coefficients.defaultRenderCoefficient
+    : coefficients.nonDefaultRenderCoefficient;
+  return workload.intersectionScore +
+    coefficients.outgoingCoefficient * workload.outgoingScoreBase +
+    renderCoefficient * workload.renderScoreBase;
+}
+
+function selectionMetrics(pairs, coefficients, includeCases = false) {
+  let wrongChoiceCount = 0;
+  let winnerDisagreementCount = 0;
+  let totalRegretMs = 0;
+  let selectedWebGpuCount = 0;
+  const wrongCases = [];
+  for (const pair of pairs) {
+    const score = correctedSelectionScore(pair, coefficients);
+    const selectsWebGpu = score >= ENGINE_SELECTION_THRESHOLD;
+    const selectedMs = selectsWebGpu ? pair.gpuMs : pair.cpuMs;
+    const bestMs = Math.min(pair.cpuMs, pair.gpuMs);
+    const wrong = selectedMs > bestMs;
+    if (selectsWebGpu) selectedWebGpuCount++;
+    if (!wrong) continue;
+    winnerDisagreementCount++;
+    const regretMs = selectedMs - bestMs;
+    totalRegretMs += regretMs;
+    if (selectedMs > SIGNIFICANT_RUNTIME_MS) wrongChoiceCount++;
+    if (includeCases) {
+      wrongCases.push({
+        case: pair.case,
+        selectedEngine: selectsWebGpu ? 'webgpu' : 'primitiveCpu',
+        selectedMs,
+        bestMs,
+        regretMs,
+        countedWrongChoice: selectedMs > SIGNIFICANT_RUNTIME_MS,
+      });
+    }
+  }
+  wrongCases.sort((a, b) => b.regretMs - a.regretMs);
+  return {
+    pairCount: pairs.length,
+    wrongChoiceCount,
+    winnerDisagreementCount,
+    totalRegretMs,
+    selectedWebGpuCount,
+    ...(includeCases ? { worstWrongChoices: wrongCases.slice(0, 12) } : {}),
+  };
+}
+
+function fitRatioSlope(pairs, coefficients) {
+  let numerator = 0;
+  let denominator = 0;
+  for (const pair of pairs) {
+    const normalizedScore = Math.max(
+      1e-12,
+      correctedSelectionScore(pair, coefficients) / ENGINE_SELECTION_THRESHOLD
+    );
+    const x = Math.log(normalizedScore);
+    const y = Math.log(Math.max(1e-12, pair.cpuMs / pair.gpuMs));
+    numerator += x * y;
+    denominator += x * x;
+  }
+  return denominator > 0 ? Math.max(0, numerator / denominator) : 0;
+}
+
+function evaluateModelSubset(pairs, coefficients, ratioSlope) {
+  const corrected = selectionMetrics(pairs, coefficients, true);
+  const currentFormula = selectionMetrics(pairs, {
+    outgoingCoefficient: 0,
+    defaultRenderCoefficient: 0,
+    nonDefaultRenderCoefficient: 0,
+  }, true);
+  const ratioErrors = pairs.map(pair => {
+    const normalizedScore = Math.max(
+      1e-12,
+      correctedSelectionScore(pair, coefficients) / ENGINE_SELECTION_THRESHOLD
+    );
+    const predictedRatio = Math.exp(Math.max(-20, Math.min(
+      20,
+      ratioSlope * Math.log(normalizedScore)
+    )));
+    const actualRatio = Math.max(1e-12, pair.cpuMs / pair.gpuMs);
+    return {
+      case: pair.case,
+      predictedCpuToWebGpuRatio: predictedRatio,
+      actualCpuToWebGpuRatio: actualRatio,
+      multiplicativeError: Math.max(
+        predictedRatio / actualRatio,
+        actualRatio / predictedRatio
+      ),
+    };
+  }).sort((a, b) => b.multiplicativeError - a.multiplicativeError);
+  const errors = ratioErrors.map(item => item.multiplicativeError)
+    .sort((a, b) => a - b);
+  return {
+    corrected,
+    currentFormula,
+    ratioPrediction: {
+      medianMultiplicativeError: percentile(errors, 0.5),
+      p90MultiplicativeError: percentile(errors, 0.9),
+      maximumMultiplicativeError: errors.at(-1) ?? null,
+      worstCases: ratioErrors.slice(0, 12),
+    },
+  };
+}
+
+function lexicographicallyLess(first, second) {
+  for (let index = 0; index < first.length; index++) {
+    if (first[index] < second[index] - 1e-9) return true;
+    if (first[index] > second[index] + 1e-9) return false;
+  }
+  return false;
+}
+
+function percentile(sortedValues, fraction) {
+  if (!sortedValues.length) return null;
+  const position = (sortedValues.length - 1) * fraction;
+  const lower = Math.floor(position);
+  const upper = Math.ceil(position);
+  if (lower === upper) return sortedValues[lower];
+  return sortedValues[lower] * (upper - position) +
+    sortedValues[upper] * (position - lower);
 }
 
 function appendUnavailableSetting(setting, error) {
@@ -608,6 +1130,7 @@ function appendUnavailableSetting(setting, error) {
     }));
   }
   currentReport.completedResultCount = currentReport.results.length;
+  updateEngineSelectionAnalysis(currentReport);
   persistReport();
   renderReport(currentReport);
 }
@@ -740,6 +1263,35 @@ function renderReport(report) {
   table.append(body);
   summaryElement.append(table);
 
+  if (report.calibration?.caseKeys?.length) {
+    const calibrationSummary = document.createElement('p');
+    const model = report.engineSelectionModel;
+    if (model?.status === 'ready') {
+      const coefficients = model.coefficients;
+      const heldOut = model.evaluation.heldOut;
+      calibrationSummary.textContent =
+        `Static-only correction fitted from ${report.calibration.validPairCount}/` +
+        `${report.calibration.caseKeys.length} calibration pairs in ` +
+        `${formatDuration((report.calibration.totalElapsedWallMs ?? 0) / 1000)}: ` +
+        `outgoing ` +
+        `${coefficients.outgoingCoefficient}, default-render ` +
+        `${coefficients.defaultRenderCoefficient}, non-default-render ` +
+        `${coefficients.nonDefaultRenderCoefficient}. On ${heldOut.corrected.pairCount} ` +
+        `completed held-out pairs: ${heldOut.corrected.wrongChoiceCount} ` +
+        `wrong choices (selected runtime above ${model.significantRuntimeMs} ms), ` +
+        `${heldOut.corrected.winnerDisagreementCount} raw winner disagreements, and ` +
+        `${formatMs(heldOut.corrected.totalRegretMs)} total regret. The current ` +
+        `intersection-only formula has ${heldOut.currentFormula.wrongChoiceCount} ` +
+        `counted wrong choices. Median CPU/WebGPU ratio error is ` +
+        `${formatFactor(heldOut.ratioPrediction.medianMultiplicativeError)}.`;
+    } else {
+      calibrationSummary.textContent =
+        `Calibration: ${report.calibration.completedWebGpuCaseCount ?? 0}/` +
+        `${report.calibration.caseKeys.length} selected WebGPU cases completed.`;
+    }
+    summaryElement.append(calibrationSummary);
+  }
+
   const recent = results.slice(-30).reverse();
   resultsElement.innerHTML = '<thead><tr><th>Scene</th><th>Variant / setting</th>' +
     '<th>Status</th><th>Median</th><th>Rays</th></tr></thead>';
@@ -794,9 +1346,11 @@ function serializeCsv(rows) {
   const columns = [
     'setting', 'engine', 'case', 'scene', 'group', 'category', 'variant',
     'mode', 'densityProperty', 'baseDensity', 'effectiveDensity', 'colorMode',
-    'maxRayDepth', 'viewportWidth', 'viewportHeight', 'status', 'warmupMs',
-    'medianMs', 'processedRayCount', 'totalTruncation', 'elapsedWallMs',
-    'error', 'completedAt'
+    'rayPowerCutoff', 'maxRayDepth', 'viewportWidth', 'viewportHeight',
+    'status', 'warmupMs', 'samplesMs', 'medianMs', 'processedRayCount',
+    'initialRayCount', 'primitiveCurveCount',
+    'additionalOutgoingRaySlotCount', 'currentSelectionScore',
+    'totalTruncation', 'elapsedWallMs', 'error', 'completedAt'
   ];
   return [
     columns.join(','),
@@ -875,6 +1429,10 @@ function finitePositiveOr(value, fallback) {
   return Number.isFinite(value) && value > 0 ? value : fallback;
 }
 
+function finiteNonnegativeOr(value, fallback) {
+  return Number.isFinite(value) && value >= 0 ? value : fallback;
+}
+
 function positiveIntegerOr(value, fallback) {
   return Number.isSafeInteger(value) && value > 0 ? value : fallback;
 }
@@ -891,6 +1449,10 @@ function formatDuration(seconds) {
   if (!Number.isFinite(seconds)) return 'unknown';
   if (seconds < 60) return `${seconds.toFixed(1)} s`;
   return `${Math.floor(seconds / 60)}m ${(seconds % 60).toFixed(0)}s`;
+}
+
+function formatFactor(value) {
+  return Number.isFinite(value) ? `${value.toFixed(2)}×` : 'unavailable';
 }
 
 function safeTimestamp() {
