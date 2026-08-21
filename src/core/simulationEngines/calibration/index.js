@@ -38,9 +38,11 @@ import {
   getRayCooperationCalibrationProbes,
 } from './probeScenes.js';
 
-const REPORT_VERSION = 'simulation-engine-calibration-v2';
+const REPORT_VERSION = 'simulation-engine-calibration-v4';
 const REPORT_STORAGE_KEY = 'rayOpticsSimulationEngineCalibrationReport';
-const DEFAULT_MEASURED_REPEATS = 2;
+const DEFAULT_MEASURED_REPEATS = 3;
+const DEFAULT_MEASUREMENT_TIME_BUDGET_MS = 200;
+const MAX_TIME_BUDGET_REPEATS = 100;
 const CALIBRATION_RAY_COUNT_LIMIT = 10_000_000;
 
 export class SimulationEngineCalibrationError extends Error {
@@ -60,12 +62,19 @@ export class SimulationEngineCalibrationError extends Error {
 export async function calibrateSimulationEngines({
   currentConfigs = {},
   measuredRepeats = DEFAULT_MEASURED_REPEATS,
+  measurementTimeBudgetMs = DEFAULT_MEASUREMENT_TIME_BUDGET_MS,
   viewport = null,
   onProgress = () => {},
   signal = null,
 } = {}) {
   if (!Number.isSafeInteger(measuredRepeats) || measuredRepeats < 1) {
     throw new RangeError('measuredRepeats must be a positive safe integer.');
+  }
+  if (!Number.isFinite(measurementTimeBudgetMs) ||
+      measurementTimeBudgetMs < 0) {
+    throw new RangeError(
+      'measurementTimeBudgetMs must be a non-negative number.'
+    );
   }
   requireVisibleDocument();
   const calibrationViewport = resolveCalibrationViewport(viewport);
@@ -96,6 +105,7 @@ export async function calibrateSimulationEngines({
   let canvasSet = null;
   const report = createReport({
     measuredRepeats,
+    measurementTimeBudgetMs,
     profiles,
     cooperationProbes,
     endToEndProbes,
@@ -138,6 +148,7 @@ export async function calibrateSimulationEngines({
         canvasSet,
         viewport: calibrationViewport,
         measuredRepeats,
+        measurementTimeBudgetMs,
         signal: controller.signal,
         onSimulator: simulator => { activeSimulator = simulator; },
         onProbeStart: probe => progress('cpu', { probeId: probe.id }),
@@ -161,6 +172,7 @@ export async function calibrateSimulationEngines({
         canvasSet,
         viewport: calibrationViewport,
         measuredRepeats,
+        measurementTimeBudgetMs,
         signal: controller.signal,
         onSimulator: simulator => { activeSimulator = simulator; },
         onProbeStart: probe => progress('cpu', { probeId: probe.id }),
@@ -200,6 +212,7 @@ export async function calibrateSimulationEngines({
           viewport: calibrationViewport,
           device,
           measuredRepeats,
+          measurementTimeBudgetMs,
           signal: controller.signal,
           onSimulator: simulator => { activeSimulator = simulator; },
           onProbeStart: probe => progress('rayCooperation', {
@@ -246,6 +259,7 @@ export async function calibrateSimulationEngines({
         viewport: calibrationViewport,
         device,
         measuredRepeats,
+        measurementTimeBudgetMs,
         signal: controller.signal,
         onSimulator: simulator => { activeSimulator = simulator; },
         onProbeStart: probe => progress('endToEndWebGpu', {
@@ -352,6 +366,7 @@ export function storeSimulationEngineCalibrationReport(report) {
 
 function createReport({
   measuredRepeats,
+  measurementTimeBudgetMs,
   profiles,
   cooperationProbes,
   endToEndProbes,
@@ -375,6 +390,10 @@ function createReport({
     viewport,
     timing: {
       measuredRepeats,
+      measurementTimeBudgetMs,
+      maximumTimeBudgetRepeats: MAX_TIME_BUDGET_REPEATS,
+      samplingStrategy:
+        'At least measuredRepeats samples, then more samples until the time budget or repeat cap is reached',
       warmupsPerProbeAndConfiguration: 1,
       warmupIncludedInFit: false,
       rayCooperationBoundary:
@@ -466,6 +485,7 @@ async function benchmarkProbePass({
   viewport,
   device = null,
   measuredRepeats,
+  measurementTimeBudgetMs,
   signal,
   onSimulator,
   onProbeStart,
@@ -508,7 +528,11 @@ async function benchmarkProbePass({
       rendered,
     });
     const samplesMs = [];
-    for (let repeat = 0; repeat < measuredRepeats; repeat++) {
+    const measurementStart = performance.now();
+    while (samplesMs.length < measuredRepeats || (
+      samplesMs.length < MAX_TIME_BUDGET_REPEATS &&
+      performance.now() - measurementStart < measurementTimeBudgetMs
+    )) {
       samplesMs.push(await runSimulatorUpdate({
         simulator,
         engineKind,

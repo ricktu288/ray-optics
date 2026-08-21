@@ -99,7 +99,7 @@ export function estimateIntersectionCrossover({
       best = candidate;
     }
   }
-  return Math.max(1, Math.round(best.threshold));
+  return Math.max(1, best.threshold);
 }
 
 function compareCrossoverCandidates(left, right) {
@@ -128,19 +128,27 @@ export function fitEngineSelectionCorrections({
   const candidates = {
     outgoingCoefficient: candidateValues(
       defaults.outgoingCoefficient,
-      [0, 0.25, 0.5, 1, 2, 4, 8]
+      [0, 0.25, 0.5, 1, 2, 4, 8, 16, 32, 64],
+      correctionBoundaryValues(pairs, threshold, 'outgoingCoefficient')
     ),
     defaultRenderCoefficient: candidateValues(
       defaults.defaultRenderCoefficient,
-      [0, 0.125, 0.25, 0.5, 1, 2, 4, 8]
+      [0, 0.125, 0.25, 0.5, 1, 2, 4, 8, 16, 32, 64],
+      correctionBoundaryValues(pairs, threshold, 'defaultRenderCoefficient')
     ),
     nonDefaultRenderCoefficient: candidateValues(
       defaults.nonDefaultRenderCoefficient,
-      [0, 0.125, 0.25, 0.5, 1, 2, 4, 8]
+      [0, 0.125, 0.25, 0.5, 1, 2, 4, 8, 16, 32, 64, 128, 256],
+      correctionBoundaryValues(
+        pairs,
+        threshold,
+        'nonDefaultRenderCoefficient'
+      )
     ),
     grinStepCoefficient: candidateValues(
       defaults.grinStepCoefficient,
-      [0, 0.005, 0.01, 0.02, 0.05, 0.1, 0.2]
+      [0, 0.005, 0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2],
+      correctionBoundaryValues(pairs, threshold, 'grinStepCoefficient')
     ),
   };
 
@@ -196,8 +204,45 @@ function selectionLoss(pairs, threshold, parameters, defaults) {
   return loss;
 }
 
-function candidateValues(defaultValue, values) {
-  return [...new Set([...values, defaultValue])].sort((a, b) => a - b);
+function correctionBoundaryValues(pairs, threshold, parameter) {
+  return pairs.flatMap(({ cpu }) => {
+    const workload = cpu.workload;
+    let factor;
+    switch (parameter) {
+      case 'outgoingCoefficient':
+        factor = workload.additionalOutgoingRaySlotCount ?? 0;
+        break;
+      case 'defaultRenderCoefficient':
+        factor = cpu.colorMode === 'default' ? 1 : 0;
+        break;
+      case 'nonDefaultRenderCoefficient':
+        factor = cpu.colorMode === 'default' ? 0 : 1;
+        break;
+      case 'grinStepCoefficient':
+        factor = workload.grinStepFactor ?? 0;
+        break;
+      default:
+        factor = 0;
+    }
+    if (!(factor > 0) || !(workload.initialRayCount > 0)) return [];
+    const base = Math.sqrt(Math.max(
+      1,
+      workload.primitiveCurveCount ?? 0
+    ));
+    const boundary = (
+      threshold / workload.initialRayCount - base
+    ) / factor;
+    if (!Number.isFinite(boundary) || boundary < 0) return [];
+    // Include the measured decision boundary itself instead of forcing the
+    // fitted value onto the human-friendly fallback grid. The tiny value above
+    // it protects the >= comparison from floating-point reconstruction error.
+    return [boundary, boundary * (1 + 1e-12) + 1e-12];
+  });
+}
+
+function candidateValues(defaultValue, values, measuredBoundaries = []) {
+  return [...new Set([...values, ...measuredBoundaries, defaultValue])]
+    .sort((a, b) => a - b);
 }
 
 export { SIGNIFICANT_RUNTIME_MS };
