@@ -58,7 +58,12 @@ function formatPrimitiveEngineWarning(warning) {
     [INTERSECTION_CONFLICT_MERGE]: 'primitiveMergeConflict',
     [INTERSECTION_CONFLICT_ORIENTATION]: 'primitiveOrientationConflict',
     [INTERSECTION_CONFLICT_NORMAL]: 'primitiveNormalConflict'
-  }[warning.type] ?? 'primitiveInteractionConflict';
+  }[warning.type];
+  if (!warningKey) {
+    throw new Error(
+      `Unknown primitive interaction warning type: ${warning.type}`
+    );
+  }
   return i18next.t(
     `simulator:generalWarnings.${warningKey}`, {
       curveId: formatWarningCurveId(warning.curveId),

@@ -84,13 +84,8 @@
               >
                 <hr v-if="sectionIndex > 0">
                 <div
-                  class="form-label fw-semibold text-body mb-1"
+                  class="form-label fw-bold text-body mb-1"
                   v-text="$t(`simulator:simulationEngineModal.configuration.sections.${section.key}.title`)"
-                ></div>
-                <div
-                  v-if="section.hasDescription"
-                  class="form-text mt-0 mb-2"
-                  v-text="$t(`simulator:simulationEngineModal.configuration.sections.${section.key}.description`)"
                 ></div>
                 <div
                   v-for="field in section.fields"
@@ -188,7 +183,6 @@ const ENGINE_CONFIG_SECTIONS = [
   {
     key: 'webgpuMemory',
     configKey: 'webgpu',
-    hasDescription: true,
     fields: [
       { key: 'maxBatchRayEvents', path: ['maxBatchRayEvents'], min: 1, step: 1, integer: true, hasInfo: true },
       { key: 'maxReadyGeometryRecords', path: ['maxReadyGeometryRecords'], min: 1, step: 1, integer: true, hasInfo: true }
@@ -197,7 +191,6 @@ const ENGINE_CONFIG_SECTIONS = [
   {
     key: 'webgpuNumerics',
     configKey: 'webgpu',
-    hasDescription: true,
     fields: [
       { key: 'atomicFixedPointScale', path: ['atomicFixedPointScale'], min: 1, max: 16777216, step: 1, integer: true, hasInfo: true }
     ]
