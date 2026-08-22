@@ -116,7 +116,9 @@ const TOGGLE_ICON_SVG =
  * @param {Record<string, boolean>} options.expanded
  * @param {string} options.keyPrefix e.g. 'w' or 'e'
  * @param {number} options.lineIdx
- * @param {{ expand: string, primitiveCurve?: function(number): string }} options.labels
+ * @param {object} options.labels
+ * @param {string} options.labels.expand
+ * @param {function(number): string} [options.labels.primitiveCurve]
  * @param {number} [options.threshold]
  * @returns {string}
  */

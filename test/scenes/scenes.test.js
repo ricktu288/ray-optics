@@ -19,7 +19,6 @@ import path from 'path';
 import {
   compareImages,
   compareCSV,
-  disposeWebGpuTestDevice,
   runScene
 } from './helpers/sceneTestHelper.js';
 
@@ -59,11 +58,6 @@ try {
 }
 
 describe(`Scene Tests (${SCENE_TEST_ENGINE})`, () => {
-  afterAll(async () => {
-    if (SCENE_TEST_ENGINE === 'webgpu') {
-      await disposeWebGpuTestDevice();
-    }
-  });
   // Test each scene in each directory
   TEST_DIRS.forEach(dirName => {
     describe(dirName, () => {

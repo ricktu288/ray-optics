@@ -20,122 +20,8 @@ import { createCanvas } from 'canvas';
 import sharp from 'sharp';
 const rayOptics = require('../../../dist-node/rayOptics.js');
 
-const webGpuPackageDirectory = path.dirname(
-  require.resolve('webgpu/package.json')
-);
-const webGpuArchitecture = process.platform === 'darwin'
-  ? 'universal'
-  : process.arch;
-const { create: createWebGpu, globals: webGpuGlobals } = require(path.join(
-  webGpuPackageDirectory,
-  'dist',
-  `${process.platform}-${webGpuArchitecture}.dawn.node`
-));
-Object.assign(globalThis, webGpuGlobals);
-let nodeGpu = null;
-let webGpuDevicePromise = null;
-
-export async function disposeWebGpuTestDevice() {
-  if (!webGpuDevicePromise) return;
-  const device = await webGpuDevicePromise;
-  await device.queue.onSubmittedWorkDone?.();
-  device.destroy();
-  webGpuDevicePromise = null;
-  nodeGpu = null;
-}
-
-async function getWebGpuDevice() {
-  if (!webGpuDevicePromise) {
-    nodeGpu = createWebGpu([]);
-    webGpuDevicePromise = (async () => {
-      const adapter = await nodeGpu.requestAdapter({
-        powerPreference: 'high-performance'
-      });
-      if (!adapter) throw new Error('No native WebGPU adapter is available.');
-      return adapter.requestDevice({
-        requiredLimits: {
-          maxStorageBuffersPerShaderStage: 8,
-          maxStorageBufferBindingSize:
-            adapter.limits.maxStorageBufferBindingSize,
-          maxBufferSize: adapter.limits.maxBufferSize,
-        }
-      });
-    })();
-  }
-  return webGpuDevicePromise;
-}
-
-function createNodeWebGpuOutput(ctx) {
-  let device = null;
-  let texture = null;
-  const width = Math.max(1, ctx?.canvas?.width ?? 1);
-  const height = Math.max(1, ctx?.canvas?.height ?? 1);
-  return {
-    format: 'rgba8unorm',
-    getSize: () => ({ width, height }),
-    initialize(nextDevice) {
-      device = nextDevice;
-      texture = device.createTexture({
-        size: [width, height],
-        format: this.format,
-        usage: GPUTextureUsage.RENDER_ATTACHMENT |
-          GPUTextureUsage.COPY_SRC,
-      });
-    },
-    acquireView: () => texture.createView(),
-    async readIntoCanvas() {
-      if (!ctx || !texture) return;
-      const bytesPerRow = Math.ceil(width * 4 / 256) * 256;
-      const readback = device.createBuffer({
-        size: bytesPerRow * height,
-        usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.MAP_READ,
-      });
-      const encoder = device.createCommandEncoder();
-      encoder.copyTextureToBuffer(
-        { texture },
-        { buffer: readback, bytesPerRow, rowsPerImage: height },
-        [width, height]
-      );
-      device.queue.submit([encoder.finish()]);
-      await readback.mapAsync(GPUMapMode.READ);
-      const source = new Uint8Array(readback.getMappedRange());
-      const image = ctx.createImageData(width, height);
-      for (let row = 0; row < height; row++) {
-        for (let column = 0; column < width; column++) {
-          const sourceOffset = row * bytesPerRow + column * 4;
-          const destinationOffset = (row * width + column) * 4;
-          const alpha = source[sourceOffset + 3];
-          if (alpha > 0) {
-            image.data[destinationOffset] = Math.min(
-              255,
-              Math.round(source[sourceOffset] * 255 / alpha)
-            );
-            image.data[destinationOffset + 1] = Math.min(
-              255,
-              Math.round(source[sourceOffset + 1] * 255 / alpha)
-            );
-            image.data[destinationOffset + 2] = Math.min(
-              255,
-              Math.round(source[sourceOffset + 2] * 255 / alpha)
-            );
-          }
-          image.data[destinationOffset + 3] = alpha;
-        }
-      }
-      ctx.putImageData(image, 0, 0);
-      readback.unmap();
-      readback.destroy();
-    },
-    dispose() {
-      texture?.destroy();
-      texture = null;
-      device = null;
-    },
-  };
-}
-
 const SUPPORTED_ENGINES = new Set([
-  'default', 'primitiveCpu', 'webgpu'
+  'default', 'primitiveCpu'
 ]);
 
 function createSimulator({
@@ -174,22 +60,12 @@ function createSimulator({
     return simulator;
   }
 
-  const engine = engineKind === 'webgpu'
-    ? new rayOptics.WebGpuSimulationEngine({
-      device: getWebGpuDevice,
-      output: ctxLight ? createNodeWebGpuOutput(ctxLight) : null,
-      numericEpsilon:
-        engineSettings.numericEpsilon ?? rayOptics.FLOAT32_EPSILON,
-      ctxMain: ctxLight,
-      ctxVirtual,
-      config: engineSettings
-    })
-    : new rayOptics.CpuSimulationEngine({
-      numericEpsilon: engineSettings.numericEpsilon,
-      ctxMain: ctxLight,
-      ctxVirtual,
-      config: engineSettings
-    });
+  const engine = new rayOptics.CpuSimulationEngine({
+    numericEpsilon: engineSettings.numericEpsilon,
+    ctxMain: ctxLight,
+    ctxVirtual,
+    config: engineSettings
+  });
   return new rayOptics.PrimitiveBasedSimulator({
     scene,
     engine,
@@ -338,7 +214,7 @@ export function compareCSV(actualData, expectedData, tolerance = 1e-3) {
  * @param {string} jsonPath - Path to the scene JSON file
  * @param {boolean} writeOutput - Whether to write output files
  * @param {Object} [options={}] - Scene-test simulation options
- * @param {'default'|'primitiveCpu'|'webgpu'} [options.engine='default'] - Simulation engine to use
+ * @param {'default'|'primitiveCpu'} [options.engine='default'] - Simulation engine to use
  * @param {Object} [options.engineSettings={}] - Settings for the selected engine
  * @returns {Promise<{imageBuffer?: Buffer, detectorData?: string}>} Generated outputs
  */
@@ -457,13 +333,9 @@ export async function runScene(
     });
     simulator.updateSimulation(false, false);
   });
-  if (engineKind === 'webgpu') {
-    await simulator.engine.output?.readIntoCanvas?.();
-  }
-
   // Generate detector data
   if (detector && detector.irradMap) {
-    if (engineKind === 'primitiveCpu' || engineKind === 'webgpu') {
+    if (engineKind === 'primitiveCpu') {
       detector.updateMeasurementsFromPrimitiveResults();
     }
     if (detector.binData) {
