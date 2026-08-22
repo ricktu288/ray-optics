@@ -19,7 +19,6 @@ import {
   DEFAULT_AMBIGUOUS_RAY_WARNING_SAFETY_FACTOR
 } from './ambiguousRayWarning.js';
 import {
-  DEFAULT_ENGINE_SELECTION_CORRECTIONS,
   DEFAULT_WEBGPU_WORKLOAD_THRESHOLD
 } from './primitiveEngineSelection.js';
 
@@ -43,7 +42,6 @@ export const DEFAULT_PRIMITIVE_SIMULATOR_CONFIG = Object.freeze({
   bvh: COMMON_BVH_CONFIG,
   engineSelection: Object.freeze({
     webGpuWorkloadThreshold: DEFAULT_WEBGPU_WORKLOAD_THRESHOLD,
-    ...DEFAULT_ENGINE_SELECTION_CORRECTIONS,
   }),
 });
 
@@ -134,8 +132,10 @@ export function resolvePrimitiveSimulatorConfig(storedConfigs = {}) {
       ...bvhOverrides,
     },
     engineSelection: {
-      ...DEFAULT_PRIMITIVE_SIMULATOR_CONFIG.engineSelection,
-      ...engineSelectionOverrides,
+      webGpuWorkloadThreshold:
+        engineSelectionOverrides.webGpuWorkloadThreshold ??
+        DEFAULT_PRIMITIVE_SIMULATOR_CONFIG.engineSelection
+          .webGpuWorkloadThreshold,
     },
   };
 }

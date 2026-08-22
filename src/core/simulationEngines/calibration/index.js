@@ -26,19 +26,16 @@ import {
   resolveSimulationEngineConfig,
 } from '../config.js';
 import {
-  SIGNIFICANT_RUNTIME_MS,
   estimateIntersectionCrossover,
-  fitEngineSelectionCorrections,
   median,
   selectRayCooperationProfile,
 } from './fitCalibration.js';
 import {
   CALIBRATION_HEADLESS_VIEWPORT,
-  getEndToEndCalibrationProbes,
   getRayCooperationCalibrationProbes,
 } from './probeScenes.js';
 
-const REPORT_VERSION = 'simulation-engine-calibration-v4';
+const REPORT_VERSION = 'simulation-engine-calibration-v5';
 const REPORT_STORAGE_KEY = 'rayOpticsSimulationEngineCalibrationReport';
 const DEFAULT_MEASURED_REPEATS = 3;
 const DEFAULT_MEASUREMENT_TIME_BUDGET_MS = 200;
@@ -92,14 +89,11 @@ export async function calibrateSimulationEngines({
   document.addEventListener('visibilitychange', onVisibilityChange);
 
   const cooperationProbes = getRayCooperationCalibrationProbes();
-  const endToEndProbes = getEndToEndCalibrationProbes();
-  const allCpuProbes = [...cooperationProbes, ...endToEndProbes];
   const primitiveConfig = resolvePrimitiveSimulatorConfig(currentConfigs);
   const cpuConfig = resolveSimulationEngineConfig('primitiveCpu', currentConfigs);
   const webGpuConfig = resolveSimulationEngineConfig('webgpu', currentConfigs);
   const profiles = createRayCooperationProfiles(webGpuConfig);
-  const totalProbeRuns = allCpuProbes.length +
-    profiles.length * cooperationProbes.length + endToEndProbes.length;
+  const totalProbeRuns = cooperationProbes.length * (profiles.length + 1);
   let completedProbeRuns = 0;
   let activeSimulator = null;
   let canvasSet = null;
@@ -108,7 +102,6 @@ export async function calibrateSimulationEngines({
     measurementTimeBudgetMs,
     profiles,
     cooperationProbes,
-    endToEndProbes,
     primitiveConfig,
     cpuConfig,
     webGpuConfig,
@@ -160,35 +153,7 @@ export async function calibrateSimulationEngines({
     } finally {
       cpuCooperationEngine.dispose();
     }
-    const cpuEndToEndEngine = createCpuEngine(canvasSet, cpuConfig, true);
-    let cpuEndToEndPassResults;
-    try {
-      cpuEndToEndPassResults = await benchmarkProbePass({
-        probes: endToEndProbes,
-        engine: cpuEndToEndEngine,
-        engineKind: 'primitiveCpu',
-        rendered: true,
-        primitiveConfig,
-        canvasSet,
-        viewport: calibrationViewport,
-        measuredRepeats,
-        measurementTimeBudgetMs,
-        signal: controller.signal,
-        onSimulator: simulator => { activeSimulator = simulator; },
-        onProbeStart: probe => progress('cpu', { probeId: probe.id }),
-        onProbeComplete: () => {
-          completedProbeRuns++;
-          progress('cpu');
-        },
-      });
-    } finally {
-      cpuEndToEndEngine.dispose();
-    }
-    const cpuResults = [
-      ...cpuCooperationPassResults,
-      ...cpuEndToEndPassResults,
-    ];
-    report.results.push(...cpuResults);
+    report.results.push(...cpuCooperationPassResults);
 
     const profileMeasurements = [];
     for (const profile of profiles) {
@@ -240,44 +205,6 @@ export async function calibrateSimulationEngines({
       ])
     );
 
-    const selectedEngine = createWebGpuEngine(
-      canvasSet,
-      device,
-      selectedProfile.config,
-      true
-    );
-    let endToEndGpuResults;
-    try {
-      endToEndGpuResults = await benchmarkProbePass({
-        probes: endToEndProbes,
-        engine: selectedEngine,
-        engineKind: 'webgpu',
-        rendered: true,
-        configurationId: selectedProfile.id,
-        primitiveConfig,
-        canvasSet,
-        viewport: calibrationViewport,
-        device,
-        measuredRepeats,
-        measurementTimeBudgetMs,
-        signal: controller.signal,
-        onSimulator: simulator => { activeSimulator = simulator; },
-        onProbeStart: probe => progress('endToEndWebGpu', {
-          probeId: probe.id,
-          configurationId: selectedProfile.id,
-        }),
-        onProbeComplete: () => {
-          completedProbeRuns++;
-          progress('endToEndWebGpu', {
-            configurationId: selectedProfile.id,
-          });
-        },
-      });
-    } finally {
-      selectedEngine.dispose();
-    }
-    report.results.push(...endToEndGpuResults);
-
     progress('fitting');
     const cooperationIds = new Set(cooperationProbes
       .map(probe => probe.id)
@@ -293,22 +220,7 @@ export async function calibrateSimulationEngines({
       gpuResults: selectedCooperationResults,
       defaultThreshold: defaultSelection.webGpuWorkloadThreshold,
     });
-    const corrections = fitEngineSelectionCorrections({
-      cpuResults: cpuEndToEndPassResults,
-      gpuResults: endToEndGpuResults,
-      threshold: webGpuWorkloadThreshold,
-      defaults: {
-        outgoingCoefficient: defaultSelection.outgoingCoefficient,
-        defaultRenderCoefficient: defaultSelection.defaultRenderCoefficient,
-        nonDefaultRenderCoefficient:
-          defaultSelection.nonDefaultRenderCoefficient,
-        grinStepCoefficient: defaultSelection.grinStepCoefficient,
-      },
-    });
-    const engineSelection = {
-      webGpuWorkloadThreshold,
-      ...corrections,
-    };
+    const engineSelection = { webGpuWorkloadThreshold };
     const rayCooperation = pickCalibratedRayCooperationSettings(
       selectedProfile.config
     );
@@ -369,7 +281,6 @@ function createReport({
   measurementTimeBudgetMs,
   profiles,
   cooperationProbes,
-  endToEndProbes,
   primitiveConfig,
   cpuConfig,
   webGpuConfig,
@@ -398,28 +309,20 @@ function createReport({
       warmupIncludedInFit: false,
       rayCooperationBoundary:
         'UI-thread simulator update without render output through simulationComplete and WebGPU queue synchronization',
-      endToEndBoundary:
-        'UI-thread updateSimulation(false, true, true) through simulationComplete and explicit Canvas/WebGL/WebGPU rendering synchronization',
     },
     probes: {
       rayCooperation: cooperationProbes.map(probe => probe.id),
-      endToEnd: endToEndProbes.map(probe => ({
-        id: probe.id,
-        source: probe.source,
-        variant: probe.variant,
-      })),
     },
     executionOrder:
-      'CPU for every probe; each WebGPU ray-cooperation profile for every ray-cooperation probe; selected WebGPU profile for every end-to-end probe',
+      'CPU and each WebGPU ray-cooperation profile for every ray-cooperation probe',
     fixedConfiguration: {
       primitive: primitiveConfig,
       primitiveCpu: cpuConfig,
       webgpuBase: webGpuConfig,
     },
     fitting: {
-      significantWrongChoiceRuntimeMs: SIGNIFICANT_RUNTIME_MS,
       selectorForm:
-        'initial rays * (sqrt(max(1, curves)) + outgoing + color-mode render + GRIN stepping corrections)',
+        'initial rays * sqrt(primitive curves)',
     },
     rayCooperation: {
       profiles: Object.fromEntries(profiles.map(profile => [

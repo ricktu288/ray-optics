@@ -75,6 +75,24 @@ function createTempCanvas(width, height) {
   return tempCanvas;
 }
 
+function createHiddenCanvasLike(source) {
+  return createTempCanvas(source.width, source.height);
+}
+
+function createWebGlRenderingContext(canvas) {
+  const contextAttributes = {
+    alpha: true,
+    premultipliedAlpha: true,
+    antialias: false,
+  };
+  const context = canvas.getContext('webgl', contextAttributes) ||
+    canvas.getContext('experimental-webgl', contextAttributes);
+  if (!context?.getExtension('OES_texture_float')) {
+    throw new Error('OES_texture_float not supported.');
+  }
+  return context;
+}
+
 async function requestWebGpuDevice() {
   if (!navigator.gpu) {
     throw new Error('WebGPU is not supported by this browser.');
@@ -110,6 +128,10 @@ function createBrowserWebGpuOutput(canvas) {
     format,
     getSize() {
       return { width: canvas.width, height: canvas.height };
+    },
+    resize(width, height) {
+      canvas.width = width;
+      canvas.height = height;
     },
     initialize(nextDevice) {
       device = nextDevice;
@@ -176,22 +198,38 @@ function createSimulator(engine) {
     engineProviders: {
       primitiveCpu: {
         isSupported: () => true,
-        create: () => new CpuSimulationEngine({
-          ctxMain: canvasLight.getContext('2d'),
-          glMain: gl,
-          ctxVirtual: document.createElement('canvas').getContext('2d'),
-          config: cpuConfig,
-        })
+        create: ({ silent = false } = {}) => {
+          const mainCanvas = silent
+            ? createHiddenCanvasLike(canvasLight)
+            : canvasLight;
+          const webGlCanvas = silent
+            ? createHiddenCanvasLike(canvasLightWebGL)
+            : canvasLightWebGL;
+          const virtualCanvas = createHiddenCanvasLike(canvasLight);
+          return new CpuSimulationEngine({
+            ctxMain: mainCanvas.getContext('2d'),
+            glMain: silent && gl
+              ? createWebGlRenderingContext(webGlCanvas)
+              : gl,
+            ctxVirtual: virtualCanvas.getContext('2d'),
+            config: cpuConfig,
+          });
+        }
       },
       webgpu: {
         isSupported: () => Boolean(navigator.gpu),
-        create: () => new WebGpuSimulationEngine({
-          device: requestWebGpuDevice,
-          output: createBrowserWebGpuOutput(canvasLightWebGPU),
-          numericEpsilon: FLOAT32_EPSILON,
-          ownsDevice: true,
-          config: webGpuConfig,
-        })
+        create: ({ silent = false } = {}) => {
+          const outputCanvas = silent
+            ? createHiddenCanvasLike(canvasLightWebGPU)
+            : canvasLightWebGPU;
+          return new WebGpuSimulationEngine({
+            device: requestWebGpuDevice,
+            output: createBrowserWebGpuOutput(outputCanvas),
+            numericEpsilon: FLOAT32_EPSILON,
+            ownsDevice: true,
+            config: webGpuConfig,
+          });
+        }
       }
     },
     ctxBelowLight: canvasBelowLight.getContext('2d'),
@@ -354,17 +392,7 @@ function initAppService() {
   app.canvasGrid = canvasGrid;
 
   try {
-    const contextAttributes = {
-      alpha: true,
-      premultipliedAlpha: true,
-      antialias: false,
-    };
-    gl = canvasLightWebGL.getContext('webgl', contextAttributes) || canvasLightWebGL.getContext('experimental-webgl', contextAttributes);
-    var ext = gl.getExtension('OES_texture_float');
-
-    if (!ext) {
-      throw new Error('OES_texture_float not supported.');
-    }
+    gl = createWebGlRenderingContext(canvasLightWebGL);
   } catch (e) {
     console.log('Failed to initialize WebGL: ' + e);
     gl = null;

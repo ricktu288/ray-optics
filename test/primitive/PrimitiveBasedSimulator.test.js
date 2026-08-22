@@ -22,12 +22,17 @@ import Detector from '../../src/core/sceneObjs/other/Detector.js';
 function createScene() {
   return {
     lengthScale: 1,
+    origin: { x: 0, y: 0 },
+    scale: 1,
     numericalTolerances: {
       rayPowerCutoff: 1e-6,
       rayPowerCutoffMode: 'truncate'
     },
     colorMode: 'default',
+    mode: 'rays',
     simulateColors: false,
+    showRayArrows: false,
+    observer: null,
     opticalObjs: []
   };
 }
@@ -104,13 +109,407 @@ describe('PrimitiveBasedSimulator engine registry', () => {
     expect(simulator.runEngine).toHaveBeenCalledTimes(2);
     expect(simulator.engine).toBe(cpu);
     expect(simulator.engineFallbackActive).toBe(true);
-    expect(engineChanges.at(-1)).toMatchObject({
-      kind: 'primitiveCpu',
-      previousKind: 'webgpu',
-      fallback: true
-    });
+    // The visible canvas remains on the previous completed frame until the
+    // fallback engine publishes its first current-revision update.
+    expect(engineChanges).toEqual([]);
     expect(simulator.engineFallbackWarning).toBeTruthy();
     expect(gpu.dispose).not.toHaveBeenCalled();
+  });
+
+  it('uses a measured winner regardless of the formula score', () => {
+    const simulator = new PrimitiveBasedSimulator({
+      scene: createScene(),
+      enginePreference: 'automatic',
+      engineProviders: {
+        primitiveCpu: () => createProviderEngine('primitiveCpu'),
+        webgpu: () => createProviderEngine('webgpu')
+      },
+      engineSelectionConfig: { webGpuWorkloadThreshold: 1024 }
+    });
+    simulator.automaticEngineWinner = 'primitiveCpu';
+
+    expect(simulator.selectEngineKind({
+      initialRayCount: 1024,
+      primitiveCurveCount: 1
+    })).toBe('primitiveCpu');
+    expect(simulator.selectEngineKind({
+      initialRayCount: 10241,
+      primitiveCurveCount: 1
+    })).toBe('primitiveCpu');
+
+    simulator.automaticEngineWinner = null;
+    expect(simulator.selectEngineKind({
+      initialRayCount: 10241,
+      primitiveCurveCount: 1
+    })).toBe('webgpu');
+    expect(simulator.getEngineSelectionDecision({
+      initialRayCount: 1,
+      primitiveCurveCount: 1
+    }).comparisonEligible).toBe(true);
+    expect(simulator.getEngineSelectionDecision({
+      initialRayCount: 1000000,
+      primitiveCurveCount: 1000000
+    }).comparisonEligible).toBe(true);
+  });
+
+  it('uses the same default-color cutoff and sampling mode for both engines', () => {
+    const scene = createScene();
+    const simulator = new PrimitiveBasedSimulator({
+      scene,
+      enginePreference: 'automatic',
+      engineProviders: {
+        primitiveCpu: () => createProviderEngine('primitiveCpu'),
+        webgpu: () => createProviderEngine('webgpu')
+      }
+    });
+
+    expect(simulator.createRunJob(0).sceneOptions).toMatchObject({
+      rayPowerCutoff: 0.01,
+      rayPowerCutoffMode: 'stableSampling'
+    });
+
+    scene.numericalTolerances.rayPowerCutoff = 0.02;
+    expect(simulator.createRunJob(0).sceneOptions).toMatchObject({
+      rayPowerCutoff: 0.02,
+      rayPowerCutoffMode: 'stableSampling'
+    });
+
+    scene.colorMode = 'linear';
+    scene.numericalTolerances.rayPowerCutoff = 1e-6;
+    scene.numericalTolerances.rayPowerCutoffMode = 'truncate';
+    expect(simulator.createRunJob(0).sceneOptions).toMatchObject({
+      rayPowerCutoff: 1e-6,
+      rayPowerCutoffMode: 'truncate'
+    });
+  });
+
+  it('logs automatic selection details as formatted text only in log mode', () => {
+    const simulator = new PrimitiveBasedSimulator({
+      scene: createScene(),
+      enginePreference: 'automatic',
+      engineProviders: {
+        primitiveCpu: () => createProviderEngine('primitiveCpu'),
+        webgpu: () => createProviderEngine('webgpu')
+      },
+      engineSelectionConfig: { webGpuWorkloadThreshold: 1024 },
+      logDebugInfo: true
+    });
+    simulator.automaticEngineWinner = 'primitiveCpu';
+    const decision = simulator.getEngineSelectionDecision({
+      initialRayCount: 1024,
+      primitiveCurveCount: 4
+    });
+    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
+
+    simulator.logEngineSelectionDecision(decision);
+
+    expect(log).toHaveBeenCalledTimes(1);
+    expect(log.mock.calls[0]).toHaveLength(1);
+    expect(log.mock.calls[0][0]).toEqual(expect.any(String));
+    expect(log.mock.calls[0][0]).toContain('Score: 2048');
+    expect(log.mock.calls[0][0]).toContain('Crossover: 1024');
+    expect(log.mock.calls[0][0]).toContain(
+      'Previous comparison winner: primitiveCpu'
+    );
+    expect(log.mock.calls[0][0]).toContain('Selected: primitiveCpu');
+
+    log.mockClear();
+    simulator.logDebugInfo = false;
+    simulator.logEngineSelectionDecision(decision);
+    expect(log).not.toHaveBeenCalled();
+    log.mockRestore();
+  });
+
+  it('does not expose an engine canvas until its current frame is published', () => {
+    const simulator = new PrimitiveBasedSimulator({
+      scene: createScene(),
+      enginePreference: 'automatic',
+      engineProviders: {
+        primitiveCpu: () => createProviderEngine('primitiveCpu'),
+        webgpu: () => createProviderEngine('webgpu')
+      }
+    });
+    const changes = [];
+    simulator.on('engineChange', event => changes.push(event));
+
+    simulator.activateEngine('webgpu', { deferPresentation: true });
+    expect(changes).toEqual([]);
+    simulator.presentEngine('webgpu');
+
+    expect(changes).toEqual([
+      expect.objectContaining({
+        kind: 'webgpu',
+        previousKind: 'primitiveCpu'
+      })
+    ]);
+  });
+
+  it('records a faster silent challenger for the next scene update', async () => {
+    const simulator = new PrimitiveBasedSimulator({
+      scene: createScene(),
+      enginePreference: 'automatic',
+      engineProviders: {
+        primitiveCpu: () => createProviderEngine('primitiveCpu'),
+        webgpu: () => createProviderEngine('webgpu')
+      }
+    });
+    simulator.workload = { initialRayCount: 512, primitiveCurveCount: 1 };
+    const firstJob = simulator.createRunJob(0);
+    simulator.runEngine = jest.fn(async job => ({
+      completed: true,
+      job,
+      durationMs: 75
+    }));
+
+    await simulator.runAutomaticComparison(firstJob, 150, 'webgpu');
+
+    expect(simulator.automaticEngineWinner).toBe('webgpu');
+    expect(simulator.selectEngineKind(simulator.workload)).toBe('webgpu');
+  });
+
+  it('always schedules CPU after WebGPU, even when WebGPU is fast', () => {
+    jest.useFakeTimers();
+    const simulator = new PrimitiveBasedSimulator({
+      scene: createScene(),
+      enginePreference: 'automatic',
+      engineProviders: {
+        primitiveCpu: () => createProviderEngine('primitiveCpu'),
+        webgpu: () => createProviderEngine('webgpu')
+      }
+    });
+    simulator.activateEngine('webgpu');
+    const webGpuJob = simulator.createRunJob(0);
+    const queueComparison = jest.spyOn(
+      simulator,
+      'queueAutomaticComparison'
+    ).mockImplementation(() => {});
+
+    simulator.scheduleAutomaticComparison(webGpuJob, 5);
+    jest.runAllTimers();
+
+    expect(queueComparison).toHaveBeenCalledWith(
+      webGpuJob,
+      5,
+      'primitiveCpu'
+    );
+
+    queueComparison.mockClear();
+    simulator.activateEngine('primitiveCpu');
+    simulator.scheduleAutomaticComparison(simulator.createRunJob(0), 5);
+    jest.runAllTimers();
+    expect(queueComparison).not.toHaveBeenCalled();
+    jest.useRealTimers();
+  });
+
+  it('does not challenge an explicitly selected WebGPU with CPU', () => {
+    jest.useFakeTimers();
+    const simulator = new PrimitiveBasedSimulator({
+      scene: createScene(),
+      enginePreference: 'webgpu',
+      engineProviders: {
+        primitiveCpu: () => createProviderEngine('primitiveCpu'),
+        webgpu: () => createProviderEngine('webgpu')
+      }
+    });
+    const webGpuJob = simulator.createRunJob(0);
+    expect(webGpuJob.comparisonEligible).toBe(false);
+    const queueComparison = jest.spyOn(
+      simulator,
+      'queueAutomaticComparison'
+    ).mockImplementation(() => {});
+
+    simulator.scheduleAutomaticComparison(webGpuJob, 6.1);
+    jest.runAllTimers();
+
+    expect(queueComparison).not.toHaveBeenCalled();
+    jest.useRealTimers();
+  });
+
+  it('does not challenge an explicitly selected CPU with WebGPU', () => {
+    jest.useFakeTimers();
+    const simulator = new PrimitiveBasedSimulator({
+      scene: createScene(),
+      enginePreference: 'primitiveCpu',
+      engineProviders: {
+        primitiveCpu: () => createProviderEngine('primitiveCpu'),
+        webgpu: () => createProviderEngine('webgpu')
+      }
+    });
+    const queueComparison = jest.spyOn(
+      simulator,
+      'queueAutomaticComparison'
+    ).mockImplementation(() => {});
+
+    simulator.scheduleAutomaticComparison(simulator.createRunJob(0), 150);
+    jest.runAllTimers();
+
+    expect(queueComparison).not.toHaveBeenCalled();
+    jest.useRealTimers();
+  });
+
+  it('prefers a sub-20ms CPU challenger even when WebGPU is faster', async () => {
+    const simulator = new PrimitiveBasedSimulator({
+      scene: createScene(),
+      enginePreference: 'automatic',
+      engineProviders: {
+        primitiveCpu: () => createProviderEngine('primitiveCpu'),
+        webgpu: () => createProviderEngine('webgpu')
+      },
+      logDebugInfo: true
+    });
+    simulator.activateEngine('webgpu');
+    const firstJob = simulator.createRunJob(0);
+    simulator.runEngine = jest.fn(async job => ({
+      completed: true,
+      job,
+      durationMs: 15
+    }));
+    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
+
+    await simulator.runAutomaticComparison(
+      firstJob,
+      5,
+      'primitiveCpu'
+    );
+
+    expect(simulator.runEngine).toHaveBeenCalledWith(
+      expect.objectContaining({ engineKind: 'primitiveCpu' }),
+      { silent: true, timeLimitMs: 20 }
+    );
+    expect(simulator.automaticEngineWinner).toBe('primitiveCpu');
+    const decisionLog = log.mock.calls.find(
+      ([message]) => message.includes('[Primitive engine comparison] decision')
+    );
+    expect(decisionLog).toHaveLength(1);
+    expect(decisionLog[0]).toContain(
+      'CPU under 20 ms preference applied: yes'
+    );
+    log.mockRestore();
+  });
+
+  it.each([
+    ['webgpu', 'primitiveCpu'],
+    ['primitiveCpu', 'webgpu']
+  ])(
+    'keeps forced %s despite a stale learned winner',
+    (enginePreference, staleWinner) => {
+      const simulator = new PrimitiveBasedSimulator({
+        scene: createScene(),
+        enginePreference,
+        engineProviders: {
+          primitiveCpu: () => createProviderEngine('primitiveCpu'),
+          webgpu: () => createProviderEngine('webgpu')
+        }
+      });
+      simulator.automaticEngineWinner = staleWinner;
+
+      expect(simulator.selectEngineKind(simulator.workload))
+        .toBe(enginePreference);
+      simulator.collectAndPreprocessPrimitives();
+      expect(simulator.engine.kind).toBe(enginePreference);
+      expect(simulator.createRunJob(70).comparisonEligible).toBe(false);
+    }
+  );
+
+  it('clears a comparison winner when the user changes preference', () => {
+    const simulator = new PrimitiveBasedSimulator({
+      scene: createScene(),
+      enginePreference: 'webgpu',
+      engineProviders: {
+        primitiveCpu: () => createProviderEngine('primitiveCpu'),
+        webgpu: () => createProviderEngine('webgpu')
+      }
+    });
+    simulator.automaticEngineWinner = 'primitiveCpu';
+
+    simulator.setEnginePreference('automatic');
+
+    expect(simulator.automaticEngineWinner).toBeNull();
+  });
+
+  it('stops preferring CPU once its comparison reaches 20ms', async () => {
+    const simulator = new PrimitiveBasedSimulator({
+      scene: createScene(),
+      enginePreference: 'automatic',
+      engineProviders: {
+        primitiveCpu: () => createProviderEngine('primitiveCpu'),
+        webgpu: () => createProviderEngine('webgpu')
+      }
+    });
+    simulator.activateEngine('webgpu');
+    const firstJob = simulator.createRunJob(0);
+    simulator.runEngine = jest.fn(async job => ({
+      completed: false,
+      slower: true,
+      job,
+      durationMs: 20
+    }));
+
+    await simulator.runAutomaticComparison(
+      firstJob,
+      5,
+      'primitiveCpu'
+    );
+
+    expect(simulator.automaticEngineWinner).toBe('webgpu');
+  });
+
+  it('cancels a scheduled silent comparison when the scene changes', () => {
+    jest.useFakeTimers();
+    const simulator = new PrimitiveBasedSimulator({
+      scene: createScene(),
+      enginePreference: 'automatic',
+      engineProviders: {
+        primitiveCpu: () => createProviderEngine('primitiveCpu'),
+        webgpu: () => createProviderEngine('webgpu')
+      }
+    });
+    simulator.workload = { initialRayCount: 1024, primitiveCurveCount: 1 };
+    const job = simulator.createRunJob(0);
+    simulator.runAutomaticComparison = jest.fn();
+
+    simulator.scheduleAutomaticComparison(job, 51);
+    simulator.cancelObsoleteWork();
+    jest.runAllTimers();
+
+    expect(simulator.runAutomaticComparison).not.toHaveBeenCalled();
+    jest.useRealTimers();
+  });
+
+  it('keeps silent-run progress, detectors, and status unpublished', async () => {
+    const simulator = createSimulator('primitiveCpu', false);
+    const silentEngine = createProviderEngine('primitiveCpu');
+    const run = {
+      advance: jest.fn(async () => ({
+        status: 'complete',
+        progress: { processedRayCount: 99, totalTruncation: 0.5 },
+        result: { detectors: [Float64Array.of(7)] }
+      })),
+      dispose: jest.fn()
+    };
+    silentEngine.prepare = jest.fn(async description => ({ description }));
+    silentEngine.createRun = jest.fn(async () => run);
+    const binding = { resultId: 0, result: { values: null } };
+    const job = simulator.createRunJob(0, {
+      engine: silentEngine,
+      detectorResultBindings: [binding]
+    });
+    simulator.publishRunUpdate = jest.fn();
+    simulator.updateSimulation = jest.fn();
+    const simulationEvents = [];
+    simulator.on('simulationPause', () => simulationEvents.push('pause'));
+    simulator.on('simulationComplete', () => simulationEvents.push('complete'));
+
+    const result = await simulator.runEngine(job, {
+      silent: true,
+      timeLimitMs: 1000
+    });
+
+    expect(result.completed).toBe(true);
+    expect(simulator.publishRunUpdate).not.toHaveBeenCalled();
+    expect(simulator.updateSimulation).not.toHaveBeenCalled();
+    expect(binding.result.values).toBeNull();
+    expect(simulationEvents).toEqual([]);
   });
 });
 
@@ -180,8 +579,8 @@ describe('PrimitiveBasedSimulator BVH diagnostics', () => {
 
     expect(simulator.engine.createRun).toHaveBeenCalledWith(
       expect.objectContaining({
-        rayPowerCutoff: 1e-6,
-        rayPowerCutoffMode: 'truncate'
+        rayPowerCutoff: 0.01,
+        rayPowerCutoffMode: 'stableSampling'
       })
     );
     expect(result.values).toEqual(Float64Array.of(2, 3));

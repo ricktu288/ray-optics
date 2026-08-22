@@ -34,6 +34,8 @@ import {
   formatPrimitiveCurveReference
 } from './primitive/diagnosticReference.js';
 import {
+  DEFAULT_WEBGPU_WORKLOAD_THRESHOLD,
+  getPrimitiveEngineWorkloadScore,
   selectPrimitiveEngineKind,
   summarizePrimitiveWorkload
 } from './simulationEngines/primitiveEngineSelection.js';
@@ -50,6 +52,10 @@ const BVH_MISSED_COLOR = 'rgba(255, 51, 51, 0.45)';
 const BVH_PRUNED_COLOR = 'rgba(191, 64, 255, 0.7)';
 const BVH_TRAVERSED_COLOR = 'rgba(38, 230, 89, 0.55)';
 const BVH_TESTED_CURVE_COLOR = [1, 0.6, 0.05, 0.95];
+const AUTOMATIC_COMPARISON_MIN_RUNTIME_MS = 50;
+const AUTOMATIC_CPU_PREFERENCE_RUNTIME_MS = 20;
+const AUTOMATIC_COMPARISON_PAUSE_MS = 50;
+const DEFAULT_COLOR_MINIMUM_RAY_POWER = 0.01;
 
 function formatPrimitiveEngineWarning(warning) {
   const tolerance = warning.tolerance;
@@ -179,22 +185,26 @@ class PrimitiveBasedSimulator {
     if (this.engineProviders.size === 0) {
       throw new TypeError('At least one primitive simulation engine is required.');
     }
-    this.workload = summarizePrimitiveWorkload([], {
-      lengthScale: this.scene.lengthScale,
-    });
+    this.automaticEngineWinner = null;
+    this.workload = summarizePrimitiveWorkload([]);
     const initialEngineKind = this.selectEngineKind(this.workload);
     this.engine = this.getEngine(initialEngineKind);
     this.engineFallbackActive = false;
-
+    this.presentedEngineKind = initialEngineKind;
+    this.presentedEngineFallback = false;
     this.canvasRendererBelowLight = null;
     this.canvasRendererAboveLight = null;
     this.canvasRendererGrid = null;
 
     this.activeRun = null;
+    this.silentActiveRun = null;
     this.runGeneration = 0;
-    this.webGpuFrameRequest = null;
-    this.pendingWebGpuRunGeneration = null;
-    this.webGpuRunLoopActive = false;
+    this.runFrameRequest = null;
+    this.pendingRunJob = null;
+    this.runLoopActive = false;
+    this.comparisonTimer = null;
+    this.comparisonRunPromise = null;
+    this.benchmarkEngines = new Map();
     this.isRunning = false;
     this.simulationStartPending = false;
     this.primitives = [];
@@ -212,20 +222,95 @@ class PrimitiveBasedSimulator {
     if (preference !== 'automatic' && !this.engineProviders.has(preference)) {
       throw new RangeError(`Unknown primitive engine preference: ${preference}`);
     }
+    if (preference !== this.enginePreference) {
+      this.automaticEngineWinner = null;
+    }
     this.enginePreference = preference;
   }
 
   selectEngineKind(workload) {
+    return this.getEngineSelectionDecision(workload).selectedEngineKind;
+  }
+
+  selectFormulaEngineKind(workload) {
     const selected = this.engineSelector({
       preference: this.enginePreference,
       workload,
       isAvailable: kind => this.isEngineAvailable(kind),
-      colorMode: this.scene.colorMode,
       ...this.engineSelectionConfig,
     });
     if (this.engineProviders.has(selected)) return selected;
     if (this.engineProviders.has('primitiveCpu')) return 'primitiveCpu';
     return this.engineProviders.keys().next().value;
+  }
+
+  isAutomaticComparisonEligible() {
+    return this.enginePreference === 'automatic' &&
+      this.isEngineAvailable('primitiveCpu') &&
+      this.isEngineAvailable('webgpu');
+  }
+
+  getEngineSelectionDecision(workload) {
+    const formulaEngineKind = this.selectFormulaEngineKind(workload);
+    const workloadScore = getPrimitiveEngineWorkloadScore(workload);
+    const crossover = Number(
+      this.engineSelectionConfig.webGpuWorkloadThreshold ??
+        DEFAULT_WEBGPU_WORKLOAD_THRESHOLD
+    );
+    const crossoverRatio = crossover > 0
+      ? workloadScore / crossover
+      : null;
+    const comparisonEligible = this.isAutomaticComparisonEligible();
+    const learnedEngineKind = this.enginePreference === 'automatic' &&
+      this.isEngineAvailable(this.automaticEngineWinner)
+      ? this.automaticEngineWinner
+      : null;
+    const selectedEngineKind = learnedEngineKind ?? formulaEngineKind;
+    let reason = 'formula';
+    if (learnedEngineKind) reason = 'previous-comparison-winner';
+    else if (this.enginePreference !== 'automatic') reason = 'forced-preference';
+    else if (!comparisonEligible) reason = 'comparison-unavailable';
+    return {
+      preference: this.enginePreference,
+      workload: { ...workload },
+      workloadScore,
+      crossover,
+      crossoverRatio,
+      comparisonEligible,
+      cpuAvailable: this.isEngineAvailable('primitiveCpu'),
+      webGpuAvailable: this.isEngineAvailable('webgpu'),
+      formulaEngineKind,
+      learnedEngineKind: this.automaticEngineWinner ?? null,
+      selectedEngineKind,
+      reason,
+    };
+  }
+
+  logEngineSelectionDecision(decision) {
+    if (!this.logDebugInfo) return;
+    console.log(
+      '[Primitive engine selection] decision\n' +
+      `  Preference: ${decision.preference}\n` +
+      `  Workload: ${formatDecisionNumber(
+        decision.workload.initialRayCount
+      )} initial rays, ${formatDecisionNumber(
+        decision.workload.primitiveCurveCount
+      )} primitive curves\n` +
+      `  Score: ${formatDecisionNumber(decision.workloadScore)}\n` +
+      `  Crossover: ${formatDecisionNumber(decision.crossover)}\n` +
+      `  Score / crossover: ${formatDecisionNumber(
+        decision.crossoverRatio
+      )}\n` +
+      '  Formula choice (only without a previous winner): ' +
+      `${decision.formulaEngineKind}\n` +
+      `  Available: CPU ${decision.cpuAvailable ? 'yes' : 'no'}, ` +
+      `WebGPU ${decision.webGpuAvailable ? 'yes' : 'no'}\n` +
+      `  Previous comparison winner: ${
+        decision.learnedEngineKind ?? 'none'
+      }\n` +
+      `  Comparison eligible: ${decision.comparisonEligible ? 'yes' : 'no'}\n` +
+      `  Selected: ${decision.selectedEngineKind} (${decision.reason})`
+    );
   }
 
   isEngineAvailable(kind) {
@@ -253,11 +338,37 @@ class PrimitiveBasedSimulator {
     return engine;
   }
 
-  activateEngine(kind, { fallback = false } = {}) {
-    const previousKind = this.engine?.kind ?? null;
-    const previousFallback = this.engineFallbackActive;
+  getBenchmarkEngine(kind) {
+    let engine = this.benchmarkEngines.get(kind);
+    if (engine) return engine;
+    const provider = this.engineProviders.get(kind);
+    if (!provider) throw new RangeError(`No primitive engine provider for ${kind}.`);
+    engine = provider.create({ silent: true });
+    if (!engine || typeof engine.then === 'function' || engine.kind !== kind) {
+      throw new TypeError(
+        `Primitive engine provider ${kind} must synchronously create that engine.`
+      );
+    }
+    // A provider returning its foreground singleton cannot render a silent
+    // comparison without corrupting the visible run.
+    if (engine === this.engines.get(kind)) {
+      throw new Error(`Primitive engine provider ${kind} has no silent engine.`);
+    }
+    this.benchmarkEngines.set(kind, engine);
+    return engine;
+  }
+
+  activateEngine(kind, { fallback = false, deferPresentation = false } = {}) {
     this.engine = this.getEngine(kind);
     this.engineFallbackActive = fallback;
+    if (!deferPresentation) this.presentEngine(kind, { fallback });
+  }
+
+  presentEngine(kind, { fallback = false } = {}) {
+    const previousKind = this.presentedEngineKind;
+    const previousFallback = this.presentedEngineFallback;
+    this.presentedEngineKind = kind;
+    this.presentedEngineFallback = fallback;
     if (previousKind !== kind || previousFallback !== fallback) {
       this.emit('engineChange', {
         kind,
@@ -288,18 +399,16 @@ class PrimitiveBasedSimulator {
       this.emit('lightLayerSyncChange', { isSynced: false });
     }
     skipLight = skipLight || (this.manualLightRedraw && !forceRedraw);
-    if (!skipLight) {
-      this.collectAndPreprocessPrimitives();
-    }
-    this.drawSceneLayers(skipGrid);
-
     if (skipLight) {
+      this.drawSceneLayers(skipGrid);
       this.emit('requestUpdateErrorAndWarning');
       return;
     }
 
-    this.runGeneration++;
-    const generation = this.runGeneration;
+    const generation = ++this.runGeneration;
+    this.cancelObsoleteWork();
+    this.collectAndPreprocessPrimitives();
+    this.drawSceneLayers(skipGrid);
     this.processedRayCount = 0;
     this.totalTruncation = 0;
     this.simulationStartTime = new Date();
@@ -311,65 +420,127 @@ class PrimitiveBasedSimulator {
     this.isLightLayerSynced = true;
     this.emit('lightLayerSyncChange', { isSynced: true });
     if (!this.simulationStartPending) this.emit('simulationStart', null);
-
-    if (isWebGpuEngine(this.engine)) {
-      // Invalidate an already submitted run immediately. A newer run may be
-      // delayed by requestAnimationFrame or pipeline construction, so waiting
-      // until that run starts would leave the old presentation eligible.
-      this.activeRun?.cancel?.();
-      this.scheduleWebGpuRun(generation);
-      return;
-    }
-    this.startEngineRun(generation);
+    this.scheduleRun(this.createRunJob(generation));
   }
 
-  scheduleWebGpuRun(generation) {
-    this.pendingWebGpuRunGeneration = generation;
-    if (this.webGpuRunLoopActive || this.webGpuFrameRequest !== null) return;
-    const launch = () => {
-      this.webGpuFrameRequest = null;
-      this.runPendingWebGpuRuns();
+  cancelObsoleteWork() {
+    if (this.logDebugInfo &&
+        (this.comparisonTimer !== null || this.silentActiveRun ||
+          this.comparisonRunPromise)) {
+      console.log(
+        '[Primitive engine comparison] cancelled by scene update\n' +
+        `  New scene revision: ${this.runGeneration}`
+      );
+    }
+    this.pendingRunJob = null;
+    this.activeRun?.cancel?.();
+    this.silentActiveRun?.cancel?.();
+    if (this.comparisonTimer !== null) {
+      clearTimeout(this.comparisonTimer);
+      this.comparisonTimer = null;
+    }
+  }
+
+  createRunJob(generation, overrides = {}) {
+    const engine = overrides.engine ?? this.engine;
+    const origin = this.scene.origin ?? { x: 0, y: 0 };
+    const numericalTolerances = this.scene.numericalTolerances ?? {};
+    const isDefaultColorMode =
+      (this.scene.colorMode ?? 'default') === 'default';
+    return {
+      generation,
+      engine,
+      engineKind: engine.kind,
+      fallback: overrides.fallback ?? this.engineFallbackActive,
+      processedScene: overrides.processedScene ?? this.processedScene,
+      detectorResultBindings:
+        overrides.detectorResultBindings ?? this.detectorResultBindings,
+      primitives: overrides.primitives ?? this.primitives.slice(),
+      workload: overrides.workload ?? this.workload,
+      comparisonEligible: overrides.comparisonEligible ??
+        this.isAutomaticComparisonEligible(),
+      viewport: {
+        origin: {
+          x: (origin.x ?? 0) * this.dpr,
+          y: (origin.y ?? 0) * this.dpr,
+        },
+        scale: (this.scene.scale ?? 1) * this.dpr,
+        lengthScale: this.scene.lengthScale,
+      },
+      sceneOptions: {
+        violetWavelength: this.scene.violetWavelength,
+        redWavelength: this.scene.redWavelength,
+        colorMode: this.scene.colorMode,
+        rayPowerCutoff: isDefaultColorMode
+          ? Math.max(
+            DEFAULT_COLOR_MINIMUM_RAY_POWER,
+            numericalTolerances.rayPowerCutoff ?? 0
+          )
+          : numericalTolerances.rayPowerCutoff,
+        rayPowerCutoffMode: isDefaultColorMode
+          ? 'stableSampling'
+          : numericalTolerances.rayPowerCutoffMode,
+        maxRayDepth: this.scene.maxRayDepth,
+        mode: this.scene.mode,
+        simulateColors: this.scene.simulateColors,
+        showRayArrows: this.scene.showRayArrows,
+        observer: this.scene.observer,
+        numericalTolerances: { ...numericalTolerances },
+        lengthScale: this.scene.lengthScale,
+      },
     };
-    if (typeof requestAnimationFrame === 'function') {
-      this.webGpuFrameRequest = requestAnimationFrame(launch);
+  }
+
+  scheduleRun(job) {
+    this.pendingRunJob = job;
+    if (this.runLoopActive || this.runFrameRequest !== null) return;
+    const launch = () => {
+      this.runFrameRequest = null;
+      this.runPendingRuns();
+    };
+    if (isWebGpuEngine(job.engine) &&
+        typeof requestAnimationFrame === 'function') {
+      this.runFrameRequest = requestAnimationFrame(launch);
     } else {
-      this.webGpuFrameRequest = true;
+      this.runFrameRequest = true;
       Promise.resolve().then(launch);
     }
   }
 
-  async runPendingWebGpuRuns() {
-    if (this.webGpuRunLoopActive) return;
-    this.webGpuRunLoopActive = true;
+  async runPendingRuns() {
+    if (this.runLoopActive) return;
+    this.runLoopActive = true;
     try {
-      while (this.pendingWebGpuRunGeneration !== null) {
-        const generation = this.pendingWebGpuRunGeneration;
-        this.pendingWebGpuRunGeneration = null;
-        if (generation !== this.runGeneration) continue;
-        // Do not overlap backend construction or presentation between scene
-        // update revisions. Updates arriving while this awaits replace the
-        // single pending revision above and are processed next.
-        await this.startEngineRun(generation);
+      while (this.pendingRunJob) {
+        const job = this.pendingRunJob;
+        this.pendingRunJob = null;
+        if (job.generation !== this.runGeneration) continue;
+        // Engines and canvases are never shared by overlapping foreground
+        // revisions. An update cancels the active revision and replaces the
+        // one pending slot with its newest complete snapshot.
+        await this.startEngineRun(job);
       }
     } finally {
-      this.webGpuRunLoopActive = false;
-      if (this.pendingWebGpuRunGeneration !== null) {
-        this.scheduleWebGpuRun(this.pendingWebGpuRunGeneration);
+      this.runLoopActive = false;
+      if (this.pendingRunJob) {
+        this.scheduleRun(this.pendingRunJob);
       }
     }
   }
 
-  async startEngineRun(generation) {
+  async startEngineRun(job) {
+    if (typeof job === 'number') job = this.createRunJob(job);
+    let result = null;
     try {
-      await this.runEngine(generation);
+      result = await this.runEngine(job);
     } catch (error) {
-      if (generation !== this.runGeneration) return;
-      if (isWebGpuEngine(this.engine) &&
+      if (job.generation !== this.runGeneration) return;
+      if (isWebGpuEngine(job.engine) &&
           this.engineProviders.has('primitiveCpu')) {
         try {
-          await this.fallbackToCpu(generation, error);
+          result = await this.fallbackToCpu(job, error);
         } catch (fallbackError) {
-          if (generation !== this.runGeneration) return;
+          if (job.generation !== this.runGeneration) return;
           this.activeRun?.dispose?.();
           this.activeRun = null;
           this.error = fallbackError.message ||
@@ -382,10 +553,14 @@ class PrimitiveBasedSimulator {
           i18next.t('simulator:settings.correctBrightness.error');
       }
     }
-    this.completeRun(generation);
+    if (job.generation !== this.runGeneration) return;
+    this.completeRun(job.generation);
+    if (result?.completed) {
+      this.scheduleAutomaticComparison(result.job, result.durationMs);
+    }
   }
 
-  async fallbackToCpu(generation, webGpuError) {
+  async fallbackToCpu(job, webGpuError) {
     // Restart the complete simulation for this scene-update revision. Engine
     // selection never changes within a bounce or megakernel ping-pong.
     this.activeRun?.cancel?.();
@@ -395,52 +570,59 @@ class PrimitiveBasedSimulator {
       'simulator:simulationEngineModal.webgpu.fallback',
       { message: webGpuError.message }
     );
-    this.activateEngine('primitiveCpu', { fallback: true });
+    this.activateEngine('primitiveCpu', {
+      fallback: true,
+      deferPresentation: true,
+    });
     this.preprocessCollectedPrimitives(null);
     this.refreshWarning();
     if (this.simulationStartPending) {
       this.simulationStartPending = false;
       this.emit('simulationStart', null);
     }
-    await this.runEngine(generation);
+    const fallbackJob = this.createRunJob(job.generation, {
+      engine: this.engine,
+      fallback: true,
+      processedScene: this.processedScene,
+      detectorResultBindings: this.detectorResultBindings,
+      comparisonEligible: false,
+    });
+    return this.runEngine(fallbackJob);
   }
 
-  async runEngine(generation) {
-    const previousRun = this.activeRun;
-    this.activeRun = null;
+  async runEngine(job, {
+    silent = false,
+    timeLimitMs = Infinity,
+  } = {}) {
+    if (typeof job === 'number') job = this.createRunJob(job);
+    const activeRunKey = silent ? 'silentActiveRun' : 'activeRun';
+    const previousRun = this[activeRunKey];
+    this[activeRunKey] = null;
     previousRun?.cancel?.();
     previousRun?.dispose?.();
 
-    const preparedScene = await this.engine.prepare(this.processedScene, {
-      violetWavelength: this.scene.violetWavelength,
-      redWavelength: this.scene.redWavelength,
+    const isCurrent = () => job.generation === this.runGeneration;
+    const preparedScene = await job.engine.prepare(job.processedScene, {
+      violetWavelength: job.sceneOptions.violetWavelength,
+      redWavelength: job.sceneOptions.redWavelength,
       logDebugInfo: this.logDebugInfo
     });
-    if (generation !== this.runGeneration) return;
+    if (!isCurrent()) return { completed: false, job, durationMs: 0 };
 
-    const viewport = {
-      origin: {
-        x: this.scene.origin.x * this.dpr,
-        y: this.scene.origin.y * this.dpr,
-      },
-      scale: this.scene.scale * this.dpr,
-      lengthScale: this.scene.lengthScale,
-    };
-    const run = await this.engine.createRun({
+    const run = await job.engine.createRun({
       preparedScene,
-      isCurrent: () => generation === this.runGeneration,
-      viewport,
-      colorMode: this.scene.colorMode,
-      rayPowerCutoff: this.scene.numericalTolerances.rayPowerCutoff,
-      rayPowerCutoffMode:
-        this.scene.numericalTolerances.rayPowerCutoffMode,
+      isCurrent,
+      viewport: job.viewport,
+      colorMode: job.sceneOptions.colorMode,
+      rayPowerCutoff: job.sceneOptions.rayPowerCutoff,
+      rayPowerCutoffMode: job.sceneOptions.rayPowerCutoffMode,
       rayCountLimit: this.rayCountLimit,
-      maxRayDepth: this.scene.maxRayDepth,
+      maxRayDepth: job.sceneOptions.maxRayDepth,
       rendering: {
-        mode: this.scene.mode,
-        simulateColors: this.scene.simulateColors,
-        showRayArrows: this.scene.showRayArrows,
-        observer: this.scene.observer,
+        mode: job.sceneOptions.mode,
+        simulateColors: job.sceneOptions.simulateColors,
+        showRayArrows: job.sceneOptions.showRayArrows,
+        observer: job.sceneOptions.observer,
         wavelengthToColor: (wavelength, brightness, transform) =>
           this.wavelengthToColor(wavelength, brightness, transform),
         getThemeRayColor: (rayType, alpha) =>
@@ -452,56 +634,286 @@ class PrimitiveBasedSimulator {
           this.getThemeImageSize(imageType)
       },
     });
-    if (generation !== this.runGeneration) {
+    if (!isCurrent()) {
       run.cancel?.();
       run.dispose?.();
-      return;
+      return { completed: false, job, durationMs: 0 };
     }
-    this.activeRun = run;
+    this[activeRunKey] = run;
 
     let update;
-    do {
-      update = await run.advance({
-        timeBudgetMs: this.enableTimer
-          ? (this.engine.timeBudgetMs ?? 200)
-          : Infinity,
-      });
-      if (generation !== this.runGeneration) {
-        run.cancel?.();
-        return;
-      }
-
-      this.publishRunUpdate(update);
-      if (update.status !== 'complete') {
-        if (this.simulationStartPending) {
-          this.simulationStartPending = false;
-          this.emit('simulationStart', null);
+    let durationMs = 0;
+    try {
+      do {
+        const remainingMs = Math.max(1, timeLimitMs - durationMs);
+        const advanceStart = monotonicNow();
+        update = await run.advance({
+          timeBudgetMs: silent
+            ? Math.min(job.engine.timeBudgetMs ?? 200, remainingMs)
+            : this.enableTimer
+              ? (job.engine.timeBudgetMs ?? 200)
+              : Infinity,
+        });
+        durationMs += monotonicNow() - advanceStart;
+        if (!isCurrent()) {
+          run.cancel?.();
+          return { completed: false, job, durationMs };
         }
-        this.emit('simulationPause', null);
-      }
-      this.updateSimulation(true, true);
-      if (update.status !== 'complete' && this.enableTimer) {
-        await new Promise(resolve => setTimeout(resolve, 0));
-      }
-    } while (update.status !== 'complete');
 
-    run.dispose?.();
-    if (this.activeRun === run) this.activeRun = null;
-    if (this.drawBvh && this.engine.kind === 'primitiveCpu') {
+        if (silent) {
+          if (update.status !== 'complete' && durationMs >= timeLimitMs) {
+            run.cancel?.();
+            return { completed: false, slower: true, job, durationMs };
+          }
+        } else {
+          this.publishRunUpdate(update, job.detectorResultBindings);
+          this.presentEngine(job.engineKind, { fallback: job.fallback });
+          if (update.status !== 'complete') {
+            if (this.simulationStartPending) {
+              this.simulationStartPending = false;
+              this.emit('simulationStart', null);
+            }
+            this.emit('simulationPause', null);
+          }
+          this.updateSimulation(true, true);
+        }
+        if (update.status !== 'complete' && (this.enableTimer || silent)) {
+          await new Promise(resolve => setTimeout(resolve, 0));
+        }
+      } while (update.status !== 'complete');
+    } finally {
+      run.dispose?.();
+      if (this[activeRunKey] === run) this[activeRunKey] = null;
+    }
+    if (!silent && this.drawBvh && job.engineKind === 'primitiveCpu') {
       this.drawBvhTraversalDiagnostics(this.canvasRendererAboveLight);
       this.drawExternalHighlightPrimitiveCurves(
         this.canvasRendererAboveLight
       );
     }
+    return { completed: true, job, durationMs };
   }
 
-  publishRunUpdate(update) {
+  scheduleAutomaticComparison(job, firstDurationMs) {
+    const challengerKind = job.engineKind === 'webgpu'
+      ? 'primitiveCpu'
+      : 'webgpu';
+    const cpuAvailable = this.isEngineAvailable('primitiveCpu');
+    const webGpuAvailable = this.isEngineAvailable('webgpu');
+    const comparisonEligible = this.enginePreference === 'automatic' &&
+      cpuAvailable && webGpuAvailable;
+    const cpuTrialRequired = comparisonEligible &&
+      challengerKind === 'primitiveCpu';
+    const logDecision = (decision, extraLines = []) => {
+      if (!this.logDebugInfo) return;
+      console.log(
+        '[Primitive engine comparison] foreground result\n' +
+        `  Scene revision: ${job.generation}\n` +
+        `  Engine preference: ${this.enginePreference}\n` +
+        `  Foreground engine: ${job.engineKind}\n` +
+        `  Foreground duration: ${formatMilliseconds(firstDurationMs)} ms\n` +
+        `  Available: CPU ${cpuAvailable ? 'yes' : 'no'}, ` +
+        `WebGPU ${webGpuAvailable ? 'yes' : 'no'}\n` +
+        `  Job automatic-comparison flag: ${
+          job.comparisonEligible ? 'yes' : 'no'
+        }\n` +
+        `  CPU trial required after WebGPU: ${
+          cpuTrialRequired ? 'yes' : 'no'
+        }\n` +
+        `  Non-CPU challenger threshold: ${
+          AUTOMATIC_COMPARISON_MIN_RUNTIME_MS
+        } ms\n` +
+        `  CPU preference threshold: <${
+          AUTOMATIC_CPU_PREFERENCE_RUNTIME_MS
+        } ms\n` +
+        '  Timing scope: engine advance calls; preparation and pauses excluded\n' +
+        `  Decision: ${decision}` +
+        (extraLines.length ? `\n  ${extraLines.join('\n  ')}` : '')
+      );
+    };
+    if (job.generation !== this.runGeneration) {
+      logDecision('skip-stale-revision');
+      return;
+    }
+    if (job.fallback) {
+      logDecision('skip-webgpu-fallback');
+      return;
+    }
+    if (this.enginePreference !== 'automatic') {
+      logDecision('skip-forced-preference');
+      return;
+    }
+    if (!cpuAvailable) {
+      logDecision('skip-cpu-unavailable');
+      return;
+    }
+    if (!webGpuAvailable) {
+      logDecision('skip-webgpu-unavailable');
+      return;
+    }
+    if (challengerKind === 'primitiveCpu') {
+      // In Automatic mode CPU is always tried after WebGPU, even when the
+      // WebGPU foreground run is below the normal comparison threshold.
+    } else {
+      if (!(firstDurationMs > AUTOMATIC_COMPARISON_MIN_RUNTIME_MS)) {
+        logDecision('skip-fast-foreground');
+        return;
+      }
+    }
+    logDecision('schedule-challenger', [
+      `Challenger: ${challengerKind}`,
+      `Pause before start: ${AUTOMATIC_COMPARISON_PAUSE_MS} ms`,
+    ]);
+    this.comparisonTimer = setTimeout(() => {
+      this.comparisonTimer = null;
+      this.queueAutomaticComparison(job, firstDurationMs, challengerKind);
+    }, AUTOMATIC_COMPARISON_PAUSE_MS);
+  }
+
+  queueAutomaticComparison(firstJob, firstDurationMs, challengerKind) {
+    const previous = this.comparisonRunPromise;
+    const current = (async () => {
+      try {
+        await previous;
+      } catch (_) {
+        // runAutomaticComparison handles its own failures. Keep the queue
+        // moving if an unexpected rejection escaped an older revision.
+      }
+      if (firstJob.generation !== this.runGeneration) return;
+      await this.runAutomaticComparison(
+        firstJob,
+        firstDurationMs,
+        challengerKind
+      );
+    })();
+    this.comparisonRunPromise = current;
+    current.finally(() => {
+      if (this.comparisonRunPromise === current) {
+        this.comparisonRunPromise = null;
+      }
+    });
+  }
+
+  async runAutomaticComparison(firstJob, firstDurationMs, challengerKind) {
+    if (firstJob.generation !== this.runGeneration ||
+        this.isRunning ||
+        this.enginePreference !== 'automatic') return;
+    try {
+      if (this.logDebugInfo) {
+        console.log(
+          '[Primitive engine comparison] challenger started\n' +
+          `  Scene revision: ${firstJob.generation}\n` +
+          `  Foreground: ${firstJob.engineKind} ` +
+          `(${formatMilliseconds(firstDurationMs)} ms)\n` +
+          `  Challenger: ${challengerKind}`
+        );
+      }
+      const engine = this.getBenchmarkEngine(challengerKind);
+      this.resizeBenchmarkEngineOutput(engine);
+      const preprocessing = preprocessPrimitives(firstJob.primitives, {
+        lengthScale: firstJob.sceneOptions.lengthScale,
+        numericalTolerances: firstJob.sceneOptions.numericalTolerances,
+        numericEpsilon: engine.numericEpsilon,
+        bvhOptions: {
+          ...this.bvhOptions,
+          maxGroupExtent:
+            (this.bvhOptions.maxGroupExtent ??
+              DEFAULT_BVH_OPTIONS.maxGroupExtent) *
+            firstJob.sceneOptions.lengthScale
+        },
+        logDebugInfo: false,
+      });
+      if (firstJob.generation !== this.runGeneration) return;
+      const challengerJob = {
+        ...firstJob,
+        engine,
+        engineKind: challengerKind,
+        fallback: false,
+        comparisonEligible: false,
+        processedScene: preprocessing.processedScene,
+        detectorResultBindings: preprocessing.detectorResultBindings,
+      };
+      const challengerTimeLimitMs = challengerKind === 'primitiveCpu'
+        ? Math.max(
+          firstDurationMs,
+          AUTOMATIC_CPU_PREFERENCE_RUNTIME_MS
+        )
+        : firstDurationMs;
+      const result = await this.runEngine(challengerJob, {
+        silent: true,
+        timeLimitMs: challengerTimeLimitMs,
+      });
+      if (firstJob.generation !== this.runGeneration) return;
+      const cpuPreferredForResponsiveness =
+        challengerKind === 'primitiveCpu' &&
+        result.completed &&
+        result.durationMs < AUTOMATIC_CPU_PREFERENCE_RUNTIME_MS;
+      const challengerWon = result.completed &&
+        (result.durationMs < firstDurationMs ||
+          cpuPreferredForResponsiveness);
+      this.automaticEngineWinner = challengerWon
+        ? challengerKind
+        : firstJob.engineKind;
+      if (this.logDebugInfo) {
+        console.log(
+          '[Primitive engine comparison] decision\n' +
+          `  Scene revision: ${firstJob.generation}\n` +
+          `  Foreground: ${firstJob.engineKind} ` +
+          `(${formatMilliseconds(firstDurationMs)} ms)\n` +
+          `  Challenger: ${challengerKind} ` +
+          `(${formatMilliseconds(result.durationMs)} ms)\n` +
+          `  Challenger completed: ${result.completed ? 'yes' : 'no'}\n` +
+          `  Challenger stopped as slower: ${result.slower ? 'yes' : 'no'}\n` +
+          `  CPU under ${AUTOMATIC_CPU_PREFERENCE_RUNTIME_MS} ms ` +
+          `preference applied: ${
+            cpuPreferredForResponsiveness ? 'yes' : 'no'
+          }\n` +
+          `  Winner for next scene update: ${this.automaticEngineWinner}`
+        );
+      }
+    } catch (error) {
+      if (firstJob.generation !== this.runGeneration) return;
+      // A silent comparison must not become a user-visible simulation error.
+      // Keep the successful foreground engine when the challenger is unusable.
+      this.automaticEngineWinner = firstJob.engineKind;
+      if (this.logDebugInfo) {
+        console.warn(
+          '[Primitive engine comparison] challenger failed\n' +
+          `  Scene revision: ${firstJob.generation}\n` +
+          `  Foreground: ${firstJob.engineKind} ` +
+          `(${formatMilliseconds(firstDurationMs)} ms)\n` +
+          `  Challenger: ${challengerKind}\n` +
+          `  Winner for next scene update: ${firstJob.engineKind}\n` +
+          `  Error: ${error?.message ?? String(error)}`
+        );
+      }
+    }
+  }
+
+  resizeBenchmarkEngineOutput(engine) {
+    const referenceCanvas = this.ctxAboveLight?.canvas ??
+      this.ctxBelowLight?.canvas;
+    if (!referenceCanvas) return;
+    const { width, height } = referenceCanvas;
+    for (const canvas of [
+      engine.ctxMain?.canvas,
+      engine.glMain?.canvas,
+      engine.ctxVirtual?.canvas,
+    ]) {
+      if (!canvas) continue;
+      if (canvas.width !== width) canvas.width = width;
+      if (canvas.height !== height) canvas.height = height;
+    }
+    engine.output?.resize?.(width, height);
+  }
+
+  publishRunUpdate(update, detectorResultBindings = this.detectorResultBindings) {
     this.processedRayCount =
       update.progress?.processedRayCount ?? this.processedRayCount;
     this.totalTruncation =
       update.progress?.totalTruncation ?? this.totalTruncation;
     const detectorResults = update.result?.detectors ?? [];
-    for (const binding of this.detectorResultBindings) {
+    for (const binding of detectorResultBindings) {
       const values = detectorResults[binding.resultId];
       if (values) binding.result.values = values;
     }
@@ -613,10 +1025,13 @@ class PrimitiveBasedSimulator {
       : null;
 
     this.primitives = primitives;
-    this.workload = summarizePrimitiveWorkload(primitives, {
-      lengthScale: this.scene.lengthScale,
+    this.workload = summarizePrimitiveWorkload(primitives);
+    const selectionDecision = this.getEngineSelectionDecision(this.workload);
+    this.logEngineSelectionDecision(selectionDecision);
+    this.activateEngine(selectionDecision.selectedEngineKind, {
+      fallback: false,
+      deferPresentation: true,
     });
-    this.activateEngine(this.selectEngineKind(this.workload), { fallback: false });
     this.preprocessCollectedPrimitives(
       collectionTime,
       previousProcessedScene
@@ -833,21 +1248,26 @@ class PrimitiveBasedSimulator {
   }
 
   stopSimulation() {
-    if (!this.isRunning) return;
+    const wasRunning = this.isRunning;
     this.runGeneration++;
-    this.pendingWebGpuRunGeneration = null;
+    this.pendingRunJob = null;
     if (
-      this.webGpuFrameRequest !== null &&
-      this.webGpuFrameRequest !== true &&
+      this.runFrameRequest !== null &&
+      this.runFrameRequest !== true &&
       typeof cancelAnimationFrame === 'function'
-    ) cancelAnimationFrame(this.webGpuFrameRequest);
-    this.webGpuFrameRequest = null;
+    ) cancelAnimationFrame(this.runFrameRequest);
+    this.runFrameRequest = null;
+    if (this.comparisonTimer !== null) clearTimeout(this.comparisonTimer);
+    this.comparisonTimer = null;
     this.activeRun?.cancel?.();
     this.activeRun?.dispose?.();
     this.activeRun = null;
+    this.silentActiveRun?.cancel?.();
+    this.silentActiveRun?.dispose?.();
+    this.silentActiveRun = null;
     this.isRunning = false;
     this.simulationStartPending = false;
-    this.emit('simulationStop', null);
+    if (wasRunning) this.emit('simulationStop', null);
   }
 
   destroy() {
@@ -855,7 +1275,11 @@ class PrimitiveBasedSimulator {
     for (const engine of new Set(this.engines.values())) {
       engine.dispose?.();
     }
+    for (const engine of new Set(this.benchmarkEngines.values())) {
+      engine.dispose?.();
+    }
     this.engines.clear();
+    this.benchmarkEngines.clear();
     this.eventListeners = {};
   }
 
@@ -992,6 +1416,13 @@ function isWebGpuEngine(engine) {
   return engine?.kind === 'webgpu';
 }
 
+function monotonicNow() {
+  return typeof performance !== 'undefined' &&
+    typeof performance.now === 'function'
+    ? performance.now()
+    : Date.now();
+}
+
 function normalizeEngineProviders(providers) {
   const result = new Map();
   const entries = providers instanceof Map
@@ -1018,6 +1449,12 @@ function formatChangeStatus(changed) {
 
 function formatMilliseconds(duration) {
   return Number.isFinite(duration) ? duration.toFixed(3) : 'n/a';
+}
+
+function formatDecisionNumber(value) {
+  if (!Number.isFinite(value)) return 'n/a';
+  if (Number.isInteger(value)) return String(value);
+  return String(Number(value.toPrecision(8)));
 }
 
 function formatRegisteredTypes(categorySummary) {

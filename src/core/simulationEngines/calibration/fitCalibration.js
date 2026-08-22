@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-const SIGNIFICANT_RUNTIME_MS = 150;
-
 export function median(values) {
   const sorted = values.filter(Number.isFinite).sort((a, b) => a - b);
   if (!sorted.length) return null;
@@ -54,7 +52,7 @@ export function estimateIntersectionCrossover({
   const points = cpuResults.flatMap(cpu => {
     const gpu = gpuByProbe.get(cpu.probeId);
     const score = cpu.workload?.initialRayCount * Math.sqrt(
-      Math.max(1, cpu.workload?.primitiveCurveCount ?? 0)
+      Math.max(0, cpu.workload?.primitiveCurveCount ?? 0)
     );
     if (!(cpu.medianMs > 0) || !(gpu?.medianMs > 0) || !(score > 0)) {
       return [];
@@ -110,139 +108,3 @@ function compareCrossoverCandidates(left, right) {
   }
   return left.distanceFromDefault - right.distanceFromDefault;
 }
-
-export function fitEngineSelectionCorrections({
-  cpuResults,
-  gpuResults,
-  threshold,
-  defaults,
-}) {
-  const gpuByProbe = new Map(gpuResults.map(result => [result.probeId, result]));
-  const pairs = cpuResults.flatMap(cpu => {
-    const gpu = gpuByProbe.get(cpu.probeId);
-    if (!(cpu.medianMs > 0) || !(gpu?.medianMs > 0) || !cpu.workload) return [];
-    return [{ cpu, gpu }];
-  });
-  if (!pairs.length) return { ...defaults };
-
-  const candidates = {
-    outgoingCoefficient: candidateValues(
-      defaults.outgoingCoefficient,
-      [0, 0.25, 0.5, 1, 2, 4, 8, 16, 32, 64],
-      correctionBoundaryValues(pairs, threshold, 'outgoingCoefficient')
-    ),
-    defaultRenderCoefficient: candidateValues(
-      defaults.defaultRenderCoefficient,
-      [0, 0.125, 0.25, 0.5, 1, 2, 4, 8, 16, 32, 64],
-      correctionBoundaryValues(pairs, threshold, 'defaultRenderCoefficient')
-    ),
-    nonDefaultRenderCoefficient: candidateValues(
-      defaults.nonDefaultRenderCoefficient,
-      [0, 0.125, 0.25, 0.5, 1, 2, 4, 8, 16, 32, 64, 128, 256],
-      correctionBoundaryValues(
-        pairs,
-        threshold,
-        'nonDefaultRenderCoefficient'
-      )
-    ),
-    grinStepCoefficient: candidateValues(
-      defaults.grinStepCoefficient,
-      [0, 0.005, 0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2],
-      correctionBoundaryValues(pairs, threshold, 'grinStepCoefficient')
-    ),
-  };
-
-  let best = { parameters: { ...defaults }, loss: Infinity };
-  for (const outgoingCoefficient of candidates.outgoingCoefficient) {
-    for (const defaultRenderCoefficient of candidates.defaultRenderCoefficient) {
-      for (const nonDefaultRenderCoefficient of candidates.nonDefaultRenderCoefficient) {
-        for (const grinStepCoefficient of candidates.grinStepCoefficient) {
-          const parameters = {
-            outgoingCoefficient,
-            defaultRenderCoefficient,
-            nonDefaultRenderCoefficient,
-            grinStepCoefficient,
-          };
-          const loss = selectionLoss(pairs, threshold, parameters, defaults);
-          if (loss < best.loss) best = { parameters, loss };
-        }
-      }
-    }
-  }
-  return best.parameters;
-}
-
-function selectionLoss(pairs, threshold, parameters, defaults) {
-  let loss = 0;
-  for (const { cpu, gpu } of pairs) {
-    const workload = cpu.workload;
-    const renderCoefficient = cpu.colorMode === 'default'
-      ? parameters.defaultRenderCoefficient
-      : parameters.nonDefaultRenderCoefficient;
-    const score = workload.initialRayCount * (
-      Math.sqrt(Math.max(1, workload.primitiveCurveCount)) +
-      parameters.outgoingCoefficient *
-        (workload.additionalOutgoingRaySlotCount ?? 0) +
-      renderCoefficient +
-      parameters.grinStepCoefficient * (workload.grinStepFactor ?? 0)
-    );
-    const selectedMs = score >= threshold ? gpu.medianMs : cpu.medianMs;
-    const bestMs = Math.min(cpu.medianMs, gpu.medianMs);
-    if (selectedMs > bestMs) {
-      const regret = Math.log(selectedMs / bestMs);
-      const weight = selectedMs >= SIGNIFICANT_RUNTIME_MS ? 10 : 0.1;
-      loss += weight * regret * regret;
-    }
-  }
-
-  // A weak prior keeps an unobserved term at its shipped value instead of
-  // allowing an arbitrary grid point to win a tie.
-  for (const key of Object.keys(defaults)) {
-    const scale = Math.max(0.05, Math.abs(defaults[key]));
-    loss += 1e-7 * ((parameters[key] - defaults[key]) / scale) ** 2;
-  }
-  return loss;
-}
-
-function correctionBoundaryValues(pairs, threshold, parameter) {
-  return pairs.flatMap(({ cpu }) => {
-    const workload = cpu.workload;
-    let factor;
-    switch (parameter) {
-      case 'outgoingCoefficient':
-        factor = workload.additionalOutgoingRaySlotCount ?? 0;
-        break;
-      case 'defaultRenderCoefficient':
-        factor = cpu.colorMode === 'default' ? 1 : 0;
-        break;
-      case 'nonDefaultRenderCoefficient':
-        factor = cpu.colorMode === 'default' ? 0 : 1;
-        break;
-      case 'grinStepCoefficient':
-        factor = workload.grinStepFactor ?? 0;
-        break;
-      default:
-        factor = 0;
-    }
-    if (!(factor > 0) || !(workload.initialRayCount > 0)) return [];
-    const base = Math.sqrt(Math.max(
-      1,
-      workload.primitiveCurveCount ?? 0
-    ));
-    const boundary = (
-      threshold / workload.initialRayCount - base
-    ) / factor;
-    if (!Number.isFinite(boundary) || boundary < 0) return [];
-    // Include the measured decision boundary itself instead of forcing the
-    // fitted value onto the human-friendly fallback grid. The tiny value above
-    // it protects the >= comparison from floating-point reconstruction error.
-    return [boundary, boundary * (1 + 1e-12) + 1e-12];
-  });
-}
-
-function candidateValues(defaultValue, values, measuredBoundaries = []) {
-  return [...new Set([...values, ...measuredBoundaries, defaultValue])]
-    .sort((a, b) => a - b);
-}
-
-export { SIGNIFICANT_RUNTIME_MS };

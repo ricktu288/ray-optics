@@ -80,13 +80,9 @@ describe('simulation engine configuration', () => {
     expect(DEFAULT_SIMULATION_ENGINE_CONFIGS.webgpu.bvh).toBeUndefined();
   });
 
-  it('provides shared automatic engine-selection corrections', () => {
+  it('provides a single automatic engine-selection crossover', () => {
     expect(DEFAULT_PRIMITIVE_SIMULATOR_CONFIG.engineSelection).toEqual({
-      webGpuWorkloadThreshold: 1024,
-      outgoingCoefficient: 0,
-      defaultRenderCoefficient: 0.25,
-      nonDefaultRenderCoefficient: 0.25,
-      grinStepCoefficient: 0.05
+      webGpuWorkloadThreshold: 1024
     });
   });
 
@@ -106,11 +102,15 @@ describe('simulation engine configuration', () => {
   it('resolves stored automatic engine-selection overrides', () => {
     const resolved = resolvePrimitiveSimulatorConfig({
       primitive: {
-        engineSelection: { outgoingCoefficient: 1.5 }
+        engineSelection: {
+          webGpuWorkloadThreshold: 2048,
+          outgoingCoefficient: 99
+        }
       }
     });
-    expect(resolved.engineSelection.outgoingCoefficient).toBe(1.5);
-    expect(resolved.engineSelection.webGpuWorkloadThreshold).toBe(1024);
+    expect(resolved.engineSelection).toEqual({
+      webGpuWorkloadThreshold: 2048
+    });
   });
 
   it('resolves engine tuning independently of shared preprocessing', () => {

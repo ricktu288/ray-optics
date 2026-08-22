@@ -5,6 +5,7 @@
  */
 
 import {
+  getPrimitiveEngineWorkloadScore,
   selectPrimitiveEngineKind,
   summarizePrimitiveWorkload
 } from '../../src/core/simulationEngines/primitiveEngineSelection';
@@ -22,86 +23,51 @@ describe('primitive engine selection', () => {
         }, {}, {}], partialReflect: true,
         stepSize: 0.5
       }
-    ], { lengthScale: 2 });
-    expect(workload).toMatchObject({
+    ]);
+    expect(workload).toEqual({
       initialRayCount: 64,
-      primitiveCurveCount: 5,
-      additionalOutgoingRaySlotCount: 5
+      primitiveCurveCount: 5
     });
-    expect(workload.grinStepFactor).toBeCloseTo(400);
   });
 
-  it('uses one virtual curve for source-only workloads', () => {
+  it('keeps source-only workloads on CPU because they have no intersections', () => {
     const choose = initialRayCount => selectPrimitiveEngineKind({
       workload: {
         primitiveCurveCount: 0,
-        initialRayCount,
-        additionalOutgoingRaySlotCount: 0,
-        grinStepFactor: 0
+        initialRayCount
       },
-      isAvailable: () => true,
-      outgoingCoefficient: 0,
-      defaultRenderCoefficient: 0,
-      nonDefaultRenderCoefficient: 0,
-      grinStepCoefficient: 0
+      isAvailable: () => true
     });
     expect(choose(1023)).toBe('primitiveCpu');
-    expect(choose(1024)).toBe('webgpu');
+    expect(choose(1024)).toBe('primitiveCpu');
   });
 
-  it('applies the static GRIN inverse-step correction', () => {
-    expect(selectPrimitiveEngineKind({
-      workload: {
-        primitiveCurveCount: 21,
-        initialRayCount: 42,
-        additionalOutgoingRaySlotCount: 0,
-        grinStepFactor: 400
-      },
-      isAvailable: () => true,
-      outgoingCoefficient: 0,
-      defaultRenderCoefficient: 0,
-      nonDefaultRenderCoefficient: 0,
-      grinStepCoefficient: 0.05
-    })).toBe('webgpu');
-  });
-
-  it('applies outgoing and color-mode rendering corrections', () => {
-    const workload = {
-      primitiveCurveCount: 1,
-      initialRayCount: 512,
-      additionalOutgoingRaySlotCount: 1
-    };
-    expect(selectPrimitiveEngineKind({
-      workload,
-      isAvailable: () => true,
-      outgoingCoefficient: 1,
-      defaultRenderCoefficient: 0,
-      nonDefaultRenderCoefficient: 0
-    })).toBe('webgpu');
-    expect(selectPrimitiveEngineKind({
-      workload: { ...workload, additionalOutgoingRaySlotCount: 0 },
-      isAvailable: () => true,
-      outgoingCoefficient: 0,
-      defaultRenderCoefficient: 0,
-      nonDefaultRenderCoefficient: 1,
+  it('ignores branching, rendering, and GRIN metadata', () => {
+    const base = { primitiveCurveCount: 4, initialRayCount: 500 };
+    expect(getPrimitiveEngineWorkloadScore({
+      ...base,
+      additionalOutgoingRaySlotCount: 1000,
+      grinStepFactor: 1000,
       colorMode: 'linear'
-    })).toBe('webgpu');
+    })).toBe(1000);
+    expect(selectPrimitiveEngineKind({
+      workload: base,
+      isAvailable: () => true
+    })).toBe('primitiveCpu');
   });
 
   it('uses the calibrated ray-count times square-root-curve-count rule', () => {
     const choose = (primitiveCurveCount, initialRayCount) =>
       selectPrimitiveEngineKind({
         workload: { primitiveCurveCount, initialRayCount },
-        isAvailable: () => true,
-        defaultRenderCoefficient: 0,
-        nonDefaultRenderCoefficient: 0
+        isAvailable: () => true
       });
     expect(choose(1, 1023)).toBe('primitiveCpu');
     expect(choose(1, 1024)).toBe('webgpu');
     expect(choose(16, 255)).toBe('primitiveCpu');
     expect(choose(16, 256)).toBe('webgpu');
     expect(choose(0, 1023)).toBe('primitiveCpu');
-    expect(choose(0, 1024)).toBe('webgpu');
+    expect(choose(0, 1024)).toBe('primitiveCpu');
   });
 
   it('honors forced engines and avoids unavailable WebGPU automatically', () => {

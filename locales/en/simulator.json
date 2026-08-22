@@ -771,7 +771,6 @@
         "preparing": "Preparing WebGL and WebGPU…",
         "cpu": "CPU probes: {{completed}} of {{total}} complete {{probe}}",
         "rayCooperation": "WebGPU ray cooperation ({{configuration}}): {{completed}} of {{total}} complete {{probe}}",
-        "endToEndWebGpu": "WebGPU end-to-end probes: {{completed}} of {{total}} complete {{probe}}",
         "fitting": "Fitting device parameters…",
         "complete": "Calibration complete."
       }
@@ -787,7 +786,7 @@
       "sections": {
         "engineSelection": {
           "title": "Automatic engine selection",
-          "description": "These device-dependent values choose between CPU and WebGPU from the expanded primitive list and scene color mode. They can be calibrated automatically or entered manually."
+          "description": "This device-dependent crossover chooses between CPU and WebGPU from only the initial ray and primitive curve counts. It can be calibrated automatically or entered manually."
         },
         "bvh": {
           "title": "Bounding volume hierarchy (BVH)",
@@ -818,23 +817,7 @@
       "fields": {
         "webGpuWorkloadThreshold": {
           "title": "CPU/WebGPU crossover score",
-          "description": "Select WebGPU in automatic mode when the corrected static workload score reaches this value. This base intersection crossover is determined by the ray-cooperation benchmark."
-        },
-        "outgoingCoefficient": {
-          "title": "Outgoing-ray coefficient",
-          "description": "Additional static workload assigned to each possible extra outgoing-ray slot. This corrects the intersection-only estimate for branching work."
-        },
-        "defaultRenderCoefficient": {
-          "title": "Default-render coefficient",
-          "description": "Per-initial-ray rendering correction used for the default color mode."
-        },
-        "nonDefaultRenderCoefficient": {
-          "title": "Non-default-render coefficient",
-          "description": "Per-initial-ray rendering correction used for linear and other non-default color modes, including the CPU-to-WebGL transfer cost."
-        },
-        "grinStepCoefficient": {
-          "title": "GRIN stepping coefficient",
-          "description": "Static correction for numerical stepping inside GRIN regions. It multiplies the sum of each expanded GRIN region's smaller bounding-box extent divided by its step size."
+          "description": "Select WebGPU in automatic mode when initial rays × √(primitive curves) reaches this value. Calibration derives it only from the ray-cooperation probes compared with CPU."
         },
         "lineLeafSize": {
           "title": "Line segments per leaf",

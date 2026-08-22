@@ -338,11 +338,7 @@ const ENGINE_CONFIG_SECTIONS = [
     configKey: 'primitive',
     hasDescription: true,
     fields: [
-      { key: 'webGpuWorkloadThreshold', path: ['engineSelection', 'webGpuWorkloadThreshold'], min: 1, step: 'any', hasInfo: true },
-      { key: 'outgoingCoefficient', path: ['engineSelection', 'outgoingCoefficient'], min: 0, step: 0.01, hasInfo: true },
-      { key: 'defaultRenderCoefficient', path: ['engineSelection', 'defaultRenderCoefficient'], min: 0, step: 0.01, hasInfo: true },
-      { key: 'nonDefaultRenderCoefficient', path: ['engineSelection', 'nonDefaultRenderCoefficient'], min: 0, step: 0.01, hasInfo: true },
-      { key: 'grinStepCoefficient', path: ['engineSelection', 'grinStepCoefficient'], min: 0, step: 0.001, hasInfo: true }
+      { key: 'webGpuWorkloadThreshold', path: ['engineSelection', 'webGpuWorkloadThreshold'], min: 1, step: 'any', hasInfo: true }
     ]
   },
   {
@@ -585,10 +581,7 @@ export default {
         : {}
       nextConfigs.primitive = {
         ...(nextConfigs.primitive ?? {}),
-        engineSelection: {
-          ...(nextConfigs.primitive?.engineSelection ?? {}),
-          ...overrides.primitive.engineSelection
-        }
+        engineSelection: { ...overrides.primitive.engineSelection }
       }
       nextConfigs.webgpu = {
         ...(nextConfigs.webgpu ?? {}),
