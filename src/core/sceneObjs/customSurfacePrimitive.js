@@ -9,6 +9,7 @@
  */
 
 import { parseFormula } from '../formula/formula-parser.js';
+import { extractNumbersAsParameters } from '../formula/parameter-extraction.js';
 import { substituteDagParameters } from '../formula/substitution.js';
 import { combineDags } from '../formula/dag-combination.js';
 import {
@@ -40,14 +41,14 @@ export function createCustomSurfacePrimitive({
     positionExpression,
     paramNames
   ]);
-  const cachedSurfaceType = surfaceTypeCache.get(cacheKey);
-  if (cachedSurfaceType) {
+  const cachedSurfaceData = surfaceTypeCache.get(cacheKey);
+  if (cachedSurfaceData) {
     return {
       kind: 'surface',
       curve,
       twoSided,
-      surfaceType: cachedSurfaceType,
-      params
+      surfaceType: cachedSurfaceData.surfaceType,
+      params: { ...params, ...cachedSurfaceData.formulaParams }
     };
   }
   const positionDag = parseFormula(
@@ -67,6 +68,8 @@ export function createCustomSurfacePrimitive({
   const angles = [[], []];
   const powers = [[], []];
   const outputDags = [];
+  const formulaParamNames = [];
+  const formulaParams = {};
   let slot = 0;
 
   const legacyNames = [
@@ -80,6 +83,21 @@ export function createCustomSurfacePrimitive({
   for (let rayIndex = 0; rayIndex < outRays.length; rayIndex++) {
     const angleSource = convertEquation(outRays[rayIndex].eqnTheta);
     const powerSource = convertEquation(outRays[rayIndex].eqnP);
+    const extractedAngle = extractNumbersAsParameters(
+      parseFormula(angleSource, legacyNames),
+      { prefix: `_theta${rayIndex + 1}_n` }
+    );
+    const extractedPower = extractNumbersAsParameters(
+      parseFormula(powerSource, legacyNames),
+      { prefix: `_power${rayIndex + 1}_n` }
+    );
+    for (const param of [
+      ...extractedAngle.extracted,
+      ...extractedPower.extracted
+    ]) {
+      formulaParamNames.push(param.name);
+      formulaParams[param.name] = param.value;
+    }
     for (let polarization = 0; polarization < 2; polarization++) {
       const substitutions = {
         theta_0: incidentAngleDag,
@@ -94,13 +112,13 @@ export function createCustomSurfacePrimitive({
           powers[polarization][previous];
       }
       angles[polarization][rayIndex] = substituteDagParameters(
-        parseFormula(angleSource, legacyNames),
+        extractedAngle.dag,
         substitutions
       );
       substitutions[`theta_${rayIndex + 1}`] =
         angles[polarization][rayIndex];
       powers[polarization][rayIndex] = substituteDagParameters(
-        parseFormula(powerSource, legacyNames),
+        extractedPower.dag,
         substitutions
       );
     }
@@ -149,7 +167,7 @@ export function createCustomSurfacePrimitive({
 
   const surfaceType = {
     name,
-    paramNames,
+    paramNames: [...paramNames, ...formulaParamNames],
     dag: combineDags(outputDags),
     outRayCount: slot,
     mergesWithBoundary: true
@@ -157,8 +175,14 @@ export function createCustomSurfacePrimitive({
   if (surfaceTypeCache.size >= MAX_SURFACE_TYPE_CACHE_SIZE) {
     surfaceTypeCache.clear();
   }
-  surfaceTypeCache.set(cacheKey, surfaceType);
-  return { kind: 'surface', curve, twoSided, surfaceType, params };
+  surfaceTypeCache.set(cacheKey, { surfaceType, formulaParams });
+  return {
+    kind: 'surface',
+    curve,
+    twoSided,
+    surfaceType,
+    params: { ...params, ...formulaParams }
+  };
 }
 
 function createOutputSlotDags(index, angleDag, sPowerDag, pPowerDag) {

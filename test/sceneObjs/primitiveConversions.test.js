@@ -17,6 +17,7 @@ import PlaneGlass from '../../src/core/sceneObjs/glass/PlaneGlass.js';
 import CustomArcSurface from '../../src/core/sceneObjs/other/CustomArcSurface.js';
 import CustomSurface from '../../src/core/sceneObjs/other/CustomSurface.js';
 import CustomParamSurface from '../../src/core/sceneObjs/other/CustomParamSurface.js';
+import ModuleObj from '../../src/core/sceneObjs/special/ModuleObj.js';
 
 describe('additional scene-object primitive conversions', () => {
   test('custom surface translates legacy angles and powers', () => {
@@ -28,6 +29,7 @@ describe('additional scene-object primitive conversions', () => {
     const [primitive] = surface.getPrimitives();
     expect(primitive.surfaceType.outRayCount).toBe(2);
     const values = createDagClosureEvaluator(primitive.surfaceType.dag)({
+      ...primitive.params,
       d_0x: 0,
       d_0y: -1,
       P_0s: 0.4,
@@ -50,6 +52,62 @@ describe('additional scene-object primitive conversions', () => {
     expect(() => preprocessPrimitives([primitive], {
       numericEpsilon: FLOAT32_EPSILON
     })).not.toThrow();
+  });
+
+  test('custom surface formula literals remain runtime parameters', () => {
+    const createPrimitive = factor => {
+      const scene = new Scene();
+      scene.modules = {
+        CustomSurfaceModule: {
+          numPoints: 0,
+          params: ['a=0:0.01:1:1'],
+          vars: [],
+          objs: [{
+            type: 'CustomArcSurface',
+            p1: { x: 0, y: 0 },
+            p2: { x: 10, y: 0 },
+            p3: { x: 5, y: 5 },
+            outRays: [{
+              eqnTheta: '\\theta_0',
+              eqnP: '``a * P_0``'
+            }]
+          }]
+        }
+      };
+      const moduleObj = new ModuleObj(scene, {
+        module: 'CustomSurfaceModule',
+        points: [],
+        params: { a: factor }
+      });
+      return moduleObj.objs[0].getPrimitives()[0];
+    };
+
+    const zero = createPrimitive(0);
+    const first = createPrimitive(0.4);
+    const second = createPrimitive(0.41);
+    const one = createPrimitive(1);
+    const cached = createPrimitive(0.4);
+    const parameterName = first.surfaceType.paramNames.find(
+      name => name.startsWith('_power1_n')
+    );
+
+    expect(parameterName).toBeDefined();
+    expect(zero.params[parameterName]).toBe(0);
+    expect(first.params[parameterName]).toBe(0.4);
+    expect(second.params[parameterName]).toBe(0.41);
+    expect(one.params[parameterName]).toBe(1);
+    expect(cached.params).toEqual(first.params);
+    expect(zero.surfaceType).toEqual(first.surfaceType);
+    expect(second.surfaceType).toEqual(first.surfaceType);
+    expect(one.surfaceType).toEqual(first.surfaceType);
+
+    const firstProcessed = preprocessPrimitives([first], {
+      numericEpsilon: FLOAT32_EPSILON
+    }).processedScene;
+    const secondProcessed = preprocessPrimitives([second], {
+      numericEpsilon: FLOAT32_EPSILON
+    }).processedScene;
+    expect(secondProcessed.typeSignature).toBe(firstProcessed.typeSignature);
   });
 
   test('custom surface preserves polarization splits through prior rays', () => {
