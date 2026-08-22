@@ -1,0 +1,81 @@
+{
+  "version": 5,
+  "name": "equiv_curve",
+  "modules": {
+    "BezierMirror": {
+      "numPoints": 4,
+      "params": [
+        "tStep=0.01:0.001:0.1:0.01"
+      ],
+      "vars": [
+        "bezierX(t)=(1-t)^3*x_1+3*(1-t)^2*t*x_2+3*(1-t)*t^2*x_3+t^3*x_4",
+        "bezierY(t)=(1-t)^3*y_1+3*(1-t)^2*t*y_2+3*(1-t)*t^2*y_3+t^3*y_4"
+      ],
+      "objs": [
+        {
+          "type": "ParamMirror",
+          "pieces": [
+            {
+              "eqnX": "``bezierX(t)``",
+              "eqnY": "``bezierY(t)``",
+              "tMin": 0,
+              "tMax": 1,
+              "tStep": "`tStep`"
+            }
+          ],
+          "curveType": "cubicBezier"
+        }
+      ]
+    }
+  },
+  "objs": [
+    {
+      "type": "ModuleObj",
+      "module": "BezierMirror",
+      "points": [
+        { "x": 450, "y": 240 },
+        { "x": 530, "y": 240 },
+        { "x": 530, "y": 320 },
+        { "x": 450, "y": 320 }
+      ],
+      "params": { "tStep": 0.01 }
+    },
+    {
+      "type": "CurveMirror",
+      "isClosed": false,
+      "points": [
+        {
+          "a1": { "x": 450, "y": 400 },
+          "c1": { "x": 530, "y": 400 },
+          "c2": { "x": 530, "y": 480 }
+        },
+        { "a1": { "x": 450, "y": 480 } }
+      ]
+    },
+    {
+      "type": "Beam",
+      "p1": { "x": 600, "y": 310 },
+      "p2": { "x": 600, "y": 250 }
+    },
+    {
+      "type": "Beam",
+      "p1": { "x": 600, "y": 470 },
+      "p2": { "x": 600, "y": 410 }
+    },
+    {
+      "type": "Detector",
+      "p1": { "x": 650, "y": 220 },
+      "p2": { "x": 650, "y": 500 },
+      "irradMap": true,
+      "binSize": 5
+    },
+    {
+      "type": "Blocker",
+      "p1": { "x": 400, "y": 360 },
+      "p2": { "x": 670, "y": 360 }
+    }
+  ],
+  "width": 800,
+  "height": 600,
+  "rayModeDensity": 2
+}

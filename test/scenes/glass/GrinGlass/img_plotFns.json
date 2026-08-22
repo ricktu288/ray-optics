@@ -1,0 +1,26 @@
+{
+  "version": 5,
+  "name": "img_plotFns",
+  "objs": [
+    {
+      "type": "CropBox",
+      "p1": { "x": 250, "y": 210 },
+      "p4": { "x": 550, "y": 510 },
+      "width": 300
+    },
+    {
+      "type": "GrinGlass",
+      "path": [
+        { "x": 300, "y": 260, "arc": false },
+        { "x": 500, "y": 260, "arc": false },
+        { "x": 500, "y": 460, "arc": false },
+        { "x": 300, "y": 460, "arc": false }
+      ],
+      "refIndexFn": "1+0.4\\cdot x/200",
+      "origin": { "x": 400, "y": 360 },
+      "plotFns": true
+    }
+  ],
+  "width": 800,
+  "height": 600
+}

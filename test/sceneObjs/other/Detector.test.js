@@ -47,6 +47,19 @@ describe('Detector', () => {
     });
   });
 
+  it('sets one-sided detection', () => {
+    user.click(100, 100);
+    user.click(200, 300);
+    user.set("{{simulator:sceneObjs.Detector.twoSided}}", false);
+
+    expect(obj.serialize()).toEqual({
+      type: "Detector",
+      p1: { x: 100, y: 100 },
+      p2: { x: 200, y: 300 },
+      twoSided: false
+    });
+  });
+
   it('initializes measurement values', () => {
     user.click(100, 100);
     user.click(200, 300);
@@ -56,4 +69,4 @@ describe('Detector', () => {
     expect(obj.shear).toBe(0);
     expect(obj.binData).toBeNull();
   });
-}); 
+});

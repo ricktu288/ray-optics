@@ -68,6 +68,13 @@ describe('ParamGrinGlass', () => {
     expect(result.intersectTol).toBe(0.002);
   });
 
+  it('sets function plotting', () => {
+    user.click(100, 100);
+    user.set("{{simulator:sceneObjs.BaseGrinGlass.plotFns}}", true);
+
+    expect(obj.serialize()).toMatchObject({ type: 'ParamGrinGlass', plotFns: true });
+  });
+
   it('sets custom parametric equations', () => {
     user.click(100, 100);
     user.set('x(t) =', '100\\cdot\\cos\\left(t\\right)');
@@ -110,4 +117,3 @@ describe('ParamGrinGlass', () => {
     expect(obj.pieces[1].tStep).toBe(0.01);
   });
 });
-

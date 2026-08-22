@@ -1,0 +1,68 @@
+{
+  "version": 5,
+  "name": "equiv_curve_types",
+  "objs": [
+    {
+      "type": "CustomGlass",
+      "p1": { "x": 760, "y": 240 },
+      "p2": { "x": 760, "y": 320 },
+      "eqn1": "-0.5\\cdot\\sqrt{1-x^2}",
+      "curveType": "polygonal",
+      "curveStepSize": 0.25,
+      "partialReflect": false
+    },
+    {
+      "type": "CustomGlass",
+      "p1": { "x": 760, "y": 360 },
+      "p2": { "x": 760, "y": 440 },
+      "eqn1": "-0.5\\cdot\\sqrt{1-x^2}",
+      "curveType": "smoothNormal",
+      "curveStepSize": 0.25,
+      "partialReflect": false
+    },
+    {
+      "type": "CustomGlass",
+      "p1": { "x": 760, "y": 480 },
+      "p2": { "x": 760, "y": 560 },
+      "eqn1": "-0.5\\cdot\\sqrt{1-x^2}",
+      "curveType": "cubicBezier",
+      "curveStepSize": 0.25,
+      "partialReflect": false
+    },
+    {
+      "type": "Beam",
+      "p1": { "x": 680, "y": 250 },
+      "p2": { "x": 680, "y": 310 }
+    },
+    {
+      "type": "Beam",
+      "p1": { "x": 680, "y": 370 },
+      "p2": { "x": 680, "y": 430 }
+    },
+    {
+      "type": "Beam",
+      "p1": { "x": 680, "y": 490 },
+      "p2": { "x": 680, "y": 550 }
+    },
+    {
+      "type": "Blocker",
+      "p1": { "x": 660, "y": 340 },
+      "p2": { "x": 860, "y": 340 }
+    },
+    {
+      "type": "Blocker",
+      "p1": { "x": 660, "y": 460 },
+      "p2": { "x": 860, "y": 460 }
+    },
+    {
+      "type": "Detector",
+      "p1": { "x": 840, "y": 220 },
+      "p2": { "x": 840, "y": 580 },
+      "irradMap": true,
+      "binSize": 5
+    }
+  ],
+  "width": 1500,
+  "height": 800,
+  "rayModeDensity": 3
+}

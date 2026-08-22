@@ -1,0 +1,26 @@
+{
+  "version": 5,
+  "name": "img_open",
+  "objs": [
+    {
+      "type": "CropBox",
+      "p1": { "x": 250, "y": 220 },
+      "p4": { "x": 550, "y": 500 },
+      "width": 300
+    },
+    {
+      "type": "CustomCurveSurface",
+      "isClosed": false,
+      "points": [
+        {
+          "a1": { "x": 300, "y": 400 },
+          "c1": { "x": 340, "y": 280 },
+          "c2": { "x": 460, "y": 280 }
+        },
+        { "a1": { "x": 500, "y": 400 } }
+      ]
+    }
+  ],
+  "width": 800,
+  "height": 600
+}

@@ -1,0 +1,83 @@
+{
+  "version": 5,
+  "name": "equiv_curve_types",
+  "objs": [
+    {
+      "type": "ParamMirror",
+      "origin": { "x": 720, "y": 280 },
+      "pieces": [
+        {
+          "eqnX": "40\\cdot\\cos\\left(t\\right)",
+          "eqnY": "40\\cdot\\sin\\left(t\\right)",
+          "tMin": 1.570796326795,
+          "tMax": 4.712388980385,
+          "tStep": 0.25
+        }
+      ],
+      "curveType": "polygonal"
+    },
+    {
+      "type": "ParamMirror",
+      "origin": { "x": 720, "y": 400 },
+      "pieces": [
+        {
+          "eqnX": "40\\cdot\\cos\\left(t\\right)",
+          "eqnY": "40\\cdot\\sin\\left(t\\right)",
+          "tMin": 1.570796326795,
+          "tMax": 4.712388980385,
+          "tStep": 0.25
+        }
+      ],
+      "curveType": "smoothNormal"
+    },
+    {
+      "type": "ParamMirror",
+      "origin": { "x": 720, "y": 520 },
+      "pieces": [
+        {
+          "eqnX": "40\\cdot\\cos\\left(t\\right)",
+          "eqnY": "40\\cdot\\sin\\left(t\\right)",
+          "tMin": 1.570796326795,
+          "tMax": 4.712388980385,
+          "tStep": 0.25
+        }
+      ],
+      "curveType": "cubicBezier"
+    },
+    {
+      "type": "Beam",
+      "p1": { "x": 660, "y": 250 },
+      "p2": { "x": 660, "y": 310 }
+    },
+    {
+      "type": "Beam",
+      "p1": { "x": 660, "y": 370 },
+      "p2": { "x": 660, "y": 430 }
+    },
+    {
+      "type": "Beam",
+      "p1": { "x": 660, "y": 490 },
+      "p2": { "x": 660, "y": 550 }
+    },
+    {
+      "type": "Blocker",
+      "p1": { "x": 600, "y": 340 },
+      "p2": { "x": 780, "y": 340 }
+    },
+    {
+      "type": "Blocker",
+      "p1": { "x": 600, "y": 460 },
+      "p2": { "x": 780, "y": 460 }
+    },
+    {
+      "type": "Detector",
+      "p1": { "x": 620, "y": 220 },
+      "p2": { "x": 620, "y": 580 },
+      "irradMap": true,
+      "binSize": 5
+    }
+  ],
+  "width": 1500,
+  "height": 800,
+  "rayModeDensity": 3
+}

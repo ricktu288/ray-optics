@@ -1,0 +1,23 @@
+{
+  "version": 5,
+  "name": "img_cubic_bezier",
+  "objs": [
+    {
+      "type": "CropBox",
+      "p1": { "x": 250, "y": 220 },
+      "p4": { "x": 550, "y": 500 },
+      "width": 300
+    },
+    {
+      "type": "CustomGlass",
+      "p1": { "x": 300, "y": 360 },
+      "p2": { "x": 500, "y": 360 },
+      "eqn1": "-0.5\\cdot\\sqrt{1-x^2}",
+      "eqn2": "0.5\\cdot\\sqrt{1-x^2}",
+      "curveType": "cubicBezier",
+      "curveStepSize": 0.05
+    }
+  ],
+  "width": 800,
+  "height": 600
+}

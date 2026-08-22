@@ -103,4 +103,17 @@ describe('CustomMirror', () => {
       eqn: "x^2"
     });
   });
-}); 
+
+  it('sets curve type and step size', () => {
+    user.click(100, 100);
+    user.click(200, 300);
+    user.set("{{simulator:sceneObjs.ParamCurveObjMixin.curveType}}", "polygonal");
+    expect(obj.serialize().curveType).toBe('polygonal');
+    user.set("{{simulator:sceneObjs.ParamCurveObjMixin.curveType}}", "cubicBezier");
+    user.set("{{simulator:sceneObjs.common.curveStepSize}}", 0.25);
+
+    expect(obj.serialize()).toMatchObject({
+      type: 'CustomMirror', curveType: 'cubicBezier', curveStepSize: 0.25
+    });
+  });
+});

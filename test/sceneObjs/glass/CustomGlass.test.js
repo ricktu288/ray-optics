@@ -119,4 +119,17 @@ describe('CustomGlass', () => {
       eqn2: "x^2"
     });
   });
+
+  it('sets curve type properties', () => {
+    user.click(100, 100);
+    user.click(200, 300);
+    user.set("{{simulator:sceneObjs.ParamCurveObjMixin.curveType}}", "polygonal");
+    expect(obj.serialize().curveType).toBe('polygonal');
+    user.set("{{simulator:sceneObjs.ParamCurveObjMixin.curveType}}", "cubicBezier");
+    user.set("{{simulator:sceneObjs.common.curveStepSize}}", 0.05);
+
+    expect(obj.serialize()).toMatchObject({
+      type: 'CustomGlass', curveType: 'cubicBezier', curveStepSize: 0.05
+    });
+  });
 });
