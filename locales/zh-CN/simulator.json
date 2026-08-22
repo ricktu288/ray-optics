@@ -118,7 +118,9 @@
     },
     "simulationEngine": {
       "title": "引擎",
-      "description": "选择负责光线追踪计算的模拟器引擎（CPU/GPU）。如需进行高性能模拟，可尝试实验性的非默认引擎。"
+      "description": "选择负责光线追踪计算的模拟器引擎（CPU/GPU）。如需进行高性能模拟，可尝试实验性的非默认引擎。",
+      "legacyWarning": "这个模拟似乎要跑很久。您可以尝试[实验性的高性能引擎](#simulationEngineModal)。",
+      "performanceWarning": "由于 GPU 性能会因平台和使用场景而有很大差异，我们鼓励您将使用体验与反馈分享至 [ray-optics@phydemo.app](/email)。"
     },
     "autoSyncUrl": {
       "title": "自动同步网址",
@@ -694,7 +696,7 @@
     "webgpu": {
       "title": "WebGPU",
       "shortTitle": "WebGPU",
-      "description": "对于光线密度高的场景而言速度最快的引擎，相较于默认引擎通常可提升 10 倍至 1000 倍的速度。但对于光线密度低的场景而言通常比 CPU 慢，且在某些平台上可能卡顿或不稳定。其使用较低的数值精度（float16）。",
+      "description": "模拟光线密度高的场景时速度最快的引擎，相较于默认引擎通常可提升 10 倍至 1000 倍的速度。但模拟光线密度低的场景时通常比 CPU 慢，且在某些平台上可能卡顿或不稳定。其使用较低的数值精度（float16）。",
       "unavailable": "无法初始化 WebGPU：{{message}}",
       "fallback": "WebGPU 无法执行此场景，因此已用 CPU 引擎重新启动模拟：{{message}}"
     },

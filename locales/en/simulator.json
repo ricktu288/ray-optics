@@ -118,7 +118,9 @@
     },
     "simulationEngine": {
       "title": "Engine",
-      "description": "Choose the simulation engine (CPU/GPU) that performs the ray-tracing calculations. Try experimental non-default engines for high-performance simulation."
+      "description": "Choose the simulation engine (CPU/GPU) that performs the ray-tracing calculations. Try experimental non-default engines for high-performance simulation.",
+      "legacyWarning": "It looks like this simulation takes a long time to finish. We encourage you to try the [experimental high-performance engines](#simulationEngineModal).",
+      "performanceWarning": "As GPU performance varies greatly with the platform and use case, please share your experience and feedback by emailing [ray-optics@phydemo.app](/email)."
     },
     "autoSyncUrl": {
       "title": "Auto sync URL",

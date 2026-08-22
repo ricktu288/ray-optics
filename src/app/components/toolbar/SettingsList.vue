@@ -169,6 +169,13 @@
     :layout="layout"
   />
 
+  <SettingsWarning
+    v-show="showEngineWarning"
+    :layout="layout"
+  >
+    <span v-html="engineWarningText"></span>
+  </SettingsWarning>
+
   <PopupSelectControl
     :label="$t('simulator:settings.language.title')"
     :value="lang"
@@ -246,6 +253,8 @@ import i18next from 'i18next'
 import { parseLinks } from '../../utils/links.js'
 import { app } from '../../services/app.js'
 import { useThemeStore } from '../../store/theme.js'
+import { useStatus } from '../../composables/useStatus.js'
+import { useSimulationEngineState } from '../../composables/useSimulationEngineState.js'
 
 export default {
   name: 'SettingsList',
@@ -268,6 +277,8 @@ export default {
     const scene = useSceneStore()
     const preferences = usePreferencesStore()
     const themeStore = useThemeStore()
+    const status = useStatus()
+    const { activeEngineKind } = useSimulationEngineState()
     const colorMode = toRef(scene, 'colorMode')
     const lang = ref(window.lang)
     const localeData = ref(window.localeData)
@@ -333,6 +344,12 @@ export default {
       }
     })
 
+    const rayDensity = computed(() =>
+      scene.mode.value === 'rays' || scene.mode.value === 'extended'
+        ? scene.rayModeDensity.value
+        : scene.imageModeDensity.value
+    )
+
     const showLanguageWarning = computed(() => {
       const TRANSLATION_THRESHOLD = 70
       const completeness = Math.round(localeData.value[lang.value].numStrings / localeData.value.en.numStrings * 100)
@@ -342,6 +359,24 @@ export default {
     const warningText = computed(() => {
       const completeness = Math.round(localeData.value[lang.value].numStrings / localeData.value.en.numStrings * 100)
       return parseLinks(i18next.t('simulator:settings.language.lowFraction', { fraction: completeness + '%' }))
+    })
+
+    const showEngineWarning = computed(() => {
+      const selectedEngine = preferences.simulationEngine.value
+      if (selectedEngine === 'webgpu' || selectedEngine === 'automatic') return true
+
+      return activeEngineKind.value === 'default' &&
+        rayDensity.value > 1 &&
+        status.simulatorStatus.value.timeElapsed > 500
+    })
+
+    const engineWarningText = computed(() => {
+      const selectedEngine = preferences.simulationEngine.value
+      if (selectedEngine === 'webgpu' || selectedEngine === 'automatic') {
+        return parseLinks(i18next.t('simulator:settings.simulationEngine.performanceWarning'))
+      }
+
+      return parseLinks(i18next.t('simulator:settings.simulationEngine.legacyWarning'))
     })
 
     const handleShowAdvancedSettings = () => {
@@ -375,6 +410,8 @@ export default {
       localeData,
       showLanguageWarning,
       warningText,
+      showEngineWarning,
+      engineWarningText,
       shouldShowAdvancedSettings,
       shouldShowAdvancedByDefault,
       handleShowAdvancedSettings,
