@@ -21,13 +21,25 @@
 
 import * as bootstrap from 'bootstrap';
 import 'bootstrap/scss/bootstrap.scss';
-import { Scene, Simulator, Editor, geometry, sceneObjs } from '../../core/index.js';
+import {
+  Scene,
+  Simulator,
+  PrimitiveBasedSimulator,
+  CpuSimulationEngine,
+  WebGpuSimulationEngine,
+  FLOAT32_EPSILON,
+  Editor,
+  geometry,
+  sceneObjs,
+} from '../../core/index.js';
 import { DATA_VERSION } from '../../core/Scene.js';
 import { objBar } from '../services/objBar.js';
 import { saveAs } from 'file-saver';
 import i18next, { t, use } from 'i18next';
 import { jsonEditorService } from '../services/jsonEditor.js';
 import { statusEmitter, STATUS_EVENT_NAMES } from '../composables/useStatus.js';
+import { setActiveEngineKind } from
+  '../composables/useSimulationEngineState.js';
 import { mapURL, parseLinks } from '../utils/links.js';
 import { parseShapesFile } from '../utils/svgImport.js';
 import {
@@ -37,10 +49,312 @@ import {
   computeImportShapesDefaults as computeImportShapesDefaultsPure,
   importedHandleOffsetBelowBBox,
 } from '../utils/shapeImport.js';
+import {
+  WEBGPU_MIN_STORAGE_BUFFERS_PER_SHADER_STAGE,
+  resolvePrimitiveSimulatorConfig,
+  resolveSimulationEngineConfig
+} from '../../core/simulationEngines/config.js';
 
 function initScene() {
   scene = new Scene();
   app.scene = scene;
+}
+
+const SIMULATION_ENGINES = [
+  'default', 'automatic', 'primitiveCpu', 'webgpu'
+];
+
+function normalizeSimulationEngine(value) {
+  return SIMULATION_ENGINES.includes(value) ? value : 'default';
+}
+
+function createTempCanvas(width, height) {
+  const tempCanvas = document.createElement('canvas');
+  tempCanvas.width = width;
+  tempCanvas.height = height;
+  return tempCanvas;
+}
+
+function createHiddenCanvasLike(source) {
+  return createTempCanvas(source.width, source.height);
+}
+
+function createWebGlRenderingContext(canvas) {
+  const contextAttributes = {
+    alpha: true,
+    premultipliedAlpha: true,
+    antialias: false,
+  };
+  const context = canvas.getContext('webgl', contextAttributes) ||
+    canvas.getContext('experimental-webgl', contextAttributes);
+  if (!context?.getExtension('OES_texture_float')) {
+    throw new Error('OES_texture_float not supported.');
+  }
+  return context;
+}
+
+async function requestWebGpuDevice() {
+  if (!navigator.gpu) {
+    throw new Error('WebGPU is not supported by this browser.');
+  }
+  const adapter = await navigator.gpu.requestAdapter();
+  if (!adapter) throw new Error('No WebGPU adapter is available.');
+  const availableStorageBuffers =
+    adapter.limits.maxStorageBuffersPerShaderStage;
+  if (
+    availableStorageBuffers <
+    WEBGPU_MIN_STORAGE_BUFFERS_PER_SHADER_STAGE
+  ) {
+    throw new Error(
+      'This WebGPU adapter supports only ' + availableStorageBuffers +
+      ' storage buffers per shader stage; the simulation engine requires ' +
+      WEBGPU_MIN_STORAGE_BUFFERS_PER_SHADER_STAGE + '.'
+    );
+  }
+  return adapter.requestDevice({
+    requiredLimits: {
+      maxStorageBuffersPerShaderStage:
+        WEBGPU_MIN_STORAGE_BUFFERS_PER_SHADER_STAGE,
+    },
+  });
+}
+
+function createBrowserWebGpuOutput(canvas) {
+  let context = null;
+  let device = null;
+  const format = navigator.gpu?.getPreferredCanvasFormat?.() || null;
+
+  return {
+    format,
+    getSize() {
+      return { width: canvas.width, height: canvas.height };
+    },
+    resize(width, height) {
+      canvas.width = width;
+      canvas.height = height;
+    },
+    initialize(nextDevice) {
+      device = nextDevice;
+      context = canvas.getContext('webgpu');
+      if (!context) throw new Error('The WebGPU canvas context could not be created.');
+      context.configure({
+        device,
+        format,
+        alphaMode: 'premultiplied',
+      });
+    },
+    acquireView() {
+      return context.getCurrentTexture().createView();
+    },
+    dispose() {
+      context?.unconfigure();
+      context = null;
+      device = null;
+    },
+  };
+}
+
+function createSimulator(engine) {
+  if (engine === 'default') {
+    setActiveEngineKind('default');
+    return new Simulator(scene,
+      canvasLight.getContext('2d'),
+      canvasBelowLight.getContext('2d'),
+      canvasAboveLight.getContext('2d'),
+      canvasGrid.getContext('2d'),
+      document.createElement('canvas').getContext('2d'),
+      true,
+      Infinity,
+      gl,
+      null,
+      createTempCanvas
+    );
+  }
+
+  const primitiveConfig = resolvePrimitiveSimulatorConfig(
+    app.simulationEngineConfigs
+  );
+  const cpuConfig = resolveSimulationEngineConfig(
+    'primitiveCpu', app.simulationEngineConfigs
+  );
+  const webGpuConfig = resolveSimulationEngineConfig(
+    'webgpu', app.simulationEngineConfigs
+  );
+
+  const primitiveSimulator = new PrimitiveBasedSimulator({
+    scene,
+    enginePreference: engine,
+    engineProviders: {
+      primitiveCpu: {
+        isSupported: () => true,
+        create: ({ silent = false } = {}) => {
+          const mainCanvas = silent
+            ? createHiddenCanvasLike(canvasLight)
+            : canvasLight;
+          const webGlCanvas = silent
+            ? createHiddenCanvasLike(canvasLightWebGL)
+            : canvasLightWebGL;
+          const virtualCanvas = createHiddenCanvasLike(canvasLight);
+          return new CpuSimulationEngine({
+            ctxMain: mainCanvas.getContext('2d'),
+            glMain: silent && gl
+              ? createWebGlRenderingContext(webGlCanvas)
+              : gl,
+            ctxVirtual: virtualCanvas.getContext('2d'),
+            config: cpuConfig,
+          });
+        }
+      },
+      webgpu: {
+        isSupported: () => Boolean(navigator.gpu),
+        create: ({ silent = false } = {}) => {
+          const outputCanvas = silent
+            ? createHiddenCanvasLike(canvasLightWebGPU)
+            : canvasLightWebGPU;
+          return new WebGpuSimulationEngine({
+            device: requestWebGpuDevice,
+            output: createBrowserWebGpuOutput(outputCanvas),
+            numericEpsilon: FLOAT32_EPSILON,
+            ownsDevice: true,
+            config: webGpuConfig,
+          });
+        }
+      }
+    },
+    ctxBelowLight: canvasBelowLight.getContext('2d'),
+    ctxAboveLight: canvasAboveLight.getContext('2d'),
+    ctxGrid: canvasGrid.getContext('2d'),
+    ctxVirtual: document.createElement('canvas').getContext('2d'),
+    enableTimer: true,
+    rayCountLimit: Infinity,
+    tempCanvasFactory: createTempCanvas,
+    numericalTolerances: primitiveConfig.numericalTolerances,
+  });
+  setActiveEngineKind(primitiveSimulator.engine.kind, {
+    fallback: primitiveSimulator.engineFallbackActive
+  });
+  return primitiveSimulator;
+}
+
+function bindSimulatorEventListeners(targetSimulator) {
+  targetSimulator.on('update', function () {
+    canvasBelowLight.style.backgroundColor = `rgb(${Math.round(scene.theme.background.color.r * 255)}, ${Math.round(scene.theme.background.color.g * 255)}, ${Math.round(scene.theme.background.color.b * 255)})`;
+  });
+
+  targetSimulator.on('simulationStart', function () {
+    statusEmitter.emit(STATUS_EVENT_NAMES.SIMULATOR_STATUS, {
+      rayCount: 0,
+      totalTruncation: 0,
+      brightnessScale: null,
+      timeElapsed: 0,
+      isSimulatorRunning: true,
+      isForceStop: false
+    });
+  });
+
+  targetSimulator.on('simulationPause', function () {
+    statusEmitter.emit(STATUS_EVENT_NAMES.SIMULATOR_STATUS, {
+      rayCount: targetSimulator.processedRayCount,
+      totalTruncation: targetSimulator.totalTruncation,
+      brightnessScale: targetSimulator.brightnessScale,
+      timeElapsed: new Date() - targetSimulator.simulationStartTime,
+      isSimulatorRunning: true,
+      isForceStop: false
+    });
+  });
+
+  targetSimulator.on('simulationStop', function () {
+    statusEmitter.emit(STATUS_EVENT_NAMES.SIMULATOR_STATUS, {
+      rayCount: targetSimulator.processedRayCount,
+      totalTruncation: targetSimulator.totalTruncation,
+      brightnessScale: targetSimulator.brightnessScale,
+      timeElapsed: new Date() - targetSimulator.simulationStartTime,
+      isSimulatorRunning: false,
+      isForceStop: true
+    });
+  });
+
+  targetSimulator.on('simulationComplete', function () {
+    statusEmitter.emit(STATUS_EVENT_NAMES.SIMULATOR_STATUS, {
+      rayCount: targetSimulator.processedRayCount,
+      totalTruncation: targetSimulator.totalTruncation,
+      brightnessScale: targetSimulator.brightnessScale,
+      timeElapsed: new Date() - targetSimulator.simulationStartTime,
+      isSimulatorRunning: false,
+      isForceStop: false
+    });
+  });
+
+  targetSimulator.on('lightLayerSyncChange', function (e) {
+    const opacity = e.isSynced ? 1 : 0.5;
+    canvasLightWebGL.style.opacity = opacity;
+    canvasLightWebGPU.style.opacity = opacity;
+    canvasLight.style.opacity = opacity;
+  });
+
+  targetSimulator.on('requestUpdateErrorAndWarning', function () {
+    updateErrorAndWarning();
+  });
+
+  targetSimulator.on('webglContextLost', function () {
+    console.log('WebGL context lost');
+    canvasLightWebGL.style.display = 'none';
+    canvasLight.style.display = '';
+  });
+
+  targetSimulator.on('engineChange', function (event) {
+    setActiveEngineKind(event.kind, { fallback: event.fallback });
+  });
+}
+
+function replaceSimulator(nextEngine) {
+  const manualLightRedraw = simulator.manualLightRedraw;
+  if (simulator.destroy) {
+    simulator.destroy();
+  } else {
+    if (simulator.simulationTimerId !== -1) {
+      clearTimeout(simulator.simulationTimerId);
+    }
+    simulator.canvasRendererMain?.destroy?.();
+    simulator.eventListeners = {};
+  }
+
+  simulator = createSimulator(nextEngine);
+  simulator.dpr = window.devicePixelRatio || 1;
+  simulator.manualLightRedraw = manualLightRedraw;
+  app.simulator = simulator;
+  if (editor) editor.simulator = simulator;
+  bindSimulatorEventListeners(simulator);
+  editor?.selectObj(editor.selectedObjIndex);
+  simulator.updateSimulation(false, false);
+}
+
+function setSimulationEngine(value) {
+  const nextEngine = normalizeSimulationEngine(value);
+  simulationEngine = nextEngine;
+  app.simulationEngine = nextEngine;
+
+  if (!scene || !canvasLight || !canvasLightWebGPU || !simulator) return;
+  if (nextEngine === 'default' && simulator instanceof Simulator) {
+    return;
+  }
+  if (nextEngine !== 'default' &&
+      simulator instanceof PrimitiveBasedSimulator) {
+    if (simulator.enginePreference === nextEngine) return;
+    simulator.setEnginePreference(nextEngine);
+    simulator.updateSimulation(false, false);
+    return;
+  }
+  replaceSimulator(nextEngine);
+}
+
+function setSimulationEngineConfigs(value) {
+  const nextConfigs = value && typeof value === 'object' ? value : {};
+  if (JSON.stringify(nextConfigs) ===
+      JSON.stringify(app.simulationEngineConfigs ?? {})) return;
+  app.simulationEngineConfigs = nextConfigs;
+  if (!(simulator instanceof PrimitiveBasedSimulator)) return;
+  replaceSimulator(simulationEngine);
 }
 
 function initAppService() {
@@ -53,51 +367,41 @@ function initAppService() {
   canvasBelowLight = document.getElementById('canvasBelowLight');
   canvasLight = document.getElementById('canvasLight');
   canvasLightWebGL = document.getElementById('canvasLightWebGL');
+  canvasLightWebGPU = document.getElementById('canvasLightWebGPU');
   canvasGrid = document.getElementById('canvasGrid');
 
   app.canvas = canvas;
   app.canvasBelowLight = canvasBelowLight;
   app.canvasLight = canvasLight;
   app.canvasLightWebGL = canvasLightWebGL;
+  app.canvasLightWebGPU = canvasLightWebGPU;
   app.canvasGrid = canvasGrid;
 
-  let gl;
-
   try {
-    const contextAttributes = {
-      alpha: true,
-      premultipliedAlpha: true,
-      antialias: false,
-    };
-    gl = canvasLightWebGL.getContext('webgl', contextAttributes) || canvasLightWebGL.getContext('experimental-webgl', contextAttributes);
-    var ext = gl.getExtension('OES_texture_float');
-
-    if (!ext) {
-      throw new Error('OES_texture_float not supported.');
-    }
+    gl = createWebGlRenderingContext(canvasLightWebGL);
   } catch (e) {
     console.log('Failed to initialize WebGL: ' + e);
     gl = null;
   }
 
-  simulator = new Simulator(scene,
-    canvasLight.getContext('2d'),
-    canvasBelowLight.getContext('2d'),
-    canvasAboveLight.getContext('2d'),
-    canvasGrid.getContext('2d'),
-    document.createElement('canvas').getContext('2d'),
-    true,
-    Infinity,
-    gl,
-    null,
-    (width, height) => {
-      const canvas = document.createElement('canvas');
-      canvas.width = width;
-      canvas.height = height;
-      return canvas;
+  try {
+    const storedEngine = localStorage.getItem('rayOpticsSimulationEngine');
+    simulationEngine = normalizeSimulationEngine(storedEngine === null ? 'default' : JSON.parse(storedEngine));
+  } catch (_) {
+    simulationEngine = 'default';
+  }
+  try {
+    const storedConfigs = localStorage.getItem('rayOpticsSimulationEngineConfigs');
+    app.simulationEngineConfigs = storedConfigs === null ? {} : JSON.parse(storedConfigs);
+    if (!app.simulationEngineConfigs || typeof app.simulationEngineConfigs !== 'object') {
+      app.simulationEngineConfigs = {};
     }
-  );
+  } catch (_) {
+    app.simulationEngineConfigs = {};
+  }
+  simulator = createSimulator(simulationEngine);
   app.simulator = simulator;
+  app.simulationEngine = simulationEngine;
 
   editor = new Editor(scene, canvas, simulator);
   app.editor = editor;
@@ -148,73 +452,7 @@ function initAppService() {
 
   simulator.dpr = dpr;
 
-  simulator.on('update', function () {
-    canvasBelowLight.style.backgroundColor = `rgb(${Math.round(scene.theme.background.color.r * 255)}, ${Math.round(scene.theme.background.color.g * 255)}, ${Math.round(scene.theme.background.color.b * 255)})`;
-  });
-
-  simulator.on('simulationStart', function () {
-    statusEmitter.emit(STATUS_EVENT_NAMES.SIMULATOR_STATUS, {
-      rayCount: 0,
-      totalTruncation: 0,
-      brightnessScale: null,
-      timeElapsed: 0,
-      isSimulatorRunning: true,
-      isForceStop: false
-    });
-  });
-
-  simulator.on('simulationPause', function () {
-    statusEmitter.emit(STATUS_EVENT_NAMES.SIMULATOR_STATUS, {
-      rayCount: simulator.processedRayCount,
-      totalTruncation: simulator.totalTruncation,
-      brightnessScale: simulator.brightnessScale,
-      timeElapsed: new Date() - simulator.simulationStartTime,
-      isSimulatorRunning: true,
-      isForceStop: false
-    });
-  });
-  
-  simulator.on('simulationStop', function () {
-    statusEmitter.emit(STATUS_EVENT_NAMES.SIMULATOR_STATUS, {
-      rayCount: simulator.processedRayCount,
-      totalTruncation: simulator.totalTruncation,
-      brightnessScale: simulator.brightnessScale,
-      timeElapsed: new Date() - simulator.simulationStartTime,
-      isSimulatorRunning: false,
-      isForceStop: true
-    });
-  });
-  
-  simulator.on('simulationComplete', function () {
-    statusEmitter.emit(STATUS_EVENT_NAMES.SIMULATOR_STATUS, {
-      rayCount: simulator.processedRayCount,
-      totalTruncation: simulator.totalTruncation,
-      brightnessScale: simulator.brightnessScale,
-      timeElapsed: new Date() - simulator.simulationStartTime,
-      isSimulatorRunning: false,
-      isForceStop: false
-    });
-  });
-
-  simulator.on('lightLayerSyncChange', function (e) {
-    if (e.isSynced) {
-      canvasLightWebGL.style.opacity = 1;
-      canvasLight.style.opacity = 1;
-    } else {
-      canvasLightWebGL.style.opacity = 0.5;
-      canvasLight.style.opacity = 0.5;
-    }
-  });
-
-  simulator.on('requestUpdateErrorAndWarning', function () {
-    updateErrorAndWarning();
-  });
-
-  simulator.on('webglContextLost', function () {
-    console.log('WebGL context lost');
-    canvasLightWebGL.style.display = 'none';
-    canvasLight.style.display = '';
-  });
+  bindSimulatorEventListeners(simulator);
 
 
   editor.on('positioningStart', function (e) {
@@ -374,6 +612,7 @@ function initAppService() {
 
       document.getElementById('obj_bar_main').style.display = '';
       document.getElementById('obj_bar_main').innerHTML = '';
+      objBar.usesPrimitiveEngine = simulationEngine !== 'default';
       scene.objs[e.newIndex].populateObjBar(objBar);
 
       if (document.getElementById('obj_bar_main').innerHTML != '') {
@@ -830,10 +1069,13 @@ var canvas;
 var canvasBelowLight;
 var canvasLight;
 var canvasLightWebGL;
+var canvasLightWebGPU;
 var canvasGrid;
+var gl;
 var scene;
 var editor;
 var simulator;
+var simulationEngine = 'default';
 var xyBox_cancelContextMenu = false;
 var hasUnsavedChange = false;
 var warning = null;
@@ -874,6 +1116,19 @@ function getBetaFeaturesInUse() {
 
   const betaFeatures = [];
   const alphaFeatures = [];
+  const defaultScene = Scene.serializableDefaults;
+
+  if (scene.rayPowerCutoff !== defaultScene.rayPowerCutoff) {
+    alphaFeatures.push(
+      i18next.t('simulator:settings.rayPowerCutoff.title')
+    );
+  }
+
+  if (scene.rayPowerSampling !== defaultScene.rayPowerSampling) {
+    alphaFeatures.push(
+      i18next.t('simulator:settings.rayPowerSampling.title')
+    );
+  }
 
   if (scene.importedFromBeta) {
     betaFeatures.push(i18next.t('simulator:footer.betaFeatures.sceneFromBeta'));
@@ -911,6 +1166,12 @@ function getBetaFeaturesInUse() {
   }
   */
 
+  if (app.simulationEngine && app.simulationEngine !== 'default') {
+    alphaFeatures.push(
+      i18next.t('simulator:settings.simulationEngine.title') + ' -> ' +
+      i18next.t(`simulator:simulationEngineModal.${app.simulationEngine}.title`)
+    );
+  }
   return { betaFeatures, alphaFeatures };
 }
 
@@ -1342,6 +1603,8 @@ function importShapes(paths, options) {
 export const app = {
   initScene,
   initAppService,
+  setSimulationEngine,
+  setSimulationEngineConfigs,
   resetDropdownButtons,
   hideWelcome,
   rename,

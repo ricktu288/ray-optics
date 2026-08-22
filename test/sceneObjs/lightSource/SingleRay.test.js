@@ -16,6 +16,7 @@
 
 import SingleRay from '../../../src/core/sceneObjs/lightSource/SingleRay';
 import Scene from '../../../src/core/Scene';
+import { createDagClosureEvaluator } from '../../../src/core/formula/dag-evaluator';
 import { testLineObj } from '../helpers/lineObjTests';
 import { MockUser } from '../helpers/test-utils';
 
@@ -80,5 +81,25 @@ describe('SingleRay', () => {
       brightness: 0.3,
       wavelength: 500
     });
+  });
+
+  it('creates one primitive ray with a normalized direction', () => {
+    obj.p1 = { x: 10, y: 20 };
+    obj.p2 = { x: 13, y: 24 };
+    obj.brightness = 0.8;
+
+    const primitive = obj.getPrimitives()[0];
+    const evaluate = createDagClosureEvaluator(primitive.sourceType.dag);
+    const ray = evaluate({ ...primitive.params, i: 0, N: primitive.rayCount });
+
+    expect(primitive.kind).toBe('source');
+    expect(primitive.rayCount).toBe(1);
+    expect(ray.x).toBe(10);
+    expect(ray.y).toBe(20);
+    expect(ray.d_x).toBeCloseTo(0.6);
+    expect(ray.d_y).toBeCloseTo(0.8);
+    expect(ray.P_s).toBeCloseTo(0.4);
+    expect(ray.P_p).toBeCloseTo(0.4);
+    expect(ray.lambda).toBe(540);
   });
 });

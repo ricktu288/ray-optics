@@ -1,0 +1,34 @@
+/*
+ * Copyright 2026 The Ray Optics Simulation authors and contributors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+const path = require('node:path');
+
+const caseFiles = [
+  'test-parser.js',
+  'test-substitution.js',
+  'test-parameter-extraction.js',
+  'test-derivative.js',
+  'test-dag-evaluator.js',
+  'test-range-estimator.js',
+  'test-random-range-estimator.js',
+  'test-random-derivative.js',
+];
+
+describe('formula utilities', () => {
+  test.each(caseFiles)('%s', (caseFile) => {
+    require(path.join(__dirname, 'cases', caseFile));
+  });
+});

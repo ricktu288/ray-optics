@@ -18,6 +18,10 @@ import BaseCustomSurface from '../BaseCustomSurface.js';
 import CurveObjMixin from '../CurveObjMixin.js';
 import i18next from 'i18next';
 import geometry from '../../geometry.js';
+import { createCubicBezierCurve } from '../primitiveCurveHelpers.js';
+import {
+  createCustomSurfacePrimitive
+} from '../customSurfacePrimitive.js';
 
 /**
  * A custom surface whose shape is a sequence of cubic Bezier curves. Can be
@@ -161,6 +165,30 @@ class CustomCurveSurface extends CurveObjMixin(BaseCustomSurface) {
       }
     }
     if (this.isClosed) ctx.closePath();
+  }
+
+  getPrimitives() {
+    if (this.notDone || !this.curves) return [];
+    try {
+      const primitives = [];
+      for (let index = 0; index < this.curves.length; index++) {
+        const curve = createCubicBezierCurve(this.curves[index]);
+        if (!curve) continue;
+        primitives.push(createCustomSurfacePrimitive({
+          curve,
+          outRays: this.outRays,
+          twoSided: this.twoSided,
+          positionExpression: 'curve_offset + u',
+          params: { curve_offset: index },
+          name: 'Custom Bezier surface'
+        }));
+      }
+      this.error = null;
+      return primitives;
+    } catch (error) {
+      this.error = error.toString();
+      return [];
+    }
   }
 
   checkRayIntersects(ray) {

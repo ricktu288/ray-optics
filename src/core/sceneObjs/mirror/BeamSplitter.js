@@ -19,6 +19,30 @@ import LineObjMixin from '../LineObjMixin.js';
 import i18next from 'i18next';
 import Simulator from '../../Simulator.js';
 import geometry from '../../geometry.js';
+import { parseFormula } from '../../formula/formula-parser.js';
+import {
+  getEffectiveRayPowerOptions
+} from '../../simulationEngines/rayPower.js';
+
+const BEAM_SPLITTER_SURFACE_TYPE = {
+  name: 'Beam splitter',
+  paramNames: ['T'],
+  dag: parseFormula(
+    `
+      d_1x = d_0x;
+      d_1y = -d_0y;
+      P_1s = (1 - T) * P_0s;
+      P_1p = (1 - T) * P_0p;
+      d_2x = d_0x;
+      d_2y = d_0y;
+      P_2s = T * P_0s;
+      P_2p = T * P_0p;
+    `,
+    ['d_0x', 'd_0y', 'P_0s', 'P_0p', 'T']
+  ),
+  outRayCount: 2,
+  mergesWithBoundary: false
+};
 
 /**
  * Beam splitter.
@@ -97,6 +121,31 @@ class BeamSplitter extends LineObjMixin(BaseFilter) {
     ctx.setLineDash([]);
   }
 
+  getPrimitives() {
+    if (!this.p1 || !this.p2 || (this.p1.x === this.p2.x && this.p1.y === this.p2.y)) {
+      return [];
+    }
+
+    const primitive = {
+      kind: 'surface',
+      curve: {
+        kind: 'lineSegment',
+        params: {
+          start: { x: this.p1.x, y: this.p1.y },
+          end: { x: this.p2.x, y: this.p2.y }
+        }
+      },
+      twoSided: true,
+      surfaceType: BEAM_SPLITTER_SURFACE_TYPE,
+      params: { T: this.transRatio }
+    };
+    const filter = this.getPrimitiveWavelengthFilter();
+    if (filter) {
+      primitive.filter = filter;
+    }
+    return [primitive];
+  }
+
   checkRayIntersects(ray) {
     if (this.checkRayIntersectFilter(ray)) {
       return this.checkRayIntersectsShape(ray);
@@ -120,18 +169,21 @@ class BeamSplitter extends LineObjMixin(BaseFilter) {
     ray2.wavelength = ray.wavelength;
     ray.brightness_s *= (1 - transmission);
     ray.brightness_p *= (1 - transmission);
-    if (ray2.brightness_s + ray2.brightness_p > (this.scene.colorMode != 'default' ? 1e-6 : 0.01)) {
+    const { rayPowerCutoff } = getEffectiveRayPowerOptions(this.scene);
+    const transmittedPower = ray2.brightness_s + ray2.brightness_p;
+    const reflectedPower = ray.brightness_s + ray.brightness_p;
+    if (transmittedPower > 0 && transmittedPower >= rayPowerCutoff) {
       return {
         newRays: [ray2]
       };
-    } else if (ray.brightness_s + ray.brightness_p > (this.scene.colorMode != 'default' ? 1e-6 : 0.01)) {
+    } else if (reflectedPower > 0 && reflectedPower >= rayPowerCutoff) {
       return {
-        truncation: ray2.brightness_s + ray2.brightness_p
+        truncation: transmittedPower
       };
     } else {
       return {
         isAbsorbed: true,
-        truncation: ray.brightness_s + ray.brightness_p + ray2.brightness_s + ray2.brightness_p
+        truncation: reflectedPower + transmittedPower
       };
     }
   }

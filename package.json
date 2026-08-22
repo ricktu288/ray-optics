@@ -52,10 +52,12 @@
     "simple-git": "^3.36.0"
   },
   "scripts": {
-    "test": "npm run test:propertyUtils && npm run test:sceneObjs && npm run test:scenes",
+    "test": "npm run test:formula && npm run test:primitive && npm run test:propertyUtils && npm run test:sceneObjs && npm run test:scenes",
+    "test:formula": "jest test/formula",
+    "test:primitive": "jest test/primitive",
     "test:propertyUtils": "jest test/propertyUtils",
     "test:sceneObjs": "jest test/sceneObjs",
-    "test:scenes": "npm run build-node && jest test/scenes",
+    "test:scenes": "node ./scripts/testScenes.mjs",
     "build-pages": "node ./scripts/buildPages.mjs",
     "build-pages:release": "node ./scripts/buildPages.mjs --release",
     "build-scenes": "node ./scripts/buildScenes.mjs",
@@ -78,6 +80,7 @@
     "jsdoc": "^4.0.4",
     "jsdoc-vuejs": "^4.0.0",
     "vue-loader": "^17.4.2",
-    "vue-template-compiler": "^2.7.16"
+    "vue-template-compiler": "^2.7.16",
+    "webgpu": "^0.4.0"
   }
 }

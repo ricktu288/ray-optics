@@ -19,6 +19,12 @@ import i18next from 'i18next';
 import Simulator from '../../Simulator.js';
 import geometry from '../../geometry.js';
 
+const TWO_PI = Math.PI * 2;
+
+function normalizeAngle(angle) {
+  return ((angle % TWO_PI) + TWO_PI) % TWO_PI;
+}
+
 /**
  * Mirror with shape of a circular arc.
  * 
@@ -221,6 +227,54 @@ class ArcMirror extends BaseFilter {
     }
   }
 
+
+  getPrimitives() {
+    if (!this.p1 || !this.p2 || !this.p3) {
+      return [];
+    }
+    if (this.p1.x === this.p2.x && this.p1.y === this.p2.y) {
+      return [];
+    }
+
+    const center = geometry.linesIntersection(
+      geometry.perpendicularBisector(geometry.line(this.p1, this.p3)),
+      geometry.perpendicularBisector(geometry.line(this.p2, this.p3))
+    );
+    let curve;
+    if (center && Number.isFinite(center.x) && Number.isFinite(center.y)) {
+      const startAngle = Math.atan2(this.p1.y - center.y, this.p1.x - center.x);
+      const endAngle = Math.atan2(this.p2.y - center.y, this.p2.x - center.x);
+      const throughAngle = Math.atan2(this.p3.y - center.y, this.p3.x - center.x);
+      const counterclockwiseSweep = normalizeAngle(endAngle - startAngle);
+      const throughSweep = normalizeAngle(throughAngle - startAngle);
+      const signedSweep = throughSweep <= counterclockwiseSweep + 1e-12
+        ? counterclockwiseSweep
+        : counterclockwiseSweep - TWO_PI;
+      const bulge = Math.tan(signedSweep * 0.25);
+
+      if (Number.isFinite(bulge) && bulge !== 0) {
+        curve = {
+          kind: 'circularArc',
+          params: {
+            start: { x: this.p1.x, y: this.p1.y },
+            end: { x: this.p2.x, y: this.p2.y },
+            bulge
+          }
+        };
+      }
+    }
+
+    if (!curve) {
+      curve = {
+        kind: 'lineSegment',
+        params: {
+          start: { x: this.p1.x, y: this.p1.y },
+          end: { x: this.p2.x, y: this.p2.y }
+        }
+      };
+    }
+    return [this.createMirrorPrimitive(curve)];
+  }
 
   move(diffX, diffY) {
     this.p1.x = this.p1.x + diffX;

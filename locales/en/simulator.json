@@ -88,6 +88,14 @@
     "theme": {
       "title": "Theme"
     },
+    "rayPowerCutoff": {
+      "title": "Minimum ray power",
+      "description": "Rays weaker than this threshold are sampled or truncated. Set it to 0 to disable weak-ray handling. Only configurable when using \"Correct Brightness\"."
+    },
+    "rayPowerSampling": {
+      "title": "Sample weak rays",
+      "description": "Preserve weak-ray power in expectation by retaining and amplifying a representative subset. Only configurable when using \"Correct Brightness\"."
+    },
     "colorMode": {
       "title": "Color Mode",
       "description": "Determines how the brightnesses (and colors if \"Simulate Colors\" is on) of the rays or images are mapped to the colors on the screen. Only configurable when using \"Correct Brightness\"."
@@ -107,6 +115,12 @@
     "language": {
       "title": "Language",
       "lowFraction": "This language is only {{fraction}} translated. You can help complete it [on Weblate](/weblate)."
+    },
+    "simulationEngine": {
+      "title": "Engine",
+      "description": "Choose the simulation engine (CPU/GPU) that performs the ray-tracing calculations. Try experimental non-default engines for high-performance simulation.",
+      "legacyWarning": "It looks like this simulation takes a long time to finish. We encourage you to try the [experimental high-performance engines](#simulationEngineModal).",
+      "performanceWarning": "As GPU performance varies greatly with the platform and use case, please share your experience and feedback by emailing [ray-optics@phydemo.app](/email)."
     },
     "autoSyncUrl": {
       "title": "Auto sync URL",
@@ -300,6 +314,7 @@
       "stepSize": "Numerical solver step size",
       "stepSizeInfo": "Step size of Euler's method for solving the eikonal ray equation - see 'step' function and documentation inside the 'BaseGrinGlass.js' file, for more information.",
       "intersectTol": "Intersection tolerance",
+      "intersectTolPrimitiveEngineInfo": "This property is not used when a primitive-based simulation engine is selected. The tolerance is automatically derived.",
       "symbolicBodyMerging": "Symbolic body-merging",
       "symbolicBodyMergingInfo": {
         "all": "This toggle applies to all GRIN objects in the simulation.",
@@ -673,11 +688,87 @@
     "translatedFraction": "translated",
     "helpTranslate": "Help us translate this app"
   },
+  "simulationEngineModal": {
+    "default": {
+      "title": "Default (Legacy)",
+      "shortTitle": "Default",
+      "description": "The original simulation engine. It will be removed in a future version."
+    },
+    "webgpu": {
+      "title": "WebGPU",
+      "shortTitle": "WebGPU",
+      "description": "The fastest engine for scenes with high ray density, often showing 10× to 1000× speedups compared to the default engine. However, it is often slower than the CPU for scenes with low ray density and may be laggy or unstable on some platforms. It uses lower numerical precision (float32).",
+      "unavailable": "WebGPU could not be initialized: {{message}}",
+      "fallback": "WebGPU could not run this scene, so the simulation was restarted on CPU: {{message}}"
+    },
+    "primitiveCpu": {
+      "title": "Primitive-based CPU",
+      "shortTitle": "Prim. CPU",
+      "description": "This will be the default engine in the future. Choose this if numerical accuracy (float64) is essential."
+    },
+    "automatic": {
+      "title": "Automatic CPU/GPU",
+      "shortTitle": "Auto CPU/GPU",
+      "description": "Automatically try both the CPU and GPU engines and use the faster one for the scene. This may cause extra background work. The engine currently in use is shown in the status box."
+    },
+    "configuration": {
+      "title": "Advanced engine settings",
+      "description": "Tuning for the selected engine. These settings are not stored in scene files.",
+      "backToDefaults": "Back to defaults",
+      "sections": {
+        "webgpuScheduling": {
+          "title": "WebGPU scheduling"
+        },
+        "webgpuMemory": {
+          "title": "WebGPU memory limits"
+        },
+        "webgpuNumerics": {
+          "title": "WebGPU atomic accumulation"
+        },
+        "primitiveCpu": {
+          "title": "CPU"
+        }
+      },
+      "fields": {
+        "workgroupSize": {
+          "title": "Workgroup size",
+          "description": "Number of WebGPU invocations in each workgroup. A larger value can improve performance when the GPU has enough resources, but may exceed hardware limits or reduce performance."
+        },
+        "maxLocalIterations": {
+          "title": "Maximum local interactions",
+          "description": "Maximum number of ray-object interactions traced continuously along each ray's main continuation before pausing it. Additional outgoing branches are placed in the stable queue for later processing. A larger value often allows the first preview to show more important rays when the scene changes, but may reduce overall performance."
+        },
+        "maxPingPongsPerSubmission": {
+          "title": "Ping-pongs per submission",
+          "description": "Number of alternating megakernel and stable-compaction cycles encoded into one GPU submission before reading back control and detector state. A larger value often allows the first preview to show more higher-order ray branches when the scene changes, but makes the simulator more laggy."
+        },
+        "timeBudgetMs": {
+          "title": "CPU update time budget (ms)",
+          "description": "Maximum CPU tracing time before pausing and updating the preview. Larger values allow more rays to be shown in the first preview when the scene changes, but make the simulator more laggy."
+        },
+        "maxBatchRayEvents": {
+          "title": "Maximum batch ray events",
+          "description": "Maximum ray-event capacity used to size the WebGPU ray buffers and to bound one submission batch. Larger values support more complex ray branching but use more GPU memory."
+        },
+        "maxReadyGeometryRecords": {
+          "title": "Maximum ready geometry records",
+          "description": "Maximum number of line, arrow, and point rendering records that may accumulate in one WebGPU submission."
+        },
+        "atomicFixedPointScale": {
+          "title": "Atomic fixed-point scale",
+          "description": "Number of integer units per unit value in WebGPU rendering and detector readings. Larger values improve resolution but reduce the range before integer overflow. The maximum is 16,777,216."
+        }
+      }
+    }
+  },
   "generalWarnings": {
     "shareLinkTooLong": "The URL is too long that it may not work on some platforms. You may need to use \"Save\" and share the file instead.",
     "autoSyncUrlTooLarge": "The scene is too large to sync with URL. Please save it manually.",
     "identicalObjects": "There are two identical optical elements in the scene that overlap completely. This may cause unexpected behavior.",
     "brightnessInconsistent": "The brightnesses of two or more light sources saturate with inconsistent ratios. This may lead to wrong detector readings and color rendering. Please increase the ray density or reduce the brightnesses of the light sources.",
+    "primitiveMergeConflict": "Surface merging conflict between curves {{curveId}} and {{conflictingCurveId}}. Please move the objects or the light source slightly to get a well-defined behavior.",
+    "primitiveOrientationConflict": "Boundary orientation conflict between curves {{curveId}} and {{conflictingCurveId}}. Please avoid overlapping boundary pieces with the same orientation in the same region.",
+    "primitiveNormalConflict": "Normal vector conflict between curves {{curveId}} and {{conflictingCurveId}}. Please move the light source slightly to get a well-defined behavior.",
     "blackBecomesTransparent": "When using \"Correct Brightness\" with a non-black background, the black part of the light's color becomes transparent due to additive color mixing. Please set all theme colors of light to have unit HSV value to avoid this issue.",
     "undefinedBehaviorOverlapping": "Surface merging is not supported for overlap between \"{{involvedObj1}}\" and \"{{involvedObj2}}\", resulting in undefined behavior. Please move the objects slightly apart (or move the light source) to get a well-defined behavior.",
     "undefinedBehaviorSingle": "Undefined behavior encountered at the object \"{{involvedObj}}\". Please move the object or the light source slightly to get a well-defined behavior."
@@ -802,6 +893,8 @@
     }
   },
   "statusBox": {
+    "engine": "Engine",
+    "engineFallback": "{{engine}} (fallback)",
     "rayCount": "Number of ray segments",
     "totalTruncation": "Truncated brightness",
     "brightnessScale": "Brightness Scale",
@@ -828,6 +921,9 @@
     },
     "jsonFold": {
       "expand": "Expand message"
+    },
+    "primitiveCurveReference": {
+      "highlight": "Highlight primitive curve {{curveId}}"
     },
     "betaFeatures": {
       "title": "Beta features",

@@ -116,4 +116,78 @@ describe('CustomMirror', () => {
       type: 'CustomMirror', curveType: 'cubicBezier', curveStepSize: 0.25
     });
   });
+
+  it('uses line primitives when a cubic Bézier derivative is non-finite', () => {
+    obj.p1 = { x: 0, y: 0 };
+    obj.p2 = { x: 1, y: 0 };
+    obj.curveType = 'cubicBezier';
+
+    const primitives = obj.getPrimitives();
+
+    expect(primitives.length).toBeGreaterThan(2);
+    expect(primitives[0].curve.kind).toBe('lineSegment');
+    expect(primitives.at(-1).curve.kind).toBe('lineSegment');
+    expect(primitives.some(primitive => primitive.curve.kind === 'cubicBezier')).toBe(true);
+  });
+
+  it('uses shared corner normals for smooth line primitives', () => {
+    obj.p1 = { x: 0, y: 0 };
+    obj.p2 = { x: 2, y: 1 };
+    obj.tmp_points = [
+      { x: 0, y: 0 },
+      { x: 1, y: 0 },
+      { x: 2, y: 1 }
+    ];
+    obj._curveCacheLengthScale = scene.lengthScale;
+
+    const primitives = obj.getPrimitives();
+
+    expect(primitives.map(primitive => primitive.curve.kind)).toEqual([
+      'smoothLineSegment',
+      'smoothLineSegment'
+    ]);
+    expect(primitives[0].curve.params.endNormal)
+      .toEqual(primitives[1].curve.params.startNormal);
+    expect(primitives[0].curve.params.startNormal.x).toBeCloseTo(0);
+    expect(primitives[0].curve.params.startNormal.y).toBeCloseTo(1);
+  });
+
+  it('uses an ordinary line segment across a large sampling skip', () => {
+    obj.p1 = { x: 0, y: 0 };
+    obj.p2 = { x: 102, y: 1 };
+    obj.tmp_points = [
+      { x: 0, y: 0 },
+      { x: 1, y: 0 },
+      { x: 101, y: 0 },
+      { x: 102, y: 1 }
+    ];
+    obj._curveCacheLengthScale = scene.lengthScale;
+
+    const primitives = obj.getPrimitives();
+
+    expect(primitives[1].curve.kind).toBe('lineSegment');
+  });
+
+  it('caches primitives until object or relevant scene settings change', () => {
+    obj.p1 = { x: 0, y: 0 };
+    obj.p2 = { x: 100, y: 0 };
+    obj.filter = true;
+
+    const initialPrimitives = obj.getPrimitives();
+    expect(obj.getPrimitives()).toBe(initialPrimitives);
+
+    scene.simulateColors = true;
+    const colorPrimitives = obj.getPrimitives();
+    expect(colorPrimitives).not.toBe(initialPrimitives);
+    expect(colorPrimitives[0].filter).toBeDefined();
+    expect(obj.getPrimitives()).toBe(colorPrimitives);
+
+    obj.move(10, 20);
+    const movedPrimitives = obj.getPrimitives();
+    expect(movedPrimitives).not.toBe(colorPrimitives);
+    expect(movedPrimitives[0].curve.params.start.x)
+      .toBeCloseTo(colorPrimitives[0].curve.params.start.x + 10);
+    expect(movedPrimitives[0].curve.params.start.y)
+      .toBeCloseTo(colorPrimitives[0].curve.params.start.y + 20);
+  });
 });

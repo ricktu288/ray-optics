@@ -81,6 +81,20 @@ class Mirror extends LineObjMixin(BaseFilter) {
     ctx.stroke();
   }
 
+  getPrimitives() {
+    if (!this.p1 || !this.p2 || (this.p1.x === this.p2.x && this.p1.y === this.p2.y)) {
+      return [];
+    }
+
+    return [this.createMirrorPrimitive({
+      kind: 'lineSegment',
+      params: {
+        start: { x: this.p1.x, y: this.p1.y },
+        end: { x: this.p2.x, y: this.p2.y }
+      }
+    })];
+  }
+
   checkRayIntersects(ray) {
     if (this.checkRayIntersectFilter(ray)) {
       return this.checkRayIntersectsShape(ray);

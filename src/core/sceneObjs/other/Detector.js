@@ -18,6 +18,45 @@ import BaseSceneObj from '../BaseSceneObj.js';
 import LineObjMixin from '../LineObjMixin.js';
 import i18next from 'i18next';
 import geometry from '../../geometry.js';
+import { parseFormula } from '../../formula/formula-parser.js';
+
+const DETECTOR_TYPE = {
+  name: 'Detector',
+  paramNames: [],
+  dag: parseFormula(
+    `
+      P = P_0s + P_0p;
+      k_1 = 0;
+      v_1 = sigma * P;
+      k_2 = 1;
+      v_2 = -d_0y * P;
+      k_3 = 2;
+      v_3 = -d_0x * P;
+    `,
+    ['d_0x', 'd_0y', 'P_0s', 'P_0p', 'sigma']
+  ),
+  writeCount: 3
+};
+
+const IRRADIANCE_MAP_DETECTOR_TYPE = {
+  name: 'Detector with irradiance map',
+  paramNames: ['L', 'h'],
+  dag: parseFormula(
+    `
+      P = P_0s + P_0p;
+      k_1 = 0;
+      v_1 = sigma * P;
+      k_2 = 1;
+      v_2 = -d_0y * P;
+      k_3 = 2;
+      v_3 = -d_0x * P;
+      k_4 = 3 + floor(u * L / h);
+      v_4 = sigma * P;
+    `,
+    ['d_0x', 'd_0y', 'P_0s', 'P_0p', 'sigma', 'u', 'L', 'h']
+  ),
+  writeCount: 4
+};
 
 /**
  * The detector tool
@@ -55,6 +94,7 @@ class Detector extends LineObjMixin(BaseSceneObj) {
     this.normal = 0;
     this.shear = 0;
     this.binData = null;
+    this.results = { values: null };
   }
 
   static getDescription(objData, scene, detailed = false) {
@@ -121,6 +161,8 @@ class Detector extends LineObjMixin(BaseSceneObj) {
   }
 
   draw(canvasRenderer, isAboveLight, isHovered) {
+    this.updateMeasurementsFromPrimitiveResults();
+
     const ctx = canvasRenderer.ctx;
     const ls = canvasRenderer.lengthScale;
 
@@ -217,7 +259,36 @@ class Detector extends LineObjMixin(BaseSceneObj) {
     return false; // It is unclear what properties should be scaled.
   }
 
+  getPrimitives() {
+    if (!this.p1 || !this.p2 || (this.p1.x === this.p2.x && this.p1.y === this.p2.y)) {
+      return [];
+    }
+
+    const length = geometry.segmentLength(this);
+    const binCount = this.irradMap ? Math.ceil(length / this.binSize) : 0;
+    return [{
+      kind: 'detector',
+      curve: {
+        kind: 'lineSegment',
+        params: {
+          start: { x: this.p1.x, y: this.p1.y },
+          end: { x: this.p2.x, y: this.p2.y }
+        }
+      },
+      twoSided: this.twoSided,
+      detectorType: this.irradMap
+        ? IRRADIANCE_MAP_DETECTOR_TYPE
+        : DETECTOR_TYPE,
+      params: this.irradMap
+        ? { L: length, h: this.binSize }
+        : {},
+      resultSize: 3 + binCount,
+      result: this.results
+    }];
+  }
+
   onSimulationStart() {
+    this.results.values = null;
     this.power = 0;
     this.normal = 0;
     this.shear = 0;
@@ -269,6 +340,20 @@ class Detector extends LineObjMixin(BaseSceneObj) {
       return -1;
     }
     return NaN;
+  }
+
+  updateMeasurementsFromPrimitiveResults() {
+    const values = this.results.values;
+    if (!values) {
+      return;
+    }
+
+    this.power = values[0] ?? 0;
+    this.normal = values[1] ?? 0;
+    this.shear = values[2] ?? 0;
+    this.binData = this.irradMap
+      ? Array.from(values).slice(3)
+      : null;
   }
 };
 

@@ -17,6 +17,7 @@
 import { ref, computed } from 'vue'
 import i18next from 'i18next'
 import { app } from '../services/app'
+import { useSimulationEngineState } from './useSimulationEngineState'
 
 // Event names for status updates
 export const STATUS_EVENT_NAMES = {
@@ -57,6 +58,8 @@ export const statusEmitter = new StatusEventEmitter()
  * @returns {Object} Reactive status state and computed properties
  */
 export function useStatus() {
+  const { activeEngineKind, activeEngineFallback } = useSimulationEngineState()
+
   // Mouse position state
   const mousePosition = ref({ x: undefined, y: undefined })
   
@@ -97,7 +100,23 @@ export function useStatus() {
 
   const formattedSimulatorStatus = computed(() => {
     const status = simulatorStatus.value
+    const engineShortName = activeEngineKind.value === 'default'
+      ? null
+      : i18next.t(
+        `simulator:simulationEngineModal.${activeEngineKind.value}.shortTitle`
+      )
+    const engineStatus = engineShortName === null
+      ? null
+      : i18next.t('main:meta.colon', {
+        name: i18next.t('simulator:statusBox.engine'),
+        value: activeEngineKind.value === 'primitiveCpu' && activeEngineFallback.value
+          ? i18next.t('simulator:statusBox.engineFallback', {
+            engine: engineShortName
+          })
+          : engineShortName
+      })
     return [
+      engineStatus,
       i18next.t('main:meta.colon', {
         name: i18next.t('simulator:statusBox.rayCount'), 
         value: status.rayCount

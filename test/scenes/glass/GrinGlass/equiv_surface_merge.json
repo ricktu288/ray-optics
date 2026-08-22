@@ -79,7 +79,7 @@
       "type": "Beam",
       "p1": {
         "x": 640,
-        "y": 340
+        "y": 360
       },
       "p2": {
         "x": 640,
@@ -90,7 +90,7 @@
       "type": "Beam",
       "p1": {
         "x": 640,
-        "y": 420
+        "y": 440
       },
       "p2": {
         "x": 640,
@@ -167,7 +167,7 @@
   ],
   "width": 1500,
   "height": 800,
-  "rayModeDensity": 7.002729488625096,
+  "rayModeDensity": 4.486621640731786,
   "showGrid": true,
   "snapToGrid": true,
   "lengthScale": 2,

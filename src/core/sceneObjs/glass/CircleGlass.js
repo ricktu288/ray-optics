@@ -72,6 +72,20 @@ class CircleGlass extends CircleObjMixin(BaseGlass) {
     }
   }
 
+  getPrimitives() {
+    if (!this.p1 || !this.p2 || (this.p1.x === this.p2.x && this.p1.y === this.p2.y)) {
+      return [];
+    }
+
+    return [this.createGlassPrimitive([{
+      kind: 'circle',
+      params: {
+        center: { x: this.p1.x, y: this.p1.y },
+        radius: geometry.segmentLength(this)
+      }
+    }])];
+  }
+
   checkRayIntersects(ray) {
     return this.checkRayIntersectsShape(ray);
   }

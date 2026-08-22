@@ -47,6 +47,7 @@
       },
       {
         "id": "penrose-unilluminable-room",
+        "beta": true,
         "contributors": [
           "Vincent Fan",
           "Yi-Ting Tu"
@@ -54,12 +55,14 @@
       },
       {
         "id": "optical-cavity",
+        "beta": true,
         "contributors": [
           "Stas Fainer"
         ]
       },
       {
         "id": "resonator",
+        "beta": true,
         "contributors": [
           "Mikhail Kochiev"
         ]
@@ -157,6 +160,7 @@
       },
       {
         "id": "rainbows",
+        "beta": true,
         "contributors": [
           "Yi-Ting Tu"
         ]
@@ -313,6 +317,7 @@
       },
       {
         "id": "simple-double-gauss-lens",
+        "beta": true,
         "contributors": [
           "Alex"
         ]
@@ -342,6 +347,7 @@
     "content": [
       {
         "id": "GRIN-slab",
+        "beta": true,
         "contributors": [
           "Stas Fainer",
           "Yi-Ting Tu"

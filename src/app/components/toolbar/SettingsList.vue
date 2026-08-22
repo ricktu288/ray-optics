@@ -128,6 +128,24 @@
       />
 
       <NumberControl
+        :label="$t('simulator:settings.rayPowerCutoff.title') + '<sup style=\'color: #0006;\'>Alpha</sup>'"
+        :popover-content="$t('simulator:settings.rayPowerCutoff.description')"
+        v-model="rayPowerCutoff"
+        :min="0"
+        :default-value="0.000001"
+        :layout="layout"
+        :disabled="!correctBrightness"
+      />
+
+      <ToggleControl
+        :label="$t('simulator:settings.rayPowerSampling.title') + '<sup style=\'color: #0006;\'>Alpha</sup>'"
+        :popover-content="$t('simulator:settings.rayPowerSampling.description')"
+        v-model="rayPowerSampling"
+        :layout="layout"
+        :disabled="!correctBrightness"
+      />
+
+      <NumberControl
         :label="$t('simulator:settings.maxRayDepth.title')"
         :popover-content="$t('simulator:settings.maxRayDepth.description')"
         v-model="maxRayDepth"
@@ -140,6 +158,23 @@
   </Transition>
 
   <hr class="dropdown-divider">
+
+  <PopupSelectControl
+    :label="$t('simulator:settings.simulationEngine.title')"
+    :value="simulationEngine"
+    :display-fn="value => $t(`simulator:simulationEngineModal.${value}.shortTitle`) + (value === 'default' ? '' : '<sup style=\'color: #0006;\'>Alpha</sup>')"
+    display-html
+    popup-target="simulationEngineModal"
+    :popover-content="$t('simulator:settings.simulationEngine.description')"
+    :layout="layout"
+  />
+
+  <SettingsWarning
+    v-show="showEngineWarning"
+    :layout="layout"
+  >
+    <span v-html="engineWarningText"></span>
+  </SettingsWarning>
 
   <PopupSelectControl
     :label="$t('simulator:settings.language.title')"
@@ -218,6 +253,8 @@ import i18next from 'i18next'
 import { parseLinks } from '../../utils/links.js'
 import { app } from '../../services/app.js'
 import { useThemeStore } from '../../store/theme.js'
+import { useStatus } from '../../composables/useStatus.js'
+import { useSimulationEngineState } from '../../composables/useSimulationEngineState.js'
 
 export default {
   name: 'SettingsList',
@@ -240,6 +277,8 @@ export default {
     const scene = useSceneStore()
     const preferences = usePreferencesStore()
     const themeStore = useThemeStore()
+    const status = useStatus()
+    const { activeEngineKind } = useSimulationEngineState()
     const colorMode = toRef(scene, 'colorMode')
     const lang = ref(window.lang)
     const localeData = ref(window.localeData)
@@ -269,15 +308,47 @@ export default {
       // For theme: show if theme is not default
       const themeNotDefault = !themeStore.isDefaultTheme.value
 
+      const rayPowerOptionsNotDefault =
+        scene.rayPowerCutoff.value !== 1e-6 ||
+        scene.rayPowerSampling.value !== false
+
       // For spectrum remapping: show if non-default
       const spectrumNotDefault = scene.redWavelength.value !== 620 || scene.violetWavelength.value !== 420
 
       // For max depth: show if non-default (i.e. not Infinity)
       const maxRayDepthNotDefault = scene.maxRayDepth.value !== Infinity
-      
+
       // Add more conditions here as more advanced options are added
-      return colorModeNotDefault || themeNotDefault || spectrumNotDefault || maxRayDepthNotDefault
+      return colorModeNotDefault ||
+        themeNotDefault ||
+        rayPowerOptionsNotDefault ||
+        spectrumNotDefault ||
+        maxRayDepthNotDefault
     })
+
+    const rayPowerCutoff = computed({
+      get: () => correctBrightness.value
+        ? scene.rayPowerCutoff.value
+        : 0.01,
+      set: value => {
+        scene.rayPowerCutoff.value = value
+      }
+    })
+
+    const rayPowerSampling = computed({
+      get: () => correctBrightness.value
+        ? scene.rayPowerSampling.value
+        : true,
+      set: value => {
+        scene.rayPowerSampling.value = value
+      }
+    })
+
+    const rayDensity = computed(() =>
+      scene.mode.value === 'rays' || scene.mode.value === 'extended'
+        ? scene.rayModeDensity.value
+        : scene.imageModeDensity.value
+    )
 
     const showLanguageWarning = computed(() => {
       const TRANSLATION_THRESHOLD = 70
@@ -288,6 +359,24 @@ export default {
     const warningText = computed(() => {
       const completeness = Math.round(localeData.value[lang.value].numStrings / localeData.value.en.numStrings * 100)
       return parseLinks(i18next.t('simulator:settings.language.lowFraction', { fraction: completeness + '%' }))
+    })
+
+    const showEngineWarning = computed(() => {
+      const selectedEngine = preferences.simulationEngine.value
+      if (selectedEngine === 'webgpu' || selectedEngine === 'automatic') return true
+
+      return activeEngineKind.value === 'default' &&
+        rayDensity.value > 1 &&
+        status.simulatorStatus.value.timeElapsed > 500
+    })
+
+    const engineWarningText = computed(() => {
+      const selectedEngine = preferences.simulationEngine.value
+      if (selectedEngine === 'webgpu' || selectedEngine === 'automatic') {
+        return parseLinks(i18next.t('simulator:settings.simulationEngine.performanceWarning'))
+      }
+
+      return parseLinks(i18next.t('simulator:settings.simulationEngine.legacyWarning'))
     })
 
     const handleShowAdvancedSettings = () => {
@@ -308,16 +397,21 @@ export default {
       redWavelength: scene.redWavelength,
       violetWavelength: scene.violetWavelength,
       maxRayDepth: scene.maxRayDepth,
+      rayPowerCutoff,
+      rayPowerSampling,
       correctBrightness,
       autoSyncUrl: preferences.autoSyncUrl,
       showSidebar: preferences.showSidebar,
       showStatus: preferences.showStatus,
       showSimulatorControls: preferences.showSimulatorControls,
       help: preferences.help,
+      simulationEngine: preferences.simulationEngine,
       lang,
       localeData,
       showLanguageWarning,
       warningText,
+      showEngineWarning,
+      engineWarningText,
       shouldShowAdvancedSettings,
       shouldShowAdvancedByDefault,
       handleShowAdvancedSettings,

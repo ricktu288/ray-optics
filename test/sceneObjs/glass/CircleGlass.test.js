@@ -88,4 +88,21 @@ describe('CircleGlass', () => {
       cauchyB: 0.008
     });
   });
-}); 
+
+  it('creates a circle region primitive without caching it', () => {
+    obj.p1 = { x: 10, y: 20 };
+    obj.p2 = { x: 13, y: 24 };
+
+    const firstPrimitive = obj.getPrimitives()[0];
+    const secondPrimitive = obj.getPrimitives()[0];
+
+    expect(secondPrimitive).not.toBe(firstPrimitive);
+    expect(firstPrimitive.curves).toEqual([{
+      kind: 'circle',
+      params: {
+        center: { x: 10, y: 20 },
+        radius: 5
+      }
+    }]);
+  });
+});

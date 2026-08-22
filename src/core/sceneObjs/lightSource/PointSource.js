@@ -18,6 +18,25 @@ import BaseSceneObj from '../BaseSceneObj.js';
 import Simulator from '../../Simulator.js';
 import geometry from '../../geometry.js';
 import i18next from 'i18next';
+import { parseFormula } from '../../formula/formula-parser.js';
+
+const POINT_SOURCE_TYPE = {
+  name: 'Point source',
+  paramNames: ['x_0', 'y_0', 'delta_theta', 'P', 'lambda_0'],
+  dag: parseFormula(
+    `
+      theta = i * delta_theta;
+      x = x_0;
+      y = y_0;
+      d_x = sin(theta);
+      d_y = cos(theta);
+      P_s = P;
+      P_p = P;
+      lambda = lambda_0;
+    `,
+    ['i', 'x_0', 'y_0', 'delta_theta', 'P', 'lambda_0']
+  )
+};
 
 /**
  * 360 degree point source
@@ -116,6 +135,42 @@ class PointSource extends BaseSceneObj {
   getDefaultCenter() {
     // For a point source, the default center is itself
     return { x: this.x, y: this.y };
+  }
+
+  getPrimitives() {
+    this.brightnessScale = null;
+    let rayDensity = this.scene.rayDensity;
+    let expectedBrightness;
+    do {
+      expectedBrightness = this.brightness / rayDensity;
+      if (this.scene.colorMode !== 'default' && expectedBrightness > 1) {
+        rayDensity += 1 / 500;
+      }
+    } while (this.scene.colorMode !== 'default' && expectedBrightness > 1);
+
+    const angularSamples = parseInt(rayDensity * 500);
+    if (!(angularSamples > 0) || !Number.isFinite(this.x) ||
+        !Number.isFinite(this.y)) {
+      return [];
+    }
+    if (this.scene.colorMode === 'default') {
+      this.brightnessScale =
+        Math.min(expectedBrightness, 1) / expectedBrightness;
+    }
+    return [{
+      kind: 'source',
+      sourceType: POINT_SOURCE_TYPE,
+      params: {
+        x_0: this.x,
+        y_0: this.y,
+        delta_theta: Math.PI * 2 / angularSamples,
+        P: Math.min(expectedBrightness, 1) * 0.5,
+        lambda_0: this.scene.simulateColors
+          ? this.wavelength
+          : Simulator.GREEN_WAVELENGTH
+      },
+      rayCount: angularSamples
+    }];
   }
 
   onConstructMouseDown(mouse, ctrl, shift) {

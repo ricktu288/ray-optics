@@ -18,6 +18,7 @@ import BaseGlass from '../BaseGlass.js';
 import CurveObjMixin from '../CurveObjMixin.js';
 import i18next from 'i18next';
 import geometry from '../../geometry.js';
+import { createBezierPrimitiveCurves } from '../primitiveCurveHelpers.js';
 
 /**
  * Glass of the shape consists of Bezier curves.
@@ -69,6 +70,12 @@ class CurveGlass extends CurveObjMixin(BaseGlass) {
       }
     }
     ctx.lineWidth = 1;
+  }
+
+  getPrimitives() {
+    if (this.notDone) return [];
+    const curves = createBezierPrimitiveCurves(this.curves);
+    return curves.length > 0 ? [this.createGlassPrimitive(curves)] : [];
   }
 
   checkRayIntersects(ray) {

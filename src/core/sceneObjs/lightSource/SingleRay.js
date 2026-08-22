@@ -18,7 +18,25 @@ import BaseSceneObj from '../BaseSceneObj.js';
 import LineObjMixin from '../LineObjMixin.js';
 import Simulator from '../../Simulator.js';
 import geometry from '../../geometry.js';
+import { parseFormula } from '../../formula/formula-parser.js';
 import i18next from 'i18next';
+
+const SINGLE_RAY_SOURCE_TYPE = {
+  name: 'Single ray',
+  paramNames: ['x_0', 'y_0', 'd_x_0', 'd_y_0', 'P', 'lambda_0'],
+  dag: parseFormula(
+    `
+      x = x_0;
+      y = y_0;
+      d_x = d_x_0;
+      d_y = d_y_0;
+      P_s = P;
+      P_p = P;
+      lambda = lambda_0;
+    `,
+    ['x_0', 'y_0', 'd_x_0', 'd_y_0', 'P', 'lambda_0']
+  )
+};
 
 /**
  * A single ray of light.
@@ -89,6 +107,33 @@ class SingleRay extends LineObjMixin(BaseSceneObj) {
 
   getDefaultCenter() {
     return this.p1;
+  }
+
+  getPrimitives() {
+    if (!this.p1 || !this.p2) return [];
+
+    const directionX = this.p2.x - this.p1.x;
+    const directionY = this.p2.y - this.p1.y;
+    const directionLength = Math.hypot(directionX, directionY);
+    if (!(directionLength > 0) || !Number.isFinite(directionLength)) {
+      return [];
+    }
+
+    return [{
+      kind: 'source',
+      sourceType: SINGLE_RAY_SOURCE_TYPE,
+      params: {
+        x_0: this.p1.x,
+        y_0: this.p1.y,
+        d_x_0: directionX / directionLength,
+        d_y_0: directionY / directionLength,
+        P: 0.5 * this.brightness,
+        lambda_0: this.scene.simulateColors
+          ? this.wavelength
+          : Simulator.GREEN_WAVELENGTH
+      },
+      rayCount: 1
+    }];
   }
 
   onSimulationStart() {

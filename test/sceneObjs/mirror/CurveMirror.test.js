@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 The Ray Optics Simulation authors and contributors
+ * Copyright 2026 The Ray Optics Simulation authors and contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,5 +69,57 @@ describe('CurveMirror', () => {
     expect(obj.serialize()).toMatchObject({
       type: 'CurveMirror', filter: true, wavelength: 500, bandwidth: 20
     });
+  });
+
+  it('creates one cubic Bézier primitive for each finished curve', () => {
+    scene.simulateColors = true;
+    obj.notDone = false;
+    obj.filter = true;
+    obj.wavelength = 500;
+    obj.bandwidth = 20;
+    obj.invert = true;
+    obj.newCurve([
+      { x: 0, y: 0 },
+      { x: 0, y: 100 },
+      { x: 100, y: 100 },
+      { x: 100, y: 0 }
+    ]);
+
+    expect(obj.getPrimitives()).toEqual([
+      expect.objectContaining({
+        kind: 'surface',
+        curve: {
+          kind: 'cubicBezier',
+          params: {
+            start: { x: 0, y: 0 },
+            control1: { x: 0, y: 100 },
+            control2: { x: 100, y: 100 },
+            end: { x: 100, y: 0 }
+          }
+        },
+        twoSided: true,
+        surfaceType: expect.objectContaining({
+          mergesWithBoundary: true
+        }),
+        params: {},
+        filter: {
+          wavelength: 500,
+          bandwidth: 20,
+          invert: true
+        }
+      })
+    ]);
+  });
+
+  it('does not create primitives while under construction', () => {
+    obj.notDone = true;
+    obj.newCurve([
+      { x: 0, y: 0 },
+      { x: 0, y: 1 },
+      { x: 1, y: 1 },
+      { x: 1, y: 0 }
+    ]);
+
+    expect(obj.getPrimitives()).toEqual([]);
   });
 });

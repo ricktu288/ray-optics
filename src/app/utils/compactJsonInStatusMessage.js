@@ -9,6 +9,9 @@
  */
 
 import escapeHtml from 'escape-html'
+import {
+  findPrimitiveCurveReferenceSpans
+} from '../../core/primitive/diagnosticReference.js'
 
 /** Inner length (between `{` and `}`) above which we collapse the segment in the UI. */
 export const JSON_INNER_COLLAPSE_THRESHOLD = 48
@@ -106,13 +109,14 @@ const TOGGLE_ICON_SVG =
   '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="status-alert__json-toggle-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 0 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 0 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>'
 
 /**
- * HTML for one status line with long JSON segments collapsed to `{ [icon] }`.
+ * HTML for one status line with long JSON segments collapsed to `{ [icon] }`
+ * and primitive-curve references rendered as interactive controls.
  * @param {string} line
  * @param {object} options
  * @param {Record<string, boolean>} options.expanded
  * @param {string} options.keyPrefix e.g. 'w' or 'e'
  * @param {number} options.lineIdx
- * @param {{ expand: string }} options.labels
+ * @param {{ expand: string, primitiveCurve?: function(number): string }} options.labels
  * @param {number} [options.threshold]
  * @returns {string}
  */
@@ -125,28 +129,47 @@ export function formatStatusLineHtml(line, options) {
     threshold = JSON_INNER_COLLAPSE_THRESHOLD
   } = options
 
-  const spans = findValidJsonObjectSpans(line)
+  const jsonSpans = findValidJsonObjectSpans(line).map(span => ({
+    ...span,
+    kind: 'json'
+  }))
+  const primitiveCurveSpans = findPrimitiveCurveReferenceSpans(line)
+    .filter(span => !jsonSpans.some(
+      jsonSpan => span.start >= jsonSpan.start && span.end <= jsonSpan.end
+    ))
+    .map(span => ({ ...span, kind: 'primitiveCurve' }))
+  const spans = [...jsonSpans, ...primitiveCurveSpans]
+    .sort((a, b) => a.start - b.start)
   if (spans.length === 0) {
     return newlinesToBr(escapeHtml(line))
   }
 
   let out = ''
   let last = 0
-  for (let spanIdx = 0; spanIdx < spans.length; spanIdx++) {
-    const span = spans[spanIdx]
+  let jsonSpanIdx = 0
+  for (const span of spans) {
     out += escapeHtml(line.slice(last, span.start))
 
-    const inner = line.slice(span.start + 1, span.end)
-    const key = `${keyPrefix}-${lineIdx}-${spanIdx}`
-    const collapsed = inner.length > threshold
-
-    if (!collapsed) {
-      out += escapeHtml(span.json)
-    } else if (expanded[key]) {
-      out += `<span class="status-alert__json-expanded">${escapeHtml(span.json)}</span>`
+    if (span.kind === 'primitiveCurve') {
+      const tip = escapeHtml(
+        labels.primitiveCurve?.(span.curveId) ??
+        `Primitive curve ${span.curveId}`
+      )
+      out += `<button type="button" class="status-alert__primitive-curve-ref" data-primitive-curve-id="${span.curveId}" title="${tip}" aria-label="${tip}">${span.curveId}</button>`
     } else {
-      const tip = escapeHtml(labels.expand)
-      out += `{<button type="button" class="status-alert__json-toggle" data-json-key="${escapeHtml(key)}" title="${tip}" aria-label="${tip}" aria-expanded="false">${TOGGLE_ICON_SVG}</button>}`
+      const inner = line.slice(span.start + 1, span.end)
+      const key = `${keyPrefix}-${lineIdx}-${jsonSpanIdx}`
+      const collapsed = inner.length > threshold
+
+      if (!collapsed) {
+        out += escapeHtml(span.json)
+      } else if (expanded[key]) {
+        out += `<span class="status-alert__json-expanded">${escapeHtml(span.json)}</span>`
+      } else {
+        const tip = escapeHtml(labels.expand)
+        out += `{<button type="button" class="status-alert__json-toggle" data-json-key="${escapeHtml(key)}" title="${tip}" aria-label="${tip}" aria-expanded="false">${TOGGLE_ICON_SVG}</button>}`
+      }
+      jsonSpanIdx++
     }
 
     last = span.end + 1

@@ -133,6 +133,8 @@ class Editor {
     this.externalHighlightIndices = [];
     /** @property {Array.<{x: number, y: number}>} externalHighlightPoints - Scene points to highlight from sidebar (e.g. point property hover). */
     this.externalHighlightPoints = [];
+    /** @property {number[]} externalHighlightPrimitiveCurveIds - Processed primitive curve IDs highlighted by diagnostic UI. */
+    this.externalHighlightPrimitiveCurveIds = [];
 
     /** @property {string} addingObjType - The type of the object that will be added when the user clicks on the canvas. Empty if 'Move view' tool is selected so that no object will be added. */
     this.addingObjType = '';
@@ -1801,6 +1803,20 @@ class Editor {
         typeof p.y === 'number' &&
         Number.isFinite(p.x) &&
         Number.isFinite(p.y)
+    );
+  }
+
+  /**
+   * Set processed primitive curve IDs for UI-driven highlighting.
+   * @param {number[]} curveIds
+   */
+  setExternalHighlightPrimitiveCurveIds(curveIds) {
+    if (!Array.isArray(curveIds)) {
+      this.externalHighlightPrimitiveCurveIds = [];
+      return;
+    }
+    this.externalHighlightPrimitiveCurveIds = curveIds.filter(
+      curveId => Number.isInteger(curveId) && curveId >= 0
     );
   }
 

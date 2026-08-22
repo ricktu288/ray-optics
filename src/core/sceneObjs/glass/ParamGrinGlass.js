@@ -18,6 +18,9 @@ import BaseGrinGlass from '../BaseGrinGlass.js';
 import ParamCurveObjMixin from '../ParamCurveObjMixin.js';
 import i18next from 'i18next';
 import geometry from '../../geometry.js';
+import {
+  createSampledPrimitiveCurveEntries
+} from '../primitiveCurveHelpers.js';
 
 /**
  * Gradient-index glass with shape defined by parametric curve pieces.
@@ -165,6 +168,15 @@ class ParamGrinGlass extends ParamCurveObjMixin(BaseGrinGlass) {
       ctx.lineTo(this.path[i].x, this.path[i].y);
     }
     ctx.closePath();
+  }
+
+  getPrimitives() {
+    const curves = createSampledPrimitiveCurveEntries(this, {
+      skipBoundarySegments: true
+    }).map(entry => entry.curve);
+    if (curves.length === 0) return [];
+    const primitive = this.createGrinPrimitive(curves);
+    return primitive ? [primitive] : [];
   }
 
   move(diffX, diffY) {
@@ -380,4 +392,4 @@ class ParamGrinGlass extends ParamCurveObjMixin(BaseGrinGlass) {
   }
 }
 
-export default ParamGrinGlass; 
+export default ParamGrinGlass;

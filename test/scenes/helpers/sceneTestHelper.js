@@ -20,6 +20,201 @@ import { createCanvas } from 'canvas';
 import sharp from 'sharp';
 const rayOptics = require('../../../dist-node/rayOptics.js');
 
+const webGpuPackageDirectory = path.dirname(
+  require.resolve('webgpu/package.json')
+);
+const webGpuArchitecture = process.platform === 'darwin'
+  ? 'universal'
+  : process.arch;
+const { create: createWebGpu, globals: webGpuGlobals } = require(path.join(
+  webGpuPackageDirectory,
+  'dist',
+  `${process.platform}-${webGpuArchitecture}.dawn.node`
+));
+Object.assign(globalThis, webGpuGlobals);
+let nodeGpu = null;
+let webGpuDevicePromise = null;
+
+export async function disposeWebGpuTestDevice() {
+  if (!webGpuDevicePromise) return;
+  const device = await webGpuDevicePromise;
+  await device.queue.onSubmittedWorkDone?.();
+  device.destroy();
+  webGpuDevicePromise = null;
+  nodeGpu = null;
+}
+
+async function getWebGpuDevice() {
+  if (!webGpuDevicePromise) {
+    nodeGpu = createWebGpu([]);
+    webGpuDevicePromise = (async () => {
+      const adapter = await nodeGpu.requestAdapter({
+        powerPreference: 'high-performance'
+      });
+      if (!adapter) throw new Error('No native WebGPU adapter is available.');
+      return adapter.requestDevice({
+        requiredLimits: {
+          maxStorageBuffersPerShaderStage: 8,
+          maxStorageBufferBindingSize:
+            adapter.limits.maxStorageBufferBindingSize,
+          maxBufferSize: adapter.limits.maxBufferSize,
+        }
+      });
+    })();
+  }
+  return webGpuDevicePromise;
+}
+
+function createNodeWebGpuOutput(ctx) {
+  let device = null;
+  let texture = null;
+  const width = Math.max(1, ctx?.canvas?.width ?? 1);
+  const height = Math.max(1, ctx?.canvas?.height ?? 1);
+  return {
+    format: 'rgba8unorm',
+    getSize: () => ({ width, height }),
+    initialize(nextDevice) {
+      device = nextDevice;
+      texture = device.createTexture({
+        size: [width, height],
+        format: this.format,
+        usage: GPUTextureUsage.RENDER_ATTACHMENT |
+          GPUTextureUsage.COPY_SRC,
+      });
+    },
+    acquireView: () => texture.createView(),
+    async readIntoCanvas() {
+      if (!ctx || !texture) return;
+      const bytesPerRow = Math.ceil(width * 4 / 256) * 256;
+      const readback = device.createBuffer({
+        size: bytesPerRow * height,
+        usage: GPUBufferUsage.COPY_DST | GPUBufferUsage.MAP_READ,
+      });
+      const encoder = device.createCommandEncoder();
+      encoder.copyTextureToBuffer(
+        { texture },
+        { buffer: readback, bytesPerRow, rowsPerImage: height },
+        [width, height]
+      );
+      device.queue.submit([encoder.finish()]);
+      await readback.mapAsync(GPUMapMode.READ);
+      const source = new Uint8Array(readback.getMappedRange());
+      const image = ctx.createImageData(width, height);
+      for (let row = 0; row < height; row++) {
+        for (let column = 0; column < width; column++) {
+          const sourceOffset = row * bytesPerRow + column * 4;
+          const destinationOffset = (row * width + column) * 4;
+          const alpha = source[sourceOffset + 3];
+          if (alpha > 0) {
+            image.data[destinationOffset] = Math.min(
+              255,
+              Math.round(source[sourceOffset] * 255 / alpha)
+            );
+            image.data[destinationOffset + 1] = Math.min(
+              255,
+              Math.round(source[sourceOffset + 1] * 255 / alpha)
+            );
+            image.data[destinationOffset + 2] = Math.min(
+              255,
+              Math.round(source[sourceOffset + 2] * 255 / alpha)
+            );
+          }
+          image.data[destinationOffset + 3] = alpha;
+        }
+      }
+      ctx.putImageData(image, 0, 0);
+      readback.unmap();
+      readback.destroy();
+    },
+    dispose() {
+      texture?.destroy();
+      texture = null;
+      device = null;
+    },
+  };
+}
+
+const SUPPORTED_ENGINES = new Set([
+  'default', 'primitiveCpu', 'webgpu'
+]);
+
+function createSimulator({
+  scene,
+  engineKind,
+  engineSettings,
+  ctxLight,
+  ctxBelowLight,
+  ctxAboveLight,
+  ctxGrid,
+  ctxVirtual,
+  rayCountLimit,
+  tempCanvasFactory
+}) {
+  if (!SUPPORTED_ENGINES.has(engineKind)) {
+    throw new Error(
+      `Unsupported scene-test engine ${JSON.stringify(engineKind)}. ` +
+      `Expected one of: ${Array.from(SUPPORTED_ENGINES).join(', ')}.`
+    );
+  }
+
+  if (engineKind === 'default') {
+    const simulator = new rayOptics.Simulator(
+      scene,
+      ctxLight,
+      ctxBelowLight,
+      ctxAboveLight,
+      ctxGrid,
+      ctxVirtual,
+      false,
+      rayCountLimit,
+      null,
+      null,
+      tempCanvasFactory
+    );
+    return simulator;
+  }
+
+  const engine = engineKind === 'webgpu'
+    ? new rayOptics.WebGpuSimulationEngine({
+      device: getWebGpuDevice,
+      output: ctxLight ? createNodeWebGpuOutput(ctxLight) : null,
+      numericEpsilon:
+        engineSettings.numericEpsilon ?? rayOptics.FLOAT32_EPSILON,
+      ctxMain: ctxLight,
+      ctxVirtual,
+      config: engineSettings
+    })
+    : new rayOptics.CpuSimulationEngine({
+      numericEpsilon: engineSettings.numericEpsilon,
+      ctxMain: ctxLight,
+      ctxVirtual,
+      config: engineSettings
+    });
+  return new rayOptics.PrimitiveBasedSimulator({
+    scene,
+    engine,
+    ctxBelowLight,
+    ctxAboveLight,
+    ctxGrid,
+    ctxVirtual,
+    enableTimer: false,
+    rayCountLimit,
+    tempCanvasFactory
+  });
+}
+
+function resolveRayCountLimit(defaultLimit, engineSettings) {
+  const rayCountLimit = engineSettings.rayCountLimit ?? defaultLimit;
+  if (
+    typeof rayCountLimit !== 'number' ||
+    Number.isNaN(rayCountLimit) ||
+    rayCountLimit < 0
+  ) {
+    throw new RangeError('Scene-test rayCountLimit must be a nonnegative number.');
+  }
+  return rayCountLimit;
+}
+
 /**
  * Compare two PNG images pixel by pixel
  * @param {Buffer} actualImage - The actual image buffer
@@ -142,9 +337,20 @@ export function compareCSV(actualData, expectedData, tolerance = 1e-3) {
  * Run a scene and generate outputs
  * @param {string} jsonPath - Path to the scene JSON file
  * @param {boolean} writeOutput - Whether to write output files
+ * @param {Object} [options={}] - Scene-test simulation options
+ * @param {'default'|'primitiveCpu'|'webgpu'} [options.engine='default'] - Simulation engine to use
+ * @param {Object} [options.engineSettings={}] - Settings for the selected engine
  * @returns {Promise<{imageBuffer?: Buffer, detectorData?: string}>} Generated outputs
  */
-export async function runScene(jsonPath, writeOutput = false) {
+export async function runScene(
+  jsonPath,
+  writeOutput = false,
+  { engine: engineKind = 'default', engineSettings = {} } = {}
+) {
+  if (!engineSettings || typeof engineSettings !== 'object' || Array.isArray(engineSettings)) {
+    throw new TypeError('Scene-test engine settings must be an object.');
+  }
+
   // Load and parse scene
   const sceneJson = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
   const outputBase = path.basename(jsonPath, '.json');
@@ -161,7 +367,6 @@ export async function runScene(jsonPath, writeOutput = false) {
       resolve();
     });
   });
-
   // Find CropBox and Detector
   const cropBox = scene.objs.find(obj => obj.constructor.type === 'CropBox');
   const detector = scene.objs.find(obj => obj.constructor.type === 'Detector');
@@ -197,21 +402,6 @@ export async function runScene(jsonPath, writeOutput = false) {
       canvas.height = imageHeight;
     });
 
-    // Initialize simulator with canvases
-    simulator = new rayOptics.Simulator(
-      scene, 
-      ctxLight, 
-      ctxBelowLight, 
-      ctxAboveLight, 
-      ctxGrid, 
-      ctxVirtual, 
-      false,
-      Infinity,
-      null,
-      null,
-      (width, height) => createCanvas(width, height)
-    );
-
     // Set cropbox settings
     originalScale = scene.scale;
     originalOrigin = { ...scene.origin };
@@ -225,10 +415,35 @@ export async function runScene(jsonPath, writeOutput = false) {
       scene.theme.background.color = { r: 0.01, g: 0.01, b: 0.01 };
     }
     
-    simulator.rayCountLimit = cropBox.rayCountLimit || 1e7;
+    simulator = createSimulator({
+      scene,
+      engineKind,
+      engineSettings,
+      ctxLight,
+      ctxBelowLight,
+      ctxAboveLight,
+      ctxGrid,
+      ctxVirtual,
+      rayCountLimit: resolveRayCountLimit(
+        cropBox.rayCountLimit || 1e7,
+        engineSettings
+      ),
+      tempCanvasFactory: (width, height) => createCanvas(width, height)
+    });
   } else {
     // Create simulator without canvases
-    simulator = new rayOptics.Simulator(scene, null, null, null, null, null, false, Infinity, null, null, (width, height) => createCanvas(width, height));
+    simulator = createSimulator({
+      scene,
+      engineKind,
+      engineSettings,
+      ctxLight: null,
+      ctxBelowLight: null,
+      ctxAboveLight: null,
+      ctxGrid: null,
+      ctxVirtual: null,
+      rayCountLimit: resolveRayCountLimit(Infinity, engineSettings),
+      tempCanvasFactory: (width, height) => createCanvas(width, height)
+    });
   }
 
   // Run simulation
@@ -242,21 +457,29 @@ export async function runScene(jsonPath, writeOutput = false) {
     });
     simulator.updateSimulation(false, false);
   });
+  if (engineKind === 'webgpu') {
+    await simulator.engine.output?.readIntoCanvas?.();
+  }
 
   // Generate detector data
   if (detector && detector.irradMap) {
-    // Generate detector data in the same format as Detector.js
-    const binSize = detector.binSize;
-    const rows = detector.binData.map((value, i) => 
-      `${i * binSize},${value / binSize}`
-    );
-    outputs.detectorData = `Position,Irradiance\n${rows.join('\n')}`;
-    
-    if (writeOutput) {
-      fs.writeFileSync(
-        path.join(outputDir, `${outputBase}.csv`),
-        outputs.detectorData
+    if (engineKind === 'primitiveCpu' || engineKind === 'webgpu') {
+      detector.updateMeasurementsFromPrimitiveResults();
+    }
+    if (detector.binData) {
+      // Generate detector data in the same format as Detector.js
+      const binSize = detector.binSize;
+      const rows = detector.binData.map((value, i) =>
+        `${i * binSize},${value / binSize}`
       );
+      outputs.detectorData = `Position,Irradiance\n${rows.join('\n')}`;
+
+      if (writeOutput) {
+        fs.writeFileSync(
+          path.join(outputDir, `${outputBase}.csv`),
+          outputs.detectorData
+        );
+      }
     }
   }
 

@@ -44,6 +44,9 @@ export function mapURL(url) {
 // Parse the markdown-like links in the text with mapURL and return the HTML.
 export function parseLinks(text) {
   return text.replace(/\[([^\]]+)\]\(([^\)]+)\)/g, function (match, text, url) {
+    if (url === "#simulationEngineModal") {
+      return `<a href="${mapURL(url)}" data-bs-toggle="modal">${text}</a>`;
+    }
     if (text === 'ray-optics@phydemo.app') {
       // Prevent link from wrapping.
       return `<a href="${mapURL(url)}" target="_blank" style="white-space: nowrap;">${text}</a>`;

@@ -93,6 +93,21 @@ class CircleGrinGlass extends CircleObjMixin(BaseGrinGlass) {
     ctx.arc(this.p1.x, this.p1.y, geometry.segmentLength(this), 0, Math.PI * 2, false);
   }
 
+  getPrimitives() {
+    if (!this.p1 || !this.p2 || (this.p1.x === this.p2.x && this.p1.y === this.p2.y)) {
+      return [];
+    }
+
+    const primitive = this.createGrinPrimitive([{
+      kind: 'circle',
+      params: {
+        center: { x: this.p1.x, y: this.p1.y },
+        radius: geometry.segmentLength(this)
+      }
+    }]);
+    return primitive ? [primitive] : [];
+  }
+
   move(diffX, diffY) {
     super.move(diffX, diffY);
     return false; // By the current design the origin is not moved. This may need to be changed in the future.

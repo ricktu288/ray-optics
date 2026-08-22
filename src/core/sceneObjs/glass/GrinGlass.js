@@ -145,6 +145,33 @@ class GrinGlass extends BaseGrinGlass {
     ctx.closePath();
   }
 
+  getPrimitives() {
+    if (this.notDone || this.path.length < 3) {
+      return [];
+    }
+
+    const curves = [];
+    for (let i = 0; i < this.path.length; i++) {
+      const start = this.path[i];
+      const end = this.path[(i + 1) % this.path.length];
+      if (start.x === end.x && start.y === end.y) {
+        continue;
+      }
+      curves.push({
+        kind: 'lineSegment',
+        params: {
+          start: { x: start.x, y: start.y },
+          end: { x: end.x, y: end.y }
+        }
+      });
+    }
+
+    const primitive = curves.length > 0
+      ? this.createGrinPrimitive(curves)
+      : null;
+    return primitive ? [primitive] : [];
+  }
+
   move(diffX, diffY) {
     for (var i = 0; i < this.path.length; i++) {
       this.path[i].x += diffX;

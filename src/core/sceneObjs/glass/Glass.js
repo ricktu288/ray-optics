@@ -19,6 +19,12 @@ import i18next from 'i18next';
 import Simulator from '../../Simulator.js';
 import geometry from '../../geometry.js';
 
+const TWO_PI = Math.PI * 2;
+
+function normalizeAngle(angle) {
+  return ((angle % TWO_PI) + TWO_PI) % TWO_PI;
+}
+
 /**
  * Glass of the shape consists of line segments or circular arcs.
  * 
@@ -159,6 +165,31 @@ class Glass extends BaseGlass {
         }
       }
     }
+  }
+
+  getPrimitives() {
+    if (this.notDone || this.path.length < 3) {
+      return [];
+    }
+
+    const curves = [];
+    for (let i = 0; i < this.path.length; i++) {
+      const start = this.path[i];
+      const next = this.path[(i + 1) % this.path.length];
+
+      if (next.arc && !start.arc) {
+        const end = this.path[(i + 2) % this.path.length];
+        curves.push(createArcOrLineCurve(start, end, next));
+      } else if (!next.arc && !start.arc) {
+        if (start.x !== next.x || start.y !== next.y) {
+          curves.push(createLineCurve(start, next));
+        }
+      }
+    }
+
+    return curves.length > 0
+      ? [this.createGlassPrimitive(curves)]
+      : [];
   }
 
   move(diffX, diffY) {
@@ -671,5 +702,47 @@ class Glass extends BaseGlass {
     return { s_point: s_point, normal: { x: normal_x, y: normal_y }, incidentType: incidentType };
   }
 };
+
+function createArcOrLineCurve(start, end, through) {
+  const center = geometry.linesIntersection(
+    geometry.perpendicularBisector(geometry.line(start, through)),
+    geometry.perpendicularBisector(geometry.line(end, through))
+  );
+
+  if (center && Number.isFinite(center.x) && Number.isFinite(center.y)) {
+    const startAngle = Math.atan2(start.y - center.y, start.x - center.x);
+    const endAngle = Math.atan2(end.y - center.y, end.x - center.x);
+    const throughAngle = Math.atan2(through.y - center.y, through.x - center.x);
+    const counterclockwiseSweep = normalizeAngle(endAngle - startAngle);
+    const throughSweep = normalizeAngle(throughAngle - startAngle);
+    const signedSweep = throughSweep <= counterclockwiseSweep + 1e-12
+      ? counterclockwiseSweep
+      : counterclockwiseSweep - TWO_PI;
+    const bulge = Math.tan(signedSweep * 0.25);
+
+    if (Number.isFinite(bulge) && bulge !== 0) {
+      return {
+        kind: 'circularArc',
+        params: {
+          start: { x: start.x, y: start.y },
+          end: { x: end.x, y: end.y },
+          bulge
+        }
+      };
+    }
+  }
+
+  return createLineCurve(start, end);
+}
+
+function createLineCurve(start, end) {
+  return {
+    kind: 'lineSegment',
+    params: {
+      start: { x: start.x, y: start.y },
+      end: { x: end.x, y: end.y }
+    }
+  };
+}
 
 export default Glass;

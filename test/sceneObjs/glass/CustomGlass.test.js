@@ -32,6 +32,8 @@
 
 import CustomGlass from '../../../src/core/sceneObjs/glass/CustomGlass.js';
 import Scene from '../../../src/core/Scene.js';
+import { FLOAT32_EPSILON } from '../../../src/core/primitive/numeric.js';
+import { preprocessPrimitives } from '../../../src/core/primitive/preprocess.js';
 import { MockUser } from '../helpers/test-utils.js';
 
 describe('CustomGlass', () => {
@@ -131,5 +133,24 @@ describe('CustomGlass', () => {
     expect(obj.serialize()).toMatchObject({
       type: 'CustomGlass', curveType: 'cubicBezier', curveStepSize: 0.05
     });
+  });
+
+  it('creates a glass primitive from cubic Bezier curves', () => {
+    obj.p1 = { x: 0, y: 0 };
+    obj.p2 = { x: 10, y: 0 };
+    obj.curveType = 'cubicBezier';
+    obj.curveStepSize = 1;
+
+    const [primitive] = obj.getPrimitives();
+
+    expect(primitive.kind).toBe('region');
+    expect(primitive.curves.length).toBeGreaterThan(0);
+    expect(primitive.curves.some(curve => curve.kind === 'cubicBezier'))
+      .toBe(true);
+
+    const prepared = preprocessPrimitives([primitive], {
+      numericEpsilon: FLOAT32_EPSILON
+    });
+    expect(prepared.processedScene.regions).toHaveLength(1);
   });
 });

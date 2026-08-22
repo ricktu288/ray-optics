@@ -21,11 +21,37 @@ import CopyWebpackPlugin from 'copy-webpack-plugin';
 import buildInlineLocaleData from './scripts/buildInlineLocaleData.mjs';
 import { VueLoaderPlugin } from 'vue-loader';
 
+class RemoveObsoleteBenchmarkAssetsPlugin {
+  apply(compiler) {
+    const remove = () => {
+      const obsoletePaths = [
+        'experiments/scene-engine-benchmark-manifest.json',
+        'experiments/scene-engine-benchmark.html',
+        'experiments/scene-engine-benchmark.js',
+        'experiments/scene-engine-benchmark.js.LICENSE.txt',
+        'experiments/scene-engine-benchmark.js.map',
+        'experiments/scene-engine-scenes',
+        'experiments/webgpu-ray-cooperation.html',
+      ];
+      for (const relativePath of obsoletePaths) {
+        fs.rmSync(path.resolve('dist', relativePath), {
+          recursive: true,
+          force: true,
+        });
+      }
+    };
+    compiler.hooks.beforeRun.tap('RemoveObsoleteBenchmarkAssetsPlugin', remove);
+    compiler.hooks.watchRun.tap('RemoveObsoleteBenchmarkAssetsPlugin', remove);
+  }
+}
+
 export default (env, argv) => {
   const isProduction = argv.mode === 'production';
 
   return {
-    entry: './src/app/main.js',
+    entry: {
+      simulator: './src/app/main.js',
+    },
     output: {
       filename: 'simulator/main.js',
       path: path.resolve('dist'),
@@ -62,9 +88,11 @@ export default (env, argv) => {
       ],
     },
     plugins: [
+      new RemoveObsoleteBenchmarkAssetsPlugin(),
       new HtmlWebpackPlugin({
         template: './src/app/index.html',
         filename: 'simulator/index.html',
+        chunks: ['simulator'],
         templateContent: () => {
           const templateContent = fs.readFileSync('./src/app/index.html', 'utf-8');
           const localeData = buildInlineLocaleData();

@@ -88,6 +88,14 @@
     "theme": {
       "title": "主题"
     },
+    "rayPowerCutoff": {
+      "title": "最小光线功率",
+      "description": "低于此阈值的光线会被采样或截断。设为 0 可停用弱光线处理。只有在启用「修正亮度」时才能调整。"
+    },
+    "rayPowerSampling": {
+      "title": "采样弱光线",
+      "description": "只保留一部分的弱光线并增强其功率，使功率在期望值上一致。只有在启用「修正亮度」时才能调整。"
+    },
     "colorMode": {
       "title": "色彩模式",
       "description": "决定光线或像的亮度（若启用「模拟色彩」，则还需考虑颜色）如何对应到萤幕上的颜色。只在启用「修正亮度」时才可调整此设定。"
@@ -107,6 +115,12 @@
     "language": {
       "title": "语言",
       "lowFraction": "此语言翻译完成率仅 {{fraction}}。您可以[在 Weblate 上](/weblate)帮助完成翻译。"
+    },
+    "simulationEngine": {
+      "title": "引擎",
+      "description": "选择负责光线追踪计算的模拟器引擎（CPU/GPU）。如需进行高性能模拟，可尝试实验性的非默认引擎。",
+      "legacyWarning": "这个模拟似乎要跑很久。您可以尝试[实验性的高性能引擎](#simulationEngineModal)。",
+      "performanceWarning": "由于 GPU 性能会因平台和使用场景而有很大差异，我们鼓励您将使用体验与反馈分享至 [ray-optics@phydemo.app](/email)。"
     },
     "autoSyncUrl": {
       "title": "自动同步网址",
@@ -300,6 +314,7 @@
       "stepSize": "数值求解器步长",
       "stepSizeInfo": "用欧拉法求解光线程函方程(eikonal ray equation)的步长 - 更多资讯详见 'BaseGrinGlass.js' 中的 'step' 函数与原始码文件。",
       "intersectTol": "相交容忍度",
+      "intersectTolPrimitiveEngineInfo": "使用基于基元对象的模拟引擎时不会使用此属性。该引擎会自动推导容忍度数值。",
       "symbolicBodyMerging": "符号式物体融合",
       "symbolicBodyMergingInfo": {
         "all": "本选项会套用至所有渐变折射率透光物。",
@@ -672,11 +687,87 @@
     "translatedFraction": "已翻译",
     "helpTranslate": "协助我们翻译本程序"
   },
+  "simulationEngineModal": {
+    "default": {
+      "title": "默认（旧版）",
+      "shortTitle": "默认",
+      "description": "本项目原本的模拟引擎。未来版本将移除此引擎。"
+    },
+    "webgpu": {
+      "title": "WebGPU",
+      "shortTitle": "WebGPU",
+      "description": "模拟光线密度高的场景时速度最快的引擎，相较于默认引擎通常可提升 10 倍至 1000 倍的速度。但模拟光线密度低的场景时通常比 CPU 慢，且在某些平台上可能卡顿或不稳定。其使用较低的数值精度（float32）。",
+      "unavailable": "无法初始化 WebGPU：{{message}}",
+      "fallback": "WebGPU 无法执行此场景，因此已用 CPU 引擎重新启动模拟：{{message}}"
+    },
+    "primitiveCpu": {
+      "title": "基于基元对象的 CPU 引擎",
+      "shortTitle": "基元 CPU",
+      "description": "未来将成为默认引擎。如果数值精度（float64）重要，请选择此引擎。"
+    },
+    "automatic": {
+      "title": "自动选择 CPU/GPU",
+      "shortTitle": "自动 CPU/GPU",
+      "description": "自动尝试 CPU 与 GPU 引擎，并针对该场景使用较快的引擎。可能会造成额外的后台工作。实际使用的引擎会显示在状态方块中。"
+    },
+    "configuration": {
+      "title": "进阶引擎设置",
+      "description": "调整所选引擎的设置。这些设置不会储存在场景文件中。",
+      "backToDefaults": "恢复默认值",
+      "sections": {
+        "webgpuScheduling": {
+          "title": "WebGPU 调度"
+        },
+        "webgpuMemory": {
+          "title": "WebGPU 内存限制"
+        },
+        "webgpuNumerics": {
+          "title": "WebGPU 原子累加"
+        },
+        "primitiveCpu": {
+          "title": "CPU"
+        }
+      },
+      "fields": {
+        "workgroupSize": {
+          "title": "工作组大小",
+          "description": "每个工作组中的 WebGPU invocation 数量。较大的值在 GPU 资源充足时可能提升性能，但可能超过硬件限制，或反而降低性能。"
+        },
+        "maxLocalIterations": {
+          "title": "最大局部交互作用次数",
+          "description": "每条光线沿其主要路径连续追踪的光线与物体交互作用次数上限，达到上限后暂停该光线。其他出射分支会放入稳定队列并稍后处理。较大的值通常能让场景变更后的首次预览显示更多重要光线，但可能降低整体性能。"
+        },
+        "maxPingPongsPerSubmission": {
+          "title": "每次提交的 Ping-pong 次数",
+          "description": "在读回控制状态与探测器状态前，于一次 GPU 提交中编码的 megakernel 与稳定队列压缩交替循环次数。较大的值通常能让场景变更后的首次预览显示更多高阶光线分支，但会使模拟器反应更迟缓。"
+        },
+        "timeBudgetMs": {
+          "title": "CPU 更新时间预算 (ms)",
+          "description": "CPU 追踪的最长时间，超过后会暂停并更新预览。较大的值能让场景变更后的首次预览显示更多光线，但会使模拟器反应更迟缓。"
+        },
+        "maxBatchRayEvents": {
+          "title": "最大批次光线事件数",
+          "description": "决定 WebGPU 光线缓冲区大小及限制单次提交批次的最大光线事件容量。较大的值可支持更复杂的光线分支，但会使用更多 GPU 内存。"
+        },
+        "maxReadyGeometryRecords": {
+          "title": "最大待处理几何记录数",
+          "description": "一次 WebGPU 提交中可累积的线段、箭头与点的渲染记录数上限。"
+        },
+        "atomicFixedPointScale": {
+          "title": "原子定点数缩放比例",
+          "description": "WebGPU 渲染和探测器读数中，每单位数值所对应的整数单位数。数值越大，分辨率越高，但在整数溢出前可表示的范围越小。上限为 16,777,216。"
+        }
+      }
+    }
+  },
   "generalWarnings": {
     "shareLinkTooLong": "本网址过长，在部分平台上可能无法正常运作。建议改用「保存」并分享文件。",
     "autoSyncUrlTooLarge": "本场景过大，无法与网址同步。 请自行储存场景。",
     "identicalObjects": "场景中有两个完全相同的光学元件完全重合。 这可能会导致非预期的行为。",
     "brightnessInconsistent": "有至少两个光源的亮度以不一致的比例达到饱和。这可能会导致探测器的读数与色彩渲染错误。请提高光线密度或降低光源亮度。",
+    "primitiveMergeConflict": "曲线 {{curveId}} 与 {{conflictingCurveId}} 之间发生界面融合冲突。请稍微移动物体或光源以得到明确的行为。",
+    "primitiveOrientationConflict": "曲线 {{curveId}} 与 {{conflictingCurveId}} 之间发生边界定向冲突。请避免在同一区域中重叠同向的边界片段。",
+    "primitiveNormalConflict": "曲线 {{curveId}} 与 {{conflictingCurveId}} 之间发生法向量冲突。请稍微移动光源以得到明确的行为。",
     "blackBecomesTransparent": "使用「修正亮度」时，由于使用加法混色，非黑色背景会导致光线的黑色部分变透明。请将主题中光的颜色都设为 HSV 明度为 1 的值以避免此问题。",
     "undefinedBehaviorOverlapping": "「{{involvedObj1}}」与「{{involvedObj2}}」的重叠部分不支持界面融合，导致未定义行为。请将物件稍微分開（或移动光源）以获得明确的行为。",
     "undefinedBehaviorSingle": "物件「{{involvedObj}}」出现未定义行为。请稍微移动物件或光源以获得明确的行为。"
@@ -801,6 +892,8 @@
     }
   },
   "statusBox": {
+    "engine": "引擎",
+    "engineFallback": "{{engine}}（回退）",
     "rayCount": "光线片段数量",
     "totalTruncation": "被截断的亮度",
     "brightnessScale": "亮度尺度",
@@ -827,6 +920,9 @@
     },
     "jsonFold": {
       "expand": "展开消息"
+    },
+    "primitiveCurveReference": {
+      "highlight": "高亮显示基元曲线 {{curveId}}"
     },
     "betaFeatures": {
       "title": "Beta 功能",

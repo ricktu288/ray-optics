@@ -17,6 +17,29 @@
 import BaseSceneObj from './BaseSceneObj.js';
 import Simulator from '../Simulator.js';
 import i18next from 'i18next';
+import { parseFormula } from '../formula/formula-parser.js';
+
+const MIRROR_SURFACE_TYPE = {
+  name: 'Mirror',
+  paramNames: [],
+  dag: parseFormula(
+    'd_1x = d_0x; d_1y = -d_0y; P_1s = P_0s; P_1p = P_0p',
+    ['d_0x', 'd_0y', 'P_0s', 'P_0p']
+  ),
+  outRayCount: 1,
+  mergesWithBoundary: true
+};
+
+const ABSORBER_SURFACE_TYPE = {
+  name: 'Absorber',
+  paramNames: [],
+  dag: parseFormula(
+    'd_1x = d_0x; d_1y = d_0y; P_1s = 0; P_1p = 0',
+    ['d_0x', 'd_0y']
+  ),
+  outRayCount: 1,
+  mergesWithBoundary: true
+};
 
 /**
  * The base class for optical elements with wavelength filter functionality, including mirrors (which have the dichroic feature) and blockers.
@@ -28,6 +51,8 @@ import i18next from 'i18next';
  * @property {number} bandwidth - The bandwidth of the filter. The unit is nm.
  */
 class BaseFilter extends BaseSceneObj {
+  static MIRROR_SURFACE_TYPE = MIRROR_SURFACE_TYPE;
+  static ABSORBER_SURFACE_TYPE = ABSORBER_SURFACE_TYPE;
 
   static getPropertySchema(objData, scene) {
     return [
@@ -71,6 +96,61 @@ class BaseFilter extends BaseSceneObj {
     var dichroicEnabled = this.scene.simulateColors && this.filter && this.wavelength;
     var rayHueMatchesMirror =  Math.abs(this.wavelength - ray.wavelength) <= this.bandwidth;
     return !dichroicEnabled || (rayHueMatchesMirror != this.invert);
+  }
+
+  /**
+   * Return this object's wavelength filter in the primitive format.
+   * @returns {WavelengthFilter|null} The enabled filter, or null.
+   */
+  getPrimitiveWavelengthFilter() {
+    if (!(this.scene.simulateColors && this.filter && this.wavelength)) {
+      return null;
+    }
+
+    return {
+      wavelength: this.wavelength,
+      bandwidth: this.bandwidth,
+      invert: this.invert
+    };
+  }
+
+  /**
+   * Build a two-sided ideal-mirror primitive for the supplied curve.
+   * @param {PrimitiveCurve} curve - The mirror curve.
+   * @returns {SurfacePrimitive} The mirror surface primitive.
+   */
+  createMirrorPrimitive(curve) {
+    const primitive = {
+      kind: 'surface',
+      curve,
+      twoSided: true,
+      surfaceType: MIRROR_SURFACE_TYPE,
+      params: {}
+    };
+    const filter = this.getPrimitiveWavelengthFilter();
+    if (filter) {
+      primitive.filter = filter;
+    }
+    return primitive;
+  }
+
+  /**
+   * Build a two-sided absorbing primitive for the supplied curve.
+   * @param {PrimitiveCurve} curve
+   * @param {boolean} [withFilter=true]
+   * @returns {SurfacePrimitive}
+   */
+  createAbsorberPrimitive(curve, withFilter = true) {
+    const primitive = {
+      kind: 'surface',
+      curve,
+      twoSided: true,
+      surfaceType: ABSORBER_SURFACE_TYPE,
+      params: {}
+    };
+    const filter = withFilter ? this.getPrimitiveWavelengthFilter() : null;
+    if (filter) primitive.filter = filter;
+    return primitive;
   }
 };
 

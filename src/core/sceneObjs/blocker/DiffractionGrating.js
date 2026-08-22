@@ -19,6 +19,12 @@ import BaseSceneObj from '../BaseSceneObj.js';
 import i18next from 'i18next';
 import Simulator from '../../Simulator.js';
 import geometry from '../../geometry.js';
+import {
+  createDiffractionGratingPrimitive
+} from '../diffractionGratingPrimitive.js';
+import {
+  getEffectiveRayPowerOptions
+} from '../../simulationEngines/rayPower.js';
 
 /**
  * Diffraction Grating
@@ -131,6 +137,21 @@ class DiffractionGrating extends LineObjMixin(BaseSceneObj) {
     ctx.lineWidth = 1 * ls;
   }
 
+  getPrimitives() {
+    if (!this.p1 || !this.p2 ||
+        (this.p1.x === this.p2.x && this.p1.y === this.p2.y)) {
+      return [];
+    }
+    const primitive = createDiffractionGratingPrimitive(this, {
+      kind: 'lineSegment',
+      params: {
+        start: { x: this.p1.x, y: this.p1.y },
+        end: { x: this.p2.x, y: this.p2.y }
+      }
+    }, this.mirrored, 1);
+    return primitive ? [primitive] : [];
+  }
+
   onSimulationStart() {
     this.warning = null;
     if (this.scene.mode == 'images' || this.scene.mode == 'observer') {
@@ -148,6 +169,7 @@ class DiffractionGrating extends LineObjMixin(BaseSceneObj) {
 
   onRayIncident(ray, rayIndex, incidentPoint) {
     let truncation = 0;
+    const { rayPowerCutoff } = getEffectiveRayPowerOptions(this.scene);
     const mm_in_nm = 1 / 1000000;
     var rx = ray.p1.x - incidentPoint.x;
     var ry = ray.p1.y - incidentPoint.y;
@@ -205,10 +227,12 @@ class DiffractionGrating extends LineObjMixin(BaseSceneObj) {
       // There is currently no good way to make image detection work here. So just set gap to true to disable image detection for the diffracted rays.
       diffracted_ray.gap = true;
 
-      if (diffracted_ray.brightness_s + diffracted_ray.brightness_p > (this.scene.colorMode != 'default' ? 1e-6 : 0.01)) {
+      const diffractedPower =
+        diffracted_ray.brightness_s + diffracted_ray.brightness_p;
+      if (diffractedPower > 0 && diffractedPower >= rayPowerCutoff) {
         newRays.push(diffracted_ray);
       } else {
-        truncation += diffracted_ray.brightness_s + diffracted_ray.brightness_p;
+        truncation += diffractedPower;
       }
     }
 

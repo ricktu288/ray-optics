@@ -18,6 +18,12 @@ import ParamCurveObjMixin from '../ParamCurveObjMixin.js';
 import BaseCustomSurface from '../BaseCustomSurface.js';
 import i18next from 'i18next';
 import geometry from '../../geometry.js';
+import {
+  createSampledPrimitiveCurveEntries
+} from '../primitiveCurveHelpers.js';
+import {
+  createCustomSurfacePrimitive
+} from '../customSurfacePrimitive.js';
 
 /**
  * A parametric curve-shaped custom surface.
@@ -157,6 +163,32 @@ class CustomParamSurface extends ParamCurveObjMixin(BaseCustomSurface) {
     ctx.setLineDash([]);
   }
 
+  getPrimitives() {
+    try {
+      const entries = createSampledPrimitiveCurveEntries(this, {
+        skipBoundarySegments: true
+      });
+      const primitives = entries.map(entry =>
+        createCustomSurfacePrimitive({
+          curve: entry.curve,
+          outRays: this.outRays,
+          twoSided: this.twoSided,
+          positionExpression: 't_start + (t_end - t_start) * u',
+          params: {
+            t_start: entry.parameterStart,
+            t_end: entry.parameterEnd
+          },
+          name: 'Custom parametric surface'
+        })
+      );
+      this.error = null;
+      return primitives;
+    } catch (error) {
+      this.error = error.toString();
+      return [];
+    }
+  }
+
   checkRayIntersects(ray) {
     // Get all intersections
     const intersections = this.getRayIntersections(ray);
@@ -248,4 +280,4 @@ class CustomParamSurface extends ParamCurveObjMixin(BaseCustomSurface) {
   }
 }
 
-export default CustomParamSurface; 
+export default CustomParamSurface;

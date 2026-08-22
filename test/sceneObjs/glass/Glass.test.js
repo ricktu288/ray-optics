@@ -16,6 +16,7 @@
 
 import Glass from '../../../src/core/sceneObjs/glass/Glass';
 import Scene from '../../../src/core/Scene';
+import { createDagClosureEvaluator } from '../../../src/core/formula/dag-evaluator';
 import { MockUser } from '../helpers/test-utils';
 
 describe('Glass', () => {
@@ -132,6 +133,74 @@ describe('Glass', () => {
         { x: -100, y: 0, arc: true }
       ]
     });
+  });
+
+  it('creates line and arc region primitives with the selected bulk type', () => {
+    obj.path = [
+      { x: 0, y: -10, arc: false },
+      { x: 10, y: 0, arc: true },
+      { x: 0, y: 10, arc: false },
+      { x: -10, y: 0, arc: true }
+    ];
+    obj.partialReflect = false;
+
+    const constantPrimitive = obj.getPrimitives()[0];
+    const evaluateConstant = createDagClosureEvaluator(constantPrimitive.bulkType.dag);
+    expect(constantPrimitive.curves.map(curve => curve.kind)).toEqual([
+      'circularArc',
+      'circularArc'
+    ]);
+    expect(evaluateConstant(constantPrimitive.params)).toMatchObject({
+      n: 1.5,
+      alpha: 0
+    });
+    expect(constantPrimitive.partialReflect).toBe(false);
+    expect(constantPrimitive.stepSize).toBe(0);
+
+    scene.simulateColors = true;
+    obj.refIndex = 1.4;
+    obj.cauchyB = 0.006;
+    const cauchyPrimitive = obj.getPrimitives()[0];
+    const evaluateCauchy = createDagClosureEvaluator(cauchyPrimitive.bulkType.dag);
+    const cauchyValues = evaluateCauchy({
+      ...cauchyPrimitive.params,
+      lambda: 500
+    });
+    expect(cauchyValues.n).toBeCloseTo(1.424);
+    expect(cauchyValues.alpha).toBe(0);
+  });
+
+  it('uses ray-index modding for legacy weak-ray sampling', () => {
+    obj.partialReflect = true;
+    scene.colorMode = 'linear';
+    scene.rayPowerCutoff = 0.01;
+    scene.rayPowerSampling = true;
+    const createRay = () => ({
+      p1: { x: 0, y: 0 },
+      p2: { x: 1, y: 0 },
+      brightness_s: 0.1,
+      brightness_p: 0,
+      gap: false
+    });
+
+    const selected = obj.refract(
+      createRay(), 0, { x: 1, y: 0 }, { x: -1, y: 0 }, 2 / 3, []
+    );
+    const skipped = obj.refract(
+      createRay(), 1, { x: 1, y: 0 }, { x: -1, y: 0 }, 2 / 3, []
+    );
+
+    expect(selected.newRays).toHaveLength(1);
+    expect(
+      selected.newRays[0].brightness_s + selected.newRays[0].brightness_p
+    ).toBeCloseTo(0.012);
+    expect(skipped.newRays).toHaveLength(0);
+
+    scene.rayPowerSampling = false;
+    const truncated = obj.refract(
+      createRay(), 0, { x: 1, y: 0 }, { x: -1, y: 0 }, 2 / 3, []
+    );
+    expect(truncated.newRays).toHaveLength(0);
   });
 
   it('hovers over square points and edges', () => {
@@ -473,4 +542,4 @@ describe('Glass', () => {
     });
   });
 
-}); 
+});

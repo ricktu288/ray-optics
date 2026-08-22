@@ -21,6 +21,12 @@ import i18next from 'i18next';
 import { evaluateLatex } from '../equation.js';
 import { parseTex } from 'tex-math-parser'
 import * as math from 'mathjs';
+import { equationValueToDisplay } from '../propertyUtils/equationConversion.js';
+import { parseFormula } from '../formula/formula-parser.js';
+import { extractNumbersAsParameters } from '../formula/parameter-extraction.js';
+import { appendPartialDerivatives } from '../formula/derivative.js';
+import { substituteDagParameters } from '../formula/substitution.js';
+import { combineDags } from '../formula/dag-combination.js';
 
 /**
  * @typedef {Object} BodyMergingObj
@@ -56,7 +62,7 @@ class BaseGrinGlass extends BaseGlass {
     const absorptionFnInfo = '<ul><li>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.absorptionFnInfo.absorption') + '</li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.mathjs') + '<br><code>+ - * / ^ sqrt sin cos tan sec csc cot sinh cosh tanh log exp asin acos atan asinh acosh atanh floor round ceil fix max min abs sign</code></li><li>' + i18next.t('simulator:sceneObjs.common.eqnInfo.customFunctions') + '</li></ul>';
 
     const sceneObjType = objData?.type ?? this.type;
-    const intersectTolInfo = '<p>' + i18next.t(`simulator:sceneObjs.${sceneObjType}.epsInfo.units`) + '</p><p>' + i18next.t(`simulator:sceneObjs.${sceneObjType}.epsInfo.functions`) + '</p>';
+    const intersectTolInfo = '<p>' + i18next.t(`simulator:sceneObjs.${sceneObjType}.epsInfo.units`) + '</p><p>' + i18next.t(`simulator:sceneObjs.${sceneObjType}.epsInfo.functions`) + '</p><p>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.intersectTolPrimitiveEngineInfo') + '</p>';
 
     return [
       { key: 'refIndexFn', type: 'equation', label: 'n(x,y)',
@@ -114,13 +120,13 @@ class BaseGrinGlass extends BaseGlass {
         obj.stepSize = parseFloat(value);
       }, '<p>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.stepSizeInfo') + '</p>', true);
     }
-    if (objBar.showAdvanced(!this.arePropertiesDefault(['intersectTol']))) {
+    if (!objBar.usesPrimitiveEngine && objBar.showAdvanced(!this.arePropertiesDefault(['intersectTol']))) {
       objBar.createNumber(i18next.t('simulator:sceneObjs.BaseGrinGlass.intersectTol'), 1e-3, 1e-2, 1e-3, this.intersectTol, function (obj, value) {
         obj.intersectTol = parseFloat(value);
       }, '<p>' + i18next.t(`simulator:sceneObjs.${this.constructor.type}.epsInfo.units`) + '</p><p>' + i18next.t(`simulator:sceneObjs.${this.constructor.type}.epsInfo.functions`) + '</p>', true);
     }
 
-    if (objBar.showAdvanced(this.scene.symbolicBodyMerging)) {
+    if (!objBar.usesPrimitiveEngine && objBar.showAdvanced(this.scene.symbolicBodyMerging)) {
       objBar.createBoolean(i18next.t('simulator:sceneObjs.BaseGrinGlass.symbolicBodyMerging'), this.scene.symbolicBodyMerging, function (obj, value) {
         obj.scene.symbolicBodyMerging = value;
       }, '<p>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.symbolicBodyMergingInfo.all') + '</p><p>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.symbolicBodyMergingInfo.impl') + '</p><p>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.symbolicBodyMergingInfo.implNote') + '</p>');
@@ -136,6 +142,143 @@ class BaseGrinGlass extends BaseGlass {
 
   getZIndex() {
     return 0;
+  }
+
+  /**
+   * Create a GRIN region primitive with the supplied boundary.
+   *
+   * The primitive formula path is independent of the legacy functions built by
+   * `initFns()`. It accepts both the current LaTeX storage format and the
+   * double-backtick math.js format supported by the equation property editor.
+   *
+   * @param {PrimitiveCurve[]} curves - The closed region boundary.
+   * @returns {RegionPrimitive|null} The region primitive, or null if the
+   * refractive-index formula cannot be compiled.
+   */
+  createGrinPrimitive(curves) {
+    const bulkData = this.getPrimitiveBulkData();
+    if (!bulkData) {
+      return null;
+    }
+
+    return {
+      kind: 'region',
+      curves,
+      bulkType: bulkData.bulkType,
+      params: {
+        x_0: this.origin.x,
+        y_0: this.origin.y,
+        ...bulkData.formulaParams
+      },
+      stepSize: this.stepSize,
+      partialReflect: this.partialReflect
+    };
+  }
+
+  /**
+   * Compile and cache the formula data shared by this object's GRIN primitive.
+   *
+   * The coordinate origin is represented by the instance parameters `x_0` and
+   * `y_0`.
+   *
+   * @returns {{
+   *   bulkType: BulkType,
+   *   formulaParams: Object<string, number>
+   * }|null} Compiled bulk data, or null if compilation fails.
+   */
+  getPrimitiveBulkData() {
+    const cacheKey = JSON.stringify([
+      this.refIndexFn,
+      this.absorptionFn
+    ]);
+    if (this._primitiveBulkDataCache?.key === cacheKey) {
+      if (this._primitiveBulkDataCache.error) {
+        this.error = this._primitiveBulkDataCache.error;
+        return null;
+      }
+      this.error = null;
+      return this._primitiveBulkDataCache.value;
+    }
+
+    try {
+      const convertedRefIndex = equationValueToDisplay(this.refIndexFn);
+      if (!convertedRefIndex.supported || convertedRefIndex.display.trim() === '') {
+        throw new Error('Unsupported refractive-index formula.');
+      }
+      const convertedAbsorption = equationValueToDisplay(this.absorptionFn);
+      if (!convertedAbsorption.supported || convertedAbsorption.display.trim() === '') {
+        throw new Error('Unsupported absorption formula.');
+      }
+
+      let refIndexDag = parseFormula(
+        convertedRefIndex.display,
+        ['x', 'y', 'lambda'],
+        { outputLabel: 'n' }
+      );
+      let absorptionDag = parseFormula(
+        convertedAbsorption.display,
+        ['x', 'y', 'lambda'],
+        { outputLabel: 'alpha' }
+      );
+
+      const substitutions = {
+        x: parseFormula('x - x_0', ['x', 'x_0']),
+        y: parseFormula('y - y_0', ['y', 'y_0'])
+      };
+      refIndexDag = substituteDagParameters(refIndexDag, substitutions);
+      absorptionDag = substituteDagParameters(absorptionDag, substitutions);
+
+      const differentiated = appendPartialDerivatives(refIndexDag, {
+        sourceLabel: 'n',
+        partials: [
+          { parameter: 'x', label: 'n_x' },
+          { parameter: 'y', label: 'n_y' }
+        ]
+      });
+      if (differentiated.errors.length > 0) {
+        throw new Error(
+          differentiated.errors.map(error => error.message).join('; ')
+        );
+      }
+      const extractedRefIndex = extractNumbersAsParameters(
+        differentiated.dag,
+        { prefix: '_n' }
+      );
+      const extractedAbsorption = extractNumbersAsParameters(
+        absorptionDag,
+        { prefix: '_alpha' }
+      );
+
+      const value = {
+        bulkType: {
+          name: 'GRIN medium',
+          paramNames: [
+            'x_0',
+            'y_0',
+            ...extractedRefIndex.extracted.map(param => param.name),
+            ...extractedAbsorption.extracted.map(param => param.name)
+          ],
+          dag: combineDags([
+            extractedRefIndex.dag,
+            extractedAbsorption.dag
+          ])
+        },
+        formulaParams: Object.fromEntries(
+          [
+            ...extractedRefIndex.extracted,
+            ...extractedAbsorption.extracted
+          ].map(param => [param.name, param.value])
+        )
+      };
+      this._primitiveBulkDataCache = { key: cacheKey, value };
+      this.error = null;
+      return value;
+    } catch (error) {
+      const message = error.toString();
+      this._primitiveBulkDataCache = { key: cacheKey, error: message };
+      this.error = message;
+      return null;
+    }
   }
 
   fillGlass(canvasRenderer, isAboveLight, isHovered) {

@@ -99,7 +99,7 @@
         "y": 280
       },
       "p2": {
-        "x": 662,
+        "x": 662.01,
         "y": 280
       },
       "refIndex": 1.324,
@@ -229,5 +229,6 @@
     "y": 124.59658619635479
   },
   "scale": 1,
-  "simulateColors": true
+  "simulateColors": true,
+  "importedFromBeta": true
 }

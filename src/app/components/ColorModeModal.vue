@@ -106,4 +106,8 @@ export default {
 .modal-dialog {
   z-index: 1045;
 }
+
+.modal-body > .form-check + .form-check {
+  margin-top: 1rem;
+}
 </style>

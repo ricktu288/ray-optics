@@ -25,6 +25,9 @@ import escapeHtml from 'escape-html';
 import { Bezier } from 'bezier-js';
 import * as math from 'mathjs';
 import { curveTypePropertyInfoHtml } from '../ParamCurveObjMixin.js';
+import {
+  createSampledPrimitiveCurveEntries
+} from '../primitiveCurveHelpers.js';
 
 function compileEquationDerivative(eqnLatex) {
   const p = latexToMathJS(eqnLatex);
@@ -520,6 +523,14 @@ class CustomGlass extends LineObjMixin(BaseGlass) {
   getIncidentType(ray) {
     return this.getIncidentData(ray).incidentType;
   }
+
+  getPrimitives() {
+    this._invalidateCurveIfLengthScaleChanged();
+    const curves = createSampledPrimitiveCurveEntries(this).map(
+      entry => entry.curve
+    );
+    return curves.length > 0 ? [this.createGlassPrimitive(curves)] : [];
+  }
   
   /* Utility methods */
 
@@ -589,6 +600,13 @@ class CustomGlass extends LineObjMixin(BaseGlass) {
       this.bezierSegmentLinearFlags.push(this.path[i].side !== this.path[i + 1].side);
     }
     return true;
+  }
+
+  // createSampledPrimitiveCurveEntries uses the ParamCurveObjMixin method
+  // name when preparing cubic Bezier primitives. CustomGlass maintains the
+  // same data under its older helper name, so expose the shared contract here.
+  _ensureCubicBezierPathReady() {
+    return this._ensureBezierPathReady();
   }
 
   /**

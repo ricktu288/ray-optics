@@ -69,6 +69,12 @@ const PROPERTY_CALLBACKS = {
   maxRayDepth: (value) => {
     app.simulator?.updateSimulation(false, true)
   },
+  rayPowerCutoff: (value) => {
+    app.simulator?.updateSimulation(false, true)
+  },
+  rayPowerSampling: (value) => {
+    app.simulator?.updateSimulation(false, true)
+  },
   observerSize: (value) => {
     if (app.simulator?.scene.observer) {
       app.simulator.scene.observer.r = value * 0.5

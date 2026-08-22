@@ -64,6 +64,15 @@ class BaseSceneObj {
     this.error = null;
     /** @property {string|null} warning - The warning message of the object. */
     this.warning = null;
+    /**
+     * @property {number|null} brightnessScale - Transient legacy-color-mode
+     * brightness scale produced while mapping this object's user-facing
+     * properties to primitives. A source sets this in `getPrimitives()` to 1
+     * when no cap is needed or to the ratio applied when its per-ray
+     * brightness is capped at 1. It is null outside the legacy color mode,
+     * is not serialized, and is not part of the primitive representation.
+     */
+    this.brightnessScale = null;
     /** @property {string|null} name - The name of the object. */
     this.name = jsonObj?.name || '';
     /** @property {'default'|'locked'|'unlocked'} locked - Lock override: 'default' follows scene.lockObjs, 'locked' always locked, 'unlocked' always unlocked. Not serialized when 'default'. */
@@ -315,6 +324,32 @@ class BaseSceneObj {
    */
   onDrag(mouse, dragContext, ctrl, shift) {
     // Do nothing by default
+  }
+
+  /**
+   * Return the optical primitives represented by this scene object for the
+   * primitive-based simulator. The returned array is flat and its order and
+   * original scene-object/module grouping have no simulation meaning.
+   *
+   * Every curve occurrence is distinct: coincident curves are not
+   * deduplicated. Preprocessing extracts all curves from surfaces, regions,
+   * and detectors, associates each extracted curve with its owning primitive,
+   * and builds the BVH. Light sources contain no curve and generate rays only
+   * from their type and parameters.
+   *
+   * Region-producing scene objects are responsible for returning curves which
+   * collectively form a valid closed boundary. The primitive format and
+   * preprocessing do not validate closure.
+   *
+   * The source, surface, bulk, and detector type definitions are intentionally
+   * opaque at this interface. Their internal formula representation is defined
+   * by the formula compiler rather than by scene objects.
+   *
+   * Non-optical scene objects return an empty array.
+   * @returns {Primitive[]} The optical primitives represented by this object.
+   */
+  getPrimitives() {
+    return [];
   }
 
   /**

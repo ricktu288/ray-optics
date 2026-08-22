@@ -32,6 +32,10 @@
 
 import Scene from './Scene.js';
 import Simulator from './Simulator.js';
+import PrimitiveBasedSimulator from './PrimitiveBasedSimulator.js';
+import CpuSimulationEngine from './simulationEngines/cpu/CpuSimulationEngine.js';
+import WebGpuSimulationEngine from './simulationEngines/webgpu/WebGpuSimulationEngine.js';
+import { FLOAT32_EPSILON } from './primitive/numeric.js';
 import Editor from './Editor.js';
 import * as sceneObjs from './sceneObjs.js';
 import geometry from './geometry.js';
@@ -60,6 +64,10 @@ if (typeof process !== 'undefined' && process.versions && process.versions.node)
 export {
   Scene,
   Simulator,
+  PrimitiveBasedSimulator,
+  CpuSimulationEngine,
+  WebGpuSimulationEngine,
+  FLOAT32_EPSILON,
   Editor,
   sceneObjs,
   geometry

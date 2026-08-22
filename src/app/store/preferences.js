@@ -27,6 +27,8 @@ const PREFERENCES_DEFAULTS = {
   showStatus: false,
   showSimulatorControls: false,
   help: true,
+  simulationEngine: 'default',
+  simulationEngineConfigs: {},
 }
 
 // Callbacks for preference changes
@@ -49,6 +51,12 @@ const PREFERENCES_CALLBACKS = {
       // Clean up JSON editor
       jsonEditorService.cleanup()
     }
+  },
+  simulationEngine: (value) => {
+    app.setSimulationEngine?.(value)
+  },
+  simulationEngineConfigs: (value) => {
+    app.setSimulationEngineConfigs?.(value)
   }
 }
 

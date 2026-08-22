@@ -18,6 +18,9 @@ import LineObjMixin from '../LineObjMixin.js';
 import BaseCustomSurface from '../BaseCustomSurface.js';
 import i18next from 'i18next';
 import geometry from '../../geometry.js';
+import {
+  createCustomSurfacePrimitive
+} from '../customSurfacePrimitive.js';
 
 /**
  * A line-shaped custom surface.
@@ -136,6 +139,33 @@ class CustomSurface extends LineObjMixin(BaseCustomSurface) {
 
     // Reset line dash
     ctx.setLineDash([]);
+  }
+
+  getPrimitives() {
+    if (!this.p1 || !this.p2 ||
+        (this.p1.x === this.p2.x && this.p1.y === this.p2.y)) {
+      return [];
+    }
+    try {
+      const primitive = createCustomSurfacePrimitive({
+        curve: {
+          kind: 'lineSegment',
+          params: {
+            start: { x: this.p1.x, y: this.p1.y },
+            end: { x: this.p2.x, y: this.p2.y }
+          }
+        },
+        outRays: this.outRays,
+        twoSided: this.twoSided,
+        positionExpression: '-1 + 2 * u',
+        name: 'Custom line surface'
+      });
+      this.error = null;
+      return [primitive];
+    } catch (error) {
+      this.error = error.toString();
+      return [];
+    }
   }
 
   checkRayIntersects(ray) {

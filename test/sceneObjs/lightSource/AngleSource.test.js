@@ -16,6 +16,7 @@
 
 import AngleSource from '../../../src/core/sceneObjs/lightSource/AngleSource';
 import Scene from '../../../src/core/Scene';
+import { createDagClosureEvaluator } from '../../../src/core/formula/dag-evaluator';
 import { testLineObj } from '../helpers/lineObjTests';
 import { MockUser } from '../helpers/test-utils';
 
@@ -86,4 +87,28 @@ describe('AngleSource', () => {
       symmetric: false
     });
   });
-}); 
+
+  it('creates an uncached source primitive without the observer offset', () => {
+    scene.mode = 'observer';
+    scene.rayDensity = 0.1;
+    obj.p1 = { x: 10, y: 20 };
+    obj.p2 = { x: 20, y: 20 };
+    obj.brightness = 0.5;
+    obj.emisAngle = 36.001;
+    obj.symmetric = false;
+
+    const firstPrimitive = obj.getPrimitives()[0];
+    const secondPrimitive = obj.getPrimitives()[0];
+    const evaluate = createDagClosureEvaluator(firstPrimitive.sourceType.dag);
+    const firstRay = evaluate({ ...firstPrimitive.params, i: 0 });
+
+    expect(secondPrimitive).not.toBe(firstPrimitive);
+    expect(firstPrimitive.params.theta_0).toBe(0);
+    expect(firstRay.x).toBe(10);
+    expect(firstRay.y).toBe(20);
+    expect(firstRay.d_x).toBeCloseTo(1);
+    expect(firstRay.d_y).toBeCloseTo(0);
+    expect(firstRay.P_s + firstRay.P_p).toBe(1);
+    expect(firstPrimitive.rayCount).toBe(6);
+  });
+});

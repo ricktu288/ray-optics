@@ -164,5 +164,7 @@
     "x": 344.6986542443067,
     "y": 208.88426501035215
   },
-  "scale": 1
+  "scale": 1,
+  "maxRayDepth": 1000,
+  "importedFromBeta": true
 }
