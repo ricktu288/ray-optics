@@ -112,7 +112,7 @@
       />
       <ToolItem
         id="CurveMirror"
-        :title="$t('main:tools.CurveMirror.title') + '<sup style=\'color: #0006;\'>Beta</sup>'"
+        :title="$t('main:tools.CurveMirror.title')"
         :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.CurveMirror.description'), sub: $t('main:tools.CurveMirror.instruction')})"
         :verticalOffset="0"
         :layout="layout"
@@ -341,7 +341,7 @@
       />
       <ToolItem
         id="CustomCurveSurface"
-        :title="$t('main:tools.CustomCurveSurface.title') + '<sup style=\'color: #0006;\'>Beta</sup>'"
+        :title="$t('main:tools.CustomCurveSurface.title')"
         :popoverContent="$t('main:meta.parentheses', {main: $t('main:tools.CustomCurveSurface.description'), sub: $t('main:tools.CurveMirror.instruction')})"
         :verticalOffset="0"
         :layout="layout"

@@ -65,7 +65,7 @@ class BaseGrinGlass extends BaseGlass {
       { key: 'absorptionFn', type: 'equation', label: 'α(x,y)',
         variables: ['x', 'y', 'lambda'],
         info: absorptionFnInfo },
-      { key: 'plotFns', type: 'boolean', label: i18next.t('simulator:sceneObjs.BaseGrinGlass.plotFns') + ' <sup class="beta-label-sup">Beta</sup>' },
+      { key: 'plotFns', type: 'boolean', label: i18next.t('simulator:sceneObjs.BaseGrinGlass.plotFns') },
       { key: 'stepSize', type: 'number', label: i18next.t('simulator:sceneObjs.BaseGrinGlass.stepSize'),
         info: '<p>' + i18next.t('simulator:sceneObjs.BaseGrinGlass.stepSizeInfo') + '</p>' },
       { key: 'intersectTol', type: 'number', label: i18next.t('simulator:sceneObjs.BaseGrinGlass.intersectTol'),
@@ -105,7 +105,7 @@ class BaseGrinGlass extends BaseGlass {
       });
     }
 
-    objBar.createBoolean(i18next.t('simulator:sceneObjs.BaseGrinGlass.plotFns') + ' <sup class="beta-label-sup">Beta</sup>', this.plotFns, function (obj, value) {
+    objBar.createBoolean(i18next.t('simulator:sceneObjs.BaseGrinGlass.plotFns'), this.plotFns, function (obj, value) {
       obj.plotFns = value;
     });
 

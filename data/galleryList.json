@@ -47,7 +47,6 @@
       },
       {
         "id": "penrose-unilluminable-room",
-        "beta": true,
         "contributors": [
           "Vincent Fan",
           "Yi-Ting Tu"
@@ -261,7 +260,6 @@
       },
       {
         "id": "schematic-eye",
-        "beta": true,
         "contributors": [
           "Yoyobuae"
         ]
@@ -333,7 +331,6 @@
       },
       {
         "id": "transmission-light-microscope",
-        "beta": true,
         "contributors": [
           "Ze-Yang Li"
         ]
@@ -345,7 +342,6 @@
     "content": [
       {
         "id": "GRIN-slab",
-        "beta": true,
         "contributors": [
           "Stas Fainer",
           "Yi-Ting Tu"
@@ -371,7 +367,6 @@
       },
       {
         "id": "luneburg-lens",
-        "beta": true,
         "contributors": [
           "Stas Fainer",
           "Yi-Ting Tu"
@@ -379,7 +374,6 @@
       },
       {
         "id": "maxwell-fisheye-lens",
-        "beta": true,
         "contributors": [
           "Stas Fainer",
           "Yi-Ting Tu"
@@ -471,7 +465,6 @@
       },
       {
         "id": "types-of-spectrometer-dispersive-elements",
-        "beta": true,
         "contributors": [
           "bird0cosmic"
         ]
@@ -496,14 +489,12 @@
       },
       {
         "id": "reflex-sight",
-        "beta": true,
         "contributors": [
           "Zain Kalim"
         ]
       },
       {
         "id": "holographic-sight",
-        "beta": true,
         "contributors": [
           "Zain Kalim"
         ]

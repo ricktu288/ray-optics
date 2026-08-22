@@ -874,22 +874,6 @@ function getBetaFeaturesInUse() {
 
   const betaFeatures = [];
   const alphaFeatures = [];
-  const defaultScene = Scene.serializableDefaults;
-
-  const expandObjs = (objs) => {
-    const expanded = [];
-    for (const obj of objs) {
-      if (obj && obj.constructor === sceneObjs.ModuleObj) {
-        expanded.push(obj);
-        expanded.push(...expandObjs(obj.objs || []));
-      } else {
-        expanded.push(obj);
-      }
-    }
-    return expanded;
-  };
-
-  const allObjs = expandObjs(scene.objs || []);
 
   if (scene.importedFromBeta) {
     betaFeatures.push(i18next.t('simulator:footer.betaFeatures.sceneFromBeta'));
@@ -909,86 +893,23 @@ function getBetaFeaturesInUse() {
 
   // When new features of the scene are added, add them as follows:
   /*
+  const defaultScene = Scene.serializableDefaults;
   if (scene.newFeature !== defaultScene.newFeature) {
-    features.push("New Feature");
+    betaFeatures.push("New Feature");
   }
   */
 
-  // When new features of some objects are added, add them as follows:
+  // When new features of some objects are added, add them as follows (including
+  // objects expanded from modules when applicable):
   /*
-  const usesNewFeature = allObjs.some((obj) =>
+  const usesNewFeature = scene.objs.some((obj) =>
     obj &&
     (obj.constructor.type === 'Type') && obj.newFeature !== someDefaultValue
   );
   if (usesNewFeature) {
-    features.push("New Feature");
+    betaFeatures.push("New Feature");
   }
   */
-
-  const usesName = allObjs.some((obj) => obj && obj.name)
-  if (usesName) {
-    betaFeatures.push('<code>sceneObj.name</code>');
-  }
-
-  const usesLock = allObjs.some((obj) => obj && obj.locked !== 'default')
-  if (usesLock) {
-    betaFeatures.push(i18next.t('<code>sceneObj.locked</code>'));
-  }
-
-  const useCurveMirror = allObjs.some((obj) => obj && obj.constructor === sceneObjs.CurveMirror);
-  if (useCurveMirror) {
-    betaFeatures.push(i18next.t('main:meta.parentheses', { main: i18next.t('main:tools.categories.mirror'), sub: i18next.t('main:tools.CurveMirror.title') }));
-  }
-
-  const useCustomCurveSurface = allObjs.some((obj) => obj && obj.constructor === sceneObjs.CustomCurveSurface);
-  if (useCustomCurveSurface) {
-    betaFeatures.push(i18next.t('main:tools.CustomCurveSurface.title'));
-  }
-
-  const usesPlotFns = allObjs.some((obj) => obj && obj.plotFns)
-  if (usesPlotFns) {
-    betaFeatures.push(i18next.t('simulator:sceneObjs.BaseGrinGlass.plotFns'));
-  }
-
-  const usesOneSidedDetector = allObjs.some((obj) => obj && obj.constructor === sceneObjs.Detector && obj.twoSided === false);
-  if (usesOneSidedDetector) {
-    betaFeatures.push(i18next.t('main:tools.Detector.title') + ' -> ' + i18next.t('simulator:sceneObjs.Detector.twoSided') + ' = false');
-  }
-
-  const usesPolygonalCurveType = allObjs.some((obj) => obj && obj.curveType && obj.curveType === 'polygonal');
-  if (usesPolygonalCurveType) {
-    betaFeatures.push(i18next.t('simulator:sceneObjs.ParamCurveObjMixin.curveType') + ' -> ' + i18next.t('simulator:sceneObjs.ParamCurveObjMixin.curveTypes.polygonal'));
-  }
-
-  const usesCubicBezierCurveType = allObjs.some((obj) => obj && obj.curveType && obj.curveType === 'cubicBezier');
-  if (usesCubicBezierCurveType) {
-    betaFeatures.push(i18next.t('simulator:sceneObjs.ParamCurveObjMixin.curveType') + ' -> ' + i18next.t('simulator:sceneObjs.ParamCurveObjMixin.curveTypes.cubicBezier'));
-  }
-
-  const usesCurveStepSize = allObjs.some((obj) => obj && obj.curveStepSize && obj.curveStepSize !== 0.1000001);
-  if (usesCurveStepSize) {
-    betaFeatures.push(i18next.t('simulator:sceneObjs.common.curveStepSize'));
-  }
-
-  const usesThemeGlassAbsorption = scene.theme.glassAbsorption.color.r !== defaultScene.theme.glassAbsorption.color.r || scene.theme.glassAbsorption.color.g !== defaultScene.theme.glassAbsorption.color.g || scene.theme.glassAbsorption.color.b !== defaultScene.theme.glassAbsorption.color.b;
-  if (usesThemeGlassAbsorption) {
-    betaFeatures.push(i18next.t('simulator:themeModal.title') + '-> ' + i18next.t('simulator:themeModal.glassAbsorption.title'));
-  }
-
-  const usesBackwardLoop = allObjs.some((obj) => obj && obj.constructor === sceneObjs.ModuleObj && obj._usesBackwardLoop);
-  if (usesBackwardLoop) {
-    betaFeatures.push('<code>moduleObj._usesBackwardLoop</code>');
-  }
-
-  try {
-    const sidebarStored = localStorage.getItem('rayOpticsShowSidebar');
-    const showSidebar = sidebarStored === null ? false : sidebarStored === 'on';
-    const tabStored = localStorage.getItem('rayOpticsSidebarTab');
-    const tab = tabStored === null ? 'visual' : JSON.parse(tabStored);
-    if (showSidebar && tab === 'visual') {
-      betaFeatures.push(i18next.t('simulator:settings.showSidebar.title') + ' -> ' + i18next.t('simulator:sidebar.tabs.visual'));
-    }
-  } catch (_) {}
 
   return { betaFeatures, alphaFeatures };
 }

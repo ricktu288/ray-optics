@@ -28,7 +28,7 @@
       } : undefined"
       @click="onCreateModuleClick"
     >
-      {{ $t('main:tools.modules.createModule') }}<sup style="color: #0006;">Beta</sup>
+      {{ $t('main:tools.modules.createModule') }}
     </button>
   </li>
   <li :id="'module_start' + (layout === 'mobile' ? '_mobile' : '')">

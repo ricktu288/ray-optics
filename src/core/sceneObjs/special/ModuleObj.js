@@ -762,11 +762,6 @@ class ModuleObj extends BaseSceneObj {
                 throw i18next.t('simulator:sceneObjs.ModuleObj.loopVariableTooLarge', { name: loopVars[0].name });
               }
 
-              // For beta usage. Remove on next release.
-              if (step < 0) {
-                self._usesBackwardLoop = true;
-              }
-
               const loopLength = span / step + 1;
               if (loopLength > (self.moduleDef.maxLoopLength || 1000)) {
                 throw i18next.t('simulator:sceneObjs.ModuleObj.loopVariableTooLarge', { name: loopVars[0].name });
@@ -835,9 +830,6 @@ class ModuleObj extends BaseSceneObj {
     this.expandedObjsWithSource = [];
     this.moduleVarScopeAfterDefs = null;
 
-    // For beta usage. Remove on next release.
-    this._usesBackwardLoop = false;
-    
     // Construct the full parameters including the coordinates of points with names "x_1", "y_1", "x_2", "y_2", ...
     const fullParams = {};
     for (let name in this.params) {

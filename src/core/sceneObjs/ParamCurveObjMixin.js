@@ -41,12 +41,11 @@ function compileParametricDerivative(eqnLatex) {
 }
 
 export function curveTypePropertyInfoHtml() {
-  const betaSup = '<sup class="beta-label-sup">Beta</sup>';
-  const li = (typeKey, withBeta) =>
+  const li = (typeKey) =>
     '<li><strong>' + i18next.t(`simulator:sceneObjs.ParamCurveObjMixin.curveTypes.${typeKey}`) + '</strong>' +
-    (withBeta ? betaSup : '') + '<br>' +
+    '<br>' +
     i18next.t(`simulator:sceneObjs.ParamCurveObjMixin.curveTypeDescriptions.${typeKey}`) + '</li>';
-  return '<ul>' + li('polygonal', true) + li('smoothNormal', false) + li('cubicBezier', true) + '</ul>';
+  return '<ul>' + li('polygonal') + li('smoothNormal') + li('cubicBezier') + '</ul>';
 }
 
 /**

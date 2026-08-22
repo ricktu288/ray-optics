@@ -104,7 +104,7 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
       {
         key: 'curveStepSize',
         type: 'number',
-        label: i18next.t('simulator:sceneObjs.common.curveStepSize') + ' (px)' + ' <sup class="beta-label-sup">Beta</sup>',
+        label: i18next.t('simulator:sceneObjs.common.curveStepSize') + ' (px)',
         info: '<p>' + i18next.t('simulator:sceneObjs.common.eqnInfo.curveStepSize') + '</p>',
       },
     ];
@@ -132,7 +132,7 @@ class CustomMirror extends LineObjMixin(BaseFilter) {
     }
 
     if (objBar.showAdvanced(!this.arePropertiesDefault(['curveStepSize']))) {
-      objBar.createNumber(i18next.t('simulator:sceneObjs.common.curveStepSize') + ' (px)' + ' <sup class="beta-label-sup">Beta</sup>', 0.001, 1, 0.001, this.curveStepSize, function (obj, value) {
+      objBar.createNumber(i18next.t('simulator:sceneObjs.common.curveStepSize') + ' (px)', 0.001, 1, 0.001, this.curveStepSize, function (obj, value) {
         obj.curveStepSize = parseFloat(value);
         delete obj.tmp_points;
         delete obj.bezierSegments;
