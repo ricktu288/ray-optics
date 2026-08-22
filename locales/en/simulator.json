@@ -117,7 +117,8 @@
       "lowFraction": "This language is only {{fraction}} translated. You can help complete it [on Weblate](/weblate)."
     },
     "simulationEngine": {
-      "title": "Simulation Engine"
+      "title": "Engine",
+      "description": "Choose the engine used to run the simulation. The engine currently in use is shown in the status box."
     },
     "autoSyncUrl": {
       "title": "Auto sync URL",
@@ -687,43 +688,32 @@
   },
   "simulationEngineModal": {
     "default": {
-      "title": "Legacy",
-      "description": "Use the original simulation engine for compatibility."
-    },
-    "accelerated": {
-      "title": "Use high-performance simulator",
-      "description": "Use the newer primitive-based simulator, which is substantially faster for complex scenes."
-    },
-    "enginePreference": {
-      "title": "Compute engine"
+      "title": "Default (Legacy)",
+      "shortTitle": "Default",
+      "description": "Use the original simulation engine. This remains the default for compatibility."
     },
     "automatic": {
-      "title": "Automatic (recommended)",
-      "description": "Initially select CPU or WebGPU from the number of primitive curves and initial rays. A scene with any positive-step GRIN region always starts on WebGPU when available. The simulator then compares both engines when the first run is long enough."
+      "title": "Automatic CPU/GPU",
+      "shortTitle": "Auto CPU/GPU",
+      "description": "Automatically select the primitive-based CPU or WebGPU engine based on the scene and available hardware. This is a good general-purpose choice when double-precision accuracy is not required. The engine currently in use is shown in the status box."
     },
     "webgpu": {
-      "title": "GPU (WebGPU)",
-      "description": "Prefer the WebGPU engine. If WebGPU cannot run the scene, the simulator falls back to CPU.",
+      "title": "WebGPU",
+      "shortTitle": "WebGPU",
+      "description": "Prefer the WebGPU engine. This is often the fastest choice on newer machines with powerful GPUs. If WebGPU cannot run the scene, the simulator falls back to the primitive-based CPU engine. The engine currently in use is shown in the status box.",
       "unavailable": "WebGPU could not be initialized: {{message}}",
       "fallback": "WebGPU could not run this scene, so the simulation was restarted on CPU: {{message}}"
     },
     "primitiveCpu": {
-      "title": "CPU",
-      "description": "Always use the double-precision primitive CPU engine."
+      "title": "Primitive-based CPU",
+      "shortTitle": "Prim. CPU",
+      "description": "Always use the double-precision (f64) primitive-based CPU engine. Choose this engine when numerical accuracy is important."
     },
     "configuration": {
       "title": "Advanced engine settings",
-      "description": "Shared preprocessing settings and tuning for every available compute engine. These settings are not stored in scene files.",
+      "description": "Tuning for the selected compute engine or engines. These settings are not stored in scene files.",
       "backToDefaults": "Back to defaults",
-      "logDebugInfo": {
-        "title": "Log debug information",
-        "description": "Write diagnostic and performance information from the selected engine to the browser console."
-      },
       "sections": {
-        "bvh": {
-          "title": "Bounding volume hierarchy (BVH)",
-          "description": "Before tracing rays, the simulator builds a BVH by grouping nearby shapes into boxes, allowing each ray to skip shapes it cannot reach."
-        },
         "webgpuScheduling": {
           "title": "WebGPU scheduling"
         },
@@ -743,34 +733,6 @@
         }
       },
       "fields": {
-        "lineLeafSize": {
-          "title": "Line segments per leaf",
-          "description": "Target maximum number of line segments in a BVH leaf when it contains only line segments. Larger values build faster and use fewer boxes, but may require each ray to test more segments."
-        },
-        "arcLeafSize": {
-          "title": "Circular arcs and circles per leaf",
-          "description": "Target maximum number of circular arcs or circles in a BVH leaf when it contains only arcs and circles. Larger values build faster and use fewer boxes, but may require each ray to test more shapes."
-        },
-        "cubicBezierLeafSize": {
-          "title": "Cubic Bézier curves per leaf",
-          "description": "Target maximum number of cubic Bézier curves in a BVH leaf when it contains only cubic Bézier curves. Larger values build faster and use fewer boxes, but may require each ray to test more curves."
-        },
-        "directPrimitiveThreshold": {
-          "title": "Direct-build primitive threshold",
-          "description": "Maximum number of primitive curves for which the BVH is built directly with recursive spatial splits. Larger inputs use consecutive grouping and Morton ordering. Higher values may improve ray traversal at the cost of more BVH build work. Set this to 0 to always use grouping and Morton ordering."
-        },
-        "drawBounds": {
-          "title": "Visualize CPU BVH traversal (for debugging)",
-          "description": "Accumulates traversal activity over all CPU rays. Green boxes were traversed, red boxes failed a ray-bounds test, purple boxes were skipped after a nearer intersection was found, and orange curves received intersection tests. Unvisited boxes are omitted. This diagnostic is unavailable in the WebGPU engine."
-        },
-        "consecutiveLocalityFactor": {
-          "title": "Consecutive locality factor",
-          "description": "This controls how far apart consecutive curves may be while remaining in the same group. Larger values create fewer groups and build faster, but may slow ray tracing when consecutive curves are not spatially related. Repeated microstructures with related curves slightly separated may benefit from a larger value."
-        },
-        "maxGroupExtent": {
-          "title": "Maximum consecutive-group extent",
-          "description": "This limits the width or height of one consecutive group, in multiples of the scene length scale. Smaller values split long runs into more groups, increasing build time but allowing those groups to be arranged spatially. This can improve ray tracing for crossing or interleaved curves; when consecutive curves already follow spatial order, larger values usually build faster without reducing efficiency."
-        },
         "workgroupSize": {
           "title": "Workgroup size",
           "description": "Number of WebGPU invocations in each workgroup."
@@ -786,10 +748,6 @@
         "timeBudgetMs": {
           "title": "CPU update time budget (ms)",
           "description": "Maximum CPU tracing time in one simulator update before yielding to the browser and flushing pending non-default-color rendering. This controls responsiveness and is not automatically calibrated."
-        },
-        "maxBvhDepth": {
-          "title": "Maximum WebGPU BVH depth",
-          "description": "Traversal-stack capacity compiled into WebGPU shaders. Scene updates at or below this depth reuse the same shaders. Increase this only for an exceptionally deep BVH; larger values use more private GPU memory per invocation."
         },
         "maxBatchRayEvents": {
           "title": "Maximum batch ray events",
@@ -943,12 +901,7 @@
   },
   "statusBox": {
     "engine": "Engine",
-    "engines": {
-      "default": "Legacy",
-      "primitiveCpu": "CPU",
-      "webgpu": "GPU",
-      "cpuFallback": "CPU (fallback)"
-    },
+    "engineFallback": "{{engine}} (fallback)",
     "rayCount": "Number of ray segments",
     "totalTruncation": "Truncated brightness",
     "brightnessScale": "Brightness Scale",

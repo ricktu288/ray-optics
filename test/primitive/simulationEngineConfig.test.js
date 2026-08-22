@@ -25,6 +25,14 @@ import {
   estimateAmbiguousRayWarningPowerThreshold
 } from '../../src/core/simulationEngines/ambiguousRayWarning';
 import { FLOAT32_EPSILON } from '../../src/core/primitive/numeric';
+import {
+  BVH_ARC_LEAF_SIZE,
+  BVH_CONSECUTIVE_LOCALITY_FACTOR,
+  BVH_CUBIC_BEZIER_LEAF_SIZE,
+  BVH_DIRECT_PRIMITIVE_THRESHOLD,
+  BVH_LINE_LEAF_SIZE,
+  BVH_MAX_GROUP_EXTENT
+} from '../../src/core/primitive/bvh';
 
 describe('simulation engine configuration', () => {
   it('uses the megakernel WebGPU storage-buffer requirement', () => {
@@ -42,7 +50,7 @@ describe('simulation engine configuration', () => {
     expect(DEFAULT_SIMULATION_ENGINE_CONFIGS.primitiveCpu.timeBudgetMs)
       .toBe(200);
     const webgpu = DEFAULT_SIMULATION_ENGINE_CONFIGS.webgpu;
-    expect(webgpu.maxBvhDepth).toBe(16);
+    expect(webgpu.maxBvhDepth).toBeUndefined();
     expect(webgpu.maxBatchRayEvents).toBe(1048576);
     expect(webgpu.maxReadyGeometryRecords).toBe(2097152);
     expect(webgpu.atomicFixedPointScale).toBe(1048576);
@@ -73,9 +81,14 @@ describe('simulation engine configuration', () => {
     expect(estimate(Number.EPSILON)).toBeCloseTo(1.818989e-12, 17);
   });
 
-  it('provides one shared BVH construction policy', () => {
-    expect(DEFAULT_PRIMITIVE_SIMULATOR_CONFIG.bvh.directPrimitiveThreshold)
-      .toBe(32);
+  it('keeps the BVH construction policy in named builder constants', () => {
+    expect(BVH_LINE_LEAF_SIZE).toBe(4);
+    expect(BVH_ARC_LEAF_SIZE).toBe(2);
+    expect(BVH_CUBIC_BEZIER_LEAF_SIZE).toBe(1);
+    expect(BVH_DIRECT_PRIMITIVE_THRESHOLD).toBe(32);
+    expect(BVH_MAX_GROUP_EXTENT).toBe(100);
+    expect(BVH_CONSECUTIVE_LOCALITY_FACTOR).toBe(2);
+    expect(DEFAULT_PRIMITIVE_SIMULATOR_CONFIG.bvh).toBeUndefined();
     expect(DEFAULT_SIMULATION_ENGINE_CONFIGS.primitiveCpu.bvh).toBeUndefined();
     expect(DEFAULT_SIMULATION_ENGINE_CONFIGS.webgpu.bvh).toBeUndefined();
   });
@@ -100,17 +113,16 @@ describe('simulation engine configuration', () => {
     });
   });
 
-  it('resolves a stored direct primitive threshold override', () => {
+  it('ignores removed primitive simulator settings', () => {
     const resolved = resolvePrimitiveSimulatorConfig({
       primitive: {
-        bvh: {
-          directPrimitiveThreshold: 0
-        }
+        bvh: { directPrimitiveThreshold: 0 },
+        logDebugInfo: true
       }
     });
 
-    expect(resolved.bvh.directPrimitiveThreshold).toBe(0);
-    expect(resolved.bvh.lineLeafSize).toBe(4);
+    expect(resolved.bvh).toBeUndefined();
+    expect(resolved.logDebugInfo).toBeUndefined();
   });
 
   it('resolves engine tuning independently of shared preprocessing', () => {

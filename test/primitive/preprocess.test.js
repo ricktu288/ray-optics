@@ -15,7 +15,6 @@
  */
 
 import {
-  createPreprocessingSummary,
   preprocessPrimitives as preprocessPrimitivesWithNumericEpsilon
 } from '../../src/core/primitive/preprocess.js';
 import { BVH_OWNER_KIND_MASKS } from '../../src/core/primitive/bvh.js';
@@ -612,57 +611,4 @@ describe('primitive preprocessing', () => {
     }])).toThrow(/detectorType must not.*"n_0"/);
   });
 
-  it('summarizes BVH structure, registered type usage, and type changes', () => {
-    const surfaceType = {
-      name: 'Surface',
-      paramNames: [],
-      dag: dag('P_1s'),
-      outRayCount: 1,
-      mergesWithBoundary: false
-    };
-    const previousScene = preprocessPrimitives([
-      surface(surfaceType, line(0, 0, 1, 0))
-    ]).processedScene;
-    const processedScene = preprocessPrimitives([
-      surface(surfaceType, line(0, 0, 1, 0)),
-      surface(surfaceType, line(2, 0, 3, 0))
-    ]).processedScene;
-    const summary = createPreprocessingSummary(
-      processedScene,
-      previousScene
-    );
-
-    expect(summary.bvh).toEqual({
-      curveCount: 2,
-      nodeCount: 1,
-      branchCount: 0,
-      leafCount: 1,
-      maxDepth: 0
-    });
-    expect(summary.types.changed).toBe(false);
-    expect(summary.types.surfaces).toEqual({
-      changed: false,
-      registered: [{
-        id: 0,
-        name: 'Surface',
-        objectCount: 2
-      }]
-    });
-    expect(summary.types.sources.registered).toEqual([]);
-    expect(summary.types.bulks.registered).toEqual([]);
-    expect(summary.types.detectors.registered).toEqual([]);
-
-    const changedScene = preprocessPrimitives([
-      surface({
-        ...surfaceType,
-        outRayCount: 2
-      }, line(0, 0, 1, 0))
-    ]).processedScene;
-    const changedSummary = createPreprocessingSummary(
-      changedScene,
-      processedScene
-    );
-    expect(changedSummary.types.changed).toBe(true);
-    expect(changedSummary.types.surfaces.changed).toBe(true);
-  });
 });

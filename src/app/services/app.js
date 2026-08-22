@@ -154,17 +154,6 @@ function createBrowserWebGpuOutput(canvas) {
   };
 }
 
-function getBvhOptions(primitiveConfig) {
-  return {
-    lineLeafSize: primitiveConfig.bvh.lineLeafSize,
-    arcLeafSize: primitiveConfig.bvh.arcLeafSize,
-    cubicBezierLeafSize: primitiveConfig.bvh.cubicBezierLeafSize,
-    directPrimitiveThreshold: primitiveConfig.bvh.directPrimitiveThreshold,
-    consecutiveLocalityFactor: primitiveConfig.bvh.consecutiveLocalityFactor,
-    maxGroupExtent: primitiveConfig.bvh.maxGroupExtent,
-  };
-}
-
 function createSimulator(engine) {
   if (engine === 'default') {
     setActiveEngineKind('default');
@@ -239,9 +228,6 @@ function createSimulator(engine) {
     enableTimer: true,
     rayCountLimit: Infinity,
     tempCanvasFactory: createTempCanvas,
-    logDebugInfo: Boolean(primitiveConfig.logDebugInfo),
-    drawBvh: Boolean(primitiveConfig.bvh.drawBounds),
-    bvhOptions: getBvhOptions(primitiveConfig),
     numericalTolerances: primitiveConfig.numericalTolerances,
   });
   setActiveEngineKind(primitiveSimulator.engine.kind, {

@@ -16,27 +16,6 @@
 
 import { updateInteractionCandidate } from './interactionCandidate.js';
 
-export const BVH_NODE_UNVISITED = 0;
-export const BVH_NODE_MISSED = 1;
-export const BVH_NODE_PRUNED = 2;
-export const BVH_NODE_TRAVERSED = 3;
-
-/**
- * Attach CPU-only traversal diagnostics to the host-created scene description.
- * The CPU engine mutates these arrays through the same object reference.
- *
- * @param {Object} description
- * @returns {Object} The attached diagnostics.
- */
-export function attachCpuBvhTraversalDiagnostics(description) {
-  const diagnostics = {
-    nodeStates: new Uint8Array(description.bvh.nodes.length),
-    testedCurves: new Uint8Array(description.curves.length)
-  };
-  description.cpuBvhTraversalDiagnostics = diagnostics;
-  return diagnostics;
-}
-
 /**
  * Traverse the prepared curve BVH using an explicit stack and update an
  * interaction candidate for every curve in a reached leaf.
@@ -50,14 +29,12 @@ export function attachCpuBvhTraversalDiagnostics(description) {
  * @param {Object} ray
  * @param {Object} candidate
  * @param {Object} candidateContext
- * @param {{nodeStates: Uint8Array, testedCurves: Uint8Array}} [diagnostics] - Optional CPU-only state accumulated across traversals.
  */
 export function traverseBvhForInteraction(
   description,
   ray,
   candidate,
-  candidateContext,
-  diagnostics
+  candidateContext
 ) {
   const { root, nodes, curveIds } = description.bvh;
   if (root < 0) return;
@@ -67,26 +44,18 @@ export function traverseBvhForInteraction(
     nodes[root].bounds,
     candidateContext.forwardDistance
   );
-  if (!Number.isFinite(rootNear)) {
-    markBvhNodeState(diagnostics, root, BVH_NODE_MISSED);
-    return;
-  }
+  if (!Number.isFinite(rootNear)) return;
 
   const stack = [root, rootNear];
   while (stack.length > 0) {
     const near = stack.pop();
     const nodeIndex = stack.pop();
-    if (near > candidate.s) {
-      markBvhNodeState(diagnostics, nodeIndex, BVH_NODE_PRUNED);
-      continue;
-    }
-    markBvhNodeState(diagnostics, nodeIndex, BVH_NODE_TRAVERSED);
+    if (near > candidate.s) continue;
 
     const node = nodes[nodeIndex];
     if (node.count > 0) {
       for (let offset = 0; offset < node.count; offset++) {
         const curveId = curveIds[node.start + offset];
-        if (diagnostics) diagnostics.testedCurves[curveId] = 1;
         updateInteractionCandidate(
           candidate,
           candidateContext,
@@ -103,8 +72,7 @@ export function traverseBvhForInteraction(
         nodes,
         childIndex,
         ray,
-        candidateContext.forwardDistance,
-        diagnostics
+        candidateContext.forwardDistance
       );
       if (!Number.isFinite(childNear) || childNear > candidate.s) continue;
       const previousEnd = stack.length;
@@ -125,18 +93,13 @@ function testChildBounds(
   nodes,
   nodeIndex,
   ray,
-  minDistance,
-  diagnostics
+  minDistance
 ) {
-  const near = intersectRayBounds(
+  return intersectRayBounds(
     ray,
     nodes[nodeIndex].bounds,
     minDistance
   );
-  if (!Number.isFinite(near)) {
-    markBvhNodeState(diagnostics, nodeIndex, BVH_NODE_MISSED);
-  }
-  return near;
 }
 
 export function intersectRayBounds(ray, bounds, minDistance) {
@@ -171,13 +134,4 @@ export function intersectRayBounds(ray, bounds, minDistance) {
   return near <= far && far > minDistance
     ? Math.max(near, minDistance)
     : Infinity;
-}
-
-export function markBvhNodeState(diagnostics, nodeIndex, state) {
-  if (
-    diagnostics &&
-    state > diagnostics.nodeStates[nodeIndex]
-  ) {
-    diagnostics.nodeStates[nodeIndex] = state;
-  }
 }

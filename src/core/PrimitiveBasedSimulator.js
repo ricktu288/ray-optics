@@ -16,20 +16,9 @@
 
 import CanvasRenderer from './CanvasRenderer.js';
 import i18next from 'i18next';
-import { DEFAULT_BVH_OPTIONS } from './primitive/bvh.js';
-import {
-  attachCpuBvhTraversalDiagnostics,
-  BVH_NODE_MISSED,
-  BVH_NODE_PRUNED,
-  BVH_NODE_TRAVERSED
-} from './primitive/bvhTraversal.js';
-import {
-  drawPreparedCurve
-} from './primitive/drawPreparedCurve.js';
-import {
-  createPreprocessingSummary,
-  preprocessPrimitives
-} from './primitive/preprocess.js';
+import { BVH_MAX_GROUP_EXTENT } from './primitive/bvh.js';
+import { drawPreparedCurve } from './primitive/drawPreparedCurve.js';
+import { preprocessPrimitives } from './primitive/preprocess.js';
 import {
   formatPrimitiveCurveReference
 } from './primitive/diagnosticReference.js';
@@ -54,10 +43,6 @@ const GREEN_WAVELENGTH = 540;
 const YELLOW_WAVELENGTH = 580;
 const RED_WAVELENGTH = 620;
 const INFRARED_WAVELENGTH = 700;
-const BVH_MISSED_COLOR = 'rgba(255, 51, 51, 0.45)';
-const BVH_PRUNED_COLOR = 'rgba(191, 64, 255, 0.7)';
-const BVH_TRAVERSED_COLOR = 'rgba(38, 230, 89, 0.55)';
-const BVH_TESTED_CURVE_COLOR = [1, 0.6, 0.05, 0.95];
 const AUTOMATIC_COMPARISON_MIN_RUNTIME_MS = 50;
 const AUTOMATIC_CPU_PREFERENCE_RUNTIME_MS = 20;
 const AUTOMATIC_COMPARISON_PAUSE_MS = 50;
@@ -115,9 +100,6 @@ class PrimitiveBasedSimulator {
    * @param {boolean} [options.enableTimer=false]
    * @param {number} [options.rayCountLimit=Infinity]
    * @param {function|null} [options.tempCanvasFactory=null]
-   * @param {boolean} [options.logDebugInfo=false]
-   * @param {boolean} [options.drawBvh=false]
-   * @param {Object} [options.bvhOptions]
    * @param {Object} [options.numericalTolerances]
    */
   constructor({
@@ -133,9 +115,6 @@ class PrimitiveBasedSimulator {
     enableTimer = false,
     rayCountLimit = Infinity,
     tempCanvasFactory = null,
-    logDebugInfo = false,
-    drawBvh = false,
-    bvhOptions = {},
     numericalTolerances = DEFAULT_PRIMITIVE_NUMERICAL_TOLERANCES,
   }) {
     this.scene = scene;
@@ -146,9 +125,6 @@ class PrimitiveBasedSimulator {
     this.enableTimer = enableTimer;
     this.rayCountLimit = rayCountLimit;
     this.tempCanvasFactory = tempCanvasFactory;
-    this.logDebugInfo = logDebugInfo;
-    this.drawBvh = drawBvh;
-    this.bvhOptions = bvhOptions;
     this.numericalTolerances = { ...numericalTolerances };
 
     this.scene.simulator = this;
@@ -287,35 +263,6 @@ class PrimitiveBasedSimulator {
     };
   }
 
-  logEngineSelectionDecision(decision) {
-    if (!this.logDebugInfo) return;
-    console.log(
-      '[Primitive engine selection] decision\n' +
-      `  Preference: ${decision.preference}\n` +
-      `  Workload: ${formatDecisionNumber(
-        decision.workload.initialRayCount
-      )} initial rays, ${formatDecisionNumber(
-        decision.workload.primitiveCurveCount
-      )} primitive curves, GRIN ${
-        decision.workload.hasGrinRegion ? 'yes' : 'no'
-      }\n` +
-      `  Score: ${formatDecisionNumber(decision.workloadScore)}\n` +
-      `  Crossover: ${formatDecisionNumber(decision.crossover)}\n` +
-      `  Score / crossover: ${formatDecisionNumber(
-        decision.crossoverRatio
-      )}\n` +
-      '  Formula choice (only without a previous winner): ' +
-      `${decision.formulaEngineKind}\n` +
-      `  Available: CPU ${decision.cpuAvailable ? 'yes' : 'no'}, ` +
-      `WebGPU ${decision.webGpuAvailable ? 'yes' : 'no'}\n` +
-      `  Previous comparison winner: ${
-        decision.learnedEngineKind ?? 'none'
-      }\n` +
-      `  Comparison eligible: ${decision.comparisonEligible ? 'yes' : 'no'}\n` +
-      `  Selected: ${decision.selectedEngineKind} (${decision.reason})`
-    );
-  }
-
   isEngineAvailable(kind) {
     const provider = this.engineProviders.get(kind);
     if (!provider) return false;
@@ -427,14 +374,6 @@ class PrimitiveBasedSimulator {
   }
 
   cancelObsoleteWork() {
-    if (this.logDebugInfo &&
-        (this.comparisonTimer !== null || this.silentActiveRun ||
-          this.comparisonRunPromise)) {
-      console.log(
-        '[Primitive engine comparison] cancelled by scene update\n' +
-        `  New scene revision: ${this.runGeneration}`
-      );
-    }
     this.pendingRunJob = null;
     this.activeRun?.cancel?.();
     this.silentActiveRun?.cancel?.();
@@ -568,7 +507,7 @@ class PrimitiveBasedSimulator {
       fallback: true,
       deferPresentation: true,
     });
-    this.preprocessCollectedPrimitives(null);
+    this.preprocessCollectedPrimitives();
     this.refreshWarning();
     if (this.simulationStartPending) {
       this.simulationStartPending = false;
@@ -598,8 +537,7 @@ class PrimitiveBasedSimulator {
     const isCurrent = () => job.generation === this.runGeneration;
     const preparedScene = await job.engine.prepare(job.processedScene, {
       violetWavelength: job.sceneOptions.violetWavelength,
-      redWavelength: job.sceneOptions.redWavelength,
-      logDebugInfo: this.logDebugInfo
+      redWavelength: job.sceneOptions.redWavelength
     });
     if (!isCurrent()) return { completed: false, job, durationMs: 0 };
 
@@ -680,85 +618,28 @@ class PrimitiveBasedSimulator {
       run.dispose?.();
       if (this[activeRunKey] === run) this[activeRunKey] = null;
     }
-    if (!silent && this.drawBvh && job.engineKind === 'primitiveCpu') {
-      this.drawBvhTraversalDiagnostics(this.canvasRendererAboveLight);
-      this.drawExternalHighlightPrimitiveCurves(
-        this.canvasRendererAboveLight
-      );
-    }
     return { completed: true, job, durationMs };
   }
 
   scheduleAutomaticComparison(job, firstDurationMs) {
     // A forced engine preference cannot produce or consume an automatic
-    // comparison result. Avoid adding a misleading challenger decision to
-    // the debug log for every completed foreground run in that mode.
+    // comparison result.
     if (this.enginePreference !== 'automatic') return;
     const challengerKind = job.engineKind === 'webgpu'
       ? 'primitiveCpu'
       : 'webgpu';
     const cpuAvailable = this.isEngineAvailable('primitiveCpu');
     const webGpuAvailable = this.isEngineAvailable('webgpu');
-    const comparisonEligible = this.enginePreference === 'automatic' &&
-      cpuAvailable && webGpuAvailable;
-    const cpuTrialRequired = comparisonEligible &&
-      challengerKind === 'primitiveCpu';
-    const logDecision = (decision, extraLines = []) => {
-      if (!this.logDebugInfo) return;
-      console.log(
-        '[Primitive engine comparison] foreground result\n' +
-        `  Scene revision: ${job.generation}\n` +
-        `  Engine preference: ${this.enginePreference}\n` +
-        `  Foreground engine: ${job.engineKind}\n` +
-        `  Foreground duration: ${formatMilliseconds(firstDurationMs)} ms\n` +
-        `  Available: CPU ${cpuAvailable ? 'yes' : 'no'}, ` +
-        `WebGPU ${webGpuAvailable ? 'yes' : 'no'}\n` +
-        `  Job automatic-comparison flag: ${
-          job.comparisonEligible ? 'yes' : 'no'
-        }\n` +
-        `  CPU trial required after WebGPU: ${
-          cpuTrialRequired ? 'yes' : 'no'
-        }\n` +
-        `  Non-CPU challenger threshold: ${
-          AUTOMATIC_COMPARISON_MIN_RUNTIME_MS
-        } ms\n` +
-        `  CPU preference threshold: <${
-          AUTOMATIC_CPU_PREFERENCE_RUNTIME_MS
-        } ms\n` +
-        '  Timing scope: engine advance calls; preparation and pauses excluded\n' +
-        `  Decision: ${decision}` +
-        (extraLines.length ? `\n  ${extraLines.join('\n  ')}` : '')
-      );
-    };
-    if (job.generation !== this.runGeneration) {
-      logDecision('skip-stale-revision');
-      return;
-    }
-    if (job.fallback) {
-      logDecision('skip-webgpu-fallback');
-      return;
-    }
-    if (!cpuAvailable) {
-      logDecision('skip-cpu-unavailable');
-      return;
-    }
-    if (!webGpuAvailable) {
-      logDecision('skip-webgpu-unavailable');
-      return;
-    }
+    if (job.generation !== this.runGeneration || job.fallback) return;
+    if (!cpuAvailable || !webGpuAvailable) return;
     if (challengerKind === 'primitiveCpu') {
       // In Automatic mode CPU is always tried after WebGPU, even when the
       // WebGPU foreground run is below the normal comparison threshold.
     } else {
       if (!(firstDurationMs > AUTOMATIC_COMPARISON_MIN_RUNTIME_MS)) {
-        logDecision('skip-fast-foreground');
         return;
       }
     }
-    logDecision('schedule-challenger', [
-      `Challenger: ${challengerKind}`,
-      `Pause before start: ${AUTOMATIC_COMPARISON_PAUSE_MS} ms`,
-    ]);
     this.comparisonTimer = setTimeout(() => {
       this.comparisonTimer = null;
       this.queueAutomaticComparison(job, firstDurationMs, challengerKind);
@@ -794,15 +675,6 @@ class PrimitiveBasedSimulator {
         this.isRunning ||
         this.enginePreference !== 'automatic') return;
     try {
-      if (this.logDebugInfo) {
-        console.log(
-          '[Primitive engine comparison] challenger started\n' +
-          `  Scene revision: ${firstJob.generation}\n` +
-          `  Foreground: ${firstJob.engineKind} ` +
-          `(${formatMilliseconds(firstDurationMs)} ms)\n` +
-          `  Challenger: ${challengerKind}`
-        );
-      }
       const engine = this.getBenchmarkEngine(challengerKind);
       this.resizeBenchmarkEngineOutput(engine);
       const preprocessing = preprocessPrimitives(firstJob.primitives, {
@@ -810,13 +682,10 @@ class PrimitiveBasedSimulator {
         numericalTolerances: firstJob.sceneOptions.numericalTolerances,
         numericEpsilon: engine.numericEpsilon,
         bvhOptions: {
-          ...this.bvhOptions,
           maxGroupExtent:
-            (this.bvhOptions.maxGroupExtent ??
-              DEFAULT_BVH_OPTIONS.maxGroupExtent) *
+            BVH_MAX_GROUP_EXTENT *
             firstJob.sceneOptions.lengthScale
-        },
-        logDebugInfo: false,
+        }
       });
       if (firstJob.generation !== this.runGeneration) return;
       const challengerJob = {
@@ -849,39 +718,11 @@ class PrimitiveBasedSimulator {
       this.automaticEngineWinner = challengerWon
         ? challengerKind
         : firstJob.engineKind;
-      if (this.logDebugInfo) {
-        console.log(
-          '[Primitive engine comparison] decision\n' +
-          `  Scene revision: ${firstJob.generation}\n` +
-          `  Foreground: ${firstJob.engineKind} ` +
-          `(${formatMilliseconds(firstDurationMs)} ms)\n` +
-          `  Challenger: ${challengerKind} ` +
-          `(${formatMilliseconds(result.durationMs)} ms)\n` +
-          `  Challenger completed: ${result.completed ? 'yes' : 'no'}\n` +
-          `  Challenger stopped as slower: ${result.slower ? 'yes' : 'no'}\n` +
-          `  CPU under ${AUTOMATIC_CPU_PREFERENCE_RUNTIME_MS} ms ` +
-          `preference applied: ${
-            cpuPreferredForResponsiveness ? 'yes' : 'no'
-          }\n` +
-          `  Winner for next scene update: ${this.automaticEngineWinner}`
-        );
-      }
-    } catch (error) {
+    } catch (_) {
       if (firstJob.generation !== this.runGeneration) return;
       // A silent comparison must not become a user-visible simulation error.
       // Keep the successful foreground engine when the challenger is unusable.
       this.automaticEngineWinner = firstJob.engineKind;
-      if (this.logDebugInfo) {
-        console.warn(
-          '[Primitive engine comparison] challenger failed\n' +
-          `  Scene revision: ${firstJob.generation}\n` +
-          `  Foreground: ${firstJob.engineKind} ` +
-          `(${formatMilliseconds(firstDurationMs)} ms)\n` +
-          `  Challenger: ${challengerKind}\n` +
-          `  Winner for next scene update: ${firstJob.engineKind}\n` +
-          `  Error: ${error?.message ?? String(error)}`
-        );
-      }
     }
   }
 
@@ -976,12 +817,6 @@ class PrimitiveBasedSimulator {
   }
 
   collectAndPreprocessPrimitives() {
-    const previousProcessedScene = this.processedScene;
-    const collectionStartTime = this.logDebugInfo
-      ? (typeof performance !== 'undefined' && typeof performance.now === 'function'
-        ? performance.now()
-        : Date.now())
-      : null;
     const primitives = [];
     let brightnessScale = 0;
     for (const obj of this.scene.opticalObjs) {
@@ -1011,88 +846,32 @@ class PrimitiveBasedSimulator {
     this.engineWarning = null;
     this.engineFallbackWarning = null;
     this.refreshWarning();
-    const collectionTime = this.logDebugInfo
-      ? (
-        typeof performance !== 'undefined' && typeof performance.now === 'function'
-          ? performance.now()
-          : Date.now()
-      ) - collectionStartTime
-      : null;
 
     this.primitives = primitives;
     this.workload = summarizePrimitiveWorkload(primitives);
     const selectionDecision = this.getEngineSelectionDecision(this.workload);
-    this.logEngineSelectionDecision(selectionDecision);
     this.activateEngine(selectionDecision.selectedEngineKind, {
       fallback: false,
       deferPresentation: true,
     });
-    this.preprocessCollectedPrimitives(
-      collectionTime,
-      previousProcessedScene
-    );
+    this.preprocessCollectedPrimitives();
   }
 
-  preprocessCollectedPrimitives(
-    collectionTime,
-    previousProcessedScene = this.processedScene
-  ) {
+  preprocessCollectedPrimitives() {
     const {
       processedScene,
-      detectorResultBindings,
-      timings
+      detectorResultBindings
     } = preprocessPrimitives(this.primitives, {
       lengthScale: this.scene.lengthScale,
       numericalTolerances: this.numericalTolerances,
       numericEpsilon: this.engine.numericEpsilon,
       bvhOptions: {
-        ...this.bvhOptions,
         maxGroupExtent:
-          (this.bvhOptions.maxGroupExtent ?? DEFAULT_BVH_OPTIONS.maxGroupExtent) *
+          BVH_MAX_GROUP_EXTENT *
           this.scene.lengthScale
-      },
-      logDebugInfo: this.logDebugInfo
+      }
     });
-    if (this.logDebugInfo) {
-      const summary = createPreprocessingSummary(
-        processedScene,
-        previousProcessedScene
-      );
-      console.log(
-        '[Primitive preprocessing] summary:\n' +
-        '  Timing (ms): collect %s, normalize %s, finalize types %s, build BVH %s, assemble %s, total %s\n' +
-        '  BVH: %d curves, %d nodes (%d branches, %d leaves), maximum depth %d\n' +
-        '  Registered types changed: %s\n' +
-        '  Source types (%s): %s\n' +
-        '  Surface types (%s): %s\n' +
-        '  Bulk types (%s): %s\n' +
-        '  Detector types (%s): %s',
-        formatMilliseconds(collectionTime),
-        formatMilliseconds(timings.normalizePrimitives),
-        formatMilliseconds(timings.finalizeTypeTables),
-        formatMilliseconds(timings.buildBvh),
-        formatMilliseconds(timings.assembleProcessedScene),
-        formatMilliseconds(collectionTime + timings.total),
-        summary.bvh.curveCount,
-        summary.bvh.nodeCount,
-        summary.bvh.branchCount,
-        summary.bvh.leafCount,
-        summary.bvh.maxDepth,
-        formatChangeStatus(summary.types.changed),
-        formatChangeStatus(summary.types.sources.changed),
-        formatRegisteredTypes(summary.types.sources),
-        formatChangeStatus(summary.types.surfaces.changed),
-        formatRegisteredTypes(summary.types.surfaces),
-        formatChangeStatus(summary.types.bulks.changed),
-        formatRegisteredTypes(summary.types.bulks),
-        formatChangeStatus(summary.types.detectors.changed),
-        formatRegisteredTypes(summary.types.detectors)
-      );
-    }
     this.processedScene = processedScene;
-    if (this.drawBvh && this.engine.kind === 'primitiveCpu') {
-      attachCpuBvhTraversalDiagnostics(processedScene);
-    }
     this.detectorResultBindings = detectorResultBindings;
     this.primitiveBvh = processedScene.bvh;
   }
@@ -1107,53 +886,6 @@ class PrimitiveBasedSimulator {
     }
     this.warning = warnings.filter(Boolean).join('<br>');
     if (!this.warning) this.warning = null;
-  }
-
-  drawBvhTraversalDiagnostics(canvasRenderer) {
-    const diagnostics =
-      this.processedScene?.cpuBvhTraversalDiagnostics;
-    const nodes = this.processedScene?.bvh.nodes;
-    if (!canvasRenderer?.ctx || !diagnostics || !nodes?.length) return;
-
-    const ctx = canvasRenderer.ctx;
-    ctx.save();
-    ctx.globalCompositeOperation = 'source-over';
-    ctx.setLineDash([]);
-
-    for (let nodeIndex = 0; nodeIndex < nodes.length; nodeIndex++) {
-      const node = nodes[nodeIndex];
-      switch (diagnostics.nodeStates[nodeIndex]) {
-        case BVH_NODE_MISSED:
-          ctx.strokeStyle = BVH_MISSED_COLOR;
-          break;
-        case BVH_NODE_PRUNED:
-          ctx.strokeStyle = BVH_PRUNED_COLOR;
-          break;
-        case BVH_NODE_TRAVERSED:
-          ctx.strokeStyle = BVH_TRAVERSED_COLOR;
-          break;
-        default:
-          continue;
-      }
-      ctx.lineWidth =
-        Math.max(0.5, 2.5 / (node.depth + 1)) * canvasRenderer.lengthScale;
-      const { minX, minY, maxX, maxY } = node.bounds;
-      ctx.strokeRect(minX, minY, maxX - minX, maxY - minY);
-    }
-
-    ctx.restore();
-
-    for (let curveId = 0;
-      curveId < diagnostics.testedCurves.length;
-      curveId++) {
-      if (!diagnostics.testedCurves[curveId]) continue;
-      drawPreparedCurve(
-        canvasRenderer,
-        this.processedScene.curves[curveId].geometry,
-        BVH_TESTED_CURVE_COLOR,
-        2
-      );
-    }
   }
 
   drawGrid() {
@@ -1435,32 +1167,6 @@ function normalizeEngineProviders(providers) {
     throw new TypeError(`Primitive engine provider ${kind} requires create().`);
   }
   return result;
-}
-
-function formatChangeStatus(changed) {
-  if (changed === null) return 'not compared';
-  return changed ? 'yes' : 'no';
-}
-
-function formatMilliseconds(duration) {
-  return Number.isFinite(duration) ? duration.toFixed(3) : 'n/a';
-}
-
-function formatDecisionNumber(value) {
-  if (!Number.isFinite(value)) return 'n/a';
-  if (Number.isInteger(value)) return String(value);
-  return String(Number(value.toPrecision(8)));
-}
-
-function formatRegisteredTypes(categorySummary) {
-  if (categorySummary.registered.length === 0) {
-    return 'none';
-  }
-  return categorySummary.registered
-    .map(({ id, name, objectCount }) =>
-      `${id}: ${name} (${objectCount} object${objectCount === 1 ? '' : 's'})`
-    )
-    .join(', ');
 }
 
 export default PrimitiveBasedSimulator;

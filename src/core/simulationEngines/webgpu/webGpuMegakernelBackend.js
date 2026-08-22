@@ -77,8 +77,6 @@ export class WebGpuMegakernelBackend {
     this.maxRayDepth = 0xffffffff;
     this.canEmitAllSources = false;
     this.renderPreparationStage = null;
-    this.debugId = 0;
-    this.sceneUploadVersion = 1;
   }
 
   async initialize() {
@@ -697,7 +695,6 @@ export class WebGpuMegakernelBackend {
     }
     this.staticStorage.update(next.packedStorage);
     this.preparedScene = next;
-    this.sceneUploadVersion++;
     this.canEmitAllSources = true;
     this.device.queue.writeBuffer(
       this.traceUniformBuffer,

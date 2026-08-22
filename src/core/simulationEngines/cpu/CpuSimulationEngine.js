@@ -249,9 +249,6 @@ export class CpuSimulationRun {
       this.summary.activeRayCount =
         this.summary.activeSourceRayCount -
         this.summary.membershipDiscardedRayCount;
-      if (this.engine.logExecutionDebugInfo !== false) {
-        logInitialRayBuffer(this.currentRayBuffer, this.summary);
-      }
       this.beginMegakernelCycle();
       return;
     }
@@ -399,8 +396,7 @@ export class CpuSimulationRun {
       description,
       ray,
       candidate,
-      this.interactionContext,
-      description.cpuBvhTraversalDiagnostics
+      this.interactionContext
     );
     const finalizedCandidate = finalizeInteractionCandidate(
       candidate,
@@ -647,7 +643,6 @@ class CpuSimulationEngine {
     this.ctxVirtual = ctxVirtual;
     this.canvasRenderer = null;
     this.configure(config);
-    this.logExecutionDebugInfo = true;
   }
 
   configure(config = {}) {
@@ -681,8 +676,7 @@ class CpuSimulationEngine {
 
   async prepare(description, {
     violetWavelength,
-    redWavelength,
-    logDebugInfo = false
+    redWavelength
   } = {}) {
     const [wavelengthRange] = deriveWebGpuWavelengthRange({
       violetWavelength,
@@ -691,7 +685,6 @@ class CpuSimulationEngine {
     return {
       description,
       wavelengthRange,
-      logDebugInfo: Boolean(logDebugInfo),
       interactionTypeLayout:
         createInteractionTypeLayout(description),
       outgoingRayData:
@@ -854,8 +847,7 @@ function resolveInitialMembership(
       description,
       testRay,
       result,
-      numericEpsilon,
-      description.cpuBvhTraversalDiagnostics
+      numericEpsilon
     );
     if (result.ambiguousCurveId < 0) {
       return {
@@ -895,64 +887,6 @@ function resolveInitialMembership(
     resolved: false,
     attemptCount: MAX_MEMBERSHIP_ATTEMPTS
   };
-}
-
-function logInitialRayBuffer(rayBuffer, summary) {
-  console.log(
-    '[Primitive CPU initialization] sources=%d slots=%d active=%d inactive=%d invalid=%d membershipRetries=%d membershipDiscarded=%d regions=%d',
-    summary.sourceCount,
-    summary.raySlotCount,
-    summary.activeRayCount,
-    summary.inactiveSourceRayCount,
-    summary.invalidSourceRayCount,
-    summary.membershipRetryCount,
-    summary.membershipDiscardedRayCount,
-    summary.regionCount
-  );
-  const lastStart = Math.max(0, rayBuffer.length - 5);
-  console.log(
-    '[Primitive CPU initial rays]\n' +
-    `  first:${formatCompactRayRange(
-      rayBuffer,
-      0,
-      Math.min(5, rayBuffer.length)
-    )}\n` +
-    `  last:${formatCompactRayRange(
-      rayBuffer,
-      lastStart,
-      rayBuffer.length
-    )}`
-  );
-}
-
-function formatCompactRayRange(rayBuffer, start, end) {
-  const rays = [];
-  for (let rayIndex = start; rayIndex < end; rayIndex++) {
-    rays.push(formatCompactRay(rayBuffer[rayIndex], rayIndex));
-  }
-  return rays.length > 0
-    ? `\n    ${rays.join('\n    ')}`
-    : ' none';
-}
-
-function formatCompactRay(ray, rayIndex) {
-  const regionIds = [];
-  for (let regionId = 0; regionId < ray.membership.length; regionId++) {
-    if (ray.membership[regionId]) regionIds.push(regionId);
-  }
-  return (
-    `#${rayIndex} ` +
-    `o=(${formatNumber(ray.originX)},${formatNumber(ray.originY)}) ` +
-    `d=(${formatNumber(ray.directionX)},${formatNumber(ray.directionY)}) ` +
-    `P=(${formatNumber(ray.powerS)},${formatNumber(ray.powerP)}) ` +
-    `lambda=${formatNumber(ray.wavelength)} ` +
-    `regions=[${regionIds.join(',')}]`
-  );
-}
-
-function formatNumber(value) {
-  if (!Number.isFinite(value)) return String(value);
-  return Number.parseFloat(value.toPrecision(7)).toString();
 }
 
 function getCurrentTime() {

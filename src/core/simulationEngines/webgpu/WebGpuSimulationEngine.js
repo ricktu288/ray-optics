@@ -19,7 +19,6 @@ import {
 import {
   clampWebGpuParameterToF32,
   estimateWebGpuParameterRanges,
-  formatWebGpuParameterRangeSummary,
   recordWebGpuRecompilationNeeds
 } from './webGpuParameterRanges.js';
 import {
@@ -75,12 +74,8 @@ class WebGpuSimulationRun {
     this.presentationPromise = null;
     this.trackNativeBatch(options.nativeBatch);
     this.nativeState = null;
-    this.detectorOverflowWarned = false;
-    this.geometryOverflowWarned = false;
     this.hasPresentedRun = false;
     this.backend = null;
-    this.backendDebugInfo = null;
-    this.lastSubmissionDebugInfo = null;
     this.lastUpdate = this.createUpdate('running', false);
   }
 
@@ -94,7 +89,6 @@ class WebGpuSimulationRun {
     this.presentationPromise = null;
     if (this.isStale()) return this.getUpdate();
     this.nativeState = state;
-    this.reportOverflow(state);
     if (state.resizeNeeded) {
       this.isComplete = true;
       const required = Number.isFinite(state.requiredRayCapacity)
@@ -139,58 +133,7 @@ class WebGpuSimulationRun {
       this.isComplete ? 'complete' : 'running',
       recordCount > 0 || this.hasPresentedRun
     );
-    if (this.isComplete) this.logCompletedState(state);
     return this.lastUpdate;
-  }
-
-  logCompletedState(state) {
-    const scene = this.options.preparedScene;
-    if (!scene?.logDebugInfo) return;
-    const sourceRayCount = scene?.packedStorage?.counts?.sourceRays ?? 0;
-    const processedRayCount = state?.processedRayCount ?? 0;
-    const allSourceRaysMissed = sourceRayCount > 0 &&
-      processedRayCount === sourceRayCount;
-    const debug = this.backendDebugInfo ?? {};
-    const submission = this.lastSubmissionDebugInfo ?? {};
-    console.log(
-      '[WebGPU run result]\n' +
-      `  Scene revision: ${formatDebugValue(this.options.sceneRevision)}\n` +
-      `  Backend: ${formatDebugValue(debug.backendId)}, ` +
-        `scene upload ${formatDebugValue(debug.sceneUploadVersion)}\n` +
-      `  Last submission: ${formatDebugValue(submission.submissionId)} ` +
-        `(${submission.kind ?? 'unknown'})\n` +
-      `  Scene fingerprint: ${debug.sceneFingerprint ?? 'n/a'}\n` +
-      `  BVH: root ${formatDebugValue(debug.bvhRoot)}, ` +
-        `${formatDebugValue(debug.bvhNodeCount)} nodes, ` +
-        `depth ${formatDebugValue(debug.maximumBvhDepth)} / ` +
-        `${formatDebugValue(debug.maxBvhDepth)} capacity\n` +
-      `  Rays: ${sourceRayCount} source, ${processedRayCount} processed, ` +
-        `${state?.currentRayCount ?? 0} remaining\n` +
-      `  Last batch geometry: ${state?.readyGeometryCount ?? 0} records\n` +
-      `  Every source ray ended at its first trace: ` +
-        `${allSourceRaysMissed ? 'yes (possible all-miss failure)' : 'no'}`
-    );
-  }
-
-  reportOverflow(state) {
-    if (state.detectorOverflow && !this.detectorOverflowWarned) {
-      console.warn(
-        '[WebGPU detector results] Fixed-point accumulation overflowed; ' +
-        'one or more affected detector values are invalid.'
-      );
-      this.detectorOverflowWarned = true;
-    }
-    if (
-      this.engine.rasterizer &&
-      state.readyGeometryOverflow &&
-      !this.geometryOverflowWarned
-    ) {
-      console.warn(
-        '[WebGPU ready geometry] The submission exceeded its render-record ' +
-        'capacity; some light geometry was omitted.'
-      );
-      this.geometryOverflowWarned = true;
-    }
   }
 
   async scheduleContinuation(state) {
@@ -223,10 +166,6 @@ class WebGpuSimulationRun {
       );
     }
     this.engine.device.queue.submit([encoder.finish()]);
-    const submissionDebugInfo = this.engine.createSubmissionDebugInfo(
-      'continuation',
-      backend
-    );
     const presentationPromise = this.engine.rasterizer
       ? this.engine.rasterizer.waitForSubmittedWork()
         .then(() => !isCancelled())
@@ -234,9 +173,7 @@ class WebGpuSimulationRun {
     this.trackNativeBatch({
       statePromise: consumeState(),
       presentationPromise,
-      backend,
-      backendDebugInfo: createBackendDebugInfo(backend),
-      submissionDebugInfo,
+      backend
     });
   }
 
@@ -244,12 +181,6 @@ class WebGpuSimulationRun {
     this.statePromise = batch?.statePromise ?? null;
     this.presentationPromise = batch?.presentationPromise ?? null;
     if (batch?.backend) this.backend = batch.backend;
-    if (batch?.backendDebugInfo) {
-      this.backendDebugInfo = batch.backendDebugInfo;
-    }
-    if (batch?.submissionDebugInfo) {
-      this.lastSubmissionDebugInfo = batch.submissionDebugInfo;
-    }
     // A replaced/cancelled run may never call advance again. Attach a handler
     // immediately so a later device-loss rejection is not reported as an
     // unhandled promise; an active run still observes the original rejection
@@ -376,9 +307,6 @@ class WebGpuSimulationEngine {
     this.computeBackendRequestToken = 0;
     this.executionMode = 'uninitialized';
     this.deferSimulationStartUntilPause = true;
-    this.logExecutionDebugInfo = false;
-    this.nextBackendDebugId = 1;
-    this.nextSubmissionDebugId = 1;
   }
 
   async prepare(description, rangeOptions = {}) {
@@ -401,12 +329,6 @@ class WebGpuSimulationEngine {
       parameterRanges
     );
     const packedStorage = packWebGpuScene(runtimeDescription);
-    if (rangeOptions.logDebugInfo) {
-      console.log(
-        formatWebGpuParameterRangeSummary(parameterRanges) + '\n' +
-        formatExecutionPlanSummary(this.executionPlan)
-      );
-    }
     return {
       description,
       runtimeDescription,
@@ -414,7 +336,6 @@ class WebGpuSimulationEngine {
       executionPlan: this.executionPlan,
       dagPrograms,
       packedStorage,
-      logDebugInfo: Boolean(rangeOptions.logDebugInfo),
       violetWavelength: rangeOptions.violetWavelength,
       redWavelength: rangeOptions.redWavelength,
       originalDescription: description,
@@ -438,8 +359,7 @@ class WebGpuSimulationEngine {
     if (this.device) {
       const backendReady = await this.ensureComputeBackend(
         options.preparedScene,
-        isCurrent,
-        options.sceneRevision
+        isCurrent
       );
       if (!backendReady || !isCurrent()) {
         run.cancel();
@@ -536,23 +456,18 @@ class WebGpuSimulationEngine {
 
   async ensureComputeBackend(
     preparedScene,
-    isCurrent = () => true,
-    sceneRevision = null
+    isCurrent = () => true
   ) {
     if (!isCurrent()) return false;
     const requestToken = ++this.computeBackendRequestToken;
     if (this.computePreparedScene === preparedScene && this.computeBackend) {
       this.discardPendingComputeBackend();
-      this.logBackendSelection('reuse-exact', preparedScene,
-        this.computeBackend, sceneRevision);
       return true;
     }
     if (this.computeBackend?.canUpdatePreparedScene(preparedScene)) {
       this.discardPendingComputeBackend();
       this.computeBackend.updatePreparedScene(preparedScene);
       this.computePreparedScene = preparedScene;
-      this.logBackendSelection('reuse-upload', preparedScene,
-        this.computeBackend, sceneRevision);
       return true;
     }
     if (this.pendingComputeBackend) {
@@ -569,8 +484,6 @@ class WebGpuSimulationEngine {
         this.pendingComputeBackend = null;
         this.pendingComputePreparedScene = null;
         previousBackend?.destroy();
-        this.logBackendSelection('adopt-pending', preparedScene,
-          this.computeBackend, sceneRevision);
         return true;
       }
       this.discardPendingComputeBackend();
@@ -580,7 +493,6 @@ class WebGpuSimulationEngine {
       preparedScene,
       this.runConfig
     );
-    backend.debugId = this.nextBackendDebugId++;
     try {
       await backend.initialize();
     } catch (error) {
@@ -607,35 +519,7 @@ class WebGpuSimulationEngine {
     this.computeBackend = backend;
     this.computePreparedScene = preparedScene;
     previousBackend?.destroy();
-    this.logBackendSelection('rebuild', preparedScene, backend,
-      sceneRevision);
     return true;
-  }
-
-  logBackendSelection(action, preparedScene, backend, sceneRevision = null) {
-    if (!preparedScene?.logDebugInfo) return;
-    const debug = createBackendDebugInfo(backend, preparedScene);
-    console.log(
-      '[WebGPU backend selection]\n' +
-      `  Scene revision: ${formatDebugValue(sceneRevision)}\n` +
-      `  Action: ${action}\n` +
-      `  Backend: ${formatDebugValue(debug.backendId)}, ` +
-        `scene upload ${formatDebugValue(debug.sceneUploadVersion)}\n` +
-      `  Scene fingerprint: ${debug.sceneFingerprint}\n` +
-      `  BVH: root ${formatDebugValue(debug.bvhRoot)}, ` +
-        `${formatDebugValue(debug.bvhNodeCount)} nodes, ` +
-        `depth ${formatDebugValue(debug.maximumBvhDepth)} / ` +
-        `${formatDebugValue(debug.maxBvhDepth)} capacity`
-    );
-  }
-
-  createSubmissionDebugInfo(kind, backend) {
-    return {
-      submissionId: this.nextSubmissionDebugId++,
-      kind,
-      backendId: backend?.debugId,
-      sceneUploadVersion: backend?.sceneUploadVersion,
-    };
   }
 
   discardPendingComputeBackend() {
@@ -674,10 +558,6 @@ class WebGpuSimulationEngine {
       );
     }
     this.device.queue.submit([encoder.finish()]);
-    const submissionDebugInfo = this.createSubmissionDebugInfo(
-      'initial',
-      backend
-    );
     const presentationPromise = this.rasterizer
       ? this.rasterizer.waitForSubmittedWork()
         .then(() => !isCancelled?.())
@@ -685,12 +565,7 @@ class WebGpuSimulationEngine {
     return {
       statePromise: consumeState(),
       presentationPromise,
-      backend,
-      backendDebugInfo: createBackendDebugInfo(
-        backend,
-        options.preparedScene
-      ),
-      submissionDebugInfo,
+      backend
     };
   }
 
@@ -770,52 +645,6 @@ function packParams(params, label) {
     name,
     clampWebGpuParameterToF32(value, `${label} ${JSON.stringify(name)}`)
   ]));
-}
-
-function formatExecutionPlanSummary(plan) {
-  return '[WebGPU execution plan] ' +
-    `curves=${plan.curveKindMask || 'none'} ` +
-    `regionWords=${plan.regionWordCount} ` +
-    `bvhDepth=${plan.maximumBvhDepth}/${plan.maxBvhDepth} ` +
-    `passes=${plan.passes.length}`;
-}
-
-function createBackendDebugInfo(backend, preparedScene = null) {
-  const scene = preparedScene ?? backend?.preparedScene;
-  const packed = scene?.packedStorage;
-  return {
-    backendId: backend?.debugId,
-    sceneUploadVersion: backend?.sceneUploadVersion,
-    sceneFingerprint: createSceneFingerprint(packed),
-    bvhRoot: scene?.runtimeDescription?.bvh?.root,
-    bvhNodeCount: packed?.counts?.bvhNodes,
-    maximumBvhDepth: scene?.executionPlan?.maximumBvhDepth,
-    maxBvhDepth: scene?.executionPlan?.maxBvhDepth,
-  };
-}
-
-function createSceneFingerprint(packed) {
-  if (!packed) return 'n/a';
-  let hash = 2166136261;
-  for (const name of [
-    'curveGeometry', 'curveDescriptors', 'bvhNodes',
-    'bvhCurveIds'
-  ]) {
-    const value = packed[name];
-    if (!value) continue;
-    const bytes = value instanceof ArrayBuffer
-      ? new Uint8Array(value)
-      : new Uint8Array(value.buffer, value.byteOffset, value.byteLength);
-    for (const byte of bytes) {
-      hash ^= byte;
-      hash = Math.imul(hash, 16777619);
-    }
-  }
-  return (hash >>> 0).toString(16).padStart(8, '0');
-}
-
-function formatDebugValue(value) {
-  return value === undefined || value === null ? 'n/a' : String(value);
 }
 
 function resolveWebGpuRunConfig(config) {

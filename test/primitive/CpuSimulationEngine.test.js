@@ -16,9 +16,6 @@
 
 import CpuSimulationEngine from '../../src/core/simulationEngines/cpu/CpuSimulationEngine';
 import { parseFormula } from '../../src/core/formula/formula-parser';
-import {
-  attachCpuBvhTraversalDiagnostics
-} from '../../src/core/primitive/bvhTraversal';
 import { preprocessPrimitives } from '../../src/core/primitive/preprocess';
 import { FLOAT32_EPSILON } from '../../src/core/primitive/numeric';
 
@@ -266,12 +263,10 @@ describe('CpuSimulationEngine initial ray buffers', () => {
       source({ rayCount: 2, deltaX: 10 }),
       source({ x: 2, y: 2 })
     ]);
-    const diagnostics = attachCpuBvhTraversalDiagnostics(processedScene);
     const engine = new CpuSimulationEngine({
       numericEpsilon: FLOAT32_EPSILON
     });
     engine.beginRenderer = jest.fn();
-    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
     const preparedScene = await engine.prepare(processedScene);
 
     const run = await engine.createRun({ preparedScene });
@@ -303,31 +298,7 @@ describe('CpuSimulationEngine initial ray buffers', () => {
         membership: Uint8Array.of(1)
       })
     ]);
-    expect(Array.from(diagnostics.testedCurves)).toContain(1);
-    expect(log).toHaveBeenCalledWith(
-      '[Primitive CPU initialization] sources=%d slots=%d active=%d inactive=%d invalid=%d membershipRetries=%d membershipDiscarded=%d regions=%d',
-      2,
-      3,
-      3,
-      0,
-      0,
-      0,
-      0,
-      1
-    );
-    expect(log.mock.calls[1]).toEqual([
-      '[Primitive CPU initial rays]\n' +
-      '  first:\n' +
-      '    #0 o=(5,5) d=(1,0) P=(0.5,0.5) lambda=540 regions=[0]\n' +
-      '    #1 o=(15,5) d=(1,0) P=(0.5,0.5) lambda=540 regions=[]\n' +
-      '    #2 o=(2,2) d=(1,0) P=(0.5,0.5) lambda=540 regions=[0]\n' +
-      '  last:\n' +
-      '    #0 o=(5,5) d=(1,0) P=(0.5,0.5) lambda=540 regions=[0]\n' +
-      '    #1 o=(15,5) d=(1,0) P=(0.5,0.5) lambda=540 regions=[]\n' +
-      '    #2 o=(2,2) d=(1,0) P=(0.5,0.5) lambda=540 regions=[0]'
-    ]);
     expect(run.megakernelLanes).toHaveLength(3);
-    log.mockRestore();
   });
 
   it('rejects source wavelengths outside the WebGPU UV-to-IR range',
@@ -371,7 +342,6 @@ describe('CpuSimulationEngine initial ray buffers', () => {
       numericEpsilon: FLOAT32_EPSILON
     });
     engine.beginRenderer = jest.fn();
-    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
     const preparedScene = await engine.prepare(processedScene);
 
     const run = await engine.createRun({ preparedScene });
@@ -381,7 +351,6 @@ describe('CpuSimulationEngine initial ray buffers', () => {
     expect(run.summary.membershipDiscardedRayCount).toBe(0);
     expect(Array.from(run.currentRayBuffer[0].membership)).toEqual([1]);
     expect(engine.beginRenderer).toHaveBeenCalledTimes(1);
-    log.mockRestore();
   });
 
   it('pauses and resumes population and membership using the time budget', async () => {
@@ -392,7 +361,6 @@ describe('CpuSimulationEngine initial ray buffers', () => {
       numericEpsilon: FLOAT32_EPSILON
     });
     engine.beginRenderer = jest.fn();
-    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
     const preparedScene = await engine.prepare(processedScene);
     const run = await engine.createRun({ preparedScene });
     const visitedPhases = new Set([run.phase]);
@@ -418,8 +386,6 @@ describe('CpuSimulationEngine initial ray buffers', () => {
     ]));
     expect(run.passIndex).toBeGreaterThan(0);
     expect(run.processedRayCount).toBeGreaterThanOrEqual(2);
-    expect(log.mock.calls.length).toBeGreaterThanOrEqual(2);
-    log.mockRestore();
   });
 
   it('stores the nearest boundary hit when no GRIN step limits the ray', async () => {
@@ -432,7 +398,6 @@ describe('CpuSimulationEngine initial ray buffers', () => {
       numericEpsilon: FLOAT32_EPSILON
     });
     engine.beginRenderer = jest.fn();
-    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
     const preparedScene = await engine.prepare(processedScene);
     const run = await engine.createRun({ preparedScene });
 
@@ -450,7 +415,6 @@ describe('CpuSimulationEngine initial ray buffers', () => {
     expect(run.hitBuffer[0].curveId).toBeGreaterThanOrEqual(0);
     expect(run.summary.finiteHitCount).toBe(1);
     expect(run.summary.grinStepCount).toBe(0);
-    log.mockRestore();
   });
 
   it('prefers a boundary exactly at the GRIN step endpoint', async () => {
@@ -463,7 +427,6 @@ describe('CpuSimulationEngine initial ray buffers', () => {
       numericEpsilon: FLOAT32_EPSILON
     });
     engine.beginRenderer = jest.fn();
-    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
     const preparedScene = await engine.prepare(processedScene);
     const run = await engine.createRun({ preparedScene });
 
@@ -476,7 +439,6 @@ describe('CpuSimulationEngine initial ray buffers', () => {
     expect(run.hitBuffer[0].curveId).toBeGreaterThanOrEqual(0);
     expect(run.summary.finiteHitCount).toBe(1);
     expect(run.summary.grinStepCount).toBe(0);
-    log.mockRestore();
   });
 
   it('traces a weak source ray before outgoing queue sampling', async () => {
@@ -487,7 +449,6 @@ describe('CpuSimulationEngine initial ray buffers', () => {
       numericEpsilon: FLOAT32_EPSILON
     });
     engine.beginRenderer = jest.fn();
-    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
     const preparedScene = await engine.prepare(processedScene);
     const run = await engine.createRun({
       preparedScene,
@@ -511,7 +472,6 @@ describe('CpuSimulationEngine initial ray buffers', () => {
     });
     expect(update.result.totalTruncation).toBe(0);
     expect(run.summary.weakRayCount).toBe(0);
-    log.mockRestore();
   });
 
   it('immediately truncates a weak working ray when sampling is disabled', async () => {
@@ -522,7 +482,6 @@ describe('CpuSimulationEngine initial ray buffers', () => {
       numericEpsilon: FLOAT32_EPSILON
     });
     engine.beginRenderer = jest.fn();
-    engine.logExecutionDebugInfo = false;
     const preparedScene = await engine.prepare(processedScene);
     const run = await engine.createRun({
       preparedScene,
@@ -564,7 +523,6 @@ describe('CpuSimulationEngine initial ray buffers', () => {
         config: { maxLocalIterations: 1 }
       });
       engine.beginRenderer = jest.fn();
-      engine.logExecutionDebugInfo = false;
       const preparedScene = await engine.prepare(processedScene);
       const run = await engine.createRun({
         preparedScene,
@@ -643,7 +601,6 @@ describe('CpuSimulationEngine initial ray buffers', () => {
       numericEpsilon: FLOAT32_EPSILON
     });
     engine.beginRenderer = jest.fn();
-    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
     const preparedScene = await engine.prepare(processedScene);
     const run = await engine.createRun({
       preparedScene,
@@ -662,7 +619,6 @@ describe('CpuSimulationEngine initial ray buffers', () => {
     ]);
     expect(run.processedRayCount).toBe(0);
     expect(update.result.totalTruncation).toBe(0);
-    log.mockRestore();
   });
 
   it.each(['default', 'linear'])(
@@ -678,8 +634,6 @@ describe('CpuSimulationEngine initial ray buffers', () => {
       config: { maxLocalIterations: 1 }
     });
     engine.beginRenderer = jest.fn();
-    engine.logExecutionDebugInfo = false;
-    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
     const preparedScene = await engine.prepare(processedScene);
     const run = await engine.createRun({
       preparedScene,
@@ -701,7 +655,6 @@ describe('CpuSimulationEngine initial ray buffers', () => {
     }
     expect(run.summary.weakRayCount).toBe(4);
     expect(update.result.totalTruncation).toBeGreaterThan(0);
-    log.mockRestore();
   });
 
   it('queues branches before the locally retained continuation', async () => {
@@ -728,7 +681,6 @@ describe('CpuSimulationEngine initial ray buffers', () => {
       config: { maxLocalIterations: 1 }
     });
     engine.beginRenderer = jest.fn();
-    engine.logExecutionDebugInfo = false;
     const preparedScene = await engine.prepare(processedScene);
     const run = await engine.createRun({
       preparedScene,
@@ -772,7 +724,6 @@ describe('CpuSimulationEngine initial ray buffers', () => {
       engine.canvasRenderer = renderer;
       return renderer;
     });
-    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
     const preparedScene = await engine.prepare(processedScene);
     const run = await engine.createRun({
       preparedScene,
@@ -797,7 +748,6 @@ describe('CpuSimulationEngine initial ray buffers', () => {
     }, [1, 0, 0, 1], true, []);
     expect(renderer.drawRay).not.toHaveBeenCalled();
     expect(update.outputUpdated).toBe(true);
-    log.mockRestore();
   });
 
   it('traces the first active child locally through escape', async () => {
@@ -823,7 +773,6 @@ describe('CpuSimulationEngine initial ray buffers', () => {
       numericEpsilon: FLOAT32_EPSILON
     });
     engine.beginRenderer = jest.fn();
-    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
     const preparedScene = await engine.prepare(processedScene);
     const run = await engine.createRun({ preparedScene });
 
@@ -837,7 +786,6 @@ describe('CpuSimulationEngine initial ray buffers', () => {
       s: Infinity,
       curveId: -1
     });
-    log.mockRestore();
   });
 
   it('stops before an interaction beyond the legacy maximum ray depth',
@@ -866,7 +814,6 @@ describe('CpuSimulationEngine initial ray buffers', () => {
         numericEpsilon: FLOAT32_EPSILON
       });
       engine.beginRenderer = jest.fn();
-      const log = jest.spyOn(console, 'log').mockImplementation(() => {});
       const preparedScene = await engine.prepare(processedScene);
       const run = await engine.createRun({
         preparedScene,
@@ -884,7 +831,6 @@ describe('CpuSimulationEngine initial ray buffers', () => {
         curveId: expect.any(Number)
       });
       expect(update.result.totalTruncation).toBeCloseTo(1);
-      log.mockRestore();
     });
 
   it('includes the effective tolerance in an interaction warning', async () => {
@@ -915,7 +861,6 @@ describe('CpuSimulationEngine initial ray buffers', () => {
       numericEpsilon: FLOAT32_EPSILON
     });
     engine.beginRenderer = jest.fn();
-    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
     const preparedScene = await engine.prepare(processedScene);
     const run = await engine.createRun({ preparedScene });
 
@@ -936,7 +881,6 @@ describe('CpuSimulationEngine initial ray buffers', () => {
       }
     });
     expect(update.result.warningPower).toBe(1);
-    log.mockRestore();
   });
 
   it('counts a normal-conflict discarded ray as truncation', async () => {
@@ -957,7 +901,6 @@ describe('CpuSimulationEngine initial ray buffers', () => {
       config: { ambiguousRayWarningSafetyFactor: 0 }
     });
     engine.beginRenderer = jest.fn();
-    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
     const preparedScene = await engine.prepare(processedScene);
     const run = await engine.createRun({ preparedScene });
 
@@ -970,7 +913,6 @@ describe('CpuSimulationEngine initial ray buffers', () => {
     expect(update.result.warningPower).toBe(1);
     expect(update.result.warning?.ambiguousPower).toBe(1);
     expect(update.result.totalTruncation).toBe(1);
-    log.mockRestore();
   });
 
   it('accumulates detector results and continues the incident ray', async () => {
@@ -1008,7 +950,6 @@ describe('CpuSimulationEngine initial ray buffers', () => {
       numericEpsilon: FLOAT32_EPSILON
     });
     engine.beginRenderer = jest.fn();
-    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
     const preparedScene = await engine.prepare(processedScene);
     const run = await engine.createRun({ preparedScene });
 
@@ -1021,6 +962,5 @@ describe('CpuSimulationEngine initial ray buffers', () => {
       s: Infinity,
       curveId: -1
     });
-    log.mockRestore();
   });
 });

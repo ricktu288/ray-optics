@@ -128,7 +128,7 @@
       />
 
       <NumberControl
-        :label="$t('simulator:settings.rayPowerCutoff.title') + '<sup>Alpha</sup>'"
+        :label="$t('simulator:settings.rayPowerCutoff.title') + '<sup style=\'color: #0006;\'>Alpha</sup>'"
         :popover-content="$t('simulator:settings.rayPowerCutoff.description')"
         v-model="rayPowerCutoff"
         :min="0"
@@ -138,7 +138,7 @@
       />
 
       <ToggleControl
-        :label="$t('simulator:settings.rayPowerSampling.title') + '<sup>Alpha</sup>'"
+        :label="$t('simulator:settings.rayPowerSampling.title') + '<sup style=\'color: #0006;\'>Alpha</sup>'"
         :popover-content="$t('simulator:settings.rayPowerSampling.description')"
         v-model="rayPowerSampling"
         :layout="layout"
@@ -162,8 +162,10 @@
   <PopupSelectControl
     :label="$t('simulator:settings.simulationEngine.title')"
     :value="simulationEngine"
-    :display-fn="value => $t(`simulator:simulationEngineModal.${value}.title`)"
+    :display-fn="value => $t(`simulator:simulationEngineModal.${value}.shortTitle`) + (value === 'default' ? '' : '<sup style=\'color: #0006;\'>Alpha</sup>')"
+    display-html
     popup-target="simulationEngineModal"
+    :popover-content="$t('simulator:settings.simulationEngine.description')"
     :layout="layout"
   />
 

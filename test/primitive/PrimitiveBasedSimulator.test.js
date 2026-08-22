@@ -35,14 +35,13 @@ function createScene() {
   };
 }
 
-function createSimulator(engineKind, drawBvh) {
+function createSimulator(engineKind) {
   return new PrimitiveBasedSimulator({
     scene: createScene(),
     engine: {
       kind: engineKind,
       numericEpsilon: FLOAT32_EPSILON
-    },
-    drawBvh
+    }
   });
 }
 
@@ -203,42 +202,6 @@ describe('PrimitiveBasedSimulator engine registry', () => {
     });
   });
 
-  it('logs automatic selection details as formatted text only in log mode', () => {
-    const simulator = new PrimitiveBasedSimulator({
-      scene: createScene(),
-      enginePreference: 'automatic',
-      engineProviders: {
-        primitiveCpu: () => createProviderEngine('primitiveCpu'),
-        webgpu: () => createProviderEngine('webgpu')
-      },
-      logDebugInfo: true
-    });
-    simulator.automaticEngineWinner = 'primitiveCpu';
-    const decision = simulator.getEngineSelectionDecision({
-      initialRayCount: 1024,
-      primitiveCurveCount: 4
-    });
-    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
-
-    simulator.logEngineSelectionDecision(decision);
-
-    expect(log).toHaveBeenCalledTimes(1);
-    expect(log.mock.calls[0]).toHaveLength(1);
-    expect(log.mock.calls[0][0]).toEqual(expect.any(String));
-    expect(log.mock.calls[0][0]).toContain('Score: 2048');
-    expect(log.mock.calls[0][0]).toContain('Crossover: 1024');
-    expect(log.mock.calls[0][0]).toContain(
-      'Previous comparison winner: primitiveCpu'
-    );
-    expect(log.mock.calls[0][0]).toContain('Selected: primitiveCpu');
-
-    log.mockClear();
-    simulator.logDebugInfo = false;
-    simulator.logEngineSelectionDecision(decision);
-    expect(log).not.toHaveBeenCalled();
-    log.mockRestore();
-  });
-
   it('does not expose an engine canvas until its current frame is published', () => {
     const simulator = new PrimitiveBasedSimulator({
       scene: createScene(),
@@ -328,8 +291,7 @@ describe('PrimitiveBasedSimulator engine registry', () => {
       engineProviders: {
         primitiveCpu: () => createProviderEngine('primitiveCpu'),
         webgpu: () => createProviderEngine('webgpu')
-      },
-      logDebugInfo: true
+      }
     });
     const webGpuJob = simulator.createRunJob(0);
     expect(webGpuJob.comparisonEligible).toBe(false);
@@ -337,14 +299,10 @@ describe('PrimitiveBasedSimulator engine registry', () => {
       simulator,
       'queueAutomaticComparison'
     ).mockImplementation(() => {});
-    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
-
     simulator.scheduleAutomaticComparison(webGpuJob, 6.1);
     jest.runAllTimers();
 
     expect(queueComparison).not.toHaveBeenCalled();
-    expect(log).not.toHaveBeenCalled();
-    log.mockRestore();
     jest.useRealTimers();
   });
 
@@ -377,8 +335,7 @@ describe('PrimitiveBasedSimulator engine registry', () => {
       engineProviders: {
         primitiveCpu: () => createProviderEngine('primitiveCpu'),
         webgpu: () => createProviderEngine('webgpu')
-      },
-      logDebugInfo: true
+      }
     });
     simulator.activateEngine('webgpu');
     const firstJob = simulator.createRunJob(0);
@@ -387,8 +344,6 @@ describe('PrimitiveBasedSimulator engine registry', () => {
       job,
       durationMs: 15
     }));
-    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
-
     await simulator.runAutomaticComparison(
       firstJob,
       5,
@@ -400,14 +355,6 @@ describe('PrimitiveBasedSimulator engine registry', () => {
       { silent: true, timeLimitMs: 20 }
     );
     expect(simulator.automaticEngineWinner).toBe('primitiveCpu');
-    const decisionLog = log.mock.calls.find(
-      ([message]) => message.includes('[Primitive engine comparison] decision')
-    );
-    expect(decisionLog).toHaveLength(1);
-    expect(decisionLog[0]).toContain(
-      'CPU under 20 ms preference applied: yes'
-    );
-    log.mockRestore();
   });
 
   it.each([
@@ -500,7 +447,7 @@ describe('PrimitiveBasedSimulator engine registry', () => {
   });
 
   it('keeps silent-run progress, detectors, and status unpublished', async () => {
-    const simulator = createSimulator('primitiveCpu', false);
+    const simulator = createSimulator('primitiveCpu');
     const silentEngine = createProviderEngine('primitiveCpu');
     const run = {
       advance: jest.fn(async () => ({
@@ -536,36 +483,9 @@ describe('PrimitiveBasedSimulator engine registry', () => {
   });
 });
 
-describe('PrimitiveBasedSimulator BVH diagnostics', () => {
-  it('attaches diagnostics to the CPU scene object when visualization is enabled', () => {
-    const simulator = createSimulator('primitiveCpu', true);
-
-    simulator.collectAndPreprocessPrimitives();
-
-    expect(simulator.processedScene.cpuBvhTraversalDiagnostics)
-      .toMatchObject({
-        nodeStates: expect.any(Uint8Array),
-        testedCurves: expect.any(Uint8Array)
-      });
-  });
-
-  it.each([
-    ['primitiveCpu', false],
-    ['webgpu', true]
-  ])(
-    'does not attach shared diagnostics for %s with drawBvh=%s',
-    (engineKind, drawBvh) => {
-      const simulator = createSimulator(engineKind, drawBvh);
-
-      simulator.collectAndPreprocessPrimitives();
-
-      expect(simulator.processedScene.cpuBvhTraversalDiagnostics)
-        .toBeUndefined();
-    }
-  );
-
+describe('PrimitiveBasedSimulator run results', () => {
   it('publishes completed detector arrays through their result bindings', async () => {
-    const simulator = createSimulator('primitiveCpu', false);
+    const simulator = createSimulator('primitiveCpu');
     const result = { values: null };
     simulator.detectorResultBindings = [{
       resultId: 0,
@@ -612,7 +532,7 @@ describe('PrimitiveBasedSimulator BVH diagnostics', () => {
   });
 
   it('publishes progress and detector readings on every paused update', async () => {
-    const simulator = createSimulator('primitiveCpu', false);
+    const simulator = createSimulator('primitiveCpu');
     simulator.enableTimer = true;
     const result = { values: null };
     simulator.detectorResultBindings = [{
@@ -690,7 +610,7 @@ describe('PrimitiveBasedSimulator BVH diagnostics', () => {
   });
 
   it('reports a consistent mapped brightness scale to simulator status', () => {
-    const simulator = createSimulator('primitiveCpu', false);
+    const simulator = createSimulator('primitiveCpu');
     simulator.scene.opticalObjs = [
       createMappedObject('PointSource', 0.5),
       createMappedObject('Beam', 0.5)
@@ -703,7 +623,7 @@ describe('PrimitiveBasedSimulator BVH diagnostics', () => {
   });
 
   it('reports the legacy inconsistent-brightness warning after mapping', () => {
-    const simulator = createSimulator('primitiveCpu', false);
+    const simulator = createSimulator('primitiveCpu');
     simulator.scene.opticalObjs = [
       createMappedObject('PointSource', 0.5),
       createMappedObject('Beam', 0.25),
@@ -719,7 +639,7 @@ describe('PrimitiveBasedSimulator BVH diagnostics', () => {
   });
 
   it('does not count a Detector object which produces no detector primitive', () => {
-    const simulator = createSimulator('primitiveCpu', false);
+    const simulator = createSimulator('primitiveCpu');
     simulator.scene.opticalObjs = [
       createMappedObject('PointSource', 0.5),
       createMappedObject('Beam', 0.25),
@@ -733,7 +653,7 @@ describe('PrimitiveBasedSimulator BVH diagnostics', () => {
   });
 
   it('ignores mapped brightness scales outside legacy color mode', () => {
-    const simulator = createSimulator('primitiveCpu', false);
+    const simulator = createSimulator('primitiveCpu');
     simulator.scene.colorMode = 'linear';
     simulator.scene.opticalObjs = [
       createMappedObject('PointSource', 0.5),
@@ -749,7 +669,7 @@ describe('PrimitiveBasedSimulator BVH diagnostics', () => {
 
 describe('PrimitiveBasedSimulator engine warnings', () => {
   it('surfaces a structured tolerance warning', () => {
-    const simulator = createSimulator('primitiveCpu', false);
+    const simulator = createSimulator('primitiveCpu');
 
     simulator.publishRunUpdate({
       progress: {},
@@ -778,7 +698,7 @@ describe('PrimitiveBasedSimulator engine warnings', () => {
   });
 
   it('marks curve IDs with namespaced diagnostic references', () => {
-    const simulator = createSimulator('primitiveCpu', false);
+    const simulator = createSimulator('primitiveCpu');
     const originalTranslate = i18next.t;
     i18next.t = (key, options = {}) => {
       if (key === 'simulator:generalWarnings.primitiveInteractionConflict') {
@@ -813,7 +733,7 @@ describe('PrimitiveBasedSimulator engine warnings', () => {
   });
 
   it('shows the accumulated ambiguous power', () => {
-    const simulator = createSimulator('primitiveCpu', false);
+    const simulator = createSimulator('primitiveCpu');
     const originalTranslate = i18next.t;
     i18next.t = (key, options = {}) => {
       if (key === 'simulator:generalWarnings.primitiveInteractionConflict') {

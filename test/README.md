@@ -12,7 +12,7 @@ the primitive CPU engine and optionally override its settings, run:
 
 ```bash
 npm run test:scenes -- --engine=primitiveCpu
-npm run test:scenes -- --engine=primitiveCpu --engine-settings='{"numericEpsilon":2.220446049250313e-16,"bvh":{"lineLeafSize":4}}'
+npm run test:scenes -- --engine=primitiveCpu --engine-settings='{"numericEpsilon":2.220446049250313e-16}'
 npm run test:scenes -- --engine=primitiveCpu --engine-settings='{"rayCountLimit":1000000}'
 ```
 

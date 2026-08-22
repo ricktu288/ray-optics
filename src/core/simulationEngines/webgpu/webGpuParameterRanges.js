@@ -351,52 +351,6 @@ export function validateWebGpuSpatialBounds(description) {
 }
 
 /**
- * Format one compact debug block containing the range contract per registered
- * type. Instance objects are intentionally not listed separately.
- */
-export function formatWebGpuParameterRangeSummary(estimated) {
-  const lines = ['[WebGPU parameter ranges]'];
-  for (const typeEntry of estimated.types) {
-    const label = typeEntry.internal
-      ? 'Internal surface'
-      : `${capitalize(typeEntry.kind)}`;
-    const id = typeEntry.internal ? typeEntry.key : typeEntry.typeId;
-    lines.push(
-      `  ${label} type ${id} ${JSON.stringify(typeEntry.name)}:`
-    );
-    lines.push(
-      `    recompilation: ${typeEntry.recompilationNeeded ? 'needed' : 'not needed'}` +
-      (typeEntry.recompilationReason
-        ? ` (${typeEntry.recompilationReason})`
-        : '')
-    );
-    if (typeEntry.parameters.length === 0) {
-      lines.push('    (no referenced parameters)');
-    }
-    for (const parameter of typeEntry.parameters) {
-      lines.push(
-        `    ${parameter.name}: ${formatIntervals(parameter.range)}` +
-        (parameter.maybeInvalid ? '; may leave finite f32' : '')
-      );
-    }
-    if (typeEntry.outputRanges?.n) {
-      lines.push(
-        `    n (output): ${formatIntervals(typeEntry.outputRanges.n.intervals)}` +
-        (typeEntry.outputRanges.n.maybeInvalid
-          ? '; may leave finite f32'
-          : '')
-      );
-    }
-  }
-  if (estimated.removedTypeKeys?.length > 0) {
-    lines.push(
-      `  Removed types: ${estimated.removedTypeKeys.join(', ')}`
-    );
-  }
-  return lines.join('\n');
-}
-
-/**
  * Compare only range-dependent guard signatures. Structural DAG changes are
  * intentionally outside this comparison and remain simulator-owned.
  *
@@ -961,27 +915,6 @@ function simplifyIntervals(intervals, intervalLimit) {
     return [[merged[0][0], merged[merged.length - 1][1]]];
   }
   return merged;
-}
-
-function formatIntervals(intervals) {
-  if (intervals.length === 0) return 'no finite values';
-  return intervals.map(([lo, hi]) =>
-    Object.is(lo, hi)
-      ? `{${formatRangeNumber(lo)}}`
-      : `[${formatRangeNumber(lo)}, ${formatRangeNumber(hi)}]`
-  ).join(' U ');
-}
-
-function formatRangeNumber(value) {
-  if (value === 0) return '0';
-  const absolute = Math.abs(value);
-  return absolute >= 1e6 || absolute < 1e-4
-    ? value.toExponential(6)
-    : String(value);
-}
-
-function capitalize(value) {
-  return value.charAt(0).toUpperCase() + value.slice(1);
 }
 
 function outwardF32Interval(lo, hi, name) {

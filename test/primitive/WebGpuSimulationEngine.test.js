@@ -913,81 +913,11 @@ describe('WebGpuSimulationEngine', () => {
     }));
 
     const run = await engine.createRun({ preparedScene: {} });
-    run.detectorOverflowWarned = true;
 
     await expect(run.advance()).rejects.toThrow(
       /detector accumulation overflowed.*detector values would be invalid/
     );
   });
-
-  it('logs revision, backend, BVH, and all-miss state for completed runs',
-    async () => {
-      const engine = new WebGpuSimulationEngine();
-      engine.initialize = jest.fn(async () => {});
-      engine.device = {};
-      engine.ensureComputeBackend = jest.fn(async () => true);
-      const preparedScene = {
-        logDebugInfo: true,
-        packedStorage: {
-          counts: {
-            sourceRays: 9,
-            bvhNodes: 12,
-          },
-          curveGeometry: Float32Array.of(1, 2),
-        },
-        runtimeDescription: { bvh: { root: 3 } },
-        executionPlan: { maximumBvhDepth: 5 },
-      };
-      const backend = {
-        debugId: 7,
-        sceneUploadVersion: 11,
-        preparedScene,
-        configureRun: jest.fn(async () => {}),
-        renderPreparationStage: { geometryCapacity: 1 },
-      };
-      engine.computeBackend = backend;
-      engine.startNativeRun = jest.fn(async () => ({
-        statePromise: Promise.resolve({
-          currentRayCount: 0,
-          processedRayCount: 9,
-          readyGeometryCount: 9,
-          resizeNeeded: false,
-          warningFlags: 0,
-          detectors: [],
-        }),
-        presentationPromise: Promise.resolve(false),
-        backend,
-        backendDebugInfo: {
-          backendId: 7,
-          sceneUploadVersion: 11,
-          sceneFingerprint: '1234abcd',
-          bvhRoot: 3,
-          bvhNodeCount: 12,
-          maximumBvhDepth: 5,
-        },
-        submissionDebugInfo: { submissionId: 13, kind: 'initial' },
-      }));
-      const log = jest.spyOn(console, 'log').mockImplementation(() => {});
-
-      try {
-        const run = await engine.createRun({
-          preparedScene,
-          sceneRevision: 973,
-        });
-        await run.advance();
-
-        expect(log).toHaveBeenCalledWith(expect.stringContaining(
-          '[WebGPU run result]\n  Scene revision: 973\n' +
-          '  Backend: 7, scene upload 11'
-        ));
-        expect(log.mock.calls[0][0]).toContain(
-          'Every source ray ended at its first trace: ' +
-          'yes (possible all-miss failure)'
-        );
-      } finally {
-        log.mockRestore();
-      }
-    });
 
   it('validates the ping-pong batch size', () => {
     expect(() => new WebGpuSimulationEngine({

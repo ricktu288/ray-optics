@@ -174,8 +174,6 @@ function createSimulator({
     return simulator;
   }
 
-  const bvhSettings = engineSettings.bvh ?? {};
-  const { drawBounds = false, ...bvhOptions } = bvhSettings;
   const engine = engineKind === 'webgpu'
     ? new rayOptics.WebGpuSimulationEngine({
       device: getWebGpuDevice,
@@ -201,10 +199,7 @@ function createSimulator({
     ctxVirtual,
     enableTimer: false,
     rayCountLimit,
-    tempCanvasFactory,
-    logDebugInfo: Boolean(engineSettings.logDebugInfo),
-    drawBvh: Boolean(drawBounds),
-    bvhOptions
+    tempCanvasFactory
   });
 }
 

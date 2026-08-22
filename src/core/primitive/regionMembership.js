@@ -15,12 +15,7 @@
  */
 
 import { BVH_OWNER_KIND_MASKS } from './bvh.js';
-import {
-  BVH_NODE_MISSED,
-  BVH_NODE_TRAVERSED,
-  intersectRayBounds,
-  markBvhNodeState
-} from './bvhTraversal.js';
+import { intersectRayBounds } from './bvhTraversal.js';
 import { countCurveRayCrossings } from './curveRayCrossings.js';
 import { getIntersectionTolerancePolicy } from './numeric.js';
 
@@ -49,15 +44,13 @@ export function createRegionMembershipResult(regionCount) {
  * @param {Object} ray
  * @param {Object} result
  * @param {number} numericEpsilon
- * @param {Object} [diagnostics]
  * @returns {Object}
  */
 export function traverseBvhForRegionMembership(
   description,
   ray,
   result,
-  numericEpsilon,
-  diagnostics
+  numericEpsilon
 ) {
   result.regionMask.fill(0);
   result.ambiguousRegionMask.fill(0);
@@ -81,7 +74,6 @@ export function traverseBvhForRegionMembership(
     nodes[root].bounds,
     0
   ))) {
-    markBvhNodeState(diagnostics, root, BVH_NODE_MISSED);
     return result;
   }
 
@@ -90,14 +82,12 @@ export function traverseBvhForRegionMembership(
   while (stack.length > 0) {
     const nodeIndex = stack.pop();
     const node = nodes[nodeIndex];
-    markBvhNodeState(diagnostics, nodeIndex, BVH_NODE_TRAVERSED);
 
     if (node.count > 0) {
       for (let offset = 0; offset < node.count; offset++) {
         const curveId = curveIds[node.start + offset];
         const curve = description.curves[curveId];
         if (curve.ownerKind !== 'region') continue;
-        if (diagnostics) diagnostics.testedCurves[curveId] = 1;
 
         countCurveRayCrossings(
           curve.geometry,
@@ -134,7 +124,6 @@ export function traverseBvhForRegionMembership(
         description,
         ray,
         childIndex,
-        diagnostics,
         stack
       );
     }
@@ -151,7 +140,6 @@ function testAndPushRegionChild(
   description,
   ray,
   nodeIndex,
-  diagnostics,
   stack
 ) {
   const node = description.bvh.nodes[nodeIndex];
@@ -162,7 +150,5 @@ function testAndPushRegionChild(
     0
   ))) {
     stack.push(nodeIndex);
-  } else {
-    markBvhNodeState(diagnostics, nodeIndex, BVH_NODE_MISSED);
   }
 }

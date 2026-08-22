@@ -158,15 +158,13 @@ import { validateNumericEpsilon } from './numeric.js';
  * @param {number} [options.lengthScale=1] - Natural scene length used by engine-selected curve tolerances.
  * @param {Object} [options.numericalTolerances] - Simulator-configured tolerance minimums, with distances relative to the scene length scale.
  * @param {number} options.numericEpsilon - Relative arithmetic epsilon selected by the engine.
- * @param {boolean} [options.logDebugInfo=false] - Whether to measure preprocessing stages for debug output.
- * @returns {{processedScene: ProcessedScene, detectorResultBindings: DetectorResultBinding[], timings: Object|null}}
+ * @returns {{processedScene: ProcessedScene, detectorResultBindings: DetectorResultBinding[]}}
  */
 export function preprocessPrimitives(primitives, {
   bvhOptions = {},
   lengthScale = 1,
   numericalTolerances = {},
-  numericEpsilon,
-  logDebugInfo = false
+  numericEpsilon
 } = {}) {
   if (!Array.isArray(primitives)) {
     throw new TypeError('primitives must be an array.');
@@ -195,7 +193,6 @@ export function preprocessPrimitives(primitives, {
     )
   };
 
-  const timing = logDebugInfo ? createTimingRecorder() : null;
   const registries = {
     sources: new TypeRegistry(),
     surfaces: new TypeRegistry(),
@@ -403,8 +400,6 @@ export function preprocessPrimitives(primitives, {
       );
     }
   }
-  timing?.recordStage('normalizePrimitives');
-
   const finalizedTypes = {
     sources: registries.sources.finalize(),
     surfaces: registries.surfaces.finalize(),
@@ -427,8 +422,6 @@ export function preprocessPrimitives(primitives, {
     detectorTypeId: typeRecord.id,
     ...detector
   }));
-  timing?.recordStage('finalizeTypeTables');
-
   const builtBvh = buildBvh(
     curves.map((curveRecord, curveId) => ({
       geometry: curveRecord.geometry,
@@ -443,8 +436,6 @@ export function preprocessPrimitives(primitives, {
     nodes: builtBvh.nodes,
     curveIds: Uint32Array.from(builtBvh.entries.map(entry => entry.curveId))
   };
-  timing?.recordStage('buildBvh');
-
   const typeSignatureSource = stableSerialize([
     registries.sources.signaturePart,
     registries.surfaces.signaturePart,
@@ -452,7 +443,7 @@ export function preprocessPrimitives(primitives, {
     registries.detectors.signaturePart
   ]);
 
-  const result = {
+  return {
     processedScene: {
       numericEpsilon,
       numericalTolerances: resolvedNumericalTolerances,
@@ -467,9 +458,6 @@ export function preprocessPrimitives(primitives, {
     },
     detectorResultBindings
   };
-  timing?.recordStage('assembleProcessedScene');
-  result.timings = timing?.finish() ?? null;
-  return result;
 }
 
 /**
@@ -541,67 +529,6 @@ function resolveToleranceMinimum(value, scale, name) {
   return resolvedValue * scale;
 }
 
-/**
- * Build the compact diagnostic summary logged after primitive preprocessing.
- *
- * @param {ProcessedScene} processedScene - The newly processed scene.
- * @param {ProcessedScene|null} [previousProcessedScene=null] - The preceding processed scene.
- * @returns {Object} BVH statistics and registered-type usage.
- */
-export function createPreprocessingSummary(
-  processedScene,
-  previousProcessedScene = null
-) {
-  const nodes = processedScene.bvh.nodes;
-  const leafCount = nodes.reduce(
-    (count, node) => count + (node.count > 0 ? 1 : 0),
-    0
-  );
-  const maxDepth = nodes.reduce(
-    (depth, node) => Math.max(depth, node.depth),
-    0
-  );
-
-  return {
-    bvh: {
-      curveCount: processedScene.curves.length,
-      nodeCount: nodes.length,
-      branchCount: nodes.length - leafCount,
-      leafCount,
-      maxDepth
-    },
-    types: {
-      changed: previousProcessedScene
-        ? processedScene.typeSignature !== previousProcessedScene.typeSignature
-        : null,
-      sources: summarizeTypeCategory(
-        processedScene.types.sources,
-        processedScene.sources,
-        'sourceTypeId',
-        previousProcessedScene?.types.sources
-      ),
-      surfaces: summarizeTypeCategory(
-        processedScene.types.surfaces,
-        processedScene.surfaces,
-        'surfaceTypeId',
-        previousProcessedScene?.types.surfaces
-      ),
-      bulks: summarizeTypeCategory(
-        processedScene.types.bulks,
-        processedScene.regions,
-        'bulkTypeId',
-        previousProcessedScene?.types.bulks
-      ),
-      detectors: summarizeTypeCategory(
-        processedScene.types.detectors,
-        processedScene.detectors,
-        'detectorTypeId',
-        previousProcessedScene?.types.detectors
-      )
-    }
-  };
-}
-
 class TypeRegistry {
   constructor() {
     this.identityRecords = new WeakMap();
@@ -649,24 +576,6 @@ class TypeRegistry {
       definition: record.definition
     }));
   }
-}
-
-function summarizeTypeCategory(types, instances, typeIdKey, previousTypes) {
-  const objectCounts = new Array(types.length).fill(0);
-  for (const instance of instances) {
-    objectCounts[instance[typeIdKey]]++;
-  }
-
-  return {
-    changed: previousTypes
-      ? stableSerialize(types) !== stableSerialize(previousTypes)
-      : null,
-    registered: types.map((type, id) => ({
-      id,
-      name: type.definition.name,
-      objectCount: objectCounts[id]
-    }))
-  };
 }
 
 function createProcessedCurve(
@@ -760,30 +669,4 @@ function deepFreeze(value) {
     deepFreeze(child);
   }
   return value;
-}
-
-function createTimingRecorder() {
-  const now = typeof performance !== 'undefined' && typeof performance.now === 'function'
-    ? () => performance.now()
-    : () => Date.now();
-  let stageStartTime = now();
-  const stages = {};
-
-  return {
-    recordStage(stageName) {
-      const endTime = now();
-      stages[stageName] = endTime - stageStartTime;
-      stageStartTime = endTime;
-    },
-
-    finish() {
-      return {
-        ...stages,
-        total: Object.values(stages).reduce(
-          (sum, duration) => sum + duration,
-          0
-        )
-      };
-    }
-  };
 }

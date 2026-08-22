@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import { DEFAULT_BVH_OPTIONS } from '../primitive/bvh.js';
 import {
   DEFAULT_AMBIGUOUS_RAY_WARNING_SAFETY_FACTOR
 } from './ambiguousRayWarning.js';
@@ -30,19 +29,7 @@ export const DEFAULT_PRIMITIVE_NUMERICAL_TOLERANCES = Object.freeze({
   forwardDistance: 1e-6,
 });
 
-const COMMON_BVH_CONFIG = Object.freeze({
-  lineLeafSize: DEFAULT_BVH_OPTIONS.lineLeafSize,
-  arcLeafSize: DEFAULT_BVH_OPTIONS.arcLeafSize,
-  cubicBezierLeafSize: DEFAULT_BVH_OPTIONS.cubicBezierLeafSize,
-  directPrimitiveThreshold: DEFAULT_BVH_OPTIONS.directPrimitiveThreshold,
-  consecutiveLocalityFactor: DEFAULT_BVH_OPTIONS.consecutiveLocalityFactor,
-  maxGroupExtent: DEFAULT_BVH_OPTIONS.maxGroupExtent,
-  drawBounds: false,
-});
-
 export const DEFAULT_PRIMITIVE_SIMULATOR_CONFIG = Object.freeze({
-  logDebugInfo: false,
-  bvh: COMMON_BVH_CONFIG,
   numericalTolerances: DEFAULT_PRIMITIVE_NUMERICAL_TOLERANCES,
 });
 
@@ -67,7 +54,6 @@ export const DEFAULT_SIMULATION_ENGINE_CONFIGS = Object.freeze({
     maxBatchRayEvents: 1048576,
     maxReadyGeometryRecords: 2097152,
     atomicFixedPointScale: 1048576,
-    maxBvhDepth: 16,
     maxLocalIterations: 256,
     maxPingPongsPerSubmission: 2,
   }),
@@ -87,18 +73,12 @@ export function resolveSimulationEngineConfig(engineKind, storedConfigs = {}) {
 }
 
 /**
- * Resolve preprocessing and diagnostic settings shared by all primitive
- * engines. They live outside engine-specific configuration so automatic
- * selection never changes the BVH construction policy.
+ * Resolve numerical tolerances shared by all primitive engines.
  */
 export function resolvePrimitiveSimulatorConfig(storedConfigs = {}) {
   const overrides = storedConfigs?.primitive;
   const resolvedOverrides =
     overrides && typeof overrides === 'object' ? overrides : {};
-  const bvhOverrides =
-    resolvedOverrides.bvh && typeof resolvedOverrides.bvh === 'object'
-      ? resolvedOverrides.bvh
-      : {};
   const numericalToleranceOverrides =
     resolvedOverrides.numericalTolerances &&
       typeof resolvedOverrides.numericalTolerances === 'object'
@@ -108,10 +88,6 @@ export function resolvePrimitiveSimulatorConfig(storedConfigs = {}) {
     ...resolveKnownOverrides(
       DEFAULT_PRIMITIVE_SIMULATOR_CONFIG,
       resolvedOverrides
-    ),
-    bvh: resolveKnownOverrides(
-      DEFAULT_PRIMITIVE_SIMULATOR_CONFIG.bvh,
-      bvhOverrides
     ),
     numericalTolerances: resolveKnownOverrides(
       DEFAULT_PRIMITIVE_SIMULATOR_CONFIG.numericalTolerances,

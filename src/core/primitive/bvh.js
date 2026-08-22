@@ -20,13 +20,20 @@ const SCENE_EPSILON_RATIO = 1e-9;
 const MORTON_COORDINATE_MAX = 0x7fff;
 const LEAF_WEIGHT_EPSILON = 1e-12;
 
+export const BVH_LINE_LEAF_SIZE = 4;
+export const BVH_ARC_LEAF_SIZE = 2;
+export const BVH_CUBIC_BEZIER_LEAF_SIZE = 1;
+export const BVH_DIRECT_PRIMITIVE_THRESHOLD = 32;
+export const BVH_MAX_GROUP_EXTENT = 100;
+export const BVH_CONSECUTIVE_LOCALITY_FACTOR = 2;
+
 export const DEFAULT_BVH_OPTIONS = Object.freeze({
-  lineLeafSize: 4,
-  arcLeafSize: 2,
-  cubicBezierLeafSize: 1,
-  directPrimitiveThreshold: 32,
-  maxGroupExtent: 100,
-  consecutiveLocalityFactor: 2
+  lineLeafSize: BVH_LINE_LEAF_SIZE,
+  arcLeafSize: BVH_ARC_LEAF_SIZE,
+  cubicBezierLeafSize: BVH_CUBIC_BEZIER_LEAF_SIZE,
+  directPrimitiveThreshold: BVH_DIRECT_PRIMITIVE_THRESHOLD,
+  maxGroupExtent: BVH_MAX_GROUP_EXTENT,
+  consecutiveLocalityFactor: BVH_CONSECUTIVE_LOCALITY_FACTOR
 });
 
 export const BVH_OWNER_KIND_MASKS = Object.freeze({

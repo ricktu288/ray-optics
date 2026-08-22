@@ -15,11 +15,6 @@
  */
 
 import { buildBvh } from '../../src/core/primitive/bvh';
-import {
-  attachCpuBvhTraversalDiagnostics,
-  BVH_NODE_PRUNED,
-  BVH_NODE_UNVISITED
-} from '../../src/core/primitive/bvhTraversal';
 import { prepareCurve } from '../../src/core/primitive/curveGeometry';
 import {
   createRegionMembershipResult,
@@ -84,15 +79,13 @@ function cast(description, originX, originY, directionX, directionY) {
   const result = createRegionMembershipResult(
     description.regions.length
   );
-  const diagnostics = attachCpuBvhTraversalDiagnostics(description);
   traverseBvhForRegionMembership(
     description,
     { originX, originY, directionX, directionY },
     result,
-    FLOAT32_EPSILON,
-    diagnostics
+    FLOAT32_EPSILON
   );
-  return { result, diagnostics };
+  return result;
 }
 
 describe('region-membership BVH traversal', () => {
@@ -102,14 +95,10 @@ describe('region-membership BVH traversal', () => {
     const inside = cast(description, 5, 5, 1, 0);
     const outside = cast(description, -5, 5, 1, 0);
 
-    expect(Array.from(inside.result.regionMask)).toEqual([1]);
-    expect(Array.from(outside.result.regionMask)).toEqual([0]);
-    expect(inside.result.nearestForwardS).toBe(5);
-    expect(inside.result.ambiguousCurveId).toBe(-1);
-    expect(Array.from(inside.diagnostics.nodeStates))
-      .not.toContain(BVH_NODE_PRUNED);
-    expect(Array.from(outside.diagnostics.nodeStates))
-      .not.toContain(BVH_NODE_PRUNED);
+    expect(Array.from(inside.regionMask)).toEqual([1]);
+    expect(Array.from(outside.regionMask)).toEqual([0]);
+    expect(inside.nearestForwardS).toBe(5);
+    expect(inside.ambiguousCurveId).toBe(-1);
   });
 
   it('treats no forward boundary as outside and ignores the origin boundary', () => {
@@ -118,39 +107,20 @@ describe('region-membership BVH traversal', () => {
     const noForwardBoundary = cast(description, -5, 5, -1, 0);
     const fromBoundaryIntoRegion = cast(description, 0, 5, 1, 0);
 
-    expect(noForwardBoundary.result).toMatchObject({
+    expect(noForwardBoundary).toMatchObject({
       nearestForwardS: Infinity,
       ambiguousCurveId: -1
     });
-    expect(Array.from(noForwardBoundary.result.regionMask)).toEqual([0]);
-    expect(Array.from(fromBoundaryIntoRegion.result.regionMask))
+    expect(Array.from(noForwardBoundary.regionMask)).toEqual([0]);
+    expect(Array.from(fromBoundaryIntoRegion.regionMask))
       .toEqual([1]);
-    expect(fromBoundaryIntoRegion.result.ambiguousCurveId).toBe(-1);
-  });
-
-  it('does not enter nodes containing no region boundaries', () => {
-    const description = createDescription();
-    const { diagnostics } = cast(description, 5, 5, 1, 0);
-    const surfaceLeafIndex = description.bvh.nodes.findIndex(node =>
-      node.count > 0 &&
-      Array.from(
-        description.bvh.curveIds.slice(
-          node.start,
-          node.start + node.count
-        )
-      ).includes(4)
-    );
-
-    expect(surfaceLeafIndex).toBeGreaterThanOrEqual(0);
-    expect(diagnostics.nodeStates[surfaceLeafIndex])
-      .toBe(BVH_NODE_UNVISITED);
-    expect(diagnostics.testedCurves[4]).toBe(0);
+    expect(fromBoundaryIntoRegion.ambiguousCurveId).toBe(-1);
   });
 
   it('marks an endpoint crossing as ambiguous without retrying', () => {
     const description = createDescription();
 
-    const { result } = cast(description, 5, 5, 1, 1);
+    const result = cast(description, 5, 5, 1, 1);
 
     expect(result.ambiguousCurveId).toBeGreaterThanOrEqual(0);
     expect(Array.from(result.ambiguousRegionMask)).toEqual([1]);

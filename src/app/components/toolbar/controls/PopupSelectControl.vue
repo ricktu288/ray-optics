@@ -34,7 +34,8 @@
         :data-bs-target="`#${popupTarget}`"
         :disabled="disabled"
       >
-        {{ displayText }}
+        <span v-if="displayHtml" v-html="displayText"></span>
+        <template v-else>{{ displayText }}</template>
       </button>
     </div>
   </div>
@@ -72,6 +73,10 @@ export default {
     displayFn: {
       type: Function,
       required: true
+    },
+    displayHtml: {
+      type: Boolean,
+      default: false
     },
     disabled: {
       type: Boolean,

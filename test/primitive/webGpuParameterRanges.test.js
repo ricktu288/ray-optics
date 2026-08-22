@@ -462,41 +462,6 @@ describe('WebGPU scene parameter range estimation', () => {
     expect(prepared.parameterRanges).not.toHaveProperty('nodeRanges');
   });
 
-  it('logs one parameter summary per registered type in debug mode', async () => {
-    const sourceType = {
-      name: 'Logged source',
-      paramNames: ['gain'],
-      dag: parseFormula(
-        'x = gain; y = 0; d_x = 1; d_y = 0; P_s = 1; P_p = 0; lambda = 540;',
-        ['gain']
-      )
-    };
-    const description = process([1, 2].map(gain => ({
-      kind: 'source',
-      sourceType,
-      params: { gain },
-      rayCount: 1
-    })));
-    const engine = new WebGpuSimulationEngine({
-      numericEpsilon: FLOAT32_EPSILON,
-      device: null,
-      output: null
-    });
-    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
-
-    try {
-      await engine.prepare(description, { logDebugInfo: true });
-      expect(log).toHaveBeenCalledTimes(1);
-      const summary = log.mock.calls[0][0];
-      expect(summary.match(/Source type 0/g)).toHaveLength(1);
-      expect(summary).toContain('"Logged source"');
-      expect(summary).toContain('gain: {1} U {2}');
-      expect(summary).toContain('recompilation: needed (initial specialization)');
-    } finally {
-      log.mockRestore();
-    }
-  });
-
   it('requests recompilation only when a type guard signature changes', async () => {
     const sourceType = {
       name: 'Range-sensitive source',
@@ -517,46 +482,27 @@ describe('WebGPU scene parameter range estimation', () => {
       device: null,
       output: null
     });
-    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
+    const initial = await engine.prepare(description(1));
+    const safeRangeChange = await engine.prepare(description(2));
+    const guardChange = await engine.prepare(description(0));
+    const unchangedGuard = await engine.prepare(description(0));
 
-    try {
-      const initial = await engine.prepare(description(1), {
-        logDebugInfo: true
-      });
-      const safeRangeChange = await engine.prepare(description(2), {
-        logDebugInfo: true
-      });
-      const guardChange = await engine.prepare(description(0), {
-        logDebugInfo: true
-      });
-      const unchangedGuard = await engine.prepare(description(0), {
-        logDebugInfo: true
-      });
-
-      expect(initial.parameterRanges.sources[0]).toMatchObject({
-        recompilationNeeded: true,
-        recompilationReason: 'initial specialization'
-      });
-      expect(safeRangeChange.parameterRanges.sources[0])
-        .toMatchObject({ recompilationNeeded: false });
-      expect(guardChange.parameterRanges.sources[0]).toMatchObject({
-        recompilationNeeded: true,
-        recompilationReason: 'range guards changed'
-      });
-      expect(unchangedGuard.parameterRanges.sources[0])
-        .toMatchObject({ recompilationNeeded: false });
-      expect(guardChange.parameterRanges.sources[0].specialization)
-        .toHaveProperty('rangeResult.nodeRanges');
-      expect(guardChange.parameterRanges.sources[0].specialization)
-        .not.toHaveProperty('code');
-      expect(log).toHaveBeenCalledTimes(4);
-      expect(log.mock.calls[1][0])
-        .toContain('recompilation: not needed');
-      expect(log.mock.calls[2][0])
-        .toContain('recompilation: needed (range guards changed)');
-    } finally {
-      log.mockRestore();
-    }
+    expect(initial.parameterRanges.sources[0]).toMatchObject({
+      recompilationNeeded: true,
+      recompilationReason: 'initial specialization'
+    });
+    expect(safeRangeChange.parameterRanges.sources[0])
+      .toMatchObject({ recompilationNeeded: false });
+    expect(guardChange.parameterRanges.sources[0]).toMatchObject({
+      recompilationNeeded: true,
+      recompilationReason: 'range guards changed'
+    });
+    expect(unchangedGuard.parameterRanges.sources[0])
+      .toMatchObject({ recompilationNeeded: false });
+    expect(guardChange.parameterRanges.sources[0].specialization)
+      .toHaveProperty('rangeResult.nodeRanges');
+    expect(guardChange.parameterRanges.sources[0].specialization)
+      .not.toHaveProperty('code');
   });
 
   it('tracks internal boundary finite-index guard changes independently', async () => {

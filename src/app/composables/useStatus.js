@@ -100,15 +100,23 @@ export function useStatus() {
 
   const formattedSimulatorStatus = computed(() => {
     const status = simulatorStatus.value
-    const engineLabelKey = activeEngineKind.value === 'primitiveCpu' &&
-      activeEngineFallback.value
-      ? 'cpuFallback'
-      : activeEngineKind.value
-    return [
-      i18next.t('main:meta.colon', {
+    const engineShortName = activeEngineKind.value === 'default'
+      ? null
+      : i18next.t(
+        `simulator:simulationEngineModal.${activeEngineKind.value}.shortTitle`
+      )
+    const engineStatus = engineShortName === null
+      ? null
+      : i18next.t('main:meta.colon', {
         name: i18next.t('simulator:statusBox.engine'),
-        value: i18next.t(`simulator:statusBox.engines.${engineLabelKey}`)
-      }),
+        value: activeEngineKind.value === 'primitiveCpu' && activeEngineFallback.value
+          ? i18next.t('simulator:statusBox.engineFallback', {
+            engine: engineShortName
+          })
+          : engineShortName
+      })
+    return [
+      engineStatus,
       i18next.t('main:meta.colon', {
         name: i18next.t('simulator:statusBox.rayCount'), 
         value: status.rayCount
