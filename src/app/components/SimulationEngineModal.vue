@@ -36,7 +36,7 @@
             <label
               class="form-check-label"
               :for="'simulationEngine_' + engine"
-              v-html="$t(`simulator:simulationEngineModal.${engine}.title`) + (engine === 'default' ? '' : '<sup style=\'color: #0006;\'>Alpha</sup>')"
+              v-html="$t(`simulator:simulationEngineModal.${engine}.title`) + (engine === 'default' ? '' : '<sup style=\'color: #0006;\'>Beta</sup>')"
             ></label>
             <div
               class="form-text"

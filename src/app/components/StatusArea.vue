@@ -18,20 +18,6 @@
   <div class="footer-left" id="footer-left" :style="notificationStyle">
     <div class="status-inline">
       <span
-        v-show="alphaFeatures.length > 0"
-        class="alpha-icon"
-        v-tooltip-popover:popover="{
-          title: 'Alpha features',
-          content: alphaPopoverContent,
-          trigger: 'click',
-          placement: 'top',
-          html: true
-        }"
-        @click.stop
-      >
-        Alpha
-      </span>
-      <span
         v-show="betaFeatures.length > 0"
         class="beta-icon"
         v-tooltip-popover:popover="{
@@ -169,18 +155,6 @@ export default {
       const description = i18next.t('simulator:footer.betaFeatures.description')
       const details = i18next.t('simulator:footer.betaFeatures.details')
       return parseLinks(`${description}<ul>${listItems}</ul>${details}`)
-    })
-
-    const alphaPopoverContent = computed(() => {
-      if (!status.activeAlphaFeatures.value?.length) {
-        return ''
-      }
-
-      const listItems = status.activeAlphaFeatures.value
-        .map((feature) => `<li>${feature}</li>`)
-        .join('')
-
-      return `You are using the following alpha features:<ul>${listItems}</ul>Alpha features are still in development and may be incomplete or buggy.`
     })
 
     const expandedJsonWarnings = ref({})
@@ -353,10 +327,8 @@ export default {
       errors: status.activeErrors,
       warnings: status.activeWarnings,
       betaFeatures: status.activeBetaFeatures,
-      alphaFeatures: status.activeAlphaFeatures,
       simulatorStatus: status.simulatorStatus,
       betaPopoverContent,
-      alphaPopoverContent,
       formattedWarningsHtml,
       formattedErrorsHtml,
       // Methods
@@ -397,7 +369,6 @@ export default {
   pointer-events: auto;
 }
 
-.alpha-icon,
 .beta-icon {
   border: 1px solid currentColor;
   border-radius: 9px;
@@ -412,10 +383,6 @@ export default {
   font-weight: 600;
   line-height: 1;
   cursor: pointer;
-}
-
-.alpha-icon {
-  color: #9b59b6d0;
 }
 
 .beta-icon {

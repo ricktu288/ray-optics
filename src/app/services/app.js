@@ -1119,13 +1119,13 @@ function getBetaFeaturesInUse() {
   const defaultScene = Scene.serializableDefaults;
 
   if (scene.rayPowerCutoff !== defaultScene.rayPowerCutoff) {
-    alphaFeatures.push(
+    betaFeatures.push(
       i18next.t('simulator:settings.rayPowerCutoff.title')
     );
   }
 
   if (scene.rayPowerSampling !== defaultScene.rayPowerSampling) {
-    alphaFeatures.push(
+    betaFeatures.push(
       i18next.t('simulator:settings.rayPowerSampling.title')
     );
   }
@@ -1167,7 +1167,7 @@ function getBetaFeaturesInUse() {
   */
 
   if (app.simulationEngine && app.simulationEngine !== 'default') {
-    alphaFeatures.push(
+    betaFeatures.push(
       i18next.t('simulator:settings.simulationEngine.title') + ' -> ' +
       i18next.t(`simulator:simulationEngineModal.${app.simulationEngine}.title`)
     );
