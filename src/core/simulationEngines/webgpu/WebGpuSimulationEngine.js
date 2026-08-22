@@ -36,7 +36,6 @@ import {
   WebGpuAtomicRayRasterizer
 } from './webGpuRayRenderer.js';
 import {
-  DEFAULT_WEBGPU_RAY_COOPERATION_CONFIG,
   WEBGPU_MIN_STORAGE_BUFFERS_PER_SHADER_STAGE,
 } from '../config.js';
 import {
@@ -46,7 +45,6 @@ import {
 
 const DEFAULT_WEBGPU_RUN_CONFIG = Object.freeze({
   workgroupSize: 64,
-  ...DEFAULT_WEBGPU_RAY_COOPERATION_CONFIG,
   ambiguousRayWarningSafetyFactor:
     DEFAULT_AMBIGUOUS_RAY_WARNING_SAFETY_FACTOR,
   maxItemsPerAdvance: 262144,
@@ -148,7 +146,6 @@ class WebGpuSimulationRun {
       `  Scene fingerprint: ${debug.sceneFingerprint ?? 'n/a'}\n` +
       `  BVH: root ${formatDebugValue(debug.bvhRoot)}, ` +
         `${formatDebugValue(debug.bvhNodeCount)} nodes, ` +
-        `${formatDebugValue(debug.bvhPartitionRootCount)} partition roots, ` +
         `depth ${formatDebugValue(debug.maximumBvhDepth)} / ` +
         `${formatDebugValue(debug.maxBvhDepth)} capacity\n` +
       `  Rays: ${sourceRayCount} source, ${processedRayCount} processed, ` +
@@ -612,7 +609,6 @@ class WebGpuSimulationEngine {
       `  Scene fingerprint: ${debug.sceneFingerprint}\n` +
       `  BVH: root ${formatDebugValue(debug.bvhRoot)}, ` +
         `${formatDebugValue(debug.bvhNodeCount)} nodes, ` +
-        `${formatDebugValue(debug.bvhPartitionRootCount)} partition roots, ` +
         `depth ${formatDebugValue(debug.maximumBvhDepth)} / ` +
         `${formatDebugValue(debug.maxBvhDepth)} capacity`
     );
@@ -778,7 +774,6 @@ function createBackendDebugInfo(backend, preparedScene = null) {
     sceneFingerprint: createSceneFingerprint(packed),
     bvhRoot: scene?.runtimeDescription?.bvh?.root,
     bvhNodeCount: packed?.counts?.bvhNodes,
-    bvhPartitionRootCount: packed?.counts?.bvhPartitionRoots,
     maximumBvhDepth: scene?.executionPlan?.maximumBvhDepth,
     maxBvhDepth: scene?.executionPlan?.maxBvhDepth,
   };
@@ -789,7 +784,7 @@ function createSceneFingerprint(packed) {
   let hash = 2166136261;
   for (const name of [
     'curveGeometry', 'curveDescriptors', 'bvhNodes',
-    'bvhPartitionRoots', 'bvhCurveIds'
+    'bvhCurveIds'
   ]) {
     const value = packed[name];
     if (!value) continue;
@@ -823,8 +818,6 @@ function resolveWebGpuRunConfig(config) {
     'maxBvhDepth',
     'maxLocalIterations',
     'maxPingPongsPerSubmission',
-    'rayCooperationSaturationRayCount',
-    'rayCooperationMaximumLanesPerRay',
   ]) {
     if (!Number.isSafeInteger(resolved[name]) || resolved[name] <= 0) {
       throw new RangeError(`${name} must be a positive safe integer.`);
@@ -840,21 +833,6 @@ function resolveWebGpuRunConfig(config) {
     throw new RangeError(
       'ambiguousRayWarningSafetyFactor must be finite and nonnegative.'
     );
-  }
-  for (const name of ['rayCooperationDirectMaxTestsPerLane']) {
-    if (!Number.isFinite(resolved[name]) || resolved[name] < 0) {
-      throw new RangeError(`${name} must be finite and nonnegative.`);
-    }
-  }
-  if (!Number.isFinite(resolved.rayCooperationMaximumHaloFraction) ||
-      resolved.rayCooperationMaximumHaloFraction < 0 ||
-      resolved.rayCooperationMaximumHaloFraction >= 1) {
-    throw new RangeError(
-      'rayCooperationMaximumHaloFraction must be in [0, 1).'
-    );
-  }
-  if (typeof resolved.rayCooperationEnabled !== 'boolean') {
-    throw new TypeError('rayCooperationEnabled must be boolean.');
   }
   return Object.freeze(resolved);
 }

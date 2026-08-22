@@ -731,7 +731,7 @@
     },
     "automatic": {
       "title": "Automatic (recommended)",
-      "description": "Automatically select CPU or WebGPU from the number of primitive curves and initial rays."
+      "description": "Initially select CPU or WebGPU from the number of primitive curves and initial rays. A scene with any positive-step GRIN region always starts on WebGPU when available. The simulator then compares both engines when the first run is long enough."
     },
     "webgpu": {
       "title": "GPU (WebGPU)",
@@ -747,34 +747,6 @@
       "description": "Numerical thresholds that affect geometry and ray termination are configured separately and stored with the scene.",
       "open": "Configure numerical tolerances"
     },
-    "calibration": {
-      "title": "Calibrate for this device",
-      "description": "Run a short set of embedded optical scenes to tune automatic CPU/WebGPU selection and WebGPU ray cooperation. Only the derived parameters are applied; a compact report is retained for later troubleshooting.",
-      "start": "Start calibration",
-      "cancel": "Cancel calibration",
-      "cancelled": "Calibration was cancelled.",
-      "download": "Download calibration report",
-      "lastRun": "Last completed calibration: {{date}}",
-      "warning": "Keep this tab and window visible until calibration finishes. Avoid switching tabs, minimizing the browser, or running other heavy work, because it can distort the timing results.",
-      "returnToSettings": "Return to settings",
-      "running": {
-        "title": "Calibrating simulation engines"
-      },
-      "complete": {
-        "title": "Calibration complete",
-        "description": "The derived settings have been applied to this browser. The report includes the device information, one warm-up time, measured samples, static workloads, and fitted parameters."
-      },
-      "failed": {
-        "title": "Calibration stopped"
-      },
-      "phases": {
-        "preparing": "Preparing WebGL and WebGPU…",
-        "cpu": "CPU probes: {{completed}} of {{total}} complete {{probe}}",
-        "rayCooperation": "WebGPU ray cooperation ({{configuration}}): {{completed}} of {{total}} complete {{probe}}",
-        "fitting": "Fitting device parameters…",
-        "complete": "Calibration complete."
-      }
-    },
     "configuration": {
       "title": "Advanced engine settings",
       "description": "Shared preprocessing settings and tuning for every available compute engine. These settings are not stored in scene files.",
@@ -784,17 +756,9 @@
         "description": "Write diagnostic and performance information from the selected engine to the browser console."
       },
       "sections": {
-        "engineSelection": {
-          "title": "Automatic engine selection",
-          "description": "This device-dependent crossover chooses between CPU and WebGPU from only the initial ray and primitive curve counts. It can be calibrated automatically or entered manually."
-        },
         "bvh": {
           "title": "Bounding volume hierarchy (BVH)",
           "description": "Before tracing rays, the simulator builds a BVH by grouping nearby shapes into boxes, allowing each ray to skip shapes it cannot reach."
-        },
-        "webgpuCooperation": {
-          "title": "WebGPU ray cooperation",
-          "description": "Controls how WebGPU lanes cooperate on a ray and when direct curve testing is used instead of BVH traversal. Calibration tunes the enable switch, saturation point, direct-test crossover, and maximum lanes. The neighbor-halo limit remains a manual rendering preference."
         },
         "webgpuScheduling": {
           "title": "WebGPU scheduling"
@@ -815,10 +779,6 @@
         }
       },
       "fields": {
-        "webGpuWorkloadThreshold": {
-          "title": "CPU/WebGPU crossover score",
-          "description": "Select WebGPU in automatic mode when initial rays × √(primitive curves) reaches this value. Calibration derives it only from the ray-cooperation probes compared with CPU."
-        },
         "lineLeafSize": {
           "title": "Line segments per leaf",
           "description": "Target maximum number of line segments in a BVH leaf when it contains only line segments. Larger values build faster and use fewer boxes, but may require each ray to test more segments."
@@ -862,26 +822,6 @@
         "timeBudgetMs": {
           "title": "CPU update time budget (ms)",
           "description": "Maximum CPU tracing time in one simulator update before yielding to the browser and flushing pending non-default-color rendering. This controls responsiveness and is not automatically calibrated."
-        },
-        "rayCooperationEnabled": {
-          "title": "Enable ray cooperation",
-          "description": "Allow multiple WebGPU lanes to cooperate on intersection tests for one ray."
-        },
-        "rayCooperationSaturationRayCount": {
-          "title": "Cooperation saturation ray count",
-          "description": "Target number of occupied WebGPU lanes. Fewer active rays cause more lanes to cooperate on each ray."
-        },
-        "rayCooperationDirectMaxTestsPerLane": {
-          "title": "Direct tests per lane threshold",
-          "description": "Use direct primitive testing when the number of curves assigned to each cooperating lane does not exceed this value; otherwise use BVH traversal."
-        },
-        "rayCooperationMaximumLanesPerRay": {
-          "title": "Maximum lanes per ray",
-          "description": "Maximum number of WebGPU lanes that may cooperate on one ray."
-        },
-        "rayCooperationMaximumHaloFraction": {
-          "title": "Maximum neighbor halo fraction",
-          "description": "Maximum fraction of ray slots that may be consumed by neighbor halos in image and observer rendering modes. Must be less than 1. This value is not changed by automatic calibration."
         },
         "maxBvhDepth": {
           "title": "Maximum WebGPU BVH depth",

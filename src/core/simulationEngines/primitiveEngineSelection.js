@@ -4,15 +4,14 @@
  * you may not use this file except in compliance with the License.
  */
 
-// Temporary Intel Xe-LPG calibration from the standalone multi-bounce
-// ray-cooperation benchmark's comparison with the CPU implementation. Engine
-// selection intentionally uses only the initial ray and primitive curve counts
-// available immediately after collecting primitive records.
+// Initial automatic selection uses a fixed shipped crossover. The simulator
+// can subsequently compare both engines and remember the measured winner.
 export const DEFAULT_WEBGPU_WORKLOAD_THRESHOLD = 1024;
 
 export function summarizePrimitiveWorkload(primitives) {
   let primitiveCurveCount = 0;
   let initialRayCount = 0;
+  let hasGrinRegion = false;
   for (const primitive of primitives) {
     switch (primitive?.kind) {
       case 'source':
@@ -26,12 +25,17 @@ export function summarizePrimitiveWorkload(primitives) {
         primitiveCurveCount += Array.isArray(primitive.curves)
           ? primitive.curves.length
           : 0;
+        hasGrinRegion ||= Number(primitive.stepSize) > 0;
         break;
       default:
         break;
     }
   }
-  return Object.freeze({ primitiveCurveCount, initialRayCount });
+  return Object.freeze({
+    primitiveCurveCount,
+    initialRayCount,
+    hasGrinRegion,
+  });
 }
 
 export function getPrimitiveEngineWorkloadScore(workload) {
@@ -50,11 +54,12 @@ export function selectPrimitiveEngineKind({
   preference = 'automatic',
   workload,
   isAvailable = () => true,
-  webGpuWorkloadThreshold = DEFAULT_WEBGPU_WORKLOAD_THRESHOLD,
 }) {
   if (preference !== 'automatic') return preference;
+  if (workload?.hasGrinRegion && isAvailable('webgpu')) return 'webgpu';
   const webGpuScore = getPrimitiveEngineWorkloadScore(workload);
-  return webGpuScore >= webGpuWorkloadThreshold && isAvailable('webgpu')
+  return webGpuScore >= DEFAULT_WEBGPU_WORKLOAD_THRESHOLD &&
+    isAvailable('webgpu')
     ? 'webgpu'
     : 'primitiveCpu';
 }

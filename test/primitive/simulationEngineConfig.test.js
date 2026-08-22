@@ -81,10 +81,8 @@ describe('simulation engine configuration', () => {
     expect(DEFAULT_SIMULATION_ENGINE_CONFIGS.webgpu.bvh).toBeUndefined();
   });
 
-  it('provides a single automatic engine-selection crossover', () => {
-    expect(DEFAULT_PRIMITIVE_SIMULATOR_CONFIG.engineSelection).toEqual({
-      webGpuWorkloadThreshold: 1024
-    });
+  it('keeps automatic engine selection out of user configuration', () => {
+    expect(DEFAULT_PRIMITIVE_SIMULATOR_CONFIG.engineSelection).toBeUndefined();
   });
 
   it('resolves a stored direct primitive threshold override', () => {
@@ -100,7 +98,7 @@ describe('simulation engine configuration', () => {
     expect(resolved.bvh.lineLeafSize).toBe(4);
   });
 
-  it('resolves stored automatic engine-selection overrides', () => {
+  it('ignores legacy automatic engine-selection overrides', () => {
     const resolved = resolvePrimitiveSimulatorConfig({
       primitive: {
         engineSelection: {
@@ -109,9 +107,7 @@ describe('simulation engine configuration', () => {
         }
       }
     });
-    expect(resolved.engineSelection).toEqual({
-      webGpuWorkloadThreshold: 2048
-    });
+    expect(resolved.engineSelection).toBeUndefined();
   });
 
   it('resolves engine tuning independently of shared preprocessing', () => {
@@ -122,12 +118,9 @@ describe('simulation engine configuration', () => {
     expect(resolved.bvh).toBeUndefined();
   });
 
-  it('exposes the provisional WebGPU cooperation calibration as defaults',
-    () => {
-      const config = DEFAULT_SIMULATION_ENGINE_CONFIGS.webgpu;
-      expect(config.rayCooperationSaturationRayCount).toBe(8192);
-      expect(config.rayCooperationDirectMaxTestsPerLane).toBe(512);
-      expect(config.rayCooperationMaximumLanesPerRay).toBe(32);
-      expect(config.rayCooperationMaximumHaloFraction).toBe(0.5);
-    });
+  it('does not expose removed WebGPU ray-cooperation settings', () => {
+    const config = DEFAULT_SIMULATION_ENGINE_CONFIGS.webgpu;
+    expect(Object.keys(config).some(key => key.startsWith('rayCooperation')))
+      .toBe(false);
+  });
 });

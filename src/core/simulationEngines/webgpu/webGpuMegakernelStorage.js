@@ -18,7 +18,6 @@ const STATIC_STORAGE_FIELDS = Object.freeze([
   'curveDescriptors',
   'curveGeometry',
   'bvhNodes',
-  'bvhPartitionRoots',
   'bvhCurveIds',
 ]);
 
@@ -31,7 +30,6 @@ const STATIC_STORAGE_MINIMUM_SIZES = Object.freeze({
   curveDescriptors: 32,
   curveGeometry: 4,
   bvhNodes: 80,
-  bvhPartitionRoots: 32,
   bvhCurveIds: 4,
 });
 
@@ -49,7 +47,6 @@ const STATIC_STORAGE_INITIAL_CAPACITY_ELEMENTS = Object.freeze({
   curveDescriptors: 8,
   curveGeometry: 64,
   bvhNodes: 8,
-  bvhPartitionRoots: 8,
   bvhCurveIds: 64,
 });
 const STATIC_STORAGE_GROWTH_FACTOR = 1.5;

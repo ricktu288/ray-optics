@@ -3,10 +3,6 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 
-import {
-  createWebGpuBvhPartitionRootIndices
-} from './webGpuStorage.js';
-
 const TRACE_SCENE_FIELDS = Object.freeze([
   ['bvhNodes', 'BvhNode', 80, 16],
   ['instanceParameters', 'f32', 4, 4],
@@ -16,7 +12,6 @@ const TRACE_SCENE_FIELDS = Object.freeze([
   ['curveDescriptors', 'CurveDescriptor', 32, 4],
   ['curveGeometry', 'f32', 4, 4],
   ['bvhCurveIds', 'u32', 4, 4],
-  ['bvhPartitionRoots', 'BvhPartitionRoot', 32, 8],
 ]);
 
 /**
@@ -104,7 +99,7 @@ function traceSceneCapacityCounts(fieldCapacities) {
 export function useWebGpuTraceScene(code) {
   const names = [
     'bvhNodes', 'instanceParameters', 'surfaces', 'regions', 'detectors',
-    'curves', 'geometry', 'bvhCurveIds', 'bvhPartitionRoots',
+    'curves', 'geometry', 'bvhCurveIds',
   ];
   let result = code;
   for (const name of names) {
@@ -156,10 +151,6 @@ function traceSceneCounts(description) {
     bvhNodes: Math.max(1, description.bvh.nodes.filter(
       node => node.count === 0
     ).length),
-    bvhPartitionRoots: Math.max(
-      1,
-      createWebGpuBvhPartitionRootIndices(description.bvh).length
-    ),
     instanceParameters,
     surfaceDescriptors: description.surfaces?.length ?? 0,
     regionDescriptors: description.regions?.length ?? 0,

@@ -118,7 +118,6 @@ class PrimitiveBasedSimulator {
    * @param {boolean} [options.logDebugInfo=false]
    * @param {boolean} [options.drawBvh=false]
    * @param {Object} [options.bvhOptions]
-   * @param {Object} [options.engineSelectionConfig]
    */
   constructor({
     scene,
@@ -136,7 +135,6 @@ class PrimitiveBasedSimulator {
     logDebugInfo = false,
     drawBvh = false,
     bvhOptions = {},
-    engineSelectionConfig = {},
   }) {
     this.scene = scene;
     this.ctxBelowLight = ctxBelowLight;
@@ -149,7 +147,6 @@ class PrimitiveBasedSimulator {
     this.logDebugInfo = logDebugInfo;
     this.drawBvh = drawBvh;
     this.bvhOptions = bvhOptions;
-    this.engineSelectionConfig = engineSelectionConfig;
 
     this.scene.simulator = this;
     this.dpr = 1;
@@ -237,7 +234,6 @@ class PrimitiveBasedSimulator {
       preference: this.enginePreference,
       workload,
       isAvailable: kind => this.isEngineAvailable(kind),
-      ...this.engineSelectionConfig,
     });
     if (this.engineProviders.has(selected)) return selected;
     if (this.engineProviders.has('primitiveCpu')) return 'primitiveCpu';
@@ -253,10 +249,7 @@ class PrimitiveBasedSimulator {
   getEngineSelectionDecision(workload) {
     const formulaEngineKind = this.selectFormulaEngineKind(workload);
     const workloadScore = getPrimitiveEngineWorkloadScore(workload);
-    const crossover = Number(
-      this.engineSelectionConfig.webGpuWorkloadThreshold ??
-        DEFAULT_WEBGPU_WORKLOAD_THRESHOLD
-    );
+    const crossover = DEFAULT_WEBGPU_WORKLOAD_THRESHOLD;
     const crossoverRatio = crossover > 0
       ? workloadScore / crossover
       : null;
@@ -265,9 +258,14 @@ class PrimitiveBasedSimulator {
       this.isEngineAvailable(this.automaticEngineWinner)
       ? this.automaticEngineWinner
       : null;
-    const selectedEngineKind = learnedEngineKind ?? formulaEngineKind;
+    const grinWebGpuFirst = this.enginePreference === 'automatic' &&
+      workload?.hasGrinRegion && formulaEngineKind === 'webgpu';
+    const selectedEngineKind = grinWebGpuFirst
+      ? formulaEngineKind
+      : learnedEngineKind ?? formulaEngineKind;
     let reason = 'formula';
-    if (learnedEngineKind) reason = 'previous-comparison-winner';
+    if (grinWebGpuFirst) reason = 'grin-region';
+    else if (learnedEngineKind) reason = 'previous-comparison-winner';
     else if (this.enginePreference !== 'automatic') reason = 'forced-preference';
     else if (!comparisonEligible) reason = 'comparison-unavailable';
     return {
@@ -295,7 +293,9 @@ class PrimitiveBasedSimulator {
         decision.workload.initialRayCount
       )} initial rays, ${formatDecisionNumber(
         decision.workload.primitiveCurveCount
-      )} primitive curves\n` +
+      )} primitive curves, GRIN ${
+        decision.workload.hasGrinRegion ? 'yes' : 'no'
+      }\n` +
       `  Score: ${formatDecisionNumber(decision.workloadScore)}\n` +
       `  Crossover: ${formatDecisionNumber(decision.crossover)}\n` +
       `  Score / crossover: ${formatDecisionNumber(

@@ -91,7 +91,6 @@ export function createWebGpuExecutionPlan(
       curveDescriptors: { stride: 32, static: true },
       curveGeometry: { stride: 4, static: true },
       bvhNodes: { stride: 80, static: true },
-      bvhPartitionRoots: { stride: 32, static: true },
       bvhCurveIds: { stride: 4, static: true },
       queueControl: { stride: 4, dynamic: true },
       activeRayIndices: { stride: 4, dynamic: true, order: 'stable' },

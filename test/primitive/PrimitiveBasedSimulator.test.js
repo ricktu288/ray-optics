@@ -123,8 +123,7 @@ describe('PrimitiveBasedSimulator engine registry', () => {
       engineProviders: {
         primitiveCpu: () => createProviderEngine('primitiveCpu'),
         webgpu: () => createProviderEngine('webgpu')
-      },
-      engineSelectionConfig: { webGpuWorkloadThreshold: 1024 }
+      }
     });
     simulator.automaticEngineWinner = 'primitiveCpu';
 
@@ -151,6 +150,29 @@ describe('PrimitiveBasedSimulator engine registry', () => {
       primitiveCurveCount: 1000000
     }).comparisonEligible).toBe(true);
   });
+
+  it('starts positive-step GRIN workloads on WebGPU despite a CPU winner',
+    () => {
+      const simulator = new PrimitiveBasedSimulator({
+        scene: createScene(),
+        enginePreference: 'automatic',
+        engineProviders: {
+          primitiveCpu: () => createProviderEngine('primitiveCpu'),
+          webgpu: () => createProviderEngine('webgpu')
+        }
+      });
+      simulator.automaticEngineWinner = 'primitiveCpu';
+
+      const decision = simulator.getEngineSelectionDecision({
+        initialRayCount: 1,
+        primitiveCurveCount: 1,
+        hasGrinRegion: true
+      });
+
+      expect(decision.selectedEngineKind).toBe('webgpu');
+      expect(decision.learnedEngineKind).toBe('primitiveCpu');
+      expect(decision.reason).toBe('grin-region');
+    });
 
   it('uses the same default-color cutoff and sampling mode for both engines', () => {
     const scene = createScene();
@@ -191,7 +213,6 @@ describe('PrimitiveBasedSimulator engine registry', () => {
         primitiveCpu: () => createProviderEngine('primitiveCpu'),
         webgpu: () => createProviderEngine('webgpu')
       },
-      engineSelectionConfig: { webGpuWorkloadThreshold: 1024 },
       logDebugInfo: true
     });
     simulator.automaticEngineWinner = 'primitiveCpu';

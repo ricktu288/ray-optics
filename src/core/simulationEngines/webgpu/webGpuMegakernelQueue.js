@@ -100,7 +100,11 @@ var<workgroup> weights:array<f32,${workgroupSize}>;
 var<workgroup> destinations:array<u32,${workgroupSize}>;
 const FIXED_SCALE:f32=${atomicFixedPointScale}.0;
 
+// Output generations persist across runs so stale physical slots never become
+// current again. Sampling generations follow the run-local ping-pong index,
+// which resetRunControl resets, so reruns repeat the same phase sequence.
 fn outputGeneration()->u32 { return atomicLoad(&queue[21])+1u; }
+fn nextSamplingGeneration()->u32 { return atomicLoad(&queue[11])+1u; }
 fn samplingPhase(generation:u32)->f32 {
   var value=generation*747796405u+2891336453u;
   value=((value>>((value>>28u)+4u))^value)*277803737u;
@@ -157,7 +161,7 @@ fn prefixMain(@builtin(global_invocation_id) id:vec3u) {
     atomicStore(&queue[offset],bitcast<u32>(cumulative));
     cumulative+=blockWeight;
   }
-  let count=u32(floor(cumulative+samplingPhase(outputGeneration())));
+  let count=u32(floor(cumulative+samplingPhase(nextSamplingGeneration())));
   atomicStore(&queue[config.countWord],count);atomicMax(&queue[5],count);
   let payload=max(1u,atomicLoad(&queue[15]));
   atomicStore(&dispatchArguments[config.dispatchWord],
@@ -170,13 +174,14 @@ fn prefixMain(@builtin(global_invocation_id) id:vec3u) {
 fn fillMain(@builtin(workgroup_id) group:vec3u,
   @builtin(local_invocation_id) local:vec3u) {
   let index=group.x*${workgroupSize}u+local.x;
-  let generation=atomicLoad(&queue[21]);
-  let weight=rayWeight(activeRayPower(index,generation));
+  let currentOutputGeneration=atomicLoad(&queue[21]);
+  let currentSamplingGeneration=atomicLoad(&queue[11]);
+  let weight=rayWeight(activeRayPower(index,currentOutputGeneration));
   weights[local.x]=weight;workgroupBarrier();
   if(local.x==0u&&group.x<config.blockCount){
     var cumulative=bitcast<f32>(
       atomicLoad(&queue[config.blockOffset+group.x]));
-    let phase=samplingPhase(generation);
+    let phase=samplingPhase(currentSamplingGeneration);
     for(var lane=0u;lane<${workgroupSize}u;lane++){
       let before=u32(floor(cumulative+phase));
       cumulative+=weights[lane];

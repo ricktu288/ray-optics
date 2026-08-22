@@ -18,10 +18,6 @@ import { DEFAULT_BVH_OPTIONS } from '../primitive/bvh.js';
 import {
   DEFAULT_AMBIGUOUS_RAY_WARNING_SAFETY_FACTOR
 } from './ambiguousRayWarning.js';
-import {
-  DEFAULT_WEBGPU_WORKLOAD_THRESHOLD
-} from './primitiveEngineSelection.js';
-
 // Read-only trace tables share one packed scene binding. The tracing
 // megakernel uses seven storage bindings, while its combined source-emission
 // and initial-membership pipeline uses eight: the WebGPU guaranteed default.
@@ -40,26 +36,11 @@ const COMMON_BVH_CONFIG = Object.freeze({
 export const DEFAULT_PRIMITIVE_SIMULATOR_CONFIG = Object.freeze({
   logDebugInfo: false,
   bvh: COMMON_BVH_CONFIG,
-  engineSelection: Object.freeze({
-    webGpuWorkloadThreshold: DEFAULT_WEBGPU_WORKLOAD_THRESHOLD,
-  }),
 });
 
 const COMMON_PRIMITIVE_ENGINE_CONFIG = Object.freeze({
   ambiguousRayWarningSafetyFactor:
     DEFAULT_AMBIGUOUS_RAY_WARNING_SAFETY_FACTOR,
-});
-
-// Provisional Intel Xe-LPG calibration from the standalone multi-bounce
-// ray-cooperation benchmark's production-supported scalar/workgroup methods.
-// Experimental subgroup results are excluded. The production settings screen
-// permits manual overrides until a per-adapter calibration path is available.
-export const DEFAULT_WEBGPU_RAY_COOPERATION_CONFIG = Object.freeze({
-  rayCooperationEnabled: true,
-  rayCooperationSaturationRayCount: 8192,
-  rayCooperationDirectMaxTestsPerLane: 512,
-  rayCooperationMaximumLanesPerRay: 32,
-  rayCooperationMaximumHaloFraction: 0.5,
 });
 
 /**
@@ -75,7 +56,6 @@ export const DEFAULT_SIMULATION_ENGINE_CONFIGS = Object.freeze({
   webgpu: Object.freeze({
     ...COMMON_PRIMITIVE_ENGINE_CONFIG,
     workgroupSize: 64,
-    ...DEFAULT_WEBGPU_RAY_COOPERATION_CONFIG,
     maxBatchRayEvents: 1048576,
     maxReadyLineRecords: 1048576,
     maxReadyPointRecords: 1048576,
@@ -120,23 +100,17 @@ export function resolvePrimitiveSimulatorConfig(storedConfigs = {}) {
     resolvedOverrides.bvh && typeof resolvedOverrides.bvh === 'object'
       ? resolvedOverrides.bvh
       : {};
-  const engineSelectionOverrides =
-    resolvedOverrides.engineSelection &&
-    typeof resolvedOverrides.engineSelection === 'object'
-      ? resolvedOverrides.engineSelection
-      : {};
+  const primitiveOverrides = { ...resolvedOverrides };
+  // Ignore preferences written by versions which exposed automatic engine
+  // calibration. Initial automatic selection now always uses the shipped
+  // policy.
+  delete primitiveOverrides.engineSelection;
   return {
     ...DEFAULT_PRIMITIVE_SIMULATOR_CONFIG,
-    ...resolvedOverrides,
+    ...primitiveOverrides,
     bvh: {
       ...DEFAULT_PRIMITIVE_SIMULATOR_CONFIG.bvh,
       ...bvhOverrides,
-    },
-    engineSelection: {
-      webGpuWorkloadThreshold:
-        engineSelectionOverrides.webGpuWorkloadThreshold ??
-        DEFAULT_PRIMITIVE_SIMULATOR_CONFIG.engineSelection
-          .webGpuWorkloadThreshold,
     },
   };
 }

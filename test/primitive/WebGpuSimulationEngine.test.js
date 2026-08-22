@@ -24,8 +24,6 @@ import {
   WebGpuMegakernelStaticSceneStorage,
   decodeWebGpuMegakernelRunState,
 } from '../../src/core/simulationEngines/webgpu/webGpuMegakernelStorage.js';
-import { selectWebGpuRayCooperationStrategy } from
-  '../../src/core/simulationEngines/webgpu/webGpuRayCooperation.js';
 import { createWebGpuTraceSceneData } from
   '../../src/core/simulationEngines/webgpu/webGpuTraceScene.js';
 import { createWebGpuInitialMembershipShader } from
@@ -402,110 +400,6 @@ describe('WebGpuSimulationEngine', () => {
       expect(headless.code).not.toContain('fn renderObserverNeighbor(');
     });
 
-  it('generates cooperative direct and partitioned-BVH megakernels', async () => {
-    const prepared = await prepare();
-    const generate = (renderVariant, acceleration, lanesPerRay) =>
-      createWebGpuMegakernelShader({
-        description: prepared.runtimeDescription,
-        dagPrograms: prepared.dagPrograms,
-        workgroupSize: 64,
-        maxLocalIterations: 8,
-        renderVariant,
-        acceleration,
-        lanesPerRay,
-      }).code;
-    const direct = generate('rays', 'direct', 16);
-    const scalarDirect = generate('rays', 'direct', 1);
-    const bvh = generate('rays', 'bvh4', 4);
-    const images = generate('images', 'direct', 16);
-
-    expect(direct).toContain('traceDirectLane(ray,&membership,lane,16u');
-    expect(scalarDirect).toContain(
-      'traceDirectLane(ray,&membership,0u,1u,&front,&back)'
-    );
-    expect(bvh).toContain('traceBvhLane(ray,&membership,lane,4u');
-    expect(bvh).toContain('bvhPartitionRoots[rootIndex]');
-    expect(direct).toContain('var<workgroup> cooperativeHits');
-    expect(images).toContain('let rayBase=workgroup.x*2u');
-    expect(images).toContain('if(leader&&real&&raySlot>=2u)');
-  });
-
-  it('selects measured lane widths and accounts for image halos', () => {
-    const config = DEFAULT_SIMULATION_ENGINE_CONFIGS.webgpu;
-    const select = (activeRayCount, primitiveCount, neighborMode = false) =>
-      selectWebGpuRayCooperationStrategy({
-        activeRayCount,
-        primitiveCount,
-        workgroupSize: 64,
-        neighborMode,
-        config,
-      });
-
-    expect(select(16384, 4096)).toEqual({
-      acceleration: 'bvh4', lanesPerRay: 1
-    });
-    expect(select(1024, 4096)).toEqual({
-      acceleration: 'direct', lanesPerRay: 8
-    });
-    expect(select(4096, 4096)).toEqual({
-      acceleration: 'bvh4', lanesPerRay: 2
-    });
-    expect(select(1, 1)).toEqual({
-      acceleration: 'direct', lanesPerRay: 1
-    });
-    expect(select(3000, 16)).toEqual({
-      acceleration: 'direct', lanesPerRay: 2
-    });
-    expect(select(256, 65536)).toEqual({
-      acceleration: 'bvh4', lanesPerRay: 32
-    });
-    expect(select(256, 65536, true)).toEqual({
-      acceleration: 'bvh4', lanesPerRay: 16
-    });
-
-    expect(selectWebGpuRayCooperationStrategy({
-      activeRayCount: 256,
-      primitiveCount: 65536,
-      workgroupSize: 64,
-      config: {
-        ...config,
-        rayCooperationMaximumLanesPerRay: 24,
-      },
-    })).toEqual({ acceleration: 'bvh4', lanesPerRay: 16 });
-  });
-
-  it('logs the selected ray cooperation in debug mode', async () => {
-    const writeBuffer = jest.fn();
-    const preparedScene = {
-      logDebugInfo: true,
-      packedStorage: { counts: { curves: 4096 } }
-    };
-    const config = DEFAULT_SIMULATION_ENGINE_CONFIGS.webgpu;
-    const backend = new WebGpuMegakernelBackend({
-      limits: { maxComputeWorkgroupStorageSize: 16384 },
-      queue: { writeBuffer }
-    }, preparedScene, config);
-    backend.queueBuffer = {};
-    backend.dispatchIndirectBuffer = {};
-    backend.regionWordCount = 1;
-    backend.megakernelStages.set('rays:direct:8', {});
-    backend.writeMegakernelUniforms = jest.fn();
-    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
-
-    try {
-      await backend.prepareBatch(1024);
-
-      expect(log).toHaveBeenCalledWith(
-        '[WebGPU ray cooperation] activeRays=%d lanesPerRay=%d acceleration=%s',
-        1024,
-        8,
-        'direct'
-      );
-    } finally {
-      log.mockRestore();
-    }
-  });
-
   it('decodes the first WebGPU normal-conflict diagnostic', () => {
     const data = new ArrayBuffer(WEBGPU_MEGAKERNEL_RUN_CONTROL_SIZE);
     const control = new Uint32Array(data);
@@ -569,6 +463,25 @@ describe('WebGpuSimulationEngine', () => {
       'activeBlocks=min(atomicLoad(\n    &queue[20]),config.blockCount)'
     );
     expect(code).not.toContain('atomicAdd(&queue[config.activeOffset');
+    expect(code).toContain(
+      'fn nextSamplingGeneration()->u32 { return atomicLoad(&queue[11])+1u; }'
+    );
+    expect(code).toContain(
+      'samplingPhase(nextSamplingGeneration())'
+    );
+    expect(code).toContain(
+      'let currentOutputGeneration=atomicLoad(&queue[21]);'
+    );
+    expect(code).toContain(
+      'let currentSamplingGeneration=atomicLoad(&queue[11]);'
+    );
+    expect(code).toContain(
+      'activeRayPower(index,currentOutputGeneration)'
+    );
+    expect(code).toContain(
+      'samplingPhase(currentSamplingGeneration)'
+    );
+    expect(code).not.toContain('samplingPhase(outputGeneration())');
     expect(code).toContain('atomicAdd(&queue[21],1u)');
     const layout = createMegakernelQueueLayout(1024, 64);
     expect(layout.activeOffsets).toEqual([32, 1056]);
@@ -725,7 +638,6 @@ describe('WebGpuSimulationEngine', () => {
         curveDescriptors: new ArrayBuffer(mirrorCount * 32),
         curveGeometry: new Float32Array(mirrorCount * 8),
         bvhNodes: new ArrayBuffer(80),
-        bvhPartitionRoots: new ArrayBuffer(32),
         bvhCurveIds: new Uint32Array(mirrorCount),
       });
       const storage = new WebGpuMegakernelStaticSceneStorage(
@@ -752,7 +664,6 @@ describe('WebGpuSimulationEngine', () => {
         curveDescriptors: 64,
         curveGeometry: 64,
         bvhCurveIds: 8,
-        bvhPartitionRoots: 64,
       };
       const generated = createWebGpuMegakernelShader({
         description: prepared.runtimeDescription,
@@ -774,39 +685,6 @@ describe('WebGpuSimulationEngine', () => {
       expect(generated.code).toContain(
         'curves:array<CurveDescriptor,2>'
       );
-      expect(generated.code).toContain(
-        'bvhPartitionRoots:array<BvhPartitionRoot,2>'
-      );
-    });
-
-  it('aligns BVH partition roots after an odd curve-index count', () => {
-    const partitionRoot = new ArrayBuffer(32);
-    const rootView = new DataView(partitionRoot);
-    rootView.setFloat32(0, 10, true);
-    rootView.setFloat32(4, 20, true);
-    rootView.setFloat32(8, 30, true);
-    rootView.setFloat32(12, 40, true);
-    rootView.setUint32(16, 0x81234567, true);
-    const data = createWebGpuTraceSceneData({
-      bvhNodes: new ArrayBuffer(80),
-      instanceParameters: new Float32Array(0),
-      surfaceDescriptors: new ArrayBuffer(0),
-      regionDescriptors: new ArrayBuffer(0),
-      detectorDescriptors: new ArrayBuffer(0),
-      curveDescriptors: new ArrayBuffer(0),
-      curveGeometry: new Float32Array(0),
-      bvhCurveIds: Uint32Array.from([7]),
-      bvhPartitionRoots: partitionRoot,
-    });
-    const view = new DataView(data.buffer, data.byteOffset, data.byteLength);
-
-    // The preceding fields end at byte 204. BvhPartitionRoot starts with
-    // vec2f, so WGSL inserts four bytes and reads this field at byte 208.
-    expect(view.getFloat32(208, true)).toBe(10);
-    expect(view.getFloat32(212, true)).toBe(20);
-    expect(view.getFloat32(216, true)).toBe(30);
-    expect(view.getFloat32(220, true)).toBe(40);
-    expect(view.getUint32(224, true)).toBe(0x81234567);
   });
 
   it('passes the configured ray-power policy to tracing and both collectors',
@@ -965,7 +843,6 @@ describe('WebGpuSimulationEngine', () => {
           counts: {
             sourceRays: 9,
             bvhNodes: 12,
-            bvhPartitionRoots: 4,
           },
           curveGeometry: Float32Array.of(1, 2),
         },
@@ -998,7 +875,6 @@ describe('WebGpuSimulationEngine', () => {
           sceneFingerprint: '1234abcd',
           bvhRoot: 3,
           bvhNodeCount: 12,
-          bvhPartitionRootCount: 4,
           maximumBvhDepth: 5,
         },
         submissionDebugInfo: { submissionId: 13, kind: 'initial' },

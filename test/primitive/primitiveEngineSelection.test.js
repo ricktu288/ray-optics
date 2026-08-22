@@ -26,7 +26,8 @@ describe('primitive engine selection', () => {
     ]);
     expect(workload).toEqual({
       initialRayCount: 64,
-      primitiveCurveCount: 5
+      primitiveCurveCount: 5,
+      hasGrinRegion: true,
     });
   });
 
@@ -42,7 +43,7 @@ describe('primitive engine selection', () => {
     expect(choose(1024)).toBe('primitiveCpu');
   });
 
-  it('ignores branching, rendering, and GRIN metadata', () => {
+  it('ignores branching and rendering metadata in the crossover score', () => {
     const base = { primitiveCurveCount: 4, initialRayCount: 500 };
     expect(getPrimitiveEngineWorkloadScore({
       ...base,
@@ -56,7 +57,7 @@ describe('primitive engine selection', () => {
     })).toBe('primitiveCpu');
   });
 
-  it('uses the calibrated ray-count times square-root-curve-count rule', () => {
+  it('uses the fixed ray-count times square-root-curve-count rule', () => {
     const choose = (primitiveCurveCount, initialRayCount) =>
       selectPrimitiveEngineKind({
         workload: { primitiveCurveCount, initialRayCount },
@@ -69,6 +70,23 @@ describe('primitive engine selection', () => {
     expect(choose(0, 1023)).toBe('primitiveCpu');
     expect(choose(0, 1024)).toBe('primitiveCpu');
   });
+
+  it('tries available WebGPU first when a positive-step GRIN region exists',
+    () => {
+      const workload = summarizePrimitiveWorkload([
+        { kind: 'source', rayCount: 1 },
+        { kind: 'region', curves: [], stepSize: 0 },
+        { kind: 'region', curves: [{}], stepSize: 0.25 },
+      ]);
+      expect(selectPrimitiveEngineKind({
+        workload,
+        isAvailable: () => true,
+      })).toBe('webgpu');
+      expect(selectPrimitiveEngineKind({
+        workload,
+        isAvailable: kind => kind !== 'webgpu',
+      })).toBe('primitiveCpu');
+    });
 
   it('honors forced engines and avoids unavailable WebGPU automatically', () => {
     const workload = { primitiveCurveCount: 4096, initialRayCount: 4096 };
