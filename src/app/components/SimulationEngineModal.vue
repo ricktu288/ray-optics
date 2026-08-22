@@ -365,6 +365,10 @@ export default {
   z-index: 1045;
 }
 
+.modal-body > .form-check + .form-check {
+  margin-top: 1rem;
+}
+
 .engine-settings-toggle {
   padding: 0;
   border: 0;

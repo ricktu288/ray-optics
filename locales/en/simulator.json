@@ -697,7 +697,7 @@
     "webgpu": {
       "title": "WebGPU",
       "shortTitle": "WebGPU",
-      "description": "The fastest engine for scenes with high ray density, often showing 10× to 1000× speedups compared to the default engine. However, it is often slower than the CPU for scenes with low ray density and may be laggy or unstable on some platforms. It uses lower numerical precision (float16).",
+      "description": "The fastest engine for scenes with high ray density, often showing 10× to 1000× speedups compared to the default engine. However, it is often slower than the CPU for scenes with low ray density and may be laggy or unstable on some platforms. It uses lower numerical precision (float32).",
       "unavailable": "WebGPU could not be initialized: {{message}}",
       "fallback": "WebGPU could not run this scene, so the simulation was restarted on CPU: {{message}}"
     },
