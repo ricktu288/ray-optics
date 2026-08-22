@@ -317,7 +317,6 @@
       },
       {
         "id": "simple-double-gauss-lens",
-        "beta": true,
         "contributors": [
           "Alex"
         ]
@@ -347,7 +346,6 @@
     "content": [
       {
         "id": "GRIN-slab",
-        "beta": true,
         "contributors": [
           "Stas Fainer",
           "Yi-Ting Tu"
