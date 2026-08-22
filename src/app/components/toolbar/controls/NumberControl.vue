@@ -112,7 +112,11 @@ export default {
     const numberToDisplayString = (num) => {
       if (num === Infinity) return 'inf'
       if (num === -Infinity) return '-inf'
-      return (num ?? '').toString()
+      if (num == null) return ''
+      const decimal = num.toString()
+      if (num === 0 || !Number.isFinite(num)) return decimal
+      const scientific = num.toExponential().replace('e+', 'e')
+      return scientific.length < decimal.length ? scientific : decimal
     }
 
     const displayStringToNumber = (str) => {

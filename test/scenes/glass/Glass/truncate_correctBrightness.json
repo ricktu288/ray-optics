@@ -93,8 +93,6 @@
   "width": 1500,
   "height": 800,
   "colorMode": "linear",
-  "numericalTolerances": {
-    "rayPowerCutoffMode": "truncate"
-  },
+  "rayPowerSampling": false,
   "randomSeed": "0"
 }

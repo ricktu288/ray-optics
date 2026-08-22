@@ -80,6 +80,26 @@ describe('simulation engine configuration', () => {
     expect(DEFAULT_SIMULATION_ENGINE_CONFIGS.webgpu.bvh).toBeUndefined();
   });
 
+  it('keeps geometric tolerances in flexible simulator configuration', () => {
+    expect(DEFAULT_PRIMITIVE_SIMULATOR_CONFIG.numericalTolerances)
+      .toEqual({
+        curveEndpoint: 0,
+        interactionMerging: 1e-6,
+        interactionNormal: 1e-6,
+        forwardDistance: 1e-6
+      });
+    expect(resolvePrimitiveSimulatorConfig({
+      primitive: {
+        numericalTolerances: { interactionMerging: 0.002 }
+      }
+    }).numericalTolerances).toEqual({
+      curveEndpoint: 0,
+      interactionMerging: 0.002,
+      interactionNormal: 1e-6,
+      forwardDistance: 1e-6
+    });
+  });
+
   it('resolves a stored direct primitive threshold override', () => {
     const resolved = resolvePrimitiveSimulatorConfig({
       primitive: {

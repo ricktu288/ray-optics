@@ -22,6 +22,9 @@ import { createArcOrLineCurve } from '../primitiveCurveHelpers.js';
 import {
   createDiffractionGratingPrimitive
 } from '../diffractionGratingPrimitive.js';
+import {
+  getEffectiveRayPowerOptions
+} from '../../simulationEngines/rayPower.js';
 
 /**
  * Mirror with shape of a circular arc. Diffracts light. 
@@ -410,6 +413,7 @@ class ConcaveDiffractionGrating extends BaseSceneObj {
   onRayIncident(ray, rayIndex, incidentPoint) {
     const mm_in_nm = 1 / 1e6;
     let truncation = 0;
+    const { rayPowerCutoff } = getEffectiveRayPowerOptions(this.scene);
   
     // Ray and Grating Geometry
     const rx = ray.p1.x - incidentPoint.x;
@@ -491,10 +495,12 @@ class ConcaveDiffractionGrating extends BaseSceneObj {
       // There is currently no good way to make image detection work here. So just set gap to true to disable image detection for the diffracted rays.
       diffracted_ray.gap = true;
 
-      if (diffracted_ray.brightness_s + diffracted_ray.brightness_p > (this.scene.colorMode != 'default' ? 1e-6 : 0.01)) {
+      const diffractedPower =
+        diffracted_ray.brightness_s + diffracted_ray.brightness_p;
+      if (diffractedPower > 0 && diffractedPower >= rayPowerCutoff) {
         newRays.push(diffracted_ray);
       } else {
-        truncation += diffracted_ray.brightness_s + diffracted_ray.brightness_p;
+        truncation += diffractedPower;
       }
     }
 

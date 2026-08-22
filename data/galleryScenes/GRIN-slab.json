@@ -195,8 +195,6 @@
     "y": 483.9899180908078
   },
   "scale": 1,
-  "numericalTolerances": {
-    "rayPowerCutoff": 0.001
-  },
+  "rayPowerCutoff": 0.001,
   "importedFromBeta": true
 }

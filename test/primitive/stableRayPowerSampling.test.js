@@ -21,7 +21,7 @@ describe('stable ray-power prefix sampling', () => {
       powerP: 0.001
     }));
 
-    const sampled = collectRayPowerQueue(rays, 0.01, 1);
+    const sampled = collectRayPowerQueue(rays, 0.01, 1, true);
 
     expect(sampled.rays).toEqual([rays[1]]);
     expect(sampled.rays[0]).toMatchObject({
@@ -37,7 +37,7 @@ describe('stable ray-power prefix sampling', () => {
     const strong = { powerS: 0.006, powerP: 0.005 };
 
     const sampled = collectRayPowerQueue(
-      [weak, strong], 0.01, 1, 'truncate'
+      [weak, strong], 0.01, 1, false
     );
 
     expect(sampled.rays).toEqual([strong]);
@@ -46,9 +46,9 @@ describe('stable ray-power prefix sampling', () => {
     expect(sampled.weakRayPower).toBeCloseTo(0.003);
   });
 
-  it('rejects unknown cutoff modes', () => {
-    expect(() => collectRayPowerQueue([], 0.01, 1, 'randomSampling'))
-      .toThrow('rayPowerCutoffMode');
+  it('rejects non-boolean sampling options', () => {
+    expect(() => collectRayPowerQueue([], 0.01, 1, 'sometimes'))
+      .toThrow('rayPowerSampling');
   });
 
   it('stably compacts active full-weight rays and inactive holes', () => {

@@ -24,10 +24,8 @@ function createScene() {
     lengthScale: 1,
     origin: { x: 0, y: 0 },
     scale: 1,
-    numericalTolerances: {
-      rayPowerCutoff: 1e-6,
-      rayPowerCutoffMode: 'truncate'
-    },
+    rayPowerCutoff: 1e-6,
+    rayPowerSampling: false,
     colorMode: 'default',
     mode: 'rays',
     simulateColors: false,
@@ -187,21 +185,21 @@ describe('PrimitiveBasedSimulator engine registry', () => {
 
     expect(simulator.createRunJob(0).sceneOptions).toMatchObject({
       rayPowerCutoff: 0.01,
-      rayPowerCutoffMode: 'stableSampling'
+      rayPowerSampling: true
     });
 
-    scene.numericalTolerances.rayPowerCutoff = 0.02;
+    scene.rayPowerCutoff = 0.02;
     expect(simulator.createRunJob(0).sceneOptions).toMatchObject({
-      rayPowerCutoff: 0.02,
-      rayPowerCutoffMode: 'stableSampling'
+      rayPowerCutoff: 0.01,
+      rayPowerSampling: true
     });
 
     scene.colorMode = 'linear';
-    scene.numericalTolerances.rayPowerCutoff = 1e-6;
-    scene.numericalTolerances.rayPowerCutoffMode = 'truncate';
+    scene.rayPowerCutoff = 1e-6;
+    scene.rayPowerSampling = false;
     expect(simulator.createRunJob(0).sceneOptions).toMatchObject({
       rayPowerCutoff: 1e-6,
-      rayPowerCutoffMode: 'truncate'
+      rayPowerSampling: false
     });
   });
 
@@ -605,7 +603,7 @@ describe('PrimitiveBasedSimulator BVH diagnostics', () => {
     expect(simulator.engine.createRun).toHaveBeenCalledWith(
       expect.objectContaining({
         rayPowerCutoff: 0.01,
-        rayPowerCutoffMode: 'stableSampling'
+        rayPowerSampling: true
       })
     );
     expect(result.values).toEqual(Float64Array.of(2, 3));

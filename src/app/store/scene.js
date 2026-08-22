@@ -69,7 +69,10 @@ const PROPERTY_CALLBACKS = {
   maxRayDepth: (value) => {
     app.simulator?.updateSimulation(false, true)
   },
-  numericalTolerances: (value) => {
+  rayPowerCutoff: (value) => {
+    app.simulator?.updateSimulation(false, true)
+  },
+  rayPowerSampling: (value) => {
     app.simulator?.updateSimulation(false, true)
   },
   observerSize: (value) => {

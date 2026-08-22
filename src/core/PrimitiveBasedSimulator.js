@@ -39,6 +39,12 @@ import {
   selectPrimitiveEngineKind,
   summarizePrimitiveWorkload
 } from './simulationEngines/primitiveEngineSelection.js';
+import {
+  DEFAULT_PRIMITIVE_NUMERICAL_TOLERANCES
+} from './simulationEngines/config.js';
+import {
+  getEffectiveRayPowerOptions
+} from './simulationEngines/rayPower.js';
 
 const UV_WAVELENGTH = 380;
 const VIOLET_WAVELENGTH = 420;
@@ -55,16 +61,12 @@ const BVH_TESTED_CURVE_COLOR = [1, 0.6, 0.05, 0.95];
 const AUTOMATIC_COMPARISON_MIN_RUNTIME_MS = 50;
 const AUTOMATIC_CPU_PREFERENCE_RUNTIME_MS = 20;
 const AUTOMATIC_COMPARISON_PAUSE_MS = 50;
-const DEFAULT_COLOR_MINIMUM_RAY_POWER = 0.01;
 
 function formatPrimitiveEngineWarning(warning) {
   const tolerance = warning.tolerance;
   if (!tolerance) return null;
   const kind = i18next.t(
     `simulator:generalWarnings.primitiveToleranceKinds.${tolerance.kind}`
-  );
-  const unit = i18next.t(
-    `simulator:generalWarnings.primitiveToleranceUnits.${tolerance.unit}`
   );
   const conflict = i18next.t(
     'simulator:generalWarnings.primitiveInteractionConflict', {
@@ -73,9 +75,7 @@ function formatPrimitiveEngineWarning(warning) {
       conflictingCurveId: formatWarningCurveId(
         warning.conflictingCurveId
       ),
-      toleranceKind: kind,
-      tolerance: formatToleranceValue(tolerance.value),
-      toleranceUnit: unit
+      toleranceKind: kind
     }
   );
   if (!Number.isFinite(warning.ambiguousPower)) return conflict;
@@ -118,6 +118,7 @@ class PrimitiveBasedSimulator {
    * @param {boolean} [options.logDebugInfo=false]
    * @param {boolean} [options.drawBvh=false]
    * @param {Object} [options.bvhOptions]
+   * @param {Object} [options.numericalTolerances]
    */
   constructor({
     scene,
@@ -135,6 +136,7 @@ class PrimitiveBasedSimulator {
     logDebugInfo = false,
     drawBvh = false,
     bvhOptions = {},
+    numericalTolerances = DEFAULT_PRIMITIVE_NUMERICAL_TOLERANCES,
   }) {
     this.scene = scene;
     this.ctxBelowLight = ctxBelowLight;
@@ -147,6 +149,7 @@ class PrimitiveBasedSimulator {
     this.logDebugInfo = logDebugInfo;
     this.drawBvh = drawBvh;
     this.bvhOptions = bvhOptions;
+    this.numericalTolerances = { ...numericalTolerances };
 
     this.scene.simulator = this;
     this.dpr = 1;
@@ -207,7 +210,7 @@ class PrimitiveBasedSimulator {
     this.primitives = [];
     const initialPreprocessing = preprocessPrimitives([], {
       lengthScale: this.scene.lengthScale,
-      numericalTolerances: this.scene.numericalTolerances,
+      numericalTolerances: this.numericalTolerances,
       numericEpsilon: this.engine.numericEpsilon
     });
     this.processedScene = initialPreprocessing.processedScene;
@@ -444,9 +447,7 @@ class PrimitiveBasedSimulator {
   createRunJob(generation, overrides = {}) {
     const engine = overrides.engine ?? this.engine;
     const origin = this.scene.origin ?? { x: 0, y: 0 };
-    const numericalTolerances = this.scene.numericalTolerances ?? {};
-    const isDefaultColorMode =
-      (this.scene.colorMode ?? 'default') === 'default';
+    const rayPowerOptions = getEffectiveRayPowerOptions(this.scene);
     return {
       generation,
       engine,
@@ -471,21 +472,14 @@ class PrimitiveBasedSimulator {
         violetWavelength: this.scene.violetWavelength,
         redWavelength: this.scene.redWavelength,
         colorMode: this.scene.colorMode,
-        rayPowerCutoff: isDefaultColorMode
-          ? Math.max(
-            DEFAULT_COLOR_MINIMUM_RAY_POWER,
-            numericalTolerances.rayPowerCutoff ?? 0
-          )
-          : numericalTolerances.rayPowerCutoff,
-        rayPowerCutoffMode: isDefaultColorMode
-          ? 'stableSampling'
-          : numericalTolerances.rayPowerCutoffMode,
+        rayPowerCutoff: rayPowerOptions.rayPowerCutoff,
+        rayPowerSampling: rayPowerOptions.rayPowerSampling,
         maxRayDepth: this.scene.maxRayDepth,
         mode: this.scene.mode,
         simulateColors: this.scene.simulateColors,
         showRayArrows: this.scene.showRayArrows,
         observer: this.scene.observer,
-        numericalTolerances: { ...numericalTolerances },
+        numericalTolerances: { ...this.numericalTolerances },
         lengthScale: this.scene.lengthScale,
       },
     };
@@ -615,7 +609,7 @@ class PrimitiveBasedSimulator {
       viewport: job.viewport,
       colorMode: job.sceneOptions.colorMode,
       rayPowerCutoff: job.sceneOptions.rayPowerCutoff,
-      rayPowerCutoffMode: job.sceneOptions.rayPowerCutoffMode,
+      rayPowerSampling: job.sceneOptions.rayPowerSampling,
       rayCountLimit: this.rayCountLimit,
       maxRayDepth: job.sceneOptions.maxRayDepth,
       sceneRevision: job.generation,
@@ -1049,7 +1043,7 @@ class PrimitiveBasedSimulator {
       timings
     } = preprocessPrimitives(this.primitives, {
       lengthScale: this.scene.lengthScale,
-      numericalTolerances: this.scene.numericalTolerances,
+      numericalTolerances: this.numericalTolerances,
       numericEpsilon: this.engine.numericEpsilon,
       bvhOptions: {
         ...this.bvhOptions,

@@ -170,6 +170,39 @@ describe('Glass', () => {
     expect(cauchyValues.alpha).toBe(0);
   });
 
+  it('uses ray-index modding for legacy weak-ray sampling', () => {
+    obj.partialReflect = true;
+    scene.colorMode = 'linear';
+    scene.rayPowerCutoff = 0.01;
+    scene.rayPowerSampling = true;
+    const createRay = () => ({
+      p1: { x: 0, y: 0 },
+      p2: { x: 1, y: 0 },
+      brightness_s: 0.1,
+      brightness_p: 0,
+      gap: false
+    });
+
+    const selected = obj.refract(
+      createRay(), 0, { x: 1, y: 0 }, { x: -1, y: 0 }, 2 / 3, []
+    );
+    const skipped = obj.refract(
+      createRay(), 1, { x: 1, y: 0 }, { x: -1, y: 0 }, 2 / 3, []
+    );
+
+    expect(selected.newRays).toHaveLength(1);
+    expect(
+      selected.newRays[0].brightness_s + selected.newRays[0].brightness_p
+    ).toBeCloseTo(0.012);
+    expect(skipped.newRays).toHaveLength(0);
+
+    scene.rayPowerSampling = false;
+    const truncated = obj.refract(
+      createRay(), 0, { x: 1, y: 0 }, { x: -1, y: 0 }, 2 / 3, []
+    );
+    expect(truncated.newRays).toHaveLength(0);
+  });
+
   it('hovers over square points and edges', () => {
     // Create the square first
     user.click(0, 0);

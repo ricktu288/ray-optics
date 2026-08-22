@@ -23,6 +23,13 @@ import {
 // and initial-membership pipeline uses eight: the WebGPU guaranteed default.
 export const WEBGPU_MIN_STORAGE_BUFFERS_PER_SHADER_STAGE = 8;
 
+export const DEFAULT_PRIMITIVE_NUMERICAL_TOLERANCES = Object.freeze({
+  curveEndpoint: 0,
+  interactionMerging: 1e-6,
+  interactionNormal: 1e-6,
+  forwardDistance: 1e-6,
+});
+
 const COMMON_BVH_CONFIG = Object.freeze({
   lineLeafSize: DEFAULT_BVH_OPTIONS.lineLeafSize,
   arcLeafSize: DEFAULT_BVH_OPTIONS.arcLeafSize,
@@ -36,6 +43,7 @@ const COMMON_BVH_CONFIG = Object.freeze({
 export const DEFAULT_PRIMITIVE_SIMULATOR_CONFIG = Object.freeze({
   logDebugInfo: false,
   bvh: COMMON_BVH_CONFIG,
+  numericalTolerances: DEFAULT_PRIMITIVE_NUMERICAL_TOLERANCES,
 });
 
 const COMMON_PRIMITIVE_ENGINE_CONFIG = Object.freeze({
@@ -91,6 +99,11 @@ export function resolvePrimitiveSimulatorConfig(storedConfigs = {}) {
     resolvedOverrides.bvh && typeof resolvedOverrides.bvh === 'object'
       ? resolvedOverrides.bvh
       : {};
+  const numericalToleranceOverrides =
+    resolvedOverrides.numericalTolerances &&
+      typeof resolvedOverrides.numericalTolerances === 'object'
+      ? resolvedOverrides.numericalTolerances
+      : {};
   return {
     ...resolveKnownOverrides(
       DEFAULT_PRIMITIVE_SIMULATOR_CONFIG,
@@ -99,6 +112,10 @@ export function resolvePrimitiveSimulatorConfig(storedConfigs = {}) {
     bvh: resolveKnownOverrides(
       DEFAULT_PRIMITIVE_SIMULATOR_CONFIG.bvh,
       bvhOverrides
+    ),
+    numericalTolerances: resolveKnownOverrides(
+      DEFAULT_PRIMITIVE_SIMULATOR_CONFIG.numericalTolerances,
+      numericalToleranceOverrides
     ),
   };
 }

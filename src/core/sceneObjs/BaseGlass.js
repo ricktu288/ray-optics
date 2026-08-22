@@ -18,6 +18,9 @@ import BaseSceneObj from './BaseSceneObj.js';
 import i18next from 'i18next';
 import geometry from '../geometry.js';
 import { parseFormula } from '../formula/formula-parser.js';
+import {
+  getEffectiveRayPowerOptions
+} from '../simulationEngines/rayPower.js';
 
 const CONSTANT_REFRACTIVE_INDEX_BULK_TYPE = {
   name: 'Constant refractive index',
@@ -266,6 +269,10 @@ class BaseGlass extends BaseSceneObj {
 
       let newRays = [];
       let truncation = 0;
+      const {
+        rayPowerCutoff,
+        rayPowerSampling
+      } = getEffectiveRayPowerOptions(this.scene);
 
       // Handle the reflected ray
       var ray2 = geometry.line(incidentPoint, geometry.point(incidentPoint.x + ray_x + 2 * cos1 * normal_x, incidentPoint.y + ray_y + 2 * cos1 * normal_y));
@@ -276,12 +283,13 @@ class BaseGlass extends BaseSceneObj {
       if (bodyMergingObj) {
         ray2.bodyMergingObj = bodyMergingObj;
       }
-      if (ray2.brightness_s + ray2.brightness_p > (this.scene.colorMode != 'default' ? 1e-6 : 0.01)) {
+      const reflectedPower = ray2.brightness_s + ray2.brightness_p;
+      if (reflectedPower > 0 && reflectedPower >= rayPowerCutoff) {
         newRays.push(ray2);
       } else {
-        truncation += ray2.brightness_s + ray2.brightness_p;
-        if (!ray.gap && !this.scene.colorMode != 'default') {
-          var amp = Math.floor(0.01 / (ray2.brightness_s + ray2.brightness_p)) + 1;
+        truncation += reflectedPower;
+        if (reflectedPower > 0 && rayPowerSampling && !ray.gap) {
+          var amp = Math.floor(rayPowerCutoff / reflectedPower) + 1;
           if (rayIndex % amp == 0) {
             ray2.brightness_s = ray2.brightness_s * amp;
             ray2.brightness_p = ray2.brightness_p * amp;
@@ -306,7 +314,11 @@ class BaseGlass extends BaseSceneObj {
       ray.brightness_s = ray.brightness_s * (1 - R_s);
       ray.brightness_p = ray.brightness_p * (1 - R_p);
 
-      if (ray.brightness_s + ray.brightness_p > (this.scene.colorMode != 'default' ? 1e-6 : 0)) {
+      const refractedPower = ray.brightness_s + ray.brightness_p;
+      const refractedCutoff = this.scene.colorMode === 'default'
+        ? 0
+        : rayPowerCutoff;
+      if (refractedPower > 0 && refractedPower >= refractedCutoff) {
         return {
           newRays: newRays,
           truncation: truncation
@@ -315,7 +327,7 @@ class BaseGlass extends BaseSceneObj {
         return {
           isAbsorbed: true,
           newRays: newRays,
-          truncation: truncation + ray.brightness_s + ray.brightness_p
+          truncation: truncation + refractedPower
         };
       }
     }

@@ -127,4 +127,55 @@ describe('BeamSplitter', () => {
     expect(rays.P_2s).toBeCloseTo(0.12);
     expect(rays.P_2p).toBeCloseTo(0.18);
   });
+
+  it('uses the scene ray-power cutoff in the legacy interaction', () => {
+    obj.p1 = { x: 0, y: -1 };
+    obj.p2 = { x: 0, y: 1 };
+    obj.transRatio = 0.005;
+    scene.colorMode = 'linear';
+    scene.rayPowerCutoff = 0.01;
+    const ray = {
+      p1: { x: -1, y: 0 },
+      p2: { x: 1, y: 0 },
+      brightness_s: 1,
+      brightness_p: 0
+    };
+
+    expect(obj.onRayIncident(ray, 0, { x: 0, y: 0 })).toMatchObject({
+      truncation: 0.005
+    });
+  });
+
+  it('uses the legacy 1e-6 cutoff with correct brightness by default', () => {
+    obj.p1 = { x: 0, y: -1 };
+    obj.p2 = { x: 0, y: 1 };
+    obj.transRatio = 5e-7;
+    scene.colorMode = 'linear';
+    const ray = {
+      p1: { x: -1, y: 0 },
+      p2: { x: 1, y: 0 },
+      brightness_s: 1,
+      brightness_p: 0
+    };
+
+    expect(obj.onRayIncident(ray, 0, { x: 0, y: 0 })).toMatchObject({
+      truncation: 5e-7
+    });
+  });
+
+  it('uses the fixed 0.01 cutoff when correct brightness is off', () => {
+    obj.p1 = { x: 0, y: -1 };
+    obj.p2 = { x: 0, y: 1 };
+    obj.transRatio = 0.02;
+    scene.rayPowerCutoff = 0.1;
+    const ray = {
+      p1: { x: -1, y: 0 },
+      p2: { x: 1, y: 0 },
+      brightness_s: 1,
+      brightness_p: 0
+    };
+
+    expect(obj.onRayIncident(ray, 0, { x: 0, y: 0 }).newRays)
+      .toHaveLength(1);
+  });
 });

@@ -20,6 +20,9 @@ import i18next from 'i18next';
 import Simulator from '../../Simulator.js';
 import geometry from '../../geometry.js';
 import { parseFormula } from '../../formula/formula-parser.js';
+import {
+  getEffectiveRayPowerOptions
+} from '../../simulationEngines/rayPower.js';
 
 const BEAM_SPLITTER_SURFACE_TYPE = {
   name: 'Beam splitter',
@@ -166,18 +169,21 @@ class BeamSplitter extends LineObjMixin(BaseFilter) {
     ray2.wavelength = ray.wavelength;
     ray.brightness_s *= (1 - transmission);
     ray.brightness_p *= (1 - transmission);
-    if (ray2.brightness_s + ray2.brightness_p > (this.scene.colorMode != 'default' ? 1e-6 : 0.01)) {
+    const { rayPowerCutoff } = getEffectiveRayPowerOptions(this.scene);
+    const transmittedPower = ray2.brightness_s + ray2.brightness_p;
+    const reflectedPower = ray.brightness_s + ray.brightness_p;
+    if (transmittedPower > 0 && transmittedPower >= rayPowerCutoff) {
       return {
         newRays: [ray2]
       };
-    } else if (ray.brightness_s + ray.brightness_p > (this.scene.colorMode != 'default' ? 1e-6 : 0.01)) {
+    } else if (reflectedPower > 0 && reflectedPower >= rayPowerCutoff) {
       return {
-        truncation: ray2.brightness_s + ray2.brightness_p
+        truncation: transmittedPower
       };
     } else {
       return {
         isAbsorbed: true,
-        truncation: ray.brightness_s + ray.brightness_p + ray2.brightness_s + ray2.brightness_p
+        truncation: reflectedPower + transmittedPower
       };
     }
   }

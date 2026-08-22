@@ -4,6 +4,8 @@
  * you may not use this file except in compliance with the License.
  */
 
+import { normalizeRayPowerSampling } from './rayPower.js';
+
 /**
  * Match the deterministic phase used by the WebGPU stable queue collector.
  * All integer operations deliberately wrap to u32.
@@ -20,23 +22,6 @@ export function stableRaySamplingPhase(generation) {
   return (value >>> 8) / 16777216;
 }
 
-export const RAY_POWER_CUTOFF_MODE_STABLE_SAMPLING = 'stableSampling';
-export const RAY_POWER_CUTOFF_MODE_TRUNCATE = 'truncate';
-
-/** Validate and default the scene-level weak-ray handling policy. */
-export function normalizeRayPowerCutoffMode(mode) {
-  const resolved = mode ?? RAY_POWER_CUTOFF_MODE_STABLE_SAMPLING;
-  if (
-    resolved !== RAY_POWER_CUTOFF_MODE_STABLE_SAMPLING &&
-    resolved !== RAY_POWER_CUTOFF_MODE_TRUNCATE
-  ) {
-    throw new RangeError(
-      'rayPowerCutoffMode must be "stableSampling" or "truncate".'
-    );
-  }
-  return resolved;
-}
-
 /**
  * Apply the selected weak-ray policy while compacting an outgoing queue.
  * Stable sampling matches the WebGPU weight/prefix/fill collector: weak rays
@@ -47,16 +32,16 @@ export function normalizeRayPowerCutoffMode(mode) {
  * @param {Object[]} rays
  * @param {number} targetPower
  * @param {number} generation
- * @param {'stableSampling'|'truncate'} [mode='stableSampling']
+ * @param {boolean} [sampling=false]
  * @returns {{rays:Object[], weakRayCount:number,weakRayPower:number}}
  */
 export function collectRayPowerQueue(
   rays,
   targetPower,
   generation,
-  mode = RAY_POWER_CUTOFF_MODE_STABLE_SAMPLING
+  sampling = false
 ) {
-  const cutoffMode = normalizeRayPowerCutoffMode(mode);
+  const shouldSample = normalizeRayPowerSampling(sampling);
   const selected = [];
   let weakRayCount = 0;
   let weakRayPower = 0;
@@ -72,7 +57,7 @@ export function collectRayPowerQueue(
     if (weight < 1) {
       weakRayCount++;
       weakRayPower += power;
-      if (cutoffMode === RAY_POWER_CUTOFF_MODE_TRUNCATE) continue;
+      if (!shouldSample) continue;
     }
     const before = Math.floor(cumulative + phase);
     cumulative += weight;

@@ -55,12 +55,14 @@
       },
       {
         "id": "optical-cavity",
+        "beta": true,
         "contributors": [
           "Stas Fainer"
         ]
       },
       {
         "id": "resonator",
+        "beta": true,
         "contributors": [
           "Mikhail Kochiev"
         ]
@@ -158,6 +160,7 @@
       },
       {
         "id": "rainbows",
+        "beta": true,
         "contributors": [
           "Yi-Ting Tu"
         ]
@@ -315,6 +318,7 @@
       },
       {
         "id": "simple-double-gauss-lens",
+        "beta": true,
         "contributors": [
           "Alex"
         ]

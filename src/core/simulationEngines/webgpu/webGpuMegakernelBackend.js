@@ -4,10 +4,7 @@
  */
 
 import { getIntersectionTolerancePolicy } from '../../primitive/numeric.js';
-import {
-  normalizeRayPowerCutoffMode,
-  RAY_POWER_CUTOFF_MODE_TRUNCATE
-} from '../stableRayPowerSampling.js';
+import { getEffectiveRayPowerOptions } from '../rayPower.js';
 import { WEBGPU_RAY_STRIDE } from './webGpuExecutionPlan.js';
 import {
   WEBGPU_MEGAKERNEL_RUN_CONTROL_SIZE,
@@ -339,17 +336,14 @@ export class WebGpuMegakernelBackend {
       options.rendering?.mode
     );
     this.maxRayDepth = normalizeDepth(options.maxRayDepth);
-    const rayPowerCutoffMode = normalizeRayPowerCutoffMode(
-      options.rayPowerCutoffMode
-    );
+    const rayPowerOptions = getEffectiveRayPowerOptions(options);
     this.device.queue.writeBuffer(
       this.traceUniformBuffer,
       48,
-      new Float32Array([Math.fround(options.rayPowerCutoff ?? 1e-6)])
+      new Float32Array([Math.fround(rayPowerOptions.rayPowerCutoff)])
     );
-    const rayPowerCutoff = Math.fround(options.rayPowerCutoff ?? 1e-6);
-    const truncateWeakRays = rayPowerCutoffMode ===
-      RAY_POWER_CUTOFF_MODE_TRUNCATE ? 1 : 0;
+    const rayPowerCutoff = Math.fround(rayPowerOptions.rayPowerCutoff);
+    const truncateWeakRays = rayPowerOptions.rayPowerSampling ? 0 : 1;
     this.device.queue.writeBuffer(
       this.traceUniformBuffer,
       13 * 4,

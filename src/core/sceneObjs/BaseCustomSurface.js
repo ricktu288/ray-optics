@@ -19,6 +19,9 @@ import i18next from 'i18next';
 import geometry from '../geometry.js';
 import { evaluateLatex } from '../equation.js';
 import Simulator from '../Simulator.js';
+import {
+  getEffectiveRayPowerOptions
+} from '../simulationEngines/rayPower.js';
 
 /**
  * @typedef {Object} OutRay
@@ -185,6 +188,7 @@ class BaseCustomSurface extends BaseSceneObj {
     const newRays = [];
     let isAbsorbed = false;
     let truncation = 0;
+    const { rayPowerCutoff } = getEffectiveRayPowerOptions(this.scene);
 
     const params = [
       {theta0: incidentAngle, P0: originalBrightness_s, lambda: originalWavelength || Simulator.GREEN_WAVELENGTH, t: incidentPos, n0: n0, n1: n1, p: 0},
@@ -297,12 +301,13 @@ class BaseCustomSurface extends BaseSceneObj {
         ray1.p2 = geometry.point(incidentPoint.x + Math.cos(outAngle), incidentPoint.y + Math.sin(outAngle));
 
         // Truncate the outgoing ray if it is too weak.
-        if (ray1.brightness_s + ray1.brightness_p > (this.scene.colorMode != 'default' ? 1e-6 : 0.01)) {
+        const outgoingPower = ray1.brightness_s + ray1.brightness_p;
+        if (outgoingPower > 0 && outgoingPower >= rayPowerCutoff) {
           if (ray1 !== ray) {
             newRays.push(ray1);
           }
         } else {
-          truncation += ray1.brightness_s + ray1.brightness_p;
+          truncation += outgoingPower;
           if (ray1 === ray) {
             isAbsorbed = true;
           }

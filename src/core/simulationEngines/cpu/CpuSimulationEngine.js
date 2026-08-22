@@ -54,10 +54,11 @@ import {
   writeCpuOutgoingRays
 } from './cpuOutgoingRays.js';
 import {
-  normalizeRayPowerCutoffMode,
-  RAY_POWER_CUTOFF_MODE_TRUNCATE,
   collectRayPowerQueue
 } from '../stableRayPowerSampling.js';
+import {
+  getEffectiveRayPowerOptions
+} from '../rayPower.js';
 import {
   deriveWebGpuWavelengthRange
 } from '../webgpu/webGpuParameterRanges.js';
@@ -69,8 +70,6 @@ import {
 const MAX_MEMBERSHIP_ATTEMPTS = 4;
 const GOLDEN_ANGLE_COS = -0.737368878;
 const GOLDEN_ANGLE_SIN = 0.675490294;
-const DEFAULT_COLOR_MINIMUM_RAY_POWER = 0.01;
-const DEFAULT_RAY_POWER_CUTOFF = 1e-6;
 export const NO_HIT_CURVE_ID = -1;
 export const TERMINATE_HIT_CURVE_ID = -2;
 const SOURCE_OUTPUT_LABELS = [
@@ -87,23 +86,9 @@ export class CpuSimulationRun {
   constructor(engine, options) {
     this.engine = engine;
     this.options = options;
-    const rayPowerCutoff =
-      options.rayPowerCutoff ?? DEFAULT_RAY_POWER_CUTOFF;
-    if (
-      typeof rayPowerCutoff !== 'number' ||
-      Number.isNaN(rayPowerCutoff) ||
-      rayPowerCutoff < 0
-    ) {
-      throw new RangeError(
-        'rayPowerCutoff must be a nonnegative number.'
-      );
-    }
-    this.rayPowerCutoff = (options.colorMode ?? 'default') === 'default'
-      ? Math.max(DEFAULT_COLOR_MINIMUM_RAY_POWER, rayPowerCutoff)
-      : rayPowerCutoff;
-    this.rayPowerCutoffMode = normalizeRayPowerCutoffMode(
-      options.rayPowerCutoffMode
-    );
+    const rayPowerOptions = getEffectiveRayPowerOptions(options);
+    this.rayPowerCutoff = rayPowerOptions.rayPowerCutoff;
+    this.rayPowerSampling = rayPowerOptions.rayPowerSampling;
     this.maxRayDepth = normalizeMaxRayDepth(options.maxRayDepth);
     this.isCancelled = false;
     this.isComplete = false;
@@ -338,7 +323,7 @@ export class CpuSimulationRun {
 
     const power = lane.ray.powerS + lane.ray.powerP;
     if (
-      this.rayPowerCutoffMode === RAY_POWER_CUTOFF_MODE_TRUNCATE &&
+      !this.rayPowerSampling &&
       this.rayPowerCutoff > 0 &&
       power < this.rayPowerCutoff
     ) {
@@ -513,7 +498,7 @@ export class CpuSimulationRun {
       outputSlots,
       this.rayPowerCutoff,
       ++this.samplingGeneration,
-      this.rayPowerCutoffMode
+      this.rayPowerSampling
     );
     this.summary.weakRayCount += sampled.weakRayCount;
     this.totalTruncation += sampled.weakRayPower;

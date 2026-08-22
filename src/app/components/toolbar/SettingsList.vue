@@ -96,16 +96,6 @@
       />
 
       <PopupSelectControl
-        :label="$t('simulator:settings.numericalTolerances.title')"
-        :value="numericalTolerancesAreDefault ? 'default' : 'custom'"
-        :display-fn="value => value === 'default' ? $t('simulator:common.defaultOption') : $t('simulator:common.customOption')"
-        :disabled="!isPrimitiveEngine"
-        popup-target="numericalToleranceModal"
-        :popover-content="!isPrimitiveEngine ? $t('simulator:settings.numericalTolerances.primitiveEngineOnly') : ''"
-        :layout="layout"
-      />
-
-      <PopupSelectControl
         :label="$t('simulator:settings.colorMode.title')"
         :value="colorMode"
         :display-fn="value => value === 'default' ? $t('simulator:common.defaultOption') : $t(`simulator:colorModeModal.${value}.title`)"
@@ -135,6 +125,24 @@
         :default-value="420"
         :layout="layout"
         :disabled="!simulateColors"
+      />
+
+      <NumberControl
+        :label="$t('simulator:settings.rayPowerCutoff.title') + '<sup>Alpha</sup>'"
+        :popover-content="$t('simulator:settings.rayPowerCutoff.description')"
+        v-model="rayPowerCutoff"
+        :min="0"
+        :default-value="0.000001"
+        :layout="layout"
+        :disabled="!correctBrightness"
+      />
+
+      <ToggleControl
+        :label="$t('simulator:settings.rayPowerSampling.title') + '<sup>Alpha</sup>'"
+        :popover-content="$t('simulator:settings.rayPowerSampling.description')"
+        v-model="rayPowerSampling"
+        :layout="layout"
+        :disabled="!correctBrightness"
       />
 
       <NumberControl
@@ -236,7 +244,6 @@ import i18next from 'i18next'
 import { parseLinks } from '../../utils/links.js'
 import { app } from '../../services/app.js'
 import { useThemeStore } from '../../store/theme.js'
-import Scene from '../../../core/Scene.js'
 
 export default {
   name: 'SettingsList',
@@ -288,9 +295,9 @@ export default {
       // For theme: show if theme is not default
       const themeNotDefault = !themeStore.isDefaultTheme.value
 
-      // For numerical tolerances: show if any scene override is non-default
-      const numericalTolerancesNotDefault =
-        !numericalTolerancesAreDefault.value
+      const rayPowerOptionsNotDefault =
+        scene.rayPowerCutoff.value !== 1e-6 ||
+        scene.rayPowerSampling.value !== false
 
       // For spectrum remapping: show if non-default
       const spectrumNotDefault = scene.redWavelength.value !== 620 || scene.violetWavelength.value !== 420
@@ -301,21 +308,27 @@ export default {
       // Add more conditions here as more advanced options are added
       return colorModeNotDefault ||
         themeNotDefault ||
-        numericalTolerancesNotDefault ||
+        rayPowerOptionsNotDefault ||
         spectrumNotDefault ||
         maxRayDepthNotDefault
     })
 
-    const isPrimitiveEngine = computed(
-      () => preferences.simulationEngine.value !== 'default'
-    )
+    const rayPowerCutoff = computed({
+      get: () => correctBrightness.value
+        ? scene.rayPowerCutoff.value
+        : 0.01,
+      set: value => {
+        scene.rayPowerCutoff.value = value
+      }
+    })
 
-    const numericalTolerancesAreDefault = computed(() => {
-      const current = scene.numericalTolerances.value
-      const defaults = Scene.serializableDefaults.numericalTolerances
-      return Object.keys(defaults).every(
-        key => current?.[key] === defaults[key]
-      )
+    const rayPowerSampling = computed({
+      get: () => correctBrightness.value
+        ? scene.rayPowerSampling.value
+        : true,
+      set: value => {
+        scene.rayPowerSampling.value = value
+      }
     })
 
     const showLanguageWarning = computed(() => {
@@ -347,6 +360,8 @@ export default {
       redWavelength: scene.redWavelength,
       violetWavelength: scene.violetWavelength,
       maxRayDepth: scene.maxRayDepth,
+      rayPowerCutoff,
+      rayPowerSampling,
       correctBrightness,
       autoSyncUrl: preferences.autoSyncUrl,
       showSidebar: preferences.showSidebar,
@@ -354,8 +369,6 @@ export default {
       showSimulatorControls: preferences.showSimulatorControls,
       help: preferences.help,
       simulationEngine: preferences.simulationEngine,
-      isPrimitiveEngine,
-      numericalTolerancesAreDefault,
       lang,
       localeData,
       showLanguageWarning,

@@ -398,5 +398,6 @@
     "y": 842.6993006993009
   },
   "scale": 1,
-  "maxRayDepth": 1000
+  "maxRayDepth": 1000,
+  "importedFromBeta": true
 }

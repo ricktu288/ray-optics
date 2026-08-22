@@ -521,8 +521,7 @@
     "y": 1536.8128732915711
   },
   "scale": 1,
-  "numericalTolerances": {
-    "rayPowerCutoff": 0.001
-  },
-  "simulateColors": true
+  "rayPowerCutoff": 0.001,
+  "simulateColors": true,
+  "importedFromBeta": true
 }

@@ -88,9 +88,13 @@
     "theme": {
       "title": "Theme"
     },
-    "numericalTolerances": {
-      "title": "Numerical tolerances",
-      "primitiveEngineOnly": "Numerical tolerances are configurable only when a primitive-based simulation engine is selected."
+    "rayPowerCutoff": {
+      "title": "Minimum ray power",
+      "description": "Rays weaker than this threshold are sampled or truncated. Set it to 0 to disable weak-ray handling. When Correct Brightness is off, the effective value is fixed at 0.01."
+    },
+    "rayPowerSampling": {
+      "title": "Sample weak rays",
+      "description": "Preserve weak-ray power in expectation by retaining and amplifying a representative subset. This is off by default when Correct Brightness is enabled. When Correct Brightness is off, sampling is always enabled."
     },
     "colorMode": {
       "title": "Color Mode",
@@ -681,42 +685,6 @@
     "translatedFraction": "translated",
     "helpTranslate": "Help us translate this app"
   },
-  "numericalToleranceModal": {
-    "title": "Numerical tolerances",
-    "description": "These numerical thresholds are stored with the scene. Distance values are relative to the scene length scale, the interaction normal tolerance is an angle in radians, and minimum ray power is dimensionless. Primitive-based engines may automatically use larger geometry tolerances when required by numerical precision. For geometry tolerances, 0 uses only the automatically derived value; for minimum ray power, 0 disables weak-ray handling.",
-    "thresholdWarning": "Geometry or ray power close to one of these thresholds may produce unexpected behavior.",
-    "backToDefaults": "Back to defaults",
-    "fields": {
-      "curveEndpoint": {
-        "title": "Curve endpoint tolerance",
-        "description": "Minimum distance within which curve endpoints may be treated as connected."
-      },
-      "interactionMerging": {
-        "title": "Interaction merging tolerance",
-        "description": "Minimum distance along a ray within which eligible hits may be treated as one interaction."
-      },
-      "interactionNormal": {
-        "title": "Interaction normal tolerance",
-        "description": "Maximum angular difference, in radians, between the adjusted normals of hits treated as one interaction."
-      },
-      "forwardDistance": {
-        "title": "Minimum forward distance",
-        "description": "Minimum forward distance from a ray's origin at which another interaction may be accepted."
-      },
-      "rayPowerCutoff": {
-        "title": "Minimum ray power",
-        "description": "Primitive-based engines use this as the weak-ray threshold. Set it to 0 to disable weak-ray handling. In the default color mode, the primitive-based CPU engine uses at least 0.01 because it renders to an 8-bit canvas."
-      },
-      "rayPowerCutoffMode": {
-        "title": "Weak-ray handling",
-        "description": "Stable sampling preserves weak-ray power in expectation and records it as a conservative error estimate when queues are collected. Deterministic truncation immediately discards working rays below the threshold and also discards weak queued rays.",
-        "options": {
-          "stableSampling": "Stable power-weighted sampling",
-          "truncate": "Deterministic truncation"
-        }
-      }
-    }
-  },
   "simulationEngineModal": {
     "default": {
       "title": "Legacy",
@@ -742,10 +710,6 @@
     "primitiveCpu": {
       "title": "CPU",
       "description": "Always use the double-precision primitive CPU engine."
-    },
-    "numericalTolerances": {
-      "description": "Numerical thresholds that affect geometry and ray termination are configured separately and stored with the scene.",
-      "open": "Configure numerical tolerances"
     },
     "configuration": {
       "title": "Advanced engine settings",
@@ -847,17 +811,12 @@
     "autoSyncUrlTooLarge": "The scene is too large to sync with URL. Please save it manually.",
     "identicalObjects": "There are two identical optical elements in the scene that overlap completely. This may cause unexpected behavior.",
     "brightnessInconsistent": "The brightnesses of two or more light sources saturate with inconsistent ratios. This may lead to wrong detector readings and color rendering. Please increase the ray density or reduce the brightnesses of the light sources.",
-    "primitiveInteractionConflict": "Numerically ambiguous primitive interaction at ray {{rayIndex}} (curves {{curveId}} and {{conflictingCurveId}}). The effective {{toleranceKind}} tolerance was {{tolerance}} {{toleranceUnit}}.",
+    "primitiveInteractionConflict": "Numerically ambiguous primitive interaction at ray {{rayIndex}} (curves {{curveId}} and {{conflictingCurveId}}) involving the {{toleranceKind}} tolerance.",
     "primitiveAmbiguousPower": "Total ambiguous power: {{power}}.",
     "primitiveToleranceKinds": {
       "interactionMerging": "interaction-merging",
       "interactionNormal": "interaction-normal",
       "normalConstruction": "normal-construction"
-    },
-    "primitiveToleranceUnits": {
-      "sceneUnits": "scene units",
-      "radians": "radians",
-      "normalizedMagnitude": "normalized magnitude"
     },
     "blackBecomesTransparent": "When using \"Correct Brightness\" with a non-black background, the black part of the light's color becomes transparent due to additive color mixing. Please set all theme colors of light to have unit HSV value to avoid this issue.",
     "undefinedBehaviorOverlapping": "Surface merging is not supported for overlap between \"{{involvedObj1}}\" and \"{{involvedObj2}}\", resulting in undefined behavior. Please move the objects slightly apart (or move the light source) to get a well-defined behavior.",

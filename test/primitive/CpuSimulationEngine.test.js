@@ -492,7 +492,8 @@ describe('CpuSimulationEngine initial ray buffers', () => {
     const run = await engine.createRun({
       preparedScene,
       colorMode: 'linear',
-      rayPowerCutoff: 1e-6
+      rayPowerCutoff: 1e-6,
+      rayPowerSampling: true
     });
 
     const update = await advanceUntil(
@@ -513,7 +514,7 @@ describe('CpuSimulationEngine initial ray buffers', () => {
     log.mockRestore();
   });
 
-  it('immediately truncates a weak working ray in truncate mode', async () => {
+  it('immediately truncates a weak working ray when sampling is disabled', async () => {
     const processedScene = createProcessedScene(rectangleCurves(), [
       source({ power: 0.004 })
     ]);
@@ -525,23 +526,23 @@ describe('CpuSimulationEngine initial ray buffers', () => {
     const preparedScene = await engine.prepare(processedScene);
     const run = await engine.createRun({
       preparedScene,
-      colorMode: 'default',
-      rayPowerCutoff: 1e-6,
-      rayPowerCutoffMode: 'truncate'
+      colorMode: 'linear',
+      rayPowerCutoff: 0.01,
+      rayPowerSampling: false
     });
 
     const update = await advanceUntil(run, current => current.isComplete);
 
     expect(run.rayPowerCutoff).toBe(0.01);
-    expect(run.rayPowerCutoffMode).toBe('truncate');
+    expect(run.rayPowerSampling).toBe(false);
     expect(run.processedRayCount).toBe(0);
     expect(run.summary.weakRayCount).toBe(1);
     expect(update.result.totalTruncation).toBeCloseTo(0.008);
   });
 
-  it.each(['stableSampling', 'truncate'])(
-    'accounts for weak collector outputs in %s mode',
-    async rayPowerCutoffMode => {
+  it.each([true, false])(
+    'accounts for weak collector outputs when sampling is %s',
+    async rayPowerSampling => {
       const processedScene = preprocessPrimitives([
         source({ x: 0, y: 0 }),
         {
@@ -569,7 +570,7 @@ describe('CpuSimulationEngine initial ray buffers', () => {
         preparedScene,
         colorMode: 'linear',
         rayPowerCutoff: 0.01,
-        rayPowerCutoffMode
+        rayPowerSampling
       });
 
       const update = await advanceUntilPass(run, 1);
@@ -580,7 +581,7 @@ describe('CpuSimulationEngine initial ray buffers', () => {
     }
   );
 
-  it('rejects an unknown ray-power cutoff mode', async () => {
+  it('rejects a non-boolean ray-power sampling option', async () => {
     const processedScene = createProcessedScene([], [source()]);
     const engine = new CpuSimulationEngine();
     engine.beginRenderer = jest.fn();
@@ -588,13 +589,14 @@ describe('CpuSimulationEngine initial ray buffers', () => {
 
     await expect(engine.createRun({
       preparedScene,
-      rayPowerCutoffMode: 'randomSampling'
-    })).rejects.toThrow('rayPowerCutoffMode');
+      colorMode: 'linear',
+      rayPowerSampling: 'sometimes'
+    })).rejects.toThrow('rayPowerSampling');
   });
 
   it.each([
     ['default', 1e-6, 0.01],
-    ['default', 0.02, 0.02],
+    ['default', 0.02, 0.01],
     ['linear', 1e-6, 1e-6],
     ['colorizedIntensity', 0, 0]
   ])('uses an effective %s cutoff of %s as %s', async (
@@ -615,6 +617,22 @@ describe('CpuSimulationEngine initial ray buffers', () => {
     });
 
     expect(run.rayPowerCutoff).toBe(effectiveCutoff);
+  });
+
+  it('disables sampling by default with correct brightness', async () => {
+    const processedScene = createProcessedScene([], [source()]);
+    const engine = new CpuSimulationEngine({
+      numericEpsilon: FLOAT32_EPSILON
+    });
+    engine.beginRenderer = jest.fn();
+    const preparedScene = await engine.prepare(processedScene);
+    const run = await engine.createRun({
+      preparedScene,
+      colorMode: 'linear'
+    });
+
+    expect(run.rayPowerCutoff).toBe(1e-6);
+    expect(run.rayPowerSampling).toBe(false);
   });
 
   it('does not sample while producing the initial source queue', async () => {
@@ -666,7 +684,8 @@ describe('CpuSimulationEngine initial ray buffers', () => {
     const run = await engine.createRun({
       preparedScene,
       colorMode,
-      rayPowerCutoff: 0.01
+      rayPowerCutoff: 0.01,
+      rayPowerSampling: true
     });
 
     const update = await advanceUntilPass(run, 1);

@@ -701,8 +701,9 @@ describe('WebGpuSimulationEngine', () => {
       backend.writeMegakernelUniforms = jest.fn();
 
       await backend.configureRun({
+        colorMode: 'linear',
         rayPowerCutoff: 0.002,
-        rayPowerCutoffMode: 'truncate',
+        rayPowerSampling: false,
         preparedScene: {
           parameterRanges: { wavelengthRange: [[380, 700]] }
         },
@@ -728,6 +729,40 @@ describe('WebGpuSimulationEngine', () => {
         expect.any(Uint32Array)
       );
     });
+
+  it('uses fixed default-color ray-power options', async () => {
+    const writeBuffer = jest.fn();
+    const backend = new WebGpuMegakernelBackend({ queue: { writeBuffer } },
+      {}, { workgroupSize: 64 });
+    backend.traceUniformBuffer = {};
+    backend.renderUniformBuffer = {};
+    backend.queueBuffer = {};
+    backend.collectorUniformBuffers = [{}, {}];
+    backend.renderPreparationStage = { geometryCapacity: 1 };
+    backend.megakernelStages.set('rays', {});
+    backend.writeMegakernelUniforms = jest.fn();
+
+    await backend.configureRun({
+      colorMode: 'default',
+      rayPowerCutoff: 0.1,
+      rayPowerSampling: false,
+      preparedScene: {
+        parameterRanges: { wavelengthRange: [[380, 700]] }
+      },
+      rendering: { mode: 'rays' }
+    });
+
+    const cutoffWrite = writeBuffer.mock.calls.find(
+      ([buffer, offset]) => buffer === backend.traceUniformBuffer &&
+        offset === 48
+    );
+    const samplingWrite = writeBuffer.mock.calls.find(
+      ([buffer, offset]) => buffer === backend.traceUniformBuffer &&
+        offset === 52
+    );
+    expect(Array.from(cutoffWrite[2])).toEqual([Math.fround(0.01)]);
+    expect(Array.from(samplingWrite[2])).toEqual([0]);
+  });
 
   it('alternates several ping-pongs in one command submission', () => {
     const backend = new WebGpuMegakernelBackend(null, {}, {

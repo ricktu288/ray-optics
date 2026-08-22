@@ -30,8 +30,10 @@
         <div class="form-check form-switch align-items-center">
           <input 
             class="form-check-input" 
+            :class="{ 'settings-control-value--disabled': disabled }"
             type="checkbox" 
             :checked="modelValue"
+            :disabled="disabled"
             @click="e => e.target.blur()"
             @change="$emit('update:modelValue', $event.target.checked)"
           >
@@ -50,6 +52,7 @@
  * @vue-prop {String} layout - The layout of the control. Can be 'mobile' or 'desktop'.
  * @vue-prop {String} [popoverContent=''] - The content of the popover.
  * @vue-prop {Number} [verticalOffset=0] - The vertical offset of the popover.
+ * @vue-prop {Boolean} [disabled=false] - Whether the toggle is disabled.
  */
 import { computed, toRef } from 'vue'
 import { vTooltipPopover } from '../../../directives/tooltip-popover'
@@ -80,6 +83,10 @@ export default {
     verticalOffset: {
       type: Number,
       default: 0
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   setup() {

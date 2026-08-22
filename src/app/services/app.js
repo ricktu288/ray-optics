@@ -242,6 +242,7 @@ function createSimulator(engine) {
     logDebugInfo: Boolean(primitiveConfig.logDebugInfo),
     drawBvh: Boolean(primitiveConfig.bvh.drawBounds),
     bvhOptions: getBvhOptions(primitiveConfig),
+    numericalTolerances: primitiveConfig.numericalTolerances,
   });
   setActiveEngineKind(primitiveSimulator.engine.kind, {
     fallback: primitiveSimulator.engineFallbackActive
@@ -1145,6 +1146,18 @@ function getBetaFeaturesInUse() {
   };
 
   const allObjs = expandObjs(scene.objs || []);
+
+  if (scene.rayPowerCutoff !== defaultScene.rayPowerCutoff) {
+    alphaFeatures.push(
+      i18next.t('simulator:settings.rayPowerCutoff.title')
+    );
+  }
+
+  if (scene.rayPowerSampling !== defaultScene.rayPowerSampling) {
+    alphaFeatures.push(
+      i18next.t('simulator:settings.rayPowerSampling.title')
+    );
+  }
 
   if (scene.importedFromBeta) {
     betaFeatures.push(i18next.t('simulator:footer.betaFeatures.sceneFromBeta'));

@@ -156,7 +156,7 @@ import { validateNumericEpsilon } from './numeric.js';
  * @param {Object} [options]
  * @param {Object} [options.bvhOptions] - Options forwarded to {@link buildBvh}.
  * @param {number} [options.lengthScale=1] - Natural scene length used by engine-selected curve tolerances.
- * @param {Object} [options.numericalTolerances] - Scene-relative configured tolerance minimums.
+ * @param {Object} [options.numericalTolerances] - Simulator-configured tolerance minimums, with distances relative to the scene length scale.
  * @param {number} options.numericEpsilon - Relative arithmetic epsilon selected by the engine.
  * @param {boolean} [options.logDebugInfo=false] - Whether to measure preprocessing stages for debug output.
  * @returns {{processedScene: ProcessedScene, detectorResultBindings: DetectorResultBinding[], timings: Object|null}}
