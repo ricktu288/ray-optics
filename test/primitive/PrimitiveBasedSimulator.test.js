@@ -309,7 +309,8 @@ describe('PrimitiveBasedSimulator engine registry', () => {
       engineProviders: {
         primitiveCpu: () => createProviderEngine('primitiveCpu'),
         webgpu: () => createProviderEngine('webgpu')
-      }
+      },
+      logDebugInfo: true
     });
     const webGpuJob = simulator.createRunJob(0);
     expect(webGpuJob.comparisonEligible).toBe(false);
@@ -317,11 +318,14 @@ describe('PrimitiveBasedSimulator engine registry', () => {
       simulator,
       'queueAutomaticComparison'
     ).mockImplementation(() => {});
+    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
 
     simulator.scheduleAutomaticComparison(webGpuJob, 6.1);
     jest.runAllTimers();
 
     expect(queueComparison).not.toHaveBeenCalled();
+    expect(log).not.toHaveBeenCalled();
+    log.mockRestore();
     jest.useRealTimers();
   });
 

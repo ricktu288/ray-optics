@@ -42,6 +42,7 @@ describe('simulation engine configuration', () => {
     expect(DEFAULT_SIMULATION_ENGINE_CONFIGS.primitiveCpu.timeBudgetMs)
       .toBe(200);
     const webgpu = DEFAULT_SIMULATION_ENGINE_CONFIGS.webgpu;
+    expect(webgpu.maxBvhDepth).toBe(16);
     expect(webgpu.maxBatchRayEvents).toBe(1048576);
     expect(webgpu.maxReadyLineRecords).toBe(1048576);
     expect(webgpu.maxReadyPointRecords).toBe(1048576);

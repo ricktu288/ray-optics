@@ -35,24 +35,38 @@ const STATIC_STORAGE_MINIMUM_SIZES = Object.freeze({
   bvhCurveIds: 4,
 });
 
+// Static scene tables are immutable during a trace, but interactive edits can
+// append a few objects between traces. Reserving a modest initial number of
+// elements prevents each same-signature addition from changing the WGSL array
+// lengths and rebuilding the megakernel. Larger scenes retain proportional
+// headroom so rebuild frequency remains logarithmic rather than linear.
+const STATIC_STORAGE_INITIAL_CAPACITY_ELEMENTS = Object.freeze({
+  instanceParameters: 64,
+  sourceDescriptors: 8,
+  surfaceDescriptors: 8,
+  regionDescriptors: 8,
+  detectorDescriptors: 8,
+  curveDescriptors: 8,
+  curveGeometry: 64,
+  bvhNodes: 8,
+  bvhPartitionRoots: 8,
+  bvhCurveIds: 64,
+});
+const STATIC_STORAGE_GROWTH_FACTOR = 1.5;
+
 /** GPU copies of the immutable packed scene tables used by both megakernels. */
 export class WebGpuMegakernelStaticSceneStorage {
   constructor(device, packedScene) {
     this.device = device;
     this.buffers = Object.create(null);
-    this.capacities = Object.create(null);
+    this.capacities = createStaticStorageCapacities(device, packedScene);
     for (const name of STATIC_STORAGE_FIELDS) {
       const data = packedScene[name] ?? new Uint8Array(0);
-      const byteLength = data.byteLength;
-      this.capacities[name] = Math.max(
-        STATIC_STORAGE_MINIMUM_SIZES[name],
-        alignTo4(byteLength)
-      );
       this.buffers[name] = createInitializedBuffer(
         device,
         data,
         `WebGPU megakernel scene ${name}`,
-        STATIC_STORAGE_MINIMUM_SIZES[name]
+        this.capacities[name]
       );
     }
     const traceScene = createWebGpuTraceSceneData(
@@ -64,7 +78,7 @@ export class WebGpuMegakernelStaticSceneStorage {
       device,
       traceScene,
       'WebGPU megakernel packed trace scene',
-      16
+      this.capacities.traceScene
     );
   }
 
@@ -188,11 +202,14 @@ function createDetectorResultLayout(description) {
   return { results, valueCount };
 }
 
-function createInitializedBuffer(device, data, label, minimumSize) {
+function createInitializedBuffer(device, data, label, capacity) {
   const bytes = toBytes(data);
+  if (bytes.byteLength > capacity) {
+    throw new RangeError(`WebGPU buffer ${label} exceeds its capacity.`);
+  }
   const buffer = device.createBuffer({
     label,
-    size: Math.max(minimumSize, alignTo4(bytes.byteLength)),
+    size: capacity,
     usage: BUFFER_USAGE_STORAGE | BUFFER_USAGE_COPY_DST,
   });
   if (bytes.byteLength > 0) device.queue.writeBuffer(buffer, 0, bytes);
@@ -204,6 +221,31 @@ function toBytes(data) {
   return new Uint8Array(data.buffer, data.byteOffset, data.byteLength);
 }
 
-function alignTo4(value) {
-  return Math.ceil(value / 4) * 4;
+function createStaticStorageCapacities(device, packedScene) {
+  const exact = Object.create(null);
+  const grown = Object.create(null);
+  for (const name of STATIC_STORAGE_FIELDS) {
+    const elementSize = STATIC_STORAGE_MINIMUM_SIZES[name];
+    const byteLength = packedScene[name]?.byteLength ?? 0;
+    const elementCount = Math.ceil(byteLength / elementSize);
+    exact[name] = Math.max(elementSize, elementCount * elementSize);
+    grown[name] = Math.max(
+      STATIC_STORAGE_INITIAL_CAPACITY_ELEMENTS[name],
+      Math.ceil(elementCount * STATIC_STORAGE_GROWTH_FACTOR),
+      1
+    ) * elementSize;
+  }
+
+  const maximumBinding = Math.min(
+    finiteLimit(device.limits?.maxStorageBufferBindingSize),
+    finiteLimit(device.limits?.maxBufferSize)
+  );
+  const grownTraceScene = createWebGpuTraceSceneData(packedScene, grown);
+  const exceedsDeviceLimit = grownTraceScene.byteLength > maximumBinding ||
+    STATIC_STORAGE_FIELDS.some(name => grown[name] > maximumBinding);
+  return exceedsDeviceLimit ? exact : grown;
+}
+
+function finiteLimit(value) {
+  return Number.isFinite(value) ? value : Infinity;
 }

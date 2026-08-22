@@ -618,6 +618,7 @@ class PrimitiveBasedSimulator {
       rayPowerCutoffMode: job.sceneOptions.rayPowerCutoffMode,
       rayCountLimit: this.rayCountLimit,
       maxRayDepth: job.sceneOptions.maxRayDepth,
+      sceneRevision: job.generation,
       rendering: {
         mode: job.sceneOptions.mode,
         simulateColors: job.sceneOptions.simulateColors,
@@ -695,6 +696,10 @@ class PrimitiveBasedSimulator {
   }
 
   scheduleAutomaticComparison(job, firstDurationMs) {
+    // A forced engine preference cannot produce or consume an automatic
+    // comparison result. Avoid adding a misleading challenger decision to
+    // the debug log for every completed foreground run in that mode.
+    if (this.enginePreference !== 'automatic') return;
     const challengerKind = job.engineKind === 'webgpu'
       ? 'primitiveCpu'
       : 'webgpu';
@@ -737,10 +742,6 @@ class PrimitiveBasedSimulator {
     }
     if (job.fallback) {
       logDecision('skip-webgpu-fallback');
-      return;
-    }
-    if (this.enginePreference !== 'automatic') {
-      logDecision('skip-forced-preference');
       return;
     }
     if (!cpuAvailable) {

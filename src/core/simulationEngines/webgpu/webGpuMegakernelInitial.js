@@ -14,10 +14,12 @@ export function createMegakernelInitialShader({
   description,
   dagPrograms,
   workgroupSize,
+  maxBvhDepth,
 }) {
   const membership = createWebGpuInitialMembershipShader(
     description,
-    workgroupSize
+    workgroupSize,
+    maxBvhDepth
   );
   if (!membership.supported) return membership;
   const regionWordCount = Math.max(1, Math.ceil(description.regions.length / 32));

@@ -80,6 +80,7 @@ export const DEFAULT_SIMULATION_ENGINE_CONFIGS = Object.freeze({
     maxReadyLineRecords: 1048576,
     maxReadyPointRecords: 1048576,
     atomicFixedPointScale: 1048576,
+    maxBvhDepth: 16,
     maxLocalIterations: 256,
     maxPingPongsPerSubmission: 2,
   }),

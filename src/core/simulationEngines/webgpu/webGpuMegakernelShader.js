@@ -27,14 +27,20 @@ export function createWebGpuMegakernelShader({
   acceleration = 'bvh4',
   lanesPerRay = 1,
   atomicFixedPointScale = 1048576,
+  maxBvhDepth = null,
+  traceSceneFieldCapacities = null,
 }) {
-  const trace = createWebGpuRawTraceShader(description, workgroupSize);
+  const trace = createWebGpuRawTraceShader(
+    description,
+    workgroupSize,
+    maxBvhDepth
+  );
   if (!trace.supported) return trace;
   const regionWords = Math.max(1, Math.ceil(description.regions.length / 32));
-  const maximumBvhDepth = description.bvh.nodes.reduce(
+  const resolvedMaxBvhDepth = maxBvhDepth ?? description.bvh.nodes.reduce(
     (maximum, node) => Math.max(maximum, node.depth ?? 0), 0
   );
-  const stackSize = Math.max(4, 4 * (maximumBvhDepth + 1));
+  const stackSize = Math.max(4, 1 + 3 * resolvedMaxBvhDepth);
   const traceGeometry = extractTraceGeometry(trace.code);
   const renderHelpers = extractRenderHelpers(
     createWebGpuRenderPreparationShader(workgroupSize),
@@ -112,7 +118,11 @@ struct BulkResult { n:f32,nX:f32,nY:f32,alpha:f32,invalid:bool };
 alias Membership=array<u32,${regionWords}>;
 alias CrossingMask=array<u32,${regionWords}>;
 
-${createWebGpuTraceSceneDeclaration(description, 0)}
+${createWebGpuTraceSceneDeclaration(
+    description,
+    0,
+    traceSceneFieldCapacities
+  )}
 @group(0) @binding(1) var<storage,read_write> rayStorage:array<Ray>;
 @group(0) @binding(2) var<storage,read_write> membershipStorage:array<u32>;
 @group(0) @binding(3) var<storage,read_write> control:array<atomic<u32>>;

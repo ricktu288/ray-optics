@@ -59,14 +59,45 @@ export function createWebGpuTraceSceneData(packedScene, fieldCapacities = null) 
 }
 
 /** Build the fixed-size WGSL struct matching createWebGpuTraceSceneData. */
-export function createWebGpuTraceSceneDeclaration(description, binding) {
-  const counts = traceSceneCounts(description);
+export function createWebGpuTraceSceneDeclaration(
+  description,
+  binding,
+  fieldCapacities = null
+) {
+  const counts = fieldCapacities
+    ? traceSceneCapacityCounts(fieldCapacities)
+    : traceSceneCounts(description);
   const fields = TRACE_SCENE_FIELDS.map(([name, type]) => {
     const count = Math.max(1, counts[name]);
     return `  ${traceSceneFieldName(name)}:array<${type},${count}>,`;
   }).join('\n');
   return `struct TraceScene {\n${fields}\n};\n` +
     `@group(0) @binding(${binding}) var<storage,read> traceScene:TraceScene;`;
+}
+
+/**
+ * Derive the WGSL array lengths from an existing packed buffer layout.
+ *
+ * A reusable backend keeps these capacities (and therefore all later field
+ * offsets) fixed even when a compatible scene with smaller tables is
+ * uploaded. Any shader compiled for that backend must use the same fixed
+ * layout rather than recomputing offsets from the replacement scene.
+ */
+function traceSceneCapacityCounts(fieldCapacities) {
+  return Object.fromEntries(TRACE_SCENE_FIELDS.map(([
+    name,
+    _type,
+    minimumSize,
+  ]) => {
+    const capacity = fieldCapacities[name] ?? minimumSize;
+    if (!Number.isInteger(capacity) || capacity < minimumSize ||
+        capacity % minimumSize !== 0) {
+      throw new RangeError(
+        `Invalid packed WebGPU trace-scene capacity for ${name}.`
+      );
+    }
+    return [name, capacity / minimumSize];
+  }));
 }
 
 /** Redirect the familiar table expressions to fields of TraceScene. */

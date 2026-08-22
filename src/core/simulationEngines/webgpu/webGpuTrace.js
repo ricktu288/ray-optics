@@ -242,7 +242,11 @@ export class WebGpuRawTraceStage {
  * typed-interaction classification. Geometry functions are specialized to
  * the curve kinds present in the prepared scene.
  */
-export function createWebGpuRawTraceShader(description, workgroupSize) {
+export function createWebGpuRawTraceShader(
+  description,
+  workgroupSize,
+  maxBvhDepth = null
+) {
   const kinds = new Set(description.curves.map(curve => curve.geometry.kind));
   const unsupported = [...kinds].filter(kind => ![
     'lineSegment', 'smoothLineSegment', 'circle', 'circularArc',
@@ -252,10 +256,10 @@ export function createWebGpuRawTraceShader(description, workgroupSize) {
     return { supported: false, unsupported, code: null };
   }
   const tolerance = getIntersectionTolerancePolicy(description.numericEpsilon);
-  const maximumDepth = description.bvh.nodes.reduce(
+  const maximumDepth = maxBvhDepth ?? description.bvh.nodes.reduce(
     (value, node) => Math.max(value, node.depth ?? 0), 0
   );
-  const stackSize = Math.max(4, 4 * (maximumDepth + 1));
+  const stackSize = Math.max(4, 1 + 3 * maximumDepth);
   const cases = [];
   if (kinds.has('lineSegment') || kinds.has('smoothLineSegment')) {
     cases.push('case 0u, 1u: { intersectLine(curve, ray, &hit); }');

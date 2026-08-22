@@ -694,14 +694,90 @@ describe('WebGpuSimulationEngine', () => {
       ([buffer]) => buffer === storage.buffers.traceScene
     );
     const traceData = traceWrite[2];
-    // bvhNodes occupy 80 bytes and the compiled parameter array occupies 8.
-    // Removing a source must not shift the following surface descriptor to 84.
+    // Removing a source must not compact the reserved parameter array or shift
+    // the following surface descriptor to the replacement scene's offset.
+    const surfaceOffset = storage.capacities.bvhNodes +
+      storage.capacities.instanceParameters;
     expect(new Uint32Array(
       traceData.buffer,
-      traceData.byteOffset + 88,
+      traceData.byteOffset + surfaceOffset,
       4
     )).toEqual(Uint32Array.from([11, 12, 13, 14]));
   });
+
+  it('reserves static scene capacity for several same-signature additions',
+    () => {
+      const writeBuffer = jest.fn();
+      const device = {
+        createBuffer: jest.fn(options => ({ ...options })),
+        queue: { writeBuffer },
+        limits: {
+          maxStorageBufferBindingSize: 128 * 1024 * 1024,
+          maxBufferSize: 128 * 1024 * 1024,
+        },
+      };
+      const packedScene = mirrorCount => ({
+        instanceParameters: new Float32Array(0),
+        sourceDescriptors: new ArrayBuffer(16),
+        surfaceDescriptors: new ArrayBuffer(mirrorCount * 16),
+        regionDescriptors: new ArrayBuffer(0),
+        detectorDescriptors: new ArrayBuffer(0),
+        curveDescriptors: new ArrayBuffer(mirrorCount * 32),
+        curveGeometry: new Float32Array(mirrorCount * 8),
+        bvhNodes: new ArrayBuffer(80),
+        bvhPartitionRoots: new ArrayBuffer(32),
+        bvhCurveIds: new Uint32Array(mirrorCount),
+      });
+      const storage = new WebGpuMegakernelStaticSceneStorage(
+        device,
+        packedScene(1)
+      );
+
+      expect(storage.canUpdate(packedScene(4))).toBe(true);
+      expect(() => storage.update(packedScene(4))).not.toThrow();
+      expect(storage.capacities.surfaceDescriptors).toBeGreaterThanOrEqual(64);
+      expect(storage.capacities.curveDescriptors).toBeGreaterThanOrEqual(128);
+      expect(storage.capacities.curveGeometry).toBeGreaterThanOrEqual(128);
+    });
+
+  it('compiles reused megakernels against immutable trace-scene capacities',
+    async () => {
+      const prepared = await prepare();
+      const capacities = {
+        bvhNodes: 160,
+        instanceParameters: 8,
+        surfaceDescriptors: 32,
+        regionDescriptors: 32,
+        detectorDescriptors: 32,
+        curveDescriptors: 64,
+        curveGeometry: 64,
+        bvhCurveIds: 8,
+        bvhPartitionRoots: 64,
+      };
+      const generated = createWebGpuMegakernelShader({
+        description: prepared.runtimeDescription,
+        dagPrograms: prepared.dagPrograms,
+        workgroupSize: 64,
+        maxLocalIterations: 8,
+        renderVariant: 'rays',
+        traceSceneFieldCapacities: capacities,
+      });
+
+      expect(generated.supported).toBe(true);
+      expect(generated.code).toContain('bvhNodes:array<BvhNode,2>');
+      expect(generated.code).toContain(
+        'instanceParameters:array<f32,2>'
+      );
+      expect(generated.code).toContain(
+        'surfaces:array<InstanceDescriptor,2>'
+      );
+      expect(generated.code).toContain(
+        'curves:array<CurveDescriptor,2>'
+      );
+      expect(generated.code).toContain(
+        'bvhPartitionRoots:array<BvhPartitionRoot,2>'
+      );
+    });
 
   it('aligns BVH partition roots after an odd curve-index count', () => {
     const partitionRoot = new ArrayBuffer(32);
@@ -877,6 +953,78 @@ describe('WebGpuSimulationEngine', () => {
       );
     });
 
+  it('logs revision, backend, BVH, and all-miss state for completed runs',
+    async () => {
+      const engine = new WebGpuSimulationEngine();
+      engine.initialize = jest.fn(async () => {});
+      engine.device = {};
+      engine.ensureComputeBackend = jest.fn(async () => true);
+      const preparedScene = {
+        logDebugInfo: true,
+        packedStorage: {
+          counts: {
+            sourceRays: 9,
+            bvhNodes: 12,
+            bvhPartitionRoots: 4,
+          },
+          curveGeometry: Float32Array.of(1, 2),
+        },
+        runtimeDescription: { bvh: { root: 3 } },
+        executionPlan: { maximumBvhDepth: 5 },
+      };
+      const backend = {
+        debugId: 7,
+        sceneUploadVersion: 11,
+        preparedScene,
+        configureRun: jest.fn(async () => {}),
+        renderPreparationStage: { geometryCapacity: 1 },
+      };
+      engine.computeBackend = backend;
+      engine.startNativeRun = jest.fn(async () => ({
+        statePromise: Promise.resolve({
+          currentRayCount: 0,
+          processedRayCount: 9,
+          readyLineCount: 9,
+          readyPointCount: 0,
+          resizeNeeded: false,
+          warningFlags: 0,
+          detectors: [],
+        }),
+        presentationPromise: Promise.resolve(false),
+        backend,
+        backendDebugInfo: {
+          backendId: 7,
+          sceneUploadVersion: 11,
+          sceneFingerprint: '1234abcd',
+          bvhRoot: 3,
+          bvhNodeCount: 12,
+          bvhPartitionRootCount: 4,
+          maximumBvhDepth: 5,
+        },
+        submissionDebugInfo: { submissionId: 13, kind: 'initial' },
+      }));
+      const log = jest.spyOn(console, 'log').mockImplementation(() => {});
+
+      try {
+        const run = await engine.createRun({
+          preparedScene,
+          sceneRevision: 973,
+        });
+        await run.advance();
+
+        expect(log).toHaveBeenCalledWith(expect.stringContaining(
+          '[WebGPU run result]\n  Scene revision: 973\n' +
+          '  Backend: 7, scene upload 11'
+        ));
+        expect(log.mock.calls[0][0]).toContain(
+          'Every source ray ended at its first trace: ' +
+          'yes (possible all-miss failure)'
+        );
+      } finally {
+        log.mockRestore();
+      }
+    });
+
   it('validates the ping-pong batch size', () => {
     expect(() => new WebGpuSimulationEngine({
       config: { maxPingPongsPerSubmission: 0 }
@@ -918,4 +1066,61 @@ describe('WebGpuSimulationEngine', () => {
       );
       expect(prepared.executionPlan.megakernelSignature).toContain('guards');
     });
+
+  it('uses configured BVH depth capacity instead of exact depth as a key',
+    async () => {
+      const description = scene();
+      const first = await new WebGpuSimulationEngine({
+        config: { maxBvhDepth: 16 }
+      }).prepare(description);
+      const deeperDescription = {
+        ...description,
+        bvh: {
+          ...description.bvh,
+          nodes: description.bvh.nodes.map((node, index) => ({
+            ...node,
+            depth: index === 0 ? 10 : node.depth,
+          })),
+        },
+      };
+      const second = await new WebGpuSimulationEngine({
+        config: { maxBvhDepth: 16 }
+      }).prepare(deeperDescription);
+
+      expect(first.executionPlan.maximumBvhDepth).not.toBe(
+        second.executionPlan.maximumBvhDepth
+      );
+      expect(first.executionPlan.megakernelSignature).toBe(
+        second.executionPlan.megakernelSignature
+      );
+      expect(second.executionPlan.maxBvhDepth).toBe(16);
+    });
+
+  it('rejects a BVH deeper than the configured WebGPU stack capacity',
+    async () => {
+      const description = scene();
+      const deeperDescription = {
+        ...description,
+        bvh: {
+          ...description.bvh,
+          nodes: description.bvh.nodes.map((node, index) => ({
+            ...node,
+            depth: index === 0 ? 17 : node.depth,
+          })),
+        },
+      };
+      const engine = new WebGpuSimulationEngine({
+        config: { maxBvhDepth: 16 }
+      });
+
+      await expect(engine.prepare(deeperDescription)).rejects.toThrow(
+        /BVH depth 17.*maxBvhDepth 16/
+      );
+    });
+
+  it('validates the configured WebGPU BVH depth capacity', () => {
+    expect(() => new WebGpuSimulationEngine({
+      config: { maxBvhDepth: 0 }
+    })).toThrow(/maxBvhDepth/);
+  });
 });

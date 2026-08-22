@@ -84,6 +84,8 @@ export class WebGpuMegakernelBackend {
     this.maxRayDepth = 0xffffffff;
     this.canEmitAllSources = false;
     this.renderPreparationStage = null;
+    this.debugId = 0;
+    this.sceneUploadVersion = 1;
   }
 
   async initialize() {
@@ -206,6 +208,7 @@ export class WebGpuMegakernelBackend {
       description,
       dagPrograms: this.preparedScene.dagPrograms,
       workgroupSize: this.config.workgroupSize,
+      maxBvhDepth: this.config.maxBvhDepth,
     });
     if (!generated.supported) {
       throw new TypeError('Unsupported megakernel membership geometry: ' +
@@ -473,6 +476,12 @@ export class WebGpuMegakernelBackend {
       renderVariant,
       acceleration: strategy.acceleration,
       lanesPerRay: strategy.lanesPerRay,
+      maxBvhDepth: this.config.maxBvhDepth,
+      // staticStorage owns the immutable packed-field offsets for the life of
+      // this backend. A stage may be compiled only after one or more compatible
+      // scene uploads, so deriving its struct from the current scene would not
+      // necessarily match the buffer it is bound to.
+      traceSceneFieldCapacities: this.staticStorage.capacities,
     });
     if (!generated.supported) {
       throw new TypeError('Unsupported megakernel trace geometry: ' +
@@ -741,6 +750,7 @@ export class WebGpuMegakernelBackend {
     }
     this.staticStorage.update(next.packedStorage);
     this.preparedScene = next;
+    this.sceneUploadVersion++;
     this.canEmitAllSources = true;
     this.device.queue.writeBuffer(
       this.traceUniformBuffer,

@@ -883,6 +883,10 @@
           "title": "Maximum neighbor halo fraction",
           "description": "Maximum fraction of ray slots that may be consumed by neighbor halos in image and observer rendering modes. Must be less than 1. This value is not changed by automatic calibration."
         },
+        "maxBvhDepth": {
+          "title": "Maximum WebGPU BVH depth",
+          "description": "Traversal-stack capacity compiled into WebGPU shaders. Scene updates at or below this depth reuse the same shaders. Increase this only for an exceptionally deep BVH; larger values use more private GPU memory per invocation."
+        },
         "maxBatchRayEvents": {
           "title": "Maximum batch ray events",
           "description": "Maximum ray-event capacity used to size the WebGPU ping-pong ray and membership buffers and to bound one submission batch."
