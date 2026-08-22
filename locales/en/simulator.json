@@ -769,13 +769,10 @@
     "autoSyncUrlTooLarge": "The scene is too large to sync with URL. Please save it manually.",
     "identicalObjects": "There are two identical optical elements in the scene that overlap completely. This may cause unexpected behavior.",
     "brightnessInconsistent": "The brightnesses of two or more light sources saturate with inconsistent ratios. This may lead to wrong detector readings and color rendering. Please increase the ray density or reduce the brightnesses of the light sources.",
-    "primitiveInteractionConflict": "Numerically ambiguous primitive interaction at ray {{rayIndex}} (curves {{curveId}} and {{conflictingCurveId}}) involving the {{toleranceKind}} tolerance.",
-    "primitiveAmbiguousPower": "Total ambiguous power: {{power}}.",
-    "primitiveToleranceKinds": {
-      "interactionMerging": "interaction-merging",
-      "interactionNormal": "interaction-normal",
-      "normalConstruction": "normal-construction"
-    },
+    "primitiveInteractionConflict": "Primitive interaction conflict at curves {{curveId}} and {{conflictingCurveId}}. Please move the objects or the light source slightly to get a well-defined behavior.",
+    "primitiveMergeConflict": "Surface merging conflict at curves {{curveId}} and {{conflictingCurveId}}. Please move the objects or the light source slightly to get a well-defined behavior.",
+    "primitiveOrientationConflict": "Surface orientation conflict at curves {{curveId}} and {{conflictingCurveId}}. Please move the objects or the light source slightly to get a well-defined behavior.",
+    "primitiveNormalConflict": "Normal vector conflict at curves {{curveId}} and {{conflictingCurveId}}. Please move the objects or the light source slightly to get a well-defined behavior.",
     "blackBecomesTransparent": "When using \"Correct Brightness\" with a non-black background, the black part of the light's color becomes transparent due to additive color mixing. Please set all theme colors of light to have unit HSV value to avoid this issue.",
     "undefinedBehaviorOverlapping": "Surface merging is not supported for overlap between \"{{involvedObj1}}\" and \"{{involvedObj2}}\", resulting in undefined behavior. Please move the objects slightly apart (or move the light source) to get a well-defined behavior.",
     "undefinedBehaviorSingle": "Undefined behavior encountered at the object \"{{involvedObj}}\". Please move the object or the light source slightly to get a well-defined behavior."

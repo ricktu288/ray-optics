@@ -16,6 +16,11 @@
 
 import PrimitiveBasedSimulator from '../../src/core/PrimitiveBasedSimulator';
 import { FLOAT32_EPSILON } from '../../src/core/primitive/numeric';
+import {
+  INTERSECTION_CONFLICT_MERGE,
+  INTERSECTION_CONFLICT_NORMAL,
+  INTERSECTION_CONFLICT_ORIENTATION
+} from '../../src/core/primitive/interactionCandidate';
 import i18next from 'i18next';
 import Detector from '../../src/core/sceneObjs/other/Detector.js';
 
@@ -675,6 +680,7 @@ describe('PrimitiveBasedSimulator engine warnings', () => {
       progress: {},
       result: {
         warning: {
+          type: INTERSECTION_CONFLICT_MERGE,
           rayIndex: 3,
           curveId: 4,
           conflictingCurveId: 7,
@@ -693,7 +699,7 @@ describe('PrimitiveBasedSimulator engine warnings', () => {
       value: 2e-4
     });
     expect(simulator.warning).toBe(
-      '{{simulator:generalWarnings.primitiveInteractionConflict}}'
+      '{{simulator:generalWarnings.primitiveMergeConflict}}'
     );
   });
 
@@ -701,7 +707,7 @@ describe('PrimitiveBasedSimulator engine warnings', () => {
     const simulator = createSimulator('primitiveCpu');
     const originalTranslate = i18next.t;
     i18next.t = (key, options = {}) => {
-      if (key === 'simulator:generalWarnings.primitiveInteractionConflict') {
+      if (key === 'simulator:generalWarnings.primitiveMergeConflict') {
         return `curves ${options.curveId} and ${options.conflictingCurveId}`;
       }
       return `{{${key}}}`;
@@ -712,6 +718,7 @@ describe('PrimitiveBasedSimulator engine warnings', () => {
         progress: {},
         result: {
           warning: {
+            type: INTERSECTION_CONFLICT_MERGE,
             rayIndex: 3,
             curveId: 4,
             conflictingCurveId: 7,
@@ -732,15 +739,20 @@ describe('PrimitiveBasedSimulator engine warnings', () => {
     }
   });
 
-  it('shows the accumulated ambiguous power', () => {
+  it.each([
+    [INTERSECTION_CONFLICT_MERGE, 'primitiveMergeConflict'],
+    [INTERSECTION_CONFLICT_ORIENTATION, 'primitiveOrientationConflict'],
+    [INTERSECTION_CONFLICT_NORMAL, 'primitiveNormalConflict']
+  ])('shows a concise conflict label for type %s', (type, label) => {
     const simulator = createSimulator('primitiveCpu');
     const originalTranslate = i18next.t;
     i18next.t = (key, options = {}) => {
-      if (key === 'simulator:generalWarnings.primitiveInteractionConflict') {
-        return 'ambiguous interaction';
-      }
-      if (key === 'simulator:generalWarnings.primitiveAmbiguousPower') {
-        return `ambiguous power ${options.power}`;
+      if (key === `simulator:generalWarnings.${label}`) {
+        expect(options).toEqual({
+          curveId: '⟦pc:4⟧',
+          conflictingCurveId: '⟦pc:7⟧'
+        });
+        return label;
       }
       return `{{${key}}}`;
     };
@@ -750,6 +762,7 @@ describe('PrimitiveBasedSimulator engine warnings', () => {
         progress: {},
         result: {
           warning: {
+            type,
             rayIndex: 3,
             curveId: 4,
             conflictingCurveId: 7,
@@ -763,9 +776,7 @@ describe('PrimitiveBasedSimulator engine warnings', () => {
         }
       });
 
-      expect(simulator.warning).toBe(
-        'ambiguous interaction ambiguous power 1.250000e-3'
-      );
+      expect(simulator.warning).toBe(label);
     } finally {
       i18next.t = originalTranslate;
     }

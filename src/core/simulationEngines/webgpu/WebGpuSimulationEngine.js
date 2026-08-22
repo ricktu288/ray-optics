@@ -14,6 +14,8 @@ import {
   validateNumericEpsilon,
 } from '../../primitive/numeric.js';
 import {
+  INTERSECTION_CONFLICT_MERGE,
+  INTERSECTION_CONFLICT_ORIENTATION,
   INTERSECTION_CONFLICT_NORMAL
 } from '../../primitive/interactionCandidate.js';
 import {
@@ -207,7 +209,7 @@ class WebGpuSimulationRun {
         detectors: state?.detectors ?? [],
         processedRayCount: state?.processedRayCount ?? 0,
         totalTruncation: state?.totalTruncation ?? 0,
-        warning: createNormalConflictWarning(
+        warning: createConflictWarning(
           state,
           this.options.preparedScene?.runtimeDescription,
           this.engine.numericEpsilon,
@@ -231,13 +233,18 @@ class WebGpuSimulationRun {
   }
 }
 
-export function createNormalConflictWarning(
+export function createConflictWarning(
   state,
   description,
   numericEpsilon,
   safetyFactor = DEFAULT_AMBIGUOUS_RAY_WARNING_SAFETY_FACTOR
 ) {
-  if (!state || (state.warningFlags & 1) === 0) return null;
+  const type = state?.warningType ?? state?.warningFlags ?? 0;
+  if (![
+    INTERSECTION_CONFLICT_MERGE,
+    INTERSECTION_CONFLICT_ORIENTATION,
+    INTERSECTION_CONFLICT_NORMAL
+  ].includes(type)) return null;
   const ambiguousPower = state.ambiguousPower ?? 0;
   const threshold = estimateAmbiguousRayWarningPowerThreshold({
     numericEpsilon,
@@ -247,10 +254,12 @@ export function createNormalConflictWarning(
   });
   if (!(ambiguousPower > threshold)) return null;
   const policy = getIntersectionTolerancePolicy(numericEpsilon);
-  const configured = description?.numericalTolerances
-    ?.interactionNormal ?? 0;
+  const isNormalConflict = type === INTERSECTION_CONFLICT_NORMAL;
+  const configured = isNormalConflict
+    ? description?.numericalTolerances?.interactionNormal ?? 0
+    : description?.numericalTolerances?.interactionMerging ?? 0;
   return {
-    type: INTERSECTION_CONFLICT_NORMAL,
+    type,
     rayIndex: state.warningRayIndex,
     curveId: toSignedInt32(state.warningCurveId),
     conflictingCurveId: toSignedInt32(
@@ -258,15 +267,20 @@ export function createNormalConflictWarning(
     ),
     ambiguousPower,
     tolerance: {
-      kind: 'interactionNormal',
-      unit: 'radians',
-      value: Math.min(
-        Math.PI,
-        Math.max(configured, policy.interactionNormal)
-      ),
+      kind: isNormalConflict ? 'interactionNormal' : 'interactionMerging',
+      unit: isNormalConflict ? 'radians' : 'sceneUnits',
+      value: isNormalConflict
+        ? Math.min(
+          Math.PI,
+          Math.max(configured, policy.interactionNormal)
+        )
+        : configured,
     },
   };
 }
+
+// Retain the former export name for integrations which imported the helper.
+export const createNormalConflictWarning = createConflictWarning;
 
 function toSignedInt32(value) {
   return Number.isFinite(value) ? value | 0 : -1;

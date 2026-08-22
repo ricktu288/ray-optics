@@ -170,6 +170,7 @@ export function decodeWebGpuMegakernelRunState(
     processedRayCount: control[16],
     totalTruncation: control[17] / atomicFixedPointScale,
     warningFlags: control[18],
+    warningType: control[18],
     warningConflictCount: control[22],
     warningRayIndex: control[23],
     warningCurveId: control[24],

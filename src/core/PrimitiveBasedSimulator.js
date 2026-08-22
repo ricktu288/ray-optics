@@ -23,6 +23,11 @@ import {
   formatPrimitiveCurveReference
 } from './primitive/diagnosticReference.js';
 import {
+  INTERSECTION_CONFLICT_MERGE,
+  INTERSECTION_CONFLICT_NORMAL,
+  INTERSECTION_CONFLICT_ORIENTATION
+} from './primitive/interactionCandidate.js';
+import {
   DEFAULT_WEBGPU_WORKLOAD_THRESHOLD,
   getPrimitiveEngineWorkloadScore,
   selectPrimitiveEngineKind,
@@ -48,25 +53,18 @@ const AUTOMATIC_CPU_PREFERENCE_RUNTIME_MS = 20;
 const AUTOMATIC_COMPARISON_PAUSE_MS = 50;
 
 function formatPrimitiveEngineWarning(warning) {
-  const tolerance = warning.tolerance;
-  if (!tolerance) return null;
-  const kind = i18next.t(
-    `simulator:generalWarnings.primitiveToleranceKinds.${tolerance.kind}`
-  );
-  const conflict = i18next.t(
-    'simulator:generalWarnings.primitiveInteractionConflict', {
-      rayIndex: warning.rayIndex,
+  if (!warning.tolerance) return null;
+  const warningKey = {
+    [INTERSECTION_CONFLICT_MERGE]: 'primitiveMergeConflict',
+    [INTERSECTION_CONFLICT_ORIENTATION]: 'primitiveOrientationConflict',
+    [INTERSECTION_CONFLICT_NORMAL]: 'primitiveNormalConflict'
+  }[warning.type] ?? 'primitiveInteractionConflict';
+  return i18next.t(
+    `simulator:generalWarnings.${warningKey}`, {
       curveId: formatWarningCurveId(warning.curveId),
       conflictingCurveId: formatWarningCurveId(
         warning.conflictingCurveId
-      ),
-      toleranceKind: kind
-    }
-  );
-  if (!Number.isFinite(warning.ambiguousPower)) return conflict;
-  return conflict + ' ' + i18next.t(
-    'simulator:generalWarnings.primitiveAmbiguousPower', {
-      power: formatToleranceValue(warning.ambiguousPower)
+      )
     }
   );
 }
@@ -75,10 +73,6 @@ function formatWarningCurveId(curveId) {
   return Number.isSafeInteger(curveId) && curveId >= 0
     ? formatPrimitiveCurveReference(curveId)
     : String(curveId)
-}
-
-function formatToleranceValue(value) {
-  return Number.isFinite(value) ? value.toExponential(6) : 'n/a';
 }
 
 /**

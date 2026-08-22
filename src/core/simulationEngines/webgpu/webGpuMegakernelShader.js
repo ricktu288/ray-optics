@@ -154,17 +154,16 @@ fn recordTruncation(power:f32) {
     power*FIXED_SCALE,4294967040.0))));
 }
 
-fn recordNormalConflict(rayIndex:u32,hit:Hit,power:f32) {
-  recordTruncation(power);
+fn recordConflict(rayIndex:u32,hit:Hit,power:f32) {
   atomicAdd(&control[26],u32(ceil(min(
     power*FIXED_SCALE,4294967040.0))));
   let ticket=atomicAdd(&control[22],1u);
   if(ticket==0u){
+    atomicStore(&control[18],hit.conflict);
     atomicStore(&control[23],rayIndex);
     atomicStore(&control[24],bitcast<u32>(hit.conflictCurveId));
     atomicStore(&control[25],bitcast<u32>(hit.conflictingCurveId));
   }
-  atomicOr(&control[18],1u);
 }
 
 fn acceptChild(child:Ray,toggle:bool,incident:ptr<function,Membership>,
@@ -361,8 +360,10 @@ fn megakernelMain(@builtin(global_invocation_id) invocation:vec3u,
     ${render}
     if(capacityStalled){isActive=false;capacityStopped=true;}
     if(isActive){
-      if(hit.conflict==3u){if(real){recordNormalConflict(
+      if(hit.conflict!=0u&&real){recordConflict(
         rayIndex,hit,ray.powers.x+ray.powers.y);}
+      if(hit.conflict==3u){if(real){recordTruncation(
+        ray.powers.x+ray.powers.y);}
         isActive=false;}
       else if(depth>=megaUniforms.maxRayDepth){
         if(real){recordTruncation(ray.powers.x+ray.powers.y);}isActive=false;}
@@ -507,7 +508,9 @@ fn mergeLocal(candidate0:Hit,hit:Hit,curveId:u32,ray:Ray,
     if(hit.sigma>0.0){duplicate=crossingPresent(front,curve.ownerId);}
     else{duplicate=crossingPresent(back,curve.ownerId);}
     if(duplicate&&hit.u>0.1&&hit.u<0.9){
-      candidate.conflict=max(candidate.conflict,2u);}
+      if(candidate.conflict<=2u){candidate.conflict=2u;
+        candidate.conflictCurveId=candidate.curveId;
+        candidate.conflictingCurveId=i32(curveId);}}
     setCrossing(front,back,curve.ownerId,hit.sigma);
   }
   let oldCurve=curves[u32(candidate.curveId)];
@@ -515,7 +518,10 @@ fn mergeLocal(candidate0:Hit,hit:Hit,curveId:u32,ray:Ray,
     (ownerPriority(curve.ownerKind)==ownerPriority(oldCurve.ownerKind)&&
       curveId<u32(candidate.curveId));
   if(!hitsCompatible(candidate,oldCurve,hit,curve,ray)){
-    candidate.conflict=max(candidate.conflict,1u);}
+    if(candidate.conflict<=1u){candidate.conflict=1u;
+      candidate.conflictCurveId=select(candidate.curveId,i32(curveId),replace);
+      candidate.conflictingCurveId=select(i32(curveId),candidate.curveId,
+        replace);}}
   if(replace){candidate.s=hit.s;candidate.u=hit.u;candidate.point=hit.point;
     candidate.curveId=i32(curveId);candidate.sigma=hit.sigma;}
   return candidate;
