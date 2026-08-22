@@ -831,13 +831,9 @@
           "title": "Maximum batch ray events",
           "description": "Maximum ray-event capacity used to size the WebGPU ping-pong ray and membership buffers and to bound one submission batch."
         },
-        "maxReadyLineRecords": {
-          "title": "Maximum ready line records",
-          "description": "Maximum number of line-rendering records that may accumulate before a WebGPU batch is submitted."
-        },
-        "maxReadyPointRecords": {
-          "title": "Maximum ready point records",
-          "description": "Maximum number of point-rendering records that may accumulate before a WebGPU batch is submitted."
+        "maxReadyGeometryRecords": {
+          "title": "Maximum ready geometry records",
+          "description": "Maximum number of line, arrow, and point rendering records that may accumulate in one WebGPU submission."
         },
         "atomicFixedPointScale": {
           "title": "Atomic fixed-point scale",

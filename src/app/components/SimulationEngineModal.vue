@@ -284,8 +284,7 @@ const ENGINE_CONFIG_SECTIONS = [
     fields: [
       { key: 'maxBvhDepth', path: ['maxBvhDepth'], min: 1, step: 1, integer: true, hasInfo: true },
       { key: 'maxBatchRayEvents', path: ['maxBatchRayEvents'], min: 1, step: 1, integer: true, hasInfo: true },
-      { key: 'maxReadyLineRecords', path: ['maxReadyLineRecords'], min: 1, step: 1, integer: true, hasInfo: true },
-      { key: 'maxReadyPointRecords', path: ['maxReadyPointRecords'], min: 1, step: 1, integer: true, hasInfo: true }
+      { key: 'maxReadyGeometryRecords', path: ['maxReadyGeometryRecords'], min: 1, step: 1, integer: true, hasInfo: true }
     ]
   },
   {

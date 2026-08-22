@@ -44,8 +44,7 @@ describe('simulation engine configuration', () => {
     const webgpu = DEFAULT_SIMULATION_ENGINE_CONFIGS.webgpu;
     expect(webgpu.maxBvhDepth).toBe(16);
     expect(webgpu.maxBatchRayEvents).toBe(1048576);
-    expect(webgpu.maxReadyLineRecords).toBe(1048576);
-    expect(webgpu.maxReadyPointRecords).toBe(1048576);
+    expect(webgpu.maxReadyGeometryRecords).toBe(2097152);
     expect(webgpu.atomicFixedPointScale).toBe(1048576);
   });
 
@@ -81,10 +80,6 @@ describe('simulation engine configuration', () => {
     expect(DEFAULT_SIMULATION_ENGINE_CONFIGS.webgpu.bvh).toBeUndefined();
   });
 
-  it('keeps automatic engine selection out of user configuration', () => {
-    expect(DEFAULT_PRIMITIVE_SIMULATOR_CONFIG.engineSelection).toBeUndefined();
-  });
-
   it('resolves a stored direct primitive threshold override', () => {
     const resolved = resolvePrimitiveSimulatorConfig({
       primitive: {
@@ -98,18 +93,6 @@ describe('simulation engine configuration', () => {
     expect(resolved.bvh.lineLeafSize).toBe(4);
   });
 
-  it('ignores legacy automatic engine-selection overrides', () => {
-    const resolved = resolvePrimitiveSimulatorConfig({
-      primitive: {
-        engineSelection: {
-          webGpuWorkloadThreshold: 2048,
-          outgoingCoefficient: 99
-        }
-      }
-    });
-    expect(resolved.engineSelection).toBeUndefined();
-  });
-
   it('resolves engine tuning independently of shared preprocessing', () => {
     const resolved = resolveSimulationEngineConfig('primitiveCpu', {
       primitiveCpu: { maxLocalIterations: 7 }
@@ -118,9 +101,10 @@ describe('simulation engine configuration', () => {
     expect(resolved.bvh).toBeUndefined();
   });
 
-  it('does not expose removed WebGPU ray-cooperation settings', () => {
-    const config = DEFAULT_SIMULATION_ENGINE_CONFIGS.webgpu;
-    expect(Object.keys(config).some(key => key.startsWith('rayCooperation')))
-      .toBe(false);
+  it('does not pass undeclared settings through to an engine', () => {
+    const resolved = resolveSimulationEngineConfig('webgpu', {
+      webgpu: { unknownSetting: 7 }
+    });
+    expect(resolved.unknownSetting).toBeUndefined();
   });
 });

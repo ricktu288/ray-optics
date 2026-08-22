@@ -12,7 +12,6 @@ export const WEBGPU_REGION_DESCRIPTOR_STRIDE = 32;
 export const WEBGPU_DETECTOR_DESCRIPTOR_STRIDE = 32;
 export const WEBGPU_CURVE_DESCRIPTOR_STRIDE = 32;
 export const WEBGPU_BVH_NODE_STRIDE = 80;
-export const WEBGPU_RUN_CONTROL_SIZE = 80;
 
 export const WEBGPU_CURVE_KINDS = Object.freeze({
   lineSegment: 0,
@@ -109,103 +108,6 @@ function packInteractionTypes(description) {
     data[offset + 3] = type.partialReflect ? 1 : 0;
   });
   return { layout, data };
-}
-
-export class WebGpuBatchController {
-  constructor(config) {
-    this.config = config;
-    this.reset();
-  }
-
-  reset() {
-    this.rayEvents = 0;
-    this.readyLineRecords = 0;
-    this.readyPointRecords = 0;
-    this.pingPongs = 0;
-    this.stopReason = null;
-  }
-
-  canAppendPingPong({
-    rayCount,
-    maximumLineRecords = rayCount * 3,
-    maximumPointRecords = rayCount,
-  }) {
-    const reason = this.getLimitReason({
-      rayCount,
-      maximumLineRecords,
-      maximumPointRecords,
-    });
-    if (reason && this.pingPongs > 0) {
-      this.stopReason = reason;
-      return false;
-    }
-    // One ping-pong is always permitted in an empty batch.  Large phases are
-    // chunked internally; refusing it here would make forward progress
-    // impossible.
-    return true;
-  }
-
-  appendPingPong({ rayCount, lineRecords, pointRecords }) {
-    this.rayEvents += rayCount;
-    this.readyLineRecords += lineRecords;
-    this.readyPointRecords += pointRecords;
-    this.pingPongs++;
-  }
-
-  getLimitReason({ rayCount, maximumLineRecords, maximumPointRecords }) {
-    if (this.pingPongs >= this.config.maxPingPongsPerSubmission) {
-      return 'ping-pong limit';
-    }
-    if (this.rayEvents + rayCount > this.config.maxBatchRayEvents) {
-      return 'ray-event limit';
-    }
-    if (
-      this.readyLineRecords + maximumLineRecords >
-      this.config.maxReadyLineRecords
-    ) {
-      return 'ready-line capacity';
-    }
-    if (
-      this.readyPointRecords + maximumPointRecords >
-      this.config.maxReadyPointRecords
-    ) {
-      return 'ready-point capacity';
-    }
-    return null;
-  }
-
-  snapshot() {
-    return {
-      rayEvents: this.rayEvents,
-      readyLineRecords: this.readyLineRecords,
-      readyPointRecords: this.readyPointRecords,
-      pingPongs: this.pingPongs,
-      stopReason: this.stopReason,
-    };
-  }
-}
-
-export function createWebGpuRunControlData({
-  currentRayCount = 0,
-  rayCapacity = 0,
-  readyLineCapacity = 0,
-  readyPointCapacity = 0,
-  workgroupSize = 64,
-} = {}) {
-  const data = new Uint32Array(WEBGPU_RUN_CONTROL_SIZE / 4);
-  data[0] = currentRayCount;
-  data[1] = rayCapacity;
-  data[2] = readyLineCapacity;
-  data[3] = readyPointCapacity;
-  // 4 nextRayCount, 5 requiredRayCapacity, 6 readyLineCount,
-  // 7 readyPointCount, 8 resizeNeeded, 9 cancelRequested,
-  // 10 phase, 11 pingPongIndex, 12-15 indirect arguments/scratch,
-  // 16 processedRayCount, 17 totalTruncation with 20 fractional bits,
-  // 18 warning flags, 19 ready-geometry overflow.
-  data[12] = Math.ceil(currentRayCount / workgroupSize);
-  data[13] = 1;
-  data[14] = 1;
-  return data;
 }
 
 function packSources(description, parameterValues) {

@@ -566,7 +566,7 @@ describe('WebGpuSimulationEngine', () => {
     const writeBuffer = jest.fn();
     const backend = new WebGpuMegakernelBackend({ queue: { writeBuffer } }, {
       packedStorage: { counts: { sourceRays: 0 } }
-    }, { maxReadyLineRecords: 1, maxReadyPointRecords: 1 });
+    }, { maxReadyGeometryRecords: 2 });
     backend.rayCapacity = 1024;
     backend.currentPayloadSize = 64;
     backend.queueBuffer = {};
@@ -817,7 +817,7 @@ describe('WebGpuSimulationEngine', () => {
       engine.startNativeRun = jest.fn(async () => ({
         statePromise: Promise.resolve({
           currentRayCount: 8,
-          readyLineCount: 0,
+          readyGeometryCount: 0,
           resizeNeeded: true,
           requiredRayCapacity: 16,
         }),
@@ -830,6 +830,60 @@ describe('WebGpuSimulationEngine', () => {
         /approximately 16 rays.*Increase the ray buffer capacity/
       );
     });
+
+  it('throws instead of presenting incomplete ready geometry', async () => {
+    const engine = new WebGpuSimulationEngine();
+    engine.initialize = jest.fn(async () => {});
+    engine.device = {};
+    engine.ensureComputeBackend = jest.fn(async () => true);
+    engine.computeBackend = {
+      configureRun: jest.fn(async () => {}),
+      renderPreparationStage: { geometryCapacity: 1 }
+    };
+    engine.startNativeRun = jest.fn(async () => ({
+      statePromise: Promise.resolve({
+        currentRayCount: 8,
+        readyGeometryCount: 2,
+        resizeNeeded: false,
+        readyGeometryOverflow: true,
+      }),
+      presentationPromise: Promise.resolve(false),
+    }));
+
+    const run = await engine.createRun({ preparedScene: {} });
+
+    await expect(run.advance()).rejects.toThrow(
+      /ready-geometry buffer.*without omitting light geometry/
+    );
+  });
+
+  it('throws instead of publishing overflowed detector values', async () => {
+    const engine = new WebGpuSimulationEngine();
+    engine.initialize = jest.fn(async () => {});
+    engine.device = {};
+    engine.ensureComputeBackend = jest.fn(async () => true);
+    engine.computeBackend = {
+      configureRun: jest.fn(async () => {}),
+      renderPreparationStage: { geometryCapacity: 1 }
+    };
+    engine.startNativeRun = jest.fn(async () => ({
+      statePromise: Promise.resolve({
+        currentRayCount: 8,
+        readyGeometryCount: 0,
+        resizeNeeded: false,
+        readyGeometryOverflow: false,
+        detectorOverflow: true,
+      }),
+      presentationPromise: Promise.resolve(false),
+    }));
+
+    const run = await engine.createRun({ preparedScene: {} });
+    run.detectorOverflowWarned = true;
+
+    await expect(run.advance()).rejects.toThrow(
+      /detector accumulation overflowed.*detector values would be invalid/
+    );
+  });
 
   it('logs revision, backend, BVH, and all-miss state for completed runs',
     async () => {
@@ -861,8 +915,7 @@ describe('WebGpuSimulationEngine', () => {
         statePromise: Promise.resolve({
           currentRayCount: 0,
           processedRayCount: 9,
-          readyLineCount: 9,
-          readyPointCount: 0,
+          readyGeometryCount: 9,
           resizeNeeded: false,
           warningFlags: 0,
           detectors: [],

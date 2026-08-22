@@ -119,8 +119,7 @@ export class WebGpuMegakernelBackend {
     this.renderPreparationStage = {
       geometryBuffer: this.geometryBuffer,
       drawIndirectBuffer: this.drawIndirectBuffer,
-      geometryCapacity: this.config.maxReadyLineRecords +
-        this.config.maxReadyPointRecords,
+      geometryCapacity: this.config.maxReadyGeometryRecords,
     };
   }
 
@@ -154,8 +153,7 @@ export class WebGpuMegakernelBackend {
         this.preparedScene.packedStorage.counts.detectorResultValues * 8),
       usage: storage,
     });
-    const geometryCapacity = this.config.maxReadyLineRecords +
-      this.config.maxReadyPointRecords;
+    const geometryCapacity = this.config.maxReadyGeometryRecords;
     this.geometryBuffer = this.device.createBuffer({
       label: 'WebGPU megakernel ready geometry',
       size: Math.max(1, geometryCapacity) * 64,
@@ -536,8 +534,7 @@ export class WebGpuMegakernelBackend {
     const data = new Uint32Array(21);
     data[0] = count;
     data[1] = this.rayCapacity;
-    data[2] = this.config.maxReadyLineRecords;
-    data[3] = this.config.maxReadyPointRecords;
+    data[2] = this.config.maxReadyGeometryRecords;
     data[4] = 0;
     data[5] = count;
     data[15] = this.currentPayloadSize;
@@ -653,7 +650,7 @@ export class WebGpuMegakernelBackend {
   }
 
   encodeReadyGeometryReset(commandEncoder) {
-    commandEncoder.clearBuffer(this.queueBuffer, 6 * 4, 2 * 4);
+    commandEncoder.clearBuffer(this.queueBuffer, 6 * 4, 4);
     commandEncoder.clearBuffer(this.queueBuffer, 19 * 4, 4);
     commandEncoder.clearBuffer(this.drawIndirectBuffer, 4, 4);
   }

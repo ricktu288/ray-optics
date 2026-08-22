@@ -57,8 +57,7 @@ export const DEFAULT_SIMULATION_ENGINE_CONFIGS = Object.freeze({
     ...COMMON_PRIMITIVE_ENGINE_CONFIG,
     workgroupSize: 64,
     maxBatchRayEvents: 1048576,
-    maxReadyLineRecords: 1048576,
-    maxReadyPointRecords: 1048576,
+    maxReadyGeometryRecords: 2097152,
     atomicFixedPointScale: 1048576,
     maxBvhDepth: 16,
     maxLocalIterations: 256,
@@ -76,15 +75,7 @@ export const DEFAULT_SIMULATION_ENGINE_CONFIGS = Object.freeze({
 export function resolveSimulationEngineConfig(engineKind, storedConfigs = {}) {
   const defaults = DEFAULT_SIMULATION_ENGINE_CONFIGS[engineKind] ?? {};
   const overrides = storedConfigs?.[engineKind];
-  const resolvedOverrides =
-    overrides && typeof overrides === 'object' ? overrides : {};
-  const engineOverrides = { ...resolvedOverrides };
-  delete engineOverrides.bvh;
-  delete engineOverrides.logDebugInfo;
-  return {
-    ...defaults,
-    ...engineOverrides,
-  };
+  return resolveKnownOverrides(defaults, overrides);
 }
 
 /**
@@ -100,17 +91,23 @@ export function resolvePrimitiveSimulatorConfig(storedConfigs = {}) {
     resolvedOverrides.bvh && typeof resolvedOverrides.bvh === 'object'
       ? resolvedOverrides.bvh
       : {};
-  const primitiveOverrides = { ...resolvedOverrides };
-  // Ignore preferences written by versions which exposed automatic engine
-  // calibration. Initial automatic selection now always uses the shipped
-  // policy.
-  delete primitiveOverrides.engineSelection;
   return {
-    ...DEFAULT_PRIMITIVE_SIMULATOR_CONFIG,
-    ...primitiveOverrides,
-    bvh: {
-      ...DEFAULT_PRIMITIVE_SIMULATOR_CONFIG.bvh,
-      ...bvhOverrides,
-    },
+    ...resolveKnownOverrides(
+      DEFAULT_PRIMITIVE_SIMULATOR_CONFIG,
+      resolvedOverrides
+    ),
+    bvh: resolveKnownOverrides(
+      DEFAULT_PRIMITIVE_SIMULATOR_CONFIG.bvh,
+      bvhOverrides
+    ),
   };
+}
+
+function resolveKnownOverrides(defaults, overrides) {
+  const resolved = { ...defaults };
+  if (!overrides || typeof overrides !== 'object') return resolved;
+  for (const name of Object.keys(defaults)) {
+    if (overrides[name] !== undefined) resolved[name] = overrides[name];
+  }
+  return resolved;
 }

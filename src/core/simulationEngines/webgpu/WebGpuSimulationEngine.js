@@ -47,10 +47,8 @@ const DEFAULT_WEBGPU_RUN_CONFIG = Object.freeze({
   workgroupSize: 64,
   ambiguousRayWarningSafetyFactor:
     DEFAULT_AMBIGUOUS_RAY_WARNING_SAFETY_FACTOR,
-  maxItemsPerAdvance: 262144,
   maxBatchRayEvents: 262144,
-  maxReadyLineRecords: 262144,
-  maxReadyPointRecords: 65536,
+  maxReadyGeometryRecords: 2097152,
   atomicFixedPointScale: 1048576,
   maxBvhDepth: 16,
   maxLocalIterations: 256,
@@ -109,10 +107,28 @@ class WebGpuSimulationRun {
         'ray power threshold.'
       );
     }
+    if (state.readyGeometryOverflow) {
+      this.isComplete = true;
+      throw new RangeError(
+        'The WebGPU ready-geometry buffer is too small to render this ' +
+        'tracing submission without omitting light geometry. Increase the ' +
+        'ready-geometry capacity, reduce the maximum local interactions or ' +
+        'ping-pongs per submission, or increase the minimum ray power ' +
+        'threshold.'
+      );
+    }
+    if (state.detectorOverflow) {
+      this.isComplete = true;
+      throw new RangeError(
+        'WebGPU fixed-point detector accumulation overflowed, so one or ' +
+        'more detector values would be invalid. Reduce the detector input ' +
+        'power or the atomic fixed-point scale.'
+      );
+    }
     const geometryCapacity = this.backend
       ?.renderPreparationStage.geometryCapacity ?? 0;
     const recordCount = this.engine.rasterizer
-      ? Math.min(state.readyLineCount, geometryCapacity)
+      ? Math.min(state.readyGeometryCount, geometryCapacity)
       : 0;
     if (presented !== false) {
       this.hasPresentedRun = true;
@@ -150,8 +166,7 @@ class WebGpuSimulationRun {
         `${formatDebugValue(debug.maxBvhDepth)} capacity\n` +
       `  Rays: ${sourceRayCount} source, ${processedRayCount} processed, ` +
         `${state?.currentRayCount ?? 0} remaining\n` +
-      `  Last batch geometry: ${state?.readyLineCount ?? 0} lines, ` +
-        `${state?.readyPointCount ?? 0} points\n` +
+      `  Last batch geometry: ${state?.readyGeometryCount ?? 0} records\n` +
       `  Every source ray ended at its first trace: ` +
         `${allSourceRaysMissed ? 'yes (possible all-miss failure)' : 'no'}`
     );
@@ -810,10 +825,8 @@ function resolveWebGpuRunConfig(config) {
   }
   for (const name of [
     'workgroupSize',
-    'maxItemsPerAdvance',
     'maxBatchRayEvents',
-    'maxReadyLineRecords',
-    'maxReadyPointRecords',
+    'maxReadyGeometryRecords',
     'atomicFixedPointScale',
     'maxBvhDepth',
     'maxLocalIterations',
