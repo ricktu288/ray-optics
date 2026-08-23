@@ -1,20 +1,12 @@
 # Roadmap
 
-## Primitive-based scene description (Sept 2026)
+## Make primitive-based engine default (Early 2027)
 
-Instead of each `sceneObj` having its own ray tracing methods such as `checkRayIntersects` and `onRayIncident`, the core of this project will be refactored to use a primitive-based ray tracing system, so that each `sceneObj` will instead have a `getPrimitives` method that returns a list of primitive optical elements based on a list of primitive curves (line segments, arcs, cubic Bezier curves) with attached source types, surface types (e.g. reflective, refractive), and bulk types (e.g. GRIN material), which are defined by parameters and formulas similar to a module. This primitive structure is then sent to a ray tracing engine to perform the ray tracing. This allows for more flexible ray tracing engines (such as the GPU-based one below).
-
-Preview available in the [`primitive-based`](https://github.com/ricktu288/ray-optics/tree/primitive-based) branch in Settings -> Simulation engine.
-
-## WebGPU-based ray tracing engine (Sept 2026)
-
-A WebGPU-based ray tracing engine will be implemented based on the above primitive-based scene description. A CPU fallback will be implemented for browsers that do not support WebGPU, but also based on the primitive-based scene description.
-
-Preview available in the [`primitive-based`](https://github.com/ricktu288/ray-optics/tree/primitive-based) branch in Settings -> Simulation engine.
+The original engine (and thus the `checkRayIntersect`, etc, methods in `sceneObj`) will be removed and the primitve based engines (which are currently in beta) will be the only engines.
 
 ## `ModuleObj`-based scene objects (Mid 2027)
 
-A module will have more features, such as different parameter types, dependent control points, etc, which are enough to cover all current `sceneObj`'s features. Then all current `sceneObj`s are expected to become module instances, with the only primitive objects being either a primitive optical element described above, or a primitive decorative object (e.g. a line or a text label). Built-in module definition will not be stored in the scene's JSON code.
+A module will have more features, such as different parameter types, dependent control points, etc, which are enough to cover all current `sceneObj`'s features. Then all current `sceneObj`s are expected to become module instances, with the only primitive objects being either a primitive optical element or a primitive decorative object (e.g. a line or a text label). Built-in module definition will not be stored in the scene's JSON code.
 
 ## Other physics simulations (2028~30)
 

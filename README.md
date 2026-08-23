@@ -27,6 +27,7 @@ A web app for creating and simulating 2D geometric optical scenes, with a galler
 - Import shapes from SVG files as optical components
 - Export as SVG diagram
 - Create modularized combinations of optical elements with custom parameters.
+- Run with high-performance ray tracing engine based on WebGPU. <sup>Beta</sup>
 - Use the simulator as a node module in your own project and integrate with other programming languages.
 
 ## Links
