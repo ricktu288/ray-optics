@@ -322,5 +322,19 @@
     "title": "Formen importieren",
     "stats_one": "{{total}} Pfad — {{closed}} geschlossen / {{open}} offen",
     "stats_other": "{{total}} Pfade — {{closed}} geschlossen / {{open}} offen"
+  },
+  "simulationEngineModal": {
+    "configuration": {
+      "fields": {
+        "workgroupSize": {
+          "title": "Arbeitsgruppengröße"
+        }
+      },
+      "sections": {
+        "primitiveCpu": {
+          "title": "CPU"
+        }
+      }
+    }
   }
 }
