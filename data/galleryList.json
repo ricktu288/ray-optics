@@ -88,6 +88,13 @@
         ]
       },
       {
+        "id": "stealth-aircraft",
+        "beta": true,
+        "contributors": [
+          "Zain Kalim"
+        ]
+      },
+      {
         "id": "caustics-from-a-reflective-sphere",
         "contributors": [
           "Georg Nadorff"
@@ -499,6 +506,13 @@
       },
       {
         "id": "holographic-sight",
+        "contributors": [
+          "Zain Kalim"
+        ]
+      },
+      {
+        "id": "telescopic-sight",
+        "beta": true,
         "contributors": [
           "Zain Kalim"
         ]

@@ -102,6 +102,16 @@
       "chaff": "箔片",
       "selectthechafftochan": "選取箔片可改變箔片數量（N）和長度（L）。"
     },
+    "stealthAircraft": {
+      "title": "匿蹤飛機",
+      "description": "此模擬展示匿蹤飛機（如 F-117）如何以平坦的斜面取代大多數飛機採用的標準曲面，從而避免被雷達偵測。",
+      "radarreciever": "雷達接收器",
+      "emitter": "發射器",
+      "conventionalaircraft": "傳統飛機",
+      "stealthaircraft": "匿蹤飛機",
+      "receivedraysexposesp": "接收到反射射線，\n飛機位置暴露",
+      "norayreceivedplaneno": "未接收到射線，\n未偵測到飛機"
+    },
     "causticsFromAReflectiveSphere": {
       "title": "反射性球體的焦散",
       "description": "一個反射性的積分球。也可以是液滴（如雨滴）中的反射。移動點光源的位置可以看到許多漂亮的圖樣。",
@@ -566,6 +576,19 @@
       "switchtoobservermode": "（切換至觀察者模式以查看）",
       "divergingmirror": "發散鏡",
       "holographicsight": "全像照準器"
+    },
+    "telescopicSight": {
+      "title": "望遠式瞄準鏡",
+      "description": "此模擬詳細示範標準望遠式步槍瞄準鏡的運作方式。",
+      "objectiveassembly": "物鏡組",
+      "ocularassembly": "目鏡組",
+      "crosshairfirstfocalp": "十字絲（第一焦平面）",
+      "imagereversalassembl": "校正鏡組",
+      "aperturesecondfocalp": "光圈（第二焦平面）",
+      "targetappearsfaraway": "標靶顯得很遠，\n無法瞄準",
+      "targetismagnifiedcro": "標靶已放大，\n可見十字絲，\n影像上下顛倒",
+      "targetismagnifiedcro1": "標靶已放大，\n可見十字絲，\n影像方向已校正",
+      "riflescope": "步槍瞄準鏡"
     }
   }
 }

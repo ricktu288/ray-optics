@@ -103,6 +103,16 @@
       "chaff": "Chaff",
       "selectthechafftochan": "Select the chaff to change the number (N) and the length (L) of chaff pieces."
     },
+    "stealthAircraft": {
+      "title": "Stealth Aircraft",
+      "description": "This simulation showcases how stealth aircraft (such as the F-117) avoid radar detection by having flat angled surfaces instead of the standard curved surfaces that most planes have.",
+      "radarreciever": "Radar Reciever",
+      "emitter": "Emitter",
+      "conventionalaircraft": "Conventional Aircraft",
+      "stealthaircraft": "Stealth Aircraft",
+      "receivedraysexposesp": "Received rays exposes\nplane's position",
+      "norayreceivedplaneno": "No ray received, \nplane not detected"
+    },
     "causticsFromAReflectiveSphere": {
       "title": "Caustics from a Reflective Sphere",
       "description": "A reflective integrating sphere (not scattering) with an entrance hole.  Can also be the reflections inside a liquid drop (like a raindrop).  Beautiful patterns emerge where the caustics develop by moving the point source around.",
@@ -567,6 +577,19 @@
       "switchtoobservermode": "(Switch to Observer Mode to see)",
       "divergingmirror": "Diverging Mirror",
       "holographicsight": "Holographic Sight"
+    },
+    "telescopicSight": {
+      "title": "Telescopic Sight",
+      "description": "Detailed demonstration of a standard telescopic rifle scope.",
+      "objectiveassembly": "Objective Assembly",
+      "ocularassembly": "Ocular Assembly",
+      "crosshairfirstfocalp": "Crosshair (First Focal Plane)",
+      "imagereversalassembl": "Image Reversal Assembly",
+      "aperturesecondfocalp": "Aperture (Second Focal Plane)",
+      "targetappearsfaraway": "Target appears far away,\nunable to aim",
+      "targetismagnifiedcro": "Target is magnified,\ncrosshair is visible,\nupside down",
+      "targetismagnifiedcro1": "Target is magnified,\ncrosshair is visible,\norientation is corrected",
+      "riflescope": "Rifle Scope "
     }
   }
 }

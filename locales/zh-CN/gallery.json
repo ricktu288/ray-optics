@@ -102,6 +102,16 @@
       "chaff": "箔片",
       "selectthechafftochan": "选择箔片可改变箔片数量（N）和长度（L）。"
     },
+    "stealthAircraft": {
+      "title": "隐身飞机",
+      "description": "此模拟展示了隐身飞机（如 F-117）如何用平坦的斜面代替大多数飞机采用的常规曲面，从而避免被雷达探测到。",
+      "radarreciever": "雷达接收器",
+      "emitter": "发射器",
+      "conventionalaircraft": "常规飞机",
+      "stealthaircraft": "隐身飞机",
+      "receivedraysexposesp": "接收到反射波，\n飞机位置暴露",
+      "norayreceivedplaneno": "未接收到反射波，\n未探测到飞机"
+    },
     "causticsFromAReflectiveSphere": {
       "title": "反射性球体的焦散",
       "description": "一个反射性的积分球。也可以是液滴（如雨滴）中的反射。移动点光源的位置可以看到许多漂亮的图样。",
@@ -566,6 +576,19 @@
       "switchtoobservermode": "（切换至观察者模式以查看）",
       "divergingmirror": "发散镜",
       "holographicsight": "全息瞄准镜"
+    },
+    "telescopicSight": {
+      "title": "望远式瞄准镜",
+      "description": "此模拟详细演示了标准望远式步枪瞄准镜的工作原理。",
+      "objectiveassembly": "物镜组",
+      "ocularassembly": "目镜组",
+      "crosshairfirstfocalp": "十字线（第一焦平面）",
+      "imagereversalassembl": "转像镜组",
+      "aperturesecondfocalp": "光圈（第二焦平面）",
+      "targetappearsfaraway": "标靶显得很远，\n无法瞄准",
+      "targetismagnifiedcro": "标靶已放大，\n可见十字线，\n影像上下颠倒",
+      "targetismagnifiedcro1": "标靶已放大，\n可见十字线，\n影像方向已校正",
+      "riflescope": "步枪瞄准镜"
     }
   }
 }
