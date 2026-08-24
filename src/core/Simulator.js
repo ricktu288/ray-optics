@@ -1127,7 +1127,7 @@ class Simulator {
     const RED_WAVELENGTH = targetRed;
     const INFRARED_WAVELENGTH = scaled(Simulator.INFRARED_WAVELENGTH);
 
-    if (wl >= UV_WAVELENGTH && wl < VIOLET_WAVELENGTH) {
+    if (wl < VIOLET_WAVELENGTH) {
       R = 0.5;
       G = 0;
       B = 1;
@@ -1151,7 +1151,7 @@ class Simulator {
       R = 1;
       G = -1 * (wl - RED_WAVELENGTH) / (RED_WAVELENGTH - YELLOW_WAVELENGTH);
       B = 0.0;
-    } else if (wl >= RED_WAVELENGTH && wl <= INFRARED_WAVELENGTH) {
+    } else if (wl >= RED_WAVELENGTH) {
       R = 1;
       G = 0;
       B = 0;
@@ -1162,12 +1162,13 @@ class Simulator {
     }
 
     // intensty is lower at the edges of the visible spectrum.
+    const FADE_LIMIT = 0.25;
     if (wl > INFRARED_WAVELENGTH || wl < UV_WAVELENGTH) {
-      alpha = 0;
+      alpha = FADE_LIMIT;
     } else if (wl > RED_WAVELENGTH) {
-      alpha = (INFRARED_WAVELENGTH - wl) / (INFRARED_WAVELENGTH - RED_WAVELENGTH);
+      alpha = 1.0 - FADE_LIMIT * (wl - RED_WAVELENGTH) / (INFRARED_WAVELENGTH - RED_WAVELENGTH);
     } else if (wl < VIOLET_WAVELENGTH) {
-      alpha = (wl - UV_WAVELENGTH) / (VIOLET_WAVELENGTH - UV_WAVELENGTH);
+      alpha = 1.0 - FADE_LIMIT * (VIOLET_WAVELENGTH - wl) / (VIOLET_WAVELENGTH - UV_WAVELENGTH);
     } else {
       alpha = 1;
     }
