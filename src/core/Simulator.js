@@ -1166,9 +1166,9 @@ class Simulator {
     if (wl > INFRARED_WAVELENGTH || wl < UV_WAVELENGTH) {
       alpha = FADE_LIMIT;
     } else if (wl > RED_WAVELENGTH) {
-      alpha = 1.0 - FADE_LIMIT * (wl - RED_WAVELENGTH) / (INFRARED_WAVELENGTH - RED_WAVELENGTH);
+      alpha = 1.0 - (1.0 - FADE_LIMIT) * (wl - RED_WAVELENGTH) / (INFRARED_WAVELENGTH - RED_WAVELENGTH);
     } else if (wl < VIOLET_WAVELENGTH) {
-      alpha = 1.0 - FADE_LIMIT * (VIOLET_WAVELENGTH - wl) / (VIOLET_WAVELENGTH - UV_WAVELENGTH);
+      alpha = 1.0 - (1.0 - FADE_LIMIT) * (VIOLET_WAVELENGTH - wl) / (VIOLET_WAVELENGTH - UV_WAVELENGTH);
     } else {
       alpha = 1;
     }
