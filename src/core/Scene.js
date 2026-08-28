@@ -186,6 +186,7 @@ function extractNonDefaults(obj, defaults) {
  * @property {boolean} simulateColors - The "Simulate Color" option indicating if the color (wavelength) of the rays is simulated (also affecting whether the options of color filtering or Cauchy coefficients of some objects are shown.)
  * @property {number} redWavelength - The wavelength (in nm) of the color to be shown as red (not necessarily the physical red, as users working with non-visible optics may want to visualize the color spectrum in a different way).
  * @property {number} violetWavelength - The wavelength (in nm) of the color to be shown as violet (not necessarily the physical violet, as users working with non-visible optics may want to visualize the color spectrum in a different way).
+ * @property {boolean} keepNonVisibleLight - Whether positive finite wavelengths outside the displayed UV-to-infrared range are retained and rendered with clamped intensity.
  * @property {string} colorMode - The mode of rendering the color of rays (color mapping functions, etc, including the brightness behavior when `simulateColors` is false). Possible values are 'default' (when 'Correct Brightness' is off), 'linear' (Linear Value), 'linearRGB' (Linear RGB), 'reinhard' (Reinhard), and 'colorizedIntensity' (Color-coded Intensity).
  * @property {boolean} showRayArrows - The "Show Ray Arrows" option indicating if the arrows are shown on the rays indicating its direction.
  * @property {boolean} symbolicBodyMerging - The "Symbolic body-merging" option in the gradient-index glass objects (which is a global option), indicating if the symbolic math is used to calculate the effective refractive index resulting from the "body-merging" of several gradient-index glass objects.
@@ -218,6 +219,7 @@ class Scene {
     simulateColors: false,
     redWavelength: 620,
     violetWavelength: 420,
+    keepNonVisibleLight: false,
     colorMode: 'default',
     showRayArrows: false,
     symbolicBodyMerging: false,

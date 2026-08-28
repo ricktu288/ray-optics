@@ -94,12 +94,14 @@ const MULTIPLY_RANGE_DAG = {
  * @param {Object} [options]
  * @param {number} [options.violetWavelength=420]
  * @param {number} [options.redWavelength=620]
+ * @param {boolean} [options.keepNonVisibleLight=false]
  * @param {number} [options.intervalLimit=8]
  * @returns {Object} A unified `types` list, category views, and supporting region-index metadata.
  */
 export function estimateWebGpuParameterRanges(description, {
   violetWavelength = DEFAULT_VIOLET_WAVELENGTH,
   redWavelength = DEFAULT_RED_WAVELENGTH,
+  keepNonVisibleLight = false,
   intervalLimit = DEFAULT_WEBGPU_PARAMETER_INTERVAL_LIMIT
 } = {}) {
   validateDescription(description);
@@ -108,7 +110,8 @@ export function estimateWebGpuParameterRanges(description, {
 
   const wavelengthRange = deriveWebGpuWavelengthRange({
     violetWavelength,
-    redWavelength
+    redWavelength,
+    keepNonVisibleLight
   });
   const ownerRanges = collectOwnerCoordinateRanges(description, intervalLimit);
   const tolerancePolicy = getIntersectionTolerancePolicy(
@@ -289,12 +292,15 @@ export function estimateWebGpuParameterRanges(description, {
 }
 
 /**
- * Derive the accepted UV-through-infrared wavelength range by applying the
- * scene's violet/red affine mapping to the standard 380/420/620/700 anchors.
+ * Derive the accepted wavelength range. By default this applies the scene's
+ * violet/red affine mapping to the standard 380/420/620/700 anchors. When
+ * non-visible light is retained, the closed range-estimation interval covers
+ * the positive finite f32 domain and runtime validation excludes zero.
  */
 export function deriveWebGpuWavelengthRange({
   violetWavelength = DEFAULT_VIOLET_WAVELENGTH,
-  redWavelength = DEFAULT_RED_WAVELENGTH
+  redWavelength = DEFAULT_RED_WAVELENGTH,
+  keepNonVisibleLight = false
 } = {}) {
   if (
     !Number.isFinite(violetWavelength) ||
@@ -304,6 +310,11 @@ export function deriveWebGpuWavelengthRange({
     throw new RangeError(
       'WebGPU violetWavelength and redWavelength must be finite, with redWavelength greater than violetWavelength.'
     );
+  }
+  if (keepNonVisibleLight) {
+    // Zero is included conservatively for formula range estimation. Runtime
+    // source validation still requires the wavelength to be strictly positive.
+    return [[0, WEBGPU_F32_MAX]];
   }
   const scale = (
     redWavelength - violetWavelength

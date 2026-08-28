@@ -334,6 +334,33 @@ describe('CpuSimulationEngine initial ray buffers', () => {
       expect(run.summary.invalidSourceRayCount).toBe(1);
     });
 
+  it('keeps every positive finite source wavelength when requested',
+    async () => {
+      const processedScene = createProcessedScene([], [
+        source({ wavelength: 1 }),
+        source({ wavelength: Number.MAX_VALUE }),
+        source({ wavelength: 0 }),
+        source({ wavelength: -1 }),
+        source({ wavelength: Infinity })
+      ]);
+      const engine = new CpuSimulationEngine({
+        numericEpsilon: FLOAT32_EPSILON
+      });
+      engine.beginRenderer = jest.fn();
+      const preparedScene = await engine.prepare(processedScene, {
+        keepNonVisibleLight: true
+      });
+      const run = await engine.createRun({ preparedScene });
+
+      await advanceUntilPhase(run, 'membership');
+
+      expect(preparedScene.keepNonVisibleLight).toBe(true);
+      expect(run.currentRayBuffer.map(ray => ray.powerS)).toEqual([
+        0.5, 0.5, 0, 0, 0
+      ]);
+      expect(run.summary.invalidSourceRayCount).toBe(3);
+    });
+
   it('retries an ambiguous cast from half the nearest distance', async () => {
     const processedScene = createProcessedScene(rectangleCurves(), [
       source({ directionX: 1, directionY: 1 })

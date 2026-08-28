@@ -34,11 +34,33 @@ function createScene() {
     colorMode: 'default',
     mode: 'rays',
     simulateColors: false,
+    keepNonVisibleLight: false,
     showRayArrows: false,
     observer: null,
     opticalObjs: []
   };
 }
+
+describe('PrimitiveBasedSimulator wavelength colors', () => {
+  it('only clamps non-visible colors when the option is enabled', () => {
+    const simulator = createSimulator('primitiveCpu');
+
+    expect(simulator.wavelengthToColor(300, 1, false))
+      .toEqual([0, 0, 0, 1]);
+    expect(simulator.wavelengthToColor(800, 1, false))
+      .toEqual([0, 0, 0, 1]);
+
+    simulator.scene.keepNonVisibleLight = true;
+    expect(simulator.wavelengthToColor(300, 1, false))
+      .toEqual([0.125, 0, 0.25, 1]);
+    expect(simulator.wavelengthToColor(800, 1, false))
+      .toEqual([0.25, 0, 0, 1]);
+    expect(simulator.wavelengthToColor(0, 1, false))
+      .toEqual([0, 0, 0, 1]);
+    expect(simulator.wavelengthToColor(Infinity, 1, false))
+      .toEqual([0, 0, 0, 1]);
+  });
+});
 
 function createSimulator(engineKind) {
   return new PrimitiveBasedSimulator({
@@ -206,6 +228,32 @@ describe('PrimitiveBasedSimulator engine registry', () => {
       rayPowerSampling: false
     });
   });
+
+  it('passes the non-visible-light option into engine preparation',
+    async () => {
+      const simulator = createSimulator('primitiveCpu');
+      simulator.scene.keepNonVisibleLight = true;
+      const run = {
+        advance: jest.fn(async () => ({
+          status: 'complete',
+          progress: { processedRayCount: 0, totalTruncation: 0 },
+          result: { detectors: [] }
+        })),
+        dispose: jest.fn()
+      };
+      simulator.engine.prepare = jest.fn(async description => ({
+        description
+      }));
+      simulator.engine.createRun = jest.fn(async () => run);
+      simulator.updateSimulation = jest.fn();
+
+      await simulator.runEngine(0);
+
+      expect(simulator.engine.prepare).toHaveBeenCalledWith(
+        simulator.processedScene,
+        expect.objectContaining({ keepNonVisibleLight: true })
+      );
+    });
 
   it('does not expose an engine canvas until its current frame is published', () => {
     const simulator = new PrimitiveBasedSimulator({

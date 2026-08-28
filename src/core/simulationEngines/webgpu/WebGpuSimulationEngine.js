@@ -352,6 +352,7 @@ class WebGpuSimulationEngine {
       packedStorage,
       violetWavelength: rangeOptions.violetWavelength,
       redWavelength: rangeOptions.redWavelength,
+      keepNonVisibleLight: Boolean(rangeOptions.keepNonVisibleLight),
       originalDescription: description,
     };
   }

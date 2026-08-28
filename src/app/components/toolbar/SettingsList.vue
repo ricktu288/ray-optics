@@ -127,6 +127,14 @@
         :disabled="!simulateColors"
       />
 
+      <ToggleControl
+        :label="$t('simulator:settings.keepNonVisibleLight.title') + '<sup style=\'color: #0006;\'>Beta</sup>'"
+        :popover-content="$t('simulator:settings.keepNonVisibleLight.description')"
+        v-model="keepNonVisibleLight"
+        :layout="layout"
+        :disabled="!simulateColors"
+      />
+
       <NumberControl
         :label="$t('simulator:settings.rayPowerCutoff.title') + '<sup style=\'color: #0006;\'>Beta</sup>'"
         :popover-content="$t('simulator:settings.rayPowerCutoff.description')"
@@ -313,7 +321,10 @@ export default {
         scene.rayPowerSampling.value !== false
 
       // For spectrum remapping: show if non-default
-      const spectrumNotDefault = scene.redWavelength.value !== 620 || scene.violetWavelength.value !== 420
+      const spectrumNotDefault =
+        scene.redWavelength.value !== 620 ||
+        scene.violetWavelength.value !== 420 ||
+        scene.keepNonVisibleLight.value !== false
 
       // For max depth: show if non-default (i.e. not Infinity)
       const maxRayDepthNotDefault = scene.maxRayDepth.value !== Infinity
@@ -396,6 +407,7 @@ export default {
       simulateColors: scene.simulateColors,
       redWavelength: scene.redWavelength,
       violetWavelength: scene.violetWavelength,
+      keepNonVisibleLight: scene.keepNonVisibleLight,
       maxRayDepth: scene.maxRayDepth,
       rayPowerCutoff,
       rayPowerSampling,

@@ -238,6 +238,7 @@ export class WebGpuMegakernelBackend {
         membershipStride: this.membershipStride,
         wavelengthRange:
           this.preparedScene.parameterRanges.wavelengthRange[0],
+        keepNonVisibleLight: this.preparedScene.keepNonVisibleLight,
       }),
       'WebGPU megakernel initial source uniforms'
     );
@@ -719,6 +720,7 @@ export class WebGpuMegakernelBackend {
         rayCapacity: this.rayCapacity,
         membershipStride: this.membershipStride,
         wavelengthRange: next.parameterRanges.wavelengthRange[0],
+        keepNonVisibleLight: next.keepNonVisibleLight,
       })
     );
   }

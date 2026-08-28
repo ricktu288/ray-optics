@@ -138,7 +138,7 @@ export function createRenderUniformData(options, geometryCapacity) {
     options.viewport?.scale ?? 1,
     options.viewport?.lengthScale ?? 1,
     geometryCapacity,
-    0,
+    options.preparedScene.keepNonVisibleLight ? 1 : 0,
   ]);
   const observer = rendering.observer;
   set(2, [
@@ -147,9 +147,8 @@ export function createRenderUniformData(options, geometryCapacity) {
     observer?.r ?? 0,
     observer ? 1 : 0,
   ]);
-  const wavelength = options.preparedScene.parameterRanges.wavelengthRange[0];
-  const violet = options.preparedScene.violetWavelength ?? wavelength[0];
-  const red = options.preparedScene.redWavelength ?? wavelength[1];
+  const violet = options.preparedScene.violetWavelength ?? 420;
+  const red = options.preparedScene.redWavelength ?? 620;
   const scale = (red - violet) / (620 - 420);
   const scaled = value => violet + (value - 420) * scale;
   set(3, [scaled(380), violet, scaled(460), scaled(500)]);
@@ -236,7 +235,9 @@ fn finite2(value:vec2f)->bool {
 }
 fn spectralColor(wavelength:f32)->vec3f {
   let a=config.values[3]; let b=config.values[4]; var rgb=vec3f(0.0);
-  if(wavelength>=a.x&&wavelength<a.y){rgb=vec3f(0.5,0.0,1.0);}
+  let keepNonVisibleLight=config.values[1].w>0.5;
+  if((keepNonVisibleLight&&wavelength<a.y)||
+    (wavelength>=a.x&&wavelength<a.y)){rgb=vec3f(0.5,0.0,1.0);}
   else if(wavelength>=a.y&&wavelength<a.z){
     rgb=vec3f(-0.5*(wavelength-a.z)/(a.z-a.y),0.0,1.0);}
   else if(wavelength>=a.z&&wavelength<a.w){
@@ -247,11 +248,19 @@ fn spectralColor(wavelength:f32)->vec3f {
     rgb=vec3f((wavelength-b.x)/(b.y-b.x),1.0,0.0);}
   else if(wavelength>=b.y&&wavelength<b.z){
     rgb=vec3f(1.0,-(wavelength-b.z)/(b.z-b.y),0.0);}
-  else if(wavelength>=b.z&&wavelength<=b.w){rgb=vec3f(1.0,0.0,0.0);}
+  else if(wavelength>=b.z&&(keepNonVisibleLight||wavelength<=b.w)){
+    rgb=vec3f(1.0,0.0,0.0);}
+  let fadeLimit=select(0.0,0.25,keepNonVisibleLight);
   var intensity=1.0;
-  if(wavelength>b.w||wavelength<a.x){intensity=0.0;}
-  else if(wavelength>b.z){intensity=(b.w-wavelength)/(b.w-b.z);}
-  else if(wavelength<a.y){intensity=(wavelength-a.x)/(a.y-a.x);}
+  if(wavelength>b.w||wavelength<a.x){intensity=fadeLimit;}
+  else if(wavelength>b.z){
+    intensity=select((b.w-wavelength)/(b.w-b.z),
+      1.0-(1.0-fadeLimit)*(wavelength-b.z)/(b.w-b.z),
+      keepNonVisibleLight);}
+  else if(wavelength<a.y){
+    intensity=select((wavelength-a.x)/(a.y-a.x),
+      1.0-(1.0-fadeLimit)*(a.y-wavelength)/(a.y-a.x),
+      keepNonVisibleLight);}
   return rgb*intensity;
 }
 fn encodeColor(theme:vec4f,ray:Ray,powerScale:f32)->vec4f {

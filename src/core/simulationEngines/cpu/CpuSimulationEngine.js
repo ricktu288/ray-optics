@@ -226,7 +226,8 @@ export class CpuSimulationRun {
       const { ray, invalid } = createInitialRay(
         output,
         this.summary.regionCount,
-        this.options.preparedScene.wavelengthRange
+        this.options.preparedScene.wavelengthRange,
+        this.options.preparedScene.keepNonVisibleLight
       );
       const active = isRayActive(ray);
       this.currentRayBuffer.push(ray);
@@ -676,15 +677,18 @@ class CpuSimulationEngine {
 
   async prepare(description, {
     violetWavelength,
-    redWavelength
+    redWavelength,
+    keepNonVisibleLight = false
   } = {}) {
     const [wavelengthRange] = deriveWebGpuWavelengthRange({
       violetWavelength,
-      redWavelength
+      redWavelength,
+      keepNonVisibleLight
     });
     return {
       description,
       wavelengthRange,
+      keepNonVisibleLight: Boolean(keepNonVisibleLight),
       interactionTypeLayout:
         createInteractionTypeLayout(description),
       outgoingRayData:
@@ -760,7 +764,12 @@ class CpuSimulationEngine {
   }
 }
 
-function createInitialRay(output, regionCount, wavelengthRange) {
+function createInitialRay(
+  output,
+  regionCount,
+  wavelengthRange,
+  keepNonVisibleLight = false
+) {
   const directionLengthSquared =
     output.d_x * output.d_x + output.d_y * output.d_y;
   const valid =
@@ -773,8 +782,10 @@ function createInitialRay(output, regionCount, wavelengthRange) {
     Number.isFinite(output.P_p) &&
     output.P_p >= 0 &&
     Number.isFinite(output.lambda) &&
-    output.lambda >= wavelengthRange[0] &&
-    output.lambda <= wavelengthRange[1];
+    (keepNonVisibleLight
+      ? output.lambda > 0
+      : output.lambda >= wavelengthRange[0] &&
+        output.lambda <= wavelengthRange[1]);
   const powerS = valid ? output.P_s : 0;
   const powerP = valid ? output.P_p : 0;
   return {

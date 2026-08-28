@@ -59,6 +59,9 @@ const PROPERTY_CALLBACKS = {
   violetWavelength: (value) => {
     app.simulator?.updateSimulation(false, true)
   },
+  keepNonVisibleLight: (value) => {
+    app.simulator?.updateSimulation(false, true)
+  },
   simulateColors: (value) => {
     app.editor.selectObj(app.editor.selectedObjIndex)
     app.simulator?.updateSimulation(false, true)
