@@ -1022,5 +1022,14 @@
       "code": true
     },
     "firstCommit": "2026-08-24"
+  },
+  {
+    "name": "SeyhaLite",
+    "contributions": {
+      "translations": [
+        "km"
+      ]
+    },
+    "firstCommit": "2026-08-26"
   }
 ]
