@@ -460,6 +460,13 @@ describe('WebGPU scene parameter range estimation', () => {
     expect(prepared.description).toBe(description);
     expect(prepared.parameterRanges.wavelengthRange).toEqual([[340, 820]]);
     expect(prepared.parameterRanges).not.toHaveProperty('nodeRanges');
+
+    const keepNonVisiblePrepared = await engine.prepare(description, {
+      keepNonVisibleLight: true
+    });
+    expect(keepNonVisiblePrepared.parameterRanges.wavelengthRange)
+      .toEqual([[0, WEBGPU_F32_MAX]]);
+    expect(keepNonVisiblePrepared.keepNonVisibleLight).toBe(true);
   });
 
   it('requests recompilation only when a type guard signature changes', async () => {
@@ -578,6 +585,12 @@ describe('WebGPU wavelength range', () => {
       violetWavelength: 400,
       redWavelength: 700
     })).toEqual([[340, 820]]);
+  });
+
+  it('covers every positive finite f32 wavelength when requested', () => {
+    expect(deriveWebGpuWavelengthRange({
+      keepNonVisibleLight: true
+    })).toEqual([[0, WEBGPU_F32_MAX]]);
   });
 
   it('rejects invalid scene wavelength anchors', () => {

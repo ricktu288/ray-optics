@@ -52,7 +52,7 @@ struct Attempt { mask:array<u32,${regionWordCount}>,ambiguous:u32,
   nearest:f32 };
 struct InitialConfig { sourceCount:u32,sourceRayCount:u32,rayCapacity:u32,
   regionWordCount:u32,wavelengthMin:f32,wavelengthMax:f32,
-  membershipStride:u32,padding1:u32 };
+  membershipStride:u32,keepNonVisibleLight:u32 };
 @group(0) @binding(0) var<storage,read> sourceDescriptors:
   array<SourceDescriptor>;
 @group(0) @binding(1) var<storage,read> instanceParameters:array<f32>;
@@ -142,6 +142,7 @@ export function createMegakernelInitialConfigData({
   membershipStride = Math.max(1,
     Math.ceil(description.regions.length / 32)) + 1,
   wavelengthRange,
+  keepNonVisibleLight = false,
 }) {
   const data = new ArrayBuffer(32);
   const view = new DataView(data);
@@ -154,6 +155,7 @@ export function createMegakernelInitialConfigData({
   view.setFloat32(16, wavelengthRange[0], true);
   view.setFloat32(20, wavelengthRange[1], true);
   view.setUint32(24, membershipStride, true);
+  view.setUint32(28, keepNonVisibleLight ? 1 : 0, true);
   return data;
 }
 
@@ -175,10 +177,14 @@ function createSourceCase(definition, program, typeId) {
     let direction=vec2f(output[2].value,output[3].value);
     let powers=vec2f(output[4].value,output[5].value);
     let lengthSquared=dot(direction,direction);
-    let invalid=sourceInvalid(output)||!(lengthSquared>0.0)||
-      powers.x<0.0||powers.y<0.0||
+    let wavelengthOutsideRange=select(
       output[6].value<initialConfig.wavelengthMin||
-      output[6].value>initialConfig.wavelengthMax;
+        output[6].value>initialConfig.wavelengthMax,
+      output[6].value<=0.0||
+        output[6].value>initialConfig.wavelengthMax,
+      initialConfig.keepNonVisibleLight!=0u);
+    let invalid=sourceInvalid(output)||!(lengthSquared>0.0)||
+      powers.x<0.0||powers.y<0.0||wavelengthOutsideRange;
     let isActive=!invalid&&(powers.x!=0.0||powers.y!=0.0);
     return Ray(vec2f(output[0].value,output[1].value),
       select(direction,vec2f(0.0),invalid),

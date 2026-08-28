@@ -409,6 +409,7 @@ class PrimitiveBasedSimulator {
       sceneOptions: {
         violetWavelength: this.scene.violetWavelength,
         redWavelength: this.scene.redWavelength,
+        keepNonVisibleLight: this.scene.keepNonVisibleLight,
         colorMode: this.scene.colorMode,
         rayPowerCutoff: rayPowerOptions.rayPowerCutoff,
         rayPowerSampling: rayPowerOptions.rayPowerSampling,
@@ -536,7 +537,8 @@ class PrimitiveBasedSimulator {
     const isCurrent = () => job.generation === this.runGeneration;
     const preparedScene = await job.engine.prepare(job.processedScene, {
       violetWavelength: job.sceneOptions.violetWavelength,
-      redWavelength: job.sceneOptions.redWavelength
+      redWavelength: job.sceneOptions.redWavelength,
+      keepNonVisibleLight: job.sceneOptions.keepNonVisibleLight
     });
     if (!isCurrent()) return { completed: false, job, durationMs: 0 };
 
@@ -1047,7 +1049,14 @@ class PrimitiveBasedSimulator {
     const yellowWavelength = scaleWavelength(YELLOW_WAVELENGTH);
     const infraredWavelength = scaleWavelength(INFRARED_WAVELENGTH);
 
-    if (wavelength >= uvWavelength && wavelength < targetViolet) {
+    const keepNonVisibleLight = Boolean(
+      this.scene.keepNonVisibleLight &&
+      Number.isFinite(wavelength) &&
+      wavelength > 0
+    );
+
+    if ((keepNonVisibleLight && wavelength < targetViolet) ||
+        (wavelength >= uvWavelength && wavelength < targetViolet)) {
       r = 0.5;
       g = 0;
       b = 1;
@@ -1071,7 +1080,8 @@ class PrimitiveBasedSimulator {
       r = 1;
       g = -(wavelength - targetRed) / (targetRed - yellowWavelength);
       b = 0;
-    } else if (wavelength >= targetRed && wavelength <= infraredWavelength) {
+    } else if (wavelength >= targetRed &&
+               (keepNonVisibleLight || wavelength <= infraredWavelength)) {
       r = 1;
       g = 0;
       b = 0;
@@ -1081,14 +1091,21 @@ class PrimitiveBasedSimulator {
       b = 0;
     }
 
+    const fadeLimit = keepNonVisibleLight ? 0.25 : 0;
     if (wavelength > infraredWavelength || wavelength < uvWavelength) {
-      spectralIntensity = 0;
+      spectralIntensity = fadeLimit;
     } else if (wavelength > targetRed) {
-      spectralIntensity =
-        (infraredWavelength - wavelength) / (infraredWavelength - targetRed);
+      spectralIntensity = keepNonVisibleLight
+        ? 1 - (1 - fadeLimit) *
+          (wavelength - targetRed) / (infraredWavelength - targetRed)
+        : (infraredWavelength - wavelength) /
+          (infraredWavelength - targetRed);
     } else if (wavelength < targetViolet) {
-      spectralIntensity =
-        (wavelength - uvWavelength) / (targetViolet - uvWavelength);
+      spectralIntensity = keepNonVisibleLight
+        ? 1 - (1 - fadeLimit) *
+          (targetViolet - wavelength) / (targetViolet - uvWavelength)
+        : (wavelength - uvWavelength) /
+          (targetViolet - uvWavelength);
     } else {
       spectralIntensity = 1;
     }

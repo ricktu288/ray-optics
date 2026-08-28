@@ -1130,6 +1130,12 @@ function getBetaFeaturesInUse() {
     );
   }
 
+  if (scene.keepNonVisibleLight !== defaultScene.keepNonVisibleLight) {
+    betaFeatures.push(
+      i18next.t('simulator:settings.keepNonVisibleLight.title')
+    );
+  }
+
   if (scene.importedFromBeta) {
     betaFeatures.push(i18next.t('simulator:footer.betaFeatures.sceneFromBeta'));
   }

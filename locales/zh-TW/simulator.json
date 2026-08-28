@@ -108,6 +108,10 @@
       "title": "紫色波長",
       "description": "當「模擬色彩」啟用時顯示為紫色的波長。可用於模擬不可見光的假色光譜。"
     },
+    "keepNonVisibleLight": {
+      "title": "保留不可見光",
+      "description": "啟用時，波長在可見光範圍之外的光線仍會被追蹤並顯示。"
+    },
     "maxRayDepth": {
       "title": "最大光線深度",
       "description": "光線與物體交互作用的最大次數（超過此深度的光線將被截斷）。設為 \"inf\" 表示無限制。"

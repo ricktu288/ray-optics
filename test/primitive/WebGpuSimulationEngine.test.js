@@ -167,8 +167,12 @@ describe('WebGpuSimulationEngine', () => {
   });
 
   it('uses the same spectral boundaries as canvas color simulation', () => {
-    expect(createWebGpuRenderPreparationShader(64)).toContain(
+    const shader = createWebGpuRenderPreparationShader(64);
+    expect(shader).toContain(
       'if(mode==5u){return vec4f(raw,1.0);}'
+    );
+    expect(shader).toContain(
+      'let fadeLimit=select(0.0,0.25,keepNonVisibleLight);'
     );
     const defaults = createRenderUniformData({
       preparedScene: {
@@ -191,6 +195,18 @@ describe('WebGpuSimulationEngine', () => {
       rendering: {}
     }, 1);
     expect(uniforms[17]).toBeCloseTo(1220);
+
+    const keepNonVisibleUniforms = createRenderUniformData({
+      preparedScene: {
+        parameterRanges: { wavelengthRange: [[0, 3.402823e38]] },
+        keepNonVisibleLight: true
+      },
+      rendering: {}
+    }, 1);
+    expect(keepNonVisibleUniforms[7]).toBe(1);
+    expect(Array.from(keepNonVisibleUniforms.slice(12, 20))).toEqual([
+      380, 420, 460, 500, 540, 580, 620, 700
+    ]);
   });
 
   it('packs the common hierarchy as 80-byte float BVH4 nodes', async () => {
@@ -242,6 +258,10 @@ describe('WebGpuSimulationEngine', () => {
       expect(generated.code).toContain('fn membershipAttempt(');
       expect(generated.code).toContain('fn initialMain(');
       expect(generated.code).toContain('switch source.typeId');
+      expect(generated.code).toContain('output[6].value<=0.0');
+      expect(generated.code).toContain(
+        'initialConfig.keepNonVisibleLight!=0u'
+      );
       expect(generated.code.match(/var<storage/g)).toHaveLength(8);
     });
 
