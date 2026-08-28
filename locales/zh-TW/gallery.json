@@ -388,6 +388,21 @@
       "backfocalplane": "後焦平面",
       "virtualimageplane": "虛像平面"
     },
+    "achromaticDoublet": {
+      "title": "消色差雙合透鏡",
+      "description": "消色差雙合透鏡由冕玻璃凸透鏡與火石玻璃凹透鏡組成，用以校正色差，使影像更清晰。",
+      "regularlens": "一般透鏡",
+      "achromaticdoublet": "消色差雙合透鏡",
+      "objecthasvisiblecolo": "物體帶有明顯色邊",
+      "objectappearsmuchsha": "物體看起來清晰許多",
+      "crownglass": "冕玻璃",
+      "flintglass": "火石玻璃",
+      "highabbenumber5860": "高阿貝數（58–60）",
+      "normalrefractiveinde": "一般折射率（約 1.52）",
+      "lowabbenumber50": "低阿貝數（>50）",
+      "higherrefractiveinde": "較高折射率（>1.52）",
+      "eye3": "眼睛"
+    },
     "grinSlab": {
       "title": "漸變折射率平板",
       "description": "模擬折射率 \\(n(\\rho) = n_0 \\sqrt{1-(\\alpha \\rho)^2}\\)的介電材料，其中 \\(n_0\\) 是其中央軸的折射率，\\(\\rho \\) 是從其中央軸的徑向距離，使得 \\(\\alpha=\\frac{\\sqrt{3}}{2R} \\)，其中 \\(R=100 \\) 是其半徑。上方的介電材料為一系列的薄矩形，每個矩形具有恆定的折射率（根據前述 \\(n(\\rho)\\) 的式子）。下方的介電材料是折射率為\\(n(\\rho)\\)的漸變折射率材料。",

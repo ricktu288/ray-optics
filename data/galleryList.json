@@ -345,6 +345,13 @@
         "contributors": [
           "Ze-Yang Li"
         ]
+      },
+      {
+        "id": "achromatic-doublet",
+        "beta": true,
+        "contributors": [
+          "Zain Kalim"
+        ]
       }
     ]
   },

@@ -389,6 +389,21 @@
       "backfocalplane": "Back Focal Plane",
       "virtualimageplane": "Virtual Image Plane"
     },
+    "achromaticDoublet": {
+      "title": "Achromatic Doublet",
+      "description": "An achromatic doublet uses a crown glass convex lens seated in a flint glass concave lens to correct chromatic aberration, making the image sharper.",
+      "regularlens": "Regular Lens",
+      "achromaticdoublet": "Achromatic Doublet",
+      "objecthasvisiblecolo": "Object has visible color fringing",
+      "objectappearsmuchsha": "Object appears much sharper",
+      "crownglass": "Crown Glass",
+      "flintglass": "Flint Glass",
+      "highabbenumber5860": "High Abbe number (58-60)",
+      "normalrefractiveinde": "Normal refractive index (~1.52)",
+      "lowabbenumber50": "Low Abbe number (>50)",
+      "higherrefractiveinde": "Higher refractive index (>1.52)",
+      "eye3": "Eye"
+    },
     "grinSlab": {
       "title": "GRIN slab",
       "description": "This is a simulation of a rectangular dielectric material with a refractive index \\(n(\\rho) = n_0 \\sqrt{1-(\\alpha \\rho)^2}\\), where \\(n_0=2\\) is the refractive index on its central axis and \\(\\rho \\) is the radial distance from its central axis, such that \\(\\alpha=\\frac{\\sqrt{3}}{2R} \\) where \\(R=100 \\) is its radius. The top dielectric in this simulation is made of thin dielectric rectangles of constant refractive index, according to \\(n(\\rho)\\), while the bottom dielectric is a gradient-index material with the refractive index \\(n(\\rho)\\).",
