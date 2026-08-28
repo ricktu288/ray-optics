@@ -1015,5 +1015,12 @@
       ]
     },
     "firstCommit": "2026-08-04"
+  },
+  {
+    "name": "Sebastian Lummer",
+    "contributions": {
+      "code": true
+    },
+    "firstCommit": "2026-08-24"
   }
 ]
