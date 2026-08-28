@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: core/simulationEngines/webgpu/webGpuRayRenderer.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: core/simulationEngines/webgpu/webGpuRayRenderer.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*
+ * Copyright 2026 The Ray Optics Simulation authors and contributors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ */
+
+import CanvasRenderer from '../../CanvasRenderer.js';
+
+const BUFFER_USAGE_COPY_DST = 0x0008;
+const BUFFER_USAGE_UNIFORM = 0x0040;
+const BUFFER_USAGE_STORAGE = 0x0080;
+const TEXTURE_USAGE_RENDER_ATTACHMENT = 0x0010;
+const FLOATS_PER_RECORD = 16;
+
+function createRasterWgsl(fixedPointScale) {
+  return `
+struct Uniforms {
+  viewport: vec4f,
+  sizeAndCount: vec4f,
+};
+
+struct ReadyGeometry {
+  p0p1: vec4f,
+  color: vec4f,
+  style: vec4f,
+  extra: vec4f,
+};
+
+struct Pixel {
+  r: atomic&lt;u32>,
+  g: atomic&lt;u32>,
+  b: atomic&lt;u32>,
+  overflow: atomic&lt;u32>,
+};
+
+struct VertexOutput {
+  @builtin(position) position: vec4f,
+  @location(0) @interpolate(flat) screenP0: vec2f,
+  @location(1) @interpolate(flat) screenP1: vec2f,
+  @location(2) @interpolate(flat) color: vec4f,
+  @location(3) @interpolate(flat) style: vec4f,
+  @location(4) @interpolate(flat) extra: vec2f,
+};
+
+struct FragmentInput {
+  @location(0) @interpolate(flat) screenP0: vec2f,
+  @location(1) @interpolate(flat) screenP1: vec2f,
+  @location(2) @interpolate(flat) color: vec4f,
+  @location(3) @interpolate(flat) style: vec4f,
+  @location(4) @interpolate(flat) extra: vec2f,
+};
+
+@group(0) @binding(0) var&lt;uniform> uniforms: Uniforms;
+@group(0) @binding(1) var&lt;storage, read> geometry: array&lt;ReadyGeometry>;
+@group(0) @binding(2) var&lt;storage, read_write> pixels: array&lt;Pixel>;
+
+fn toScreen(point: vec2f) -> vec2f {
+  return point * uniforms.viewport.z + uniforms.viewport.xy;
+}
+
+fn toClip(point: vec2f) -> vec4f {
+  let size = uniforms.sizeAndCount.xy;
+  return vec4f(point.x / size.x * 2.0 - 1.0,
+               1.0 - point.y / size.y * 2.0, 0.0, 1.0);
+}
+
+@vertex
+fn vertexMain(
+  @builtin(vertex_index) vertexIndex: u32,
+  @builtin(instance_index) instanceIndex: u32,
+) -> VertexOutput {
+  let item = geometry[instanceIndex];
+  let p0 = toScreen(item.p0p1.xy);
+  let p1 = toScreen(item.p0p1.zw);
+  let geometryKind = item.extra.x;
+  let isPoint = geometryKind > 0.5 &amp;&amp; geometryKind &lt; 1.5;
+  var position: vec2f;
+  if (isPoint) {
+    let corner = array&lt;vec2f, 6>(
+      vec2f(-1.0, -1.0), vec2f(1.0, -1.0), vec2f(-1.0, 1.0),
+      vec2f(-1.0, 1.0), vec2f(1.0, -1.0), vec2f(1.0, 1.0)
+    )[vertexIndex];
+    // Keep a half-pixel fringe around subpixel points so the fragment shader
+    // can integrate their fractional coverage instead of center-sampling them
+    // into either zero or one whole pixel.
+    position = p0 + corner * (0.5 * (item.extra.y + 1.0));
+  } else {
+    let delta = p1 - p0;
+    let length = max(length(delta), 1e-20);
+    let direction = delta / length;
+    let side = vec2f(-direction.y, direction.x);
+    let endIndex = select(0.0, 1.0,
+      vertexIndex == 1u || vertexIndex == 2u || vertexIndex == 4u);
+    let sideSign = select(-1.0, 1.0,
+      vertexIndex == 2u || vertexIndex == 4u || vertexIndex == 5u);
+    var halfWidth = 0.5 * item.style.x + 1.0;
+    if (geometryKind > 1.5) {
+      let sideSlope = 0.5 * (item.style.w - item.style.x) / length;
+      let sideExpansion = sqrt(1.0 + sideSlope * sideSlope);
+      halfWidth = 0.5 * mix(item.style.x, item.style.w, endIndex) +
+        sideExpansion;
+    }
+    position = mix(p0, p1, endIndex) + side * sideSign * halfWidth;
+  }
+  var output: VertexOutput;
+  output.position = toClip(position);
+  output.screenP0 = p0;
+  output.screenP1 = p1;
+  output.color = item.color;
+  output.style = item.style;
+  output.extra = item.extra.xy;
+  return output;
+}
+
+@fragment
+fn fragmentMain(input: FragmentInput,
+                @builtin(position) frag: vec4f) -> @location(0) vec4f {
+  let size = vec2u(uniforms.sizeAndCount.xy);
+  let pixelCoord = vec2u(frag.xy);
+  if (pixelCoord.x >= size.x || pixelCoord.y >= size.y) { discard; }
+  var coverage = 1.0;
+  let colorMode = u32(uniforms.sizeAndCount.w);
+  let geometryKind = input.extra.x;
+  if (geometryKind > 0.5 &amp;&amp; geometryKind &lt; 1.5) {
+    let pointSize = max(input.extra.y, 0.0);
+    let relative = frag.xy - input.screenP0;
+    if (colorMode == 4u) {
+      coverage = select(0.0, 1.0,
+        abs(relative.x) &lt;= 0.5 * pointSize &amp;&amp;
+        abs(relative.y) &lt;= 0.5 * pointSize);
+    } else {
+      let maximumCoverage = min(1.0, pointSize);
+      let xCoverage = clamp(
+        0.5 * pointSize + 0.5 - abs(relative.x),
+        0.0, maximumCoverage);
+      let yCoverage = clamp(
+        0.5 * pointSize + 0.5 - abs(relative.y),
+        0.0, maximumCoverage);
+      coverage = xCoverage * yCoverage;
+    }
+  } else {
+    let delta = input.screenP1 - input.screenP0;
+    let lineLength = max(length(delta), 1e-20);
+    let direction = delta / lineLength;
+    let relative = frag.xy - input.screenP0;
+    let signedSide = dot(relative, vec2f(-direction.y, direction.x));
+    // Analytic AA is intentionally only applied to the two longitudinal
+    // sides.  Segment and arrow ends remain hard, matching the GPU contract.
+    if (geometryKind > 1.5) {
+      let along = dot(relative, direction);
+      if (along &lt; 0.0 || along > lineLength) { discard; }
+      let sideSlope = 0.5 * (input.style.w - input.style.x) / lineLength;
+      let halfWidth = 0.5 * mix(
+        input.style.x, input.style.w, along / lineLength
+      );
+      let sideExpansion = sqrt(1.0 + sideSlope * sideSlope);
+      let signedDistance = (abs(signedSide) - halfWidth) / sideExpansion;
+      let maximumCoverage = min(
+        1.0, max(0.0, 2.0 * halfWidth / sideExpansion));
+      coverage = clamp(
+        0.5 - signedDistance, 0.0, maximumCoverage);
+    } else {
+      let maximumCoverage = min(1.0, max(input.style.x, 0.0));
+      coverage = clamp(
+        0.5 * input.style.x + 0.5 - abs(signedSide),
+        0.0, maximumCoverage
+      );
+    }
+    if (colorMode == 4u) {
+      // Colorized intensity is a measurement view rather than translucent
+      // light.  Keep its two longitudinal edges hard.
+      coverage = select(0.0, 1.0, coverage >= 0.5);
+    }
+    let dashOn = input.style.y;
+    let dashOff = input.style.z;
+    if (geometryKind &lt; 0.5 &amp;&amp; dashOn > 0.0 &amp;&amp; dashOff > 0.0) {
+      let along = clamp(dot(relative, direction), 0.0, lineLength);
+      let period = dashOn + dashOff;
+      let withinDash = along - floor(along / period) * period;
+      if (colorMode == 4u) {
+        if (withinDash >= dashOn) { discard; }
+      } else {
+        var signedDashDistance: f32;
+        if (withinDash &lt;= dashOn) {
+          signedDashDistance = -min(withinDash, dashOn - withinDash);
+        } else {
+          signedDashDistance = min(
+            withinDash - dashOn, period - withinDash);
+        }
+        let maximumDashCoverage = min(1.0, dashOn);
+        coverage *= clamp(
+          0.5 - signedDashDistance, 0.0, maximumDashCoverage);
+      }
+    }
+  }
+  if (coverage &lt;= 0.0) { discard; }
+  var value: vec3f;
+  if (colorMode == 0u) {
+    // Legacy theme colors are accumulated as optical density.  Applying
+    // coverage directly to density would produce 1-(1-alpha)^coverage rather
+    // than the canvas-like alpha*coverage edge.  Convert back to alpha,
+    // apply coverage, and return to density before the atomic addition.
+    let density = input.color.a;
+    let alpha = 1.0 - exp(-density);
+    let coveredDensity = -log(max(1.0 - alpha * coverage, 1e-7));
+    let hue = select(vec3f(0.0), input.color.rgb / density, density > 0.0);
+    value = hue * coveredDensity;
+  } else if (colorMode == 5u) {
+    // Canvas rasterization stores geometric coverage in pixel alpha.  Its
+    // simulated-color post-pass then multiplies the recovered linear
+    // wavelength intensity by that alpha.  Apply coverage in linear space to
+    // match an isolated Canvas ray, including subpixel-width rays.
+    value = input.color.rgb * coverage;
+  } else {
+    value = input.color.rgb * coverage;
+  }
+  value = max(value, vec3f(0.0));
+  let amountf = round(min(value * ${fixedPointScale}.0,
+                          vec3f(4294967040.0)));
+  let amounts = vec3u(u32(amountf.r), u32(amountf.g), u32(amountf.b));
+  let index = pixelCoord.y * size.x + pixelCoord.x;
+  if (amounts.r > 0u) {
+    let old = atomicAdd(&amp;pixels[index].r, amounts.r);
+    if (old > 4294967295u - amounts.r) {
+      atomicStore(&amp;pixels[index].overflow, 1u);
+    }
+  }
+  if (amounts.g > 0u) {
+    let old = atomicAdd(&amp;pixels[index].g, amounts.g);
+    if (old > 4294967295u - amounts.g) {
+      atomicStore(&amp;pixels[index].overflow, 1u);
+    }
+  }
+  if (amounts.b > 0u) {
+    let old = atomicAdd(&amp;pixels[index].b, amounts.b);
+    if (old > 4294967295u - amounts.b) {
+      atomicStore(&amp;pixels[index].overflow, 1u);
+    }
+  }
+  return vec4f(0.0);
+}
+`;
+}
+
+function createPresentWgsl(fixedPointScale) {
+  return `
+struct Uniforms {
+  viewport: vec4f,
+  sizeAndCount: vec4f,
+};
+struct PresentOutput {
+  @builtin(position) position: vec4f,
+  @location(0) uv: vec2f,
+};
+@group(0) @binding(0) var&lt;uniform> uniforms: Uniforms;
+@group(0) @binding(1) var&lt;storage, read> pixelWords: array&lt;u32>;
+
+@vertex
+fn vertexMain(@builtin(vertex_index) index: u32) -> PresentOutput {
+  let positions = array&lt;vec2f, 3>(
+    vec2f(-1.0, -1.0), vec2f(3.0, -1.0), vec2f(-1.0, 3.0));
+  var output: PresentOutput;
+  output.position = vec4f(positions[index], 0.0, 1.0);
+  output.uv = positions[index] * vec2f(0.5, -0.5) + vec2f(0.5);
+  return output;
+}
+
+fn brightnessToColor(brightness: f32) -> vec4f {
+  if (brightness > 100.0) {
+    return vec4f(1.0, 0.0, 0.0, 1.0);
+  }
+  if (brightness > 10.0) {
+    let t = (log2(brightness) - log2(10.0)) /
+            (log2(100.0) - log2(10.0));
+    return vec4f(mix(vec3f(1.0, 0.5, 0.0), vec3f(1.0, 0.0, 0.0), t), 1.0);
+  }
+  if (brightness > 1.0) {
+    let t = (log2(brightness) - log2(1.0)) /
+            (log2(10.0) - log2(1.0));
+    return vec4f(mix(vec3f(1.0, 1.0, 0.0), vec3f(1.0, 0.5, 0.0), t), 1.0);
+  }
+  if (brightness > 0.1) {
+    let t = (log2(brightness) - log2(0.1)) /
+            (log2(1.0) - log2(0.1));
+    return vec4f(mix(vec3f(0.0, 1.0, 0.0), vec3f(1.0, 1.0, 0.0), t), 1.0);
+  }
+  if (brightness > 0.01) {
+    let t = (log2(brightness) - log2(0.01)) /
+            (log2(0.1) - log2(0.01));
+    return vec4f(mix(vec3f(0.0, 1.0, 1.0), vec3f(0.0, 1.0, 0.0), t), 1.0);
+  }
+  if (brightness > 0.001) {
+    let t = (log2(brightness) - log2(0.001)) /
+            (log2(0.01) - log2(0.001));
+    return vec4f(mix(vec3f(0.0, 0.0, 1.0), vec3f(0.0, 1.0, 1.0), t), 1.0);
+  }
+  if (brightness > 0.0001) {
+    let t = (log2(brightness) - log2(0.0001)) /
+            (log2(0.001) - log2(0.0001));
+    return vec4f(mix(vec3f(0.3, 0.0, 0.3), vec3f(0.0, 0.0, 1.0), t), 1.0);
+  }
+  let t = (log2(max(brightness, 1e-7)) - log2(1e-7)) /
+          (log2(0.0001) - log2(1e-7));
+  return vec4f(mix(vec3f(0.0), vec3f(0.3, 0.0, 0.3), t), t);
+}
+
+fn toneMapAdditive(color: vec3f, mode: u32) -> vec4f {
+  if (mode == 0u) {
+    // Default/legacy colors are accumulated as optical density.  This is
+    // exactly source-over/screen for a single color and intentionally only an
+    // approximation when differently colored theme rays overlap.
+    let density = max(max(color.r, color.g), color.b);
+    let opacity = 1.0 - exp(-density);
+    let mapped = select(vec3f(0.0), color / density * opacity, density > 0.0);
+    return vec4f(mapped, clamp(opacity, 0.0, 1.0));
+  }
+  if (mode == 5u) {
+    // Simulated wavelengths accumulate optical density per channel.  Match
+    // CanvasRenderer.applyColorTransformation by storing the normalized hue
+    // in RGB and the largest channel density in alpha.  Unlike Canvas, this
+    // path avoids the intermediate u8 quantization.
+    let factor = max(max(color.r, color.g), color.b);
+    let opacity = clamp(factor, 0.0, 1.0);
+    let mapped = select(vec3f(0.0), color / factor * opacity, factor > 0.0);
+    return vec4f(mapped, opacity);
+  }
+  if (mode == 3u) {
+    let luminance = dot(color, vec3f(0.2126, 0.7152, 0.0722));
+    // This is algebraically the Reinhard luminance ratio, but unlike
+    // (luminance / (1 + luminance)) / luminance it is defined at black.
+    let rgb = pow(color / (1.0 + luminance), vec3f(1.0 / 2.2));
+    let maximum = max(max(color.r, color.g), color.b);
+    return vec4f(rgb, pow(maximum, 1.0 / 2.2));
+  }
+  if (mode == 4u) {
+    let brightness = max(max(color.r, color.g), color.b);
+    let mapped = brightnessToColor(brightness);
+    return vec4f(mapped.rgb * 0.8, 0.0);
+  }
+  var value = max(color, vec3f(0.0));
+  let maximum = max(max(value.r, value.g), value.b);
+  if (mode == 1u) {
+    if (maximum > 1.0) { value /= maximum; }
+    return vec4f(pow(value, vec3f(1.0 / 2.2)),
+                 pow(min(maximum, 1.0), 1.0 / 2.2));
+  }
+  return vec4f(pow(value, vec3f(1.0 / 2.2)),
+               pow(maximum, 1.0 / 2.2));
+}
+
+@fragment
+fn fragmentMain(input: PresentOutput) -> @location(0) vec4f {
+  let size = vec2u(uniforms.sizeAndCount.xy);
+  let coord = min(vec2u(input.uv * vec2f(size)), size - vec2u(1u));
+  let index = coord.y * size.x + coord.x;
+  let base = index * 4u;
+  if (pixelWords[base + 3u] != 0u) {
+    return vec4f(1.0);
+  }
+  let raw = vec3u(pixelWords[base], pixelWords[base + 1u],
+                  pixelWords[base + 2u]);
+  let color = vec3f(raw) / ${fixedPointScale}.0;
+  let mode = u32(uniforms.sizeAndCount.w);
+  return toneMapAdditive(color, mode);
+}
+`;
+}
+
+/**
+ * Backend-neutral ready-geometry sink.  The CPU primitive event loop writes
+ * the same lines and image points that the GPU pre-render pass will eventually
+ * write.  In Node it delegates to CanvasRenderer; in browsers it retains
+ * packed records for the raster-atomic passes below.
+ */
+export class WebGpuReadyRayRenderer {
+  constructor({ ctx = null, origin, scale, lengthScale }) {
+    this.origin = origin;
+    this.scale = scale;
+    this.lengthScale = lengthScale;
+    this.canvasRenderer = ctx
+      ? new CanvasRenderer(ctx, origin, scale, lengthScale, null, null)
+      : null;
+    this.records = [];
+    this.flushedRecordCount = 0;
+  }
+
+  drawPoint(point, color = [1, 1, 1, 1], size = 5) {
+    if (this.canvasRenderer) {
+      this.canvasRenderer.drawPoint(point, color, size);
+      return;
+    }
+    this.records.push(createRecord(
+      point, point, color, 0, [], 'point',
+      size * this.lengthScale * this.scale
+    ));
+  }
+
+  drawLine(line, color, showArrow, dash, width = 1) {
+    if (this.canvasRenderer) {
+      this.canvasRenderer.drawLine(line, color, showArrow, dash, width);
+      return;
+    }
+    const directionX = line.p2.x - line.p1.x;
+    const directionY = line.p2.y - line.p1.y;
+    const magnitude = Math.hypot(directionX, directionY);
+    if (!(magnitude > 0)) return;
+    const extent = 2 * (Math.abs(line.p1.x) + Math.abs(line.p1.y) + 1e6);
+    const unitX = directionX / magnitude;
+    const unitY = directionY / magnitude;
+    this.pushSegment(
+      { x: line.p1.x - unitX * extent, y: line.p1.y - unitY * extent },
+      { x: line.p1.x + unitX * extent, y: line.p1.y + unitY * extent },
+      color, dash, width
+    );
+  }
+
+  drawRay(ray, color, showArrow, dash, width = 1) {
+    if (this.canvasRenderer) {
+      this.canvasRenderer.drawRay(ray, color, showArrow, dash, width);
+      return;
+    }
+    const dx = ray.p2.x - ray.p1.x;
+    const dy = ray.p2.y - ray.p1.y;
+    const magnitude = Math.hypot(dx, dy);
+    if (!(magnitude > 0)) return;
+    const extent = 2e6 / Math.max(this.scale, 1e-12);
+    const unitX = dx / magnitude;
+    const unitY = dy / magnitude;
+    const end = {
+      x: ray.p1.x + dx / magnitude * extent,
+      y: ray.p1.y + dy / magnitude * extent
+    };
+    const arrowSize = 5 * this.lengthScale;
+    const baseWidth = width * this.lengthScale;
+    if (!showArrow || arrowSize &lt; baseWidth * 1.2) {
+      this.pushSegment(ray.p1, end, color, dash, width);
+      return;
+    }
+    const arrowDistance = 150 * this.lengthScale;
+    const arrowFront = {
+      x: ray.p1.x + unitX * arrowDistance,
+      y: ray.p1.y + unitY * arrowDistance,
+    };
+    const arrowBack = {
+      x: arrowFront.x + unitX * arrowSize,
+      y: arrowFront.y + unitY * arrowSize,
+    };
+    this.pushSegment(ray.p1, arrowFront, color, dash, width);
+    this.pushArrow(
+      arrowFront, arrowBack, color, arrowSize, baseWidth
+    );
+    this.pushSegment(arrowBack, end, color, dash, width);
+  }
+
+  drawSegment(segment, color, showArrow, dash, width = 1) {
+    if (this.canvasRenderer) {
+      this.canvasRenderer.drawSegment(segment, color, showArrow, dash, width);
+      return;
+    }
+    const dx = segment.p2.x - segment.p1.x;
+    const dy = segment.p2.y - segment.p1.y;
+    const length = Math.hypot(dx, dy);
+    if (!(length > 0)) return;
+    const arrowSize = Math.min(length * 0.15, 5 * this.lengthScale);
+    const baseWidth = width * this.lengthScale;
+    if (!showArrow || arrowSize &lt; baseWidth * 1.2) {
+      this.pushSegment(segment.p1, segment.p2, color, dash, width);
+      return;
+    }
+    const unitX = dx / length;
+    const unitY = dy / length;
+    const arrowCenter = {
+      x: segment.p1.x + dx * 0.67,
+      y: segment.p1.y + dy * 0.67,
+    };
+    const arrowFront = {
+      x: arrowCenter.x - unitX * arrowSize * 0.5,
+      y: arrowCenter.y - unitY * arrowSize * 0.5,
+    };
+    const arrowBack = {
+      x: arrowCenter.x + unitX * arrowSize * 0.5,
+      y: arrowCenter.y + unitY * arrowSize * 0.5,
+    };
+    this.pushSegment(segment.p1, arrowFront, color, dash, width);
+    this.pushArrow(
+      arrowFront, arrowBack, color, arrowSize, baseWidth
+    );
+    this.pushSegment(arrowBack, segment.p2, color, dash, width);
+  }
+
+  pushSegment(p0, p1, color, dash, width) {
+    this.records.push(createRecord(
+      p0, p1, color,
+      width * this.lengthScale * this.scale,
+      (dash ?? []).map(value => value * this.lengthScale * this.scale),
+      'line', 0
+    ));
+  }
+
+  pushArrow(front, back, color, frontWidth, backWidth) {
+    this.records.push(createRecord(
+      front,
+      back,
+      color,
+      frontWidth * this.scale,
+      [],
+      'arrow',
+      0,
+      backWidth * this.scale
+    ));
+  }
+
+  applyColorTransformation() {}
+  flush() {}
+  destroy() {
+    this.records.length = 0;
+    this.canvasRenderer = null;
+  }
+
+  takeNewRecords() {
+    const records = this.records.slice(this.flushedRecordCount);
+    this.flushedRecordCount = this.records.length;
+    return records;
+  }
+}
+
+export class WebGpuAtomicRayRasterizer {
+  constructor(device, output, fixedPointScale = 1048576) {
+    this.device = device;
+    this.output = output;
+    this.fixedPointScale = fixedPointScale;
+    this.width = 0;
+    this.height = 0;
+    this.pixelBuffer = null;
+    this.uniformBuffer = null;
+    this.geometryBuffer = null;
+    this.geometryCapacity = 0;
+    this.bindGroup = null;
+    this.presentBindGroup = null;
+    this.dummyTexture = null;
+    this.dummyView = null;
+    this.rasterPipeline = null;
+    this.presentPipeline = null;
+  }
+
+  async initialize() {
+    this.device.pushErrorScope?.('validation');
+    const rasterModule = this.device.createShaderModule({
+      code: createRasterWgsl(this.fixedPointScale)
+    });
+    const presentModule = this.device.createShaderModule({
+      code: createPresentWgsl(this.fixedPointScale)
+    });
+    try {
+      await validateShaderModule(rasterModule, 'raster-atomic');
+      await validateShaderModule(presentModule, 'tone-map');
+      const createPipeline = descriptor =>
+        this.device.createRenderPipelineAsync
+          ? this.device.createRenderPipelineAsync(descriptor)
+          : Promise.resolve(this.device.createRenderPipeline(descriptor));
+      this.rasterPipeline = await createPipeline({
+        layout: 'auto',
+        vertex: { module: rasterModule, entryPoint: 'vertexMain' },
+        fragment: {
+          module: rasterModule,
+          entryPoint: 'fragmentMain',
+          targets: [{ format: this.output.format, writeMask: 0 }],
+        },
+        primitive: { topology: 'triangle-list' },
+      });
+      this.presentPipeline = await createPipeline({
+        layout: 'auto',
+        vertex: { module: presentModule, entryPoint: 'vertexMain' },
+        fragment: {
+          module: presentModule,
+          entryPoint: 'fragmentMain',
+          targets: [{ format: this.output.format }],
+        },
+        primitive: { topology: 'triangle-list' },
+      });
+    } finally {
+      const validationError = await this.device.popErrorScope?.();
+      if (validationError) throw validationError;
+    }
+  }
+
+  ensureSize(width, height) {
+    width = Math.max(1, Math.trunc(width));
+    height = Math.max(1, Math.trunc(height));
+    if (width === this.width &amp;&amp; height === this.height &amp;&amp; this.pixelBuffer) {
+      return;
+    }
+    this.width = width;
+    this.height = height;
+    this.pixelBuffer?.destroy?.();
+    this.uniformBuffer?.destroy?.();
+    this.dummyTexture?.destroy?.();
+    this.pixelBuffer = this.device.createBuffer({
+      size: width * height * 16,
+      usage: BUFFER_USAGE_STORAGE | BUFFER_USAGE_COPY_DST,
+    });
+    this.uniformBuffer = this.device.createBuffer({
+      size: 32,
+      usage: BUFFER_USAGE_UNIFORM | BUFFER_USAGE_COPY_DST,
+    });
+    this.dummyTexture = this.device.createTexture({
+      size: [width, height],
+      format: this.output.format,
+      usage: TEXTURE_USAGE_RENDER_ATTACHMENT,
+    });
+    this.dummyView = this.dummyTexture.createView();
+    this.device.queue.writeBuffer(
+      this.pixelBuffer, 0, new Uint32Array(width * height * 4)
+    );
+    this.rebuildBindGroups();
+  }
+
+  ensureGeometryCapacity(recordCount) {
+    const required = Math.max(1, recordCount) * FLOATS_PER_RECORD * 4;
+    if (required &lt;= this.geometryCapacity) return;
+    this.geometryCapacity = nextPowerOfTwo(required);
+    this.geometryBuffer?.destroy?.();
+    this.geometryBuffer = this.device.createBuffer({
+      size: this.geometryCapacity,
+      usage: BUFFER_USAGE_STORAGE | BUFFER_USAGE_COPY_DST,
+    });
+    this.rebuildBindGroups();
+  }
+
+  rebuildBindGroups() {
+    if (!this.uniformBuffer || !this.pixelBuffer) return;
+    this.presentBindGroup = this.device.createBindGroup({
+      layout: this.presentPipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 0, resource: { buffer: this.uniformBuffer } },
+        { binding: 1, resource: { buffer: this.pixelBuffer } },
+      ],
+    });
+    if (!this.geometryBuffer) return;
+    this.bindGroup = this.device.createBindGroup({
+      layout: this.rasterPipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 0, resource: { buffer: this.uniformBuffer } },
+        { binding: 1, resource: { buffer: this.geometryBuffer } },
+        { binding: 2, resource: { buffer: this.pixelBuffer } },
+      ],
+    });
+  }
+
+  async draw(
+    records,
+    { origin, scale, colorMode, simulateColors = false },
+    { isCancelled = null, resetAccumulation = false } = {}
+  ) {
+    if (isCancelled?.()) return false;
+    const size = this.output.getSize?.() ?? this.output.size;
+    const width = size?.width ?? 1;
+    const height = size?.height ?? 1;
+    this.ensureSize(width, height);
+    this.ensureGeometryCapacity(records.length);
+    if (records.length > 0) {
+      const packed = packRecords(records, colorMode, simulateColors);
+      this.device.queue.writeBuffer(this.geometryBuffer, 0, packed);
+    }
+    const uniforms = new Float32Array([
+      origin.x, origin.y, scale, 0,
+      this.width, this.height, records.length,
+      colorModeId(colorMode, simulateColors)
+    ]);
+    this.device.queue.writeBuffer(this.uniformBuffer, 0, uniforms);
+    const view = await this.output.acquireView(this.device);
+    if (isCancelled?.()) return false;
+    const encoder = this.device.createCommandEncoder();
+    if (resetAccumulation) encoder.clearBuffer(this.pixelBuffer);
+    if (records.length > 0) {
+      const raster = encoder.beginRenderPass({
+        colorAttachments: [{
+          view: this.dummyView,
+          clearValue: { r: 0, g: 0, b: 0, a: 0 },
+          loadOp: 'clear',
+          storeOp: 'store',
+        }],
+      });
+      raster.setPipeline(this.rasterPipeline);
+      raster.setBindGroup(0, this.bindGroup);
+      raster.draw(6, records.length);
+      raster.end();
+    }
+    const present = encoder.beginRenderPass({
+      colorAttachments: [{
+        view,
+        clearValue: { r: 0, g: 0, b: 0, a: 0 },
+        loadOp: 'clear',
+        storeOp: 'store',
+      }],
+    });
+    present.setPipeline(this.presentPipeline);
+    present.setBindGroup(0, this.presentBindGroup);
+    present.draw(3);
+    present.end();
+    this.device.queue.submit([encoder.finish()]);
+    await waitForSubmittedWork(this.device);
+    return !isCancelled?.();
+  }
+
+  async drawGpuGeometry(
+    geometryBuffer,
+    recordCount,
+    { origin, scale, colorMode, simulateColors = false },
+    { isCancelled = null, resetAccumulation = false } = {}
+  ) {
+    if (isCancelled?.()) return false;
+    const size = this.output.getSize?.() ?? this.output.size;
+    this.ensureSize(size?.width ?? 1, size?.height ?? 1);
+    this.device.queue.writeBuffer(this.uniformBuffer, 0, new Float32Array([
+      origin.x, origin.y, scale, 0,
+      this.width, this.height, recordCount,
+      colorModeId(colorMode, simulateColors)
+    ]));
+    const geometryBindGroup = this.device.createBindGroup({
+      layout: this.rasterPipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 0, resource: { buffer: this.uniformBuffer } },
+        { binding: 1, resource: { buffer: geometryBuffer } },
+        { binding: 2, resource: { buffer: this.pixelBuffer } },
+      ],
+    });
+    const view = await this.output.acquireView(this.device);
+    if (isCancelled?.()) return false;
+    const encoder = this.device.createCommandEncoder({
+      label: 'WebGPU raster native ready geometry',
+    });
+    if (resetAccumulation) encoder.clearBuffer(this.pixelBuffer);
+    if (recordCount > 0) {
+      const raster = encoder.beginRenderPass({
+        colorAttachments: [{
+          view: this.dummyView,
+          clearValue: { r: 0, g: 0, b: 0, a: 0 },
+          loadOp: 'clear',
+          storeOp: 'store',
+        }],
+      });
+      raster.setPipeline(this.rasterPipeline);
+      raster.setBindGroup(0, geometryBindGroup);
+      raster.draw(6, recordCount);
+      raster.end();
+    }
+    const present = encoder.beginRenderPass({
+      colorAttachments: [{
+        view,
+        clearValue: { r: 0, g: 0, b: 0, a: 0 },
+        loadOp: 'clear',
+        storeOp: 'store',
+      }],
+    });
+    present.setPipeline(this.presentPipeline);
+    present.setBindGroup(0, this.presentBindGroup);
+    present.draw(3);
+    present.end();
+    this.device.queue.submit([encoder.finish()]);
+    await waitForSubmittedWork(this.device);
+    return !isCancelled?.();
+  }
+
+  async drawGpuGeometryIndirect(
+    geometryBuffer,
+    drawIndirectBuffer,
+    { origin, scale, colorMode, simulateColors = false },
+    { isCancelled = null, resetAccumulation = false } = {}
+  ) {
+    const prepared = await this.prepareGpuGeometryIndirect(
+      geometryBuffer,
+      { origin, scale, colorMode, simulateColors },
+      { isCancelled }
+    );
+    if (!prepared) return false;
+    const encoder = this.device.createCommandEncoder({
+      label: 'WebGPU raster native ready geometry indirect',
+    });
+    this.encodeGpuGeometryIndirect(
+      encoder,
+      drawIndirectBuffer,
+      prepared,
+      { resetAccumulation }
+    );
+    this.device.queue.submit([encoder.finish()]);
+    await waitForSubmittedWork(this.device);
+    return !isCancelled?.();
+  }
+
+  async prepareGpuGeometryIndirect(
+    geometryBuffer,
+    { origin, scale, colorMode, simulateColors = false },
+    { isCancelled = null } = {}
+  ) {
+    if (isCancelled?.()) return null;
+    const size = this.output.getSize?.() ?? this.output.size;
+    this.ensureSize(size?.width ?? 1, size?.height ?? 1);
+    this.device.queue.writeBuffer(this.uniformBuffer, 0, new Float32Array([
+      origin.x, origin.y, scale, 0,
+      this.width, this.height, 0,
+      colorModeId(colorMode, simulateColors)
+    ]));
+    const geometryBindGroup = this.device.createBindGroup({
+      layout: this.rasterPipeline.getBindGroupLayout(0),
+      entries: [
+        { binding: 0, resource: { buffer: this.uniformBuffer } },
+        { binding: 1, resource: { buffer: geometryBuffer } },
+        { binding: 2, resource: { buffer: this.pixelBuffer } },
+      ],
+    });
+    const view = await this.output.acquireView(this.device);
+    if (isCancelled?.()) return null;
+    return { geometryBindGroup, view };
+  }
+
+  encodeGpuGeometryIndirect(
+    encoder,
+    drawIndirectBuffer,
+    { geometryBindGroup, view },
+    { resetAccumulation = false } = {}
+  ) {
+    if (resetAccumulation) encoder.clearBuffer(this.pixelBuffer);
+    const raster = encoder.beginRenderPass({
+      colorAttachments: [{
+        view: this.dummyView,
+        clearValue: { r: 0, g: 0, b: 0, a: 0 },
+        loadOp: 'clear',
+        storeOp: 'store',
+      }],
+    });
+    raster.setPipeline(this.rasterPipeline);
+    raster.setBindGroup(0, geometryBindGroup);
+    raster.drawIndirect(drawIndirectBuffer, 0);
+    raster.end();
+    const present = encoder.beginRenderPass({
+      colorAttachments: [{
+        view,
+        clearValue: { r: 0, g: 0, b: 0, a: 0 },
+        loadOp: 'clear',
+        storeOp: 'store',
+      }],
+    });
+    present.setPipeline(this.presentPipeline);
+    present.setBindGroup(0, this.presentBindGroup);
+    present.draw(3);
+    present.end();
+  }
+
+  waitForSubmittedWork() {
+    return waitForSubmittedWork(this.device);
+  }
+
+  async clear({
+    origin = { x: 0, y: 0 },
+    scale = 1,
+    colorMode = 'default',
+    simulateColors = false,
+  } = {}) {
+    const size = this.output.getSize?.() ?? this.output.size;
+    this.ensureSize(size?.width ?? 1, size?.height ?? 1);
+    this.device.queue.writeBuffer(this.uniformBuffer, 0, new Float32Array([
+      origin.x, origin.y, scale, 0,
+      this.width, this.height, 0,
+      colorModeId(colorMode, simulateColors)
+    ]));
+    const view = await this.output.acquireView(this.device);
+    const encoder = this.device.createCommandEncoder({
+      label: 'WebGPU clear and present light accumulation',
+    });
+    encoder.clearBuffer(this.pixelBuffer);
+    const present = encoder.beginRenderPass({
+      colorAttachments: [{
+        view,
+        clearValue: { r: 0, g: 0, b: 0, a: 0 },
+        loadOp: 'clear',
+        storeOp: 'store',
+      }],
+    });
+    present.setPipeline(this.presentPipeline);
+    present.setBindGroup(0, this.presentBindGroup);
+    present.draw(3);
+    present.end();
+    this.device.queue.submit([encoder.finish()]);
+    await waitForSubmittedWork(this.device);
+    return true;
+  }
+
+  destroy() {
+    this.pixelBuffer?.destroy?.();
+    this.uniformBuffer?.destroy?.();
+    this.geometryBuffer?.destroy?.();
+    this.dummyTexture?.destroy?.();
+    this.pixelBuffer = null;
+    this.uniformBuffer = null;
+    this.geometryBuffer = null;
+    this.dummyTexture = null;
+    this.dummyView = null;
+  }
+}
+
+async function waitForSubmittedWork(device) {
+  await device.queue.onSubmittedWorkDone?.();
+}
+
+/**
+ * Node has no built-in WebGPU implementation on the supported test runtime.
+ * This small rasterizer executes the same ready-record, fixed accumulation
+ * and tone-map contract into Canvas ImageData.  It is intentionally aimed at
+ * deterministic smoke tests, not as a high-throughput replacement backend.
+ */
+export class WebGpuCanvasRayRasterizer {
+  constructor(ctx, fixedPointScale = 1048576) {
+    this.ctx = ctx;
+    this.fixedPointScale = fixedPointScale;
+    this.width = 0;
+    this.height = 0;
+    this.accumulation = null;
+    this.overflow = null;
+  }
+
+  ensureSize() {
+    const width = Math.max(1, this.ctx.canvas.width);
+    const height = Math.max(1, this.ctx.canvas.height);
+    if (width === this.width &amp;&amp; height === this.height &amp;&amp; this.accumulation) {
+      return;
+    }
+    this.width = width;
+    this.height = height;
+    this.accumulation = new Float64Array(width * height * 3);
+    this.overflow = new Uint8Array(width * height);
+  }
+
+  clear() {
+    this.ensureSize();
+    this.accumulation.fill(0);
+    this.overflow.fill(0);
+    this.ctx.clearRect(0, 0, this.width, this.height);
+    // Canvas 2D clearing is immediately visible and needs no presentation.
+    return true;
+  }
+
+  async draw(records, {
+    origin,
+    scale,
+    colorMode,
+    simulateColors = false
+  }, { resetAccumulation = false } = {}) {
+    this.ensureSize();
+    if (resetAccumulation) {
+      this.accumulation.fill(0);
+      this.overflow.fill(0);
+    }
+    for (const record of records) {
+      const contribution = encodeWebGpuColorContribution(
+        record.color, colorMode, simulateColors
+      );
+      this.rasterRecord(
+        record, contribution, origin, scale, colorMode, simulateColors
+      );
+    }
+    const image = this.ctx.createImageData(this.width, this.height);
+    for (let pixel = 0; pixel &lt; this.width * this.height; pixel++) {
+      const outputOffset = pixel * 4;
+      if (this.overflow[pixel]) {
+        image.data.set([255, 255, 255, 255], outputOffset);
+        continue;
+      }
+      const inputOffset = pixel * 3;
+      const mapped = toneMapWebGpuColorContribution([
+        this.accumulation[inputOffset],
+        this.accumulation[inputOffset + 1],
+        this.accumulation[inputOffset + 2],
+      ], colorMode, simulateColors);
+      image.data[outputOffset] = toByte(mapped[0]);
+      image.data[outputOffset + 1] = toByte(mapped[1]);
+      image.data[outputOffset + 2] = toByte(mapped[2]);
+      image.data[outputOffset + 3] = toByte(mapped[3]);
+    }
+    this.ctx.putImageData(image, 0, 0);
+    return true;
+  }
+
+  rasterRecord(
+    record,
+    contribution,
+    origin,
+    scale,
+    colorMode,
+    simulateColors
+  ) {
+    const p0 = {
+      x: record.p0.x * scale + origin.x,
+      y: record.p0.y * scale + origin.y,
+    };
+    if (record.isPoint) {
+      const half = 0.5 * (record.pointSize + 1);
+      this.visitBounds(
+        p0.x - half, p0.y - half, p0.x + half, p0.y + half,
+        (x, y, pixel) => {
+          const coverage = calculateWebGpuPointCoverage(
+            x + 0.5 - p0.x,
+            y + 0.5 - p0.y,
+            record.pointSize,
+            colorMode
+          );
+          if (coverage > 0) {
+            this.add(
+              pixel, contribution, coverage, colorMode, simulateColors
+            );
+          }
+        }
+      );
+      return;
+    }
+    const p1 = {
+      x: record.p1.x * scale + origin.x,
+      y: record.p1.y * scale + origin.y,
+    };
+    const dx = p1.x - p0.x;
+    const dy = p1.y - p0.y;
+    const length = Math.hypot(dx, dy);
+    if (!(length > 1e-20)) return;
+    const ux = dx / length;
+    const uy = dy / length;
+    const extent = 0.5 * Math.max(record.width, record.endWidth) + 1;
+    this.visitBounds(
+      Math.min(p0.x, p1.x) - extent,
+      Math.min(p0.y, p1.y) - extent,
+      Math.max(p0.x, p1.x) + extent,
+      Math.max(p0.y, p1.y) + extent,
+      (x, y, pixel) => {
+        const relativeX = x + 0.5 - p0.x;
+        const relativeY = y + 0.5 - p0.y;
+        const along = relativeX * ux + relativeY * uy;
+        if (along &lt; 0 || along > length) return;
+        const signedSide = relativeX * -uy + relativeY * ux;
+        let coverage = record.kind === 'arrow'
+          ? calculateWebGpuArrowCoverage(
+            signedSide,
+            along,
+            length,
+            record.width,
+            record.endWidth,
+            colorMode
+          )
+          : calculateWebGpuLineCoverage(
+            signedSide, record.width, colorMode
+          );
+        if (
+          record.kind !== 'arrow' &amp;&amp;
+          record.dashOn > 0 &amp;&amp; record.dashOff > 0
+        ) {
+          coverage *= calculateWebGpuDashCoverage(
+            along, record.dashOn, record.dashOff, colorMode
+          );
+        }
+        if (coverage > 0) {
+          this.add(
+            pixel, contribution, coverage, colorMode, simulateColors
+          );
+        }
+      }
+    );
+  }
+
+  visitBounds(minX, minY, maxX, maxY, callback) {
+    const startX = Math.max(0, Math.floor(minX));
+    const startY = Math.max(0, Math.floor(minY));
+    const endX = Math.min(this.width - 1, Math.ceil(maxX));
+    const endY = Math.min(this.height - 1, Math.ceil(maxY));
+    for (let y = startY; y &lt;= endY; y++) {
+      for (let x = startX; x &lt;= endX; x++) {
+        callback(x, y, y * this.width + x);
+      }
+    }
+  }
+
+  add(pixel, contribution, coverage, colorMode, simulateColors) {
+    const covered = applyWebGpuAnalyticCoverage(
+      contribution, coverage, colorMode, simulateColors
+    );
+    const offset = pixel * 3;
+    for (let channel = 0; channel &lt; 3; channel++) {
+      const next = this.accumulation[offset + channel] +
+        covered[channel];
+      if (next * this.fixedPointScale > 0xffffffff) {
+        this.overflow[pixel] = 1;
+      } else {
+        this.accumulation[offset + channel] = next;
+      }
+    }
+  }
+
+  destroy() {
+    this.accumulation = null;
+    this.overflow = null;
+    this.ctx = null;
+  }
+}
+
+function createRecord(
+  p0,
+  p1,
+  color,
+  width,
+  dash,
+  kind,
+  pointSize,
+  endWidth = width
+) {
+  return {
+    p0, p1,
+    color: normalizeColor(color),
+    width: Math.max(0, width ?? 1),
+    endWidth: Math.max(0, endWidth ?? 1),
+    dashOn: dash?.[0] ?? 0,
+    dashOff: dash?.[1] ?? 0,
+    kind,
+    isPoint: kind === 'point',
+    pointSize,
+  };
+}
+
+function normalizeColor(color) {
+  if (color?.r !== undefined) return [color.r, color.g, color.b, color.a];
+  return [color?.[0] ?? 1, color?.[1] ?? 1, color?.[2] ?? 1,
+    color?.[3] ?? 1];
+}
+
+function packRecords(records, colorMode, simulateColors) {
+  const packed = new Float32Array(records.length * FLOATS_PER_RECORD);
+  for (let index = 0; index &lt; records.length; index++) {
+    const record = records[index];
+    const offset = index * FLOATS_PER_RECORD;
+    packed.set([record.p0.x, record.p0.y, record.p1.x, record.p1.y], offset);
+    packed.set(
+      encodeWebGpuColorContribution(record.color, colorMode, simulateColors),
+      offset + 4
+    );
+    packed.set([
+      record.width, record.dashOn, record.dashOff, record.endWidth
+    ], offset + 8);
+    packed.set([
+      geometryKindId(record.kind), record.pointSize, 0, 0
+    ], offset + 12);
+  }
+  return packed;
+}
+
+function geometryKindId(kind) {
+  if (kind === 'point') return 1;
+  if (kind === 'arrow') return 2;
+  return 0;
+}
+
+export function encodeWebGpuColorContribution(
+  color,
+  colorMode,
+  simulateColors
+) {
+  if (colorMode !== 'default') {
+    const r = color[0] * color[3];
+    const g = color[1] * color[3];
+    const b = color[2] * color[3];
+    const maximum = Math.max(r, g, b);
+    if (!(maximum > 0)) return [0, 0, 0, 0];
+    if (colorMode === 'colorizedIntensity') {
+      return [maximum, maximum, maximum, 1];
+    }
+    const rr = r ** 2.2;
+    const gg = g ** 2.2;
+    const bb = b ** 2.2;
+    const ratio = maximum / Math.max(rr, gg, bb);
+    return [rr * ratio, gg * ratio, bb * ratio, 1];
+  }
+  if (simulateColors) {
+    return [
+      -Math.log1p(-Math.min(Math.max(color[0], 0), 1 - 1e-7)),
+      -Math.log1p(-Math.min(Math.max(color[1], 0), 1 - 1e-7)),
+      -Math.log1p(-Math.min(Math.max(color[2], 0), 1 - 1e-7)),
+      1
+    ];
+  }
+  const alpha = Math.min(Math.max(color[3], 0), 1 - 1e-7);
+  const density = -Math.log1p(-alpha);
+  return [color[0] * density, color[1] * density,
+    color[2] * density, density];
+}
+
+export function calculateWebGpuLineCoverage(
+  signedSide,
+  width,
+  colorMode
+) {
+  if (colorMode === 'colorizedIntensity') {
+    return Math.abs(signedSide) &lt;= 0.5 * width ? 1 : 0;
+  }
+  const maximumCoverage = Math.min(1, Math.max(0, width));
+  return Math.min(maximumCoverage, Math.max(
+    0, 0.5 * width + 0.5 - Math.abs(signedSide)
+  ));
+}
+
+export function calculateWebGpuArrowCoverage(
+  signedSide,
+  along,
+  length,
+  frontWidth,
+  backWidth,
+  colorMode
+) {
+  if (along &lt; 0 || along > length || !(length > 0)) return 0;
+  const sideSlope = 0.5 * (backWidth - frontWidth) / length;
+  const halfWidth = 0.5 * (
+    frontWidth + (backWidth - frontWidth) * along / length
+  );
+  const sideExpansion = Math.hypot(1, sideSlope);
+  const signedDistance = (
+    Math.abs(signedSide) - halfWidth
+  ) / sideExpansion;
+  if (colorMode === 'colorizedIntensity') {
+    return signedDistance &lt;= 0 ? 1 : 0;
+  }
+  const maximumCoverage = Math.min(
+    1, Math.max(0, 2 * halfWidth / sideExpansion)
+  );
+  return Math.min(
+    maximumCoverage, Math.max(0, 0.5 - signedDistance)
+  );
+}
+
+export function calculateWebGpuPointCoverage(
+  relativeX,
+  relativeY,
+  size,
+  colorMode
+) {
+  const resolvedSize = Math.max(0, size);
+  if (colorMode === 'colorizedIntensity') {
+    return Math.abs(relativeX) &lt;= 0.5 * resolvedSize &amp;&amp;
+      Math.abs(relativeY) &lt;= 0.5 * resolvedSize ? 1 : 0;
+  }
+  const maximumCoverage = Math.min(1, resolvedSize);
+  const xCoverage = Math.min(maximumCoverage, Math.max(
+    0, 0.5 * resolvedSize + 0.5 - Math.abs(relativeX)
+  ));
+  const yCoverage = Math.min(maximumCoverage, Math.max(
+    0, 0.5 * resolvedSize + 0.5 - Math.abs(relativeY)
+  ));
+  return xCoverage * yCoverage;
+}
+
+export function calculateWebGpuDashCoverage(
+  along,
+  dashOn,
+  dashOff,
+  colorMode
+) {
+  if (!(dashOn > 0) || !(dashOff > 0)) return 1;
+  const period = dashOn + dashOff;
+  const withinDash = along - Math.floor(along / period) * period;
+  if (colorMode === 'colorizedIntensity') {
+    return withinDash &lt; dashOn ? 1 : 0;
+  }
+  const signedDistance = withinDash &lt;= dashOn
+    ? -Math.min(withinDash, dashOn - withinDash)
+    : Math.min(withinDash - dashOn, period - withinDash);
+  const maximumCoverage = Math.min(1, dashOn);
+  return Math.min(maximumCoverage, Math.max(
+    0, 0.5 - signedDistance
+  ));
+}
+
+export function applyWebGpuAnalyticCoverage(
+  contribution,
+  coverage,
+  colorMode,
+  simulateColors
+) {
+  if (colorMode === 'default' &amp;&amp; !simulateColors) {
+    const density = contribution[3];
+    if (!(density > 0)) return [0, 0, 0, contribution[3]];
+    const alpha = 1 - Math.exp(-density);
+    const coveredDensity = -Math.log1p(-alpha * coverage);
+    return [
+      contribution[0] / density * coveredDensity,
+      contribution[1] / density * coveredDensity,
+      contribution[2] / density * coveredDensity,
+      coveredDensity
+    ];
+  }
+  if (colorMode === 'default' &amp;&amp; simulateColors) {
+    return [
+      contribution[0] * coverage,
+      contribution[1] * coverage,
+      contribution[2] * coverage,
+      contribution[3]
+    ];
+  }
+  return [
+    contribution[0] * coverage,
+    contribution[1] * coverage,
+    contribution[2] * coverage,
+    contribution[3]
+  ];
+}
+
+function colorModeId(mode, simulateColors) {
+  if (mode === 'default' &amp;&amp; simulateColors) return 5;
+  switch (mode) {
+    case 'default': return 0;
+    case 'linear': return 1;
+    case 'linearRGB': return 2;
+    case 'reinhard': return 3;
+    case 'colorizedIntensity': return 4;
+    default: return 0;
+  }
+}
+
+export function toneMapWebGpuColorContribution(
+  color,
+  mode,
+  simulateColors
+) {
+  if (mode === 'default') {
+    if (simulateColors) {
+      const factor = Math.max(...color);
+      const opacity = Math.min(Math.max(factor, 0), 1);
+      const rgb = factor > 0
+        ? color.map(value => value / factor * opacity)
+        : [0, 0, 0];
+      return [...rgb, opacity];
+    }
+    const density = Math.max(...color);
+    const opacity = 1 - Math.exp(-density);
+    const rgb = density > 0
+      ? color.map(value => value / density * opacity)
+      : [0, 0, 0];
+    return [...rgb, opacity];
+  }
+  const maximum = Math.max(...color);
+  if (mode === 'colorizedIntensity') {
+    const mapped = brightnessToColorJs(maximum);
+    return [mapped[0] * 0.8, mapped[1] * 0.8, mapped[2] * 0.8, 0];
+  }
+  if (mode === 'reinhard') {
+    const luminance =
+      color[0] * 0.2126 + color[1] * 0.7152 + color[2] * 0.0722;
+    const scale = 1 / (1 + luminance);
+    return [
+      (color[0] * scale) ** (1 / 2.2),
+      (color[1] * scale) ** (1 / 2.2),
+      (color[2] * scale) ** (1 / 2.2),
+      maximum ** (1 / 2.2)
+    ];
+  }
+  const divisor = mode === 'linear' &amp;&amp; maximum > 1 ? maximum : 1;
+  return [
+    (color[0] / divisor) ** (1 / 2.2),
+    (color[1] / divisor) ** (1 / 2.2),
+    (color[2] / divisor) ** (1 / 2.2),
+    Math.min(maximum, mode === 'linear' ? 1 : maximum) ** (1 / 2.2)
+  ];
+}
+
+function brightnessToColorJs(brightness) {
+  const interpolate = (left, right, t) => left.map(
+    (value, index) => value + (right[index] - value) * t
+  );
+  if (brightness > 100) return [1, 0, 0, 1];
+  const bands = [
+    [10, 100, [1, 0.5, 0], [1, 0, 0]],
+    [1, 10, [1, 1, 0], [1, 0.5, 0]],
+    [0.1, 1, [0, 1, 0], [1, 1, 0]],
+    [0.01, 0.1, [0, 1, 1], [0, 1, 0]],
+    [0.001, 0.01, [0, 0, 1], [0, 1, 1]],
+    [0.0001, 0.001, [0.3, 0, 0.3], [0, 0, 1]],
+  ];
+  for (const [minimum, maximum, left, right] of bands) {
+    if (brightness > minimum) {
+      const t = (Math.log2(brightness) - Math.log2(minimum)) /
+        (Math.log2(maximum) - Math.log2(minimum));
+      return [...interpolate(left, right, t), 1];
+    }
+  }
+  const t = (Math.log2(Math.max(brightness, 1e-7)) - Math.log2(1e-7)) /
+    (Math.log2(0.0001) - Math.log2(1e-7));
+  return [...interpolate([0, 0, 0], [0.3, 0, 0.3], t), t];
+}
+
+function toByte(value) {
+  return Math.round(Math.min(1, Math.max(0, value)) * 255);
+}
+
+function nextPowerOfTwo(value) {
+  return 2 ** Math.ceil(Math.log2(Math.max(value, 4)));
+}
+
+async function validateShaderModule(module, label) {
+  if (!module.getCompilationInfo) return;
+  const info = await module.getCompilationInfo();
+  const errors = info.messages.filter(message => message.type === 'error');
+  if (errors.length === 0) return;
+  const details = errors.map(message => {
+    const position = message.lineNum
+      ? `:${message.lineNum}:${message.linePos ?? 0}`
+      : '';
+    return `${label}${position} ${message.message}`;
+  }).join('\n');
+  throw new Error(`WebGPU shader compilation failed:\n${details}`);
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-CanvasContainer.html">CanvasContainer</a></li><li><a href="module-ColorModeModal.html">ColorModeModal</a></li><li><a href="module-ColorPicker.html">ColorPicker</a></li><li><a href="module-DashPicker.html">DashPicker</a></li><li><a href="module-FileBar.html">FileBar</a></li><li><a href="module-FillControl.html">FillControl</a></li><li><a href="module-FontPicker.html">FontPicker</a></li><li><a href="module-Footer.html">Footer</a></li><li><a href="module-ImportShapesModal.html">ImportShapesModal</a></li><li><a href="module-LanguageModal.html">LanguageModal</a></li><li><a href="module-LayoutAidsBar.html">LayoutAidsBar</a></li><li><a href="module-ModuleModal.html">ModuleModal</a></li><li><a href="module-ModuleTools.html">ModuleTools</a></li><li><a href="module-MoreToolsCollapsible.html">MoreToolsCollapsible</a></li><li><a href="module-NumberControl.html">NumberControl</a></li><li><a href="module-ObjBar.html">ObjBar</a></li><li><a href="module-PointControl.html">PointControl</a></li><li><a href="module-PopupSelectControl.html">PopupSelectControl</a></li><li><a href="module-RayDensityBar.html">RayDensityBar</a></li><li><a href="module-SaveModal.html">SaveModal</a></li><li><a href="module-SettingsBar.html">SettingsBar</a></li><li><a href="module-SettingsList.html">SettingsList</a></li><li><a href="module-SettingsWarning.html">SettingsWarning</a></li><li><a href="module-Sidebar.html">Sidebar</a></li><li><a href="module-SimulationEngineModal.html">SimulationEngineModal</a></li><li><a href="module-SimulatorControls.html">SimulatorControls</a></li><li><a href="module-SizePicker.html">SizePicker</a></li><li><a href="module-StatusArea.html">StatusArea</a></li><li><a href="module-StrokeControl.html">StrokeControl</a></li><li><a href="module-TextControl.html">TextControl</a></li><li><a href="module-TextInput.html">TextInput</a></li><li><a href="module-ThemeModal.html">ThemeModal</a></li><li><a href="module-ThemeOptionsList.html">ThemeOptionsList</a></li><li><a href="module-ToggleControl.html">ToggleControl</a></li><li><a href="module-ToolItem.html">ToolItem</a></li><li><a href="module-Toolbar.html">Toolbar</a></li><li><a href="module-ToolsBar.html">ToolsBar</a></li><li><a href="module-ToolsCategory.html">ToolsCategory</a></li><li><a href="module-ToolsList.html">ToolsList</a></li><li><a href="module-ViewBar.html">ViewBar</a></li><li><a href="module-VirtualKeyboard.html">VirtualKeyboard</a></li><li><a href="module-WelcomeMessage.html">WelcomeMessage</a></li><li><a href="module-ZoomControl.html">ZoomControl</a></li><li><a href="module-app_.html">app</a></li><li><a href="module-shapeImport.html">shapeImport</a></li><li><a href="module-svgImport.html">svgImport</a></li></ul><h3>Namespaces</h3><ul><li><a href="geometry.html">geometry</a></li><li><a href="sceneObjs.html">sceneObjs</a></li></ul><h3>Classes</h3><ul><li><a href="BaseFilter.html">BaseFilter</a></li><li><a href="BaseGlass.html">BaseGlass</a></li><li><a href="BaseGrinGlass.html">BaseGrinGlass</a></li><li><a href="BaseSceneObj.html">BaseSceneObj</a></li><li><a href="CanvasRenderer.html">CanvasRenderer</a></li><li><a href="CpuSimulationEngine.html">CpuSimulationEngine</a></li><li><a href="DegenerateCurveError.html">DegenerateCurveError</a></li><li><a href="Editor.html">Editor</a></li><li><a href="FloatColorRenderer.html">FloatColorRenderer</a></li><li><a href="JsonEditorService.html">JsonEditorService</a></li><li><a href="Mouse.html">Mouse</a></li><li><a href="ObjBar.html">ObjBar</a></li><li><a href="PrimitiveBasedSimulator.html">PrimitiveBasedSimulator</a></li><li><a href="Scene.html">Scene</a></li><li><a href="Simulator.html">Simulator</a></li><li><a href="TexExprParser.html">TexExprParser</a></li><li><a href="WebGpuCanvasRayRasterizer.html">WebGpuCanvasRayRasterizer</a></li><li><a href="WebGpuInitialMembershipStage.html">WebGpuInitialMembershipStage</a></li><li><a href="WebGpuMegakernelStaticSceneStorage.html">WebGpuMegakernelStaticSceneStorage</a></li><li><a href="WebGpuReadyRayRenderer.html">WebGpuReadyRayRenderer</a></li><li><a href="WebGpuSimulationEngine.html">WebGpuSimulationEngine</a></li><li><a href="WebGpuSimulationRun.html">WebGpuSimulationRun</a></li><li><a href="sceneObjs.AngleSource.html">AngleSource</a></li><li><a href="sceneObjs.Aperture.html">Aperture</a></li><li><a href="sceneObjs.ArcMirror.html">ArcMirror</a></li><li><a href="sceneObjs.BaseCustomSurface.html">BaseCustomSurface</a></li><li><a href="sceneObjs.Beam.html">Beam</a></li><li><a href="sceneObjs.BeamSplitter.html">BeamSplitter</a></li><li><a href="sceneObjs.Blocker.html">Blocker</a></li><li><a href="sceneObjs.CircleBlocker.html">CircleBlocker</a></li><li><a href="sceneObjs.CircleGlass.html">CircleGlass</a></li><li><a href="sceneObjs.CircleGrinGlass.html">CircleGrinGlass</a></li><li><a href="sceneObjs.ConcaveDiffractionGrating.html">ConcaveDiffractionGrating</a></li><li><a href="sceneObjs.CropBox.html">CropBox</a></li><li><a href="sceneObjs.CurveGlass.html">CurveGlass</a></li><li><a href="sceneObjs.CurveGrinGlass.html">CurveGrinGlass</a></li><li><a href="sceneObjs.CurveMirror.html">CurveMirror</a></li><li><a href="sceneObjs.CustomArcSurface.html">CustomArcSurface</a></li><li><a href="sceneObjs.CustomCurveSurface.html">CustomCurveSurface</a></li><li><a href="sceneObjs.CustomGlass.html">CustomGlass</a></li><li><a href="sceneObjs.CustomMirror.html">CustomMirror</a></li><li><a href="sceneObjs.CustomParamSurface.html">CustomParamSurface</a></li><li><a href="sceneObjs.CustomSurface.html">CustomSurface</a></li><li><a href="sceneObjs.Detector.html">Detector</a></li><li><a href="sceneObjs.DiffractionGrating.html">DiffractionGrating</a></li><li><a href="sceneObjs.Drawing.html">Drawing</a></li><li><a href="sceneObjs.Glass.html">Glass</a></li><li><a href="sceneObjs.GrinGlass.html">GrinGlass</a></li><li><a href="sceneObjs.Handle.html">Handle</a></li><li><a href="sceneObjs.IdealLens.html">IdealLens</a></li><li><a href="sceneObjs.IdealMirror.html">IdealMirror</a></li><li><a href="sceneObjs.LineArrow.html">LineArrow</a></li><li><a href="sceneObjs.Mirror.html">Mirror</a></li><li><a href="sceneObjs.ModuleObj.html">ModuleObj</a></li><li><a href="sceneObjs.ParabolicMirror.html">ParabolicMirror</a></li><li><a href="sceneObjs.ParamGlass.html">ParamGlass</a></li><li><a href="sceneObjs.ParamGrinGlass.html">ParamGrinGlass</a></li><li><a href="sceneObjs.ParamMirror.html">ParamMirror</a></li><li><a href="sceneObjs.PlaneGlass.html">PlaneGlass</a></li><li><a href="sceneObjs.PointSource.html">PointSource</a></li><li><a href="sceneObjs.Protractor.html">Protractor</a></li><li><a href="sceneObjs.Ruler.html">Ruler</a></li><li><a href="sceneObjs.SingleRay.html">SingleRay</a></li><li><a href="sceneObjs.SphericalLens.html">SphericalLens</a></li><li><a href="sceneObjs.TextLabel.html">TextLabel</a></li></ul><h3>Events</h3><ul><li><a href="Editor.html#event:handleCreationHint">handleCreationHint</a></li><li><a href="Editor.html#event:mouseCoordinateChange">mouseCoordinateChange</a></li><li><a href="Editor.html#event:newAction">newAction</a></li><li><a href="Editor.html#event:newUndoPoint">newUndoPoint</a></li><li><a href="Editor.html#event:objectBodyClick">objectBodyClick</a></li><li><a href="Editor.html#event:positioningEnd">positioningEnd</a></li><li><a href="Editor.html#event:positioningStart">positioningStart</a></li><li><a href="Editor.html#event:redo">redo</a></li><li><a href="Editor.html#event:requestPositioningComfirm">requestPositioningComfirm</a></li><li><a href="Editor.html#event:scaleChange">scaleChange</a></li><li><a href="Editor.html#event:sceneLoaded">sceneLoaded</a></li><li><a href="Editor.html#event:selectionChange">selectionChange</a></li><li><a href="Editor.html#event:undo">undo</a></li><li><a href="ObjBar.html#event:edit">edit</a></li><li><a href="ObjBar.html#event:editEnd">editEnd</a></li><li><a href="ObjBar.html#event:requestUpdate">requestUpdate</a></li><li><a href="ObjBar.html#event:showAdvancedEnabled">showAdvancedEnabled</a></li><li><a href="Simulator.html#event:lightLayerSyncChange">lightLayerSyncChange</a></li><li><a href="Simulator.html#event:simulationComplete">simulationComplete</a></li><li><a href="Simulator.html#event:simulationPause">simulationPause</a></li><li><a href="Simulator.html#event:simulationStart">simulationStart</a></li><li><a href="Simulator.html#event:simulationStop">simulationStop</a></li><li><a href="Simulator.html#event:update">update</a></li><li><a href="global.html#event:deviceChange">deviceChange</a></li><li><a href="global.html#event:requestUpdateErrorAndWarning">requestUpdateErrorAndWarning</a></li><li><a href="global.html#event:webglContextLost">webglContextLost</a></li></ul><h3>Global</h3><ul><li><a href="global.html#BACKTICK_HIGHLIGHT_MATCH_CLASS">BACKTICK_HIGHLIGHT_MATCH_CLASS</a></li><li><a href="global.html#CircleObjMixin">CircleObjMixin</a></li><li><a href="global.html#CurveObjMixin">CurveObjMixin</a></li><li><a href="global.html#DATA_VERSION">DATA_VERSION</a></li><li><a href="global.html#DEFAULT_SIMULATION_ENGINE_CONFIGS">DEFAULT_SIMULATION_ENGINE_CONFIGS</a></li><li><a href="global.html#FLOAT32_EPSILON">FLOAT32_EPSILON</a></li><li><a href="global.html#FN1">FN1</a></li><li><a href="global.html#FORMULA_MODULE_TOOLTIP_MAX_LINES">FORMULA_MODULE_TOOLTIP_MAX_LINES</a></li><li><a href="global.html#FOR_IF_DEFAULTS">FOR_IF_DEFAULTS</a></li><li><a href="global.html#GREEK_SYMBOL">GREEK_SYMBOL</a></li><li><a href="global.html#JSON_INNER_COLLAPSE_THRESHOLD">JSON_INNER_COLLAPSE_THRESHOLD</a></li><li><a href="global.html#LITERAL_NUMERIC_TOKEN">LITERAL_NUMERIC_TOKEN</a></li><li><a href="global.html#LineObjMixin">LineObjMixin</a></li><li><a href="global.html#MODULE_EDITOR_LIST">MODULE_EDITOR_LIST</a></li><li><a href="global.html#PARAM_CURVE_POINT_TOLERANCE">PARAM_CURVE_POINT_TOLERANCE</a></li><li><a href="global.html#PAREN_HIGHLIGHT_MATCH_CLASS">PAREN_HIGHLIGHT_MATCH_CLASS</a></li><li><a href="global.html#PRIMITIVE_CURVE_REFERENCE_PREFIX">PRIMITIVE_CURVE_REFERENCE_PREFIX</a></li><li><a href="global.html#ParamCurveObjMixin">ParamCurveObjMixin</a></li><li><a href="global.html#_applyPiecesJoinedWarning">_applyPiecesJoinedWarning</a></li><li><a href="global.html#_ensureCubicBezierPathReady">_ensureCubicBezierPathReady</a></li><li><a href="global.html#_pathPairToHermiteBezier">_pathPairToHermiteBezier</a></li><li><a href="global.html#allocateInteractionIndexBuffers">allocateInteractionIndexBuffers</a></li><li><a href="global.html#appendPartialDerivatives">appendPartialDerivatives</a></li><li><a href="global.html#applyTextareaAutoResize">applyTextareaAutoResize</a></li><li><a href="global.html#arePiecesJoined">arePiecesJoined</a></li><li><a href="global.html#buildBacktickHighlightHtml">buildBacktickHighlightHtml</a></li><li><a href="global.html#buildBvh">buildBvh</a></li><li><a href="global.html#buildModuleInstanceTooltipHtml">buildModuleInstanceTooltipHtml</a></li><li><a href="global.html#buildParenHighlightHtml">buildParenHighlightHtml</a></li><li><a href="global.html#checkRayIntersectsShape">checkRayIntersectsShape</a></li><li><a href="global.html#clampWebGpuParameterToF32">clampWebGpuParameterToF32</a></li><li><a href="global.html#collapseBinaryBvh">collapseBinaryBvh</a></li><li><a href="global.html#collapseRedundantNestedParentheses">collapseRedundantNestedParentheses</a></li><li><a href="global.html#collectPointPaths">collectPointPaths</a></li><li><a href="global.html#collectRayPowerQueue">collectRayPowerQueue</a></li><li><a href="global.html#collectReferencedParameterNames">collectReferencedParameterNames</a></li><li><a href="global.html#combineDags">combineDags</a></li><li><a href="global.html#compileParametricDerivative">compileParametricDerivative</a></li><li><a href="global.html#controlPointIndexAfterReorder">controlPointIndexAfterReorder</a></li><li><a href="global.html#countCurveRayCrossings">countCurveRayCrossings</a></li><li><a href="global.html#countIntersections">countIntersections</a></li><li><a href="global.html#createArcOrLineCurve">createArcOrLineCurve</a></li><li><a href="global.html#createCpuDetectorResults">createCpuDetectorResults</a></li><li><a href="global.html#createCustomSurfacePrimitive">createCustomSurfacePrimitive</a></li><li><a href="global.html#createDagClosureEvaluator">createDagClosureEvaluator</a></li><li><a href="global.html#createDagEvaluator">createDagEvaluator</a></li><li><a href="global.html#createDagWgslSpecialization">createDagWgslSpecialization</a></li><li><a href="global.html#createInteractionCandidate">createInteractionCandidate</a></li><li><a href="global.html#createInteractionCandidateContext">createInteractionCandidateContext</a></li><li><a href="global.html#createInteractionIndexBuffers">createInteractionIndexBuffers</a></li><li><a href="global.html#createInteractionTypeLayout">createInteractionTypeLayout</a></li><li><a href="global.html#createMegakernelCollectorShader">createMegakernelCollectorShader</a></li><li><a href="global.html#createMegakernelInitialShader">createMegakernelInitialShader</a></li><li><a href="global.html#createMegakernelQueueLayout">createMegakernelQueueLayout</a></li><li><a href="global.html#createRegionMembershipResult">createRegionMembershipResult</a></li><li><a href="global.html#createSampledPrimitiveCurveEntries">createSampledPrimitiveCurveEntries</a></li><li><a href="global.html#createWebGpuDagPrograms">createWebGpuDagPrograms</a></li><li><a href="global.html#createWebGpuExecutionPlan">createWebGpuExecutionPlan</a></li><li><a href="global.html#createWebGpuMegakernelShader">createWebGpuMegakernelShader</a></li><li><a href="global.html#createWebGpuRawTraceShader">createWebGpuRawTraceShader</a></li><li><a href="global.html#createWebGpuTraceSceneData">createWebGpuTraceSceneData</a></li><li><a href="global.html#createWebGpuTraceSceneDeclaration">createWebGpuTraceSceneDeclaration</a></li><li><a href="global.html#deepEqual">deepEqual</a></li><li><a href="global.html#deriveWebGpuWavelengthRange">deriveWebGpuWavelengthRange</a></li><li><a href="global.html#distancePointToSegment">distancePointToSegment</a></li><li><a href="global.html#draftsToCommittedValue">draftsToCommittedValue</a></li><li><a href="global.html#drawConstruction">drawConstruction</a></li><li><a href="global.html#drawControlHandles">drawControlHandles</a></li><li><a href="global.html#drawPath">drawPath</a></li><li><a href="global.html#drawPreparedCurve">drawPreparedCurve</a></li><li><a href="global.html#drawPreparedRegion">drawPreparedRegion</a></li><li><a href="global.html#ensureCurveIntersectionNormal">ensureCurveIntersectionNormal</a></li><li><a href="global.html#equationDisplayToValue">equationDisplayToValue</a></li><li><a href="global.html#equationValueForListDisplay">equationValueForListDisplay</a></li><li><a href="global.html#equationValueToDisplay">equationValueToDisplay</a></li><li><a href="global.html#estimateAmbiguousRayWarningPowerThreshold">estimateAmbiguousRayWarningPowerThreshold</a></li><li><a href="global.html#estimateDagRanges">estimateDagRanges</a></li><li><a href="global.html#estimateWebGpuParameterRanges">estimateWebGpuParameterRanges</a></li><li><a href="global.html#evaluatePreparedCurve">evaluatePreparedCurve</a></li><li><a href="global.html#extractNonDefaults">extractNonDefaults</a></li><li><a href="global.html#extractNumbersAsParameters">extractNumbersAsParameters</a></li><li><a href="global.html#finalizeInteractionCandidate">finalizeInteractionCandidate</a></li><li><a href="global.html#findMatchingBraceEnd">findMatchingBraceEnd</a></li><li><a href="global.html#findMatchingParenPair">findMatchingParenPair</a></li><li><a href="global.html#findMathBlockRanges">findMathBlockRanges</a></li><li><a href="global.html#findPrimitiveCurveReferenceSpans">findPrimitiveCurveReferenceSpans</a></li><li><a href="global.html#findUnjoinedPieces">findUnjoinedPieces</a></li><li><a href="global.html#findValidJsonObjectSpans">findValidJsonObjectSpans</a></li><li><a href="global.html#formatKeyPath">formatKeyPath</a></li><li><a href="global.html#formatPrimitiveCurveReference">formatPrimitiveCurveReference</a></li><li><a href="global.html#formatStatusLineHtml">formatStatusLineHtml</a></li><li><a href="global.html#formatTooltipNumber">formatTooltipNumber</a></li><li><a href="global.html#formulaDisplayToValue">formulaDisplayToValue</a></li><li><a href="global.html#generateDagJsEvaluator">generateDagJsEvaluator</a></li><li><a href="global.html#getAllByKeyPath">getAllByKeyPath</a></li><li><a href="global.html#getCurveBounds">getCurveBounds</a></li><li><a href="global.html#getEffectiveRayPowerOptions">getEffectiveRayPowerOptions</a></li><li><a href="global.html#getInteractionTypeIndex">getInteractionTypeIndex</a></li><li><a href="global.html#getIntersectionTolerancePolicy">getIntersectionTolerancePolicy</a></li><li><a href="global.html#getNextModuleIdentifierName">getNextModuleIdentifierName</a></li><li><a href="global.html#getRayIntersections">getRayIntersections</a></li><li><a href="global.html#getRayIntersectionsCubicBezier">getRayIntersectionsCubicBezier</a></li><li><a href="global.html#getRayIntersectionsLinear">getRayIntersectionsLinear</a></li><li><a href="global.html#getRoundingErrorFactor">getRoundingErrorFactor</a></li><li><a href="global.html#initPath">initPath</a></li><li><a href="global.html#intersectCurve">intersectCurve</a></li><li><a href="global.html#isAtomicExpr">isAtomicExpr</a></li><li><a href="global.html#isClosed">isClosed</a></li><li><a href="global.html#isFormula">isFormula</a></li><li><a href="global.html#isFormulaValueSupported">isFormulaValueSupported</a></li><li><a href="global.html#isInside">isInside</a></li><li><a href="global.html#isLiteralBooleanFieldValue">isLiteralBooleanFieldValue</a></li><li><a href="global.html#isLiteralNumericFieldValue">isLiteralNumericFieldValue</a></li><li><a href="global.html#isNonBasicProperty">isNonBasicProperty</a></li><li><a href="global.html#isNonDefault">isNonDefault</a></li><li><a href="global.html#isOnBoundary">isOnBoundary</a></li><li><a href="global.html#isOutside">isOutside</a></li><li><a href="global.html#isPointHardcoded">isPointHardcoded</a></li><li><a href="global.html#isPositivelyOriented">isPositivelyOriented</a></li><li><a href="global.html#isSourceIndexArray">isSourceIndexArray</a></li><li><a href="global.html#isTextareaAutoResizeMeasurable">isTextareaAutoResizeMeasurable</a></li><li><a href="global.html#isValidFormulaParameterName">isValidFormulaParameterName</a></li><li><a href="global.html#latexToMathJS">latexToMathJS</a></li><li><a href="global.html#mathJSToLatex">mathJSToLatex</a></li><li><a href="global.html#mergeWithDefaults">mergeWithDefaults</a></li><li><a href="global.html#newlinesToBr">newlinesToBr</a></li><li><a href="global.html#nextDuplicateIdentifier">nextDuplicateIdentifier</a></li><li><a href="global.html#normalizeNumericStrings">normalizeNumericStrings</a></li><li><a href="global.html#normalizeParsedEquationAST">normalizeParsedEquationAST</a></li><li><a href="global.html#observeTextareasResizeWhenVisible">observeTextareasResizeWhenVisible</a></li><li><a href="global.html#packWebGpuScene">packWebGpuScene</a></li><li><a href="global.html#parseFormula">parseFormula</a></li><li><a href="global.html#populateObjBarShape">populateObjBarShape</a></li><li><a href="global.html#prepareCpuOutgoingRayData">prepareCpuOutgoingRayData</a></li><li><a href="global.html#prepareCurve">prepareCurve</a></li><li><a href="global.html#preprocessPrimitives">preprocessPrimitives</a></li><li><a href="global.html#promptNewModuleName">promptNewModuleName</a></li><li><a href="global.html#promptNewModuleNameForHandle">promptNewModuleNameForHandle</a></li><li><a href="global.html#recordWebGpuRecompilationNeeds">recordWebGpuRecompilationNeeds</a></li><li><a href="global.html#renderCpuRay">renderCpuRay</a></li><li><a href="global.html#resetInteractionIndexBuffers">resetInteractionIndexBuffers</a></li><li><a href="global.html#resolvePrimitiveSimulatorConfig">resolvePrimitiveSimulatorConfig</a></li><li><a href="global.html#resolveSimulationEngineConfig">resolveSimulationEngineConfig</a></li><li><a href="global.html#sanitizePastedJson">sanitizePastedJson</a></li><li><a href="global.html#setByKeyPath">setByKeyPath</a></li><li><a href="global.html#setViewportSize">setViewportSize</a></li><li><a href="global.html#solveQuadraticRoots">solveQuadraticRoots</a></li><li><a href="global.html#splitTexCommaArgs">splitTexCommaArgs</a></li><li><a href="global.html#splitTopLevelCommas">splitTopLevelCommas</a></li><li><a href="global.html#stableRaySamplingPhase">stableRaySamplingPhase</a></li><li><a href="global.html#stripJsonComments">stripJsonComments</a></li><li><a href="global.html#stripMarkdownCodeFence">stripMarkdownCodeFence</a></li><li><a href="global.html#stripParenChain">stripParenChain</a></li><li><a href="global.html#stripRedundantParensForLatex">stripRedundantParensForLatex</a></li><li><a href="global.html#substituteDagParameters">substituteDagParameters</a></li><li><a href="global.html#suggestNewModuleName">suggestNewModuleName</a></li><li><a href="global.html#templatePointLockState">templatePointLockState</a></li><li><a href="global.html#textHasBacktickBlocks">textHasBacktickBlocks</a></li><li><a href="global.html#toJSON">toJSON</a></li><li><a href="global.html#tooltipAllTupleRowsConstant">tooltipAllTupleRowsConstant</a></li><li><a href="global.html#tooltipMantissaDecimalPlaces">tooltipMantissaDecimalPlaces</a></li><li><a href="global.html#tooltipPointTupleEqual">tooltipPointTupleEqual</a></li><li><a href="global.html#tooltipValueEqualForCollapse">tooltipValueEqualForCollapse</a></li><li><a href="global.html#tracePath">tracePath</a></li><li><a href="global.html#traceSceneCapacityCounts">traceSceneCapacityCounts</a></li><li><a href="global.html#traverseBvhForInteraction">traverseBvhForInteraction</a></li><li><a href="global.html#traverseBvhForRegionMembership">traverseBvhForRegionMembership</a></li><li><a href="global.html#unwrapParenInCallableArgs">unwrapParenInCallableArgs</a></li><li><a href="global.html#updateInteractionCandidate">updateInteractionCandidate</a></li><li><a href="global.html#useBacktickHighlightLayer">useBacktickHighlightLayer</a></li><li><a href="global.html#useParenHighlightLayer">useParenHighlightLayer</a></li><li><a href="global.html#usePreferencesStore">usePreferencesStore</a></li><li><a href="global.html#useSceneStore">useSceneStore</a></li><li><a href="global.html#useStatus">useStatus</a></li><li><a href="global.html#useStatusStore">useStatusStore</a></li><li><a href="global.html#useThemeStore">useThemeStore</a></li><li><a href="global.html#useWebGpuTraceScene">useWebGpuTraceScene</a></li><li><a href="global.html#vTooltipPopover">vTooltipPopover</a></li><li><a href="global.html#validateDagNodeLabel">validateDagNodeLabel</a></li><li><a href="global.html#validateFormulaNodeLabel">validateFormulaNodeLabel</a></li><li><a href="global.html#validateNestedKeys">validateNestedKeys</a></li><li><a href="global.html#validateNumericEpsilon">validateNumericEpsilon</a></li><li><a href="global.html#validateWebGpuSpatialBounds">validateWebGpuSpatialBounds</a></li><li><a href="global.html#valueToFormulaDisplay">valueToFormulaDisplay</a></li><li><a href="global.html#versionUpdate">versionUpdate</a></li><li><a href="global.html#viewportCenterSceneCoords">viewportCenterSceneCoords</a></li><li><a href="global.html#writeCpuOutgoingRays">writeCpuOutgoingRays</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
