@@ -48,7 +48,7 @@
     "jsdoc": "^4.0.4",
     "marked": "^15.0.3",
     "mathjax": "^3.2.2",
-    "sharp": "^0.35.0",
+    "sharp": "^0.35.4",
     "simple-git": "^3.36.0"
   },
   "scripts": {
