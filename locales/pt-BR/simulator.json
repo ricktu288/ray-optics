@@ -128,7 +128,11 @@
       "title": "Exibir popups de ajuda",
       "description": "Define se vai exibir popups de ajuda quando pairando sobre botões."
     },
-    "advancedHelp": "Para ajuda avançada, veja o ícone de ajuda no canto inferior direito."
+    "advancedHelp": "Para ajuda avançada, veja o ícone de ajuda no canto inferior direito.",
+    "rayPowerCutoff": {
+      "title": "Potência mínima do raio",
+      "description": "Raios mais fracos que este limite são amostrados ou truncados. Defina como 0 para desabilitar gerenciamento de raio fraco. Só é configurável ao usar \"Corrigir Brilho\"."
+    }
   },
   "editor": {
     "objectBodyHint": "Para rotação, agrupamento, etc., veja o ícone de ajuda no canto inferior direito.",
