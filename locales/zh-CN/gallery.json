@@ -403,6 +403,16 @@
       "higherrefractiveinde": "较高折射率（>1.52）",
       "eye3": "眼睛"
     },
+    "apochromat": {
+      "title": "复消色差透镜",
+      "description": "复消色差透镜可同时校正[球面像差](/gallery/monochromatic-aberrations)和[色差](/gallery/chromatic-aberration)，所成图像比[消色差透镜](/gallery/achromatic-doublet)或单透镜清晰得多。",
+      "single": "单透镜",
+      "achromat": "消色差透镜",
+      "apochromat": "复消色差透镜",
+      "sphericalaberrationc": "- 球面像差\n- 色差",
+      "sphericalaberration1": "- 球面像差",
+      "noaberration": "- 无像差\n"
+    },
     "grinSlab": {
       "title": "渐变折射率平板",
       "description": "模拟折射率 \\(n(\\rho) = n_0 \\sqrt{1-(\\alpha \\rho)^2}\\)的介电材料，其中 \\(n_0\\) 是其中央轴的折射率，\\(\\rho \\) 是从其中央轴的径向距离，使得 \\(\\alpha=\\frac{\\sqrt{3}}{2R} \\)，其中 \\(R=100 \\) 是其半径。上方的介电材料为一系列的薄矩形，每个矩形具有恒定的折射率（根据前述 \\(n(\\rho)\\) 的式子）。下方的介电材料是折射率为\\(n(\\rho)\\)的渐变折射率材料。",
