@@ -1031,5 +1031,17 @@
       ]
     },
     "firstCommit": "2026-08-26"
+  },
+  {
+    "name": "Torsten-Karl Strempel",
+    "githubEmails": [
+      "torsten-karl.strempel@h-da.de"
+    ],
+    "contributions": {
+      "translations": [
+        "de"
+      ]
+    },
+    "firstCommit": "2026-09-24"
   }
 ]
