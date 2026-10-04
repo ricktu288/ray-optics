@@ -37,7 +37,8 @@
       "instruction": "Ziehen oder Klicken zum Erzeugen. Der erste Punkt ist die Quelle, die in Richtung des zweiten Punkts zielt."
     },
     "Beam": {
-      "title": "Bündel"
+      "title": "Bündel",
+      "description": "Ein paralleles oder divergendes Lichtbündel wird von einer Strecke abgestrahlt. Die Strahldichte kann über den Regler 'Strahldichte' eingestellt werden."
     },
     "PointSource": {
       "title": "Punktquelle",
@@ -78,10 +79,11 @@
       "description": "Ein Spiegel dessen Form durch eine Gleichung y = f(x) bestimmt ist, wobei (x,y) transformierte Koordinaten sind mit den Randpunkten (-1,0) und (1,0)."
     },
     "ConcaveDiffractionGrating": {
-      "title": "Konkaves Reflexionsgitter"
+      "title": "Konkaves Reflexionsgitter",
+      "description": "Ein konkaves Diffraktionsgitter in Form eines Kreissegments."
     },
     "PlaneGlass": {
-      "title": "Halbraum",
+      "title": "Halbebene",
       "description": "Simulieren Sie die Brechung und Reflexion von Licht auf einer Oberfläche.",
       "instruction": "Ziehen oder Klicken zum Erzeugen."
     },
@@ -95,11 +97,12 @@
     },
     "Glass": {
       "description": "Beliebig gefortmer Glaskörper aus Liniensegmenten und Kreisbögen konstruiert.",
-      "instruction": "Klicken, um ein Liniensegment zu erzeugen; Ziehen, um einen Kreisbogen zu erzeugen; auf den Startpunkt klicken, um die Form abzuschließen."
+      "instruction": "Klicken, um ein Liniensegment zu erzeugen; Ziehen, um einen Kreisbogen zu erzeugen; auf den Startpunkt klicken, um die Form abzuschließen.",
+      "title": "Polygon / Kreissegmente"
     },
     "IdealLens": {
       "title": "Ideale Linse",
-      "description": "Eine ideale Linse, die Linsengleichung (1/p + 1/q = 1/f) erfüllt. Die Brennweite kann direkt eingestellt werden."
+      "description": "Ideale Linse, die die Linsengleichung (1/p + 1/q = 1/f) erfüllt. Die Brennweite kann direkt eingestellt werden."
     },
     "SphericalLens": {
       "title": "Sphärische Linse",
@@ -136,6 +139,19 @@
     "moveView": {
       "title": "Ansicht bewegen",
       "description": "Ziehen um die Ansicht zu Verschieben. (Rechte Maustaste hat die gleiche Funktion.)"
+    },
+    "ParamMirror": {
+      "title": "Parametrisierte Kurve",
+      "description": "Ein durch Parametergleichungen definierter Spiegel."
+    },
+    "CurveMirror": {
+      "title": "Bézier-Kurven",
+      "description": "Ein durch kubische Bézier-Kurven definierter Spiegel.",
+      "instruction": "Klicken um ein Teil zu erzeugen. Am Ende fuf den Startpunkt klicken, um eine geschlossene Randkurve oder den letzten Kontrollpunkt doppelt anklicken, um eine offene Kurve zu erzeugen. Danach durch Ziehen an den Quadraten die Kontrollpunkte verschieben, um die Kurve zu verändern."
+    },
+    "ParamGlass": {
+      "title": "Parametrisierte Kurve",
+      "description": "Glas definiert durch Parametergleichungen."
     }
   },
   "view": {
