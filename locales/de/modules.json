@@ -1,0 +1,32 @@
+{
+  "modulesPage": {
+    "description": {
+      "makeNewTools": "Die Funktion „Module“ ermöglicht die Erstellung neuer Werkzeuge durch Kombination, Spezialisierung oder Neuparametrisierung von bestehenden Objekten.",
+      "appearAsTools": "Importierte Module erscheinen als Werkzeuge in der Kategorie „Andere“. Wählen Sie die freie Fläche aus und klicken Sie entsprechend der Reihenfolge der Kontrollpunkte, zum Einfügen des Moduls (siehe \"Spezifikationen\").",
+      "embeddedInScene": "Importierte Module sind in den Daten der Szene eingebettet und werden nicht automatisch aktualisiert wenn die Autoren der Module diese aktualisieren."
+    },
+    "import": "Importieren",
+    "imported": "Importiert",
+    "specification": {
+      "title": "Spezifikation",
+      "controlPointSequence": "Reihenfolge der Kontrollpunkte",
+      "parameters": "Parameter"
+    },
+    "contribution": {
+      "title": "Beitrag",
+      "description": "Beiträge zur obigen Liste sind willkommen. Um ein Modul beizutragen, siehe [Contributing modules](/contributing/modules)."
+    }
+  },
+  "moduleData": {
+    "FresnelLens": {
+      "title": "Fresnel Linse",
+      "point1": "Der erste Endpunkt der Linse",
+      "point2": "Der zweite Endpunkt der Linse",
+      "Nslice": "Anzahl an Slices",
+      "refIndex": "Der Brechungsindex der Linse"
+    },
+    "ContSpectrum": {
+      "title": "Lichtquelle mit kontinuierlichem Spektrum"
+    }
+  }
+}

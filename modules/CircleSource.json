@@ -1,0 +1,67 @@
+{
+  "version": 5,
+  "name": "CircleSource",
+  "modules": {
+    "CircleSource": {
+      "numPoints": 1,
+      "params": [
+        "r=0:1:500:100",
+        "N=1:1:500:10",
+        "brightness=0.01:0.01:10:1"
+      ],
+      "objs": [
+        {
+          "for": "theta=0:2pi/N:2pi-0.0001",
+          "type": "AngleSource",
+          "p1": {
+            "x": "`x_1+r*cos(theta)`",
+            "y": "`y_1+r*sin(theta)`"
+          },
+          "p2": {
+            "x": "`x_1+(r+1)*cos(theta)`",
+            "y": "`y_1+(r+1)*sin(theta)`"
+          },
+          "brightness": "`brightness/N`",
+          "emisAngle": 180
+        }
+      ]
+    }
+  },
+  "objs": [
+    {
+      "type": "ModuleObj",
+      "module": "CircleSource",
+      "points": [
+        {
+          "x": 580,
+          "y": 420
+        }
+      ],
+      "params": {
+        "r": 50,
+        "N": 200,
+        "brightness": 2
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 460,
+        "y": 300
+      },
+      "p4": {
+        "x": 700,
+        "y": 540
+      },
+      "width": 300
+    }
+  ],
+  "width": 1500,
+  "height": 900,
+  "rayModeDensity": 0.8805575434761368,
+  "snapToGrid": true,
+  "origin": {
+    "x": 231.66666666666663,
+    "y": -18.000000000000014
+  }
+}

@@ -1,0 +1,150 @@
+{
+  "project": {
+    "name": "Giả lập tia quang học",
+    "shortName": "Quang hình học",
+    "description": "Trang web mã nguồn mở miễn phí mô phỏng quang hình học 2D."
+  },
+  "pages": {
+    "simulator": "Giả lập",
+    "home": "Trang chủ",
+    "gallery": "Thư viện",
+    "modules": "Mô-đun",
+    "about": "Thông tin",
+    "github": "GitHub"
+  },
+  "homePage": {
+    "description": "Trình mô phỏng & sáng tạo quang học 2D .\nHoàn toàn miễn phí trên nền tảng web. Mã nguồn [trên GitHub](/github).",
+    "launchSimulator": "Chạy trình giả lập"
+  },
+  "tools": {
+    "title": "Công cụ",
+    "categories": {
+      "lightSource": "Nguồn sáng",
+      "mirror": "Gương",
+      "glass": "Mặt lưỡng chất",
+      "blocker": "Tấm chắn",
+      "other": "Khác"
+    },
+    "common": {
+      "clickInstruction": "Nhấp chuật để tạo.",
+      "lineInstruction": "Kéo hoặc nhấp chuật để tạo.",
+      "circleInstruction": "Kéo hoặc nhấp chuột để tạo, đầu tiên là ở giữa , tiếp theo là phần viền."
+    },
+    "SingleRay": {
+      "title": "Nguồn một tia",
+      "description": "Nguồn một tia đi qua 2 điểm.",
+      "instruction": "Kéo hoặc nhấp chuột để tạo, đầu tiên là điểm đặt nguồn, tiếp theo là hướng chiếu."
+    },
+    "Beam": {
+      "title": "Nguồn tạo chùm tia",
+      "description": "Một đoạn thẳng tạo ra chùm tia (song song hoặc phân kì), mật độ tia được điều khiển ở mục 'Mật độ tia'."
+    },
+    "PointSource": {
+      "title": "Nguồn sáng điểm",
+      "description": "Các tia sáng được phát ra từ một điểm, mật độ tia được điều khiển ở mục 'Mật độ tia'."
+    },
+    "AngleSource": {
+      "instruction": "Kéo hoặc nhấp chuột để tạo, đầu tiên là vị trí nguồn, tiếp theo là hướng chiếu.",
+      "description": "Nguồn điểm giới hạn góc chiếu sáng."
+    },
+    "Mirror": {
+      "title": "Gương phẳng",
+      "description": "Mô phỏng phản xạ gương."
+    },
+    "otherMirror": {
+      "title": "Gương cong",
+      "description": "Gương cong. Có thể là cầu, parabol tròn xoay hoặc hàm số y =f(x)."
+    },
+    "ArcMirror": {
+      "title": "Gương cầu",
+      "description": "Gương có hình dạng là một phần của hình cầu. Được xác định bằng ba điểm.",
+      "instruction": "Kéo hoặc nhấp chuột ở hai biên để tạo gương, tiếp theo là nhấp chuột để xác định điểm thứ ba và độ cong của gương."
+    },
+    "homePageTitle": "Công cụ",
+    "ParabolicMirror": {
+      "title": "Parabol",
+      "description": "Gương có dạng parabol tròn xoay, được xác định bằng ba điểm.",
+      "instruction": "Kéo hoặc nhấp chuột ở hai biên để tạo gương, tiếp theo là nhấp chuột để xác định đỉnh."
+    },
+    "IdealMirror": {
+      "title": "Gương cầu lý tưởng",
+      "description": "Gương cầu có bán kính khẩu độ rất nhỏ so với bán kính cong, xác định qua phương trình 1/p + 1/q = 1/f. Tiêu điểm gương có thể được xác định trực tiếp."
+    },
+    "BeamSplitter": {
+      "title": "Gương bán mạ",
+      "description": "Gương cho phép tia sáng có thể truyền qua một phần và phản xạ một phần."
+    },
+    "CustomMirror": {
+      "title": "Gương xác đinh bằng phương trình",
+      "description": "Gương có hình dạng xác định theo hàm y = f(x); trong đó, hai điểm xác định có quy ước toạ độ (x;y) là (-1;0) và (1;0)."
+    },
+    "ParamMirror": {
+      "title": "Gương xác định bằng phương trình tham số",
+      "description": "Gương xác đinh bằng phương trình tham số."
+    },
+    "CurveMirror": {
+      "title": "Gương cong Bézier",
+      "description": "Gương được xác đinh bằng đường cong Bézier bậc ba.",
+      "instruction": "Nhấp chuột để tạo các điểm neo. Nhấp chuột vào điểm bắt đầu để kết thúc hoặc nhấp chuột hai lần vào điểm cuối (đường cong hở). Tiếp theo là điều chỉnh các đường tiếp tuyến để sửa đường cong."
+    },
+    "ConcaveDiffractionGrating": {
+      "title": "Gương tán xạ cong cầu",
+      "description": "Gương nhiễu xạ có dạng một phần hình cầu."
+    },
+    "PlaneGlass": {
+      "title": "Lưỡng chất phẳng",
+      "description": "Mô phỏng khúc xạ của ảnh sáng khi qua mặt lưỡng chất.",
+      "instruction": "Kéo hoặc nhấp vào hai điểm để tạo."
+    },
+    "otherGlass": {
+      "title": "Một số hình dạng khác",
+      "description": "Mặt lưỡng chất có hình dạng bất kì, được xác đỉnh bởi bất đẳng thức f(x)<y<g(x)."
+    },
+    "CircleGlass": {
+      "title": "Quả cầu lưỡng chất",
+      "description": "Quả cầu lưỡng chất, được xác đinh bởi tâm và một điểm trên mặt cầu."
+    },
+    "Glass": {
+      "title": "Lưỡng chất dạng đa giác / cầu",
+      "description": "Lưỡng chất có hình dạng bất kì được xác đinh bởi các đa giác và các cung tròn.",
+      "instruction": "Nhấp chuột để tạo đoạn thẳng, kéo để tạo cung tròn, nhấp chuột vào điểm bắt đầu để kết thúc."
+    },
+    "IdealLens": {
+      "title": "Thấu kính mỏng",
+      "description": "Thấu kính mỏng, xác định theo phương trình 1/p + 1/q = 1/f. Tiêu điểm có thể được xác định trực tiếp."
+    },
+    "SphericalLens": {
+      "title": "Thấu kính cầu",
+      "description": "Thấu kính có hai mặt là một phần của hình cầu, xác định bằng nhiều thông số khác nhau."
+    },
+    "CustomGlass": {
+      "title": "Lương chất xác định bằng phương trình",
+      "description": "Lưỡng chất có hình dạng xác định theo bất đẳng thức f(x) < y < g(x); trong đó, hai điểm xác định có quy ước toạ độ (x;y) là (-1;0) và (1;0)."
+    },
+    "ParamGlass": {
+      "title": "Lưỡng chất xác định bằng phương trình tham số",
+      "description": "Lưỡng chất xác đinh bằng bất đẳng thức tham số."
+    },
+    "CurveGlass": {
+      "title": "Lưỡng chất cong Bézier",
+      "description": "Lưỡng chất được xác đinh bằng đường cong Bézier bậc ba.",
+      "instruction": "Nhấp chuột để tạo các điểm neo. Nhấp chuột vào điểm bắt đầu để kết thúc hoặc nhấp chuột hai lần vào điểm cuối (đường cong hở). Tiếp theo là điều chỉnh các đường tiếp tuyến để sửa đường cong."
+    },
+    "CircleGrinGlass": {
+      "title": "Quả cầu chiết suất biến đổi",
+      "description": "Quả cầu có chiết suất biến đổi theo hàm n(x,y)."
+    },
+    "GrinGlass": {
+      "title": "Đa giác chiết suất biến đổi",
+      "description": "Khối đa giác có chiết suất biến đổi theo hàm n(x,y).",
+      "instruction": "Nhấp chuột để tạo các đỉnh đa giác, nhấp chuột vào điểm đầu để kết thúc.",
+      "warning": "LƯU Ý: Các đa giác quá phức tạp có thể vượt khả năng tính toán của thiết bị."
+    }
+  },
+  "meta": {
+    "languageName": "Tiếng Việt",
+    "parentheses": "{{main}} ({{sub}})",
+    "colon": "{{name}}: {{value}}",
+    "list": "{{first}}, {{others}}"
+  }
+}

@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: core/primitive/preprocess.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: core/primitive/preprocess.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*
+ * Copyright 2026 The Ray Optics Simulation authors and contributors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import { buildBvh } from './bvh.js';
+import {
+  DegenerateCurveError,
+  prepareCurve
+} from './curveGeometry.js';
+import { collectParameterNames } from '../formula/dag-util.js';
+import { validateNumericEpsilon } from './numeric.js';
+
+/**
+ * A canonical, engine-independent type definition.
+ *
+ * The definition is a deeply frozen plain-data copy of the type supplied by a
+ * scene object. `hash` is an efficient lookup key, not the definition's
+ * identity: preprocessing also compares the complete canonical representation
+ * when hashes match.
+ *
+ * @typedef {Object} ProcessedType
+ * @property {string} hash - A deterministic structural hash.
+ * @property {Object} definition - The canonical type definition.
+ */
+
+/**
+ * A source instance. The engine decides whether to use the parameter object
+ * directly or pack it according to the corresponding type's `paramNames`.
+ *
+ * @typedef {Object} ProcessedSource
+ * @property {number} sourceTypeId - Index into `types.sources`.
+ * @property {Object&lt;string, number>} params - Source instance parameters.
+ * @property {number} rayCount - Number of source-formula invocations.
+ */
+
+/**
+ * A surface instance. Its geometry is stored separately in `curves`.
+ *
+ * @typedef {Object} ProcessedSurface
+ * @property {number} surfaceTypeId - Index into `types.surfaces`.
+ * @property {Object&lt;string, number>} params - Surface instance parameters.
+ */
+
+/**
+ * A bulk-region instance. All of its boundary curves point back to this
+ * record through their `ownerId`.
+ *
+ * @typedef {Object} ProcessedRegion
+ * @property {number} bulkTypeId - Index into `types.bulks`.
+ * @property {Object&lt;string, number>} params - Bulk instance parameters.
+ * @property {number} stepSize - Interior propagation step size.
+ * @property {boolean} partialReflect - Whether transmissible boundaries also reflect.
+ */
+
+/**
+ * A detector instance. `resultId` identifies primitives contributing to the
+ * same logical scene-object result without prescribing an engine memory
+ * layout.
+ *
+ * @typedef {Object} ProcessedDetector
+ * @property {number} detectorTypeId - Index into `types.detectors`.
+ * @property {Object&lt;string, number>} params - Detector instance parameters.
+ * @property {number} resultId - Index into the simulator-side detector result bindings.
+ * @property {number} resultSize - Number of result scalars.
+ */
+
+/**
+ * An intersection curve and its owning processed instance. Surface and
+ * detector intersection policy is kept here because it is needed while
+ * traversing the BVH, before formula evaluation. Region curves do not have
+ * sidedness or wavelength filters.
+ *
+ * @typedef {Object} ProcessedCurve
+ * @property {PreparedCurveGeometry} geometry - Prepared engine-independent curve geometry.
+ * @property {{minX: number, minY: number, maxX: number, maxY: number}} bounds - Conservative world-space bounds, including the engine-selected positional and endpoint tolerances.
+ * @property {'surface'|'region'|'detector'} ownerKind - Owner table kind.
+ * @property {number} ownerId - Index into the matching owner table.
+ * @property {boolean} mergesWithBoundary - Whether this curve can participate in an interaction with coincident region boundaries.
+ * @property {boolean} [twoSided] - Whether both oriented sides participate.
+ * @property {WavelengthFilter} [filter] - Optional pre-intersection wavelength filter.
+ */
+
+/**
+ * The BVH node array uses up to four child node indices for branches. A leaf
+ * has `count > 0`; its `[start, start + count)` range indexes `curveIds`, whose
+ * values index the stable `curves` table. Branches are stored before leaves so
+ * GPU packing can omit standalone leaf records. The BVH may therefore reorder
+ * curves without changing curve or owner IDs. Every node's `ownerKindMask` is
+ * the bitwise union of the surface, region, and detector kinds in its subtree.
+ *
+ * @typedef {Object} ProcessedBvh
+ * @property {number} root - Root node index, or -1 for an empty tree.
+ * @property {Array&lt;Object>} nodes - BVH4 branch and leaf nodes.
+ * @property {Uint32Array} curveIds - Curve IDs in BVH leaf order.
+ */
+
+/**
+ * A complete engine-independent scene snapshot.
+ *
+ * Type IDs are local to their category and deterministic for a given set of
+ * structural definitions. Instance parameters remain plain objects in this
+ * common representation. Each engine may use those objects directly or pack
+ * the values in the corresponding type's significant `paramNames` order.
+ *
+ * The type signature changes when any canonical type definition changes,
+ * independent of primitive encounter order. It can be compared with the
+ * previous snapshot to decide whether compiled engine code remains reusable.
+ * Runtime parameter values, curves, and detector result sizes do not affect
+ * this signature.
+ *
+ * This object contains only transferable plain data. In particular, it does
+ * not contain the mutable detector result holders owned by scene objects.
+ *
+ * @typedef {Object} ProcessedScene
+ * @property {number} numericEpsilon - Relative arithmetic epsilon selected by the engine for geometry preparation and intersection.
+ * @property {{curveEndpoint: number, interactionMerging: number, interactionNormal: number, forwardDistance: number}} numericalTolerances - Engine-ready tolerance minimums. Distance values are in world units and `interactionNormal` is in radians.
+ * @property {string} typeSignature - Structural signature of all four type tables.
+ * @property {{sources: ProcessedType[], surfaces: ProcessedType[], bulks: ProcessedType[], detectors: ProcessedType[]}} types
+ * @property {ProcessedSource[]} sources
+ * @property {ProcessedSurface[]} surfaces
+ * @property {ProcessedRegion[]} regions
+ * @property {ProcessedDetector[]} detectors
+ * @property {ProcessedCurve[]} curves
+ * @property {ProcessedBvh} bvh
+ */
+
+/**
+ * Simulator-side association between a logical detector result range and the
+ * mutable holder supplied by one or more detector primitives. These bindings
+ * are deliberately returned beside, rather than inside, `processedScene`.
+ *
+ * @typedef {Object} DetectorResultBinding
+ * @property {number} resultId - Logical detector result ID used by processed detector instances.
+ * @property {DetectorResult} result - Scene-object-owned mutable holder.
+ * @property {number} resultSize - Number of scalars in the logical result.
+ */
+
+/**
+ * Convert scene-object primitives into an engine-independent processed scene.
+ * Degenerate curves are discarded. A surface or detector owning one is
+ * discarded with it, while a region is retained if any boundary remains.
+ *
+ * @param {Primitive[]} primitives - Primitives collected in scene order.
+ * @param {Object} [options]
+ * @param {Object} [options.bvhOptions] - Options forwarded to {@link buildBvh}.
+ * @param {number} [options.lengthScale=1] - Natural scene length used by engine-selected curve tolerances.
+ * @param {Object} [options.numericalTolerances] - Simulator-configured tolerance minimums, with distances relative to the scene length scale.
+ * @param {number} options.numericEpsilon - Relative arithmetic epsilon selected by the engine.
+ * @returns {{processedScene: ProcessedScene, detectorResultBindings: DetectorResultBinding[]}}
+ */
+export function preprocessPrimitives(primitives, {
+  bvhOptions = {},
+  lengthScale = 1,
+  numericalTolerances = {},
+  numericEpsilon
+} = {}) {
+  if (!Array.isArray(primitives)) {
+    throw new TypeError('primitives must be an array.');
+  }
+  validateNumericEpsilon(numericEpsilon);
+  const resolvedNumericalTolerances = {
+    curveEndpoint: resolveToleranceMinimum(
+      numericalTolerances.curveEndpoint,
+      lengthScale,
+      'curveEndpoint'
+    ),
+    interactionMerging: resolveToleranceMinimum(
+      numericalTolerances.interactionMerging,
+      lengthScale,
+      'interactionMerging'
+    ),
+    interactionNormal: resolveToleranceMinimum(
+      numericalTolerances.interactionNormal,
+      1,
+      'interactionNormal'
+    ),
+    forwardDistance: resolveToleranceMinimum(
+      numericalTolerances.forwardDistance,
+      lengthScale,
+      'forwardDistance'
+    )
+  };
+
+  const registries = {
+    sources: new TypeRegistry(),
+    surfaces: new TypeRegistry(),
+    bulks: new TypeRegistry(),
+    detectors: new TypeRegistry()
+  };
+  const sources = [];
+  const surfaces = [];
+  const regions = [];
+  const detectors = [];
+  const curves = [];
+  const curveBounds = [];
+  const detectorResults = new Map();
+  const detectorResultBindings = [];
+  const preparePrimitiveCurve = (curve, curvePath) => {
+    const normalizedCurve = normalizePrimitiveCurve(
+      curve,
+      curvePath
+    );
+    try {
+      return prepareCurve(normalizedCurve, {
+        lengthScale,
+        endpointTolerance: resolvedNumericalTolerances.curveEndpoint,
+        numericEpsilon
+      });
+    } catch (error) {
+      if (error instanceof DegenerateCurveError) return null;
+      throw error;
+    }
+  };
+  const appendProcessedCurve = (
+    prepared,
+    ownerKind,
+    ownerId,
+    mergesWithBoundary,
+    twoSided,
+    filter
+  ) => {
+    curves.push(createProcessedCurve(
+      prepared.geometry,
+      prepared.bounds,
+      ownerKind,
+      ownerId,
+      mergesWithBoundary,
+      twoSided,
+      filter
+    ));
+    curveBounds.push(prepared.bounds);
+  };
+
+  for (let primitiveIndex = 0; primitiveIndex &lt; primitives.length; primitiveIndex++) {
+    const primitive = primitives[primitiveIndex];
+
+    switch (primitive.kind) {
+      case 'source': {
+        const typeRecord = registries.sources.register(
+          primitive.sourceType
+        );
+        sources.push({
+          typeRecord,
+          params: normalizeNumericStrings(
+            primitive.params,
+            `primitives[${primitiveIndex}].params`
+          ),
+          rayCount: normalizeNumericString(
+            primitive.rayCount,
+            `primitives[${primitiveIndex}].rayCount`
+          )
+        });
+        break;
+      }
+
+      case 'surface': {
+        const prepared = preparePrimitiveCurve(
+          primitive.curve,
+          `primitives[${primitiveIndex}].curve`
+        );
+        if (!prepared) break;
+        const typeRecord = registries.surfaces.register(
+          primitive.surfaceType
+        );
+        const ownerId = surfaces.length;
+        surfaces.push({
+          typeRecord,
+          params: normalizeNumericStrings(
+            primitive.params,
+            `primitives[${primitiveIndex}].params`
+          )
+        });
+        appendProcessedCurve(
+          prepared,
+          'surface',
+          ownerId,
+          primitive.surfaceType.mergesWithBoundary,
+          primitive.twoSided,
+          normalizeNumericStrings(
+            primitive.filter,
+            `primitives[${primitiveIndex}].filter`
+          )
+        );
+        break;
+      }
+
+      case 'region': {
+        const preparedCurves = [];
+        for (let curveIndex = 0; curveIndex &lt; primitive.curves.length; curveIndex++) {
+          const prepared = preparePrimitiveCurve(
+            primitive.curves[curveIndex],
+            `primitives[${primitiveIndex}].curves[${curveIndex}]`
+          );
+          if (prepared) {
+            preparedCurves.push(prepared);
+          }
+        }
+        if (preparedCurves.length === 0) break;
+        const typeRecord = registries.bulks.register(
+          primitive.bulkType
+        );
+        const ownerId = regions.length;
+        regions.push({
+          typeRecord,
+          params: normalizeNumericStrings(
+            primitive.params,
+            `primitives[${primitiveIndex}].params`
+          ),
+          stepSize: normalizeNumericString(
+            primitive.stepSize,
+            `primitives[${primitiveIndex}].stepSize`
+          ),
+          partialReflect: primitive.partialReflect
+        });
+        for (const prepared of preparedCurves) {
+          appendProcessedCurve(
+            prepared,
+            'region',
+            ownerId,
+            true,
+            undefined,
+            undefined
+          );
+        }
+        break;
+      }
+
+      case 'detector': {
+        const prepared = preparePrimitiveCurve(
+          primitive.curve,
+          `primitives[${primitiveIndex}].curve`
+        );
+        if (!prepared) break;
+        validateDetectorTypeContract(
+          primitive.detectorType,
+          primitiveIndex
+        );
+        const typeRecord = registries.detectors.register(
+          primitive.detectorType
+        );
+        const resultSize = normalizeNumericString(
+          primitive.resultSize,
+          `primitives[${primitiveIndex}].resultSize`
+        );
+        let resultRange = detectorResults.get(primitive.result);
+        if (resultRange) {
+          if (resultRange.resultSize !== resultSize) {
+            throw new RangeError(
+              `primitives[${primitiveIndex}].resultSize does not match the other primitives using the same result holder.`
+            );
+          }
+        } else {
+          resultRange = {
+            resultId: detectorResultBindings.length,
+            resultSize
+          };
+          detectorResults.set(primitive.result, resultRange);
+          detectorResultBindings.push({
+            resultId: resultRange.resultId,
+            result: primitive.result,
+            resultSize: resultRange.resultSize
+          });
+        }
+
+        const ownerId = detectors.length;
+        detectors.push({
+          typeRecord,
+          params: normalizeNumericStrings(
+            primitive.params,
+            `primitives[${primitiveIndex}].params`
+          ),
+          ...resultRange
+        });
+        appendProcessedCurve(
+          prepared,
+          'detector',
+          ownerId,
+          false,
+          primitive.twoSided,
+          undefined
+        );
+        break;
+      }
+
+      default:
+        throw new TypeError(
+          `Unsupported primitive kind at primitives[${primitiveIndex}]: ${JSON.stringify(primitive.kind)}`
+      );
+    }
+  }
+  const finalizedTypes = {
+    sources: registries.sources.finalize(),
+    surfaces: registries.surfaces.finalize(),
+    bulks: registries.bulks.finalize(),
+    detectors: registries.detectors.finalize()
+  };
+  const processedSources = sources.map(({ typeRecord, ...source }) => ({
+    sourceTypeId: typeRecord.id,
+    ...source
+  }));
+  const processedSurfaces = surfaces.map(({ typeRecord, ...surface }) => ({
+    surfaceTypeId: typeRecord.id,
+    ...surface
+  }));
+  const processedRegions = regions.map(({ typeRecord, ...region }) => ({
+    bulkTypeId: typeRecord.id,
+    ...region
+  }));
+  const processedDetectors = detectors.map(({ typeRecord, ...detector }) => ({
+    detectorTypeId: typeRecord.id,
+    ...detector
+  }));
+  const builtBvh = buildBvh(
+    curves.map((curveRecord, curveId) => ({
+      geometry: curveRecord.geometry,
+      bounds: curveBounds[curveId],
+      curveId,
+      ownerKind: curveRecord.ownerKind
+    })),
+    bvhOptions
+  );
+  const bvh = {
+    root: builtBvh.root,
+    nodes: builtBvh.nodes,
+    curveIds: Uint32Array.from(builtBvh.entries.map(entry => entry.curveId))
+  };
+  const typeSignatureSource = stableSerialize([
+    registries.sources.signaturePart,
+    registries.surfaces.signaturePart,
+    registries.bulks.signaturePart,
+    registries.detectors.signaturePart
+  ]);
+
+  return {
+    processedScene: {
+      numericEpsilon,
+      numericalTolerances: resolvedNumericalTolerances,
+      typeSignature: hashCanonicalString(typeSignatureSource),
+      types: finalizedTypes,
+      sources: processedSources,
+      surfaces: processedSurfaces,
+      regions: processedRegions,
+      detectors: processedDetectors,
+      curves,
+      bvh
+    },
+    detectorResultBindings
+  };
+}
+
+/**
+ * Convert numeric strings left by older scene data without mutating primitive
+ * objects. Primitive parameter contracts contain only numbers, including the
+ * nested point objects used by curve geometry.
+ */
+function normalizeNumericStrings(value, path) {
+  if (typeof value === 'string') {
+    return normalizeNumericString(value, path);
+  }
+  if (!value || typeof value !== 'object') {
+    return value;
+  }
+
+  let normalized = value;
+  const keys = Object.keys(value);
+  for (const key of keys) {
+    const child = normalizeNumericStrings(
+      value[key],
+      Array.isArray(value) ? `${path}[${key}]` : `${path}.${key}`
+    );
+    if (Object.is(child, value[key])) continue;
+    if (normalized === value) {
+      normalized = Array.isArray(value) ? [...value] : { ...value };
+    }
+    normalized[key] = child;
+  }
+  return normalized;
+}
+
+function normalizeNumericString(value, path) {
+  if (typeof value !== 'string') return value;
+  if (value.trim() === '') {
+    throw new TypeError(`${path} must be numeric, but received an empty string.`);
+  }
+  const numericValue = Number(value);
+  if (Number.isNaN(numericValue)) {
+    throw new TypeError(`${path} must be numeric, but received ${JSON.stringify(value)}.`);
+  }
+  return numericValue;
+}
+
+function normalizePrimitiveCurve(curve, path) {
+  const params = normalizeNumericStrings(curve.params, `${path}.params`);
+  return params === curve.params ? curve : { ...curve, params };
+}
+
+function validateDetectorTypeContract(detectorType, primitiveIndex) {
+  const forbidden = new Set(['n_0', 'n_1']);
+  const declaredNames = detectorType?.paramNames ?? [];
+  const referencedNames = collectParameterNames(detectorType?.dag);
+  for (const name of forbidden) {
+    if (declaredNames.includes(name) || referencedNames.has(name)) {
+      throw new TypeError(
+        `primitives[${primitiveIndex}].detectorType must not declare or reference ${JSON.stringify(name)}.`
+      );
+    }
+  }
+}
+
+function resolveToleranceMinimum(value, scale, name) {
+  const resolvedValue = value ?? 0;
+  if (!Number.isFinite(resolvedValue) || resolvedValue &lt; 0) {
+    throw new RangeError(
+      `numericalTolerances.${name} must be a finite nonnegative number.`
+    );
+  }
+  return resolvedValue * scale;
+}
+
+class TypeRegistry {
+  constructor() {
+    this.identityRecords = new WeakMap();
+    this.hashBuckets = new Map();
+    this.records = [];
+    this.signaturePart = '';
+  }
+
+  register(definition) {
+    const identityRecord = this.identityRecords.get(definition);
+    if (identityRecord) return identityRecord;
+
+    const canonicalDefinition = clonePlainData(definition);
+    const canonicalKey = stableSerialize(canonicalDefinition);
+    const hash = hashCanonicalString(canonicalKey);
+    const bucket = this.hashBuckets.get(hash) || [];
+    let record = bucket.find(candidate => candidate.canonicalKey === canonicalKey);
+    if (!record) {
+      record = {
+        hash,
+        canonicalKey,
+        definition: deepFreeze(canonicalDefinition),
+        id: -1
+      };
+      bucket.push(record);
+      this.hashBuckets.set(hash, bucket);
+      this.records.push(record);
+    }
+    this.identityRecords.set(definition, record);
+    return record;
+  }
+
+  finalize() {
+    this.records.sort((a, b) =>
+      a.hash.localeCompare(b.hash) || a.canonicalKey.localeCompare(b.canonicalKey)
+    );
+    this.records.forEach((record, id) => {
+      record.id = id;
+    });
+    this.signaturePart = stableSerialize(
+      this.records.map(record => [record.hash, record.canonicalKey])
+    );
+    return this.records.map(record => ({
+      hash: record.hash,
+      definition: record.definition
+    }));
+  }
+}
+
+function createProcessedCurve(
+  geometry,
+  bounds,
+  ownerKind,
+  ownerId,
+  mergesWithBoundary,
+  twoSided,
+  filter
+) {
+  const processedCurve = {
+    geometry,
+    bounds,
+    ownerKind,
+    ownerId,
+    mergesWithBoundary
+  };
+  if (ownerKind !== 'region') {
+    processedCurve.twoSided = twoSided;
+  }
+  if (filter !== undefined &amp;&amp; filter !== null) {
+    processedCurve.filter = filter;
+  }
+  return processedCurve;
+}
+
+function clonePlainData(value) {
+  if (
+    value === null ||
+    typeof value === 'string' ||
+    typeof value === 'boolean' ||
+    typeof value === 'undefined'
+  ) {
+    return value;
+  }
+  if (typeof value === 'number') {
+    return value;
+  }
+
+  if (Array.isArray(value)) {
+    return value.map(clonePlainData);
+  }
+
+  const clone = {};
+  for (const key of Object.keys(value)) {
+    clone[key] = clonePlainData(value[key]);
+  }
+  return clone;
+}
+
+function stableSerialize(value) {
+  if (value === undefined) return 'u';
+  if (value === null) return 'n';
+  if (typeof value === 'boolean') return value ? 'b1' : 'b0';
+  if (typeof value === 'string') return `s${JSON.stringify(value)}`;
+  if (typeof value === 'number') {
+    if (Number.isNaN(value)) return 'dNaN';
+    if (value === Infinity) return 'dInfinity';
+    if (value === -Infinity) return 'd-Infinity';
+    if (Object.is(value, -0)) return 'd-0';
+    return `d${String(value)}`;
+  }
+  if (Array.isArray(value)) {
+    return `a[${value.map(stableSerialize).join(',')}]`;
+  }
+  return `o{${Object.keys(value)
+    .sort()
+    .map(key => `${JSON.stringify(key)}:${stableSerialize(value[key])}`)
+    .join(',')}}`;
+}
+
+function hashCanonicalString(value) {
+  let first = 0x811c9dc5;
+  let second = 0x9e3779b9;
+  for (let index = 0; index &lt; value.length; index++) {
+    const code = value.charCodeAt(index);
+    first = Math.imul(first ^ code, 0x01000193);
+    second = Math.imul(second ^ code, 0x85ebca6b);
+  }
+  return (
+    (first >>> 0).toString(16).padStart(8, '0') +
+    (second >>> 0).toString(16).padStart(8, '0')
+  );
+}
+
+function deepFreeze(value) {
+  if (!value || typeof value !== 'object' || Object.isFrozen(value)) return value;
+  Object.freeze(value);
+  for (const child of Object.values(value)) {
+    deepFreeze(child);
+  }
+  return value;
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-CanvasContainer.html">CanvasContainer</a></li><li><a href="module-ColorModeModal.html">ColorModeModal</a></li><li><a href="module-ColorPicker.html">ColorPicker</a></li><li><a href="module-DashPicker.html">DashPicker</a></li><li><a href="module-FileBar.html">FileBar</a></li><li><a href="module-FillControl.html">FillControl</a></li><li><a href="module-FontPicker.html">FontPicker</a></li><li><a href="module-Footer.html">Footer</a></li><li><a href="module-ImportShapesModal.html">ImportShapesModal</a></li><li><a href="module-LanguageModal.html">LanguageModal</a></li><li><a href="module-LayoutAidsBar.html">LayoutAidsBar</a></li><li><a href="module-ModuleModal.html">ModuleModal</a></li><li><a href="module-ModuleTools.html">ModuleTools</a></li><li><a href="module-MoreToolsCollapsible.html">MoreToolsCollapsible</a></li><li><a href="module-NumberControl.html">NumberControl</a></li><li><a href="module-ObjBar.html">ObjBar</a></li><li><a href="module-PointControl.html">PointControl</a></li><li><a href="module-PopupSelectControl.html">PopupSelectControl</a></li><li><a href="module-RayDensityBar.html">RayDensityBar</a></li><li><a href="module-SaveModal.html">SaveModal</a></li><li><a href="module-SettingsBar.html">SettingsBar</a></li><li><a href="module-SettingsList.html">SettingsList</a></li><li><a href="module-SettingsWarning.html">SettingsWarning</a></li><li><a href="module-Sidebar.html">Sidebar</a></li><li><a href="module-SimulationEngineModal.html">SimulationEngineModal</a></li><li><a href="module-SimulatorControls.html">SimulatorControls</a></li><li><a href="module-SizePicker.html">SizePicker</a></li><li><a href="module-StatusArea.html">StatusArea</a></li><li><a href="module-StrokeControl.html">StrokeControl</a></li><li><a href="module-TextControl.html">TextControl</a></li><li><a href="module-TextInput.html">TextInput</a></li><li><a href="module-ThemeModal.html">ThemeModal</a></li><li><a href="module-ThemeOptionsList.html">ThemeOptionsList</a></li><li><a href="module-ToggleControl.html">ToggleControl</a></li><li><a href="module-ToolItem.html">ToolItem</a></li><li><a href="module-Toolbar.html">Toolbar</a></li><li><a href="module-ToolsBar.html">ToolsBar</a></li><li><a href="module-ToolsCategory.html">ToolsCategory</a></li><li><a href="module-ToolsList.html">ToolsList</a></li><li><a href="module-ViewBar.html">ViewBar</a></li><li><a href="module-VirtualKeyboard.html">VirtualKeyboard</a></li><li><a href="module-WelcomeMessage.html">WelcomeMessage</a></li><li><a href="module-ZoomControl.html">ZoomControl</a></li><li><a href="module-app_.html">app</a></li><li><a href="module-shapeImport.html">shapeImport</a></li><li><a href="module-svgImport.html">svgImport</a></li></ul><h3>Namespaces</h3><ul><li><a href="geometry.html">geometry</a></li><li><a href="sceneObjs.html">sceneObjs</a></li></ul><h3>Classes</h3><ul><li><a href="BaseFilter.html">BaseFilter</a></li><li><a href="BaseGlass.html">BaseGlass</a></li><li><a href="BaseGrinGlass.html">BaseGrinGlass</a></li><li><a href="BaseSceneObj.html">BaseSceneObj</a></li><li><a href="CanvasRenderer.html">CanvasRenderer</a></li><li><a href="CpuSimulationEngine.html">CpuSimulationEngine</a></li><li><a href="DegenerateCurveError.html">DegenerateCurveError</a></li><li><a href="Editor.html">Editor</a></li><li><a href="FloatColorRenderer.html">FloatColorRenderer</a></li><li><a href="JsonEditorService.html">JsonEditorService</a></li><li><a href="Mouse.html">Mouse</a></li><li><a href="ObjBar.html">ObjBar</a></li><li><a href="PrimitiveBasedSimulator.html">PrimitiveBasedSimulator</a></li><li><a href="Scene.html">Scene</a></li><li><a href="Simulator.html">Simulator</a></li><li><a href="TexExprParser.html">TexExprParser</a></li><li><a href="WebGpuCanvasRayRasterizer.html">WebGpuCanvasRayRasterizer</a></li><li><a href="WebGpuInitialMembershipStage.html">WebGpuInitialMembershipStage</a></li><li><a href="WebGpuMegakernelStaticSceneStorage.html">WebGpuMegakernelStaticSceneStorage</a></li><li><a href="WebGpuReadyRayRenderer.html">WebGpuReadyRayRenderer</a></li><li><a href="WebGpuSimulationEngine.html">WebGpuSimulationEngine</a></li><li><a href="WebGpuSimulationRun.html">WebGpuSimulationRun</a></li><li><a href="sceneObjs.AngleSource.html">AngleSource</a></li><li><a href="sceneObjs.Aperture.html">Aperture</a></li><li><a href="sceneObjs.ArcMirror.html">ArcMirror</a></li><li><a href="sceneObjs.BaseCustomSurface.html">BaseCustomSurface</a></li><li><a href="sceneObjs.Beam.html">Beam</a></li><li><a href="sceneObjs.BeamSplitter.html">BeamSplitter</a></li><li><a href="sceneObjs.Blocker.html">Blocker</a></li><li><a href="sceneObjs.CircleBlocker.html">CircleBlocker</a></li><li><a href="sceneObjs.CircleGlass.html">CircleGlass</a></li><li><a href="sceneObjs.CircleGrinGlass.html">CircleGrinGlass</a></li><li><a href="sceneObjs.ConcaveDiffractionGrating.html">ConcaveDiffractionGrating</a></li><li><a href="sceneObjs.CropBox.html">CropBox</a></li><li><a href="sceneObjs.CurveGlass.html">CurveGlass</a></li><li><a href="sceneObjs.CurveGrinGlass.html">CurveGrinGlass</a></li><li><a href="sceneObjs.CurveMirror.html">CurveMirror</a></li><li><a href="sceneObjs.CustomArcSurface.html">CustomArcSurface</a></li><li><a href="sceneObjs.CustomCurveSurface.html">CustomCurveSurface</a></li><li><a href="sceneObjs.CustomGlass.html">CustomGlass</a></li><li><a href="sceneObjs.CustomMirror.html">CustomMirror</a></li><li><a href="sceneObjs.CustomParamSurface.html">CustomParamSurface</a></li><li><a href="sceneObjs.CustomSurface.html">CustomSurface</a></li><li><a href="sceneObjs.Detector.html">Detector</a></li><li><a href="sceneObjs.DiffractionGrating.html">DiffractionGrating</a></li><li><a href="sceneObjs.Drawing.html">Drawing</a></li><li><a href="sceneObjs.Glass.html">Glass</a></li><li><a href="sceneObjs.GrinGlass.html">GrinGlass</a></li><li><a href="sceneObjs.Handle.html">Handle</a></li><li><a href="sceneObjs.IdealLens.html">IdealLens</a></li><li><a href="sceneObjs.IdealMirror.html">IdealMirror</a></li><li><a href="sceneObjs.LineArrow.html">LineArrow</a></li><li><a href="sceneObjs.Mirror.html">Mirror</a></li><li><a href="sceneObjs.ModuleObj.html">ModuleObj</a></li><li><a href="sceneObjs.ParabolicMirror.html">ParabolicMirror</a></li><li><a href="sceneObjs.ParamGlass.html">ParamGlass</a></li><li><a href="sceneObjs.ParamGrinGlass.html">ParamGrinGlass</a></li><li><a href="sceneObjs.ParamMirror.html">ParamMirror</a></li><li><a href="sceneObjs.PlaneGlass.html">PlaneGlass</a></li><li><a href="sceneObjs.PointSource.html">PointSource</a></li><li><a href="sceneObjs.Protractor.html">Protractor</a></li><li><a href="sceneObjs.Ruler.html">Ruler</a></li><li><a href="sceneObjs.SingleRay.html">SingleRay</a></li><li><a href="sceneObjs.SphericalLens.html">SphericalLens</a></li><li><a href="sceneObjs.TextLabel.html">TextLabel</a></li></ul><h3>Events</h3><ul><li><a href="Editor.html#event:handleCreationHint">handleCreationHint</a></li><li><a href="Editor.html#event:mouseCoordinateChange">mouseCoordinateChange</a></li><li><a href="Editor.html#event:newAction">newAction</a></li><li><a href="Editor.html#event:newUndoPoint">newUndoPoint</a></li><li><a href="Editor.html#event:objectBodyClick">objectBodyClick</a></li><li><a href="Editor.html#event:positioningEnd">positioningEnd</a></li><li><a href="Editor.html#event:positioningStart">positioningStart</a></li><li><a href="Editor.html#event:redo">redo</a></li><li><a href="Editor.html#event:requestPositioningComfirm">requestPositioningComfirm</a></li><li><a href="Editor.html#event:scaleChange">scaleChange</a></li><li><a href="Editor.html#event:sceneLoaded">sceneLoaded</a></li><li><a href="Editor.html#event:selectionChange">selectionChange</a></li><li><a href="Editor.html#event:undo">undo</a></li><li><a href="ObjBar.html#event:edit">edit</a></li><li><a href="ObjBar.html#event:editEnd">editEnd</a></li><li><a href="ObjBar.html#event:requestUpdate">requestUpdate</a></li><li><a href="ObjBar.html#event:showAdvancedEnabled">showAdvancedEnabled</a></li><li><a href="Simulator.html#event:lightLayerSyncChange">lightLayerSyncChange</a></li><li><a href="Simulator.html#event:simulationComplete">simulationComplete</a></li><li><a href="Simulator.html#event:simulationPause">simulationPause</a></li><li><a href="Simulator.html#event:simulationStart">simulationStart</a></li><li><a href="Simulator.html#event:simulationStop">simulationStop</a></li><li><a href="Simulator.html#event:update">update</a></li><li><a href="global.html#event:deviceChange">deviceChange</a></li><li><a href="global.html#event:requestUpdateErrorAndWarning">requestUpdateErrorAndWarning</a></li><li><a href="global.html#event:webglContextLost">webglContextLost</a></li></ul><h3>Global</h3><ul><li><a href="global.html#BACKTICK_HIGHLIGHT_MATCH_CLASS">BACKTICK_HIGHLIGHT_MATCH_CLASS</a></li><li><a href="global.html#CircleObjMixin">CircleObjMixin</a></li><li><a href="global.html#CurveObjMixin">CurveObjMixin</a></li><li><a href="global.html#DATA_VERSION">DATA_VERSION</a></li><li><a href="global.html#DEFAULT_SIMULATION_ENGINE_CONFIGS">DEFAULT_SIMULATION_ENGINE_CONFIGS</a></li><li><a href="global.html#FLOAT32_EPSILON">FLOAT32_EPSILON</a></li><li><a href="global.html#FN1">FN1</a></li><li><a href="global.html#FORMULA_MODULE_TOOLTIP_MAX_LINES">FORMULA_MODULE_TOOLTIP_MAX_LINES</a></li><li><a href="global.html#FOR_IF_DEFAULTS">FOR_IF_DEFAULTS</a></li><li><a href="global.html#GREEK_SYMBOL">GREEK_SYMBOL</a></li><li><a href="global.html#JSON_INNER_COLLAPSE_THRESHOLD">JSON_INNER_COLLAPSE_THRESHOLD</a></li><li><a href="global.html#LITERAL_NUMERIC_TOKEN">LITERAL_NUMERIC_TOKEN</a></li><li><a href="global.html#LineObjMixin">LineObjMixin</a></li><li><a href="global.html#MODULE_EDITOR_LIST">MODULE_EDITOR_LIST</a></li><li><a href="global.html#PARAM_CURVE_POINT_TOLERANCE">PARAM_CURVE_POINT_TOLERANCE</a></li><li><a href="global.html#PAREN_HIGHLIGHT_MATCH_CLASS">PAREN_HIGHLIGHT_MATCH_CLASS</a></li><li><a href="global.html#PRIMITIVE_CURVE_REFERENCE_PREFIX">PRIMITIVE_CURVE_REFERENCE_PREFIX</a></li><li><a href="global.html#ParamCurveObjMixin">ParamCurveObjMixin</a></li><li><a href="global.html#_applyPiecesJoinedWarning">_applyPiecesJoinedWarning</a></li><li><a href="global.html#_ensureCubicBezierPathReady">_ensureCubicBezierPathReady</a></li><li><a href="global.html#_pathPairToHermiteBezier">_pathPairToHermiteBezier</a></li><li><a href="global.html#allocateInteractionIndexBuffers">allocateInteractionIndexBuffers</a></li><li><a href="global.html#appendPartialDerivatives">appendPartialDerivatives</a></li><li><a href="global.html#applyTextareaAutoResize">applyTextareaAutoResize</a></li><li><a href="global.html#arePiecesJoined">arePiecesJoined</a></li><li><a href="global.html#buildBacktickHighlightHtml">buildBacktickHighlightHtml</a></li><li><a href="global.html#buildBvh">buildBvh</a></li><li><a href="global.html#buildModuleInstanceTooltipHtml">buildModuleInstanceTooltipHtml</a></li><li><a href="global.html#buildParenHighlightHtml">buildParenHighlightHtml</a></li><li><a href="global.html#checkRayIntersectsShape">checkRayIntersectsShape</a></li><li><a href="global.html#clampWebGpuParameterToF32">clampWebGpuParameterToF32</a></li><li><a href="global.html#collapseBinaryBvh">collapseBinaryBvh</a></li><li><a href="global.html#collapseRedundantNestedParentheses">collapseRedundantNestedParentheses</a></li><li><a href="global.html#collectPointPaths">collectPointPaths</a></li><li><a href="global.html#collectRayPowerQueue">collectRayPowerQueue</a></li><li><a href="global.html#collectReferencedParameterNames">collectReferencedParameterNames</a></li><li><a href="global.html#combineDags">combineDags</a></li><li><a href="global.html#compileParametricDerivative">compileParametricDerivative</a></li><li><a href="global.html#controlPointIndexAfterReorder">controlPointIndexAfterReorder</a></li><li><a href="global.html#countCurveRayCrossings">countCurveRayCrossings</a></li><li><a href="global.html#countIntersections">countIntersections</a></li><li><a href="global.html#createArcOrLineCurve">createArcOrLineCurve</a></li><li><a href="global.html#createCpuDetectorResults">createCpuDetectorResults</a></li><li><a href="global.html#createCustomSurfacePrimitive">createCustomSurfacePrimitive</a></li><li><a href="global.html#createDagClosureEvaluator">createDagClosureEvaluator</a></li><li><a href="global.html#createDagEvaluator">createDagEvaluator</a></li><li><a href="global.html#createDagWgslSpecialization">createDagWgslSpecialization</a></li><li><a href="global.html#createInteractionCandidate">createInteractionCandidate</a></li><li><a href="global.html#createInteractionCandidateContext">createInteractionCandidateContext</a></li><li><a href="global.html#createInteractionIndexBuffers">createInteractionIndexBuffers</a></li><li><a href="global.html#createInteractionTypeLayout">createInteractionTypeLayout</a></li><li><a href="global.html#createMegakernelCollectorShader">createMegakernelCollectorShader</a></li><li><a href="global.html#createMegakernelInitialShader">createMegakernelInitialShader</a></li><li><a href="global.html#createMegakernelQueueLayout">createMegakernelQueueLayout</a></li><li><a href="global.html#createRegionMembershipResult">createRegionMembershipResult</a></li><li><a href="global.html#createSampledPrimitiveCurveEntries">createSampledPrimitiveCurveEntries</a></li><li><a href="global.html#createWebGpuDagPrograms">createWebGpuDagPrograms</a></li><li><a href="global.html#createWebGpuExecutionPlan">createWebGpuExecutionPlan</a></li><li><a href="global.html#createWebGpuMegakernelShader">createWebGpuMegakernelShader</a></li><li><a href="global.html#createWebGpuRawTraceShader">createWebGpuRawTraceShader</a></li><li><a href="global.html#createWebGpuTraceSceneData">createWebGpuTraceSceneData</a></li><li><a href="global.html#createWebGpuTraceSceneDeclaration">createWebGpuTraceSceneDeclaration</a></li><li><a href="global.html#deepEqual">deepEqual</a></li><li><a href="global.html#deriveWebGpuWavelengthRange">deriveWebGpuWavelengthRange</a></li><li><a href="global.html#distancePointToSegment">distancePointToSegment</a></li><li><a href="global.html#draftsToCommittedValue">draftsToCommittedValue</a></li><li><a href="global.html#drawConstruction">drawConstruction</a></li><li><a href="global.html#drawControlHandles">drawControlHandles</a></li><li><a href="global.html#drawPath">drawPath</a></li><li><a href="global.html#drawPreparedCurve">drawPreparedCurve</a></li><li><a href="global.html#drawPreparedRegion">drawPreparedRegion</a></li><li><a href="global.html#ensureCurveIntersectionNormal">ensureCurveIntersectionNormal</a></li><li><a href="global.html#equationDisplayToValue">equationDisplayToValue</a></li><li><a href="global.html#equationValueForListDisplay">equationValueForListDisplay</a></li><li><a href="global.html#equationValueToDisplay">equationValueToDisplay</a></li><li><a href="global.html#estimateAmbiguousRayWarningPowerThreshold">estimateAmbiguousRayWarningPowerThreshold</a></li><li><a href="global.html#estimateDagRanges">estimateDagRanges</a></li><li><a href="global.html#estimateWebGpuParameterRanges">estimateWebGpuParameterRanges</a></li><li><a href="global.html#evaluatePreparedCurve">evaluatePreparedCurve</a></li><li><a href="global.html#extractNonDefaults">extractNonDefaults</a></li><li><a href="global.html#extractNumbersAsParameters">extractNumbersAsParameters</a></li><li><a href="global.html#finalizeInteractionCandidate">finalizeInteractionCandidate</a></li><li><a href="global.html#findMatchingBraceEnd">findMatchingBraceEnd</a></li><li><a href="global.html#findMatchingParenPair">findMatchingParenPair</a></li><li><a href="global.html#findMathBlockRanges">findMathBlockRanges</a></li><li><a href="global.html#findPrimitiveCurveReferenceSpans">findPrimitiveCurveReferenceSpans</a></li><li><a href="global.html#findUnjoinedPieces">findUnjoinedPieces</a></li><li><a href="global.html#findValidJsonObjectSpans">findValidJsonObjectSpans</a></li><li><a href="global.html#formatKeyPath">formatKeyPath</a></li><li><a href="global.html#formatPrimitiveCurveReference">formatPrimitiveCurveReference</a></li><li><a href="global.html#formatStatusLineHtml">formatStatusLineHtml</a></li><li><a href="global.html#formatTooltipNumber">formatTooltipNumber</a></li><li><a href="global.html#formulaDisplayToValue">formulaDisplayToValue</a></li><li><a href="global.html#generateDagJsEvaluator">generateDagJsEvaluator</a></li><li><a href="global.html#getAllByKeyPath">getAllByKeyPath</a></li><li><a href="global.html#getCurveBounds">getCurveBounds</a></li><li><a href="global.html#getEffectiveRayPowerOptions">getEffectiveRayPowerOptions</a></li><li><a href="global.html#getInteractionTypeIndex">getInteractionTypeIndex</a></li><li><a href="global.html#getIntersectionTolerancePolicy">getIntersectionTolerancePolicy</a></li><li><a href="global.html#getNextModuleIdentifierName">getNextModuleIdentifierName</a></li><li><a href="global.html#getRayIntersections">getRayIntersections</a></li><li><a href="global.html#getRayIntersectionsCubicBezier">getRayIntersectionsCubicBezier</a></li><li><a href="global.html#getRayIntersectionsLinear">getRayIntersectionsLinear</a></li><li><a href="global.html#getRoundingErrorFactor">getRoundingErrorFactor</a></li><li><a href="global.html#initPath">initPath</a></li><li><a href="global.html#intersectCurve">intersectCurve</a></li><li><a href="global.html#isAtomicExpr">isAtomicExpr</a></li><li><a href="global.html#isClosed">isClosed</a></li><li><a href="global.html#isFormula">isFormula</a></li><li><a href="global.html#isFormulaValueSupported">isFormulaValueSupported</a></li><li><a href="global.html#isInside">isInside</a></li><li><a href="global.html#isLiteralBooleanFieldValue">isLiteralBooleanFieldValue</a></li><li><a href="global.html#isLiteralNumericFieldValue">isLiteralNumericFieldValue</a></li><li><a href="global.html#isNonBasicProperty">isNonBasicProperty</a></li><li><a href="global.html#isNonDefault">isNonDefault</a></li><li><a href="global.html#isOnBoundary">isOnBoundary</a></li><li><a href="global.html#isOutside">isOutside</a></li><li><a href="global.html#isPointHardcoded">isPointHardcoded</a></li><li><a href="global.html#isPositivelyOriented">isPositivelyOriented</a></li><li><a href="global.html#isSourceIndexArray">isSourceIndexArray</a></li><li><a href="global.html#isTextareaAutoResizeMeasurable">isTextareaAutoResizeMeasurable</a></li><li><a href="global.html#isValidFormulaParameterName">isValidFormulaParameterName</a></li><li><a href="global.html#latexToMathJS">latexToMathJS</a></li><li><a href="global.html#mathJSToLatex">mathJSToLatex</a></li><li><a href="global.html#mergeWithDefaults">mergeWithDefaults</a></li><li><a href="global.html#newlinesToBr">newlinesToBr</a></li><li><a href="global.html#nextDuplicateIdentifier">nextDuplicateIdentifier</a></li><li><a href="global.html#normalizeNumericStrings">normalizeNumericStrings</a></li><li><a href="global.html#normalizeParsedEquationAST">normalizeParsedEquationAST</a></li><li><a href="global.html#observeTextareasResizeWhenVisible">observeTextareasResizeWhenVisible</a></li><li><a href="global.html#packWebGpuScene">packWebGpuScene</a></li><li><a href="global.html#parseFormula">parseFormula</a></li><li><a href="global.html#populateObjBarShape">populateObjBarShape</a></li><li><a href="global.html#prepareCpuOutgoingRayData">prepareCpuOutgoingRayData</a></li><li><a href="global.html#prepareCurve">prepareCurve</a></li><li><a href="global.html#preprocessPrimitives">preprocessPrimitives</a></li><li><a href="global.html#promptNewModuleName">promptNewModuleName</a></li><li><a href="global.html#promptNewModuleNameForHandle">promptNewModuleNameForHandle</a></li><li><a href="global.html#recordWebGpuRecompilationNeeds">recordWebGpuRecompilationNeeds</a></li><li><a href="global.html#renderCpuRay">renderCpuRay</a></li><li><a href="global.html#resetInteractionIndexBuffers">resetInteractionIndexBuffers</a></li><li><a href="global.html#resolvePrimitiveSimulatorConfig">resolvePrimitiveSimulatorConfig</a></li><li><a href="global.html#resolveSimulationEngineConfig">resolveSimulationEngineConfig</a></li><li><a href="global.html#sanitizePastedJson">sanitizePastedJson</a></li><li><a href="global.html#setByKeyPath">setByKeyPath</a></li><li><a href="global.html#setViewportSize">setViewportSize</a></li><li><a href="global.html#solveQuadraticRoots">solveQuadraticRoots</a></li><li><a href="global.html#splitTexCommaArgs">splitTexCommaArgs</a></li><li><a href="global.html#splitTopLevelCommas">splitTopLevelCommas</a></li><li><a href="global.html#stableRaySamplingPhase">stableRaySamplingPhase</a></li><li><a href="global.html#stripJsonComments">stripJsonComments</a></li><li><a href="global.html#stripMarkdownCodeFence">stripMarkdownCodeFence</a></li><li><a href="global.html#stripParenChain">stripParenChain</a></li><li><a href="global.html#stripRedundantParensForLatex">stripRedundantParensForLatex</a></li><li><a href="global.html#substituteDagParameters">substituteDagParameters</a></li><li><a href="global.html#suggestNewModuleName">suggestNewModuleName</a></li><li><a href="global.html#templatePointLockState">templatePointLockState</a></li><li><a href="global.html#textHasBacktickBlocks">textHasBacktickBlocks</a></li><li><a href="global.html#toJSON">toJSON</a></li><li><a href="global.html#tooltipAllTupleRowsConstant">tooltipAllTupleRowsConstant</a></li><li><a href="global.html#tooltipMantissaDecimalPlaces">tooltipMantissaDecimalPlaces</a></li><li><a href="global.html#tooltipPointTupleEqual">tooltipPointTupleEqual</a></li><li><a href="global.html#tooltipValueEqualForCollapse">tooltipValueEqualForCollapse</a></li><li><a href="global.html#tracePath">tracePath</a></li><li><a href="global.html#traceSceneCapacityCounts">traceSceneCapacityCounts</a></li><li><a href="global.html#traverseBvhForInteraction">traverseBvhForInteraction</a></li><li><a href="global.html#traverseBvhForRegionMembership">traverseBvhForRegionMembership</a></li><li><a href="global.html#unwrapParenInCallableArgs">unwrapParenInCallableArgs</a></li><li><a href="global.html#updateInteractionCandidate">updateInteractionCandidate</a></li><li><a href="global.html#useBacktickHighlightLayer">useBacktickHighlightLayer</a></li><li><a href="global.html#useParenHighlightLayer">useParenHighlightLayer</a></li><li><a href="global.html#usePreferencesStore">usePreferencesStore</a></li><li><a href="global.html#useSceneStore">useSceneStore</a></li><li><a href="global.html#useStatus">useStatus</a></li><li><a href="global.html#useStatusStore">useStatusStore</a></li><li><a href="global.html#useThemeStore">useThemeStore</a></li><li><a href="global.html#useWebGpuTraceScene">useWebGpuTraceScene</a></li><li><a href="global.html#vTooltipPopover">vTooltipPopover</a></li><li><a href="global.html#validateDagNodeLabel">validateDagNodeLabel</a></li><li><a href="global.html#validateFormulaNodeLabel">validateFormulaNodeLabel</a></li><li><a href="global.html#validateNestedKeys">validateNestedKeys</a></li><li><a href="global.html#validateNumericEpsilon">validateNumericEpsilon</a></li><li><a href="global.html#validateWebGpuSpatialBounds">validateWebGpuSpatialBounds</a></li><li><a href="global.html#valueToFormulaDisplay">valueToFormulaDisplay</a></li><li><a href="global.html#versionUpdate">versionUpdate</a></li><li><a href="global.html#viewportCenterSceneCoords">viewportCenterSceneCoords</a></li><li><a href="global.html#writeCpuOutgoingRays">writeCpuOutgoingRays</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
