@@ -1,1 +1,10 @@
-{}
+{
+  "tools": {
+    "IdealLens": {
+      "title": "عدسی‌های ایده‌آل"
+    },
+    "SphericalLens": {
+      "title": "عدسی‌های کروی"
+    }
+  }
+}
