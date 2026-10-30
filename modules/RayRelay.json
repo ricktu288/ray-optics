@@ -1,0 +1,83 @@
+{
+  "version": 5,
+  "name": "RayRelay",
+  "modules": {
+    "RayRelay": {
+      "numPoints": 2,
+      "params": [
+        "f=-200:1:200:40",
+        "d=1:1:200:80",
+        "N=1:1:100:30"
+      ],
+      "objs": [
+        {
+          "for": "i=0:1:N-1",
+          "type": "IdealLens",
+          "p1": {
+            "x": "`x_1+i*d`",
+            "y": "`y_1`"
+          },
+          "p2": {
+            "x": "`x_2+i*d`",
+            "y": "`y_2`"
+          },
+          "focalLength": "`f`"
+        }
+      ]
+    }
+  },
+  "objs": [
+    {
+      "type": "ModuleObj",
+      "module": "RayRelay",
+      "points": [
+        {
+          "x": 300,
+          "y": 1200
+        },
+        {
+          "x": 300,
+          "y": 1280
+        }
+      ],
+      "params": {
+        "f": 59,
+        "d": 40,
+        "N": 10
+      }
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 180,
+        "y": 1210
+      },
+      "p2": {
+        "x": 180,
+        "y": 1270
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 280,
+        "y": 1120
+      },
+      "p4": {
+        "x": 520,
+        "y": 1360
+      },
+      "width": 300
+    }
+  ],
+  "width": 1500,
+  "height": 900,
+  "rayModeDensity": 0.08208499862389883,
+  "snapToGrid": true,
+  "gridSize": 10,
+  "origin": {
+    "x": 211.938256746549,
+    "y": -1413.7564166010247
+  },
+  "scale": 1.5208333333333335
+}

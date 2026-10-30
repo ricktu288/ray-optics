@@ -1,0 +1,561 @@
+{
+  "name": "消色差双合透镜",
+  "version": 5,
+  "objs": [
+    {
+      "type": "CustomGlass",
+      "p1": {
+        "x": 500,
+        "y": 180
+      },
+      "p2": {
+        "x": 500,
+        "y": 420
+      },
+      "eqn1": "0.325x^2",
+      "eqn2": "0.6",
+      "curveStepSize": 1,
+      "partialReflect": false
+    },
+    {
+      "type": "SingleRay",
+      "p1": {
+        "x": 160,
+        "y": 410
+      },
+      "p2": {
+        "x": 280,
+        "y": 410
+      }
+    },
+    {
+      "type": "SingleRay",
+      "p1": {
+        "x": 140,
+        "y": 410
+      },
+      "p2": {
+        "x": 260,
+        "y": 410
+      },
+      "wavelength": 480
+    },
+    {
+      "type": "SingleRay",
+      "p1": {
+        "x": 120,
+        "y": 410
+      },
+      "p2": {
+        "x": 240,
+        "y": 410
+      },
+      "wavelength": 420
+    },
+    {
+      "type": "SingleRay",
+      "p1": {
+        "x": 180,
+        "y": 410
+      },
+      "p2": {
+        "x": 300,
+        "y": 410
+      },
+      "wavelength": 580
+    },
+    {
+      "type": "SingleRay",
+      "p1": {
+        "x": 200,
+        "y": 410
+      },
+      "p2": {
+        "x": 320,
+        "y": 410
+      },
+      "wavelength": 620
+    },
+    {
+      "type": "CustomGlass",
+      "p1": {
+        "x": 560,
+        "y": 440
+      },
+      "p2": {
+        "x": 560,
+        "y": 680
+      },
+      "eqn1": "-0.1x^2",
+      "eqn2": "0.1",
+      "curveStepSize": 1,
+      "refIndex": 1.75,
+      "cauchyB": 0.02,
+      "partialReflect": false
+    },
+    {
+      "type": "CustomGlass",
+      "p1": {
+        "x": 500,
+        "y": 440
+      },
+      "p2": {
+        "x": 500,
+        "y": 680
+      },
+      "eqn1": "0.5\\left(0.75x^2\\right)",
+      "eqn2": "0.5+\\left(-0.1x^2\\right)",
+      "curveStepSize": 1,
+      "refIndex": 1.53,
+      "cauchyB": 0.0046,
+      "partialReflect": false
+    },
+    {
+      "type": "SingleRay",
+      "p1": {
+        "x": 120,
+        "y": 670
+      },
+      "p2": {
+        "x": 240,
+        "y": 670
+      },
+      "wavelength": 420
+    },
+    {
+      "type": "SingleRay",
+      "p1": {
+        "x": 140,
+        "y": 670
+      },
+      "p2": {
+        "x": 260,
+        "y": 670
+      },
+      "wavelength": 480
+    },
+    {
+      "type": "SingleRay",
+      "p1": {
+        "x": 160,
+        "y": 670
+      },
+      "p2": {
+        "x": 280,
+        "y": 670
+      }
+    },
+    {
+      "type": "SingleRay",
+      "p1": {
+        "x": 180,
+        "y": 670
+      },
+      "p2": {
+        "x": 300,
+        "y": 670
+      },
+      "wavelength": 580
+    },
+    {
+      "type": "SingleRay",
+      "p1": {
+        "x": 200,
+        "y": 670
+      },
+      "p2": {
+        "x": 320,
+        "y": 670
+      },
+      "wavelength": 620
+    },
+    {
+      "type": "SingleRay",
+      "p1": {
+        "x": 120,
+        "y": 450
+      },
+      "p2": {
+        "x": 240,
+        "y": 450
+      },
+      "wavelength": 420
+    },
+    {
+      "type": "SingleRay",
+      "p1": {
+        "x": 140,
+        "y": 450
+      },
+      "p2": {
+        "x": 260,
+        "y": 450
+      },
+      "wavelength": 480
+    },
+    {
+      "type": "SingleRay",
+      "p1": {
+        "x": 160,
+        "y": 450
+      },
+      "p2": {
+        "x": 280,
+        "y": 450
+      }
+    },
+    {
+      "type": "SingleRay",
+      "p1": {
+        "x": 180,
+        "y": 450
+      },
+      "p2": {
+        "x": 300,
+        "y": 450
+      },
+      "wavelength": 580
+    },
+    {
+      "type": "SingleRay",
+      "p1": {
+        "x": 200,
+        "y": 450
+      },
+      "p2": {
+        "x": 320,
+        "y": 450
+      },
+      "wavelength": 620
+    },
+    {
+      "type": "SingleRay",
+      "p1": {
+        "x": 120,
+        "y": 190
+      },
+      "p2": {
+        "x": 240,
+        "y": 190
+      },
+      "wavelength": 420
+    },
+    {
+      "type": "SingleRay",
+      "p1": {
+        "x": 140,
+        "y": 190
+      },
+      "p2": {
+        "x": 260,
+        "y": 190
+      },
+      "wavelength": 480
+    },
+    {
+      "type": "SingleRay",
+      "p1": {
+        "x": 160,
+        "y": 190
+      },
+      "p2": {
+        "x": 280,
+        "y": 190
+      }
+    },
+    {
+      "type": "SingleRay",
+      "p1": {
+        "x": 180,
+        "y": 190
+      },
+      "p2": {
+        "x": 300,
+        "y": 190
+      },
+      "wavelength": 580
+    },
+    {
+      "type": "SingleRay",
+      "p1": {
+        "x": 200,
+        "y": 190
+      },
+      "p2": {
+        "x": 320,
+        "y": 190
+      },
+      "wavelength": 620
+    },
+    {
+      "type": "CircleBlocker",
+      "p1": {
+        "x": 966,
+        "y": 559.25
+      },
+      "p2": {
+        "x": 1026,
+        "y": 559.25
+      }
+    },
+    {
+      "type": "CircleBlocker",
+      "p1": {
+        "x": 964.125,
+        "y": 300
+      },
+      "p2": {
+        "x": 904.125,
+        "y": 300
+      }
+    },
+    {
+      "type": "TextLabel",
+      "x": 1080,
+      "y": 700,
+      "text": ".",
+      "fontSize": 500
+    },
+    {
+      "type": "TextLabel",
+      "x": 1090,
+      "y": 435,
+      "text": ".",
+      "fontSize": 500,
+      "fillStyle": {
+        "color": {
+          "r": 0,
+          "g": 1,
+          "b": 1,
+          "a": 0.28
+        }
+      }
+    },
+    {
+      "type": "TextLabel",
+      "x": 1083,
+      "y": 435,
+      "text": ".",
+      "fontSize": 500,
+      "fillStyle": {
+        "color": {
+          "r": 0,
+          "g": 0,
+          "b": 1,
+          "a": 0.28
+        }
+      }
+    },
+    {
+      "type": "TextLabel",
+      "x": 1068,
+      "y": 435,
+      "text": ".",
+      "fontSize": 500,
+      "fillStyle": {
+        "color": {
+          "r": 1,
+          "g": 0,
+          "b": 0,
+          "a": 0.28
+        }
+      }
+    },
+    {
+      "type": "TextLabel",
+      "x": 1061,
+      "y": 435,
+      "text": ".",
+      "fontSize": 500,
+      "fillStyle": {
+        "color": {
+          "r": 1,
+          "g": 1,
+          "b": 0,
+          "a": 0.28
+        }
+      }
+    },
+    {
+      "type": "TextLabel",
+      "x": 1075,
+      "y": 435,
+      "text": ".",
+      "fontSize": 500,
+      "fillStyle": {
+        "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 0.804
+        }
+      }
+    },
+    {
+      "type": "TextLabel",
+      "x": 484,
+      "y": 325,
+      "text": "普通透镜",
+      "fontSize": 50,
+      "alignment": "right"
+    },
+    {
+      "type": "TextLabel",
+      "x": 483,
+      "y": 585,
+      "text": "消色差双合透镜",
+      "fontSize": 50,
+      "alignment": "right"
+    },
+    {
+      "type": "TextLabel",
+      "x": 1215,
+      "y": 310,
+      "text": "物体有明显彩边",
+      "fontSize": 30
+    },
+    {
+      "type": "TextLabel",
+      "x": 1210,
+      "y": 575,
+      "text": "物体看起来清晰得多",
+      "fontSize": 30
+    },
+    {
+      "type": "TextLabel",
+      "x": 359,
+      "y": 723.5,
+      "text": "冕牌玻璃"
+    },
+    {
+      "type": "TextLabel",
+      "x": 630.5,
+      "y": 732.5,
+      "text": "火石玻璃"
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 491.5,
+        "y": 703.5
+      },
+      "p2": {
+        "x": 535,
+        "y": 675
+      },
+      "arrow": true
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 623.5,
+        "y": 717.5
+      },
+      "p2": {
+        "x": 570,
+        "y": 685
+      },
+      "arrow": true
+    },
+    {
+      "type": "TextLabel",
+      "x": 358.5,
+      "y": 749.5,
+      "text": "高阿贝数（58–60）",
+      "fontSize": 16
+    },
+    {
+      "type": "TextLabel",
+      "x": 357.5,
+      "y": 772,
+      "text": "普通折射率（约 1.52）",
+      "fontSize": 16
+    },
+    {
+      "type": "TextLabel",
+      "x": 632.5,
+      "y": 752,
+      "text": "低阿贝数（>50）",
+      "fontSize": 16
+    },
+    {
+      "type": "TextLabel",
+      "x": 632,
+      "y": 771.5,
+      "text": "较高折射率（>1.52）",
+      "fontSize": 16
+    },
+    {
+      "type": "TextLabel",
+      "x": 967,
+      "y": 485,
+      "text": "眼睛",
+      "alignment": "center"
+    },
+    {
+      "type": "TextLabel",
+      "x": 965,
+      "y": 225,
+      "text": "眼睛",
+      "alignment": "center"
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 1040,
+        "y": 300
+      },
+      "p2": {
+        "x": 1070,
+        "y": 300
+      },
+      "arrow": true
+    },
+    {
+      "type": "LineArrow",
+      "p1": {
+        "x": 1045,
+        "y": 560
+      },
+      "p2": {
+        "x": 1080,
+        "y": 560
+      },
+      "arrow": true
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": -211,
+        "y": 65
+      },
+      "p4": {
+        "x": 1885,
+        "y": 882
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": -96,
+        "y": -92
+      },
+      "p4": {
+        "x": 1036,
+        "y": 1040
+      }
+    }
+  ],
+  "width": 3144,
+  "height": 1865,
+  "rayModeDensity": 0.0036978637164829485,
+  "gridSize": 5,
+  "origin": {
+    "x": 735,
+    "y": 459
+  },
+  "scale": 1,
+  "simulateColors": true,
+  "colorMode": "linear",
+  "importedFromBeta": true
+}

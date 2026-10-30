@@ -1,0 +1,128 @@
+{
+  "modulesPage": {
+    "description": {
+      "makeNewTools": "“Modül” özelliği, bu simülatörde mevcut araçlar tarafından oluşturulan nesneleri birleştirerek, özelleştirerek veya yeniden yapılandırarak yeni araçlar oluşturmaya olanak tanır.",
+      "appearAsTools": "İçe aktarılan modüller “Diğer” kategorisinde araçlar olarak görünecektir. Kontrol noktası sırasına göre boş alanı seçin ve tıklayın (bkz. “Özellikler”).",
+      "embeddedInScene": "İçe aktarılan modüller sahnenin verilerine gömülüdür, bu nedenle modüllerin yazarları bunları güncellediğinde otomatik olarak güncellenmezler."
+    },
+    "import": "İçeri aktar",
+    "imported": "İçeri aktarıldı",
+    "specification": {
+      "title": "Özellikler",
+      "controlPointSequence": "Kontrol noktası serisi",
+      "parameters": "Değişkenler"
+    },
+    "customization": {
+      "title": "Kişiselleştirme",
+      "description": "Modüller doğrudan web uygulamasının kenar çubuğunda yapılabilir veya özelleştirilmiş olabilir (görüler -> Show sidebar). ithal modüllerin özelleştirmesi yalnızca mevcut sahneyi etkileyecektir. Başka bir sahneden özel modüller ithal etmek için aşağıdaki \"Import from file\" below to import custom modülleri from another scene."
+    },
+    "contribution": {
+      "title": "Katkı",
+      "description": "Yukarıdaki listeye katkı yapabilirsiniz. Modülünüzü katkıda bulunmak için [Modül katkısı](/contributing/modules) bölümüne bakın."
+    }
+  },
+  "moduleData": {
+    "FresnelLens": {
+      "title": "Fresnel Merceği",
+      "description": "Yarım daire şeklinde bir cam parçasından yapılmış Fresnel merceği. [Bu Galeri örneğinin](/gallery/fresnel-lens) modülerleştirilmiş versiyonu.",
+      "point1": "Merceğin ilk uç noktası",
+      "point2": "Merceğin ikinci uç noktası",
+      "Nslice": "Dilim sayısı",
+      "refIndex": "Merceğin kırılma indisi"
+    },
+    "ContSpectrum": {
+      "title": "Sürekli spektrum ışık kaynağı",
+      "description": "Belirli bir sabit adımla ayrıştırılmış, düzgün bir sürekli spektruma sahip ışık kaynağı. Yalnızca “Renkleri Simüle Et” seçeneği açıkken çalışır.",
+      "point1": "Işınların kaynağı",
+      "point2": "Işınların yönünü belirler",
+      "min": "Minimum dalga boyu",
+      "step": "Dalgaboyu adımı",
+      "max": "Maksimum dalgaboyu",
+      "brightness": "Toplam parlaklık"
+    },
+    "RainbowPointSource": {
+      "title": "Gökkuşağı Nokta Kaynağı",
+      "description": "Nokta ışık kaynağı <360 derece - ancak bir renk spektrumu yayar. “Renkleri Simüle Et” seçeneği açık olarak çalıştırılmalıdır.",
+      "point1": "Kaynak",
+      "N": "Işınların sayısı",
+      "brightness": "Toplam parlaklık",
+      "angle": "Emisyon açısı",
+      "lambdaMin": "Minimum dalga boyu",
+      "lambdaMax": "Maksimum dalga boyu"
+    },
+    "CoatedLens": {
+      "title": "Kaplamalı Küresel Mercek",
+      "description": "Her iki tarafında tek katmanlı kaplamalar bulunan küresel bir mercek. Bu modüle gömülü olan `ArcCoating` modülü, cam yüzeyi ile örtüştüğünde kaplaması haline gelen tek bir ince film tabakasını temsil eder.",
+      "point1": "Merceğin merkezi",
+      "h": "Merceğin yüksekliği",
+      "d": "Mercek kalınlığı",
+      "R1": "Ön yüzeyin eğrilik yarıçapı",
+      "R2": "Arka yüzeyin eğrilik yarıçapı",
+      "A": "Camın Cauchy katsayısı \\(A\\)",
+      "B": "Camın cauchy katsayısı \\(B\\) mikrometre kare cinsinden",
+      "dc": "Kaplama tabakasının kalınlığı nanometre cinsinden",
+      "Ac": "Kaplama malzemesinin Cauchy katsayısı \\(A\\)",
+      "Bc": "Mikrometre kare cinsinden kaplama malzemesinin Cauchy katsayısı \\(B\\)"
+    },
+    "CircleSource": {
+      "title": "Dairesel ışık kaynağı",
+      "description": "Çevresi boyunca 180 derecelik eşit nokta kaynakları bulunan bir daire.",
+      "point1": "Çemberin merkezi",
+      "r": "Dairenin yarıçapı",
+      "N": "Noktasal kaynakların sayısı",
+      "brightness": "Toplam parlaklık"
+    },
+    "CubeBeamSplitter": {
+      "splitRatio": "Diyagonal ışın ayırıcının iletim oranı",
+      "cauchyB": "Küpün Cauchy katsayısı \\(B\\) (kare mikrometre cinsinden)",
+      "refIndex": "Küpün kırılma indisi (“Renkleri Simüle Et” seçeneği etkin olduğunda Cauchy katsayısı \\(A\\))",
+      "angle": "Küpün dönme açısı (derece cinsinden)",
+      "size": "Küpün boyutu",
+      "point1": "Küpün (karenin) merkezi",
+      "description": "Küp ışın ayırıcı, yaygın olarak kullanılan bir optik bileşendir. Bu, boyut ve açı açısından ayarlanabilen bir küp ışın ayırıcı modülüdür.",
+      "title": "Küp Işın Ayırıcı"
+    },
+    "OpticalFiber": {
+      "n2": "Kaplamanın kırılma indisi",
+      "Y": "Kaplamanın kalınlığı",
+      "point2": "Optik fiberin ikinci uç noktası",
+      "point1": "Optik fiberin ilk uç noktası",
+      "description": "Belirli bir çekirdek ve kaplama kalınlığına ve kırılma indislerine sahip çizgi şeklindeki optik fiber.",
+      "title": "Optik Fiber"
+    },
+    "RayRelay": {
+      "N": "Lens sayısı",
+      "d": "Mercekler arasındaki mesafe",
+      "f": "Merceklerin odak uzaklığı",
+      "point2": "İlk merceğin ikinci uç noktası (ilk nokta ile aynı \\(x\\) değerine sahip olmalıdır)",
+      "title": "Işın Aktarıcı",
+      "description": "Odak uzaklığı \\(f\\) olan ve mercekler arasındaki mesafe \\(d\\) olan bir dizi ideal özdeş mercek. Işın yörüngesinin sapmaması, ancak ve ancak \\(d\\leq 4f\\) olduğunda garanti edilir. [Bu Galeri örneğinin](/gallery/ray-relaying) modülerleştirilmiş versiyonu.",
+      "point1": "İlk merceğin ilk odak noktası"
+    },
+    "EllipticalMirror": {
+      "title": "Eliptik Ayna",
+      "description": "İki odak noktası ve büyük yarı eksenin uzunluğu ile tanımlanan eliptik bir ayna.",
+      "point1": "İlk odak noktası",
+      "point2": "İkinci odak noktası",
+      "a": "Yarı büyük eksen uzunluğu",
+      "tMin": "Eğrinin minimum açısı",
+      "tMax": "Eğrinin maksimum açısı",
+      "tStep": "Eğrinin adım açısı"
+    },
+    "Chaff": {
+      "title": "Chaff(Yanıltıcı)",
+      "description": "Rastgele ayna parçalarından oluşan dikdörtgen şeklindeki yanıltıcı(Chaff). [Bu Galeri örneğinin](/gallery/chaff-countermeasure) modüler bir versiyonu.",
+      "point1": "Chaff sol üst köşesi",
+      "point2": "chaff sağ alt köşesi",
+      "N": "Chaff içindeki ayna sayısı",
+      "L": "Aynaların uzunluğu"
+    },
+    "BeamExpander": {
+      "title": "Işın Genişletici",
+      "description": "Odak uzaklıklarının toplamı, aralarındaki mesafeye eşit olan iki ideal merceğin birleşimi. Bu mercekler, paralel ışık demetinin çapını genişletir veya daraltır. [Bu Galeri örneğinin](/gallery/beam-expanders) modüler versiyonu.",
+      "point1": "İlk merceğin merkezi",
+      "point2": "İkinci merceğin ikinci noktası",
+      "point3": "Lenslerin ortak odak noktasını belirler"
+    }
+  }
+}

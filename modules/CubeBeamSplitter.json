@@ -1,0 +1,120 @@
+{
+  "version": 5,
+  "name": "CubeBeamSplitter",
+  "modules": {
+    "CubeBeamSplitter": {
+      "numPoints": 1,
+      "params": [
+        "size=50:1:300:100",
+        "angle=0:0.01:180:0",
+        "refIndex=1.5:0.01:3:1.5",
+        "cauchyB=0:0.001:0.1:0.004",
+        "splitRatio=0:0.01:1:0.5"
+      ],
+      "vars": [
+        "angle_rad = angle*pi/180",
+        "c=cos(angle_rad)",
+        "s=sin(angle_rad)",
+        "hx=size/2",
+        "hy=size/2",
+        "x1=x_1 + (-hx)*c - (-hy)*s",
+        "y1=y_1 + (-hx)*s + (-hy)*c",
+        "x2=x_1 + (hx)*c - (-hy)*s",
+        "y2=y_1 + (hx)*s + (-hy)*c",
+        "x3=x_1 + (hx)*c - (hy)*s",
+        "y3=y_1 + (hx)*s + (hy)*c",
+        "x4=x_1 + (-hx)*c - (hy)*s",
+        "y4=y_1 + (-hx)*s + (hy)*c"
+      ],
+      "objs": [
+        {
+          "type": "Glass",
+          "path": [
+            {
+              "x": "`x1`",
+              "y": "`y1`",
+              "arc": false
+            },
+            {
+              "x": "`x2`",
+              "y": "`y2`",
+              "arc": false
+            },
+            {
+              "x": "`x3`",
+              "y": "`y3`",
+              "arc": false
+            },
+            {
+              "x": "`x4`",
+              "y": "`y4`",
+              "arc": false
+            }
+          ],
+          "refIndex": "`refIndex`",
+          "cauchyB": "`cauchyB`"
+        },
+        {
+          "type": "BeamSplitter",
+          "p1": {
+            "x": "`x1`",
+            "y": "`y1`"
+          },
+          "p2": {
+            "x": "`x3`",
+            "y": "`y3`"
+          },
+          "transRatio": "`splitRatio`"
+        }
+      ]
+    }
+  },
+  "objs": [
+    {
+      "type": "ModuleObj",
+      "module": "CubeBeamSplitter",
+      "points": [
+        {
+          "x": 967,
+          "y": 442
+        }
+      ],
+      "params": {
+        "size": 133,
+        "angle": 0,
+        "splitRatio": 0.28,
+        "refIndex": 2.3,
+        "cauchyB": 0.048
+      }
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 800,
+        "y": 420
+      },
+      "p2": {
+        "x": 800,
+        "y": 460
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 840,
+        "y": 320
+      },
+      "p4": {
+        "x": 1080,
+        "y": 560
+      }
+    }
+  ],
+  "width": 1300,
+  "height": 800,
+  "origin": {
+    "x": -376.12044836706735,
+    "y": -128.65386782265628
+  },
+  "scale": 1.1006041666666675
+}

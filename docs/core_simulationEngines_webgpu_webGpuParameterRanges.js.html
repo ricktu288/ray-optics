@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: core/simulationEngines/webgpu/webGpuParameterRanges.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: core/simulationEngines/webgpu/webGpuParameterRanges.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/*
+ * Copyright 2026 The Ray Optics Simulation authors and contributors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import {
+  collectNodeLabels,
+  collectParameterNames
+} from '../../formula/dag-util.js';
+import { estimateDagRanges } from '../../formula/range-estimator.js';
+import {
+  createDagWgslSpecialization
+} from '../../formula/dag-wgsl-generator.js';
+import { getIntersectionTolerancePolicy } from '../../primitive/numeric.js';
+
+export const WEBGPU_F32_MAX = 3.4028234663852886e38;
+export const WEBGPU_F32_MIN_NORMAL = 2 ** -126;
+export const WEBGPU_MAX_POLARIZED_POWER = WEBGPU_F32_MAX / 2;
+export const DEFAULT_WEBGPU_PARAMETER_INTERVAL_LIMIT = 8;
+
+// With every world coordinate in [-2^62, 2^62], subtracting two coordinates
+// is finite and the sum of the squared x/y differences is at most 2^127.
+// This leaves a factor-of-two margin below the largest f32 value for the
+// distance and normal calculations shared with the primitive CPU engine.
+// Scale-normalized curve algorithms can have additional constraints; those
+// belong to WebGPU geometry packing rather than to the world-coordinate range.
+export const WEBGPU_SPATIAL_MAX = 2 ** 62;
+
+const DEFAULT_VIOLET_WAVELENGTH = 420;
+const DEFAULT_RED_WAVELENGTH = 620;
+const BASE_UV_WAVELENGTH = 380;
+const BASE_INFRARED_WAVELENGTH = 700;
+
+const SOURCE_RESERVED_PARAMETERS = ['i', 'N'];
+const BULK_RESERVED_PARAMETERS = ['x', 'y', 'lambda'];
+const DETECTOR_RESERVED_PARAMETERS = [
+  'd_0x',
+  'd_0y',
+  'P_0s',
+  'P_0p',
+  'lambda',
+  'x',
+  'y',
+  'u',
+  'sigma'
+];
+const SURFACE_RESERVED_PARAMETERS = [
+  ...DETECTOR_RESERVED_PARAMETERS,
+  'n_0',
+  'n_1'
+];
+const INTERNAL_BOUNDARY_PARAMETERS = [
+  'd_0x',
+  'd_0y',
+  'P_0s',
+  'P_0p',
+  'n_0',
+  'n_1'
+];
+
+const F32 = new Float32Array(1);
+const U32 = new Uint32Array(F32.buffer);
+const MULTIPLY_RANGE_DAG = {
+  root: 2,
+  nodes: [
+    { id: 0, kind: 'parameter', name: 'left' },
+    { id: 1, kind: 'parameter', name: 'right' },
+    { id: 2, kind: 'binary', op: '*', args: [0, 1] }
+  ]
+};
+
+/**
+ * Estimate the f32 input interval contract for every formula type in a
+ * processed scene. Each authored type receives a reusable WGSL specialization
+ * containing its DAG range result and range-dependent guard signature. A
+ * later WGSL generation step can consume that specialization without running
+ * the range estimator again. No WGSL is emitted or compiled here.
+ *
+ * Runtime WebGPU tracing must discard wavelengths outside `wavelengthRange`.
+ * The same range is used for every downstream `lambda` input.
+ *
+ * @param {Object} description - Engine-independent processed scene.
+ * @param {Object} [options]
+ * @param {number} [options.violetWavelength=420]
+ * @param {number} [options.redWavelength=620]
+ * @param {boolean} [options.keepNonVisibleLight=false]
+ * @param {number} [options.intervalLimit=8]
+ * @returns {Object} A unified `types` list, category views, and supporting region-index metadata.
+ */
+export function estimateWebGpuParameterRanges(description, {
+  violetWavelength = DEFAULT_VIOLET_WAVELENGTH,
+  redWavelength = DEFAULT_RED_WAVELENGTH,
+  keepNonVisibleLight = false,
+  intervalLimit = DEFAULT_WEBGPU_PARAMETER_INTERVAL_LIMIT
+} = {}) {
+  validateDescription(description);
+  validateIntervalLimit(intervalLimit);
+  validateWebGpuSpatialBounds(description);
+
+  const wavelengthRange = deriveWebGpuWavelengthRange({
+    violetWavelength,
+    redWavelength,
+    keepNonVisibleLight
+  });
+  const ownerRanges = collectOwnerCoordinateRanges(description, intervalLimit);
+  const tolerancePolicy = getIntersectionTolerancePolicy(
+    description.numericEpsilon
+  );
+  const regionRefractiveIndices = estimateRegionRefractiveIndices(
+    description,
+    ownerRanges.regionBounds,
+    wavelengthRange,
+    intervalLimit
+  );
+  const bulkRefractiveIndices = description.types.bulks.map((_, typeId) =>
+    unionRangeInfos(
+      regionRefractiveIndices.filter(info => info.bulkTypeId === typeId),
+      intervalLimit
+    )
+  );
+
+  const sourceTypes = description.types.sources.map((type, typeId) =>
+    createTypeRangeEntry({
+      type,
+      typeId,
+      instances: description.sources.filter(
+        source => source.sourceTypeId === typeId
+      ),
+      reservedNames: SOURCE_RESERVED_PARAMETERS,
+      reservedRanges: createSourceReservedRanges(
+        description.sources.filter(source => source.sourceTypeId === typeId),
+        intervalLimit
+      ),
+      intervalLimit,
+      categoryName: 'source'
+    })
+  );
+  const surfaceTypes = description.types.surfaces.map((type, typeId) => {
+    const instances = description.surfaces.filter(
+      surface => surface.surfaceTypeId === typeId
+    );
+    const curves = description.curves.filter(curve =>
+      curve.ownerKind === 'surface' &amp;&amp;
+      description.surfaces[curve.ownerId]?.surfaceTypeId === typeId
+    );
+    const refractiveIndexRange = interactionRefractiveIndexRange(
+      curves,
+      regionRefractiveIndices,
+      ownerRanges.regionBounds,
+      intervalLimit
+    );
+    return createTypeRangeEntry({
+      type,
+      typeId,
+      instances,
+      reservedNames: SURFACE_RESERVED_PARAMETERS,
+      reservedRanges: createInteractionReservedRanges({
+        coordinateRanges: ownerRanges.surfaces[typeId],
+        curves,
+        wavelengthRange,
+        refractiveIndexRange,
+        tolerancePolicy,
+        intervalLimit
+      }),
+      intervalLimit,
+      categoryName: 'surface'
+    });
+  });
+  const bulkTypes = description.types.bulks.map((type, typeId) => {
+    const instances = description.regions.filter(
+      region => region.bulkTypeId === typeId
+    );
+    return {
+      ...createTypeRangeEntry({
+        type,
+        typeId,
+        instances,
+        reservedNames: BULK_RESERVED_PARAMETERS,
+        reservedRanges: {
+          ...(ownerRanges.bulks[typeId] ?? zeroCoordinateRanges()),
+          lambda: wavelengthRange
+        },
+        intervalLimit,
+        categoryName: 'bulk'
+      }),
+      outputRanges: {
+        n: cloneRangeInfo(bulkRefractiveIndices[typeId])
+      }
+    };
+  });
+  const detectorTypes = description.types.detectors.map((type, typeId) => {
+    const instances = description.detectors.filter(
+      detector => detector.detectorTypeId === typeId
+    );
+    const curves = description.curves.filter(curve =>
+      curve.ownerKind === 'detector' &amp;&amp;
+      description.detectors[curve.ownerId]?.detectorTypeId === typeId
+    );
+    return createTypeRangeEntry({
+      type,
+      typeId,
+      instances,
+      reservedNames: DETECTOR_RESERVED_PARAMETERS,
+      reservedRanges: createInteractionReservedRanges({
+        coordinateRanges: ownerRanges.detectors[typeId],
+        curves,
+        wavelengthRange,
+        tolerancePolicy,
+        intervalLimit
+      }),
+      intervalLimit,
+      categoryName: 'detector'
+    });
+  });
+  const internalSurfaceTypes = [false, true].flatMap(partialReflect => {
+    const regions = description.regions.filter(
+      region => region.partialReflect === partialReflect
+    );
+    if (regions.length === 0) return [];
+    const curves = description.curves.filter(curve =>
+      curve.ownerKind === 'region' &amp;&amp;
+      description.regions[curve.ownerId]?.partialReflect === partialReflect
+    );
+    const refractiveIndexRange = interactionRefractiveIndexRange(
+      curves,
+      regionRefractiveIndices,
+      ownerRanges.regionBounds,
+      intervalLimit
+    );
+    return [createInternalBoundaryType(
+      partialReflect,
+      refractiveIndexRange
+    )];
+  });
+  for (const type of sourceTypes) {
+    attachDagSpecialization(
+      type,
+      description.types.sources[type.typeId].definition.dag
+    );
+    validateSourceCoordinateOutputs(
+      type,
+      description.types.sources[type.typeId].definition.dag
+    );
+  }
+  for (const type of bulkTypes) {
+    attachDagSpecialization(
+      type,
+      description.types.bulks[type.typeId].definition.dag
+    );
+  }
+  for (const type of surfaceTypes) {
+    attachDagSpecialization(
+      type,
+      description.types.surfaces[type.typeId].definition.dag
+    );
+  }
+  for (const type of detectorTypes) {
+    attachDagSpecialization(
+      type,
+      description.types.detectors[type.typeId].definition.dag
+    );
+  }
+  const types = [
+    ...sourceTypes,
+    ...bulkTypes,
+    ...internalSurfaceTypes,
+    ...surfaceTypes,
+    ...detectorTypes
+  ];
+
+  return {
+    wavelengthRange,
+    types,
+    sources: sourceTypes,
+    surfaces: surfaceTypes,
+    bulks: bulkTypes,
+    detectors: detectorTypes,
+    internalSurfaces: internalSurfaceTypes,
+    regionRefractiveIndices
+  };
+}
+
+/**
+ * Derive the accepted wavelength range. By default this applies the scene's
+ * violet/red affine mapping to the standard 380/420/620/700 anchors. When
+ * non-visible light is retained, the closed range-estimation interval covers
+ * the positive finite f32 domain and runtime validation excludes zero.
+ */
+export function deriveWebGpuWavelengthRange({
+  violetWavelength = DEFAULT_VIOLET_WAVELENGTH,
+  redWavelength = DEFAULT_RED_WAVELENGTH,
+  keepNonVisibleLight = false
+} = {}) {
+  if (
+    !Number.isFinite(violetWavelength) ||
+    !Number.isFinite(redWavelength) ||
+    !(redWavelength > violetWavelength)
+  ) {
+    throw new RangeError(
+      'WebGPU violetWavelength and redWavelength must be finite, with redWavelength greater than violetWavelength.'
+    );
+  }
+  if (keepNonVisibleLight) {
+    // Zero is included conservatively for formula range estimation. Runtime
+    // source validation still requires the wavelength to be strictly positive.
+    return [[0, WEBGPU_F32_MAX]];
+  }
+  const scale = (
+    redWavelength - violetWavelength
+  ) / (
+    DEFAULT_RED_WAVELENGTH - DEFAULT_VIOLET_WAVELENGTH
+  );
+  const mapWavelength = wavelength =>
+    violetWavelength +
+    (wavelength - DEFAULT_VIOLET_WAVELENGTH) * scale;
+  return [outwardF32Interval(
+    mapWavelength(BASE_UV_WAVELENGTH),
+    mapWavelength(BASE_INFRARED_WAVELENGTH),
+    'WebGPU wavelength range'
+  )];
+}
+
+/**
+ * Convert an ordinary instance parameter to the value that may be packed in
+ * an f32 buffer. Finite overflow and signed infinities saturate; NaN and
+ * non-numeric values remain scene-contract errors.
+ */
+export function clampWebGpuParameterToF32(value, name = 'parameter') {
+  if (typeof value !== 'number' || Number.isNaN(value)) {
+    throw new TypeError(`${name} must be a number other than NaN.`);
+  }
+  const clamped = Math.max(
+    -WEBGPU_F32_MAX,
+    Math.min(WEBGPU_F32_MAX, value)
+  );
+  return Math.fround(clamped);
+}
+
+/**
+ * Reject processed geometry which cannot use the WebGPU world-coordinate
+ * domain. This is intentionally a GPU preparation check, not common CPU
+ * preprocessing policy.
+ */
+export function validateWebGpuSpatialBounds(description) {
+  for (const [curveId, curve] of description.curves.entries()) {
+    validateSpatialBounds(curve.bounds, `curve ${curveId}`);
+  }
+  for (const [nodeId, node] of description.bvh.nodes.entries()) {
+    validateSpatialBounds(node.bounds, `BVH node ${nodeId}`);
+  }
+}
+
+/**
+ * Compare only range-dependent guard signatures. Structural DAG changes are
+ * intentionally outside this comparison and remain simulator-owned.
+ *
+ * @param {Object} estimated
+ * @param {Map&lt;string, string>|null} previousSignatures
+ * @returns {Map&lt;string, string>} Signatures to retain for the next update.
+ */
+export function recordWebGpuRecompilationNeeds(
+  estimated,
+  previousSignatures = null
+) {
+  const nextSignatures = new Map();
+  for (const type of estimated.types) {
+    const previous = previousSignatures?.get(type.key);
+    type.recompilationNeeded = previousSignatures === null ||
+      previous === undefined ||
+      previous !== type.guardSignature;
+    type.recompilationReason = previousSignatures === null
+      ? 'initial specialization'
+      : previous === undefined
+        ? 'new type'
+        : previous !== type.guardSignature
+          ? 'range guards changed'
+          : null;
+    nextSignatures.set(type.key, type.guardSignature);
+  }
+  estimated.removedTypeKeys = previousSignatures
+    ? [...previousSignatures.keys()].filter(key => !nextSignatures.has(key))
+    : [];
+  estimated.anyRecompilationNeeded =
+    estimated.types.some(type => type.recompilationNeeded) ||
+    estimated.removedTypeKeys.length > 0;
+  return nextSignatures;
+}
+
+function createTypeRangeEntry({
+  type,
+  typeId,
+  instances,
+  reservedNames,
+  reservedRanges,
+  intervalLimit,
+  categoryName
+}) {
+  const definition = type.definition;
+  const referencedNames = collectParameterNames(definition.dag);
+  const declaredNames = definition.paramNames ?? [];
+  validateUniqueNames(declaredNames, `${categoryName} type ${typeId} paramNames`);
+  const reservedSet = new Set(reservedNames);
+  for (const name of declaredNames) {
+    if (reservedSet.has(name)) {
+      throw new TypeError(
+        `${categoryName} type ${typeId} parameter ${JSON.stringify(name)} is reserved.`
+      );
+    }
+  }
+
+  const orderedNames = [
+    ...declaredNames.filter(name => referencedNames.has(name)),
+    ...reservedNames.filter(name => referencedNames.has(name))
+  ];
+  const knownNames = new Set([...declaredNames, ...reservedNames]);
+  for (const name of referencedNames) {
+    if (!knownNames.has(name)) {
+      throw new TypeError(
+        `${categoryName} type ${typeId} DAG references undeclared parameter ${JSON.stringify(name)}.`
+      );
+    }
+  }
+
+  const parameters = orderedNames.map(name => {
+    if (declaredNames.includes(name)) {
+      return {
+        name,
+        range: collectInstanceParameterRange(
+          instances,
+          name,
+          intervalLimit,
+          `${categoryName} type ${typeId}`
+        )
+      };
+    }
+    const reserved = reservedRanges[name];
+    const rangeInfo = Array.isArray(reserved)
+      ? { intervals: reserved, maybeInvalid: false }
+      : reserved;
+    if (!rangeInfo) {
+      throw new TypeError(
+        `Missing reserved WebGPU parameter range for ${JSON.stringify(name)}.`
+      );
+    }
+    return {
+      name,
+      range: cloneRange(rangeInfo.intervals),
+      ...(rangeInfo.maybeInvalid
+        ? { maybeInvalid: true, requiresFiniteGuard: true }
+        : {})
+    };
+  });
+  return {
+    kind: categoryName,
+    typeId,
+    key: `${categoryName}:${typeId}`,
+    name: definition.name,
+    parameters
+  };
+}
+
+function createInternalBoundaryType(
+  partialReflect,
+  refractiveIndexRange
+) {
+  const ranges = {
+    d_0x: [[-1, 1]],
+    d_0y: [[-1, -WEBGPU_F32_MIN_NORMAL]],
+    P_0s: [[0, WEBGPU_MAX_POLARIZED_POWER]],
+    P_0p: [[0, WEBGPU_MAX_POLARIZED_POWER]],
+    n_0: cloneRangeInfo(refractiveIndexRange),
+    n_1: cloneRangeInfo(refractiveIndexRange)
+  };
+  const parameters = INTERNAL_BOUNDARY_PARAMETERS.map(name => {
+    const rangeInfo = Array.isArray(ranges[name])
+      ? { intervals: ranges[name], maybeInvalid: false }
+      : ranges[name];
+    return {
+      name,
+      range: cloneRange(rangeInfo.intervals),
+      ...(rangeInfo.maybeInvalid
+        ? { maybeInvalid: true, requiresFiniteGuard: true }
+        : {})
+    };
+  });
+  const guardProfile = {
+    finiteRefractiveIndex:
+      parameters.some(parameter =>
+        (parameter.name === 'n_0' || parameter.name === 'n_1') &amp;&amp;
+        parameter.maybeInvalid
+      )
+  };
+  return {
+    kind: 'surface',
+    internal: true,
+    key: partialReflect
+      ? 'regionBoundaryPartialReflection'
+      : 'regionBoundaryRefraction',
+    name: partialReflect
+      ? 'Region boundary with partial reflection'
+      : 'Region boundary without partial reflection',
+    partialReflect,
+    outRayCount: partialReflect ? 2 : 1,
+    parameters,
+    specialization: {
+      kind: 'internalSurface',
+      guardProfile,
+      guardSignature: JSON.stringify(guardProfile)
+    },
+    guardSignature: JSON.stringify(guardProfile)
+  };
+}
+
+function attachDagSpecialization(type, dag) {
+  type.specialization = createDagWgslSpecialization(dag, {
+    parameters: type.parameters
+  });
+  type.guardSignature = type.specialization.guardSignature;
+}
+
+function validateSourceCoordinateOutputs(type, dag) {
+  const labels = collectNodeLabels(dag);
+  for (const label of ['x', 'y']) {
+    const nodeId = labels.get(label);
+    if (nodeId === undefined) {
+      throw new TypeError(`source type ${type.typeId} has no ${label} output.`);
+    }
+    const range = type.specialization.rangeResult.nodeRanges[nodeId];
+    for (const [minimum, maximum] of range.intervals) {
+      if (minimum &lt; -WEBGPU_SPATIAL_MAX || maximum > WEBGPU_SPATIAL_MAX) {
+        throw new RangeError(
+          `source type ${type.typeId} ${label} output may exceed the ` +
+          `WebGPU spatial limit ${WEBGPU_SPATIAL_MAX}.`
+        );
+      }
+    }
+  }
+}
+
+function collectInstanceParameterRange(
+  instances,
+  name,
+  intervalLimit,
+  context
+) {
+  const values = instances.map((instance, instanceIndex) => {
+    if (!Object.prototype.hasOwnProperty.call(instance.params, name)) {
+      throw new TypeError(
+        `${context} instance ${instanceIndex} is missing parameter ${JSON.stringify(name)}.`
+      );
+    }
+    return clampWebGpuParameterToF32(
+      instance.params[name],
+      `${context} instance ${instanceIndex} parameter ${JSON.stringify(name)}`
+    );
+  });
+  if (values.length === 0) {
+    throw new TypeError(`${context} has no instances from which to estimate parameters.`);
+  }
+  return simplifySingletonValues(values, intervalLimit);
+}
+
+function createSourceReservedRanges(sources, intervalLimit) {
+  const counts = sources.map((source, sourceIndex) => {
+    if (
+      !Number.isSafeInteger(source.rayCount) ||
+      source.rayCount &lt; 0
+    ) {
+      throw new RangeError(
+        `source instance ${sourceIndex} rayCount must be a nonnegative safe integer.`
+      );
+    }
+    return source.rayCount;
+  });
+  const nRange = simplifySingletonValues(
+    counts.map(count => clampWebGpuParameterToF32(count, 'source rayCount')),
+    intervalLimit
+  );
+  const maximumIndex = counts.reduce(
+    (maximum, count) => Math.max(maximum, count - 1),
+    0
+  );
+  return {
+    i: [[0, Math.fround(maximumIndex)]],
+    N: nRange
+  };
+}
+
+function estimateRegionRefractiveIndices(
+  description,
+  regionBounds,
+  wavelengthRange,
+  intervalLimit
+) {
+  return description.regions.map((region, regionId) => {
+    const definition = description.types.bulks[
+      region.bulkTypeId
+    ].definition;
+    const bounds = regionBounds[regionId];
+    const coordinateRanges = bounds
+      ? {
+        x: [outwardF32Interval(
+          bounds.minX,
+          bounds.maxX,
+          `region ${regionId} x range`
+        )],
+        y: [outwardF32Interval(
+          bounds.minY,
+          bounds.maxY,
+          `region ${regionId} y range`
+        )]
+      }
+      : zeroCoordinateRanges();
+    const parameterRanges = createRegionDagParameterRanges(
+      definition,
+      region,
+      coordinateRanges,
+      wavelengthRange,
+      regionId
+    );
+    const nNodeId = collectNodeLabels(definition.dag).get('n');
+    if (nNodeId === undefined) {
+      throw new TypeError(`bulk type ${region.bulkTypeId} has no n output.`);
+    }
+    const estimated = estimateDagRanges(
+      definition.dag,
+      parameterRanges
+    ).nodeRanges[nNodeId];
+    return {
+      regionId,
+      bulkTypeId: region.bulkTypeId,
+      intervals: simplifyIntervals(estimated.intervals, intervalLimit),
+      maybeInvalid: estimated.maybeInvalid
+    };
+  });
+}
+
+function createRegionDagParameterRanges(
+  definition,
+  region,
+  coordinateRanges,
+  wavelengthRange,
+  regionId
+) {
+  const declaredNames = definition.paramNames ?? [];
+  const declaredSet = new Set(declaredNames);
+  const reservedRanges = {
+    ...coordinateRanges,
+    lambda: wavelengthRange
+  };
+  const ranges = {};
+  for (const name of collectParameterNames(definition.dag)) {
+    if (declaredSet.has(name)) {
+      if (!Object.prototype.hasOwnProperty.call(region.params, name)) {
+        throw new TypeError(
+          `region ${regionId} is missing parameter ${JSON.stringify(name)}.`
+        );
+      }
+      const value = clampWebGpuParameterToF32(
+        region.params[name],
+        `region ${regionId} parameter ${JSON.stringify(name)}`
+      );
+      ranges[name] = [[value, value]];
+    } else if (reservedRanges[name]) {
+      ranges[name] = cloneRange(reservedRanges[name]);
+    } else {
+      throw new TypeError(
+        `bulk type ${region.bulkTypeId} DAG references undeclared parameter ${JSON.stringify(name)}.`
+      );
+    }
+  }
+  return ranges;
+}
+
+function interactionRefractiveIndexRange(
+  curves,
+  regionRefractiveIndices,
+  regionBounds,
+  intervalLimit
+) {
+  const perCurveRanges = curves.map(curve => {
+    const possibleRegions = regionRefractiveIndices.filter(info => {
+      const bounds = regionBounds[info.regionId];
+      return bounds &amp;&amp; boundsOverlap(curve.bounds, bounds);
+    });
+    let effective = {
+      intervals: [[1, 1]],
+      maybeInvalid: false
+    };
+    for (const regionInfo of possibleRegions) {
+      const optionalRegion = {
+        intervals: simplifyIntervals(
+          [[1, 1], ...regionInfo.intervals],
+          intervalLimit
+        ),
+        maybeInvalid: regionInfo.maybeInvalid
+      };
+      effective = multiplyRangeInfos(
+        effective,
+        optionalRegion,
+        intervalLimit
+      );
+    }
+    return effective;
+  });
+  return unionRangeInfos(perCurveRanges, intervalLimit);
+}
+
+function multiplyRangeInfos(left, right, intervalLimit) {
+  if (left.intervals.length === 0 || right.intervals.length === 0) {
+    return {
+      intervals: [],
+      maybeInvalid: true
+    };
+  }
+  const estimated = estimateDagRanges(MULTIPLY_RANGE_DAG, {
+    left: left.intervals,
+    right: right.intervals
+  }).nodeRanges[MULTIPLY_RANGE_DAG.root];
+  return {
+    intervals: simplifyIntervals(estimated.intervals, intervalLimit),
+    maybeInvalid:
+      left.maybeInvalid || right.maybeInvalid || estimated.maybeInvalid
+  };
+}
+
+function unionRangeInfos(infos, intervalLimit) {
+  if (infos.length === 0) {
+    return {
+      intervals: [[1, 1]],
+      maybeInvalid: false
+    };
+  }
+  return {
+    intervals: simplifyIntervals(
+      infos.flatMap(info => info.intervals),
+      intervalLimit
+    ),
+    maybeInvalid: infos.some(info => info.maybeInvalid)
+  };
+}
+
+function createInteractionReservedRanges({
+  coordinateRanges,
+  curves,
+  wavelengthRange,
+  refractiveIndexRange,
+  tolerancePolicy,
+  intervalLimit
+}) {
+  return {
+    d_0x: [[-1, 1]],
+    d_0y: [[-1, -WEBGPU_F32_MIN_NORMAL]],
+    P_0s: [[0, WEBGPU_MAX_POLARIZED_POWER]],
+    P_0p: [[0, WEBGPU_MAX_POLARIZED_POWER]],
+    lambda: wavelengthRange,
+    ...(coordinateRanges ?? zeroCoordinateRanges()),
+    u: collectCurveParameterRanges(curves, tolerancePolicy, intervalLimit),
+    sigma: curves.some(curve => curve.twoSided)
+      ? [[-1, -1], [1, 1]]
+      : [[1, 1]],
+    ...(refractiveIndexRange
+      ? {
+        n_0: cloneRangeInfo(refractiveIndexRange),
+        n_1: cloneRangeInfo(refractiveIndexRange)
+      }
+      : {})
+  };
+}
+
+function collectCurveParameterRanges(curves, tolerancePolicy, intervalLimit) {
+  if (curves.length === 0) return [[0, 0]];
+  const intervals = curves.map(curve => {
+    const geometry = curve.geometry;
+    if (geometry.kind === 'circle') return [0.5, 0.5];
+    const distanceTolerance = Math.max(
+      geometry.positionTolerance,
+      geometry.endpointTolerance ?? 0
+    );
+    if (
+      geometry.kind === 'lineSegment' ||
+      geometry.kind === 'smoothLineSegment'
+    ) {
+      const tolerance = Math.max(
+        tolerancePolicy.parameter,
+        distanceTolerance * geometry.invLength
+      );
+      return outwardF32Interval(-tolerance, 1 + tolerance, 'curve u range');
+    }
+    if (geometry.kind === 'circularArc') {
+      const tolerance = Math.max(
+        tolerancePolicy.parameter,
+        distanceTolerance * geometry.invChordLength
+      );
+      return outwardF32Interval(-tolerance, 1 + tolerance, 'curve u range');
+    }
+    if (geometry.kind === 'cubicBezier') {
+      const normalizedTolerance = distanceTolerance * geometry.invScale;
+      const startDerivative = Math.hypot(
+        3 * (geometry.control1X - geometry.startX),
+        3 * (geometry.control1Y - geometry.startY)
+      );
+      const endDerivative = Math.hypot(
+        3 * (geometry.endX - geometry.control2X),
+        3 * (geometry.endY - geometry.control2Y)
+      );
+      const startTolerance = startDerivative > 0
+        ? Math.max(tolerancePolicy.parameter, normalizedTolerance / startDerivative)
+        : tolerancePolicy.parameter;
+      const endTolerance = endDerivative > 0
+        ? Math.max(tolerancePolicy.parameter, normalizedTolerance / endDerivative)
+        : tolerancePolicy.parameter;
+      return outwardF32Interval(
+        -startTolerance,
+        1 + endTolerance,
+        'curve u range'
+      );
+    }
+    throw new TypeError(
+      `Unsupported prepared curve kind: ${JSON.stringify(geometry.kind)}`
+    );
+  });
+  return simplifyIntervals(intervals, intervalLimit);
+}
+
+function collectOwnerCoordinateRanges(description, intervalLimit) {
+  const surfaceBounds = description.surfaces.map(() => null);
+  const regionBounds = description.regions.map(() => null);
+  const detectorBounds = description.detectors.map(() => null);
+  for (const curve of description.curves) {
+    const table = curve.ownerKind === 'surface'
+      ? surfaceBounds
+      : curve.ownerKind === 'region'
+        ? regionBounds
+        : detectorBounds;
+    table[curve.ownerId] = combineBounds(table[curve.ownerId], curve.bounds);
+  }
+  return {
+    surfaces: groupBoundsByType(
+      surfaceBounds,
+      description.surfaces,
+      'surfaceTypeId',
+      description.types.surfaces.length,
+      intervalLimit
+    ),
+    bulks: groupBoundsByType(
+      regionBounds,
+      description.regions,
+      'bulkTypeId',
+      description.types.bulks.length,
+      intervalLimit
+    ),
+    detectors: groupBoundsByType(
+      detectorBounds,
+      description.detectors,
+      'detectorTypeId',
+      description.types.detectors.length,
+      intervalLimit
+    ),
+    surfaceBounds,
+    regionBounds,
+    detectorBounds
+  };
+}
+
+function groupBoundsByType(
+  ownerBounds,
+  owners,
+  typeIdKey,
+  typeCount,
+  intervalLimit
+) {
+  const grouped = Array.from({ length: typeCount }, () => []);
+  ownerBounds.forEach((bounds, ownerId) => {
+    if (bounds) grouped[owners[ownerId][typeIdKey]].push(bounds);
+  });
+  return grouped.map(boundsList => {
+    if (boundsList.length === 0) return zeroCoordinateRanges();
+    return {
+      x: simplifyIntervals(boundsList.map(bounds =>
+        outwardF32Interval(bounds.minX, bounds.maxX, 'coordinate x range')
+      ), intervalLimit),
+      y: simplifyIntervals(boundsList.map(bounds =>
+        outwardF32Interval(bounds.minY, bounds.maxY, 'coordinate y range')
+      ), intervalLimit)
+    };
+  });
+}
+
+function simplifySingletonValues(values, intervalLimit) {
+  const unique = [...new Set(values.map(value =>
+    Object.is(value, -0) ? 0 : value
+  ))].sort((left, right) => left - right);
+  if (unique.length === 0) return [[0, 0]];
+  if (unique.length > intervalLimit) {
+    return [[unique[0], unique[unique.length - 1]]];
+  }
+  return unique.map(value => [value, value]);
+}
+
+function simplifyIntervals(intervals, intervalLimit) {
+  const sorted = intervals
+    .map(([lo, hi]) => [lo, hi])
+    .sort((left, right) => left[0] - right[0] || left[1] - right[1]);
+  const merged = [];
+  for (const interval of sorted) {
+    const last = merged[merged.length - 1];
+    if (last &amp;&amp; interval[0] &lt;= last[1]) {
+      last[1] = Math.max(last[1], interval[1]);
+    } else {
+      merged.push(interval);
+    }
+  }
+  if (merged.length > intervalLimit) {
+    return [[merged[0][0], merged[merged.length - 1][1]]];
+  }
+  return merged;
+}
+
+function outwardF32Interval(lo, hi, name) {
+  if (!Number.isFinite(lo) || !Number.isFinite(hi) || lo > hi) {
+    throw new RangeError(`${name} must have finite ordered endpoints.`);
+  }
+  if (lo &lt; -WEBGPU_F32_MAX || hi > WEBGPU_F32_MAX) {
+    throw new RangeError(`${name} is outside the finite f32 range.`);
+  }
+  let roundedLo = Math.fround(lo);
+  let roundedHi = Math.fround(hi);
+  if (roundedLo > lo) roundedLo = nextDownF32(roundedLo);
+  if (roundedHi &lt; hi) roundedHi = nextUpF32(roundedHi);
+  return [roundedLo, roundedHi];
+}
+
+function nextUpF32(value) {
+  value = Math.fround(value);
+  if (value === Infinity) return value;
+  if (Object.is(value, -0)) value = 0;
+  F32[0] = value;
+  if (value >= 0) U32[0] += 1;
+  else U32[0] -= 1;
+  return F32[0];
+}
+
+function nextDownF32(value) {
+  return -nextUpF32(-value);
+}
+
+function validateSpatialBounds(bounds, name) {
+  if (!bounds) {
+    throw new TypeError(`Processed ${name} is missing bounds.`);
+  }
+  for (const key of ['minX', 'minY', 'maxX', 'maxY']) {
+    const value = bounds[key];
+    if (!Number.isFinite(value) || Math.abs(value) > WEBGPU_SPATIAL_MAX) {
+      throw new RangeError(
+        `Processed ${name} ${key}=${value} exceeds the WebGPU spatial limit ${WEBGPU_SPATIAL_MAX}.`
+      );
+    }
+  }
+  if (bounds.minX > bounds.maxX || bounds.minY > bounds.maxY) {
+    throw new RangeError(`Processed ${name} has invalid bounds.`);
+  }
+}
+
+function combineBounds(first, second) {
+  if (!first) return { ...second };
+  return {
+    minX: Math.min(first.minX, second.minX),
+    minY: Math.min(first.minY, second.minY),
+    maxX: Math.max(first.maxX, second.maxX),
+    maxY: Math.max(first.maxY, second.maxY)
+  };
+}
+
+function boundsOverlap(first, second) {
+  return (
+    first.minX &lt;= second.maxX &amp;&amp;
+    first.maxX >= second.minX &amp;&amp;
+    first.minY &lt;= second.maxY &amp;&amp;
+    first.maxY >= second.minY
+  );
+}
+
+function zeroCoordinateRanges() {
+  return { x: [[0, 0]], y: [[0, 0]] };
+}
+
+function cloneRange(range) {
+  if (!range) throw new TypeError('Missing reserved WebGPU parameter range.');
+  return range.map(([lo, hi]) => [lo, hi]);
+}
+
+function cloneRangeInfo(info) {
+  return {
+    intervals: cloneRange(info.intervals),
+    maybeInvalid: info.maybeInvalid
+  };
+}
+
+function validateUniqueNames(names, context) {
+  const unique = new Set();
+  for (const name of names) {
+    if (typeof name !== 'string' || name.length === 0 || unique.has(name)) {
+      throw new TypeError(`${context} must contain unique nonempty strings.`);
+    }
+    unique.add(name);
+  }
+}
+
+function validateDescription(description) {
+  if (
+    !description ||
+    !description.types ||
+    !Array.isArray(description.curves) ||
+    !description.bvh
+  ) {
+    throw new TypeError('A processed scene description is required.');
+  }
+}
+
+function validateIntervalLimit(intervalLimit) {
+  if (!Number.isInteger(intervalLimit) || intervalLimit &lt; 1) {
+    throw new RangeError('intervalLimit must be a positive integer.');
+  }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a></li><li><a href="module-CanvasContainer.html">CanvasContainer</a></li><li><a href="module-ColorModeModal.html">ColorModeModal</a></li><li><a href="module-ColorPicker.html">ColorPicker</a></li><li><a href="module-DashPicker.html">DashPicker</a></li><li><a href="module-FileBar.html">FileBar</a></li><li><a href="module-FillControl.html">FillControl</a></li><li><a href="module-FontPicker.html">FontPicker</a></li><li><a href="module-Footer.html">Footer</a></li><li><a href="module-ImportShapesModal.html">ImportShapesModal</a></li><li><a href="module-LanguageModal.html">LanguageModal</a></li><li><a href="module-LayoutAidsBar.html">LayoutAidsBar</a></li><li><a href="module-ModuleModal.html">ModuleModal</a></li><li><a href="module-ModuleTools.html">ModuleTools</a></li><li><a href="module-MoreToolsCollapsible.html">MoreToolsCollapsible</a></li><li><a href="module-NumberControl.html">NumberControl</a></li><li><a href="module-ObjBar.html">ObjBar</a></li><li><a href="module-PointControl.html">PointControl</a></li><li><a href="module-PopupSelectControl.html">PopupSelectControl</a></li><li><a href="module-RayDensityBar.html">RayDensityBar</a></li><li><a href="module-SaveModal.html">SaveModal</a></li><li><a href="module-SettingsBar.html">SettingsBar</a></li><li><a href="module-SettingsList.html">SettingsList</a></li><li><a href="module-SettingsWarning.html">SettingsWarning</a></li><li><a href="module-Sidebar.html">Sidebar</a></li><li><a href="module-SimulationEngineModal.html">SimulationEngineModal</a></li><li><a href="module-SimulatorControls.html">SimulatorControls</a></li><li><a href="module-SizePicker.html">SizePicker</a></li><li><a href="module-StatusArea.html">StatusArea</a></li><li><a href="module-StrokeControl.html">StrokeControl</a></li><li><a href="module-TextControl.html">TextControl</a></li><li><a href="module-TextInput.html">TextInput</a></li><li><a href="module-ThemeModal.html">ThemeModal</a></li><li><a href="module-ThemeOptionsList.html">ThemeOptionsList</a></li><li><a href="module-ToggleControl.html">ToggleControl</a></li><li><a href="module-ToolItem.html">ToolItem</a></li><li><a href="module-Toolbar.html">Toolbar</a></li><li><a href="module-ToolsBar.html">ToolsBar</a></li><li><a href="module-ToolsCategory.html">ToolsCategory</a></li><li><a href="module-ToolsList.html">ToolsList</a></li><li><a href="module-ViewBar.html">ViewBar</a></li><li><a href="module-VirtualKeyboard.html">VirtualKeyboard</a></li><li><a href="module-WelcomeMessage.html">WelcomeMessage</a></li><li><a href="module-ZoomControl.html">ZoomControl</a></li><li><a href="module-app_.html">app</a></li><li><a href="module-shapeImport.html">shapeImport</a></li><li><a href="module-svgImport.html">svgImport</a></li></ul><h3>Namespaces</h3><ul><li><a href="geometry.html">geometry</a></li><li><a href="sceneObjs.html">sceneObjs</a></li></ul><h3>Classes</h3><ul><li><a href="BaseFilter.html">BaseFilter</a></li><li><a href="BaseGlass.html">BaseGlass</a></li><li><a href="BaseGrinGlass.html">BaseGrinGlass</a></li><li><a href="BaseSceneObj.html">BaseSceneObj</a></li><li><a href="CanvasRenderer.html">CanvasRenderer</a></li><li><a href="CpuSimulationEngine.html">CpuSimulationEngine</a></li><li><a href="DegenerateCurveError.html">DegenerateCurveError</a></li><li><a href="Editor.html">Editor</a></li><li><a href="FloatColorRenderer.html">FloatColorRenderer</a></li><li><a href="JsonEditorService.html">JsonEditorService</a></li><li><a href="Mouse.html">Mouse</a></li><li><a href="ObjBar.html">ObjBar</a></li><li><a href="PrimitiveBasedSimulator.html">PrimitiveBasedSimulator</a></li><li><a href="Scene.html">Scene</a></li><li><a href="Simulator.html">Simulator</a></li><li><a href="TexExprParser.html">TexExprParser</a></li><li><a href="WebGpuCanvasRayRasterizer.html">WebGpuCanvasRayRasterizer</a></li><li><a href="WebGpuInitialMembershipStage.html">WebGpuInitialMembershipStage</a></li><li><a href="WebGpuMegakernelStaticSceneStorage.html">WebGpuMegakernelStaticSceneStorage</a></li><li><a href="WebGpuReadyRayRenderer.html">WebGpuReadyRayRenderer</a></li><li><a href="WebGpuSimulationEngine.html">WebGpuSimulationEngine</a></li><li><a href="WebGpuSimulationRun.html">WebGpuSimulationRun</a></li><li><a href="sceneObjs.AngleSource.html">AngleSource</a></li><li><a href="sceneObjs.Aperture.html">Aperture</a></li><li><a href="sceneObjs.ArcMirror.html">ArcMirror</a></li><li><a href="sceneObjs.BaseCustomSurface.html">BaseCustomSurface</a></li><li><a href="sceneObjs.Beam.html">Beam</a></li><li><a href="sceneObjs.BeamSplitter.html">BeamSplitter</a></li><li><a href="sceneObjs.Blocker.html">Blocker</a></li><li><a href="sceneObjs.CircleBlocker.html">CircleBlocker</a></li><li><a href="sceneObjs.CircleGlass.html">CircleGlass</a></li><li><a href="sceneObjs.CircleGrinGlass.html">CircleGrinGlass</a></li><li><a href="sceneObjs.ConcaveDiffractionGrating.html">ConcaveDiffractionGrating</a></li><li><a href="sceneObjs.CropBox.html">CropBox</a></li><li><a href="sceneObjs.CurveGlass.html">CurveGlass</a></li><li><a href="sceneObjs.CurveGrinGlass.html">CurveGrinGlass</a></li><li><a href="sceneObjs.CurveMirror.html">CurveMirror</a></li><li><a href="sceneObjs.CustomArcSurface.html">CustomArcSurface</a></li><li><a href="sceneObjs.CustomCurveSurface.html">CustomCurveSurface</a></li><li><a href="sceneObjs.CustomGlass.html">CustomGlass</a></li><li><a href="sceneObjs.CustomMirror.html">CustomMirror</a></li><li><a href="sceneObjs.CustomParamSurface.html">CustomParamSurface</a></li><li><a href="sceneObjs.CustomSurface.html">CustomSurface</a></li><li><a href="sceneObjs.Detector.html">Detector</a></li><li><a href="sceneObjs.DiffractionGrating.html">DiffractionGrating</a></li><li><a href="sceneObjs.Drawing.html">Drawing</a></li><li><a href="sceneObjs.Glass.html">Glass</a></li><li><a href="sceneObjs.GrinGlass.html">GrinGlass</a></li><li><a href="sceneObjs.Handle.html">Handle</a></li><li><a href="sceneObjs.IdealLens.html">IdealLens</a></li><li><a href="sceneObjs.IdealMirror.html">IdealMirror</a></li><li><a href="sceneObjs.LineArrow.html">LineArrow</a></li><li><a href="sceneObjs.Mirror.html">Mirror</a></li><li><a href="sceneObjs.ModuleObj.html">ModuleObj</a></li><li><a href="sceneObjs.ParabolicMirror.html">ParabolicMirror</a></li><li><a href="sceneObjs.ParamGlass.html">ParamGlass</a></li><li><a href="sceneObjs.ParamGrinGlass.html">ParamGrinGlass</a></li><li><a href="sceneObjs.ParamMirror.html">ParamMirror</a></li><li><a href="sceneObjs.PlaneGlass.html">PlaneGlass</a></li><li><a href="sceneObjs.PointSource.html">PointSource</a></li><li><a href="sceneObjs.Protractor.html">Protractor</a></li><li><a href="sceneObjs.Ruler.html">Ruler</a></li><li><a href="sceneObjs.SingleRay.html">SingleRay</a></li><li><a href="sceneObjs.SphericalLens.html">SphericalLens</a></li><li><a href="sceneObjs.TextLabel.html">TextLabel</a></li></ul><h3>Events</h3><ul><li><a href="Editor.html#event:handleCreationHint">handleCreationHint</a></li><li><a href="Editor.html#event:mouseCoordinateChange">mouseCoordinateChange</a></li><li><a href="Editor.html#event:newAction">newAction</a></li><li><a href="Editor.html#event:newUndoPoint">newUndoPoint</a></li><li><a href="Editor.html#event:objectBodyClick">objectBodyClick</a></li><li><a href="Editor.html#event:positioningEnd">positioningEnd</a></li><li><a href="Editor.html#event:positioningStart">positioningStart</a></li><li><a href="Editor.html#event:redo">redo</a></li><li><a href="Editor.html#event:requestPositioningComfirm">requestPositioningComfirm</a></li><li><a href="Editor.html#event:scaleChange">scaleChange</a></li><li><a href="Editor.html#event:sceneLoaded">sceneLoaded</a></li><li><a href="Editor.html#event:selectionChange">selectionChange</a></li><li><a href="Editor.html#event:undo">undo</a></li><li><a href="ObjBar.html#event:edit">edit</a></li><li><a href="ObjBar.html#event:editEnd">editEnd</a></li><li><a href="ObjBar.html#event:requestUpdate">requestUpdate</a></li><li><a href="ObjBar.html#event:showAdvancedEnabled">showAdvancedEnabled</a></li><li><a href="Simulator.html#event:lightLayerSyncChange">lightLayerSyncChange</a></li><li><a href="Simulator.html#event:simulationComplete">simulationComplete</a></li><li><a href="Simulator.html#event:simulationPause">simulationPause</a></li><li><a href="Simulator.html#event:simulationStart">simulationStart</a></li><li><a href="Simulator.html#event:simulationStop">simulationStop</a></li><li><a href="Simulator.html#event:update">update</a></li><li><a href="global.html#event:deviceChange">deviceChange</a></li><li><a href="global.html#event:requestUpdateErrorAndWarning">requestUpdateErrorAndWarning</a></li><li><a href="global.html#event:webglContextLost">webglContextLost</a></li></ul><h3>Global</h3><ul><li><a href="global.html#BACKTICK_HIGHLIGHT_MATCH_CLASS">BACKTICK_HIGHLIGHT_MATCH_CLASS</a></li><li><a href="global.html#CircleObjMixin">CircleObjMixin</a></li><li><a href="global.html#CurveObjMixin">CurveObjMixin</a></li><li><a href="global.html#DATA_VERSION">DATA_VERSION</a></li><li><a href="global.html#DEFAULT_SIMULATION_ENGINE_CONFIGS">DEFAULT_SIMULATION_ENGINE_CONFIGS</a></li><li><a href="global.html#FLOAT32_EPSILON">FLOAT32_EPSILON</a></li><li><a href="global.html#FN1">FN1</a></li><li><a href="global.html#FORMULA_MODULE_TOOLTIP_MAX_LINES">FORMULA_MODULE_TOOLTIP_MAX_LINES</a></li><li><a href="global.html#FOR_IF_DEFAULTS">FOR_IF_DEFAULTS</a></li><li><a href="global.html#GREEK_SYMBOL">GREEK_SYMBOL</a></li><li><a href="global.html#JSON_INNER_COLLAPSE_THRESHOLD">JSON_INNER_COLLAPSE_THRESHOLD</a></li><li><a href="global.html#LITERAL_NUMERIC_TOKEN">LITERAL_NUMERIC_TOKEN</a></li><li><a href="global.html#LineObjMixin">LineObjMixin</a></li><li><a href="global.html#MODULE_EDITOR_LIST">MODULE_EDITOR_LIST</a></li><li><a href="global.html#PARAM_CURVE_POINT_TOLERANCE">PARAM_CURVE_POINT_TOLERANCE</a></li><li><a href="global.html#PAREN_HIGHLIGHT_MATCH_CLASS">PAREN_HIGHLIGHT_MATCH_CLASS</a></li><li><a href="global.html#PRIMITIVE_CURVE_REFERENCE_PREFIX">PRIMITIVE_CURVE_REFERENCE_PREFIX</a></li><li><a href="global.html#ParamCurveObjMixin">ParamCurveObjMixin</a></li><li><a href="global.html#_applyPiecesJoinedWarning">_applyPiecesJoinedWarning</a></li><li><a href="global.html#_ensureCubicBezierPathReady">_ensureCubicBezierPathReady</a></li><li><a href="global.html#_pathPairToHermiteBezier">_pathPairToHermiteBezier</a></li><li><a href="global.html#allocateInteractionIndexBuffers">allocateInteractionIndexBuffers</a></li><li><a href="global.html#appendPartialDerivatives">appendPartialDerivatives</a></li><li><a href="global.html#applyTextareaAutoResize">applyTextareaAutoResize</a></li><li><a href="global.html#arePiecesJoined">arePiecesJoined</a></li><li><a href="global.html#buildBacktickHighlightHtml">buildBacktickHighlightHtml</a></li><li><a href="global.html#buildBvh">buildBvh</a></li><li><a href="global.html#buildModuleInstanceTooltipHtml">buildModuleInstanceTooltipHtml</a></li><li><a href="global.html#buildParenHighlightHtml">buildParenHighlightHtml</a></li><li><a href="global.html#checkRayIntersectsShape">checkRayIntersectsShape</a></li><li><a href="global.html#clampWebGpuParameterToF32">clampWebGpuParameterToF32</a></li><li><a href="global.html#collapseBinaryBvh">collapseBinaryBvh</a></li><li><a href="global.html#collapseRedundantNestedParentheses">collapseRedundantNestedParentheses</a></li><li><a href="global.html#collectPointPaths">collectPointPaths</a></li><li><a href="global.html#collectRayPowerQueue">collectRayPowerQueue</a></li><li><a href="global.html#collectReferencedParameterNames">collectReferencedParameterNames</a></li><li><a href="global.html#combineDags">combineDags</a></li><li><a href="global.html#compileParametricDerivative">compileParametricDerivative</a></li><li><a href="global.html#controlPointIndexAfterReorder">controlPointIndexAfterReorder</a></li><li><a href="global.html#countCurveRayCrossings">countCurveRayCrossings</a></li><li><a href="global.html#countIntersections">countIntersections</a></li><li><a href="global.html#createArcOrLineCurve">createArcOrLineCurve</a></li><li><a href="global.html#createCpuDetectorResults">createCpuDetectorResults</a></li><li><a href="global.html#createCustomSurfacePrimitive">createCustomSurfacePrimitive</a></li><li><a href="global.html#createDagClosureEvaluator">createDagClosureEvaluator</a></li><li><a href="global.html#createDagEvaluator">createDagEvaluator</a></li><li><a href="global.html#createDagWgslSpecialization">createDagWgslSpecialization</a></li><li><a href="global.html#createInteractionCandidate">createInteractionCandidate</a></li><li><a href="global.html#createInteractionCandidateContext">createInteractionCandidateContext</a></li><li><a href="global.html#createInteractionIndexBuffers">createInteractionIndexBuffers</a></li><li><a href="global.html#createInteractionTypeLayout">createInteractionTypeLayout</a></li><li><a href="global.html#createMegakernelCollectorShader">createMegakernelCollectorShader</a></li><li><a href="global.html#createMegakernelInitialShader">createMegakernelInitialShader</a></li><li><a href="global.html#createMegakernelQueueLayout">createMegakernelQueueLayout</a></li><li><a href="global.html#createRegionMembershipResult">createRegionMembershipResult</a></li><li><a href="global.html#createSampledPrimitiveCurveEntries">createSampledPrimitiveCurveEntries</a></li><li><a href="global.html#createWebGpuDagPrograms">createWebGpuDagPrograms</a></li><li><a href="global.html#createWebGpuExecutionPlan">createWebGpuExecutionPlan</a></li><li><a href="global.html#createWebGpuMegakernelShader">createWebGpuMegakernelShader</a></li><li><a href="global.html#createWebGpuRawTraceShader">createWebGpuRawTraceShader</a></li><li><a href="global.html#createWebGpuTraceSceneData">createWebGpuTraceSceneData</a></li><li><a href="global.html#createWebGpuTraceSceneDeclaration">createWebGpuTraceSceneDeclaration</a></li><li><a href="global.html#deepEqual">deepEqual</a></li><li><a href="global.html#deriveWebGpuWavelengthRange">deriveWebGpuWavelengthRange</a></li><li><a href="global.html#distancePointToSegment">distancePointToSegment</a></li><li><a href="global.html#draftsToCommittedValue">draftsToCommittedValue</a></li><li><a href="global.html#drawConstruction">drawConstruction</a></li><li><a href="global.html#drawControlHandles">drawControlHandles</a></li><li><a href="global.html#drawPath">drawPath</a></li><li><a href="global.html#drawPreparedCurve">drawPreparedCurve</a></li><li><a href="global.html#drawPreparedRegion">drawPreparedRegion</a></li><li><a href="global.html#ensureCurveIntersectionNormal">ensureCurveIntersectionNormal</a></li><li><a href="global.html#equationDisplayToValue">equationDisplayToValue</a></li><li><a href="global.html#equationValueForListDisplay">equationValueForListDisplay</a></li><li><a href="global.html#equationValueToDisplay">equationValueToDisplay</a></li><li><a href="global.html#estimateAmbiguousRayWarningPowerThreshold">estimateAmbiguousRayWarningPowerThreshold</a></li><li><a href="global.html#estimateDagRanges">estimateDagRanges</a></li><li><a href="global.html#estimateWebGpuParameterRanges">estimateWebGpuParameterRanges</a></li><li><a href="global.html#evaluatePreparedCurve">evaluatePreparedCurve</a></li><li><a href="global.html#extractNonDefaults">extractNonDefaults</a></li><li><a href="global.html#extractNumbersAsParameters">extractNumbersAsParameters</a></li><li><a href="global.html#finalizeInteractionCandidate">finalizeInteractionCandidate</a></li><li><a href="global.html#findMatchingBraceEnd">findMatchingBraceEnd</a></li><li><a href="global.html#findMatchingParenPair">findMatchingParenPair</a></li><li><a href="global.html#findMathBlockRanges">findMathBlockRanges</a></li><li><a href="global.html#findPrimitiveCurveReferenceSpans">findPrimitiveCurveReferenceSpans</a></li><li><a href="global.html#findUnjoinedPieces">findUnjoinedPieces</a></li><li><a href="global.html#findValidJsonObjectSpans">findValidJsonObjectSpans</a></li><li><a href="global.html#formatKeyPath">formatKeyPath</a></li><li><a href="global.html#formatPrimitiveCurveReference">formatPrimitiveCurveReference</a></li><li><a href="global.html#formatStatusLineHtml">formatStatusLineHtml</a></li><li><a href="global.html#formatTooltipNumber">formatTooltipNumber</a></li><li><a href="global.html#formulaDisplayToValue">formulaDisplayToValue</a></li><li><a href="global.html#generateDagJsEvaluator">generateDagJsEvaluator</a></li><li><a href="global.html#getAllByKeyPath">getAllByKeyPath</a></li><li><a href="global.html#getCurveBounds">getCurveBounds</a></li><li><a href="global.html#getEffectiveRayPowerOptions">getEffectiveRayPowerOptions</a></li><li><a href="global.html#getInteractionTypeIndex">getInteractionTypeIndex</a></li><li><a href="global.html#getIntersectionTolerancePolicy">getIntersectionTolerancePolicy</a></li><li><a href="global.html#getNextModuleIdentifierName">getNextModuleIdentifierName</a></li><li><a href="global.html#getRayIntersections">getRayIntersections</a></li><li><a href="global.html#getRayIntersectionsCubicBezier">getRayIntersectionsCubicBezier</a></li><li><a href="global.html#getRayIntersectionsLinear">getRayIntersectionsLinear</a></li><li><a href="global.html#getRoundingErrorFactor">getRoundingErrorFactor</a></li><li><a href="global.html#initPath">initPath</a></li><li><a href="global.html#intersectCurve">intersectCurve</a></li><li><a href="global.html#isAtomicExpr">isAtomicExpr</a></li><li><a href="global.html#isClosed">isClosed</a></li><li><a href="global.html#isFormula">isFormula</a></li><li><a href="global.html#isFormulaValueSupported">isFormulaValueSupported</a></li><li><a href="global.html#isInside">isInside</a></li><li><a href="global.html#isLiteralBooleanFieldValue">isLiteralBooleanFieldValue</a></li><li><a href="global.html#isLiteralNumericFieldValue">isLiteralNumericFieldValue</a></li><li><a href="global.html#isNonBasicProperty">isNonBasicProperty</a></li><li><a href="global.html#isNonDefault">isNonDefault</a></li><li><a href="global.html#isOnBoundary">isOnBoundary</a></li><li><a href="global.html#isOutside">isOutside</a></li><li><a href="global.html#isPointHardcoded">isPointHardcoded</a></li><li><a href="global.html#isPositivelyOriented">isPositivelyOriented</a></li><li><a href="global.html#isSourceIndexArray">isSourceIndexArray</a></li><li><a href="global.html#isTextareaAutoResizeMeasurable">isTextareaAutoResizeMeasurable</a></li><li><a href="global.html#isValidFormulaParameterName">isValidFormulaParameterName</a></li><li><a href="global.html#latexToMathJS">latexToMathJS</a></li><li><a href="global.html#mathJSToLatex">mathJSToLatex</a></li><li><a href="global.html#mergeWithDefaults">mergeWithDefaults</a></li><li><a href="global.html#newlinesToBr">newlinesToBr</a></li><li><a href="global.html#nextDuplicateIdentifier">nextDuplicateIdentifier</a></li><li><a href="global.html#normalizeNumericStrings">normalizeNumericStrings</a></li><li><a href="global.html#normalizeParsedEquationAST">normalizeParsedEquationAST</a></li><li><a href="global.html#observeTextareasResizeWhenVisible">observeTextareasResizeWhenVisible</a></li><li><a href="global.html#packWebGpuScene">packWebGpuScene</a></li><li><a href="global.html#parseFormula">parseFormula</a></li><li><a href="global.html#populateObjBarShape">populateObjBarShape</a></li><li><a href="global.html#prepareCpuOutgoingRayData">prepareCpuOutgoingRayData</a></li><li><a href="global.html#prepareCurve">prepareCurve</a></li><li><a href="global.html#preprocessPrimitives">preprocessPrimitives</a></li><li><a href="global.html#promptNewModuleName">promptNewModuleName</a></li><li><a href="global.html#promptNewModuleNameForHandle">promptNewModuleNameForHandle</a></li><li><a href="global.html#recordWebGpuRecompilationNeeds">recordWebGpuRecompilationNeeds</a></li><li><a href="global.html#renderCpuRay">renderCpuRay</a></li><li><a href="global.html#resetInteractionIndexBuffers">resetInteractionIndexBuffers</a></li><li><a href="global.html#resolvePrimitiveSimulatorConfig">resolvePrimitiveSimulatorConfig</a></li><li><a href="global.html#resolveSimulationEngineConfig">resolveSimulationEngineConfig</a></li><li><a href="global.html#sanitizePastedJson">sanitizePastedJson</a></li><li><a href="global.html#setByKeyPath">setByKeyPath</a></li><li><a href="global.html#setViewportSize">setViewportSize</a></li><li><a href="global.html#solveQuadraticRoots">solveQuadraticRoots</a></li><li><a href="global.html#splitTexCommaArgs">splitTexCommaArgs</a></li><li><a href="global.html#splitTopLevelCommas">splitTopLevelCommas</a></li><li><a href="global.html#stableRaySamplingPhase">stableRaySamplingPhase</a></li><li><a href="global.html#stripJsonComments">stripJsonComments</a></li><li><a href="global.html#stripMarkdownCodeFence">stripMarkdownCodeFence</a></li><li><a href="global.html#stripParenChain">stripParenChain</a></li><li><a href="global.html#stripRedundantParensForLatex">stripRedundantParensForLatex</a></li><li><a href="global.html#substituteDagParameters">substituteDagParameters</a></li><li><a href="global.html#suggestNewModuleName">suggestNewModuleName</a></li><li><a href="global.html#templatePointLockState">templatePointLockState</a></li><li><a href="global.html#textHasBacktickBlocks">textHasBacktickBlocks</a></li><li><a href="global.html#toJSON">toJSON</a></li><li><a href="global.html#tooltipAllTupleRowsConstant">tooltipAllTupleRowsConstant</a></li><li><a href="global.html#tooltipMantissaDecimalPlaces">tooltipMantissaDecimalPlaces</a></li><li><a href="global.html#tooltipPointTupleEqual">tooltipPointTupleEqual</a></li><li><a href="global.html#tooltipValueEqualForCollapse">tooltipValueEqualForCollapse</a></li><li><a href="global.html#tracePath">tracePath</a></li><li><a href="global.html#traceSceneCapacityCounts">traceSceneCapacityCounts</a></li><li><a href="global.html#traverseBvhForInteraction">traverseBvhForInteraction</a></li><li><a href="global.html#traverseBvhForRegionMembership">traverseBvhForRegionMembership</a></li><li><a href="global.html#unwrapParenInCallableArgs">unwrapParenInCallableArgs</a></li><li><a href="global.html#updateInteractionCandidate">updateInteractionCandidate</a></li><li><a href="global.html#useBacktickHighlightLayer">useBacktickHighlightLayer</a></li><li><a href="global.html#useParenHighlightLayer">useParenHighlightLayer</a></li><li><a href="global.html#usePreferencesStore">usePreferencesStore</a></li><li><a href="global.html#useSceneStore">useSceneStore</a></li><li><a href="global.html#useStatus">useStatus</a></li><li><a href="global.html#useStatusStore">useStatusStore</a></li><li><a href="global.html#useThemeStore">useThemeStore</a></li><li><a href="global.html#useWebGpuTraceScene">useWebGpuTraceScene</a></li><li><a href="global.html#vTooltipPopover">vTooltipPopover</a></li><li><a href="global.html#validateDagNodeLabel">validateDagNodeLabel</a></li><li><a href="global.html#validateFormulaNodeLabel">validateFormulaNodeLabel</a></li><li><a href="global.html#validateNestedKeys">validateNestedKeys</a></li><li><a href="global.html#validateNumericEpsilon">validateNumericEpsilon</a></li><li><a href="global.html#validateWebGpuSpatialBounds">validateWebGpuSpatialBounds</a></li><li><a href="global.html#valueToFormulaDisplay">valueToFormulaDisplay</a></li><li><a href="global.html#versionUpdate">versionUpdate</a></li><li><a href="global.html#viewportCenterSceneCoords">viewportCenterSceneCoords</a></li><li><a href="global.html#writeCpuOutgoingRays">writeCpuOutgoingRays</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,316 @@
+{
+  "name": "复消色差透镜",
+  "version": 5,
+  "modules": {
+    "ContSpectrum": {
+      "numPoints": 2,
+      "params": [
+        "min=380:1:700:380",
+        "step=1:1:100:10",
+        "max=380:1:700:700",
+        "brightness=0.01:0.01:100:50"
+      ],
+      "objs": [
+        {
+          "for": "lambda=min:step:max",
+          "type": "SingleRay",
+          "p1": {
+            "x": "`x_1`",
+            "y": "`y_1`"
+          },
+          "p2": {
+            "x": "`x_2`",
+            "y": "`y_2`"
+          },
+          "wavelength": "`lambda`",
+          "brightness": "`brightness/((max-min)/step)`"
+        }
+      ]
+    }
+  },
+  "objs": [
+    {
+      "type": "CustomGlass",
+      "p1": {
+        "x": 663,
+        "y": 340
+      },
+      "p2": {
+        "x": 663,
+        "y": 80
+      },
+      "eqn1": "-0.3+0.05x^2",
+      "eqn2": "-0.13x^2",
+      "curveStepSize": 2,
+      "partialReflect": false
+    },
+    {
+      "type": "CustomGlass",
+      "p1": {
+        "x": 722,
+        "y": 340
+      },
+      "p2": {
+        "x": 722,
+        "y": 80
+      },
+      "eqn1": "-0.2",
+      "eqn2": "-0.15x^2",
+      "curveStepSize": 2,
+      "refIndex": 1.65,
+      "partialReflect": false
+    },
+    {
+      "type": "CustomGlass",
+      "p1": {
+        "x": 706,
+        "y": 340
+      },
+      "p2": {
+        "x": 706,
+        "y": 80
+      },
+      "eqn1": "-0.1",
+      "eqn2": "0.05x^2",
+      "curveStepSize": 2,
+      "cauchyB": 0.0265,
+      "partialReflect": false
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 400,
+        "y": 80
+      },
+      "p2": {
+        "x": 400,
+        "y": 340
+      },
+      "brightness": 0.04,
+      "wavelength": 460
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 400,
+        "y": 80
+      },
+      "p2": {
+        "x": 400,
+        "y": 340
+      },
+      "brightness": 0.04,
+      "wavelength": 620
+    },
+    {
+      "type": "CustomGlass",
+      "p1": {
+        "x": 650,
+        "y": 60
+      },
+      "p2": {
+        "x": 650,
+        "y": -200
+      },
+      "eqn1": "-0.4+0.05x^2",
+      "eqn2": "-0.3x^2",
+      "curveStepSize": 5,
+      "partialReflect": false
+    },
+    {
+      "type": "CustomGlass",
+      "p1": {
+        "x": 706,
+        "y": 60
+      },
+      "p2": {
+        "x": 706,
+        "y": -200
+      },
+      "eqn1": "-0.1",
+      "eqn2": "0.05x^2",
+      "curveStepSize": 5,
+      "refIndex": 1.55,
+      "cauchyB": 0.0255,
+      "partialReflect": false
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 400,
+        "y": -200
+      },
+      "p2": {
+        "x": 400,
+        "y": 60
+      },
+      "brightness": 0.04,
+      "wavelength": 620
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 400,
+        "y": -200
+      },
+      "p2": {
+        "x": 400,
+        "y": 60
+      },
+      "brightness": 0.04,
+      "wavelength": 460
+    },
+    {
+      "type": "CustomGlass",
+      "p1": {
+        "x": 674,
+        "y": -220
+      },
+      "p2": {
+        "x": 674,
+        "y": -480
+      },
+      "eqn1": "-0.35+0.135x^2",
+      "eqn2": "-0.135x^2",
+      "curveStepSize": 10,
+      "cauchyB": 0.0126,
+      "partialReflect": false
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 400,
+        "y": -480
+      },
+      "p2": {
+        "x": 400,
+        "y": -220
+      },
+      "brightness": 0.04,
+      "wavelength": 460
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 400,
+        "y": -480
+      },
+      "p2": {
+        "x": 400,
+        "y": -220
+      },
+      "brightness": 0.04,
+      "wavelength": 620
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 400,
+        "y": -480
+      },
+      "p2": {
+        "x": 400,
+        "y": -220
+      },
+      "brightness": 0.04
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 400,
+        "y": -200
+      },
+      "p2": {
+        "x": 400,
+        "y": 60
+      },
+      "brightness": 0.04
+    },
+    {
+      "type": "Beam",
+      "p1": {
+        "x": 400,
+        "y": 80
+      },
+      "p2": {
+        "x": 400,
+        "y": 340
+      },
+      "brightness": 0.04
+    },
+    {
+      "type": "TextLabel",
+      "x": 365,
+      "y": -320,
+      "text": "单透镜",
+      "fontSize": 80,
+      "alignment": "right"
+    },
+    {
+      "type": "TextLabel",
+      "x": 369,
+      "y": -40,
+      "text": "消色差透镜",
+      "fontSize": 80,
+      "alignment": "right"
+    },
+    {
+      "type": "TextLabel",
+      "x": 363,
+      "y": 240,
+      "text": "复消色差透镜",
+      "fontSize": 80,
+      "alignment": "right"
+    },
+    {
+      "type": "TextLabel",
+      "x": 1040,
+      "y": -420,
+      "text": "- 球面像差\n- 色差"
+    },
+    {
+      "type": "TextLabel",
+      "x": 1040,
+      "y": -120,
+      "text": "- 球面像差"
+    },
+    {
+      "type": "TextLabel",
+      "x": 1060,
+      "y": 160,
+      "text": "- 无像差\n"
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": 581,
+        "y": -533
+      },
+      "p4": {
+        "x": 1509,
+        "y": 395
+      }
+    },
+    {
+      "type": "CropBox",
+      "p1": {
+        "x": -409.57419926612704,
+        "y": -650.2258990767156
+      },
+      "p4": {
+        "x": 2014,
+        "y": 517
+      }
+    }
+  ],
+  "width": 3635.3612988991904,
+  "height": 2379.012998709779,
+  "rayModeDensity": 0.0734169825670727,
+  "origin": {
+    "x": 1015.4677490826588,
+    "y": 1256.1194488932474
+  },
+  "scale": 1,
+  "simulateColors": true,
+  "importedFromBeta": true
+}
