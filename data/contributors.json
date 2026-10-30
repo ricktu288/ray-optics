@@ -1043,5 +1043,23 @@
       ]
     },
     "firstCommit": "2026-09-24"
+  },
+  {
+    "name": "Kiên Trần Trung",
+    "contributions": {
+      "translations": [
+        "vi"
+      ]
+    },
+    "firstCommit": "2026-10-12"
+  },
+  {
+    "name": "ehsan ghorbani",
+    "contributions": {
+      "translations": [
+        "fa"
+      ]
+    },
+    "firstCommit": "2026-10-28"
   }
 ]

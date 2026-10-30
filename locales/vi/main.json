@@ -139,6 +139,86 @@
       "description": "Khối đa giác có chiết suất biến đổi theo hàm n(x,y).",
       "instruction": "Nhấp chuột để tạo các đỉnh đa giác, nhấp chuột vào điểm đầu để kết thúc.",
       "warning": "LƯU Ý: Các đa giác quá phức tạp có thể vượt khả năng tính toán của thiết bị."
+    },
+    "otherGrinGlass": {
+      "description": "Vật liệu với hàm chiết suất tuỳ chỉnh n(x,y).",
+      "title": "Vật liệu chiết suất biến thiên"
+    },
+    "Blocker": {
+      "title": "Đường Cản Sáng",
+      "description": "Một đoạn thẳng hấp thụ tia tới."
+    },
+    "CircleBlocker": {
+      "title": "Hình Tròn Cản Sáng",
+      "description": "Một hình tròn hấp thụ các tia tới."
+    },
+    "Aperture": {
+      "title": "Khẩu Độ",
+      "description": "Một cặp vật cản sáng hấp thụ tia tới. Kích thước lỗ có thể được điều chỉnh một cách đối xứng.",
+      "instruction": "Kéo hoặc thả hai điểm để tạo."
+    },
+    "DiffractionGrating": {
+      "title": "Cách Tử Nhiễu Xạ",
+      "description": "Một cách tử nhiễu xạ tách ánh sáng ở một góc tuỳ vào bước sóng.",
+      "warning": "Cảnh báo: Cường độ của các tia nhiễu xạ có thể không chính xác."
+    },
+    "Ruler": {
+      "title": "Thước",
+      "description": "Một cây thước có vạch từ số không đến điểm khác."
+    },
+    "Protractor": {
+      "title": "Thước Đo Góc",
+      "description": "Thước đo góc xác định từ tâm đến điểm có vạch số không. Thang đo độ."
+    },
+    "Detector": {
+      "title": "Cảm Biến",
+      "description": "Một công cụ dùng để đo công suất (P), tốc độ dòng động lượng vuông góc (F⊥) và tốc độ dòng động lượng song song (F∥) qua một đoạn thẳng. Các đơn vị là đơn vị quy ước."
+    },
+    "TextLabel": {
+      "title": "Văn Bản",
+      "description": "Một văn bản."
+    },
+    "LineArrow": {
+      "title": "Đoạn Thẳng / Mũi Tên",
+      "description": "Một đoạn thẳng hoặc mũi tên."
+    },
+    "Drawing": {
+      "title": "Vẽ",
+      "description": "Một công cụ vẽ tay.",
+      "instruction": "Kéo để vẽ."
+    },
+    "CustomSurface": {
+      "title": "Đường Bề Mặt Tuỳ Chỉnh",
+      "description": "Một bề mặt phẳng tuỳ chỉnh có các góc (θ) và độ sáng (P) của các tia ló (khi một tia sáng chiếu tới) được định nghĩa bằng các phương trình tuỳ chỉnh."
+    },
+    "modules": {
+      "import": "Nhập Module…",
+      "createModule": "Tạo Module…",
+      "remove": "Xoá module"
+    },
+    "moveView": {
+      "title": "Di chuyển vùng quan sát",
+      "description": "Kéo để di chuyển vùng quan sát. (Có thể kéo bằng chuột phải.)"
+    },
+    "ParamGrinGlass": {
+      "title": "Tham Số Đường Cong GRIN",
+      "description": "Vật liệu chiết suất biến thiên (GRIN) với hình dạng được xác định bởi các phương trình tham số."
+    },
+    "CurveGrinGlass": {
+      "title": "Đường cong Bézier GRIN",
+      "description": "Vật liệu chiết suất biến thiên được giới hạn bởi các đường cong Bézier bậc ba."
+    },
+    "CustomArcSurface": {
+      "title": "Bề Mặt Cong Tuỳ Chỉnh",
+      "description": "Một bề mặt tuỳ chỉnh có hình dạng một cung tròn."
+    },
+    "CustomParamSurface": {
+      "title": "Đường Cong Tham Số Tuỳ Chỉnh",
+      "description": "Một bề mặt tuỳ chỉnh có hình dạng quyết định bởi các phương trình tham số."
+    },
+    "CustomCurveSurface": {
+      "title": "Các Đường Cong Bézier Tuỳ Chỉnh",
+      "description": "Một bề mặt tuỳ chỉnh có hình dạng được xác định bởi các đường cong Bézier bậc ba."
     }
   },
   "meta": {
@@ -146,5 +226,16 @@
     "parentheses": "{{main}} ({{sub}})",
     "colon": "{{name}}: {{value}}",
     "list": "{{first}}, {{others}}"
+  },
+  "view": {
+    "rays": {
+      "title": "Tia Sáng",
+      "description": "Hiển thị các tia sáng. Khi 'Mật độ tia sáng' có giá trị lớn, các tia sáng trở nên liên tục."
+    },
+    "images": {
+      "title": "Tất Cả Hình Ảnh",
+      "description": "Hiển thị vị trí của tất cả ảnh và tụ quang. Chấm vàng cho biết ảnh thực, cam cho biết ảnh ảo và xám (không có trong ảnh) cho biết vật ảo. Cần lưu ý rằng một số ảnh không bị phát hiện nếu 'Mật độ tia sáng' không đủ lớn."
+    },
+    "title": "Chế Độ Xem"
   }
 }
