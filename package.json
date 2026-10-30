@@ -49,7 +49,7 @@
     "marked": "^15.0.3",
     "mathjax": "^3.2.2",
     "sharp": "^0.35.4",
-    "simple-git": "^3.36.0"
+    "simple-git": "^4.0.2"
   },
   "scripts": {
     "test": "npm run test:formula && npm run test:primitive && npm run test:propertyUtils && npm run test:sceneObjs && npm run test:scenes",
