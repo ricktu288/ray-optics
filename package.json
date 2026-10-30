@@ -24,7 +24,7 @@
     "i18next": "^23.16.5",
     "i18next-http-backend": "^3.0.5",
     "jquery": "^3.7.1",
-    "json-url": "^3.1.0",
+    "json-url": "^4.0.0",
     "mathjs": "^15.2.0",
     "mathquill": "github:Jutanium/mathquill-webpack",
     "sass": "^1.80.3",
