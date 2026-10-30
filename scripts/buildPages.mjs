@@ -20,7 +20,7 @@ import { fileURLToPath } from 'url';
 import Handlebars from 'handlebars';
 import { marked } from 'marked';
 import i18next from 'i18next';
-import simpleGit from 'simple-git';
+import { simpleGit } from 'simple-git';
 
 // Check for --release flag
 const isRelease = process.argv.includes('--release');
