@@ -6,5 +6,11 @@
     "SphericalLens": {
       "title": "عدسی‌های کروی"
     }
+  },
+  "meta": {
+    "languageName": "فارسی",
+    "parentheses": "{{main}} ({{sub}})",
+    "colon": "{{name}}: {{value}}",
+    "list": "{{first}}, {{others}}"
   }
 }
