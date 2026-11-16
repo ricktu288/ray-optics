@@ -81,6 +81,19 @@
     "ParamMirror": {
       "title": "Curva Parametrica",
       "description": "Uno specchio la cui forma è definita da equazioni parametriche personalizzate."
+    },
+    "GrinGlass": {
+      "description": "Materiale con una funzione indice rifrazione personalizzata n(x,y) e un limite poligonale.",
+      "instruction": "Fare clic per creare un segmento, fare clic sul punto di partenza quando si finisce il disegno.",
+      "warning": "ATTENZIONE: Sono supportati solo poligoni semplici, altrimenti il comportamento è imprevedibile."
+    },
+    "ParamGrinGlass": {
+      "title": "Curva parametrica GRIN"
+    },
+    "CurveMirror": {
+      "title": "Curve di Bézier",
+      "description": "Uno specchio dalla forma definita dalle curve di Bézier cubiche.",
+      "instruction": "Fare clic per creare un pezzo. Fare clic sul punto di partenza per finire come una forma chiusa, o fare clic sull'ultimo punto due volte per finire come una curva aperta. Dopodiché, trascina le caselle per manipolare i punti di controllo, cambiando la curva."
     }
   },
   "meta": {
